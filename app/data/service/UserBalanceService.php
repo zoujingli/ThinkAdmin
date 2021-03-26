@@ -13,30 +13,6 @@ class UserBalanceService extends Service
 {
 
     /**
-     * 同步刷新用户余额
-     * @param int $uuid 用户UID
-     * @param array $nots 排除的订单
-     * @return array [total, count]
-     * @throws \think\db\exception\DbException
-     */
-    public function amount(int $uuid, array $nots = []): array
-    {
-        if ($uuid > 0) {
-            $total = abs($this->app->db->name('DataUserBalance')->whereRaw("uid='{$uuid}' and amount>0 and deleted=0")->sum('amount'));
-            $count = abs($this->app->db->name('DataUserBalance')->whereRaw("uid='{$uuid}' and amount<0 and deleted=0")->sum('amount'));
-            if (empty($nots)) {
-                $this->app->db->name('DataUser')->where(['id' => $uuid])->update(['balance_total' => $total, 'balance_used' => $count]);
-            } else {
-                $count -= $this->app->db->name('DataUserBalance')->whereRaw("uid={$uuid}")->whereIn('code', $nots)->sum('amount');
-            }
-        } else {
-            $total = abs($this->app->db->name('DataUserBalance')->whereRaw("amount>0 and deleted=0")->sum('amount'));
-            $count = abs($this->app->db->name('DataUserBalance')->whereRaw("amount<0 and deleted=0")->sum('amount'));
-        }
-        return [$total, $count];
-    }
-
-    /**
      * 验证订单发放余额
      * @param string $orderNo
      * @return array [total, count]
@@ -60,6 +36,30 @@ class UserBalanceService extends Service
         ], 'code');
 
         return $this->amount($order['uid']);
+    }
+
+    /**
+     * 同步刷新用户余额
+     * @param int $uuid 用户UID
+     * @param array $nots 排除的订单
+     * @return array [total, count]
+     * @throws \think\db\exception\DbException
+     */
+    public function amount(int $uuid, array $nots = []): array
+    {
+        if ($uuid > 0) {
+            $total = abs($this->app->db->name('DataUserBalance')->whereRaw("uid='{$uuid}' and amount>0 and deleted=0")->sum('amount'));
+            $count = abs($this->app->db->name('DataUserBalance')->whereRaw("uid='{$uuid}' and amount<0 and deleted=0")->sum('amount'));
+            if (empty($nots)) {
+                $this->app->db->name('DataUser')->where(['id' => $uuid])->update(['balance_total' => $total, 'balance_used' => $count]);
+            } else {
+                $count -= $this->app->db->name('DataUserBalance')->whereRaw("uid={$uuid}")->whereIn('code', $nots)->sum('amount');
+            }
+        } else {
+            $total = abs($this->app->db->name('DataUserBalance')->whereRaw("amount>0 and deleted=0")->sum('amount'));
+            $count = abs($this->app->db->name('DataUserBalance')->whereRaw("amount<0 and deleted=0")->sum('amount'));
+        }
+        return [$total, $count];
     }
 
 }

@@ -63,7 +63,7 @@ class ExpressService extends Service
 
     /**
      * 配送区域树型数据
-     * @param integer $level 最大级别
+     * @param integer $level 最大等级
      * @param null|integer $status 状态筛选
      * @return array
      */
@@ -98,16 +98,6 @@ class ExpressService extends Service
     }
 
     /**
-     * 楚才开放平台快递公司
-     * @return array
-     * @throws \think\admin\Exception
-     */
-    public function company(): array
-    {
-        return $this->_getInterface()->doRequest('api.auth.express/getCompany');
-    }
-
-    /**
      * 获取楚才开放平台接口实例
      * @return InterfaceService
      */
@@ -118,6 +108,16 @@ class ExpressService extends Service
         $service->getway('https://open.cuci.cc/user/');
         $service->setAuth("6998081316132228", "193fc1d9a2aac78475bc8dbeb9a5feb1");
         return $service;
+    }
+
+    /**
+     * 楚才开放平台快递公司
+     * @return array
+     * @throws \think\admin\Exception
+     */
+    public function company(): array
+    {
+        return $this->_getInterface()->doRequest('api.auth.express/getCompany');
     }
 
 }

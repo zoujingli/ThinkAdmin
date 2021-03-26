@@ -96,7 +96,7 @@ class OrderService extends Service
     }
 
     /**
-     * 获取级别折扣比例
+     * 获取等级折扣比例
      * @param int $disId 折扣方案ID
      * @param int $vipCode 等级序号
      * @param float $disRate 默认比例

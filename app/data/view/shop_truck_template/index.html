@@ -2,7 +2,7 @@
 
 {block name="button"}
 <!--{if auth("add")}-->
-<button data-open='{:url("add")}' data-title="添加邮费模板" class='layui-btn layui-btn-sm layui-btn-primary'>添加邮费模板</button>
+<button class='layui-btn layui-btn-sm layui-btn-primary' data-open='{:url("add")}' data-title="添加邮费模板">添加邮费模板</button>
 <!--{/if}-->
 {/block}
 
@@ -18,7 +18,7 @@
                     <label><input data-auto-none data-check-target='.list-check-box' type='checkbox'></label>
                 </th>
                 <th class='list-table-sort-td'>
-                    <button type="button" data-reload class="layui-btn layui-btn-xs">刷 新</button>
+                    <button class="layui-btn layui-btn-xs" data-reload type="button">刷 新</button>
                 </th>
                 <th class='text-left nowrap'>模板编号</th>
                 <th class='text-left nowrap'>模板名称</th>
@@ -32,10 +32,10 @@
             {foreach $list as $key=>$vo}
             <tr data-dbclick>
                 <td class='list-table-check-td think-checkbox'>
-                    <label><input class="list-check-box" value='{$vo.id}' type='checkbox'></label>
+                    <label><input class="list-check-box" type='checkbox' value='{$vo.id}'></label>
                 </td>
                 <td class='list-table-sort-td'>
-                    <label><input data-action-blur="{:request()->url()}" data-value="id#{$vo.id};action#sort;sort#{value}" data-loading="false" value="{$vo.sort}" class="list-sort-input"></label>
+                    <label><input class="list-sort-input" data-action-blur="{:request()->url()}" data-loading="false" data-value="id#{$vo.id};action#sort;sort#{value}" value="{$vo.sort}"></label>
                 </td>
                 <td class='text-left nowrap'>{$vo.code|default=''}</td>
                 <td class='text-left nowrap'>{$vo.name|default=''}</td>
@@ -43,7 +43,7 @@
                 <td class='text-left nowrap'>{$vo.create_at|format_datetime}</td>
                 <td class='text-left nowrap'>
                     <!--{if auth("edit")}-->
-                    <a data-dbclick class="layui-btn layui-btn-sm" data-title="编辑快递公司" data-open='{:url("edit")}?code={$vo.code}'>编 辑</a>
+                    <a class="layui-btn layui-btn-sm" data-dbclick data-open='{:url("edit")}?code={$vo.code}' data-title="编辑快递公司">编 辑</a>
                     <!--{/if}-->
 
                     <!--{if auth("state") and $vo.status eq 1}-->
@@ -53,7 +53,7 @@
                     <!--{/if}-->
 
                     <!--{if auth("remove")}-->
-                    <a class="layui-btn layui-btn-danger layui-btn-sm" data-confirm="确定要删除数据吗?" data-action="{:url('remove')}" data-value="code#{$vo.code}">删 除</a>
+                    <a class="layui-btn layui-btn-danger layui-btn-sm" data-action="{:url('remove')}" data-confirm="确定要删除数据吗?" data-value="code#{$vo.code}">删 除</a>
                     <!--{/if}-->
                 </td>
             </tr>

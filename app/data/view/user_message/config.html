@@ -5,7 +5,7 @@
     注意：短信接口配置的参数不能随意修改，会影响到用户注册发送短信通知功能，若有需要调整请联系客服！
 </div>
 <div class="think-box-shadow">
-    <form style="width:800px" onsubmit="return false;" data-auto="true" action="{$request->url()}" method="post" class='layui-form layui-card shadow-none' autocomplete="off">
+    <form action="{$request->url()}" autocomplete="off" class='layui-form layui-card shadow-none' data-auto="true" method="post" onsubmit="return false;" style="width:800px">
 
         <div class="layui-card-body padding-left-40">
 
@@ -23,19 +23,19 @@
 
             <label class="layui-form-item block relative">
                 <span class="color-green font-w7 margin-right-10">短信授权账号</span><span class="nowrap color-desc">Username</span>
-                <input name="zt.username" required placeholder="请输入短信授权账号" value="{:sysconf('zt.username')}" class="layui-input">
+                <input class="layui-input" name="zt.username" placeholder="请输入短信授权账号" required value="{:sysconf('zt.username')}">
                 <span class="help-block">短信授权账号，可以联系 18122377655 获取账号与密码</span>
             </label>
 
             <label class="layui-form-item block relative">
                 <span class="color-green font-w7 margin-right-10">短信授权密码</span><span class="nowrap color-desc">Password</span>
-                <input name="zt.password" required placeholder="请输入短信授权密码" value="{:sysconf('zt.password')}" class="layui-input">
+                <input class="layui-input" name="zt.password" placeholder="请输入短信授权密码" required value="{:sysconf('zt.password')}">
                 <span class="help-block">短信授权密码，可以联系 18122377655 获取账号与密码</span>
             </label>
 
             <label class="layui-form-item block relative">
                 <span class="color-green font-w7 margin-right-10">短信发送安全码</span><span class="nowrap color-desc">SecureCode</span>
-                <input name="zt.secure_code" required placeholder="请输入短信发送安全码" value="{:sysconf('zt.secure_code')}" class="layui-input">
+                <input class="layui-input" name="zt.secure_code" placeholder="请输入短信发送安全码" required value="{:sysconf('zt.secure_code')}">
                 <span class="help-block">短信发送安全码，调用接口发短信时需要传入此参数</span>
             </label>
 

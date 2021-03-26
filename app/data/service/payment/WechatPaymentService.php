@@ -20,21 +20,6 @@ class WechatPaymentService extends PaymentService
     protected $payment;
 
     /**
-     * 微信支付服务初始化
-     * @return WechatPaymentService
-     */
-    protected function initialize(): WechatPaymentService
-    {
-        $this->payment = Order::instance([
-            'appid'      => $this->params['wechat_appid'],
-            'mch_id'     => $this->params['wechat_mch_id'],
-            'mch_key'    => $this->params['wechat_mch_key'],
-            'cache_path' => $this->app->getRootPath() . 'runtime' . DIRECTORY_SEPARATOR . 'wechat',
-        ]);
-        return $this;
-    }
-
-    /**
      * 创建订单支付参数
      * @param string $openid 用户OPENID
      * @param string $orderNo 交易订单单号
@@ -126,5 +111,20 @@ class WechatPaymentService extends PaymentService
         } else {
             return $this->payment->getNotifySuccessReply();
         }
+    }
+
+    /**
+     * 微信支付服务初始化
+     * @return WechatPaymentService
+     */
+    protected function initialize(): WechatPaymentService
+    {
+        $this->payment = Order::instance([
+            'appid'      => $this->params['wechat_appid'],
+            'mch_id'     => $this->params['wechat_mch_id'],
+            'mch_key'    => $this->params['wechat_mch_key'],
+            'cache_path' => $this->app->getRootPath() . 'runtime' . DIRECTORY_SEPARATOR . 'wechat',
+        ]);
+        return $this;
     }
 }

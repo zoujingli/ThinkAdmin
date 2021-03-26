@@ -1,4 +1,4 @@
-<form class="layui-form layui-card" action="{:request()->url()}" data-auto="true" method="post" autocomplete="off">
+<form action="{:request()->url()}" autocomplete="off" class="layui-form layui-card" data-auto="true" method="post">
     <div class="layui-card-body padding-left-40">
 
         <div class="layui-form-item relative block">
@@ -64,10 +64,10 @@
                             <td class="layui-bg-gray text-center">{$goods.stock_sales|default=0}</td>
                             <td class="layui-bg-gray text-center">{$goods.stock_total-$goods.stock_sales}</td>
                             <td class="padding-0 nowrap">
-                                <input type="hidden" name="goods_code[]" value="{$goods.goods_code|default=''}">
-                                <input type="hidden" name="goods_spec[]" value="{$goods.goods_spec|default=''}">
+                                <input name="goods_code[]" type="hidden" value="{$goods.goods_code|default=''}">
+                                <input name="goods_spec[]" type="hidden" value="{$goods.goods_spec|default=''}">
                                 <label>
-                                    <input class="layui-input text-right border-0 padding-right-40" maxlength="20" data-blur-number="0" name="goods_stock[]" value="0">
+                                    <input class="layui-input text-right border-0 padding-right-40" data-blur-number="0" maxlength="20" name="goods_stock[]" value="0">
                                     <span class="input-right-icon layui-bg-gray">件</span>
                                 </label>
                             </td>
@@ -83,7 +83,7 @@
     <div class="hr-line-dashed"></div>
     <div class="layui-form-item text-center">
         <button class="layui-btn" type='submit'>确定入库</button>
-        <button class="layui-btn layui-btn-danger" type='button' data-confirm="确定要取消入库吗？" data-close>取消入库</button>
+        <button class="layui-btn layui-btn-danger" data-close data-confirm="确定要取消入库吗？" type='button'>取消入库</button>
     </div>
 </form>
 

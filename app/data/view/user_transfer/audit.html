@@ -1,4 +1,4 @@
-<form class="layui-form layui-card" action="{:request()->url()}" data-auto="true" method="post" autocomplete="off">
+<form action="{:request()->url()}" autocomplete="off" class="layui-form layui-card" data-auto="true" method="post">
 
     <div class="layui-card-body padding-left-40">
 
@@ -6,19 +6,19 @@
         <div class="layui-row layui-form-item layui-col-space15">
             <label class="layui-col-xs3">
                 <span class="color-green font-w7">提现单号</span>
-                <input disabled class='layui-input layui-disabled layui-bg-gray' value='{$vo.code|default="-"}'>
+                <input class='layui-input layui-disabled layui-bg-gray' disabled value='{$vo.code|default="-"}'>
             </label>
             <label class="layui-col-xs3">
                 <span class="color-green font-w7">提现金额</span>
-                <input disabled class='layui-input layui-disabled layui-bg-gray' value='{$vo.amount|default="0.00"}'>
+                <input class='layui-input layui-disabled layui-bg-gray' disabled value='{$vo.amount|default="0.00"}'>
             </label>
             <label class="layui-col-xs3">
                 <span class="color-green font-w7">提现手续费</span>
-                <input disabled class='layui-input layui-disabled layui-bg-gray' value='{$vo.charge_amount|default="0.00"}'>
+                <input class='layui-input layui-disabled layui-bg-gray' disabled value='{$vo.charge_amount|default="0.00"}'>
             </label>
             <label class="layui-col-xs3">
                 <span class="color-green font-w7 label-required-prev">提现方式</span>
-                <input disabled class='layui-input layui-disabled layui-bg-gray' value='{$vo.type|default="-"}'>
+                <input class='layui-input layui-disabled layui-bg-gray' disabled value='{$vo.type|default="-"}'>
             </label>
         </div>
 
@@ -26,7 +26,7 @@
         {in name='vo.type' value='wechat_qrcode,alipay_qrcode'}
         <fieldset class="layui-form-item">
             <legend><span class="layui-badge layui-bg-blue">付款二维码</span></legend>
-            <div data-tips-image style="height:300px" data-lazy-src="{$vo.qrcode}"></div>
+            <div data-lazy-src="{$vo.qrcode}" data-tips-image style="height:300px"></div>
         </fieldset>
         {/in}
 
@@ -35,11 +35,11 @@
         <div class="layui-row layui-form-item layui-col-space15">
             <label class="layui-col-xs3">
                 <span class="color-green font-w7">支付宝姓名</span>
-                <input disabled class='layui-input layui-disabled layui-bg-gray' value='{$vo.alipay_user|default="0.00"}'>
+                <input class='layui-input layui-disabled layui-bg-gray' disabled value='{$vo.alipay_user|default="0.00"}'>
             </label>
             <label class="layui-col-xs3">
                 <span class="color-green font-w7">支付宝账号</span>
-                <input disabled class='layui-input layui-disabled layui-bg-gray' value='{$vo.alipay_code|default="0.00"}'>
+                <input class='layui-input layui-disabled layui-bg-gray' disabled value='{$vo.alipay_code|default="0.00"}'>
             </label>
         </div>
         {/in}
@@ -49,19 +49,19 @@
         <div class="layui-row layui-form-item layui-col-space15">
             <label class="layui-col-xs3">
                 <span class="color-green font-w7">开户银行名称</span>
-                <input disabled class='layui-input layui-disabled layui-bg-gray' value='{$vo.bank_name|default="-"}'>
+                <input class='layui-input layui-disabled layui-bg-gray' disabled value='{$vo.bank_name|default="-"}'>
             </label>
             <label class="layui-col-xs3">
                 <span class="color-green font-w7">开户分行名称</span>
-                <input disabled class='layui-input layui-disabled layui-bg-gray' value='{$vo.bank_bran|default="-"}'>
+                <input class='layui-input layui-disabled layui-bg-gray' disabled value='{$vo.bank_bran|default="-"}'>
             </label>
             <label class="layui-col-xs3">
                 <span class="color-green font-w7">开户账号姓名</span>
-                <input disabled class='layui-input layui-disabled layui-bg-gray' value='{$vo.bank_user|default="-"}'>
+                <input class='layui-input layui-disabled layui-bg-gray' disabled value='{$vo.bank_user|default="-"}'>
             </label>
             <label class="layui-col-xs3">
                 <span class="color-green font-w7">开户银行卡号</span>
-                <input disabled class='layui-input layui-disabled layui-bg-gray' value='{$vo.bank_code|default="-"}'>
+                <input class='layui-input layui-disabled layui-bg-gray' disabled value='{$vo.bank_code|default="-"}'>
             </label>
         </div>
         {/in}
@@ -99,9 +99,9 @@
 
             <div class="layui-textarea" style="min-height:auto;padding:10px 0 13px 18px">
                 {foreach($types as $k => $v)}{if $k eq $vo.status}
-                <input checked type="radio" name="status" value='{$k}' title="{$v}">
+                <input checked name="status" title="{$v}" type="radio" value='{$k}'>
                 {else}
-                <input type="radio" name="status" value='{$k}' title="{$v}">
+                <input name="status" title="{$v}" type="radio" value='{$k}'>
                 {/if}{/foreach}
             </div>
         </div>
@@ -109,18 +109,18 @@
         <div class="layui-form-item">
             <label class="relative block">
                 <span class="color-green font-w7">审核操作描述</span>
-                <textarea class="layui-textarea" placeholder="请输入审核描述" name="remark">{$vo.remark|default=''}</textarea>
+                <textarea class="layui-textarea" name="remark" placeholder="请输入审核描述">{$vo.remark|default=''}</textarea>
             </label>
         </div>
 
     </div>
 
     <div class="hr-line-dashed"></div>
-    {notempty name='vo.id'}<input type='hidden' value='{$vo.id}' name='id'>{/notempty}
+    {notempty name='vo.id'}<input name='id' type='hidden' value='{$vo.id}'>{/notempty}
 
     <div class="layui-form-item text-center">
         <button class="layui-btn" type='submit'>保存数据</button>
-        <button class="layui-btn layui-btn-danger" type='button' data-confirm="确定要取消编辑吗？" data-close>取消编辑</button>
+        <button class="layui-btn layui-btn-danger" data-close data-confirm="确定要取消编辑吗？" type='button'>取消编辑</button>
     </div>
 
 </form>

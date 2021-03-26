@@ -50,6 +50,29 @@ class UserTokenService extends Service
     }
 
     /**
+     * 获取令牌的认证值
+     * @return string
+     */
+    private function _buildTokenVerify(): string
+    {
+        return md5($this->app->request->server('HTTP_USER_AGENT', '-'));
+    }
+
+    /**
+     * 延期 TOKEN 有效时间
+     * @param string $type 接口类型
+     * @param string $token 授权令牌
+     * @throws DbException
+     */
+    public function expire(string $type, string $token)
+    {
+        $map = ['type' => $type, 'token' => $token];
+        $this->app->db->name('DataUserToken')->where($map)->update([
+            'time' => time() + $this->expire,
+        ]);
+    }
+
+    /**
      * 生成新的用户令牌
      * @param int $uuid 授权用户
      * @param string $type 接口类型
@@ -72,28 +95,5 @@ class UserTokenService extends Service
         } else {
             return [0, '刷新认证失败', []];
         }
-    }
-
-    /**
-     * 延期 TOKEN 有效时间
-     * @param string $type 接口类型
-     * @param string $token 授权令牌
-     * @throws DbException
-     */
-    public function expire(string $type, string $token)
-    {
-        $map = ['type' => $type, 'token' => $token];
-        $this->app->db->name('DataUserToken')->where($map)->update([
-            'time' => time() + $this->expire,
-        ]);
-    }
-
-    /**
-     * 获取令牌的认证值
-     * @return string
-     */
-    private function _buildTokenVerify(): string
-    {
-        return md5($this->app->request->server('HTTP_USER_AGENT', '-'));
     }
 }

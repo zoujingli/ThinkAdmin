@@ -1,10 +1,10 @@
 <fieldset>
     <legend>条件搜索</legend>
-    <form class="layui-form layui-form-pane form-search" action="{:request()->url()}" onsubmit="return false" method="get" autocomplete="off">
+    <form action="{:request()->url()}" autocomplete="off" class="layui-form layui-form-pane form-search" method="get" onsubmit="return false">
         <div class="layui-form-item layui-inline">
             <label class="layui-form-label">标签名称</label>
             <label class="layui-input-inline">
-                <input name="name" value="{:input('name','')}" placeholder="请输入标签名称" class="layui-input">
+                <input class="layui-input" name="name" placeholder="请输入标签名称" value="{:input('name','')}">
             </label>
         </div>
 
@@ -26,7 +26,7 @@
         <div class="layui-form-item layui-inline">
             <label class="layui-form-label">创建时间</label>
             <label class="layui-input-inline">
-                <input data-date-range name="create_at" value="{:input('create_at','')}" placeholder="请选择创建时间" class="layui-input">
+                <input class="layui-input" data-date-range name="create_at" placeholder="请选择创建时间" value="{:input('create_at','')}">
             </label>
         </div>
 

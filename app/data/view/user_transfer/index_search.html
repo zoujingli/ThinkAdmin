@@ -1,18 +1,18 @@
 <fieldset>
     <legend>条件搜索</legend>
-    <form class="layui-form layui-form-pane form-search" action="{:request()->url()}" onsubmit="return false" method="get" autocomplete="off">
+    <form action="{:request()->url()}" autocomplete="off" class="layui-form layui-form-pane form-search" method="get" onsubmit="return false">
 
         <div class="layui-form-item layui-inline">
             <label class="layui-form-label">用户手机</label>
             <label class="layui-input-inline">
-                <input name="phone" value="{:input('phone')}" placeholder="请输入用户手机" class="layui-input">
+                <input class="layui-input" name="phone" placeholder="请输入用户手机" value="{:input('phone')}">
             </label>
         </div>
 
         <div class="layui-form-item layui-inline">
             <label class="layui-form-label">用户昵称</label>
             <label class="layui-input-inline">
-                <input name="nickname" value="{:input('nickname')}" placeholder="请输入用户昵称" class="layui-input">
+                <input class="layui-input" name="nickname" placeholder="请输入用户昵称" value="{:input('nickname')}">
             </label>
         </div>
 
@@ -49,7 +49,7 @@
         <div class="layui-form-item layui-inline">
             <label class="layui-form-label">申请时间</label>
             <div class="layui-input-inline">
-                <input data-date-range name="create_at" value="{:input('create_at')}" placeholder="请选择申请时间" class="layui-input">
+                <input class="layui-input" data-date-range name="create_at" placeholder="请选择申请时间" value="{:input('create_at')}">
             </div>
         </div>
 

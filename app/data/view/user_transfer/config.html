@@ -22,7 +22,7 @@
     }
 </style>
 
-<form class="layui-form layui-card" action="{:request()->url()}" data-auto="true" method="post" autocomplete="off">
+<form action="{:request()->url()}" autocomplete="off" class="layui-form layui-card" data-auto="true" method="post">
     <div class="layui-card-body padding-left-40">
 
         <div class="layui-form-item relative block">
@@ -32,9 +32,9 @@
                 {php} $data['status'] = $data['status'] ?? 0; {/php}
                 {foreach ['关闭返利提现', '开启返利提现'] as $k => $v}
                 {if $data.status eq $k}
-                <input checked class="layui-input layui-bg-gray" type="radio" title="{$v}" name="status" value="{$k}">
+                <input checked class="layui-input layui-bg-gray" name="status" title="{$v}" type="radio" value="{$k}">
                 {else}
-                <input class="layui-input layui-bg-gray" type="radio" title="{$v}" name="status" value="{$k}">
+                <input class="layui-input layui-bg-gray" name="status" title="{$v}" type="radio" value="{$k}">
                 {/if}{/foreach}
             </div>
         </div>
@@ -42,7 +42,7 @@
         <label class="layui-form-item relative block">
             <span class="color-green font-w7 label-required-prev">提现手续费配置</span>
             <span class="color-desc margin-left-5">Transfer Charge</span>
-            <input name="charge" class='layui-input' data-value-min="0.0000" data-value-max="50.0000" data-blur-number="4" value='{$data.charge|default="0.0000"}'>
+            <input class='layui-input' data-blur-number="4" data-value-max="50.0000" data-value-min="0.0000" name="charge" value='{$data.charge|default="0.0000"}'>
             <span class='help-block'>请输入提现金额的百分比，费率的取值范围为 0.0000% - 50.0000%</span>
         </label>
 
@@ -66,23 +66,23 @@
                 <tr class="think-bg-white">
                     <td class="nowrap padding-col-5">
                         {php} $key = 'transfer['.$k.']["state"]'; {/php}
-                        <input type="hidden" name="{$key}" value="0">
+                        <input name="{$key}" type="hidden" value="0">
                         {if isset($data['transfer'][$k]['state']) and $data['transfer'][$k]['state'] eq 1}
-                        <input checked type="checkbox" name="{$key}" value="1" lay-skin="primary" title="{$t}">
+                        <input checked lay-skin="primary" name="{$key}" title="{$t}" type="checkbox" value="1">
                         {else}
-                        <input type="checkbox" name="{$key}" value="1" lay-skin="primary" title="{$t}">
+                        <input lay-skin="primary" name="{$key}" title="{$t}" type="checkbox" value="1">
                         {/if}
                     </td>
                     <td class="text-center padding-col-5" style="width:80px">
                         {php} $key = 'transfer['.$k.']["audit"]'; {/php}
-                        <input type="hidden" name="{$key}" value="0">
+                        <input name="{$key}" type="hidden" value="0">
                         {if isset($data['transfer'][$k]['audit']) and $data['transfer'][$k]['audit'] eq 1}
-                        <input checked type="checkbox" name="{$key}" value="1" lay-skin="switch" lay-text="需审核|免审核">
+                        <input checked lay-skin="switch" lay-text="需审核|免审核" name="{$key}" type="checkbox" value="1">
                         {else}
-                        <input type="checkbox" name="{$key}" value="1" lay-skin="switch" lay-text="需审核|免审核">
+                        <input lay-skin="switch" lay-text="需审核|免审核" name="{$key}" type="checkbox" value="1">
                         {/if}
                         {php} $key = 'transfer['.$k.'][title]'; {/php}
-                        <input type="hidden" class="layui-input" name="{$key}" value="{$t}">
+                        <input class="layui-input" name="{$key}" type="hidden" value="{$t}">
                     </td>
                     <td class="text-center transfer-image">
                         {php} $key = 'transfer['.$k.'][image]'; {/php}
@@ -92,20 +92,20 @@
                     <td class="text-center padding-col-5">
                         <label>
                             {php} $key = 'transfer['.$k.'][minAmount]'; {/php}
-                            <input placeholder="￥" class="layui-input" data-value-min="0.00" data-blur-number="2" name="{$key}" value="{$data['transfer'][$k]['minAmount'] ?? '1.00'}">
+                            <input class="layui-input" data-blur-number="2" data-value-min="0.00" name="{$key}" placeholder="￥" value="{$data['transfer'][$k]['minAmount'] ?? '1.00'}">
                         </label>
                     </td>
                     <td class="text-center padding-col-5">-</td>
                     <td class="text-center padding-col-5">
                         <label>
                             {php} $key = 'transfer['.$k.'][maxAmount]'; {/php}
-                            <input placeholder="￥" class="layui-input" data-value-max="100000.00" data-blur-number="2" name="{$key}" value="{$data['transfer'][$k]['maxAmount'] ?? '2000.00'}">
+                            <input class="layui-input" data-blur-number="2" data-value-max="100000.00" name="{$key}" placeholder="￥" value="{$data['transfer'][$k]['maxAmount'] ?? '2000.00'}">
                         </label>
                     </td>
                     <td class="text-center padding-col-5">
                         <label>
                             {php} $key = 'transfer['.$k.'][dayNumber]'; {/php}
-                            <input class="layui-input text-center padding-left-0" data-blur-number="0" data-value-min="1" data-value-max="100" name="{$key}" value="{$data['transfer'][$k]['dayNumber'] ?? '1'}">
+                            <input class="layui-input text-center padding-left-0" data-blur-number="0" data-value-max="100" data-value-min="1" name="{$key}" value="{$data['transfer'][$k]['dayNumber'] ?? '1'}">
                         </label>
                     </td>
                 </tr>
@@ -118,7 +118,7 @@
             <span class="color-green font-w7">用户提现描述内容</span>
             <span class="color-desc margin-left-5">Transfer Remark</span>
             <label class="relative block">
-                <textarea class="layui-textarea" placeholder="请输入用户提现描述内容" name="remark">{$data.remark|default=''}</textarea>
+                <textarea class="layui-textarea" name="remark" placeholder="请输入用户提现描述内容">{$data.remark|default=''}</textarea>
             </label>
         </div>
 
@@ -128,7 +128,7 @@
 
     <div class="layui-form-item text-center">
         <button class="layui-btn" type='submit'>保存数据</button>
-        <button class="layui-btn layui-btn-danger" type='button' data-confirm="确定要取消编辑吗？" data-close>取消编辑</button>
+        <button class="layui-btn layui-btn-danger" data-close data-confirm="确定要取消编辑吗？" type='button'>取消编辑</button>
     </div>
 
     <script>layui.form.render();</script>

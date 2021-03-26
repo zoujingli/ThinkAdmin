@@ -1,17 +1,17 @@
 <fieldset>
     <legend>条件搜索</legend>
-    <form class="layui-form layui-form-pane form-search" action="{:request()->url()}" onsubmit="return false" method="get" autocomplete="off">
+    <form action="{:request()->url()}" autocomplete="off" class="layui-form layui-form-pane form-search" method="get" onsubmit="return false">
         <div class="layui-form-item layui-inline">
             <label class="layui-form-label">用户手机</label>
             <label class="layui-input-inline">
-                <input name="phone" value="{:input('phone')}" placeholder="请输入用户手机" class="layui-input">
+                <input class="layui-input" name="phone" placeholder="请输入用户手机" value="{:input('phone')}">
             </label>
         </div>
 
         <div class="layui-form-item layui-inline">
             <label class="layui-form-label">用户昵称</label>
             <label class="layui-input-inline">
-                <input name="username" value="{:input('username')}" placeholder="请输入用户昵称" class="layui-input">
+                <input class="layui-input" name="username" placeholder="请输入用户昵称" value="{:input('username')}">
             </label>
         </div>
 
@@ -19,7 +19,7 @@
         <div class="layui-form-item layui-inline">
             <label class="layui-form-label">用户等级</label>
             <div class="layui-input-inline">
-                <select name="vip_code" class="layui-select">
+                <select class="layui-select" name="vip_code">
                     <option value="">-- 全部 --</option>
                     {foreach $upgrades as $upgrade}{if input('vip_code') eq $upgrade.number}
                     <option selected value="{$upgrade.number|default=0}">[ {$upgrade.number|default='0'} ] {$upgrade.name|default=''}</option>
@@ -34,14 +34,14 @@
         <div class="layui-form-item layui-inline">
             <label class="layui-form-label">推荐人手机</label>
             <label class="layui-input-inline">
-                <input name="from_phone" value="{:input('from_phone')}" placeholder="请输入推荐人手机" class="layui-input">
+                <input class="layui-input" name="from_phone" placeholder="请输入推荐人手机" value="{:input('from_phone')}">
             </label>
         </div>
 
         <div class="layui-form-item layui-inline">
             <label class="layui-form-label">推荐人昵称</label>
             <label class="layui-input-inline">
-                <input name="from_username" value="{:input('from_username')}" placeholder="请输入推荐人昵称" class="layui-input">
+                <input class="layui-input" name="from_username" placeholder="请输入推荐人昵称" value="{:input('from_username')}">
             </label>
         </div>
 
@@ -49,7 +49,7 @@
         <div class="layui-form-item layui-inline">
             <label class="layui-form-label">推荐人等级</label>
             <div class="layui-input-inline">
-                <select name="from_vipcode" class="layui-select">
+                <select class="layui-select" name="from_vipcode">
                     <option value="">-- 全部 --</option>
                     {foreach $upgrades as $upgrade}{if input('from_vipcode') eq $upgrade.number}
                     <option selected value="{$upgrade.number|default=0}">[ {$upgrade.number|default='0'} ] {$upgrade.name|default=''}</option>
@@ -79,13 +79,13 @@
         <div class="layui-form-item layui-inline">
             <label class="layui-form-label">注册时间</label>
             <div class="layui-input-inline">
-                <input data-date-range name="create_at" value="{:input('create_at','')}" placeholder="请选择注册时间" class="layui-input">
+                <input class="layui-input" data-date-range name="create_at" placeholder="请选择注册时间" value="{:input('create_at','')}">
             </div>
         </div>
 
         <div class="layui-form-item layui-inline">
             <button class="layui-btn layui-btn-primary"><i class="layui-icon">&#xe615;</i> 搜 索</button>
-            <button type="button" data-export-list class="layui-btn layui-btn-primary layui-hide"><i class="layui-icon layui-icon-export"></i> 导 出</button>
+            <button class="layui-btn layui-btn-primary layui-hide" data-export-list type="button"><i class="layui-icon layui-icon-export"></i> 导 出</button>
         </div>
     </form>
 

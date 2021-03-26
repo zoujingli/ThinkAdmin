@@ -1,4 +1,4 @@
-<form class="layui-form layui-card overhide" action="{:request()->url()}" data-auto="true" method="post" autocomplete="off">
+<form action="{:request()->url()}" autocomplete="off" class="layui-form layui-card overhide" data-auto="true" method="post">
     <div class="layui-card-body padding-left-40">
 
         <fieldset class="layui-form-item">
@@ -6,19 +6,19 @@
             <div class="layui-row layui-col-space15">
                 <div class="layui-col-xs3">
                     <div class="layui-table">
-                        <div class="headimg WechatUserHead" data-tips-image data-lazy-src="{$user.headimg|default='__ROOT__/static/theme/img/headimg.png'}"></div>
+                        <div class="headimg WechatUserHead" data-lazy-src="{$user.headimg|default='__ROOT__/static/theme/img/headimg.png'}" data-tips-image></div>
                     </div>
                 </div>
                 <div class="layui-col-xs9">
                     <label class="layui-form-item relative block">
                         <span class="color-green font-w7">微信昵称</span>
                         <span class="color-desc margin-left-5">Wechat Nickname</span>
-                        <input data-bind="nickname" class="layui-input layui-bg-gray" readonly placeholder="请使用微信扫码登录" value="{$user.nickname|default=''}">
+                        <input class="layui-input layui-bg-gray" data-bind="nickname" placeholder="请使用微信扫码登录" readonly value="{$user.nickname|default=''}">
                     </label>
                     <label class="relative block">
                         <span class="color-green font-w7">微信标识</span>
                         <span class="color-desc margin-left-5">Wechat Openid</span>
-                        <input data-bind="openid" class="layui-input layui-bg-gray" readonly placeholder="请使用微信扫码登录" value="{$user['openid1']?:$user['openid2']}">
+                        <input class="layui-input layui-bg-gray" data-bind="openid" placeholder="请使用微信扫码登录" readonly value="{$user['openid1']?:$user['openid2']}">
                     </label>
                 </div>
             </div>
@@ -27,26 +27,26 @@
         <label class="layui-form-item layui-hide">
             <span class="color-green font-w7">充值单号</span>
             <span class="color-desc margin-left-5">Code</span>
-            <input class="layui-input layui-bg-gray" readonly required placeholder="请输入充值单号" name="name" value="{$vo.code|default=''}">
+            <input class="layui-input layui-bg-gray" name="name" placeholder="请输入充值单号" readonly required value="{$vo.code|default=''}">
         </label>
 
         <label class="layui-form-item layui-hide">
             <span class="color-green font-w7">余额充值名称</span>
             <span class="color-desc margin-left-5">Name</span>
-            <input class="layui-input" maxlength="100" required placeholder="请输入余额充值名称" name="name" value="{$vo.name|default='后台余额充值'}">
+            <input class="layui-input" maxlength="100" name="name" placeholder="请输入余额充值名称" required value="{$vo.name|default='后台余额充值'}">
         </label>
 
         <label class="layui-form-item relative block">
             <span class="color-green font-w7">充值账户余额</span>
             <span class="color-desc margin-left-5">Amount</span>
-            <input class="layui-input" maxlength="10" data-blur-number="2" required placeholder="请输入充值账户余额" name="amount" value="{$vo.amount|default='0.00'}">
+            <input class="layui-input" data-blur-number="2" maxlength="10" name="amount" placeholder="请输入充值账户余额" required value="{$vo.amount|default='0.00'}">
             <span class="help-block">请输入要充值的金额，充值后可以使用此余额购买商品</span>
         </label>
 
         <div class="layui-form-item">
             <span class="color-green font-w7 label-required-prev">升级用户等级</span>
             <span class="color-desc margin-left-5">Upgrade</span>
-            <select name="vip_upgrade" class="layui-select" lay-filter="vip_upgrade">
+            <select class="layui-select" lay-filter="vip_upgrade" name="vip_upgrade">
                 <option value="0">-- 不升级 --</option>
                 {foreach $upgrades as $upgrade}{if isset($vo.vip_upgrade) and $vo.vip_upgrade eq $upgrade.number}
                 <option selected value="{$upgrade.number|default=0}">升级到 [ {$upgrade.number|default='0'} ] {$upgrade.name|default=''}</option>
@@ -61,19 +61,19 @@
             <span class="color-green font-w7">余额充值备注</span>
             <span class="color-desc margin-left-5">Remark</span>
             <label class="relative block">
-                <textarea class="layui-textarea" placeholder="请输入余额充值备注" name="remark">{$vo.remark|default=''}</textarea>
+                <textarea class="layui-textarea" name="remark" placeholder="请输入余额充值备注">{$vo.remark|default=''}</textarea>
             </label>
         </div>
 
     </div>
 
     <div class="hr-line-dashed"></div>
-    <input type='hidden' value='{$vo.uid|default=$user.id}' name='uid'>
-    {notempty name='vo.id'}<input type='hidden' value='{$vo.id}' name='id'>{/notempty}
+    <input name='uid' type='hidden' value='{$vo.uid|default=$user.id}'>
+    {notempty name='vo.id'}<input name='id' type='hidden' value='{$vo.id}'>{/notempty}
 
     <div class="layui-form-item text-center">
         <button class="layui-btn" type='submit'>保存数据</button>
-        <button class="layui-btn layui-btn-danger" type='button' data-confirm="确定要取消编辑吗？" data-close>取消编辑</button>
+        <button class="layui-btn layui-btn-danger" data-close data-confirm="确定要取消编辑吗？" type='button'>取消编辑</button>
     </div>
 </form>
 

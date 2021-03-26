@@ -8,6 +8,12 @@ use think\admin\Exception;
 use think\admin\storage\LocalStorage;
 use think\console\Input;
 use think\console\Output;
+use think\db\exception\DataNotFoundException;
+use think\db\exception\DbException;
+use think\db\exception\ModelNotFoundException;
+use WeChat\Exceptions\InvalidDecryptException;
+use WeChat\Exceptions\InvalidResponseException;
+use WeChat\Exceptions\LocalCacheException;
 use WePay\Transfers;
 use WePay\TransfersBank;
 
@@ -30,7 +36,7 @@ class UserTransfer extends Command
      * @param Output $output
      * @return void
      * @throws Exception
-     * @throws \think\db\exception\DbException
+     * @throws DbException
      */
     protected function execute(Input $input, Output $output)
     {
@@ -83,12 +89,12 @@ class UserTransfer extends Command
      * @param array $item
      * @return array [config, result]
      * @throws Exception
-     * @throws \WeChat\Exceptions\InvalidDecryptException
-     * @throws \WeChat\Exceptions\InvalidResponseException
-     * @throws \WeChat\Exceptions\LocalCacheException
-     * @throws \think\db\exception\DataNotFoundException
-     * @throws \think\db\exception\DbException
-     * @throws \think\db\exception\ModelNotFoundException
+     * @throws InvalidDecryptException
+     * @throws InvalidResponseException
+     * @throws LocalCacheException
+     * @throws DataNotFoundException
+     * @throws DbException
+     * @throws ModelNotFoundException
      */
     private function createTransferBank(array $item): array
     {
@@ -104,102 +110,13 @@ class UserTransfer extends Command
     }
 
     /**
-     * 尝试提现转账到微信钱包
-     * @param array $item
-     * @return array [config, result]
-     * @throws Exception
-     * @throws \WeChat\Exceptions\InvalidResponseException
-     * @throws \WeChat\Exceptions\LocalCacheException
-     * @throws \think\db\exception\DataNotFoundException
-     * @throws \think\db\exception\DbException
-     * @throws \think\db\exception\ModelNotFoundException
-     */
-    private function createTransferWallet(array $item): array
-    {
-        $config = $this->getConfig($item['uid']);
-        return [$config, Transfers::instance($config)->create([
-            'openid'           => $config['openid'],
-            'amount'           => intval($item['amount'] - $item['charge_amount']) * 100,
-            'partner_trade_no' => $item['code'],
-            'spbill_create_ip' => '127.0.0.1',
-            'check_name'       => 'NO_CHECK',
-            'desc'             => '微信余额提现',
-        ])];
-    }
-
-    /**
-     * 查询更新提现打款状态
-     * @param array $item
-     * @throws Exception
-     * @throws \WeChat\Exceptions\InvalidResponseException
-     * @throws \WeChat\Exceptions\LocalCacheException
-     * @throws \think\db\exception\DataNotFoundException
-     * @throws \think\db\exception\DbException
-     * @throws \think\db\exception\ModelNotFoundException
-     */
-    private function queryTransferWallet(array $item)
-    {
-        $config = $this->getConfig($item['uid']);
-        [$config['appid'], $config['openid']] = [$item['appid'], $item['openid']];
-        $result = Transfers::instance($config)->query($item['partner_trade_no']);
-        if ($result['return_code'] === 'SUCCESS' && $result['result_code'] === 'SUCCESS') {
-            $this->app->db->name('DataUserTransfer')->where(['code' => $item['code']])->update([
-                'status'      => 5,
-                'appid'       => $config['appid'],
-                'openid'      => $config['openid'],
-                'trade_time'  => $result['payment_time'],
-                'change_time' => date('Y-m-d H:i:s'),
-                'change_desc' => '微信提现打款成功',
-            ]);
-        }
-    }
-
-    /**
-     * 查询更新提现打款状态
-     * @param array $item
-     * @throws Exception
-     * @throws \WeChat\Exceptions\InvalidResponseException
-     * @throws \WeChat\Exceptions\LocalCacheException
-     * @throws \think\db\exception\DataNotFoundException
-     * @throws \think\db\exception\DbException
-     * @throws \think\db\exception\ModelNotFoundException
-     */
-    private function queryTransferBank(array $item)
-    {
-        $config = $this->getConfig($item['uid']);
-        [$config['appid'], $config['openid']] = [$item['appid'], $item['openid']];
-        $result = TransfersBank::instance($config)->query($item['partner_trade_no']);
-        if ($result['return_code'] === 'SUCCESS' && $result['result_code'] === 'SUCCESS') {
-            if ($result['status'] === 'SUCCESS') {
-                $this->app->db->name('DataUserTransfer')->where(['code' => $item['code']])->update([
-                    'status'      => 5,
-                    'appid'       => $config['appid'],
-                    'openid'      => $config['openid'],
-                    'trade_time'  => $result['pay_succ_time'] ?: date('Y-m-d H:i:s'),
-                    'change_time' => date('Y-m-d H:i:s'),
-                    'change_desc' => '微信提现打款成功',
-                ]);
-            }
-            if (in_array($result['status'], ['FAILED', 'BANK_FAIL'])) {
-                $this->app->db->name('DataUserTransfer')->where(['code' => $item['code']])->update([
-                    'status'      => 0,
-                    'change_time' => date('Y-m-d H:i:s'),
-                    'change_desc' => '微信提现打款失败',
-                ]);
-                // 刷新用户可提现余额
-                UserRebateService::instance()->amount($item['uid']);
-            }
-        }
-    }
-
-    /**
      * 获取微信提现参数
      * @param int $uid
      * @return array
      * @throws Exception
-     * @throws \think\db\exception\DataNotFoundException
-     * @throws \think\db\exception\DbException
-     * @throws \think\db\exception\ModelNotFoundException
+     * @throws DataNotFoundException
+     * @throws DbException
+     * @throws ModelNotFoundException
      */
     private function getConfig(int $uid): array
     {
@@ -232,9 +149,9 @@ class UserTransfer extends Command
      * @param int $uid
      * @param string $type
      * @return mixed|null
-     * @throws \think\db\exception\DataNotFoundException
-     * @throws \think\db\exception\DbException
-     * @throws \think\db\exception\ModelNotFoundException
+     * @throws DataNotFoundException
+     * @throws DbException
+     * @throws ModelNotFoundException
      */
     private function getWechatInfo(int $uid, string $type): ?array
     {
@@ -257,5 +174,94 @@ class UserTransfer extends Command
             return [$appid2, $user['openid2']];
         }
         return null;
+    }
+
+    /**
+     * 尝试提现转账到微信钱包
+     * @param array $item
+     * @return array [config, result]
+     * @throws Exception
+     * @throws InvalidResponseException
+     * @throws LocalCacheException
+     * @throws DataNotFoundException
+     * @throws DbException
+     * @throws ModelNotFoundException
+     */
+    private function createTransferWallet(array $item): array
+    {
+        $config = $this->getConfig($item['uid']);
+        return [$config, Transfers::instance($config)->create([
+            'openid'           => $config['openid'],
+            'amount'           => intval($item['amount'] - $item['charge_amount']) * 100,
+            'partner_trade_no' => $item['code'],
+            'spbill_create_ip' => '127.0.0.1',
+            'check_name'       => 'NO_CHECK',
+            'desc'             => '微信余额提现',
+        ])];
+    }
+
+    /**
+     * 查询更新提现打款状态
+     * @param array $item
+     * @throws Exception
+     * @throws InvalidResponseException
+     * @throws LocalCacheException
+     * @throws DataNotFoundException
+     * @throws DbException
+     * @throws ModelNotFoundException
+     */
+    private function queryTransferBank(array $item)
+    {
+        $config = $this->getConfig($item['uid']);
+        [$config['appid'], $config['openid']] = [$item['appid'], $item['openid']];
+        $result = TransfersBank::instance($config)->query($item['partner_trade_no']);
+        if ($result['return_code'] === 'SUCCESS' && $result['result_code'] === 'SUCCESS') {
+            if ($result['status'] === 'SUCCESS') {
+                $this->app->db->name('DataUserTransfer')->where(['code' => $item['code']])->update([
+                    'status'      => 5,
+                    'appid'       => $config['appid'],
+                    'openid'      => $config['openid'],
+                    'trade_time'  => $result['pay_succ_time'] ?: date('Y-m-d H:i:s'),
+                    'change_time' => date('Y-m-d H:i:s'),
+                    'change_desc' => '微信提现打款成功',
+                ]);
+            }
+            if (in_array($result['status'], ['FAILED', 'BANK_FAIL'])) {
+                $this->app->db->name('DataUserTransfer')->where(['code' => $item['code']])->update([
+                    'status'      => 0,
+                    'change_time' => date('Y-m-d H:i:s'),
+                    'change_desc' => '微信提现打款失败',
+                ]);
+                // 刷新用户可提现余额
+                UserRebateService::instance()->amount($item['uid']);
+            }
+        }
+    }
+
+    /**
+     * 查询更新提现打款状态
+     * @param array $item
+     * @throws Exception
+     * @throws InvalidResponseException
+     * @throws LocalCacheException
+     * @throws DataNotFoundException
+     * @throws DbException
+     * @throws ModelNotFoundException
+     */
+    private function queryTransferWallet(array $item)
+    {
+        $config = $this->getConfig($item['uid']);
+        [$config['appid'], $config['openid']] = [$item['appid'], $item['openid']];
+        $result = Transfers::instance($config)->query($item['partner_trade_no']);
+        if ($result['return_code'] === 'SUCCESS' && $result['result_code'] === 'SUCCESS') {
+            $this->app->db->name('DataUserTransfer')->where(['code' => $item['code']])->update([
+                'status'      => 5,
+                'appid'       => $config['appid'],
+                'openid'      => $config['openid'],
+                'trade_time'  => $result['payment_time'],
+                'change_time' => date('Y-m-d H:i:s'),
+                'change_desc' => '微信提现打款成功',
+            ]);
+        }
     }
 }

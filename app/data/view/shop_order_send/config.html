@@ -1,14 +1,14 @@
-<form class="layui-form layui-card margin-bottom-0" action="{:request()->url()}" data-auto="true" method="post" autocomplete="off">
+<form action="{:request()->url()}" autocomplete="off" class="layui-form layui-card margin-bottom-0" data-auto="true" method="post">
     <div class="layui-card-body padding-left-40">
 
         <label class="layui-form-item relative block">
             <span class="color-green font-w7 label-required-prev">发货人姓名</span>
-            <input class="layui-input" required placeholder="请输入发货人姓名" name="name" value="{$vo.name|default=''}">
+            <input class="layui-input" name="name" placeholder="请输入发货人姓名" required value="{$vo.name|default=''}">
         </label>
 
         <label class="layui-form-item relative block">
             <span class="color-green font-w7 label-required-prev">发货人手机</span>
-            <input class="layui-input" required placeholder="请输入发货人手机" name="phone" value="{$vo.phone|default=''}">
+            <input class="layui-input" name="phone" placeholder="请输入发货人手机" required value="{$vo.phone|default=''}">
         </label>
 
         <div class="layui-form-item relative block">
@@ -22,7 +22,7 @@
 
         <label class="layui-form-item relative block">
             <span class="color-green font-w7 label-required-prev">发货详细地址</span>
-            <textarea class="layui-textarea" name="content" required placeholder="请输入发货详细地址">{$vo.content|default=""}</textarea>
+            <textarea class="layui-textarea" name="content" placeholder="请输入发货详细地址" required>{$vo.content|default=""}</textarea>
         </label>
     </div>
 
@@ -30,7 +30,7 @@
 
     <div class="layui-form-item text-center">
         <button class="layui-btn" type='submit'>保存数据</button>
-        <button class="layui-btn layui-btn-danger" type='button' data-confirm="确定要取消编辑吗？" data-close>取消编辑</button>
+        <button class="layui-btn layui-btn-danger" data-close data-confirm="确定要取消编辑吗？" type='button'>取消编辑</button>
     </div>
 
     <script>

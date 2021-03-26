@@ -20,41 +20,6 @@ class AlipayPaymentService extends PaymentService
     protected $config = [];
 
     /**
-     * 支付服务初始化
-     * @return $this
-     */
-    protected function initialize(): AlipayPaymentService
-    {
-        $this->config = [
-            // 沙箱模式
-            'debug'       => false,
-            // 签名类型（RSA|RSA2）
-            'sign_type'   => "RSA2",
-            // 应用ID
-            'appid'       => $this->params['alipay_appid'],
-            // 支付宝公钥 (1行填写，特别注意，这里是支付宝公钥，不是应用公钥，最好从开发者中心的网页上去复制)
-            'public_key'  => $this->_trimCertHeader($this->params['alipay_public_key']),
-            // 支付宝私钥 (1行填写)
-            'private_key' => $this->_trimCertHeader($this->params['alipay_private_key']),
-            // 支付成功通知地址
-            'notify_url'  => '',
-            // 网页支付回跳地址
-            'return_url'  => '',
-        ];
-        return $this;
-    }
-
-    /**
-     * 去除证书内容前后缀
-     * @param string $content
-     * @return string
-     */
-    private function _trimCertHeader(string $content): string
-    {
-        return preg_replace(['/\s+/', '/-{5}.*?-{5}/'], '', $content);
-    }
-
-    /**
      * 创建订单支付参数
      * @param string $openid 用户OPENID
      * @param string $orderNo 交易订单单号
@@ -137,5 +102,40 @@ class AlipayPaymentService extends PaymentService
     public function query(string $orderNo): array
     {
         return \AliPay\App::instance($this->config)->query($orderNo);
+    }
+
+    /**
+     * 支付服务初始化
+     * @return $this
+     */
+    protected function initialize(): AlipayPaymentService
+    {
+        $this->config = [
+            // 沙箱模式
+            'debug'       => false,
+            // 签名类型（RSA|RSA2）
+            'sign_type'   => "RSA2",
+            // 应用ID
+            'appid'       => $this->params['alipay_appid'],
+            // 支付宝公钥 (1行填写，特别注意，这里是支付宝公钥，不是应用公钥，最好从开发者中心的网页上去复制)
+            'public_key'  => $this->_trimCertHeader($this->params['alipay_public_key']),
+            // 支付宝私钥 (1行填写)
+            'private_key' => $this->_trimCertHeader($this->params['alipay_private_key']),
+            // 支付成功通知地址
+            'notify_url'  => '',
+            // 网页支付回跳地址
+            'return_url'  => '',
+        ];
+        return $this;
+    }
+
+    /**
+     * 去除证书内容前后缀
+     * @param string $content
+     * @return string
+     */
+    private function _trimCertHeader(string $content): string
+    {
+        return preg_replace(['/\s+/', '/-{5}.*?-{5}/'], '', $content);
     }
 }

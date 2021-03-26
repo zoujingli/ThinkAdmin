@@ -1,17 +1,17 @@
 <fieldset>
     <legend>条件搜索</legend>
-    <form class="layui-form layui-form-pane form-search" action="{:url('index')}" onsubmit="return false" method="get" autocomplete="off">
+    <form action="{:url('index')}" autocomplete="off" class="layui-form layui-form-pane form-search" method="get" onsubmit="return false">
         <div class="layui-form-item layui-inline">
             <label class="layui-form-label">模板编号</label>
             <label class="layui-input-inline">
-                <input name="code" value="{:input('code','')}" placeholder="请输入模板编号" class="layui-input">
+                <input class="layui-input" name="code" placeholder="请输入模板编号" value="{:input('code','')}">
             </label>
         </div>
 
         <div class="layui-form-item layui-inline">
             <label class="layui-form-label">模板名称</label>
             <label class="layui-input-inline">
-                <input name="name" value="{:input('name','')}" placeholder="请输入模板名称" class="layui-input">
+                <input class="layui-input" name="name" placeholder="请输入模板名称" value="{:input('name','')}">
             </label>
         </div>
 
@@ -33,7 +33,7 @@
         <div class="layui-form-item layui-inline">
             <label class="layui-form-label">添加时间</label>
             <label class="layui-input-inline">
-                <input data-date-range name="create_at" value="{:input('create_at','')}" placeholder="请选择添加时间" class="layui-input">
+                <input class="layui-input" data-date-range name="create_at" placeholder="请选择添加时间" value="{:input('create_at','')}">
             </label>
         </div>
 

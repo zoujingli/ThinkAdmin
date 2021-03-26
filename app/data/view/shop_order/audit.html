@@ -1,4 +1,4 @@
-<form class="layui-form layui-card" action="{:request()->url()}" data-auto="true" method="post" autocomplete="off">
+<form action="{:request()->url()}" autocomplete="off" class="layui-form layui-card" data-auto="true" method="post">
 
     <div class="layui-card-body padding-left-40">
 
@@ -9,7 +9,7 @@
                 <span class="layui-badge think-bg-violet">订单需要支付 {$vo.amount_real+0} 元</span>
             </legend>
             <div class="layui-form-item relative block">
-                <img data-tips-image style="width:auto;height:220px" src="{$vo.payment_image|default=''}" alt="img">
+                <img alt="img" data-tips-image src="{$vo.payment_image|default=''}" style="width:auto;height:220px">
             </div>
         </fieldset>
 
@@ -20,9 +20,9 @@
                 {php} $status = 0; {/php}
                 {foreach [1 => '审核通过并完成订单支付', 0 => '驳回审核并取消订单'] as $k => $v}
                 {if $k eq $status}
-                <input checked type="radio" name="status" value='{$k}' title="{$v}">
+                <input checked name="status" title="{$v}" type="radio" value='{$k}'>
                 {else}
-                <input checked type="radio" name="status" value='{$k}' title="{$v}">
+                <input checked name="status" title="{$v}" type="radio" value='{$k}'>
                 {/if}{/foreach}
             </div>
         </div>
@@ -30,17 +30,17 @@
         <label class="layui-form-item relative block">
             <span class="color-green font-w7">订单审核描述</span>
             <span class="color-desc margin-left-5"></span>
-            <textarea name="remark" class="layui-textarea" placeholder="请输入订单审核描述">{$vo.remark|default=''}</textarea>
+            <textarea class="layui-textarea" name="remark" placeholder="请输入订单审核描述">{$vo.remark|default=''}</textarea>
         </label>
 
 
         <div class="hr-line-dashed"></div>
-        {notempty name='vo.id'}<input type='hidden' value='{$vo.id}' name='id'>{/notempty}
-        {notempty name='vo.order_no'}<input type='hidden' value='{$vo.order_no}' name='order_no'>{/notempty}
+        {notempty name='vo.id'}<input name='id' type='hidden' value='{$vo.id}'>{/notempty}
+        {notempty name='vo.order_no'}<input name='order_no' type='hidden' value='{$vo.order_no}'>{/notempty}
 
         <div class="layui-form-item text-center">
             <button class="layui-btn" type='submit'>审核</button>
-            <button class="layui-btn layui-btn-danger" type='button' data-confirm="确定要取消吗？" data-close>取消</button>
+            <button class="layui-btn layui-btn-danger" data-close data-confirm="确定要取消吗？" type='button'>取消</button>
         </div>
     </div>
     <script>form.render()</script>

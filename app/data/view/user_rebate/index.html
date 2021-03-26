@@ -30,11 +30,11 @@
         {foreach $list as $key=>$vo}
         <tr>
             <td class='list-table-check-td think-checkbox'>
-                <label><input class="list-check-box" value='{$vo.id}' type='checkbox'></label>
+                <label><input class="list-check-box" type='checkbox' value='{$vo.id}'></label>
             </td>
             <td class="text-left nowrap relative">
                 {notempty name='vo.agent.headimg'}
-                <div class="headimg headimg-md" data-tips-image data-lazy-src="{$vo.agent.headimg|default='__ROOT__/static/theme/img/headimg.png'}"></div>
+                <div class="headimg headimg-md" data-lazy-src="{$vo.agent.headimg|default='__ROOT__/static/theme/img/headimg.png'}" data-tips-image></div>
                 {/notempty}
                 <div class="inline-block text-middle">
                     代理昵称：{$vo.agent.nickname|default='--'}<br>
@@ -44,7 +44,7 @@
             </td>
             <td class="text-left nowrap relative">
                 {notempty name='vo.user.headimg'}
-                <div class="headimg headimg-md" data-tips-image data-lazy-src="{$vo.user.headimg|default='__ROOT__/static/theme/img/headimg.png'}"></div>
+                <div class="headimg headimg-md" data-lazy-src="{$vo.user.headimg|default='__ROOT__/static/theme/img/headimg.png'}" data-tips-image></div>
                 {/notempty}
                 <div class="inline-block text-middle">
                     用户昵称：{$vo.user.nickname|default='--'}<br>

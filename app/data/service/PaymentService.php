@@ -120,36 +120,31 @@ abstract class PaymentService
             'bind' => [UserAdminService::API_TYPE_WECHAT],
         ],
     ];
-
-    /**
-     * 当前应用
-     * @var App
-     */
-    protected $app;
-
-    /**
-     * 支付参数编号
-     * @var string
-     */
-    protected $code;
-
-    /**
-     * 默认支付类型
-     * @var string
-     */
-    protected $type;
-
-    /**
-     * 当前支付参数
-     * @var array
-     */
-    protected $params;
-
     /**
      * 支付服务对象
      * @var array
      */
     protected static $driver = [];
+    /**
+     * 当前应用
+     * @var App
+     */
+    protected $app;
+    /**
+     * 支付参数编号
+     * @var string
+     */
+    protected $code;
+    /**
+     * 默认支付类型
+     * @var string
+     */
+    protected $type;
+    /**
+     * 当前支付参数
+     * @var array
+     */
+    protected $params;
 
     /**
      * PaymentService constructor.
@@ -196,31 +191,6 @@ abstract class PaymentService
     }
 
     /**
-     * 获取支付支付名称
-     * @param string $type
-     * @return string
-     */
-    public static function name(string $type): string
-    {
-        return self::TYPES[$type]['name'] ?? $type;
-    }
-
-    /**
-     * 获取支付类型
-     * @return array
-     */
-    public static function types(): array
-    {
-        $types = [];
-        foreach (self::TYPES as $k => $v) if (isset($v['bind'])) {
-            if (array_intersect($v['bind'], array_keys(UserAdminService::TYPES))) {
-                $types[$k] = $v;
-            }
-        }
-        return $types;
-    }
-
-    /**
      * 获取支付配置参数
      * @param string $code
      * @param array $payment
@@ -248,6 +218,101 @@ abstract class PaymentService
         } catch (\Exception $exception) {
             throw new Exception($exception->getMessage(), $exception->getCode());
         }
+    }
+
+    /**
+     * 获取支付支付名称
+     * @param string $type
+     * @return string
+     */
+    public static function name(string $type): string
+    {
+        return self::TYPES[$type]['name'] ?? $type;
+    }
+
+    /**
+     * 获取支付类型
+     * @return array
+     */
+    public static function types(): array
+    {
+        $types = [];
+        foreach (self::TYPES as $k => $v) if (isset($v['bind'])) {
+            if (array_intersect($v['bind'], array_keys(UserAdminService::TYPES))) {
+                $types[$k] = $v;
+            }
+        }
+        return $types;
+    }
+
+    /**
+     * 订单主动查询
+     * @param string $orderNo
+     * @return array
+     */
+    abstract public function query(string $orderNo): array;
+
+    /**
+     * 支付通知处理
+     * @return string
+     */
+    abstract public function notify(): string;
+
+    /**
+     * 创建支付订单
+     * @param string $openid 用户OPENID
+     * @param string $orderNo 交易订单单号
+     * @param string $paymentAmount 交易订单金额（元）
+     * @param string $paymentTitle 交易订单名称
+     * @param string $paymentRemark 交易订单描述
+     * @param string $paymentReturn 支付回跳地址
+     * @param string $paymentImage 支付凭证图片
+     * @return array
+     */
+    abstract public function create(string $openid, string $orderNo, string $paymentAmount, string $paymentTitle, string $paymentRemark, string $paymentReturn = '', string $paymentImage = ''): array;
+
+    /**
+     * 创建支付行为
+     * @param string $orderNo 商户订单单号
+     * @param string $paymentTitle 商户订单标题
+     * @param string $paymentAmount 需要支付金额
+     */
+    protected function createPaymentAction(string $orderNo, string $paymentTitle, string $paymentAmount)
+    {
+        $this->app->db->name('ShopPaymentItem')->insert([
+            'payment_code' => $this->code, 'payment_type' => $this->type,
+            'order_amount' => $paymentAmount, 'order_name' => $paymentTitle, 'order_no' => $orderNo,
+        ]);
+    }
+
+    /**
+     * 更新支付记录并更新订单
+     * @param string $orderNo 商户订单单号
+     * @param string $paymentTrade 平台交易单号
+     * @param string $paymentAmount 实际到账金额
+     * @param string $paymentRemark 平台支付备注
+     * @return boolean
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\DbException
+     * @throws \think\db\exception\ModelNotFoundException
+     */
+    protected function updatePaymentAction(string $orderNo, string $paymentTrade, string $paymentAmount, string $paymentRemark = '在线支付'): bool
+    {
+        // 更新支付记录
+        data_save('ShopPaymentItem', [
+            'order_no'         => $orderNo,
+            'payment_code'     => $this->code,
+            'payment_type'     => $this->type,
+            'payment_trade'    => $paymentTrade,
+            'payment_amount'   => $paymentAmount,
+            'payment_status'   => 1,
+            'payment_datatime' => date('Y-m-d H:i:s'),
+        ], 'order_no', [
+            'payment_code' => $this->code,
+            'payment_type' => $this->type,
+        ]);
+        // 更新记录状态
+        return $this->updateOrder($orderNo, $paymentTrade, $paymentAmount, $paymentRemark);
     }
 
     /**
@@ -295,74 +360,4 @@ abstract class PaymentService
         }
         return true;
     }
-
-    /**
-     * 创建支付行为
-     * @param string $orderNo 商户订单单号
-     * @param string $paymentTitle 商户订单标题
-     * @param string $paymentAmount 需要支付金额
-     */
-    protected function createPaymentAction(string $orderNo, string $paymentTitle, string $paymentAmount)
-    {
-        $this->app->db->name('ShopPaymentItem')->insert([
-            'payment_code' => $this->code, 'payment_type' => $this->type,
-            'order_amount' => $paymentAmount, 'order_name' => $paymentTitle, 'order_no' => $orderNo,
-        ]);
-    }
-
-    /**
-     * 更新支付记录并更新订单
-     * @param string $orderNo 商户订单单号
-     * @param string $paymentTrade 平台交易单号
-     * @param string $paymentAmount 实际到账金额
-     * @param string $paymentRemark 平台支付备注
-     * @return boolean
-     * @throws \think\db\exception\DataNotFoundException
-     * @throws \think\db\exception\DbException
-     * @throws \think\db\exception\ModelNotFoundException
-     */
-    protected function updatePaymentAction(string $orderNo, string $paymentTrade, string $paymentAmount, string $paymentRemark = '在线支付'): bool
-    {
-        // 更新支付记录
-        data_save('ShopPaymentItem', [
-            'order_no'         => $orderNo,
-            'payment_code'     => $this->code,
-            'payment_type'     => $this->type,
-            'payment_trade'    => $paymentTrade,
-            'payment_amount'   => $paymentAmount,
-            'payment_status'   => 1,
-            'payment_datatime' => date('Y-m-d H:i:s'),
-        ], 'order_no', [
-            'payment_code' => $this->code,
-            'payment_type' => $this->type,
-        ]);
-        // 更新记录状态
-        return $this->updateOrder($orderNo, $paymentTrade, $paymentAmount, $paymentRemark);
-    }
-
-    /**
-     * 订单主动查询
-     * @param string $orderNo
-     * @return array
-     */
-    abstract public function query(string $orderNo): array;
-
-    /**
-     * 支付通知处理
-     * @return string
-     */
-    abstract public function notify(): string;
-
-    /**
-     * 创建支付订单
-     * @param string $openid 用户OPENID
-     * @param string $orderNo 交易订单单号
-     * @param string $paymentAmount 交易订单金额（元）
-     * @param string $paymentTitle 交易订单名称
-     * @param string $paymentRemark 交易订单描述
-     * @param string $paymentReturn 支付回跳地址
-     * @param string $paymentImage 支付凭证图片
-     * @return array
-     */
-    abstract public function create(string $openid, string $orderNo, string $paymentAmount, string $paymentTitle, string $paymentRemark, string $paymentReturn = '', string $paymentImage = ''): array;
 }

@@ -18,7 +18,7 @@
         {foreach $list as $key=>$vo}
         <tr>
             <td class="nowrap">
-                <div class="headimg" data-tips-image data-lazy-src="{$vo.headimg|default='__ROOT__/static/theme/img/headimg.png'}"></div>
+                <div class="headimg" data-lazy-src="{$vo.headimg|default='__ROOT__/static/theme/img/headimg.png'}" data-tips-image></div>
                 <div class="inline-block">
                     <div>
                         {notempty name='vo.username'}
@@ -33,7 +33,7 @@
             </td>
             <td class="nowrap">
                 {notempty name='vo.from'}
-                <div class="headimg" data-tips-image data-lazy-src="{$vo.from.headimg|default='__ROOT__/static/theme/img/headimg.png'}"></div>
+                <div class="headimg" data-lazy-src="{$vo.from.headimg|default='__ROOT__/static/theme/img/headimg.png'}" data-tips-image></div>
                 <div class="inline-block text-middle">
                     <!--{notempty name='vo.pids'}-->
                     <span class="layui-badge layui-badge-middle layui-bg-green">永久</span>

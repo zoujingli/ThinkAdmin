@@ -2,21 +2,21 @@
 
 {block name="button"}
 <!--{if auth("add")}-->
-<button data-open='{:url("add")}' class='layui-btn layui-btn-sm layui-btn-primary'>添加商品</button>
+<button class='layui-btn layui-btn-sm layui-btn-primary' data-open='{:url("add")}'>添加商品</button>
 <!--{/if}-->
 
 {if isset($type) and $type eq 'index'}
 <!--{if auth("remove")}-->
-<button data-action='{:url("remove")}' data-rule="code#{key};deleted#1" class='layui-btn layui-btn-sm layui-btn-primary'>删除商品</button>
+<button class='layui-btn layui-btn-sm layui-btn-primary' data-action='{:url("remove")}' data-rule="code#{key};deleted#1">删除商品</button>
 <!--{/if}-->
 {else}
 <!--{if auth("remove")}-->
-<button data-action='{:url("remove")}' data-rule="code#{key};deleted#0" data-confirm="确定要恢复这些数据吗？" class='layui-btn layui-btn-sm layui-btn-primary'>恢复商品</button>
+<button class='layui-btn layui-btn-sm layui-btn-primary' data-action='{:url("remove")}' data-confirm="确定要恢复这些数据吗？" data-rule="code#{key};deleted#0">恢复商品</button>
 <!--{/if}-->
 {/if}
 
 <!--{if auth("shop_goods_mark/index")}-->
-<button data-iframe='{:url("shop_goods_mark/index")}' data-width="900px" data-title="标签管理" class='layui-btn layui-btn-sm layui-btn-primary'>标签管理</button>
+<button class='layui-btn layui-btn-sm layui-btn-primary' data-iframe='{:url("shop_goods_mark/index")}' data-title="标签管理" data-width="900px">标签管理</button>
 <!--{/if}-->
 {/block}
 
@@ -25,7 +25,7 @@
     <ul class="layui-tab-title">
         {foreach ['index'=>'商品管理','recycle'=>'回 收 站'] as $k=>$v}
         {if isset($type) and $type eq $k}
-        <li data-open="{:url('index')}?type={$k}" class="layui-this">{$v}</li>
+        <li class="layui-this" data-open="{:url('index')}?type={$k}">{$v}</li>
         {else}
         <li data-open="{:url('index')}?type={$k}">{$v}</li>
         {/if}{/foreach}
@@ -40,7 +40,7 @@
                     <label><input data-auto-none data-check-target='.list-check-box' type='checkbox'></label>
                 </th>
                 <th class='list-table-sort-td'>
-                    <button type="button" data-reload class="layui-btn layui-btn-xs">刷 新</button>
+                    <button class="layui-btn layui-btn-xs" data-reload type="button">刷 新</button>
                 </th>
                 <th class='text-left nowrap'>商品信息</th>
                 <th class='text-left nowrap'></th>
@@ -53,14 +53,14 @@
             {foreach $list as $key=>$vo}
             <tr>
                 <td class='list-table-check-td think-checkbox'>
-                    <label><input class="list-check-box" value='{$vo.code}' type='checkbox'></label>
+                    <label><input class="list-check-box" type='checkbox' value='{$vo.code}'></label>
                 </td>
                 <td class='list-table-sort-td'>
-                    <label><input data-action-blur="{:request()->url()}" data-value="id#{$vo.id};action#sort;sort#{value}" data-loading="false" value="{$vo.sort}" class="list-sort-input"></label>
+                    <label><input class="list-sort-input" data-action-blur="{:request()->url()}" data-loading="false" data-value="id#{$vo.id};action#sort;sort#{value}" value="{$vo.sort}"></label>
                 </td>
                 <td class='nowrap'>
                     {notempty name='vo.cover'}
-                    <div class="headimg" data-tips-image data-lazy-src="{$vo.cover}"></div>
+                    <div class="headimg" data-lazy-src="{$vo.cover}" data-tips-image></div>
                     {/notempty}
                     <div class="inline-block text-top sub-span-blue">
                         <div>商品名称：<span>{$vo.name|default='--'}</span></div>
@@ -100,7 +100,7 @@
                     <!--{if auth("edit")}-->
                     <a class="layui-btn layui-btn-xs" data-open='{:url("edit")}?code={$vo.code}'>编 辑</a>
                     <!--{else}-->
-                    <a data-tips-text="您没有编辑商品的权限哦！" class="layui-btn layui-btn-xs layui-btn-primary layui-disabled">编 辑</a>
+                    <a class="layui-btn layui-btn-xs layui-btn-primary layui-disabled" data-tips-text="您没有编辑商品的权限哦！">编 辑</a>
                     <!--{/if}-->
 
                     {if isset($type) and $type eq 'index'}
@@ -108,22 +108,22 @@
                     <!--{if auth("state")}-->
                     <a class="layui-btn layui-btn-xs layui-btn-warm" data-action="{:url('state')}" data-value="code#{$vo.code};status#0">下 架</a>
                     <!--{else}-->
-                    <a data-tips-text="您没有下架商品的权限哦！" class="layui-btn layui-btn-xs layui-btn-primary layui-disabled">下 架</a>
+                    <a class="layui-btn layui-btn-xs layui-btn-primary layui-disabled" data-tips-text="您没有下架商品的权限哦！">下 架</a>
                     <!--{/if}-->
                     {else}
                     <!--{if auth("state")}-->
                     <a class="layui-btn layui-btn-xs layui-btn-warm" data-action="{:url('state')}" data-value="code#{$vo.code};status#1">上 架</a>
                     <!--{else}-->
-                    <a data-tips-text="您没有上架商品的权限哦！" class="layui-btn layui-btn-xs layui-btn-primary layui-disabled">上 架</a>
+                    <a class="layui-btn layui-btn-xs layui-btn-primary layui-disabled" data-tips-text="您没有上架商品的权限哦！">上 架</a>
                     <!--{/if}-->
                     {/if}
                     <!--{if auth("stock")}-->
-                    <a class="layui-btn layui-btn-xs layui-btn-normal" data-title="商品入库" data-modal='{:url("stock")}?code={$vo.code}'>入 库</a>
+                    <a class="layui-btn layui-btn-xs layui-btn-normal" data-modal='{:url("stock")}?code={$vo.code}' data-title="商品入库">入 库</a>
                     <!--{else}-->
-                    <a data-tips-text="您没有商品入库的权限哦！" class="layui-btn layui-btn-xs layui-btn-primary layui-disabled">入 库</a>
+                    <a class="layui-btn layui-btn-xs layui-btn-primary layui-disabled" data-tips-text="您没有商品入库的权限哦！">入 库</a>
                     <!--{/if}-->
                     <!--{if auth("remove")}-->
-                    <a class="layui-btn layui-btn-xs layui-btn-danger" data-confirm="确定要移入回收站吗？" data-action="{:url('remove')}" data-value="code#{$vo.code};deleted#1">删 除</a>
+                    <a class="layui-btn layui-btn-xs layui-btn-danger" data-action="{:url('remove')}" data-confirm="确定要移入回收站吗？" data-value="code#{$vo.code};deleted#1">删 除</a>
                     <!--{/if}-->
                     {else}
                     <!--{if auth("remove")}-->

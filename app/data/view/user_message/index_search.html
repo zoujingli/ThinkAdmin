@@ -1,17 +1,17 @@
 <fieldset>
     <legend>条件搜索</legend>
-    <form class="layui-form layui-form-pane form-search" action="{$request->url()}" onsubmit="return false" method="get" autocomplete="off">
+    <form action="{$request->url()}" autocomplete="off" class="layui-form layui-form-pane form-search" method="get" onsubmit="return false">
         <div class="layui-form-item layui-inline">
             <label class="layui-form-label">目标手机</label>
             <label class="layui-input-inline">
-                <input name="phone" value="{:input('phone')}" placeholder="请输入目标手机" class="layui-input">
+                <input class="layui-input" name="phone" placeholder="请输入目标手机" value="{:input('phone')}">
             </label>
         </div>
 
         <div class="layui-form-item layui-inline">
             <label class="layui-form-label">短信内容</label>
             <label class="layui-input-inline">
-                <input name="content" value="{:input('content')}" placeholder="请输入短信内容" class="layui-input">
+                <input class="layui-input" name="content" placeholder="请输入短信内容" value="{:input('content')}">
             </label>
         </div>
 
@@ -33,7 +33,7 @@
         <div class="layui-form-item layui-inline">
             <label class="layui-form-label">发送时间</label>
             <div class="layui-input-inline">
-                <input data-date-range name="create_at" value="{:input('create_at','')}" placeholder="请选择发送时间" class="layui-input">
+                <input class="layui-input" data-date-range name="create_at" placeholder="请选择发送时间" value="{:input('create_at','')}">
             </div>
         </div>
 

@@ -11,7 +11,7 @@
     <ul class="layui-tab-title notselect">
         {foreach ['ta'=>'全部订单','t1'=>'待发货的订单','t2'=>'已发货的订单','t0'=>'已取消的订单'] as $k => $v}
         {if isset($type) and 't'.$type eq $k}
-        <li data-open="{:url('index')}?type={$k}" class="layui-this">{$v}<sup class="layui-badge border-radius">{$total[$k]??0}</sup></li>
+        <li class="layui-this" data-open="{:url('index')}?type={$k}">{$v}<sup class="layui-badge border-radius">{$total[$k]??0}</sup></li>
         {else}
         <li data-open="{:url('index')}?type={$k}">{$v}<sup class="layui-badge border-radius">{$total[$k]??0}</sup></li>
         {/if}{/foreach}
@@ -36,10 +36,10 @@
             {foreach $list as $key=>$vo}
             <tr>
                 <td class='list-table-check-td think-checkbox'>
-                    <label><input class="list-check-box" value='{$vo.id}' type='checkbox'></label>
+                    <label><input class="list-check-box" type='checkbox' value='{$vo.id}'></label>
                 </td>
                 <td class="nowrap relative">
-                    <div class="headimg" style="width:56px;height:56px" data-tips-image data-lazy-src="{$vo.user.headimg|default='__ROOT__/static/theme/img/headimg.png'}"></div>
+                    <div class="headimg" data-lazy-src="{$vo.user.headimg|default='__ROOT__/static/theme/img/headimg.png'}" data-tips-image style="width:56px;height:56px"></div>
                     <div class="inline-block sub-span-blue">
                         用户昵称：<span>{$vo.user.nickname|default='-'}</span><br>
                         用户手机：<span>{$vo.user.phone|default='-'}</span><br>
@@ -59,17 +59,17 @@
                     <span class="layui-badge layui-bg-black">未发货</span>
                     {else}
                     <span class="layui-badge layui-bg-blue">{$vo.company_name|default='-'}</span>
-                    <a data-title="{$vo.company_name}（{$vo.send_number}）" data-tips-text="快递追踪查询"
-                       data-modal="{:url('shop_order/truckQuery')}?code={$vo.company_code}&number={$vo.send_number}"
-                       class="layui-badge layui-bg-orange margin-left-5">{$vo.send_number|default='-'}</a>
+                    <a class="layui-badge layui-bg-orange margin-left-5" data-modal="{:url('shop_order/truckQuery')}?code={$vo.company_code}&number={$vo.send_number}"
+                       data-tips-text="快递追踪查询"
+                       data-title="{$vo.company_name}（{$vo.send_number}）">{$vo.send_number|default='-'}</a>
                     <div class="margin-top-5">于 <b>{$vo.send_datetime|format_datetime} 发货！</b></div>
                     {/if}
                 </td>
                 <td class="color-desc">
                     <!--{if auth('shop_order/truck') and $vo.status eq 1}-->
-                    <a class="layui-btn layui-btn-sm" data-title="填写订单信息" data-modal="{:url('shop_order/truck')}?order_no={$vo.order_no}">填写发货</a>
+                    <a class="layui-btn layui-btn-sm" data-modal="{:url('shop_order/truck')}?order_no={$vo.order_no}" data-title="填写订单信息">填写发货</a>
                     <!--{elseif auth('shop_order/truck') and $vo.status eq 2}-->
-                    <a class="layui-btn layui-btn-sm" data-title="修改发货信息" data-modal="{:url('shop_order/truck')}?order_no={$vo.order_no}">修改发货</a>
+                    <a class="layui-btn layui-btn-sm" data-modal="{:url('shop_order/truck')}?order_no={$vo.order_no}" data-title="修改发货信息">修改发货</a>
                     <!--{/if}-->
                 </td>
             </tr>

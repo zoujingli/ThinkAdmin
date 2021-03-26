@@ -2,11 +2,11 @@
 
 {block name="button"}
 <!--{if auth("add") and $page.total <= 9}-->
-<button data-modal="{:url('add')}" class='layui-btn layui-btn-sm layui-btn-primary'>添加用户等级</button>
+<button class='layui-btn layui-btn-sm layui-btn-primary' data-modal="{:url('add')}">添加用户等级</button>
 <!--{/if}-->
 
 <!--{if auth("sync")}-->
-<button data-queue="{:url('sync')}" class='layui-btn layui-btn-sm layui-btn-primary'>刷新用户数据</button>
+<button class='layui-btn layui-btn-sm layui-btn-primary' data-queue="{:url('sync')}">刷新用户数据</button>
 <!--{/if}-->
 {/block}
 
@@ -40,7 +40,7 @@
         {foreach $list as $key=>$vo}
         <tr>
             <td class='list-table-check-td think-checkbox'>
-                <label><input class="list-check-box" value='{$vo.id}' type='checkbox'></label>
+                <label><input class="list-check-box" type='checkbox' value='{$vo.id}'></label>
             </td>
             <td class="text-left nowrap"> [ <span class="color-blue">{$vo.number}</span> ] {$vo.name|default=''}</td>
             <td class="text-left nowrap">{if $vo.upgrade_type eq 1}<span class="color-green">全部完成</span>{else}<span class="color-blue">任何条件</span>{/if}</td>
@@ -63,7 +63,7 @@
                 <!--{/if}-->
 
                 <!--{if auth("remove")}-->
-                <a class="layui-btn layui-btn-sm layui-btn-danger" data-confirm="确定要删除用户等级吗？" data-action="{:url('remove')}" data-value="id#{$vo.id}" data-csrf="{:systoken('remove')}">删 除</a>
+                <a class="layui-btn layui-btn-sm layui-btn-danger" data-action="{:url('remove')}" data-confirm="确定要删除用户等级吗？" data-csrf="{:systoken('remove')}" data-value="id#{$vo.id}">删 除</a>
                 <!--{/if}-->
             </td>
         </tr>

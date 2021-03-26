@@ -1,45 +1,45 @@
 <fieldset>
     <legend>条件搜索</legend>
-    <form class="layui-form layui-form-pane form-search" action="{:request()->url()}" onsubmit="return false" method="get" autocomplete="off">
+    <form action="{:request()->url()}" autocomplete="off" class="layui-form layui-form-pane form-search" method="get" onsubmit="return false">
         <div class="layui-form-item layui-inline">
             <label class="layui-form-label">用户手机</label>
             <label class="layui-input-inline">
-                <input name="member_phone" value="{:input('member_phone')}" placeholder="请输入用户手机" class="layui-input">
+                <input class="layui-input" name="member_phone" placeholder="请输入用户手机" value="{:input('member_phone')}">
             </label>
         </div>
 
         <div class="layui-form-item layui-inline">
             <label class="layui-form-label">用户昵称</label>
             <label class="layui-input-inline">
-                <input name="member_nickname" value="{:input('member_nickname')}" placeholder="请输入用户昵称" class="layui-input">
+                <input class="layui-input" name="member_nickname" placeholder="请输入用户昵称" value="{:input('member_nickname')}">
             </label>
         </div>
 
         <div class="layui-form-item layui-inline">
             <label class="layui-form-label">推荐手机</label>
             <label class="layui-input-inline">
-                <input name="agent_phone" value="{:input('agent_phone')}" placeholder="请输入用户手机" class="layui-input">
+                <input class="layui-input" name="agent_phone" placeholder="请输入用户手机" value="{:input('agent_phone')}">
             </label>
         </div>
 
         <div class="layui-form-item layui-inline">
             <label class="layui-form-label">推荐昵称</label>
             <label class="layui-input-inline">
-                <input name="agent_nickname" value="{:input('agent_nickname')}" placeholder="请输入用户昵称" class="layui-input">
+                <input class="layui-input" name="agent_nickname" placeholder="请输入用户昵称" value="{:input('agent_nickname')}">
             </label>
         </div>
 
         <div class="layui-form-item layui-inline">
             <label class="layui-form-label">订单单号</label>
             <label class="layui-input-inline">
-                <input name="order_no" value="{:input('order_no')}" placeholder="请输入订单单号" class="layui-input">
+                <input class="layui-input" name="order_no" placeholder="请输入订单单号" value="{:input('order_no')}">
             </label>
         </div>
 
         <div class="layui-form-item layui-inline">
             <label class="layui-form-label">发货单号</label>
             <label class="layui-input-inline">
-                <input name="express_send_no" value="{:input('express_send_no')}" placeholder="请输入发货单号" class="layui-input">
+                <input class="layui-input" name="express_send_no" placeholder="请输入发货单号" value="{:input('express_send_no')}">
             </label>
         </div>
 
@@ -76,56 +76,56 @@
         <div class="layui-form-item layui-inline">
             <label class="layui-form-label">下单时间</label>
             <label class="layui-input-inline">
-                <input data-date-range name="create_at" value="{:input('create_at')}" placeholder="请选择下单时间" class="layui-input">
+                <input class="layui-input" data-date-range name="create_at" placeholder="请选择下单时间" value="{:input('create_at')}">
             </label>
         </div>
 
         <div class="layui-form-item layui-inline">
             <label class="layui-form-label">支付时间</label>
             <label class="layui-input-inline">
-                <input data-date-range name="pay_datetime" value="{:input('pay_datetime')}" placeholder="请选择支付时间" class="layui-input">
+                <input class="layui-input" data-date-range name="pay_datetime" placeholder="请选择支付时间" value="{:input('pay_datetime')}">
             </label>
         </div>
 
         <div class="layui-form-item layui-inline">
             <label class="layui-form-label">收货姓名</label>
             <label class="layui-input-inline">
-                <input name="express_name" value="{:input('express_name')}" placeholder="请输入收货姓名" class="layui-input">
+                <input class="layui-input" name="express_name" placeholder="请输入收货姓名" value="{:input('express_name')}">
             </label>
         </div>
 
         <div class="layui-form-item layui-inline">
             <label class="layui-form-label">收货手机</label>
             <label class="layui-input-inline">
-                <input name="express_phone" value="{:input('express_phone')}" placeholder="请输入收货手机" class="layui-input">
+                <input class="layui-input" name="express_phone" placeholder="请输入收货手机" value="{:input('express_phone')}">
             </label>
         </div>
 
         <div class="layui-form-item layui-inline">
             <label class="layui-form-label">收货省份</label>
             <label class="layui-input-inline">
-                <input name="express_province" value="{:input('express_province')}" placeholder="请输入收货省份" class="layui-input">
+                <input class="layui-input" name="express_province" placeholder="请输入收货省份" value="{:input('express_province')}">
             </label>
         </div>
 
         <div class="layui-form-item layui-inline">
             <label class="layui-form-label">收货城市</label>
             <label class="layui-input-inline">
-                <input name="express_city" value="{:input('express_city')}" placeholder="请输入收货城市" class="layui-input">
+                <input class="layui-input" name="express_city" placeholder="请输入收货城市" value="{:input('express_city')}">
             </label>
         </div>
 
         <div class="layui-form-item layui-inline">
             <label class="layui-form-label">收货区域</label>
             <label class="layui-input-inline">
-                <input name="express_area" value="{:input('express_area')}" placeholder="请输入收货区域" class="layui-input">
+                <input class="layui-input" name="express_area" placeholder="请输入收货区域" value="{:input('express_area')}">
             </label>
         </div>
 
         <div class="layui-form-item layui-inline">
             <label class="layui-form-label">详细地址</label>
             <label class="layui-input-inline">
-                <input name="express_address" value="{:input('express_address')}" placeholder="请输入详细地址" class="layui-input">
+                <input class="layui-input" name="express_address" placeholder="请输入详细地址" value="{:input('express_address')}">
             </label>
         </div>
 

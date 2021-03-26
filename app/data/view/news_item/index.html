@@ -2,15 +2,15 @@
 
 {block name="button"}
 <!--{if auth("add")}-->
-<button data-open='{:url("add")}' class='layui-btn layui-btn-sm layui-btn-primary'>添加文章</button>
+<button class='layui-btn layui-btn-sm layui-btn-primary' data-open='{:url("add")}'>添加文章</button>
 <!--{/if}-->
 
 <!--{if auth("remove")}-->
-<button data-action='{:url("remove")}' data-rule="id#{key}" data-confirm="确定要删除这些文章吗？" class='layui-btn layui-btn-sm layui-btn-primary'>删除文章</button>
+<button class='layui-btn layui-btn-sm layui-btn-primary' data-action='{:url("remove")}' data-confirm="确定要删除这些文章吗？" data-rule="id#{key}">删除文章</button>
 <!--{/if}-->
 
 <!--{if auth("news_mark/index")}-->
-<button data-iframe='{:url("news_mark/index")}' data-width="900px" data-title="标签管理" class='layui-btn layui-btn-sm layui-btn-primary'>标签管理</button>
+<button class='layui-btn layui-btn-sm layui-btn-primary' data-iframe='{:url("news_mark/index")}' data-title="标签管理" data-width="900px">标签管理</button>
 <!--{/if}-->
 {/block}
 
@@ -25,7 +25,7 @@
                 <label><input data-auto-none data-check-target='.list-check-box' type='checkbox'></label>
             </th>
             <th class='list-table-sort-td'>
-                <button type="button" data-reload class="layui-btn layui-btn-xs">刷 新</button>
+                <button class="layui-btn layui-btn-xs" data-reload type="button">刷 新</button>
             </th>
             <th class="text-left nowrap">文章编号</th>
             <th class="text-left nowrap">文章名称</th>
@@ -40,10 +40,10 @@
         {foreach $list as $key=>$vo}
         <tr>
             <td class='list-table-check-td think-checkbox'>
-                <label><input class="list-check-box" value='{$vo.id}' type='checkbox'></label>
+                <label><input class="list-check-box" type='checkbox' value='{$vo.id}'></label>
             </td>
             <td class='list-table-sort-td'>
-                <label><input data-action-blur="{:request()->url()}" data-value="id#{$vo.id};action#sort;sort#{value}" data-loading="false" value="{$vo.sort}" class="list-sort-input"></label>
+                <label><input class="list-sort-input" data-action-blur="{:request()->url()}" data-loading="false" data-value="id#{$vo.id};action#sort;sort#{value}" value="{$vo.sort}"></label>
             </td>
             <td class="text-left nowrap">{$vo.code|default=''}</td>
             <td class="text-left nowrap">{$vo.name|default=''}</td>
@@ -53,7 +53,7 @@
             <td class='text-left nowrap'>
 
                 <!--{if auth("edit")}-->
-                <a data-dbclick class="layui-btn layui-btn-sm" data-title="编辑文章文章" data-open="{:url('edit')}?id={$vo.id}">编 辑</a>
+                <a class="layui-btn layui-btn-sm" data-dbclick data-open="{:url('edit')}?id={$vo.id}" data-title="编辑文章文章">编 辑</a>
                 <!--{/if}-->
 
                 <!--{if auth("state") and $vo.status eq 1}-->
@@ -65,7 +65,7 @@
                 <!--{/if}-->
 
                 <!--{if auth("remove")}-->
-                <a class="layui-btn layui-btn-sm layui-btn-danger" data-confirm="确定要删除该文章吗？" data-action="{:url('remove')}" data-value="id#{$vo.id}">删 除</a>
+                <a class="layui-btn layui-btn-sm layui-btn-danger" data-action="{:url('remove')}" data-confirm="确定要删除该文章吗？" data-value="id#{$vo.id}">删 除</a>
                 <!--{/if}-->
 
             </td>

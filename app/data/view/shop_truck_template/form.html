@@ -2,12 +2,12 @@
 
 {block name="content"}
 <div id="TruckForm">
-    <form onsubmit="return false;" data-auto="true" action="{:request()->url()}" method="post" class='layui-form layui-card' autocomplete="off">
+    <form action="{:request()->url()}" autocomplete="off" class='layui-form layui-card' data-auto="true" method="post" onsubmit="return false;">
         <div class="layui-card-body padding-40">
             <label class="layui-form-item block relative">
                 <span class="color-green font-w7">邮费模板名称</span>
                 <span class="color-desc margin-left-5">Name</span>
-                <input name="name" required value='{$vo.name|default=""}' placeholder="请输入邮费模板名称" class="layui-input">
+                <input class="layui-input" name="name" placeholder="请输入邮费模板名称" required value='{$vo.name|default=""}'>
                 <p class="color-desc"><b>必填</b>，邮费模板名称用于区分邮费模板规则，仅在后台选择邮费模板时使用。</p>
             </label>
             <div class="layui-form-item">
@@ -25,10 +25,10 @@
                     </thead>
                     <tbody>
                     <!--已选择的区域邮费规则-->
-                    <tr ng-repeat="item in rules" ng-if="item.city.length > 0">
+                    <tr ng-if="item.city.length > 0" ng-repeat="item in rules">
                         <td>
                             <b class="color-green">自定区域：</b>
-                            <div class="margin-right-5 inline-block" ng-repeat="province in item.city" ng-if="ShowProvinceStatus(province)">
+                            <div class="margin-right-5 inline-block" ng-if="ShowProvinceStatus(province)" ng-repeat="province in item.city">
                                 <b class="font-w7" ng-bind="province.name"></b>
                                 <span class="color-desc">{{ShowProvinceCityName(province)}}</span>
                             </div>
@@ -77,11 +77,11 @@
                 </table>
             </div>
             <label class="layui-form-item layui-hide">
-                <textarea name="normal" class="layui-textarea layui-bg-gray">{{defs.rule}}</textarea>
-                <textarea name="content" class="layui-textarea layui-bg-gray">{{GetRuleData()}}</textarea>
+                <textarea class="layui-textarea layui-bg-gray" name="normal">{{defs.rule}}</textarea>
+                <textarea class="layui-textarea layui-bg-gray" name="content">{{GetRuleData()}}</textarea>
             </label>
             <div class="hr-line-dashed margin-top-30"></div>
-            {notempty name='vo.code'}<input type="hidden" name="code" value="{$vo.code}">{/notempty}
+            {notempty name='vo.code'}<input name="code" type="hidden" value="{$vo.code}">{/notempty}
             <div class="layui-form-item text-center">
                 <button class="layui-btn" type='submit'>保存数据</button>
             </div>
@@ -99,12 +99,12 @@
                         </div>
                         <hr class="hr-line-dashed margin-top-5 margin-bottom-5">
                         <div class="layui-row layui-col-space5">
-                            <div class="layui-col-xs3 nowrap" ng-repeat="x in citys" ng-if="ShowProvinceShow(x)">
+                            <div class="layui-col-xs3 nowrap" ng-if="ShowProvinceShow(x)" ng-repeat="x in citys">
                                 <label class="think-checkbox margin-right-0">
-                                    <input type="checkbox" ng-model="x.status" ng-change="SwitchActiveProvince(x, true)" ng-value="x.name" lay-ignore>
+                                    <input lay-ignore ng-change="SwitchActiveProvince(x, true)" ng-model="x.status" ng-value="x.name" type="checkbox">
                                 </label>
-                                <span ng-if="x.name==city.name" class="pointer notselect color-blue" ng-click="SwitchActiveProvince(x, false)">{{x.name}}</span>
-                                <span ng-if="x.name!=city.name" class="pointer notselect color-text" ng-click="SwitchActiveProvince(x, false)">{{x.name}}</span>
+                                <span class="pointer notselect color-blue" ng-click="SwitchActiveProvince(x, false)" ng-if="x.name==city.name">{{x.name}}</span>
+                                <span class="pointer notselect color-text" ng-click="SwitchActiveProvince(x, false)" ng-if="x.name!=city.name">{{x.name}}</span>
                             </div>
                         </div>
                     </div>
@@ -117,8 +117,8 @@
                             <b class="pull-right color-blue" ng-bind="city.name"></b>
                         </div>
                         <hr class="hr-line-dashed margin-top-5 margin-bottom-5">
-                        <label ng-repeat="x in city.subs" class="think-checkbox nowrap layui-elip" ng-if="x.show">
-                            <input type="checkbox" ng-model="x.status" ng-value="x.name" value="" lay-ignore> {{x.name}}
+                        <label class="think-checkbox nowrap layui-elip" ng-if="x.show" ng-repeat="x in city.subs">
+                            <input lay-ignore ng-model="x.status" ng-value="x.name" type="checkbox" value=""> {{x.name}}
                         </label>
                     </div>
                 </div>

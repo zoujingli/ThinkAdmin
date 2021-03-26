@@ -2,7 +2,7 @@
 
 {block name="button"}
 <!--{if auth('config')}-->
-<a class="layui-btn layui-btn-sm layui-btn-primary" data-width="850px" data-modal="{:url('config')}">用户提现配置</a>
+<a class="layui-btn layui-btn-sm layui-btn-primary" data-modal="{:url('config')}" data-width="850px">用户提现配置</a>
 <!--{/if}-->
 
 <!--{if auth('payment')}-->
@@ -40,10 +40,10 @@
         {foreach $list as $key => $vo}
         <tr>
             <td class='list-table-check-td think-checkbox'>
-                <label><input class="list-check-box" value='{$vo.id}' type='checkbox'></label>
+                <label><input class="list-check-box" type='checkbox' value='{$vo.id}'></label>
             </td>
             <td class="nowrap">
-                <div class="headimg headimg-md" data-tips-image data-lazy-src="{$vo.user.headimg|default='__ROOT__/static/theme/img/headimg.png'}"></div>
+                <div class="headimg headimg-md" data-lazy-src="{$vo.user.headimg|default='__ROOT__/static/theme/img/headimg.png'}" data-tips-image></div>
                 <div class="inline-block sub-span-blue">
                     <div>
                         <!--{notempty name='vo.user.username'}-->
@@ -82,7 +82,7 @@
                 {/in}
 
                 {in name='vo.type' value='wechat_qrcode,alipay_qrcode'}
-                <div data-tips-image class="headimg headimg-md" data-lazy-src="{$vo.qrcode}"></div>
+                <div class="headimg headimg-md" data-lazy-src="{$vo.qrcode}" data-tips-image></div>
                 {/in}
 
                 {in name='vo.type' value='alipay_account'}

@@ -2,7 +2,7 @@
 
 {block name="button"}
 <!--{if auth("add")}-->
-<button data-modal="{:url('add')}" data-title="添加折扣方案" class='layui-btn layui-btn-sm layui-btn-primary'>添加折扣方案</button>
+<button class='layui-btn layui-btn-sm layui-btn-primary' data-modal="{:url('add')}" data-title="添加折扣方案">添加折扣方案</button>
 <!--{/if}-->
 {/block}
 
@@ -19,7 +19,7 @@
                 <label><input data-auto-none data-check-target='.list-check-box' type='checkbox'></label>
             </th>
             <th class='list-table-sort-td'>
-                <button type="button" data-reload class="layui-btn layui-btn-xs">刷 新</button>
+                <button class="layui-btn layui-btn-xs" data-reload type="button">刷 新</button>
             </th>
             <th class="text-left nowrap">折扣方案</th>
             <th class="text-left nowrap">等级折扣</th>
@@ -32,10 +32,10 @@
         {foreach $list as $key=>$vo}
         <tr>
             <td class='list-table-check-td think-checkbox'>
-                <label><input class="list-check-box" value='{$vo.id}' type='checkbox'></label>
+                <label><input class="list-check-box" type='checkbox' value='{$vo.id}'></label>
             </td>
             <td class='list-table-sort-td'>
-                <label><input data-action-blur="{:request()->url()}" data-value="id#{$vo.id};action#sort;sort#{value}" data-loading="false" value="{$vo.sort}" class="list-sort-input"></label>
+                <label><input class="list-sort-input" data-action-blur="{:request()->url()}" data-loading="false" data-value="id#{$vo.id};action#sort;sort#{value}" value="{$vo.sort}"></label>
             </td>
             <td class="text-left nowrap">{$vo.name|default=''}</td>
             <td class="text-left">
@@ -55,13 +55,13 @@
                 <!--{/if}-->
 
                 <!--{if auth("state") and $vo.status eq 1}-->
-                <a class="layui-btn layui-btn-sm layui-btn-warm" data-action="{:url('state')}" data-value="id#{$vo.id};status#0" data-csrf="{:systoken('state')}">禁 用</a>
+                <a class="layui-btn layui-btn-sm layui-btn-warm" data-action="{:url('state')}" data-csrf="{:systoken('state')}" data-value="id#{$vo.id};status#0">禁 用</a>
                 <!--{elseif auth("state")}-->
-                <a class="layui-btn layui-btn-sm layui-btn-warm" data-action="{:url('state')}" data-value="id#{$vo.id};status#1" data-csrf="{:systoken('state')}">启 用</a>
+                <a class="layui-btn layui-btn-sm layui-btn-warm" data-action="{:url('state')}" data-csrf="{:systoken('state')}" data-value="id#{$vo.id};status#1">启 用</a>
                 <!--{/if}-->
 
                 <!--{if auth("remove")}-->
-                <a class="layui-btn layui-btn-sm layui-btn-danger" data-confirm="确定要删除折扣方案吗？" data-action="{:url('remove')}" data-value="id#{$vo.id}" data-csrf="{:systoken('remove')}">删 除</a>
+                <a class="layui-btn layui-btn-sm layui-btn-danger" data-action="{:url('remove')}" data-confirm="确定要删除折扣方案吗？" data-csrf="{:systoken('remove')}" data-value="id#{$vo.id}">删 除</a>
                 <!--{/if}-->
 
             </td>

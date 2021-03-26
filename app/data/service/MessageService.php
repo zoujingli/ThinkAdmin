@@ -24,88 +24,12 @@ class MessageService extends Service
     protected $password;
 
     /**
-     * 短信服务初始化
-     * @return MessageService
-     * @throws \think\db\exception\DataNotFoundException
-     * @throws \think\db\exception\DbException
-     * @throws \think\db\exception\ModelNotFoundException
-     */
-    protected function initialize(): MessageService
-    {
-        $this->username = sysconf('zt.username');
-        $this->password = sysconf('zt.password');
-        return $this;
-    }
-
-    /**
-     * 发送自定义短信内容
-     * @param string $phone
-     * @param string $content
-     * @return array
-     */
-    public function send(string $phone, string $content): array
-    {
-        [$state, $message, $record] = $this->_request('v2/sendSms', ['mobile' => $phone, 'content' => $content]);
-        $this->app->db->name('DataUserMessage')->insert([
-            'phone' => $phone, 'content' => $content, 'result' => $message, 'status' => $state ? 1 : 0,
-        ]);
-        return [$state, $message, $record];
-    }
-
-    /**
      * 短信条数查询
      */
     public function balance(): array
     {
         [$state, $message, $result] = $this->_request('v2/balance', []);
         return [$state, $message, $state ? $result['sumSms'] : 0];
-    }
-
-    /**
-     * 验证手机短信验证码
-     * @param string $code 验证码
-     * @param string $phone 手机号验证
-     * @param string $tplcode
-     * @return boolean
-     */
-    public function checkVerifyCode(string $code, string $phone, string $tplcode = 'zt.tplcode_register'): bool
-    {
-        $cache = $this->app->cache->get($ckey = md5("code-{$tplcode}-{$phone}"), []);
-        return is_array($cache) && isset($cache['code']) && $cache['code'] == $code;
-    }
-
-    /**
-     * 验证手机短信验证码
-     * @param string $phone 手机号码
-     * @param integer $wait 等待时间
-     * @param string $tplcode 模板编号
-     * @return array
-     * @throws \think\db\exception\DataNotFoundException
-     * @throws \think\db\exception\DbException
-     * @throws \think\db\exception\ModelNotFoundException
-     */
-    public function sendVerifyCode(string $phone, int $wait = 120, string $tplcode = 'zt.tplcode_register'): array
-    {
-        $content = sysconf($tplcode) ?: '您的短信验证码为{code}，请在十分钟内完成操作！';
-        $cache = $this->app->cache->get($ckey = md5("code-{$tplcode}-{$phone}"), []);
-        // 检查是否已经发送
-        if (is_array($cache) && isset($cache['time']) && $cache['time'] > time() - $wait) {
-            $dtime = ($cache['time'] + $wait < time()) ? 0 : ($wait - time() + $cache['time']);
-            return [1, '短信验证码已经发送！', ['time' => $dtime]];
-        }
-        // 生成新的验证码
-        [$code, $time] = [rand(100000, 999999), time()];
-        $this->app->cache->set($ckey, ['code' => $code, 'time' => $time], 600);
-        // 尝试发送短信内容
-        [$state] = $this->send($phone, preg_replace_callback("|{(.*?)}|", function ($matches) use ($code) {
-            return $matches[1] === 'code' ? $code : $matches[1];
-        }, $content));
-        if ($state) return [1, '短信验证码发送成功！', [
-            'time' => ($time + $wait < time()) ? 0 : ($wait - time() + $time)],
-        ]; else {
-            $this->app->cache->delete($ckey);
-            return [0, '短信发送失败，请稍候再试！', []];
-        }
     }
 
     /**
@@ -172,6 +96,82 @@ class MessageService extends Service
             9999 => '非法请求',
         ];
         return $arrs[$code] ?? $code;
+    }
+
+    /**
+     * 验证手机短信验证码
+     * @param string $code 验证码
+     * @param string $phone 手机号验证
+     * @param string $tplcode
+     * @return boolean
+     */
+    public function checkVerifyCode(string $code, string $phone, string $tplcode = 'zt.tplcode_register'): bool
+    {
+        $cache = $this->app->cache->get($ckey = md5("code-{$tplcode}-{$phone}"), []);
+        return is_array($cache) && isset($cache['code']) && $cache['code'] == $code;
+    }
+
+    /**
+     * 验证手机短信验证码
+     * @param string $phone 手机号码
+     * @param integer $wait 等待时间
+     * @param string $tplcode 模板编号
+     * @return array
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\DbException
+     * @throws \think\db\exception\ModelNotFoundException
+     */
+    public function sendVerifyCode(string $phone, int $wait = 120, string $tplcode = 'zt.tplcode_register'): array
+    {
+        $content = sysconf($tplcode) ?: '您的短信验证码为{code}，请在十分钟内完成操作！';
+        $cache = $this->app->cache->get($ckey = md5("code-{$tplcode}-{$phone}"), []);
+        // 检查是否已经发送
+        if (is_array($cache) && isset($cache['time']) && $cache['time'] > time() - $wait) {
+            $dtime = ($cache['time'] + $wait < time()) ? 0 : ($wait - time() + $cache['time']);
+            return [1, '短信验证码已经发送！', ['time' => $dtime]];
+        }
+        // 生成新的验证码
+        [$code, $time] = [rand(100000, 999999), time()];
+        $this->app->cache->set($ckey, ['code' => $code, 'time' => $time], 600);
+        // 尝试发送短信内容
+        [$state] = $this->send($phone, preg_replace_callback("|{(.*?)}|", function ($matches) use ($code) {
+            return $matches[1] === 'code' ? $code : $matches[1];
+        }, $content));
+        if ($state) return [1, '短信验证码发送成功！', [
+            'time' => ($time + $wait < time()) ? 0 : ($wait - time() + $time)],
+        ]; else {
+            $this->app->cache->delete($ckey);
+            return [0, '短信发送失败，请稍候再试！', []];
+        }
+    }
+
+    /**
+     * 发送自定义短信内容
+     * @param string $phone
+     * @param string $content
+     * @return array
+     */
+    public function send(string $phone, string $content): array
+    {
+        [$state, $message, $record] = $this->_request('v2/sendSms', ['mobile' => $phone, 'content' => $content]);
+        $this->app->db->name('DataUserMessage')->insert([
+            'phone' => $phone, 'content' => $content, 'result' => $message, 'status' => $state ? 1 : 0,
+        ]);
+        return [$state, $message, $record];
+    }
+
+    /**
+     * 短信服务初始化
+     * @return MessageService
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\DbException
+     * @throws \think\db\exception\ModelNotFoundException
+     */
+    protected function initialize(): MessageService
+    {
+        $this->username = sysconf('zt.username');
+        $this->password = sysconf('zt.password');
+        return $this;
     }
 
 }

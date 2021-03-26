@@ -2,7 +2,7 @@
 
 {block name="button"}
 <!--{if auth("remove")}-->
-<button data-action='{:url("remove")}' data-rule="id#{key}" data-confirm="确定要删除这些充值记录吗？" class='layui-btn layui-btn-sm layui-btn-primary'>删除充值</button>
+<button class='layui-btn layui-btn-sm layui-btn-primary' data-action='{:url("remove")}' data-confirm="确定要删除这些充值记录吗？" data-rule="id#{key}">删除充值</button>
 <!--{/if}-->
 {/block}
 
@@ -30,10 +30,10 @@
         {foreach $list as $key=>$vo}
         <tr>
             <td class='list-table-check-td think-checkbox'>
-                <label><input class="list-check-box" value='{$vo.id}' type='checkbox'></label>
+                <label><input class="list-check-box" type='checkbox' value='{$vo.id}'></label>
             </td>
             <td class="nowrap">
-                <div class="headimg headimg-md" data-tips-image data-lazy-src="{$vo.user.headimg|default='__ROOT__/static/theme/img/headimg.png'}"></div>
+                <div class="headimg headimg-md" data-lazy-src="{$vo.user.headimg|default='__ROOT__/static/theme/img/headimg.png'}" data-tips-image></div>
                 <div class="inline-block">
                     <div>用户昵称：<span class="color-blue">{$vo.user.nickname|default='--'}</span></div>
                     <div>用户手机：<span class="color-blue">{$vo.user.phone|default='--'}</span></div>
@@ -56,7 +56,7 @@
             </td>
             <td class="nowrap">
                 <!--{if auth("remove") and stripos($vo.code,'B') === 0}-->
-                <a class="layui-btn layui-btn-sm layui-btn-danger" data-confirm="确定要删除数据吗?" data-action="{:url('remove')}" data-value="id#{$vo.id}">删 除</a>
+                <a class="layui-btn layui-btn-sm layui-btn-danger" data-action="{:url('remove')}" data-confirm="确定要删除数据吗?" data-value="id#{$vo.id}">删 除</a>
                 <!--{/if}-->
             </td>
         </tr>

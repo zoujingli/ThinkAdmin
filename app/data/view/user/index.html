@@ -2,7 +2,7 @@
 
 {block name="button"}
 <!--{if auth("sync")}-->
-<button data-queue="{:url('sync')}" class='layui-btn layui-btn-sm layui-btn-primary'>刷新账户金额</button>
+<button class='layui-btn layui-btn-sm layui-btn-primary' data-queue="{:url('sync')}">刷新账户金额</button>
 <!--{/if}-->
 {/block}
 
@@ -30,10 +30,10 @@
         {foreach $list as $key=>$vo}
         <tr>
             <td class='list-table-check-td think-checkbox'>
-                <label><input class="list-check-box" value='{$vo.id}' type='checkbox'></label>
+                <label><input class="list-check-box" type='checkbox' value='{$vo.id}'></label>
             </td>
             <td class="nowrap">
-                <div class="headimg headimg-md" data-tips-image data-lazy-src="{$vo.headimg|default='__ROOT__/static/theme/img/headimg.png'}"></div>
+                <div class="headimg headimg-md" data-lazy-src="{$vo.headimg|default='__ROOT__/static/theme/img/headimg.png'}" data-tips-image></div>
                 <div class="inline-block">
                     <div>
                         {notempty name='vo.username'}
@@ -48,7 +48,7 @@
             </td>
             <td class="nowrap">
                 {notempty name='vo.from'}
-                <div class="headimg headimg-md" data-tips-image data-lazy-src="{$vo.from.headimg|default='__ROOT__/static/theme/img/headimg.png'}"></div>
+                <div class="headimg headimg-md" data-lazy-src="{$vo.from.headimg|default='__ROOT__/static/theme/img/headimg.png'}" data-tips-image></div>
                 <div class="inline-block text-middle">
                     <div>
                         {notempty name='vo.from.username'}
@@ -98,7 +98,7 @@
             <td class="nowrap">
 
                 <!--{if auth("parent") and false}-->
-                <a class="layui-btn layui-btn-sm layui-btn-primary" data-width="900px" data-iframe="{:url('parent')}?uid={$vo.id}">修改上级</a>
+                <a class="layui-btn layui-btn-sm layui-btn-primary" data-iframe="{:url('parent')}?uid={$vo.id}" data-width="900px">修改上级</a>
                 <!--{/if}-->
 
                 <!--{if auth("user_balance/add")}-->
@@ -106,7 +106,7 @@
                 <!--{/if}-->
 
                 <!--{if auth("state") and $vo.status eq 1}-->
-                <a class="layui-btn layui-btn-sm layui-btn-danger" data-action="{:url('state')}" data-value="id#{$vo.id};status#0" data-confirm="账号冻结后将不能下单和提现，确认吗？">冻 结</a>
+                <a class="layui-btn layui-btn-sm layui-btn-danger" data-action="{:url('state')}" data-confirm="账号冻结后将不能下单和提现，确认吗？" data-value="id#{$vo.id};status#0">冻 结</a>
                 <!--{/if}-->
 
                 <!--{if auth("state") and $vo.status eq 0}-->

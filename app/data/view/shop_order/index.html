@@ -2,7 +2,7 @@
 
 {block name="button"}
 <!--{if auth("clean")}-->
-<button data-queue='{:url("clean")}' class='layui-btn layui-btn-sm layui-btn-primary'>定时清理订单</button>
+<button class='layui-btn layui-btn-sm layui-btn-primary' data-queue='{:url("clean")}'>定时清理订单</button>
 <!--{/if}-->
 {/block}
 
@@ -11,7 +11,7 @@
     <ul class="layui-tab-title notselect">
         {foreach ['ta'=>'全部订单','t2'=>'待支付的订单','t3'=>'待审核的订单','t4'=>'待发货的订单','t5'=>'待收货的订单','t6'=>'已完成的订单','t0'=>'已取消的订单'] as $k=>$v}
         {if isset($type) and 't'.$type eq $k}
-        <li data-open="{:url('index')}?type={$k}" class="layui-this">{$v}<sup class="layui-badge border-radius">{$total[$k]??0}</sup></li>
+        <li class="layui-this" data-open="{:url('index')}?type={$k}">{$v}<sup class="layui-badge border-radius">{$total[$k]??0}</sup></li>
         {else}
         <li data-open="{:url('index')}?type={$k}">{$v}<sup class="layui-badge border-radius">{$total[$k]??0}</sup></li>
         {/if}{/foreach}
@@ -36,12 +36,12 @@
             {foreach $list as $key=>$vo}
             <tr>
                 <td class='list-table-check-td think-checkbox'>
-                    <label><input class="list-check-box" value='{$vo.id}' type='checkbox'></label>
+                    <label><input class="list-check-box" type='checkbox' value='{$vo.id}'></label>
                 </td>
                 <td class="nowrap relative">
                     <div>
                         <!--{notempty name='vo.from'}-->
-                        <div class="headimg" data-tips-image data-lazy-src="{$vo.from.headimg|default='__ROOT__/static/theme/img/headimg.png'}"></div>
+                        <div class="headimg" data-lazy-src="{$vo.from.headimg|default='__ROOT__/static/theme/img/headimg.png'}" data-tips-image></div>
                         <div class="inline-block sub-span-blue">
                             推荐用户：{$vo.from.nickname|default='--'} <span>[ <b class="color-red">VIP{$vo.from.vip_code}</b> ] <b class="color-red">{$vo.from.vip_name}</b></span><br>
                             推荐手机：<span>{$vo.from.phone|default='--'}</span><br>
@@ -51,7 +51,7 @@
                         <!--{/notempty}-->
                     </div>
                     <div>
-                        <div class="headimg" data-tips-image data-lazy-src="{$vo.user.headimg|default='__ROOT__/static/theme/img/headimg.png'}"></div>
+                        <div class="headimg" data-lazy-src="{$vo.user.headimg|default='__ROOT__/static/theme/img/headimg.png'}" data-tips-image></div>
                         <div class="inline-block sub-span-blue">
                             用户昵称：{$vo.user.nickname|default='--'} <span>[ <b class="color-red">VIP{$vo.user.vip_code}</b> ] <b class="color-red">{$vo.user.vip_name}</b></span><br>
                             用户手机：<span>{$vo.user.phone|default='--'}</span><br>
@@ -70,7 +70,7 @@
                         <div class="sub-strong-blue">
                             订单单号：<b>{$vo.order_no|default=''}</b>
                             <!--{eq name='vo.status' value='3'}-->
-                            <a data-modal="{:url('audit')}?order_no={$vo.order_no}" class="margin-left-5 layui-badge layui-bg-blue">凭证审核</a>
+                            <a class="margin-left-5 layui-badge layui-bg-blue" data-modal="{:url('audit')}?order_no={$vo.order_no}">凭证审核</a>
                             <!--{/eq}-->
                         </div>
                         <div class="sub-strong-blue sub-span-blue">
@@ -84,7 +84,7 @@
                             支付时间：{$vo.payment_datetime|format_datetime}
                             {notempty name='vo.payment_name'}
                             <!--{notempty name='vo.payment_image'}-->
-                            <span data-tips-text="{$vo.payment_remark|default=''}" data-tips-image="{$vo.payment_image}" class="margin-left-5 color-blue">({$vo.payment_name|default='-'})</span>
+                            <span class="margin-left-5 color-blue" data-tips-image="{$vo.payment_image}" data-tips-text="{$vo.payment_remark|default=''}">({$vo.payment_name|default='-'})</span>
                             <!--{else}-->
                             <span class="margin-left-5 color-blue">({$vo.payment_name|default='-'})</span>
                             <!--{/notempty}-->
@@ -102,13 +102,13 @@
                     <div>收货信息：{$vo.truck.address_name|default='--'}<span class="margin-left-5 color-blue">{$vo.truck.address_phone|default=''}</span></div>
                     <div>收货地址：{$vo.truck.address_province|default='--'}{$vo.truck.address_city|default=''}{$vo.truck.address_area|default=''}{$vo.truck.address_content|default=''}</div>
                     <div>发货状态：<!--{if empty($vo.truck.send_number)}--><span class="layui-badge layui-bg-black">未发货</span><!--{else}--><span class="layui-badge layui-bg-blue">{$vo.truck.company_name|default='--'}</span>
-                        <a data-title="快递查询" data-modal="{:url('truckQuery')}?code={$vo.truck.company_code|default=''}&number={$vo.truck.send_number|default=''}" class="layui-badge layui-bg-orange">{$vo.truck.send_number|default='--'}</a>
+                        <a class="layui-badge layui-bg-orange" data-modal="{:url('truckQuery')}?code={$vo.truck.company_code|default=''}&number={$vo.truck.send_number|default=''}" data-title="快递查询">{$vo.truck.send_number|default='--'}</a>
                         <!--{/if}-->
 
                         <!--{if auth('truck') and $vo.status eq 3}-->
-                        <a class="margin-left-5" data-title="填写订单信息" data-modal="{:url('truck')}?order_no={$vo.order_no}">填写发货</a>
+                        <a class="margin-left-5" data-modal="{:url('truck')}?order_no={$vo.order_no}" data-title="填写订单信息">填写发货</a>
                         <!--{elseif auth('truck') and $vo.status eq 4}-->
-                        <a class="margin-left-5" data-title="修改发货信息" data-modal="{:url('truck')}?order_no={$vo.order_no}">修改发货</a>
+                        <a class="margin-left-5" data-modal="{:url('truck')}?order_no={$vo.order_no}" data-title="修改发货信息">修改发货</a>
                         <!--{/if}-->
 
                         <!--{if auth('cancel') and in_array($vo.status, [1,2])}-->

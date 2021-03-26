@@ -22,7 +22,7 @@ class ShopGoods extends Controller
     private $table = 'ShopGoods';
 
     /**
-     * 最大分类级别
+     * 最大分类等级
      * @var integer
      */
     protected $cateLevel;

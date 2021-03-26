@@ -44,19 +44,6 @@ class JoinpayPaymentService extends PaymentService
     protected $mchkey;
 
     /**
-     * 汇聚支付服务初始化
-     * @return JoinpayPaymentService
-     */
-    protected function initialize(): JoinpayPaymentService
-    {
-        $this->appid = $this->params['joinpay_appid'];
-        $this->trade = $this->params['joinpay_trade'];;
-        $this->mchid = $this->params['joinpay_mch_id'];
-        $this->mchkey = $this->params['joinpay_mch_key'];
-        return $this;
-    }
-
-    /**
      * 创建订单支付参数
      * @param string $openid 用户OPENID
      * @param string $orderNo 交易订单单号
@@ -111,6 +98,29 @@ class JoinpayPaymentService extends PaymentService
     }
 
     /**
+     * 执行数据请求
+     * @param array $data
+     * @return array
+     */
+    private function _doReuest($data = []): array
+    {
+        $data['hmac'] = $this->_doSign($data);
+        return json_decode(HttpExtend::post($this->uri, $data), true);
+    }
+
+    /**
+     * 请求数据签名
+     * @param array $data
+     * @return string
+     */
+    private function _doSign(array $data): string
+    {
+        ksort($data);
+        unset($data['hmac']);
+        return md5(join('', $data) . $this->mchkey);
+    }
+
+    /**
      * 查询订单数据
      * @param string $orderNo
      * @return array
@@ -147,25 +157,15 @@ class JoinpayPaymentService extends PaymentService
     }
 
     /**
-     * 请求数据签名
-     * @param array $data
-     * @return string
+     * 汇聚支付服务初始化
+     * @return JoinpayPaymentService
      */
-    private function _doSign(array $data): string
+    protected function initialize(): JoinpayPaymentService
     {
-        ksort($data);
-        unset($data['hmac']);
-        return md5(join('', $data) . $this->mchkey);
-    }
-
-    /**
-     * 执行数据请求
-     * @param array $data
-     * @return array
-     */
-    private function _doReuest($data = []): array
-    {
-        $data['hmac'] = $this->_doSign($data);
-        return json_decode(HttpExtend::post($this->uri, $data), true);
+        $this->appid = $this->params['joinpay_appid'];
+        $this->trade = $this->params['joinpay_trade'];;
+        $this->mchid = $this->params['joinpay_mch_id'];
+        $this->mchkey = $this->params['joinpay_mch_key'];
+        return $this;
     }
 }

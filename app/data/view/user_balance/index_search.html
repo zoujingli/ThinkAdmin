@@ -1,17 +1,17 @@
 <fieldset>
     <legend>条件搜索</legend>
-    <form class="layui-form layui-form-pane form-search" action="{$request->url()}" onsubmit="return false" method="get" autocomplete="off">
+    <form action="{$request->url()}" autocomplete="off" class="layui-form layui-form-pane form-search" method="get" onsubmit="return false">
         <div class="layui-form-item layui-inline">
             <label class="layui-form-label">用户手机</label>
             <label class="layui-input-inline">
-                <input name="user_phone" value="{:input('user_phone')}" placeholder="请输入用户手机" class="layui-input">
+                <input class="layui-input" name="user_phone" placeholder="请输入用户手机" value="{:input('user_phone')}">
             </label>
         </div>
 
         <div class="layui-form-item layui-inline">
             <label class="layui-form-label">用户昵称</label>
             <label class="layui-input-inline">
-                <input name="user_nickname" value="{:input('user_nickname')}" placeholder="请输入用户昵称" class="layui-input">
+                <input class="layui-input" name="user_nickname" placeholder="请输入用户昵称" value="{:input('user_nickname')}">
             </label>
         </div>
 
@@ -19,7 +19,7 @@
         <div class="layui-form-item layui-inline">
             <label class="layui-form-label">升级等级</label>
             <div class="layui-input-inline">
-                <select name="vip_upgrade" class="layui-select">
+                <select class="layui-select" name="vip_upgrade">
                     <option value="">-- 全部 --</option>
                     {foreach $upgrades as $upgrade}{if input('vip_upgrade') eq $upgrade.number}
                     <option selected value="{$upgrade.number|default=0}">[ {$upgrade.number|default='0'} ] {$upgrade.name|default=''}</option>
@@ -35,7 +35,7 @@
         <div class="layui-form-item layui-inline">
             <label class="layui-form-label">充值名称</label>
             <div class="layui-input-inline">
-                <select name="name" class="layui-select">
+                <select class="layui-select" name="name">
                     <option value="">-- 全部 --</option>
                     {foreach $names as $name}{if input('name') eq $name}
                     <option selected value="{$name}">{$name}</option>
@@ -50,14 +50,14 @@
         <div class="layui-form-item layui-inline">
             <label class="layui-form-label">充值备注</label>
             <label class="layui-input-inline">
-                <input name="remark" value="{:input('remark')}" placeholder="请输入充值备注" class="layui-input">
+                <input class="layui-input" name="remark" placeholder="请输入充值备注" value="{:input('remark')}">
             </label>
         </div>
 
         <div class="layui-form-item layui-inline">
             <label class="layui-form-label">操作时间</label>
             <label class="layui-input-inline">
-                <input data-date-range name="create_at" value="{:input('create_at','')}" placeholder="请选择操作时间" class="layui-input">
+                <input class="layui-input" data-date-range name="create_at" placeholder="请选择操作时间" value="{:input('create_at','')}">
             </label>
         </div>
 

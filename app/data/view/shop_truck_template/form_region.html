@@ -5,11 +5,11 @@
     <div class="layui-card border-line">
         <div class="layui-card-header layui-bg-gray border-bottom-line">
             <b class="color-green">全国</b><span class="font-s12 color-desc margin-left-10">配送省份</span>
-            <a ng-click="SetAllChecked()" class="pull-right notselect">全选</a>
+            <a class="pull-right notselect" ng-click="SetAllChecked()">全选</a>
         </div>
         <div class="layui-card-body">
-            <div ng-repeat="x in items" ng-click="SetActiveProvince(x)" ng-class="{true:'layui-btn-normal',false:'layui-btn-warm'}[x.status]" class="layui-btn layui-btn-radius margin-left-0 margin-right-5 margin-bottom-5">
-                <label class="think-checkbox margin-right-0"><input ng-change="SetChangeCity(x,x.status)" type="checkbox" ng-model="x.status"></label><span ng-bind="x.name"></span>
+            <div class="layui-btn layui-btn-radius margin-left-0 margin-right-5 margin-bottom-5" ng-class="{true:'layui-btn-normal',false:'layui-btn-warm'}[x.status]" ng-click="SetActiveProvince(x)" ng-repeat="x in items">
+                <label class="think-checkbox margin-right-0"><input ng-change="SetChangeCity(x,x.status)" ng-model="x.status" type="checkbox"></label><span ng-bind="x.name"></span>
             </div>
         </div>
     </div>
@@ -17,8 +17,8 @@
     <div class="layui-card border-line">
         <div class="layui-card-header layui-bg-gray border-bottom-line"><b class="color-green" ng-bind="province.name"></b><span class="font-s12 color-desc margin-left-10">配送城市</span></div>
         <div class="layui-card-body">
-            <div ng-repeat="x in province.subs" ng-click="SetActiveCity(x)" ng-class="{true:'layui-btn-normal',false:'layui-btn-warm'}[x.status]" class="layui-btn layui-btn-radius margin-left-0 margin-right-5 margin-bottom-5">
-                <label class="think-checkbox margin-right-0"><input ng-change="SetChangeCity(x,x.status)" type="checkbox" ng-model="x.status"></label><span ng-bind="x.name"></span>
+            <div class="layui-btn layui-btn-radius margin-left-0 margin-right-5 margin-bottom-5" ng-class="{true:'layui-btn-normal',false:'layui-btn-warm'}[x.status]" ng-click="SetActiveCity(x)" ng-repeat="x in province.subs">
+                <label class="think-checkbox margin-right-0"><input ng-change="SetChangeCity(x,x.status)" ng-model="x.status" type="checkbox"></label><span ng-bind="x.name"></span>
             </div>
         </div>
     </div>
@@ -26,8 +26,8 @@
     <div class="layui-card border-line">
         <div class="layui-card-header layui-bg-gray border-bottom-line"><b class="color-green" ng-bind="city.name"></b><span class="font-s12 color-desc margin-left-10">配送区域</span></div>
         <div class="layui-card-body">
-            <div ng-repeat="x in city.subs" ng-class="{true:'layui-btn-normal',false:'layui-btn-warm'}[x.status]" class="layui-btn layui-btn-radius margin-left-0 margin-right-5 margin-bottom-5">
-                <label class="think-checkbox margin-right-0"><input type="checkbox" ng-model="x.status"></label><span ng-bind="x.name"></span>
+            <div class="layui-btn layui-btn-radius margin-left-0 margin-right-5 margin-bottom-5" ng-class="{true:'layui-btn-normal',false:'layui-btn-warm'}[x.status]" ng-repeat="x in city.subs">
+                <label class="think-checkbox margin-right-0"><input ng-model="x.status" type="checkbox"></label><span ng-bind="x.name"></span>
             </div>
         </div>
     </div>

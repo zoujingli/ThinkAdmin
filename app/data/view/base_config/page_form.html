@@ -1,13 +1,13 @@
 {extend name="../../admin/view/main"}
 
 {block name='content'}
-<form class="layui-form layui-card" action="{:request()->url()}" data-auto="true" method="post" autocomplete="off">
+<form action="{:request()->url()}" autocomplete="off" class="layui-form layui-card" data-auto="true" method="post">
     <div class="layui-card-body padding-40">
 
         <label class="layui-form-item relative block">
             <span class="color-green font-w7">页面名称</span>
             <span class="color-desc margin-left-5">Page Name</span>
-            <input required name="name" value='{$data.name|default=""}' placeholder="请输入页面名称" class="layui-input">
+            <input class="layui-input" name="name" placeholder="请输入页面名称" required value='{$data.name|default=""}'>
         </label>
 
         <div class="layui-form-item relative block">
@@ -21,8 +21,8 @@
         <div class="hr-line-dashed"></div>
 
         <div class="layui-form-item text-center">
-            <button type="submit" class="layui-btn">保存数据</button>
-            <button type='button' class="layui-btn layui-btn-danger" data-confirm="确定要取消编辑吗？" data-history-back>取消编辑</button>
+            <button class="layui-btn" type="submit">保存数据</button>
+            <button class="layui-btn layui-btn-danger" data-confirm="确定要取消编辑吗？" data-history-back type='button'>取消编辑</button>
         </div>
     </div>
 

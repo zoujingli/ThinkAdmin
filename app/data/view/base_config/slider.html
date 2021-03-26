@@ -2,14 +2,14 @@
 
 {block name="content"}
 <div class="think-box-shadow">
-    <form onsubmit="return false;" id="DataForm" class='layui-form layui-card' autocomplete="off" style="width:850px">
+    <form autocomplete="off" class='layui-form layui-card' id="DataForm" onsubmit="return false;" style="width:850px">
         <div class="layui-card-header text-center margin-20 font-w7 color-text layui-bg-gray border-radius-5">
             {$title|default='图片数据管理'}<span class="color-desc font-s12"> ( 建议上传图片尺寸为 690px  250px )</span>
         </div>
         <div class="layui-card-body margin-top-20 padding-bottom-0">
             <div class="padding-left-20" data-rule-list>
                 <div class="layui-form-item text-center">
-                    <a data-item-add class="layui-btn layui-btn-primary">添加图片</a>
+                    <a class="layui-btn layui-btn-primary" data-item-add>添加图片</a>
                 </div>
             </div>
             <div class="hr-line-dashed margin-top-30"></div>
@@ -20,23 +20,23 @@
     </form>
 </div>
 
-<div data-item-tpl class="layui-hide">
+<div class="layui-hide" data-item-tpl>
     <div class="layui-form-item" data-rule-item>
         <div class="layui-input-inline nowrap relative" style="width:180px">
             <input data-upload-image name="img[]" type="hidden">
         </div>
         <label class="layui-input-inline nowrap relative margin-bottom-5" style="width:300px">
             <b class="notselect color-green margin-right-5">图片名称</b>
-            <input class="layui-input inline-block" style="width:240px" name="name[]" value="#" required placeholder="请输入图片名称">
-            <a data-item-up class="layui-btn layui-btn-primary"><i class="layui-icon layui-icon-up margin-0"></i></a>
-            <a data-item-dn class="layui-btn layui-btn-primary"><i class="layui-icon layui-icon-down margin-0"></i></a>
-            <a data-item-rm class="layui-btn layui-btn-primary"><i class="layui-icon layui-icon-close margin-0"></i></a>
+            <input class="layui-input inline-block" name="name[]" placeholder="请输入图片名称" required style="width:240px" value="#">
+            <a class="layui-btn layui-btn-primary" data-item-up><i class="layui-icon layui-icon-up margin-0"></i></a>
+            <a class="layui-btn layui-btn-primary" data-item-dn><i class="layui-icon layui-icon-down margin-0"></i></a>
+            <a class="layui-btn layui-btn-primary" data-item-rm><i class="layui-icon layui-icon-close margin-0"></i></a>
         </label>
         <label class="layui-input-inline nowrap relative margin-bottom-5" style="width:300px">
             <b class="notselect color-green margin-right-5">跳转规则</b>
-            <input class="layui-input inline-block" style="width:240px" name="rule[]" value="#" required placeholder="请输入跳转规则">
-            <a data-prefix="NEWS" data-rule-page="{:url('data/news_item/select')}" class="layui-btn layui-btn-primary">选择文章</a>
-            <a data-prefix="GOODS" data-rule-page="{:url('data/shop_goods/select')}" class="layui-btn layui-btn-primary">选择商品</a>
+            <input class="layui-input inline-block" name="rule[]" placeholder="请输入跳转规则" required style="width:240px" value="#">
+            <a class="layui-btn layui-btn-primary" data-prefix="NEWS" data-rule-page="{:url('data/news_item/select')}">选择文章</a>
+            <a class="layui-btn layui-btn-primary" data-prefix="GOODS" data-rule-page="{:url('data/shop_goods/select')}">选择商品</a>
             <span class="help-block block notselect">若要跳转页面，请选择对应的数据或填写跳转的 URL 地址，不跳转请填写 “#” 号占位。</span>
         </label>
     </div>

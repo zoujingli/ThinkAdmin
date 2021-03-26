@@ -5,6 +5,9 @@ namespace app\data\service\payment;
 use app\data\service\PaymentService;
 use think\admin\Exception;
 use think\admin\extend\CodeExtend;
+use think\db\exception\DataNotFoundException;
+use think\db\exception\DbException;
+use think\db\exception\ModelNotFoundException;
 
 /**
  * 空支付支付
@@ -44,9 +47,9 @@ class EmptyPaymentService extends PaymentService
      * @param string $paymentImage 支付凭证图片
      * @return array
      * @throws Exception
-     * @throws \think\db\exception\DataNotFoundException
-     * @throws \think\db\exception\DbException
-     * @throws \think\db\exception\ModelNotFoundException
+     * @throws DataNotFoundException
+     * @throws DbException
+     * @throws ModelNotFoundException
      */
     public function create(string $openid, string $orderNo, string $paymentAmount, string $paymentTitle, string $paymentRemark, string $paymentReturn = '', string $paymentImage = ''): array
     {

@@ -49,30 +49,6 @@ class UserAdminService extends Service
     ];
 
     /**
-     * 获取用户数据
-     * @param integer $uuid 用户UID
-     * @param ?string $type 接口类型
-     * @return array
-     * @throws DbException
-     * @throws Exception
-     */
-    public function get(int $uuid, ?string $type = null): array
-    {
-        $user = $this->app->db->name('DataUser')->where(['id' => $uuid, 'deleted' => 0])->findOrEmpty();
-        if (empty($user)) throw new Exception('指定UID用户不存在');
-        if (!is_null($type)) {
-            $data = $this->app->db->name('DataUserToken')->where(['uid' => $uuid, 'type' => $type])->findOrEmpty();
-            if (empty($data)) {
-                [$state, $info, $data] = UserTokenService::instance()->token($uuid, $type);
-                if (empty($state) || empty($data)) throw new Exception($info);
-            }
-            $user['token'] = ['token' => $data['token'], 'expire' => $data['time']];
-        }
-        unset($user['deleted'], $user['password']);
-        return $user;
-    }
-
-    /**
      * 更新用户用户参数
      * @param array $map 查询条件
      * @param array $data 更新数据
@@ -97,6 +73,30 @@ class UserAdminService extends Service
             UserTokenService::instance()->token(intval($uuid), $type);
         }
         return $this->get($uuid, $type);
+    }
+
+    /**
+     * 获取用户数据
+     * @param integer $uuid 用户UID
+     * @param ?string $type 接口类型
+     * @return array
+     * @throws DbException
+     * @throws Exception
+     */
+    public function get(int $uuid, ?string $type = null): array
+    {
+        $user = $this->app->db->name('DataUser')->where(['id' => $uuid, 'deleted' => 0])->findOrEmpty();
+        if (empty($user)) throw new Exception('指定UID用户不存在');
+        if (!is_null($type)) {
+            $data = $this->app->db->name('DataUserToken')->where(['uid' => $uuid, 'type' => $type])->findOrEmpty();
+            if (empty($data)) {
+                [$state, $info, $data] = UserTokenService::instance()->token($uuid, $type);
+                if (empty($state) || empty($data)) throw new Exception($info);
+            }
+            $user['token'] = ['token' => $data['token'], 'expire' => $data['time']];
+        }
+        unset($user['deleted'], $user['password']);
+        return $user;
     }
 
     /**

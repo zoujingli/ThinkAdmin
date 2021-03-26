@@ -1,30 +1,30 @@
 {extend name="../../admin/view/main"}
 
 {block name='content'}
-<form class="layui-form layui-card" action="{:request()->url()}" data-auto="true" method="post" autocomplete="off">
+<form action="{:request()->url()}" autocomplete="off" class="layui-form layui-card" data-auto="true" method="post">
     <div class="layui-card-body padding-40">
-        
+
         <label class="layui-form-item relative block">
             <span class="color-green font-w7">通知标题</span>
             <span class="color-desc margin-left-5">Notify Title</span>
-            <input required name="name" value='{$vo.name|default=""}' placeholder="请输入通知标题" class="layui-input">
+            <input class="layui-input" name="name" placeholder="请输入通知标题" required value='{$vo.name|default=""}'>
         </label>
 
         <div class="layui-form-item relative block">
             <span class="color-green font-w7 label-required-prev">通知内容</span>
             <span class="color-desc margin-left-5">Notify Content</span>
             <label class="relative block">
-                <textarea class="layui-textarea" placeholder="请输入通知内容" name="content">{$vo.content|default=''}</textarea>
+                <textarea class="layui-textarea" name="content" placeholder="请输入通知内容">{$vo.content|default=''}</textarea>
             </label>
         </div>
 
         <div class="hr-line-dashed"></div>
-        {notempty name='vo.id'}<input type='hidden' value='{$vo.id}' name='id'>{/notempty}
-        {notempty name='vo.code'}<input type='hidden' value='{$vo.code}' name='code'>{/notempty}
+        {notempty name='vo.id'}<input name='id' type='hidden' value='{$vo.id}'>{/notempty}
+        {notempty name='vo.code'}<input name='code' type='hidden' value='{$vo.code}'>{/notempty}
 
         <div class="layui-form-item text-center">
-            <button type="submit" class="layui-btn">保存数据</button>
-            <button type='button' class="layui-btn layui-btn-danger" data-confirm="确定要取消编辑吗？" data-history-back>取消编辑</button>
+            <button class="layui-btn" type="submit">保存数据</button>
+            <button class="layui-btn layui-btn-danger" data-confirm="确定要取消编辑吗？" data-history-back type='button'>取消编辑</button>
         </div>
     </div>
 

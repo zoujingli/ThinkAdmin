@@ -2,11 +2,11 @@
 
 {block name="button"}
 <!--{if auth("add")}-->
-<button data-modal='{:url("add")}' data-title="添加分类" class='layui-btn layui-btn-sm layui-btn-primary'>添加分类</button>
+<button class='layui-btn layui-btn-sm layui-btn-primary' data-modal='{:url("add")}' data-title="添加分类">添加分类</button>
 <!--{/if}-->
 
 <!--{if auth("remove")}-->
-<button data-action='{:url("remove")}' data-rule="id#{key}" class='layui-btn layui-btn-sm layui-btn-primary'>删除分类</button>
+<button class='layui-btn layui-btn-sm layui-btn-primary' data-action='{:url("remove")}' data-rule="id#{key}">删除分类</button>
 <!--{/if}-->
 {/block}
 
@@ -20,7 +20,7 @@
                 <label><input data-auto-none data-check-target='.list-check-box' type='checkbox'></label>
             </th>
             <th class='list-table-sort-td'>
-                <button type="button" data-reload class="layui-btn layui-btn-xs">刷 新</button>
+                <button class="layui-btn layui-btn-xs" data-reload type="button">刷 新</button>
             </th>
             <th class='text-center'></th>
             <th colspan="3"></th>
@@ -30,10 +30,10 @@
         {foreach $list as $key=>$vo}
         <tr>
             <td class='list-table-check-td think-checkbox'>
-                <label><input class="list-check-box" value='{$vo.ids}' type='checkbox'></label>
+                <label><input class="list-check-box" type='checkbox' value='{$vo.ids}'></label>
             </td>
             <td class='list-table-sort-td'>
-                <label><input data-action-blur="{:request()->url()}" data-value="id#{$vo.id};action#sort;sort#{value}" data-loading="false" value="{$vo.sort}" class="list-sort-input"></label>
+                <label><input class="list-sort-input" data-action-blur="{:request()->url()}" data-loading="false" data-value="id#{$vo.id};action#sort;sort#{value}" value="{$vo.sort}"></label>
             </td>
             <td class="nowrap"><span class="color-desc notselect">{$vo.spl|raw}</span>{$vo.name}</td>
             <td class="color-desc">{$vo.remark|default=''}</td>
@@ -42,26 +42,26 @@
 
                 {if auth("add")}
                 <!--{if $vo.spt < $cateLevel-1}-->
-                <a class="layui-btn layui-btn-xs layui-btn-primary" data-title="添加子分类" data-modal='{:url("add")}?pid={$vo.id}'>添 加</a>
+                <a class="layui-btn layui-btn-xs layui-btn-primary" data-modal='{:url("add")}?pid={$vo.id}' data-title="添加子分类">添 加</a>
                 <!--{else}-->
                 <a class="layui-btn layui-btn-xs layui-btn-disabled">添 加</a>
                 <!--{/if}-->
                 {/if}
 
                 <!--{if auth("edit")}-->
-                <a data-dbclick class="layui-btn layui-btn-xs" data-title="编辑分类" data-modal='{:url("edit")}?id={$vo.id}'>编 辑</a>
+                <a class="layui-btn layui-btn-xs" data-dbclick data-modal='{:url("edit")}?id={$vo.id}' data-title="编辑分类">编 辑</a>
                 <!--{/if}-->
 
                 <!--{if $vo.status eq 0 and auth("state")}-->
-                <a class="layui-btn layui-btn-warm layui-btn-xs" data-action="{:url('state')}" data-value="id#{$vo.ids};status#1" data-csrf="{:systoken('state')}">激 活</a>
+                <a class="layui-btn layui-btn-warm layui-btn-xs" data-action="{:url('state')}" data-csrf="{:systoken('state')}" data-value="id#{$vo.ids};status#1">激 活</a>
                 <!--{/if}-->
 
                 <!--{if $vo.status eq 1 and auth("state")}-->
-                <a class="layui-btn layui-btn-warm layui-btn-xs" data-action="{:url('state')}" data-value="id#{$vo.ids};status#0" data-csrf="{:systoken('state')}">禁 用</a>
+                <a class="layui-btn layui-btn-warm layui-btn-xs" data-action="{:url('state')}" data-csrf="{:systoken('state')}" data-value="id#{$vo.ids};status#0">禁 用</a>
                 <!--{/if}-->
 
                 <!--{if auth("remove")}-->
-                <a class="layui-btn layui-btn-danger layui-btn-xs" data-confirm="确定要删除数据吗?" data-action="{:url('remove')}" data-value="id#{$vo.ids}" data-csrf="{:systoken('remove')}">删 除</a>
+                <a class="layui-btn layui-btn-danger layui-btn-xs" data-action="{:url('remove')}" data-confirm="确定要删除数据吗?" data-csrf="{:systoken('remove')}" data-value="id#{$vo.ids}">删 除</a>
                 <!--{/if}-->
 
             </td>
