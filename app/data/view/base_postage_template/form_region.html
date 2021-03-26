@@ -34,6 +34,7 @@
 
     <div class="hr-line-dashed margin-top-40"></div>
     <div class="layui-form-item text-center">
+        <button class="layui-btn layui-btn-danger" type="button" data-history-back>取消修改</button>
         <button class="layui-btn" ng-click="Confirm()">确定修改</button>
     </div>
 </div>
@@ -123,9 +124,7 @@
                     });
                 });
                 /*! 提交数据并返回结果 */
-                $.form.load('{:url("region")}', {nos: nos.join(','), oks: oks.join(',')}, 'post', function (ret) {
-                    return ret.code ? $.msg.success(ret.info) : $.msg.error(ret.info), false;
-                });
+                $.form.load('{:url("region")}', {nos: nos.join(','), oks: oks.join(',')}, 'post');
             };
         }
     });
