@@ -260,6 +260,8 @@ class Order extends Auth
         $express['address_name'] = $addr['name'];
         $express['address_phone'] = $addr['phone'];
         $express['address_idcode'] = $addr['idcode'];
+        $express['address_idimg1'] = $addr['idimg1'];
+        $express['address_idimg2'] = $addr['idimg2'];
         $express['address_province'] = $addr['province'];
         $express['address_city'] = $addr['city'];
         $express['address_area'] = $addr['area'];

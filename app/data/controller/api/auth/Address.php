@@ -28,7 +28,9 @@ class Address extends Auth
             'uid.value'        => $this->uuid,
             'type.default'     => 0,
             'code.default'     => '',
-            'idcode.default'   => '',
+            'idcode.default'   => '', // 身份证号码
+            'idimg1.default'   => '', // 身份证正面
+            'idimg2.default'   => '', // 身份证反面
             'type.in:0,1'      => '地址状态不在范围！',
             'name.require'     => '收货姓名不能为空！',
             'phone.mobile'     => '收货手机格式错误！',
