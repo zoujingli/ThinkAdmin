@@ -43,8 +43,8 @@
                         <!--{notempty name='vo.from'}-->
                         <div class="headimg" data-lazy-src="{$vo.from.headimg|default='__ROOT__/static/theme/img/headimg.png'}" data-tips-image></div>
                         <div class="inline-block sub-span-blue">
-                            推荐用户：{$vo.from.nickname|default='--'} <span>[ <b class="color-red">VIP{$vo.from.vip_code}</b> ] <b class="color-red">{$vo.from.vip_name}</b></span><br>
-                            推荐手机：<span>{$vo.from.phone|default='--'}</span><br>
+                            <div>推荐用户：{$vo.from.nickname|default='--'}<span class="margin-left-5">[ <b class="color-red">VIP{$vo.from.vip_code}</b> ] <b class="color-red">{$vo.from.vip_name}</b></span></div>
+                            <div>推荐手机：<span>{$vo.from.phone|default='--'}</span></div>
                         </div>
                         <!--{else}-->
                         <div class="color-desc padding-10">没有推荐人</div>
@@ -111,7 +111,7 @@
                         <a class="margin-left-5" data-modal="{:url('truck')}?order_no={$vo.order_no}" data-title="修改发货信息">修改发货</a>
                         <!--{/if}-->
 
-                        <!--{if auth('cancel') and in_array($vo.status, [1,2])}-->
+                        <!--{if auth('cancel') and in_array($vo.status, [1,2,3])}-->
                         <a class="margin-left-5" data-confirm="确认要取消订单吗？" data-load="{:url('cancel')}?order_no={$vo.order_no}">取消订单</a>
                         <!--{/if}-->
                     </div>

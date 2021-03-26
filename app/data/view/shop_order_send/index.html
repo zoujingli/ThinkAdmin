@@ -40,10 +40,10 @@
                 </td>
                 <td class="nowrap relative">
                     <div class="headimg" data-lazy-src="{$vo.user.headimg|default='__ROOT__/static/theme/img/headimg.png'}" data-tips-image style="width:56px;height:56px"></div>
-                    <div class="inline-block sub-span-blue">
-                        用户昵称：<span>{$vo.user.nickname|default='-'}</span><br>
-                        用户手机：<span>{$vo.user.phone|default='-'}</span><br>
-                        订单单号：<span>{$vo.order_no|default='-'}</span><br>
+                    <div class="inline-block sub-span-blue sub-strong-red">
+                        <div>用户昵称：<span>{$vo.user.nickname|default='-'}</span><span class="margin-left-5">[ <b>VIP{$vo.user.vip_code}</b> ] <b>{$vo.user.vip_name}</b></span></div>
+                        <div>用户手机：<span>{$vo.user.phone|default='-'}</span></div>
+                        <div>订单单号：<span>{$vo.order_no|default='-'}</span></div>
                     </div>
                 </td>
                 <td class="nowrap">

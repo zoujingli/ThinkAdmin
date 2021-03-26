@@ -31,7 +31,7 @@ class UserBalanceService extends Service
             'uid'    => $order['uid'],
             'code'   => "CZ{$order['order_no']}",
             'name'   => "订单余额充值",
-            'remark' => "来自订单{$order['order_no']}的余额充值{$order['reward_balance']}元",
+            'remark' => "来自订单 {$order['order_no']} 的余额充值 {$order['reward_balance']} 元",
             'amount' => $order['reward_balance'],
         ], 'code');
 
