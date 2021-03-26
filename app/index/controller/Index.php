@@ -46,6 +46,6 @@ class Index extends Controller
         $this->_query('ShopOrder')->empty();
         $this->_query('ShopOrderItem')->empty();
         $this->_query('ShopOrderSend')->empty();
-        $this->_query('ShopPaymentItem')->empty();
+        $this->_query('DataBasePaymentRecord')->empty();
     }
 }

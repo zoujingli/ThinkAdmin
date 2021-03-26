@@ -216,7 +216,6 @@ return array(
     'app\\data\\controller\\ShopOrder' => $baseDir . '/app/data/controller/ShopOrder.php',
     'app\\data\\controller\\ShopOrderSend' => $baseDir . '/app/data/controller/ShopOrderSend.php',
     'app\\data\\controller\\ShopOrderService' => $baseDir . '/app/data/controller/ShopOrderService.php',
-    'app\\data\\controller\\ShopPaymentItem' => $baseDir . '/app/data/controller/ShopPaymentItem.php',
     'app\\data\\controller\\ShopTruckCompany' => $baseDir . '/app/data/controller/ShopTruckCompany.php',
     'app\\data\\controller\\ShopTruckTemplate' => $baseDir . '/app/data/controller/ShopTruckTemplate.php',
     'app\\data\\controller\\User' => $baseDir . '/app/data/controller/User.php',

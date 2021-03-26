@@ -11,7 +11,7 @@
  Target Server Version : 50562
  File Encoding         : 65001
 
- Date: 26/03/2021 18:05:56
+ Date: 26/03/2021 18:10:56
 */
 
 SET NAMES utf8mb4;
@@ -77,6 +77,30 @@ CREATE TABLE `data_base_payment`  (
   INDEX `idx_data_base_payment_status`(`status`) USING BTREE,
   INDEX `idx_data_base_payment_deleted`(`deleted`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 6 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '数据-基础-支付' ROW_FORMAT = COMPACT;
+
+-- ----------------------------
+-- Table structure for data_base_payment_record
+-- ----------------------------
+DROP TABLE IF EXISTS `data_base_payment_record`;
+CREATE TABLE `data_base_payment_record`  (
+  `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `order_no` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '订单单号',
+  `order_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '订单描述',
+  `order_amount` decimal(20, 2) NULL DEFAULT 0.00 COMMENT '订单金额',
+  `payment_code` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '支付编号',
+  `payment_type` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '支付通道',
+  `payment_trade` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '支付单号',
+  `payment_status` tinyint(1) NULL DEFAULT 0 COMMENT '支付状态',
+  `payment_amount` decimal(20, 2) NULL DEFAULT NULL COMMENT '支付金额',
+  `payment_datatime` datetime NULL DEFAULT NULL COMMENT '支付时间',
+  `create_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  PRIMARY KEY (`id`) USING BTREE,
+  INDEX `idx_data_base_payment_record_order_no`(`order_no`) USING BTREE,
+  INDEX `idx_data_base_payment_record_payment_code`(`payment_code`) USING BTREE,
+  INDEX `idx_data_base_payment_record_payment_type`(`payment_type`) USING BTREE,
+  INDEX `idx_data_base_payment_record_payment_trade`(`payment_trade`) USING BTREE,
+  INDEX `idx_data_base_payment_record_payment_status`(`payment_status`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 30 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '数据-基础-支付' ROW_FORMAT = COMPACT;
 
 -- ----------------------------
 -- Table structure for data_base_upgrade
@@ -644,30 +668,6 @@ CREATE TABLE `shop_order_send`  (
   INDEX `idx_shop_order_send_deleted`(`deleted`) USING BTREE,
   INDEX `idx_shop_order_send_order_no`(`order_no`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 28 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '商城-订单-配送' ROW_FORMAT = COMPACT;
-
--- ----------------------------
--- Table structure for shop_payment_item
--- ----------------------------
-DROP TABLE IF EXISTS `shop_payment_item`;
-CREATE TABLE `shop_payment_item`  (
-  `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT,
-  `order_no` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '订单单号',
-  `order_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '订单描述',
-  `order_amount` decimal(20, 2) NULL DEFAULT 0.00 COMMENT '订单金额',
-  `payment_code` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '支付编号',
-  `payment_type` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '支付通道',
-  `payment_trade` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '支付单号',
-  `payment_status` tinyint(1) NULL DEFAULT 0 COMMENT '支付状态',
-  `payment_amount` decimal(20, 2) NULL DEFAULT NULL COMMENT '支付金额',
-  `payment_datatime` datetime NULL DEFAULT NULL COMMENT '支付时间',
-  `create_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-  PRIMARY KEY (`id`) USING BTREE,
-  INDEX `idx_shop_payment_item_order_no`(`order_no`) USING BTREE,
-  INDEX `idx_shop_payment_item_payment_code`(`payment_code`) USING BTREE,
-  INDEX `idx_shop_payment_item_payment_type`(`payment_type`) USING BTREE,
-  INDEX `idx_shop_payment_item_payment_trade`(`payment_trade`) USING BTREE,
-  INDEX `idx_shop_payment_item_payment_status`(`payment_status`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 30 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '商城-支付-记录' ROW_FORMAT = COMPACT;
 
 -- ----------------------------
 -- Table structure for shop_truck_company

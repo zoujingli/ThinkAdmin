@@ -279,7 +279,7 @@ abstract class PaymentService
      */
     protected function createPaymentAction(string $orderNo, string $paymentTitle, string $paymentAmount)
     {
-        $this->app->db->name('ShopPaymentItem')->insert([
+        $this->app->db->name('DataBasePaymentRecord')->insert([
             'payment_code' => $this->code, 'payment_type' => $this->type,
             'order_amount' => $paymentAmount, 'order_name' => $paymentTitle, 'order_no' => $orderNo,
         ]);
@@ -299,7 +299,7 @@ abstract class PaymentService
     protected function updatePaymentAction(string $orderNo, string $paymentTrade, string $paymentAmount, string $paymentRemark = '在线支付'): bool
     {
         // 更新支付记录
-        data_save('ShopPaymentItem', [
+        data_save('DataBasePaymentRecord', [
             'order_no'         => $orderNo,
             'payment_code'     => $this->code,
             'payment_type'     => $this->type,

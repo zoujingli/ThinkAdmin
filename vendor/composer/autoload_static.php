@@ -345,7 +345,6 @@ class ComposerStaticInit6dcb8a18f830adceacf76408fbd14a53
         'app\\data\\controller\\ShopOrder' => __DIR__ . '/../..' . '/app/data/controller/ShopOrder.php',
         'app\\data\\controller\\ShopOrderSend' => __DIR__ . '/../..' . '/app/data/controller/ShopOrderSend.php',
         'app\\data\\controller\\ShopOrderService' => __DIR__ . '/../..' . '/app/data/controller/ShopOrderService.php',
-        'app\\data\\controller\\ShopPaymentItem' => __DIR__ . '/../..' . '/app/data/controller/ShopPaymentItem.php',
         'app\\data\\controller\\ShopTruckCompany' => __DIR__ . '/../..' . '/app/data/controller/ShopTruckCompany.php',
         'app\\data\\controller\\ShopTruckTemplate' => __DIR__ . '/../..' . '/app/data/controller/ShopTruckTemplate.php',
         'app\\data\\controller\\User' => __DIR__ . '/../..' . '/app/data/controller/User.php',
