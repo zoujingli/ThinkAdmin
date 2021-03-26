@@ -28,7 +28,7 @@ class ExpressService extends Service
     {
         if (empty($codes)) return [0, $truckCount, '', '邮费模板编码为空！'];
         $map = [['status', '=', 1], ['deleted', '=', 0], ['code', 'in', $codes]];
-        $template = $this->app->db->name('ShopTruckTemplate')->where($map)->order('sort desc,id desc')->find();
+        $template = $this->app->db->name('DataBasePostageTemplate')->where($map)->order('sort desc,id desc')->find();
         if (empty($template)) return [0, $truckCount, '', '邮费模板编码无效！'];
         $rule = json_decode($template['normal'] ?: '[]', true) ?: [];
         foreach (json_decode($template['content'] ?: '[]', true) ?: [] as $item) {
@@ -57,7 +57,7 @@ class ExpressService extends Service
     public function templates(): array
     {
         $map = ['status' => 1, 'deleted' => 0];
-        $query = $this->app->db->name('ShopTruckTemplate')->where($map);
+        $query = $this->app->db->name('DataBasePostageTemplate')->where($map);
         return $query->order('sort desc,id desc')->column('code,name,normal,content', 'code');
     }
 
@@ -69,7 +69,7 @@ class ExpressService extends Service
      */
     public function region(int $level = 3, ?int $status = null): array
     {
-        $query = $this->app->db->name('ShopTruckRegion');
+        $query = $this->app->db->name('DataBasePostageRegion');
         if (is_numeric($level)) $query->where('level', '<=', $level);
         if (is_numeric($status)) $query->where(['status' => $status]);
         $items = DataExtend::arr2tree($query->column('id,pid,name,status', 'id'), 'id', 'pid', 'subs');

@@ -8,17 +8,17 @@ use think\admin\service\SystemService;
 use think\exception\HttpResponseException;
 
 /**
- * 配送快递公司管理
- * Class ShopTruckCompany
+ * 快递公司管理
+ * Class BasePostageCompany
  * @package app\data\controller
  */
-class ShopTruckCompany extends Controller
+class BasePostageCompany extends Controller
 {
     /**
      * 绑定数据表
      * @var string
      */
-    private $table = 'ShopTruckCompany';
+    private $table = 'DataBasePostageCompany';
 
     /**
      * 快递公司管理

@@ -8,16 +8,16 @@ use think\admin\extend\CodeExtend;
 
 /**
  * 邮费模板管理
- * Class ShopTruckTemplate
+ * Class BasePostageTemplate
  * @package app\data\controller
  */
-class ShopTruckTemplate extends Controller
+class BasePostageTemplate extends Controller
 {
     /**
      * 绑定数据表
      * @var string
      */
-    private $table = 'ShopTruckTemplate';
+    private $table = 'DataBasePostageTemplate';
 
     /**
      * 快递邮费模板
@@ -49,8 +49,8 @@ class ShopTruckTemplate extends Controller
             $this->fetch('form_region');
         } else {
             $data = $this->_vali(['nos.default' => '', 'oks.default' => '']);
-            if ($data['nos']) $this->app->db->name('ShopTruckRegion')->whereIn('id', str2arr($data['nos']))->update(['status' => 0]);
-            if ($data['oks']) $this->app->db->name('ShopTruckRegion')->whereIn('id', str2arr($data['oks']))->update(['status' => 1]);
+            if ($data['nos']) $this->app->db->name('DataBasePostageRegion')->whereIn('id', str2arr($data['nos']))->update(['status' => 0]);
+            if ($data['oks']) $this->app->db->name('DataBasePostageRegion')->whereIn('id', str2arr($data['oks']))->update(['status' => 1]);
             $this->success('修改配送区域成功！');
         }
     }

@@ -102,7 +102,7 @@ class ShopOrder extends Controller
     {
         if ($this->request->isGet()) {
             $map = ['deleted' => 0, 'status' => 1];
-            $query = $this->app->db->name('ShopTruckCompany')->where($map);
+            $query = $this->app->db->name('DataBasePostageCompany')->where($map);
             $this->items = $query->order('sort desc,id desc')->select()->toArray();
         }
         $this->_form('ShopOrderSend', '', 'order_no');
@@ -123,7 +123,7 @@ class ShopOrder extends Controller
             if (empty($order)) $this->error('订单查询异常，请稍候再试！');
             // 配送快递公司填写
             $map = ['code_1|code_2|code_3' => $vo['company_code']];
-            $company = $this->app->db->name('ShopTruckCompany')->where($map)->find();
+            $company = $this->app->db->name('DataBasePostageCompany')->where($map)->find();
             if (empty($company)) $this->error('配送快递公司异常，请重新选择快递公司！');
             $vo['status'] = 2;
             $vo['company_name'] = $company['name'];
