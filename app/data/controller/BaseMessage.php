@@ -6,16 +6,16 @@ use think\admin\Controller;
 
 /**
  * 用户通知管理
- * Class BaseNotify
+ * Class BaseMessage
  * @package app\data\controller
  */
-class BaseNotify extends Controller
+class BaseMessage extends Controller
 {
     /**
      * 绑定数据表
      * @var string
      */
-    private $table = 'DataBaseNotify';
+    private $table = 'DataBaseMessage';
 
     /**
      * 系统通知管理
