@@ -11,7 +11,7 @@
  Target Server Version : 50562
  File Encoding         : 65001
 
- Date: 26/03/2021 15:39:38
+ Date: 26/03/2021 17:48:18
 */
 
 SET NAMES utf8mb4;
@@ -44,6 +44,7 @@ CREATE TABLE `data_base_notify`  (
   `type` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '消息类型',
   `name` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '消息名称',
   `content` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL COMMENT '消息内容',
+  `num_read` bigint(20) NULL DEFAULT 0 COMMENT '阅读次数',
   `sort` bigint(20) UNSIGNED NULL DEFAULT 0 COMMENT '排序权重',
   `status` tinyint(1) UNSIGNED NULL DEFAULT 1 COMMENT '消息状态(1使用,0禁用)',
   `deleted` tinyint(1) UNSIGNED NULL DEFAULT 0 COMMENT '删除状态',
@@ -318,7 +319,7 @@ CREATE TABLE `data_user_token`  (
   INDEX `idx_data_user_token_type`(`type`) USING BTREE,
   INDEX `idx_data_user_token_time`(`time`) USING BTREE,
   INDEX `idx_data_user_token_token`(`token`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 42 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '数据-用户-认证' ROW_FORMAT = COMPACT;
+) ENGINE = InnoDB AUTO_INCREMENT = 43 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '数据-用户-认证' ROW_FORMAT = COMPACT;
 
 -- ----------------------------
 -- Table structure for data_user_transfer
@@ -535,7 +536,7 @@ CREATE TABLE `shop_order`  (
   INDEX `idx_shop_order_orderno`(`order_no`) USING BTREE,
   INDEX `idx_shop_order_cancel_status`(`cancel_status`) USING BTREE,
   INDEX `idx_shop_order_payment_status`(`payment_status`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 46 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '商城-订单-内容' ROW_FORMAT = COMPACT;
+) ENGINE = InnoDB AUTO_INCREMENT = 47 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '商城-订单-内容' ROW_FORMAT = COMPACT;
 
 -- ----------------------------
 -- Table structure for shop_order_item
@@ -581,7 +582,7 @@ CREATE TABLE `shop_order_item`  (
   INDEX `idx_shop_order_item_goods_code`(`goods_code`) USING BTREE,
   INDEX `idx_shop_order_item_goods_spec`(`goods_spec`) USING BTREE,
   INDEX `idx_shop_order_item_rebate_type`(`rebate_type`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 46 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '商城-订单-商品' ROW_FORMAT = COMPACT;
+) ENGINE = InnoDB AUTO_INCREMENT = 47 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '商城-订单-商品' ROW_FORMAT = COMPACT;
 
 -- ----------------------------
 -- Table structure for shop_order_send
@@ -619,7 +620,7 @@ CREATE TABLE `shop_order_send`  (
   INDEX `idx_shop_order_send_status`(`status`) USING BTREE,
   INDEX `idx_shop_order_send_deleted`(`deleted`) USING BTREE,
   INDEX `idx_shop_order_send_order_no`(`order_no`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 27 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '商城-订单-配送' ROW_FORMAT = COMPACT;
+) ENGINE = InnoDB AUTO_INCREMENT = 28 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '商城-订单-配送' ROW_FORMAT = COMPACT;
 
 -- ----------------------------
 -- Table structure for shop_payment
@@ -666,7 +667,7 @@ CREATE TABLE `shop_payment_item`  (
   INDEX `idx_shop_payment_item_payment_type`(`payment_type`) USING BTREE,
   INDEX `idx_shop_payment_item_payment_trade`(`payment_trade`) USING BTREE,
   INDEX `idx_shop_payment_item_payment_status`(`payment_status`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 29 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '商城-支付-记录' ROW_FORMAT = COMPACT;
+) ENGINE = InnoDB AUTO_INCREMENT = 30 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '商城-支付-记录' ROW_FORMAT = COMPACT;
 
 -- ----------------------------
 -- Table structure for shop_truck_company
@@ -756,7 +757,7 @@ CREATE TABLE `system_auth_node`  (
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `idx_system_auth_auth`(`auth`) USING BTREE,
   INDEX `idx_system_auth_node`(`node`(191)) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '系统-授权' ROW_FORMAT = COMPACT;
+) ENGINE = InnoDB AUTO_INCREMENT = 107 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '系统-授权' ROW_FORMAT = COMPACT;
 
 -- ----------------------------
 -- Table structure for system_config
@@ -817,7 +818,7 @@ CREATE TABLE `system_oplog`  (
   `username` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '操作人用户名',
   `create_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 127 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '系统-日志' ROW_FORMAT = COMPACT;
+) ENGINE = InnoDB AUTO_INCREMENT = 153 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '系统-日志' ROW_FORMAT = COMPACT;
 
 -- ----------------------------
 -- Table structure for system_queue
@@ -846,7 +847,7 @@ CREATE TABLE `system_queue`  (
   INDEX `idx_system_queue_rscript`(`rscript`) USING BTREE,
   INDEX `idx_system_queue_create_at`(`create_at`) USING BTREE,
   INDEX `idx_system_queue_exec_time`(`exec_time`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 30 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '系统-任务' ROW_FORMAT = COMPACT;
+) ENGINE = InnoDB AUTO_INCREMENT = 32 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '系统-任务' ROW_FORMAT = COMPACT;
 
 -- ----------------------------
 -- Table structure for system_user
