@@ -118,13 +118,13 @@ class OrderService extends Service
     /**
      * 绑定订单详情数据
      * @param array $data
-     * @param boolean $fromer
+     * @param boolean $from
      * @return array
      * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\DbException
      * @throws \think\db\exception\ModelNotFoundException
      */
-    public function buildData(array &$data = [], $fromer = true): array
+    public function buildData(array &$data = [], $from = true): array
     {
         // 关联发货信息
         $nobs = array_unique(array_column($data, 'order_no'));
@@ -136,7 +136,7 @@ class OrderService extends Service
         // 关联用户数据
         $fields = 'phone,username,nickname,headimg,status,vip_code,vip_name';
         UserAdminService::instance()->buildByUid($data, 'uid', 'user', $fields);
-        if ($fromer) UserAdminService::instance()->buildByUid($data, 'puid1', 'fromer', $fields);
+        if ($from) UserAdminService::instance()->buildByUid($data, 'puid1', 'from', $fields);
         foreach ($data as &$vo) {
             [$vo['sales'], $vo['truck'], $vo['items']] = [0, $trucks[$vo['order_no']] ?? [], []];
             foreach ($items as $item) if ($vo['order_no'] === $item['order_no']) {
