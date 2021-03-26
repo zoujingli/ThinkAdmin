@@ -96,9 +96,10 @@ class BaseUpgrade extends Controller
             $vo['teams_direct_status'] = intval($vo['teams_direct_status'] && $vo['teams_direct_number'] > 0);
             $vo['teams_indirect_status'] = intval($vo['teams_indirect_status'] && $vo['teams_indirect_number'] > 0);
             $vo['order_amount_status'] = intval($vo['order_amount_status'] && $vo['order_amount_number'] > 0);
-            $state = 0;
-            foreach ($vo as $k => $v) if (stripos($k, '_status') !== false) $state += $v;
-            if (empty($state)) $this->error('升级条件不能为空！');
+            // 检查升级条件配置
+            $count = 0;
+            foreach ($vo as $k => $v) if (is_numeric(stripos($k, '_status'))) $count += $v;
+            if (empty($count)) $this->error('升级条件不能为空！');
         }
     }
 
