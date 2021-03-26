@@ -98,6 +98,16 @@ class ExpressService extends Service
     }
 
     /**
+     * 楚才开放平台快递公司
+     * @return array
+     * @throws \think\admin\Exception
+     */
+    public function company(): array
+    {
+        return $this->_getInterface()->doRequest('api.auth.express/getCompany');
+    }
+
+    /**
      * 获取楚才开放平台接口实例
      * @return InterfaceService
      */
@@ -109,15 +119,4 @@ class ExpressService extends Service
         $service->setAuth("6998081316132228", "193fc1d9a2aac78475bc8dbeb9a5feb1");
         return $service;
     }
-
-    /**
-     * 楚才开放平台快递公司
-     * @return array
-     * @throws \think\admin\Exception
-     */
-    public function company(): array
-    {
-        return $this->_getInterface()->doRequest('api.auth.express/getCompany');
-    }
-
 }
