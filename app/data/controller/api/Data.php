@@ -31,7 +31,7 @@ class Data extends Controller
      */
     public function getNotify()
     {
-        $query = $this->_query('DataUserNotify')->where(['status' => 1, 'deleted' => 0]);
+        $query = $this->_query('DataBaseNotify')->where(['status' => 1, 'deleted' => 0]);
         $result = $query->equal('id')->order('sort desc,id desc')->page(true, false, false, 20);
         $this->success('获取系统通知数据', $result);
     }

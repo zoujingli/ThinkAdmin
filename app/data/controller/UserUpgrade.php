@@ -16,7 +16,7 @@ class UserUpgrade extends Controller
      * 绑定数据表
      * @var string
      */
-    private $table = 'DataUserUpgrade';
+    private $table = 'DataBaseUpgrade';
 
     /**
      * 用户等级管理

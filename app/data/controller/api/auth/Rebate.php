@@ -44,7 +44,7 @@ class Rebate extends Auth
     {
         [$map, $data] = [['number' => $this->user['vip_code']], []];
         $prizes = $this->app->db->name($this->table)->group('name')->column('name');
-        $rebate = $this->app->db->name('DataUserUpgrade')->where($map)->value('rebate_rule', '');
+        $rebate = $this->app->db->name('DataBaseUpgrade')->where($map)->value('rebate_rule', '');
         $codemap = array_merge($prizes, str2arr($rebate));
         foreach (RebateService::PRIZES as $prize) {
             if (in_array($prize['code'], $codemap)) $data[] = $prize;

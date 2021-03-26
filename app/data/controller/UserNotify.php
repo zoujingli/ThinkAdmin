@@ -15,7 +15,7 @@ class UserNotify extends Controller
      * 绑定数据表
      * @var string
      */
-    private $table = 'DataUserNotify';
+    private $table = 'DataBaseNotify';
 
     /**
      * 系统通知管理

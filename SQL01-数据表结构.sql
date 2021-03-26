@@ -11,11 +11,76 @@
  Target Server Version : 50562
  File Encoding         : 65001
 
- Date: 26/03/2021 15:18:31
+ Date: 26/03/2021 15:39:38
 */
 
 SET NAMES utf8mb4;
 SET FOREIGN_KEY_CHECKS = 0;
+
+-- ----------------------------
+-- Table structure for data_base_discount
+-- ----------------------------
+DROP TABLE IF EXISTS `data_base_discount`;
+CREATE TABLE `data_base_discount`  (
+  `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `name` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '方案名称',
+  `items` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL COMMENT '方案规则',
+  `remark` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '方案描述',
+  `sort` bigint(20) NULL DEFAULT 0 COMMENT '排序权重',
+  `status` tinyint(1) UNSIGNED NULL DEFAULT 1 COMMENT '方案状态(1使用,0禁用)',
+  `deleted` tinyint(1) NULL DEFAULT 0 COMMENT '删除状态',
+  `create_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  PRIMARY KEY (`id`) USING BTREE,
+  INDEX `idx_data_base_discount_status`(`status`) USING BTREE,
+  INDEX `idx_data_base_discount_deleted`(`deleted`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '数据-基础-折扣' ROW_FORMAT = Compact;
+
+-- ----------------------------
+-- Table structure for data_base_notify
+-- ----------------------------
+DROP TABLE IF EXISTS `data_base_notify`;
+CREATE TABLE `data_base_notify`  (
+  `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `type` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '消息类型',
+  `name` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '消息名称',
+  `content` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL COMMENT '消息内容',
+  `sort` bigint(20) UNSIGNED NULL DEFAULT 0 COMMENT '排序权重',
+  `status` tinyint(1) UNSIGNED NULL DEFAULT 1 COMMENT '消息状态(1使用,0禁用)',
+  `deleted` tinyint(1) UNSIGNED NULL DEFAULT 0 COMMENT '删除状态',
+  `create_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  PRIMARY KEY (`id`) USING BTREE,
+  INDEX `idx_data_base_notify_type`(`type`) USING BTREE,
+  INDEX `idx_data_base_notify_status`(`status`) USING BTREE,
+  INDEX `idx_data_base_notify_deleted`(`deleted`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '数据-基础-通知' ROW_FORMAT = COMPACT;
+
+-- ----------------------------
+-- Table structure for data_base_upgrade
+-- ----------------------------
+DROP TABLE IF EXISTS `data_base_upgrade`;
+CREATE TABLE `data_base_upgrade`  (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `name` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '用户级别名称',
+  `number` tinyint(2) NULL DEFAULT 0 COMMENT '用户级别序号',
+  `rebate_rule` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '用户奖利规则',
+  `upgrade_type` tinyint(1) NULL DEFAULT 0 COMMENT '会员升级规则(0单个,1同时)',
+  `goods_vip_status` tinyint(1) NULL DEFAULT 0 COMMENT '入会礼包状态',
+  `order_amount_status` tinyint(1) NULL DEFAULT 0 COMMENT '订单金额状态',
+  `order_amount_number` decimal(20, 2) NULL DEFAULT 0.00 COMMENT '订单金额累计',
+  `teams_users_status` tinyint(1) NULL DEFAULT 0 COMMENT '团队人数状态',
+  `teams_users_number` bigint(20) NULL DEFAULT 0 COMMENT '团队人数累计',
+  `teams_direct_status` tinyint(1) NULL DEFAULT 0 COMMENT '直推人数状态',
+  `teams_direct_number` bigint(20) NULL DEFAULT 0 COMMENT '直推人数累计',
+  `teams_indirect_status` tinyint(1) NULL DEFAULT 0 COMMENT '间推人数状态',
+  `teams_indirect_number` bigint(20) NULL DEFAULT 0 COMMENT '间推人数累计',
+  `remark` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '用户级别描述',
+  `utime` bigint(20) NULL DEFAULT 0 COMMENT '等级更新时间',
+  `status` tinyint(1) NULL DEFAULT 1 COMMENT '用户等级状态(1使用,0禁用)',
+  `create_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP COMMENT '等级创建时间',
+  PRIMARY KEY (`id`) USING BTREE,
+  INDEX `idx_data_base_upgrade_status`(`status`) USING BTREE,
+  INDEX `idx_data_base_upgrade_number`(`number`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 5 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '数据-基础-等级' ROW_FORMAT = Compact;
 
 -- ----------------------------
 -- Table structure for data_news_item
@@ -190,24 +255,6 @@ CREATE TABLE `data_user_balance`  (
 ) ENGINE = InnoDB AUTO_INCREMENT = 29 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '数据-用户-余额' ROW_FORMAT = COMPACT;
 
 -- ----------------------------
--- Table structure for data_user_discount
--- ----------------------------
-DROP TABLE IF EXISTS `data_user_discount`;
-CREATE TABLE `data_user_discount`  (
-  `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT,
-  `name` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '方案名称',
-  `items` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL COMMENT '方案规则',
-  `remark` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '方案描述',
-  `sort` bigint(20) NULL DEFAULT 0 COMMENT '排序权重',
-  `status` tinyint(1) UNSIGNED NULL DEFAULT 1 COMMENT '方案状态(1使用,0禁用)',
-  `deleted` tinyint(1) NULL DEFAULT 0 COMMENT '删除状态',
-  `create_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-  PRIMARY KEY (`id`) USING BTREE,
-  INDEX `idx_data_user_discount_status`(`status`) USING BTREE,
-  INDEX `idx_data_user_discount_deleted`(`deleted`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '数据-用户-折扣' ROW_FORMAT = Compact;
-
--- ----------------------------
 -- Table structure for data_user_message
 -- ----------------------------
 DROP TABLE IF EXISTS `data_user_message`;
@@ -227,25 +274,6 @@ CREATE TABLE `data_user_message`  (
   INDEX `idx_data_user_message_msgid`(`msgid`) USING BTREE,
   INDEX `idx_data_user_message_status`(`status`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '数据-用户-短信' ROW_FORMAT = COMPACT;
-
--- ----------------------------
--- Table structure for data_user_notify
--- ----------------------------
-DROP TABLE IF EXISTS `data_user_notify`;
-CREATE TABLE `data_user_notify`  (
-  `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT,
-  `type` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '消息类型',
-  `name` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '消息名称',
-  `content` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL COMMENT '消息内容',
-  `sort` bigint(20) UNSIGNED NULL DEFAULT 0 COMMENT '排序权重',
-  `status` tinyint(1) UNSIGNED NULL DEFAULT 1 COMMENT '消息状态(1使用,0禁用)',
-  `deleted` tinyint(1) UNSIGNED NULL DEFAULT 0 COMMENT '删除状态',
-  `create_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-  PRIMARY KEY (`id`) USING BTREE,
-  INDEX `idx_data_user_notify_type`(`type`) USING BTREE,
-  INDEX `idx_data_user_notify_status`(`status`) USING BTREE,
-  INDEX `idx_data_user_notify_deleted`(`deleted`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '数据-用户-通知' ROW_FORMAT = COMPACT;
 
 -- ----------------------------
 -- Table structure for data_user_rebate
@@ -335,34 +363,6 @@ CREATE TABLE `data_user_transfer`  (
   INDEX `idx_data_user_transfer_openid`(`openid`) USING BTREE,
   INDEX `idx_data_user_transfer_audit_status`(`audit_status`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '数据-用户-提现' ROW_FORMAT = Compact;
-
--- ----------------------------
--- Table structure for data_user_upgrade
--- ----------------------------
-DROP TABLE IF EXISTS `data_user_upgrade`;
-CREATE TABLE `data_user_upgrade`  (
-  `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `name` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '用户级别名称',
-  `number` tinyint(2) NULL DEFAULT 0 COMMENT '用户级别序号',
-  `rebate_rule` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '用户奖利规则',
-  `upgrade_type` tinyint(1) NULL DEFAULT 0 COMMENT '会员升级规则(0单个,1同时)',
-  `goods_vip_status` tinyint(1) NULL DEFAULT 0 COMMENT '入会礼包状态',
-  `order_amount_status` tinyint(1) NULL DEFAULT 0 COMMENT '订单金额状态',
-  `order_amount_number` decimal(20, 2) NULL DEFAULT 0.00 COMMENT '订单金额累计',
-  `teams_users_status` tinyint(1) NULL DEFAULT 0 COMMENT '团队人数状态',
-  `teams_users_number` bigint(20) NULL DEFAULT 0 COMMENT '团队人数累计',
-  `teams_direct_status` tinyint(1) NULL DEFAULT 0 COMMENT '直推人数状态',
-  `teams_direct_number` bigint(20) NULL DEFAULT 0 COMMENT '直推人数累计',
-  `teams_indirect_status` tinyint(1) NULL DEFAULT 0 COMMENT '间推人数状态',
-  `teams_indirect_number` bigint(20) NULL DEFAULT 0 COMMENT '间推人数累计',
-  `remark` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '用户级别描述',
-  `utime` bigint(20) NULL DEFAULT 0 COMMENT '等级更新时间',
-  `status` tinyint(1) NULL DEFAULT 1 COMMENT '用户等级状态(1使用,0禁用)',
-  `create_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP COMMENT '等级创建时间',
-  PRIMARY KEY (`id`) USING BTREE,
-  INDEX `idx_data_user_upgrade_status`(`status`) USING BTREE,
-  INDEX `idx_data_user_upgrade_number`(`number`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 5 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '数据-用户-等级' ROW_FORMAT = Compact;
 
 -- ----------------------------
 -- Table structure for shop_goods
@@ -493,10 +493,10 @@ CREATE TABLE `shop_goods_stock`  (
 DROP TABLE IF EXISTS `shop_order`;
 CREATE TABLE `shop_order`  (
   `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT,
-  `uid` bigint(20) UNSIGNED NULL DEFAULT 0 COMMENT '用户编号',
-  `puid1` bigint(20) UNSIGNED NULL DEFAULT 0 COMMENT '推荐用户1',
-  `puid2` bigint(20) NULL DEFAULT 0 COMMENT '推荐用户2',
-  `order_no` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '订单编号',
+  `uid` bigint(20) UNSIGNED NULL DEFAULT 0 COMMENT '下单用户编号',
+  `puid1` bigint(20) UNSIGNED NULL DEFAULT 0 COMMENT '推荐一层用户',
+  `puid2` bigint(20) NULL DEFAULT 0 COMMENT '推荐二层用户',
+  `order_no` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '商品订单单号',
   `amount_real` decimal(20, 2) NULL DEFAULT 0.00 COMMENT '订单实际金额',
   `amount_total` decimal(20, 2) NULL DEFAULT 0.00 COMMENT '订单统计金额',
   `amount_goods` decimal(20, 2) NULL DEFAULT 0.00 COMMENT '商品统计金额',
@@ -517,7 +517,7 @@ CREATE TABLE `shop_order`  (
   `payment_datetime` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '支付到账时间',
   `number_goods` bigint(20) NULL DEFAULT 0 COMMENT '订单商品数量',
   `number_express` bigint(20) NULL DEFAULT 0 COMMENT '订单快递计数',
-  `truck_type` tinyint(1) NULL DEFAULT 0 COMMENT '物流配送(0无需配送,1需要配送)',
+  `truck_type` tinyint(1) NULL DEFAULT 0 COMMENT '物流配送类型(0无需配送,1需要配送)',
   `order_remark` varchar(999) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '订单用户备注',
   `cancel_status` tinyint(1) NULL DEFAULT 0 COMMENT '订单取消状态',
   `cancel_remark` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '订单取消描述',
@@ -525,8 +525,8 @@ CREATE TABLE `shop_order`  (
   `deleted_status` tinyint(1) NULL DEFAULT 0 COMMENT '订单删除状态(0未删,1已删)',
   `deleted_remark` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '订单删除描述',
   `deleted_datetime` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '订单删除时间',
-  `status` tinyint(1) NULL DEFAULT 1 COMMENT '订单状态(0已取消,1预订单,2待支付,3支付中,4已支付,5已发货,6已完成)',
-  `create_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `status` tinyint(1) NULL DEFAULT 1 COMMENT '订单流程状态(0已取消,1预订单,2待支付,3支付中,4已支付,5已发货,6已完成)',
+  `create_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP COMMENT '订单创建时间',
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `idx_shop_order_mid`(`uid`) USING BTREE,
   INDEX `idx_shop_order_from`(`puid1`) USING BTREE,
@@ -543,21 +543,21 @@ CREATE TABLE `shop_order`  (
 DROP TABLE IF EXISTS `shop_order_item`;
 CREATE TABLE `shop_order_item`  (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `uid` bigint(20) NULL DEFAULT 0 COMMENT '用户编号',
-  `order_no` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '订单单号',
-  `goods_sku` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '商品SKU',
-  `goods_code` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '商品编号',
-  `goods_spec` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '商品规格',
-  `goods_name` varchar(250) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '商品名称',
-  `goods_cover` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '商品图片',
-  `goods_payment` varchar(999) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '支付通道',
-  `price_market` decimal(20, 2) NULL DEFAULT 0.00 COMMENT '市场单价',
-  `price_selling` decimal(20, 2) NULL DEFAULT 0.00 COMMENT '销售单价',
-  `total_market` decimal(20, 2) NULL DEFAULT 0.00 COMMENT '市场总价',
-  `total_selling` decimal(20, 2) NULL DEFAULT 0.00 COMMENT '销售总价',
-  `reward_balance` decimal(20, 2) NULL DEFAULT 0.00 COMMENT '奖励余额',
-  `reward_integral` decimal(20, 2) NULL DEFAULT 0.00 COMMENT '奖励积分',
-  `stock_sales` bigint(20) NULL DEFAULT 1 COMMENT '商品数量',
+  `uid` bigint(20) NULL DEFAULT 0 COMMENT '商城用户编号',
+  `order_no` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '商城订单单号',
+  `goods_sku` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '商城商品SKU',
+  `goods_code` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '商城商品编号',
+  `goods_spec` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '商城商品规格',
+  `goods_name` varchar(250) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '商城商品名称',
+  `goods_cover` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '商品封面图片',
+  `goods_payment` varchar(999) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '指定支付通道',
+  `price_market` decimal(20, 2) NULL DEFAULT 0.00 COMMENT '商品市场单价',
+  `price_selling` decimal(20, 2) NULL DEFAULT 0.00 COMMENT '商品销售单价',
+  `total_market` decimal(20, 2) NULL DEFAULT 0.00 COMMENT '商品市场总价',
+  `total_selling` decimal(20, 2) NULL DEFAULT 0.00 COMMENT '商品销售总价',
+  `reward_balance` decimal(20, 2) NULL DEFAULT 0.00 COMMENT '商品奖励余额',
+  `reward_integral` decimal(20, 2) NULL DEFAULT 0.00 COMMENT '商品奖励积分',
+  `stock_sales` bigint(20) NULL DEFAULT 1 COMMENT '包含商品数量',
   `vip_name` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '用户等级名称',
   `vip_code` bigint(20) NULL DEFAULT 0 COMMENT '用户等级序号',
   `vip_entry` tinyint(1) NULL DEFAULT 0 COMMENT '是否入会礼包(0非礼包,1是礼包)',
@@ -572,7 +572,7 @@ CREATE TABLE `shop_order_item`  (
   `discount_amount` decimal(20, 2) NULL DEFAULT 0.00 COMMENT '商品优惠金额',
   `status` tinyint(1) NULL DEFAULT 1 COMMENT '商品状态(1使用,0禁用)',
   `deleted` tinyint(1) NULL DEFAULT 0 COMMENT '删除状态(0未删,1已删)',
-  `create_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `create_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP COMMENT '订单创建时间',
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `idx_shop_order_item_status`(`status`) USING BTREE,
   INDEX `idx_shop_order_item_deleted`(`deleted`) USING BTREE,
@@ -589,8 +589,8 @@ CREATE TABLE `shop_order_item`  (
 DROP TABLE IF EXISTS `shop_order_send`;
 CREATE TABLE `shop_order_send`  (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `uid` bigint(20) NULL DEFAULT 0 COMMENT '用户编号',
-  `order_no` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '订单订单',
+  `uid` bigint(20) NULL DEFAULT 0 COMMENT '商城用户编号',
+  `order_no` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '商城订单单号',
   `address_code` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '配送地址编号',
   `address_name` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '配送收货人姓名',
   `address_phone` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '配送收货人手机',
@@ -611,8 +611,8 @@ CREATE TABLE `shop_order_send`  (
   `send_number` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '快递运送单号',
   `send_remark` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '快递发送备注',
   `send_datetime` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '快递发送时间',
-  `status` tinyint(1) NULL DEFAULT 1 COMMENT '商品状态(1使用,0禁用)',
-  `deleted` tinyint(1) NULL DEFAULT 0 COMMENT '删除状态(0未删,1已删)',
+  `status` tinyint(1) NULL DEFAULT 1 COMMENT '发货商品状态(1使用,0禁用)',
+  `deleted` tinyint(1) NULL DEFAULT 0 COMMENT '发货删除状态(0未删,1已删)',
   `create_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `idx_shop_order_send_mid`(`uid`) USING BTREE,

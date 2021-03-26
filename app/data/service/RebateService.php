@@ -254,12 +254,12 @@ class RebateService extends Service
         $puids = array_reverse(str2arr($this->user['path'], '-'));
         if (empty($puids) || $this->order['amount_total'] <= 0) return false;
         // 获取可以参与奖励的代理
-        $vips = $this->app->db->name('DataUserUpgrade')->whereLike('rebate_rule', '%,' . self::PRIZE_05 . ',%')->column('number');
+        $vips = $this->app->db->name('DataBaseUpgrade')->whereLike('rebate_rule', '%,' . self::PRIZE_05 . ',%')->column('number');
         $users = $this->app->db->name('DataUser')->whereIn('vip_code', $vips)->whereIn('id', $puids)->orderField('id', $puids)->select()->toArray();
         // 查询需要计算奖励的商品
         $map = [['order_no', '=', $this->order['order_no']], ['discount_rate', '<', 100]];
         foreach ($this->app->db->name('ShopOrderItem')->where($map)->cursor() as $item) {
-            $itemJson = $this->app->db->name('DataUserDiscount')->where(['status' => 1, 'deleted' => 0])->value('items');
+            $itemJson = $this->app->db->name('DataBaseDiscount')->where(['status' => 1, 'deleted' => 0])->value('items');
             if (!empty($itemJson) && is_array($rules = json_decode($itemJson, true))) {
                 [$tVip, $tRate] = [$item['vip_code'], $item['discount_rate']];
                 foreach ($rules as $rule) if ($rule['level'] > $tVip) foreach ($users as $user) if ($user['vip_code'] > $tVip) {
@@ -295,7 +295,7 @@ class RebateService extends Service
         // 记录原始等级
         $prevLevel = $this->user['vip_code'];
         // 获取可以参与奖励的代理
-        $vips = $this->app->db->name('DataUserUpgrade')->whereLike('rebate_rule', '%,' . self::PRIZE_06 . ',%')->column('number');
+        $vips = $this->app->db->name('DataBaseUpgrade')->whereLike('rebate_rule', '%,' . self::PRIZE_06 . ',%')->column('number');
         foreach ($this->app->db->name('DataUser')->whereIn('vip_code', $vips)->whereIn('id', $puids)->orderField('id', $puids)->cursor() as $user) {
             if ($user['vip_code'] > $prevLevel) {
                 if (($amount = $this->_prize06amount($prevLevel + 1, $user['vip_code'])) > 0.00) {
@@ -416,6 +416,6 @@ class RebateService extends Service
     private function isPrizeStatus(string $prize, int $level): bool
     {
         $map = [['number', '=', $level], ['rebate_rule', 'like', "%,{$prize},%"]];
-        return $this->app->db->name('DataUserUpgrade')->where($map)->count() > 0;
+        return $this->app->db->name('DataBaseUpgrade')->where($map)->count() > 0;
     }
 }

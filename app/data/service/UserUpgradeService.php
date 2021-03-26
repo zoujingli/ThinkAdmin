@@ -18,7 +18,7 @@ class UserUpgradeService extends Service
      */
     public function levels(): array
     {
-        $query = $this->app->db->name('DataUserUpgrade');
+        $query = $this->app->db->name('DataBaseUpgrade');
         return $query->where(['status' => 1])->order('number asc')->column('*', 'number');
     }
 
@@ -44,7 +44,7 @@ class UserUpgradeService extends Service
         $teamsIndirect = $this->app->db->name('DataUser')->where(['pid2' => $uid])->whereRaw('vip_code>0')->count();
         $teamsUsers = $this->app->db->name('DataUser')->where(['pid1|pid2' => $uid])->whereRaw('vip_code>0')->count();
         // 计算用户等级
-        foreach ($this->app->db->name('DataUserUpgrade')->where(['status' => 1])->order('number desc')->cursor() as $item) {
+        foreach ($this->app->db->name('DataBaseUpgrade')->where(['status' => 1])->order('number desc')->cursor() as $item) {
             $l1 = empty($item['goods_vip_status']) || $user['buy_vip_entry'] > 0;
             $l2 = empty($item['teams_users_status']) || $item['teams_users_number'] <= $teamsUsers;
             $l3 = empty($item['order_amount_status']) || $item['order_amount_number'] <= $orderAmount;
@@ -64,7 +64,7 @@ class UserUpgradeService extends Service
         $tmpCode = $query->whereRaw("a.uid={$uid} and a.payment_status=1 and a.status>=4 and b.vip_entry=1")->max('b.vip_upgrade');
         if ($tmpCode > $vipCode) {
             $map = ['status' => 1, 'number' => $tmpCode];
-            $upgrade = $this->app->db->name('DataUserUpgrade')->where($map)->find();
+            $upgrade = $this->app->db->name('DataBaseUpgrade')->where($map)->find();
             if (!empty($upgrade)) [$vipName, $vipCode] = [$upgrade['name'], $upgrade['number']];
         } else {
             $orderNo = null;
@@ -73,7 +73,7 @@ class UserUpgradeService extends Service
         $tmpCode = $this->app->db->name('DataUserBalance')->where(['uid' => $uid, 'deleted' => 0])->max('vip_upgrade');
         if ($tmpCode > $vipCode) {
             $map = ['status' => 1, 'number' => $tmpCode];
-            $upgrade = $this->app->db->name('DataUserUpgrade')->where($map)->find();
+            $upgrade = $this->app->db->name('DataBaseUpgrade')->where($map)->find();
             if (!empty($upgrade)) [$vipName, $vipCode] = [$upgrade['name'], $upgrade['number']];
         }
         // 统计用户订单金额

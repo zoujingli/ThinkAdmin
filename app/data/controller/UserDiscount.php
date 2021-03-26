@@ -16,7 +16,7 @@ class UserDiscount extends Controller
      * 绑定数据表
      * @var string
      */
-    private $table = 'DataUserDiscount';
+    private $table = 'DataBaseDiscount';
 
     /**
      * 折扣方案管理
