@@ -257,16 +257,21 @@ class Order extends Auth
         ];
         $express['order_no'] = $data['order_no'];
         $express['address_code'] = $data['code'];
+        $express['address_datetime'] = date('Y-m-d H:i:s');
+
+        // 收货人信息
         $express['address_name'] = $addr['name'];
         $express['address_phone'] = $addr['phone'];
         $express['address_idcode'] = $addr['idcode'];
         $express['address_idimg1'] = $addr['idimg1'];
         $express['address_idimg2'] = $addr['idimg2'];
+
+        // 收货地址信息
         $express['address_province'] = $addr['province'];
         $express['address_city'] = $addr['city'];
         $express['address_area'] = $addr['area'];
         $express['address_content'] = $addr['address'];
-        $express['address_datetime'] = date('Y-m-d H:i:s');
+
         data_save('ShopOrderSend', $express, 'order_no');
         // 组装更新订单数据
         $update = ['status' => 2, 'amount_express' => $express['template_amount']];
