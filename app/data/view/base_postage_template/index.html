@@ -2,7 +2,11 @@
 
 {block name="button"}
 <!--{if auth("add")}-->
-<button class='layui-btn layui-btn-sm layui-btn-primary' data-open='{:url("add")}' data-title="添加邮费模板">添加邮费模板</button>
+<button class='layui-btn layui-btn-sm layui-btn-primary' data-open='{:url("add")}'>添加邮费模板</button>
+<!--{/if}-->
+
+<!--{if auth("region")}-->
+<button class='layui-btn layui-btn-sm layui-btn-primary' data-open='{:url("region")}'>配送区域管理</button>
 <!--{/if}-->
 {/block}
 

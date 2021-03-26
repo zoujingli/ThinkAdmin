@@ -38,7 +38,6 @@ class BasePostageTemplate extends Controller
     /**
      * 配送区域管理
      * @auth true
-     * @menu true
      * @throws \think\db\exception\DbException
      */
     public function region()
