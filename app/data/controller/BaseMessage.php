@@ -5,7 +5,7 @@ namespace app\data\controller;
 use think\admin\Controller;
 
 /**
- * 用户通知管理
+ * 系统通知管理
  * Class BaseMessage
  * @package app\data\controller
  */

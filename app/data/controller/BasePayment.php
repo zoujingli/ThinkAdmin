@@ -8,7 +8,7 @@ use think\admin\Controller;
 use think\admin\extend\CodeExtend;
 
 /**
- * 支付参数支付
+ * 支付通道管理
  * Class BasePayment
  * @package app\data\controller
  */
@@ -21,13 +21,13 @@ class BasePayment extends Controller
     private $table = 'DataBasePayment';
 
     /**
-     * 支付参数类型
+     * 支付通道类型
      * @var array
      */
     protected $types = PaymentService::TYPES;
 
     /**
-     * 支付参数管理
+     * 支付通道管理
      * @auth true
      * @menu true
      * @throws \think\db\exception\DataNotFoundException
@@ -36,14 +36,14 @@ class BasePayment extends Controller
      */
     public function index()
     {
-        $this->title = '支付参数管理';
+        $this->title = '支付通道管理';
         $query = $this->_query($this->table);
         $query->where(['deleted' => 0])->order('sort desc,id desc');
         $query->like('name,code')->equal('type,status')->dateBetween('create_at')->page();
     }
 
     /**
-     * 添加支付参数
+     * 添加支付通道
      * @auth true
      * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\DbException
@@ -51,12 +51,12 @@ class BasePayment extends Controller
      */
     public function add()
     {
-        $this->title = '添加支付参数';
+        $this->title = '添加支付通道';
         $this->_form($this->table, 'form');
     }
 
     /**
-     * 编辑支付参数
+     * 编辑支付通道
      * @auth true
      * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\DbException
@@ -64,7 +64,7 @@ class BasePayment extends Controller
      */
     public function edit()
     {
-        $this->title = '编辑支付参数';
+        $this->title = '编辑支付通道';
         $this->_form($this->table, 'form');
     }
 
@@ -102,12 +102,12 @@ class BasePayment extends Controller
     protected function _form_result(bool $state)
     {
         if ($state) {
-            $this->success('支付参数保存成功！', 'javascript:history.back()');
+            $this->success('支付通道保存成功！', 'javascript:history.back()');
         }
     }
 
     /**
-     * 修改支付参数状态
+     * 修改通道状态
      * @auth true
      * @throws \think\db\exception\DbException
      */
@@ -120,7 +120,7 @@ class BasePayment extends Controller
     }
 
     /**
-     * 删除支付参数
+     * 删除支付通道
      * @auth true
      * @throws \think\db\exception\DbException
      */
