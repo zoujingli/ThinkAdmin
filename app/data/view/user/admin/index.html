@@ -37,12 +37,12 @@
                 <div class="inline-block">
                     <div>
                         {notempty name='vo.username'}
-                        用户姓名：<span class="color-blue">{$vo.username|default='-'}</span>
+                        用户姓名：<span class="color-text">{$vo.username|default='-'}</span>
                         {else}
-                        用户昵称：<span class="color-blue">{$vo.nickname|default='-'}</span>
+                        用户昵称：<span class="color-text">{$vo.nickname|default='-'}</span>
                         {/notempty}
                     </div>
-                    <div>用户手机：<span class="color-blue">{$vo.phone|default='-'}</span></div>
+                    <div>用户手机：<span class="color-text">{$vo.phone|default='-'}</span></div>
                     <div>用户等级：[ <b class="color-red">VIP{$vo.vip_code}</b> ] <b class="color-red">{$vo.vip_name}</b></div>
                 </div>
             </td>
@@ -52,12 +52,12 @@
                 <div class="inline-block text-middle">
                     <div>
                         {notempty name='vo.from.username'}
-                        用户姓名：<span class="color-blue">{$vo.from.username|default='-'}</span>
+                        用户姓名：<span class="color-text">{$vo.from.username|default='-'}</span>
                         {else}
-                        用户昵称：<span class="color-blue">{$vo.from.nickname|default='-'}</span>
+                        用户昵称：<span class="color-text">{$vo.from.nickname|default='-'}</span>
                         {/notempty}
                     </div>
-                    <div>用户手机：<span>{$vo.from.phone|default='-'}</span></div>
+                    <div>用户手机：<span class="color-text">{$vo.from.phone|default='-'}</span></div>
                     <div>用户等级：[ <b class="color-red">VIP{$vo.from.vip_code}</b> ] <b class="color-red">{$vo.from.vip_name}</b></div>
                 </div>
                 {else}

@@ -42,9 +42,9 @@
                     <div>
                         <!--{notempty name='vo.from'}-->
                         <div class="headimg" data-lazy-src="{$vo.from.headimg|default='__ROOT__/static/theme/img/headimg.png'}" data-tips-image></div>
-                        <div class="inline-block sub-span-blue">
-                            <div>推荐用户：<b class="color-text">{$vo.from.nickname|default='--'}</b><span class="margin-left-5">[ <b class="color-red">VIP{$vo.from.vip_code}</b> ] <b class="color-red">{$vo.from.vip_name}</b></span></div>
-                            <div>推荐手机：<b class="color-text">{$vo.from.phone|default='--'}</b></div>
+                        <div class="inline-block sub-strong-red">
+                            <div>推荐用户：<span class="color-text">{$vo.from.nickname|default='--'}</span><span class="margin-left-5">[ <b>VIP{$vo.from.vip_code}</b> ] <b>{$vo.from.vip_name}</b></span></div>
+                            <div>推荐手机：<span class="color-text">{$vo.from.phone|default='--'}</span></div>
                         </div>
                         <!--{else}-->
                         <div class="color-desc padding-10">没有推荐人</div>
@@ -52,9 +52,9 @@
                     </div>
                     <div>
                         <div class="headimg" data-lazy-src="{$vo.user.headimg|default='__ROOT__/static/theme/img/headimg.png'}" data-tips-image></div>
-                        <div class="inline-block sub-span-blue">
-                            用户昵称：<b class="color-text">{$vo.user.nickname|default='--'}</b><span class="margin-left-5">[ <b class="color-red">VIP{$vo.user.vip_code}</b> ] <b class="color-red">{$vo.user.vip_name}</b></span><br>
-                            用户手机：<b class="color-text">{$vo.user.phone|default='--'}</b><br>
+                        <div class="inline-block sub-strong-red">
+                            用户昵称：<span class="color-text">{$vo.user.nickname|default='--'}</span><span class="margin-left-5">[ <b>VIP{$vo.user.vip_code}</b> ] <b>{$vo.user.vip_name}</b></span><br>
+                            用户手机：<span class="color-text">{$vo.user.phone|default='--'}</span><br>
                         </div>
                     </div>
                 </td>
@@ -73,9 +73,9 @@
                             <a class="margin-left-5 layui-badge layui-bg-blue" data-modal="{:url('audit')}?order_no={$vo.order_no}">凭证审核</a>
                             <!--{/eq}-->
                         </div>
-                        <div class="sub-strong-blue sub-span-blue">
+                        <div class="sub-strong-blue">
                             订单总计：<b>{$vo.amount_total+0}</b> 元
-                            <span>{if $vo.amount_express>0}(含邮费{$vo.amount_express+0}元){else}(包邮){/if}</span>
+                            <span class="color-green">{if $vo.amount_express>0}(含运费 {$vo.amount_express+0} 元{else}(包邮{/if}, 随减 {$vo.amount_reduct+0} 元)</span>
                             已支付 <b>{$vo.payment_amount+0}</b> 元
                         </div>
                         <div>下单时间：<span class="color-text">{$vo.create_at|format_datetime}</span></div>
@@ -84,9 +84,9 @@
                             支付时间：<span class="color-text">{$vo.payment_datetime|format_datetime}</span>
                             {notempty name='vo.payment_name'}
                             <!--{notempty name='vo.payment_image'}-->
-                            <span class="margin-left-5 color-blue" data-tips-image="{$vo.payment_image}" data-tips-text="{$vo.payment_remark|default=''}">({$vo.payment_name|default='-'})</span>
+                            <b class="margin-left-5 color-blue" data-tips-image="{$vo.payment_image}" data-tips-text="{$vo.payment_remark|default=''}">({$vo.payment_name|default='-'})</b>
                             <!--{else}-->
-                            <span class="margin-left-5 color-blue">({$vo.payment_name|default='-'})</span>
+                            <b class="margin-left-5 color-blue">({$vo.payment_name|default='-'})</b>
                             <!--{/notempty}-->
                             {/notempty}
                         </div>
