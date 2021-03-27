@@ -20,12 +20,12 @@ return [
     'path'      => '/',
     // cookie 有效域名
     'domain'    => '',
-    // cookie 安全传输
-    'secure'    => false,
     // httponly 访问设置
     'httponly'  => true,
     // 是否使用 setcookie
     'setcookie' => true,
-    // samesite 设置，支持 'strict' 'lax'
-    'samesite'  => '',
+    // cookie 安全传输，只支持 https 协议
+    'secure'    => app()->request->isSsl(),
+    // samesite 安装设置，支持 'strict' 'lax' 'none'
+    'samesite'  => app()->request->isSsl() ? 'none' : 'lax',
 ];
