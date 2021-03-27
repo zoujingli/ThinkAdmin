@@ -26,6 +26,6 @@ return [
     'setcookie' => true,
     // cookie 安全传输，只支持 https 协议
     'secure'    => app()->request->isSsl(),
-    // samesite 安装设置，支持 'strict' 'lax' 'none'
+    // samesite 安全设置，支持 'strict' 'lax' 'none'
     'samesite'  => app()->request->isSsl() ? 'none' : 'lax',
 ];
