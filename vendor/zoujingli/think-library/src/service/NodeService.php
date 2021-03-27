@@ -31,7 +31,7 @@ class NodeService extends Service
      * @param string $name
      * @return string
      */
-    public function nameTolower(string $name): string
+    public static function nameTolower(string $name): string
     {
         $dots = [];
         foreach (explode('.', strtr($name, '/', '.')) as $dot) {

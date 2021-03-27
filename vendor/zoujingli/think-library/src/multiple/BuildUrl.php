@@ -16,7 +16,7 @@ declare (strict_types=1);
 
 namespace think\admin\multiple;
 
-use think\helper\Str;
+use think\admin\service\NodeService;
 use think\route\Url;
 
 /**
@@ -48,7 +48,7 @@ class BuildUrl extends Url
             $action = empty($path) ? $request->action() : array_pop($path);
             $controller = empty($path) ? $request->controller() : array_pop($path);
             $app = empty($path) ? $this->app->http->getName() : array_pop($path);
-            $url = Str::snake($controller) . '/' . $action;
+            $url = NodeService::nameTolower($controller) . '/' . $action;
             $bind = $this->app->config->get('app.domain_bind', []);
             if ($key = array_search($app, $bind)) {
                 isset($bind[$_SERVER['SERVER_NAME']]) && $domain = $_SERVER['SERVER_NAME'];
@@ -62,7 +62,11 @@ class BuildUrl extends Url
         return $url;
     }
 
-    public function build()
+    /**
+     * Build URL
+     * @return string
+     */
+    public function build(): string
     {
         $url = $this->url;
         $vars = $this->vars;

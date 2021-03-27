@@ -18,7 +18,6 @@ declare (strict_types=1);
 namespace think\admin\service;
 
 use think\admin\Service;
-use think\App;
 use think\db\Query;
 use think\helper\Str;
 
