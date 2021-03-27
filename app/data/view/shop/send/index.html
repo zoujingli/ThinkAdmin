@@ -59,17 +59,17 @@
                     <span class="layui-badge layui-bg-black">未发货</span>
                     {else}
                     <span class="layui-badge layui-bg-blue">{$vo.company_name|default='-'}</span>
-                    <a class="layui-badge layui-bg-orange margin-left-5" data-modal="{:url('shop_order/truckQuery')}?code={$vo.company_code}&number={$vo.send_number}"
+                    <a class="layui-badge layui-bg-orange margin-left-5" data-modal="{:url('shop.order/truckQuery')}?code={$vo.company_code}&number={$vo.send_number}"
                        data-tips-text="快递追踪查询"
                        data-title="{$vo.company_name}（{$vo.send_number}）">{$vo.send_number|default='-'}</a>
                     <div class="margin-top-5">于 <b>{$vo.send_datetime|format_datetime} 发货！</b></div>
                     {/if}
                 </td>
                 <td class="color-desc">
-                    <!--{if auth('shop_order/truck') and $vo.status eq 1}-->
-                    <a class="layui-btn layui-btn-sm" data-modal="{:url('shop_order/truck')}?order_no={$vo.order_no}" data-title="填写订单信息">填写发货</a>
-                    <!--{elseif auth('shop_order/truck') and $vo.status eq 2}-->
-                    <a class="layui-btn layui-btn-sm" data-modal="{:url('shop_order/truck')}?order_no={$vo.order_no}" data-title="修改发货信息">修改发货</a>
+                    <!--{if auth('shop.order/truck') and $vo.status eq 1}-->
+                    <a class="layui-btn layui-btn-sm" data-modal="{:url('shop.order/truck')}?order_no={$vo.order_no}" data-title="填写订单信息">填写发货</a>
+                    <!--{elseif auth('shop.order/truck') and $vo.status eq 2}-->
+                    <a class="layui-btn layui-btn-sm" data-modal="{:url('shop.order/truck')}?order_no={$vo.order_no}" data-title="修改发货信息">修改发货</a>
                     <!--{/if}-->
                 </td>
             </tr>
