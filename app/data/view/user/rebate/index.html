@@ -36,20 +36,20 @@
                 {notempty name='vo.agent.headimg'}
                 <div class="headimg headimg-md" data-lazy-src="{$vo.agent.headimg|default='__ROOT__/static/theme/img/headimg.png'}" data-tips-image></div>
                 {/notempty}
-                <div class="inline-block text-middle">
-                    代理昵称：{$vo.agent.nickname|default='--'}<br>
-                    代理手机：{$vo.agent.phone|default='--'}<br>
-                    代理等级：{notempty name='vo.agent.vip_code'}[ <b class="color-red">VIP{$vo.agent.vip_code}</b> ] <b class="color-red">{$vo.agent.vip_name}</b>{else}--{/notempty}
+                <div class="inline-block text-middle sub-strong-red">
+                    代理昵称：<span class="color-text">{$vo.agent.nickname|default='--'}</span><br>
+                    代理手机：<span class="color-text">{$vo.agent.phone|default='--'}</span><br>
+                    代理等级：[ <b>VIP{$vo.agent.vip_code|default=0}</b> ] <b>{$vo.agent.vip_name|default=''}</b>
                 </div>
             </td>
             <td class="text-left nowrap relative">
                 {notempty name='vo.user.headimg'}
                 <div class="headimg headimg-md" data-lazy-src="{$vo.user.headimg|default='__ROOT__/static/theme/img/headimg.png'}" data-tips-image></div>
                 {/notempty}
-                <div class="inline-block text-middle">
-                    用户昵称：{$vo.user.nickname|default='--'}<br>
-                    用户手机：{$vo.user.phone|default='--'}<br>
-                    用户等级：{notempty name='vo.user.vip_code'}[ <b class="color-red">VIP{$vo.user.vip_code}</b> ] <b class="color-red">{$vo.user.vip_name}</b>{else}--{/notempty}
+                <div class="inline-block text-middle sub-strong-red">
+                    用户昵称：<span class="color-text">{$vo.user.nickname|default='--'}</span><br>
+                    用户手机：<span class="color-text">{$vo.user.phone|default='--'}</span><br>
+                    用户等级：[ <b>VIP{$vo.user.vip_code|default=0}</b> ] <b>{$vo.user.vip_name|default=''}</b>
                 </div>
             </td>
             <td class='text-left nowrap'>

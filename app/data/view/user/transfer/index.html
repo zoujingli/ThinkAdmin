@@ -47,13 +47,13 @@
                 <div class="inline-block sub-span-blue">
                     <div>
                         <!--{notempty name='vo.user.username'}-->
-                        用户姓名：<span class="color-blue">{$vo.user.username|default='-'}</span>
+                        用户姓名：<span class="color-text">{$vo.user.username|default='-'}</span>
                         <!--{else}-->
-                        用户昵称：<span class="color-blue">{$vo.user.nickname|default='-'}</span>
+                        用户昵称：<span class="color-text">{$vo.user.nickname|default='-'}</span>
                         <!--{/notempty}-->
                         <span class="margin-left-5">[ <b class="color-red">VIP{$vo.user.vip_code}</b> ] <b class="color-red">{$vo.user.vip_name}</b></span>
                     </div>
-                    <div>用户手机：<span class="color-blue">{$vo.user.phone|default='-'}</span></div>
+                    <div>用户手机：<span class="color-text">{$vo.user.phone|default='-'}</span></div>
                     <div class="sub-strong-blue">剩余可提现 <b>{$vo.user.rebate_total-$vo.user.rebate_used}</b> 元 已提现 <b>{$vo.user.rebate_used+0}</b> 元 待到账 <b>{$vo.user.rebate_lock+0}</b> 元</div>
                 </div>
             </td>
