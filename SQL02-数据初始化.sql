@@ -11,7 +11,7 @@
  Target Server Version : 50562
  File Encoding         : 65001
 
- Date: 26/03/2021 18:36:50
+ Date: 27/03/2021 14:30:25
 */
 
 SET NAMES utf8mb4;
@@ -3831,28 +3831,27 @@ INSERT INTO `system_menu` VALUES (65, 60, '关注回复配置', 'layui-icon layu
 INSERT INTO `system_menu` VALUES (66, 60, '默认回复配置', 'layui-icon layui-icon-util', '', 'wechat/keys/defaults', '', '_self', 0, 1, '2019-12-14 14:11:18');
 INSERT INTO `system_menu` VALUES (67, 0, '控制台', '', '', '#', '', '_self', 300, 1, '2020-07-13 06:51:46');
 INSERT INTO `system_menu` VALUES (68, 67, '数据管理', '', '', '#', '', '_self', 301, 1, '2020-07-13 06:51:54');
-INSERT INTO `system_menu` VALUES (70, 68, '文章内容管理', 'layui-icon layui-icon-template', '', 'data/news_item/index', '', '_self', 10, 1, '2020-07-13 06:52:26');
-INSERT INTO `system_menu` VALUES (71, 68, '轮播图片管理', 'layui-icon layui-icon-carousel', 'data/base_config/sliderhome', 'data/base_config/sliderhome', '', '_self', 30, 1, '2020-07-14 01:17:02');
+INSERT INTO `system_menu` VALUES (70, 68, '文章内容管理', 'layui-icon layui-icon-template', 'data/news.item/index', 'data/news.item/index', '', '_self', 10, 0, '2020-07-13 06:52:26');
+INSERT INTO `system_menu` VALUES (71, 68, '轮播图片管理', 'layui-icon layui-icon-carousel', 'data/base.config/sliderhome', 'data/base.config/sliderhome', '', '_self', 30, 1, '2020-07-14 01:17:02');
 INSERT INTO `system_menu` VALUES (73, 67, '商城管理', '', '', '#', '', '_self', 303, 1, '2020-09-08 02:51:30');
-INSERT INTO `system_menu` VALUES (75, 73, '商品分类管理', 'layui-icon layui-icon-tabs', 'data/shop_goods_cate/index', 'data/shop_goods_cate/index', '', '_self', 70, 1, '2020-09-08 03:35:58');
-INSERT INTO `system_menu` VALUES (76, 73, '商品数据管理', 'layui-icon layui-icon-star', 'data/shop_goods/index', 'data/shop_goods/index', '', '_self', 90, 1, '2020-09-08 07:13:19');
-INSERT INTO `system_menu` VALUES (77, 90, '会员用户管理', 'layui-icon layui-icon-user', 'data/user/index', 'data/user/index', '', '_self', 900, 1, '2020-09-10 01:48:02');
-INSERT INTO `system_menu` VALUES (78, 73, '订单数据管理', 'layui-icon layui-icon-template', 'data/shop_order/index', 'data/shop_order/index', '', '_self', 60, 1, '2020-09-10 01:48:41');
-INSERT INTO `system_menu` VALUES (79, 73, '订单发货管理', 'layui-icon layui-icon-transfer', 'data/shop_order_send/index', 'data/shop_order_send/index', '', '_self', 50, 1, '2020-09-10 01:50:12');
-INSERT INTO `system_menu` VALUES (81, 73, '快递公司管理', 'layui-icon layui-icon-website', 'data/base_postage_company/index', 'data/base_postage_company/index', '', '_self', 0, 1, '2020-09-15 08:47:46');
-INSERT INTO `system_menu` VALUES (82, 73, '邮费模板管理', 'layui-icon layui-icon-template-1', 'data/base_postage_template/index', 'data/base_postage_template/index', '', '_self', 0, 1, '2020-09-15 09:14:46');
-INSERT INTO `system_menu` VALUES (83, 73, '配送区域管理', 'layui-icon layui-icon-location', 'data/base_postage_template/region', 'data/base_postage_template/region', '', '_self', 0, 1, '2020-09-17 09:13:35');
-INSERT INTO `system_menu` VALUES (84, 68, '微信小程序配置', 'layui-icon layui-icon-set', 'data/base_config/wxapp', 'data/base_config/wxapp', '', '_self', 5, 1, '2020-09-21 16:34:08');
-INSERT INTO `system_menu` VALUES (87, 68, '支付参数管理', 'layui-icon layui-icon-rmb', 'data/base_payment/index', 'data/base_payment/index', '', '_self', 6, 1, '2020-12-12 09:08:09');
-INSERT INTO `system_menu` VALUES (88, 68, '系统通知管理', 'layui-icon layui-icon-notice', 'data/base_message/index', 'data/base_message/index', '', '_self', 6, 1, '2021-01-20 10:07:32');
-INSERT INTO `system_menu` VALUES (89, 90, '余额充值管理', 'layui-icon layui-icon-rmb', 'data/user_balance/index', 'data/user_balance/index', '', '_self', 800, 1, '2021-01-20 10:09:49');
+INSERT INTO `system_menu` VALUES (75, 73, '商品分类管理', 'layui-icon layui-icon-tabs', 'data/shop.cate/index', 'data/shop.cate/index', '', '_self', 70, 1, '2020-09-08 03:35:58');
+INSERT INTO `system_menu` VALUES (76, 73, '商品数据管理', 'layui-icon layui-icon-star', 'data/shop.goods/index', 'data/shop.goods/index', '', '_self', 90, 1, '2020-09-08 07:13:19');
+INSERT INTO `system_menu` VALUES (77, 90, '会员用户管理', 'layui-icon layui-icon-user', 'data/user.admin/index', 'data/user.admin/index', '', '_self', 900, 1, '2020-09-10 01:48:02');
+INSERT INTO `system_menu` VALUES (78, 73, '订单数据管理', 'layui-icon layui-icon-template', 'data/shop.order/index', 'data/shop.order/index', '', '_self', 60, 1, '2020-09-10 01:48:41');
+INSERT INTO `system_menu` VALUES (79, 73, '订单发货管理', 'layui-icon layui-icon-transfer', 'data/shop.send/index', 'data/shop.send/index', '', '_self', 50, 1, '2020-09-10 01:50:12');
+INSERT INTO `system_menu` VALUES (81, 73, '快递公司管理', 'layui-icon layui-icon-website', 'data/base.postage.company/index', 'data/base.postage.company/index', '', '_self', 0, 1, '2020-09-15 08:47:46');
+INSERT INTO `system_menu` VALUES (82, 73, '邮费模板管理', 'layui-icon layui-icon-template-1', 'data/base.postage.template/index', 'data/base.postage.template/index', '', '_self', 0, 1, '2020-09-15 09:14:46');
+INSERT INTO `system_menu` VALUES (84, 68, '微信小程序配置', 'layui-icon layui-icon-set', 'data/base.config/wxapp', 'data/base.config/wxapp', '', '_self', 5, 1, '2020-09-21 16:34:08');
+INSERT INTO `system_menu` VALUES (87, 68, '支付参数管理', 'layui-icon layui-icon-rmb', 'data/base.payment/index', 'data/base.payment/index', '', '_self', 6, 1, '2020-12-12 09:08:09');
+INSERT INTO `system_menu` VALUES (88, 68, '系统通知管理', 'layui-icon layui-icon-notice', 'data/base.message/index', 'data/base.message/index', '', '_self', 6, 1, '2021-01-20 10:07:32');
+INSERT INTO `system_menu` VALUES (89, 90, '余额充值管理', 'layui-icon layui-icon-rmb', 'data/user.balance/index', 'data/user.balance/index', '', '_self', 800, 1, '2021-01-20 10:09:49');
 INSERT INTO `system_menu` VALUES (90, 67, '用户管理', '', '', '#', '', '_self', 302, 1, '2021-01-22 05:43:01');
-INSERT INTO `system_menu` VALUES (91, 90, '用户等级管理', 'layui-icon layui-icon-senior', 'data/base_upgrade/index', 'data/base_upgrade/index', '', '_self', 300, 1, '2021-01-22 05:43:27');
-INSERT INTO `system_menu` VALUES (92, 90, '用户折扣方案', 'layui-icon layui-icon-set', 'data/base_discount/index', 'data/base_discount/index', '', '_self', 200, 1, '2021-01-27 05:44:51');
-INSERT INTO `system_menu` VALUES (93, 90, '用户提现管理', 'layui-icon layui-icon-component', 'data/user_transfer/index', 'data/user_transfer/index', '', '_self', 500, 1, '2021-01-28 06:48:34');
-INSERT INTO `system_menu` VALUES (94, 68, '页面内容管理', 'layui-icon layui-icon-read', 'data/base_config/pagehome', 'data/base_config/pagehome', '', '_self', 20, 1, '2021-02-24 08:49:16');
-INSERT INTO `system_menu` VALUES (95, 68, '邀请二维码设置', 'layui-icon layui-icon-cols', 'data/config/cropper', 'data/base_config/cropper', '', '_self', 0, 1, '2021-03-01 09:53:59');
-INSERT INTO `system_menu` VALUES (97, 90, '用户返利管理', 'layui-icon layui-icon-transfer', 'data/user_rebate/index', 'data/user_rebate/index', '', '_self', 600, 1, '2021-03-12 10:06:49');
+INSERT INTO `system_menu` VALUES (91, 90, '用户等级管理', 'layui-icon layui-icon-senior', 'data/base.upgrade/index', 'data/base.upgrade/index', '', '_self', 300, 1, '2021-01-22 05:43:27');
+INSERT INTO `system_menu` VALUES (92, 90, '用户折扣方案', 'layui-icon layui-icon-set', 'data/base.discount/index', 'data/base.discount/index', '', '_self', 200, 1, '2021-01-27 05:44:51');
+INSERT INTO `system_menu` VALUES (93, 90, '用户提现管理', 'layui-icon layui-icon-component', 'data/user.transfer/index', 'data/user.transfer/index', '', '_self', 500, 1, '2021-01-28 06:48:34');
+INSERT INTO `system_menu` VALUES (94, 68, '页面内容管理', 'layui-icon layui-icon-read', 'data/base.config/pagehome', 'data/base.config/pagehome', '', '_self', 20, 0, '2021-02-24 08:49:16');
+INSERT INTO `system_menu` VALUES (95, 68, '邀请二维码设置', 'layui-icon layui-icon-cols', 'data/base.config/cropper', 'data/base.config/cropper', '', '_self', 0, 1, '2021-03-01 09:53:59');
+INSERT INTO `system_menu` VALUES (97, 90, '用户返利管理', 'layui-icon layui-icon-transfer', 'data/user.rebate/index', 'data/user.rebate/index', '', '_self', 600, 1, '2021-03-12 10:06:49');
 
 -- ----------------------------
 -- Table structure for system_user
@@ -3885,6 +3884,6 @@ CREATE TABLE `system_user`  (
 -- ----------------------------
 -- Records of system_user
 -- ----------------------------
-INSERT INTO `system_user` VALUES (10000, 'admin', '21232f297a57a5a743894a0e4a801fc3', '系统管理员', 'https://xhtwxapp.cdn.xiaoding.shop/cf/23526f451784ff137f161b8fe18d5a.png', ',,', '', '', '', '61.140.234.218', '2021-03-26 18:20:44', 139, '', 1, 0, 0, '2015-11-13 15:14:22');
+INSERT INTO `system_user` VALUES (10000, 'admin', '21232f297a57a5a743894a0e4a801fc3', '系统管理员', 'https://xhtwxapp.cdn.xiaoding.shop/cf/23526f451784ff137f161b8fe18d5a.png', ',,', '', '', '', '127.0.0.1', '2021-03-27 13:55:45', 140, '', 1, 0, 0, '2015-11-13 15:14:22');
 
 SET FOREIGN_KEY_CHECKS = 1;

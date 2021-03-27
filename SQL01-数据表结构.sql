@@ -11,7 +11,7 @@
  Target Server Version : 50562
  File Encoding         : 65001
 
- Date: 26/03/2021 18:33:53
+ Date: 27/03/2021 14:30:02
 */
 
 SET NAMES utf8mb4;
@@ -380,11 +380,11 @@ CREATE TABLE `data_user_payment`  (
   `payment_datatime` datetime NULL DEFAULT NULL COMMENT '支付时间',
   `create_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   PRIMARY KEY (`id`) USING BTREE,
-  INDEX `idx_data_base_payment_record_order_no`(`order_no`) USING BTREE,
-  INDEX `idx_data_base_payment_record_payment_code`(`payment_code`) USING BTREE,
-  INDEX `idx_data_base_payment_record_payment_type`(`payment_type`) USING BTREE,
-  INDEX `idx_data_base_payment_record_payment_trade`(`payment_trade`) USING BTREE,
-  INDEX `idx_data_base_payment_record_payment_status`(`payment_status`) USING BTREE
+  INDEX `idx_data_user_payment_order_no`(`order_no`) USING BTREE,
+  INDEX `idx_data_user_payment_payment_code`(`payment_code`) USING BTREE,
+  INDEX `idx_data_user_payment_payment_type`(`payment_type`) USING BTREE,
+  INDEX `idx_data_user_payment_payment_trade`(`payment_trade`) USING BTREE,
+  INDEX `idx_data_user_payment_payment_status`(`payment_status`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 30 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '数据-基础-支付' ROW_FORMAT = COMPACT;
 
 -- ----------------------------
@@ -615,8 +615,6 @@ CREATE TABLE `shop_order`  (
   `amount_reduct` decimal(20, 2) NULL DEFAULT 0.00 COMMENT '随机减免金额',
   `amount_express` decimal(20, 2) NULL DEFAULT 0.00 COMMENT '快递费用金额',
   `amount_discount` decimal(20, 2) NULL DEFAULT 0.00 COMMENT '折扣后的金额',
-  `rebate_amount` decimal(20, 2) NULL DEFAULT 0.00 COMMENT '参与返利金额',
-  `reward_balance` decimal(20, 2) NULL DEFAULT 0.00 COMMENT '奖励账户余额',
   `payment_type` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '实际支付平台',
   `payment_code` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '实际通道编号',
   `payment_allow` varchar(999) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '允许支付通道',
@@ -630,6 +628,8 @@ CREATE TABLE `shop_order`  (
   `number_goods` bigint(20) NULL DEFAULT 0 COMMENT '订单商品数量',
   `number_express` bigint(20) NULL DEFAULT 0 COMMENT '订单快递计数',
   `truck_type` tinyint(1) NULL DEFAULT 0 COMMENT '物流配送类型(0无需配送,1需要配送)',
+  `rebate_amount` decimal(20, 2) NULL DEFAULT 0.00 COMMENT '参与返利金额',
+  `reward_balance` decimal(20, 2) NULL DEFAULT 0.00 COMMENT '奖励账户余额',
   `order_remark` varchar(999) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '订单用户备注',
   `cancel_status` tinyint(1) NULL DEFAULT 0 COMMENT '订单取消状态',
   `cancel_remark` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '订单取消描述',
@@ -821,7 +821,7 @@ CREATE TABLE `system_oplog`  (
   `username` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '操作人用户名',
   `create_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 158 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '系统-日志' ROW_FORMAT = COMPACT;
+) ENGINE = InnoDB AUTO_INCREMENT = 198 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '系统-日志' ROW_FORMAT = COMPACT;
 
 -- ----------------------------
 -- Table structure for system_queue
@@ -850,7 +850,7 @@ CREATE TABLE `system_queue`  (
   INDEX `idx_system_queue_rscript`(`rscript`) USING BTREE,
   INDEX `idx_system_queue_create_at`(`create_at`) USING BTREE,
   INDEX `idx_system_queue_exec_time`(`exec_time`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 32 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '系统-任务' ROW_FORMAT = COMPACT;
+) ENGINE = InnoDB AUTO_INCREMENT = 34 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '系统-任务' ROW_FORMAT = COMPACT;
 
 -- ----------------------------
 -- Table structure for system_user

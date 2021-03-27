@@ -1,0 +1,52 @@
+{extend name="../../admin/view/main"}
+
+{block name="button"}
+<!--{if auth("remove")}-->
+<button class='layui-btn layui-btn-sm layui-btn-primary' data-action='{:url("remove")}' data-confirm="确实要删除这些记录吗？" data-rule="id#{key}">删除记录</button>
+<!--{/if}-->
+{/block}
+
+{block name="content"}
+<div class="think-box-shadow">
+    {include file='user/message/index_search'}
+    <table class="layui-table margin-top-10" lay-skin="line">
+        {notempty name='list'}
+        <thead>
+        <tr>
+            <th class='list-table-check-td think-checkbox'>
+                <label><input data-auto-none data-check-target='.list-check-box' type='checkbox'></label>
+            </th>
+            <th class='text-left nowrap'>目标手机</th>
+            <th class='text-left nowrap'>短信内容</th>
+            <th class='text-left nowrap'>执行结果</th>
+            <th class='text-left nowrap'>发送时间</th>
+            <th></th>
+        </tr>
+        </thead>
+        {/notempty}
+        <tbody>
+        {foreach $list as $key=>$vo}
+        <tr>
+            <td class='list-table-check-td think-checkbox'>
+                <label><input class="list-check-box" type='checkbox' value='{$vo.id}'></label>
+            </td>
+            <td>{$vo.phone|default=''}</td>
+            <td>{$vo.content|default=''}</td>
+            <td>
+                {if $vo.status eq 0}<b class="color-red margin-right-5">失败</b>{/if}
+                {if $vo.status eq 1}<b class="color-green margin-right-5">成功</b>{/if}
+                {$vo.result|default=''}
+            </td>
+            <td>{$vo.create_at|default=''}<br></td>
+            <td>
+                <!--{if auth("remove")}-->
+                <a class="layui-btn layui-btn-xs layui-btn-danger" data-action="{:url('remove')}" data-confirm="确定要删除数据吗?" data-value="id#{$vo.id}">删 除</a>
+                <!--{/if}-->
+            </td>
+        </tr>
+        {/foreach}
+        </tbody>
+    </table>
+    {empty name='list'}<span class="notdata">没有记录哦</span>{else}{$pagehtml|raw|default=''}{/empty}
+</div>
+{/block}

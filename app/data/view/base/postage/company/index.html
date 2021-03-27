@@ -1,0 +1,92 @@
+{extend name="../../admin/view/main"}
+
+{block name="button"}
+<!--{if auth("sync") and $type eq 'index'}-->
+<button class='layui-btn layui-btn-sm layui-btn-primary' data-confirm="确定要同步快递公司数据吗？" data-load='{:url("sync")}'>同步公司</button>
+<!--{/if}-->
+
+<!--{if auth("add") and $type eq 'index'}-->
+<button class='layui-btn layui-btn-sm layui-btn-primary' data-modal='{:url("add")}' data-title="添加快递公司">添加公司</button>
+<!--{/if}-->
+
+<!--{if auth("state") and $type eq 'index'}-->
+<button class='layui-btn layui-btn-sm layui-btn-primary' data-action='{:url("state")}' data-confirm="确定要禁用快递公司？" data-rule="id#{key};status#0">批量禁用</button>
+<!--{/if}-->
+
+<!--{if auth("state") and $type eq 'recycle'}-->
+<button class='layui-btn layui-btn-sm layui-btn-primary' data-action='{:url("state")}' data-rule="id#{key};status#1">批量启用</button>
+<!--{/if}-->
+
+<!--{if auth("remove") and $type eq 'recycle'}-->
+<button class='layui-btn layui-btn-sm layui-btn-primary' data-action='{:url("remove")}' data-csrf="{:systoken('remove')}" data-rule="id#{key}">批量删除</button>
+<!--{/if}-->
+{/block}
+
+{block name="content"}
+<div class="layui-tab layui-tab-card think-bg-white'amount'">
+    <ul class="layui-tab-title">
+        {foreach ['index'=>'快递公司','recycle'=>'回 收 站'] as $k=>$v}
+        {if $type eq $k}
+        <li class="layui-this" data-open="{:url('index')}?type={$k}">{$v}</li>
+        {else}
+        <li data-open="{:url('index')}?type={$k}">{$v}</li>
+        {/if}{/foreach}
+    </ul>
+    <div class="layui-tab-content">
+        {include file='base/postage/company/index_search'}
+        <table class="layui-table" lay-skin="line">
+            {notempty name='list'}
+            <thead>
+            <tr>
+                <th class='list-table-check-td think-checkbox'>
+                    <label><input data-auto-none data-check-target='.list-check-box' type='checkbox'></label>
+                </th>
+                <th class='list-table-sort-td'>
+                    <button class="layui-btn layui-btn-xs" data-reload type="button">刷 新</button>
+                </th>
+                <th class='text-left nowrap'>快递名称</th>
+                <th class='text-center nowrap'>快递鸟接口编码</th>
+                <th class='text-center nowrap'>快递100百度编码</th>
+                <th class='text-center nowrap'>快递100接口编码</th>
+                <th class="text-center">创建时间</th>
+                <th></th>
+            </tr>
+            </thead>
+            {/notempty}
+            <tbody>
+            {foreach $list as $key=>$vo}
+            <tr data-dbclick>
+                <td class='list-table-check-td think-checkbox'>
+                    <label><input class="list-check-box" type='checkbox' value='{$vo.id}'></label>
+                </td>
+                <td class='list-table-sort-td'>
+                    <label><input class="list-sort-input" data-action-blur="{:request()->url()}" data-loading="false" data-value="id#{$vo.id};action#sort;sort#{value}" value="{$vo.sort}"></label>
+                </td>
+                <td class='text-left nowrap'>{$vo.name|default=''}</td>
+                <td class='text-center nowrap'>{$vo.code_1|default='-'}</td>
+                <td class='text-center nowrap'>{$vo.code_2|default='-'}</td>
+                <td class='text-center nowrap'>{$vo.code_3|default='-'}</td>
+                <td class='text-center nowrap'>{$vo.create_at|format_datetime}</td>
+                <td class='text-left nowrap'>
+                    <!--{if auth("edit") and $type eq 'index'}-->
+                    <a class="layui-btn layui-btn-sm" data-dbclick data-modal='{:url("edit")}?id={$vo.id}' data-title="编辑快递公司">编 辑</a>
+                    <!--{/if}-->
+
+                    <!--{if $vo.status eq 1 and auth("state")}-->
+                    <a class="layui-btn layui-btn-warm layui-btn-sm" data-action="{:url('state')}" data-value="id#{$vo.id};status#0">禁 用</a>
+                    <!--{elseif auth("state")}-->
+                    <a class="layui-btn layui-btn-warm layui-btn-sm" data-action="{:url('state')}" data-value="id#{$vo.id};status#1">激 活</a>
+                    <!--{/if}-->
+
+                    <!--{if auth("remove") and $type eq 'recycle'}-->
+                    <a class="layui-btn layui-btn-danger layui-btn-sm" data-action="{:url('remove')}" data-confirm="确定要删除数据吗?" data-value="id#{$vo.id}">删 除</a>
+                    <!--{/if}-->
+                </td>
+            </tr>
+            {/foreach}
+            </tbody>
+        </table>
+        {empty name='list'}<span class="notdata">没有记录哦</span>{else}{$pagehtml|raw|default=''}{/empty}
+    </div>
+</div>
+{/block}

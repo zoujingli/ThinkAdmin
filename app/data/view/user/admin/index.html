@@ -1,0 +1,115 @@
+{extend name="../../admin/view/main"}
+
+{block name="button"}
+<!--{if auth("sync")}-->
+<button class='layui-btn layui-btn-sm layui-btn-primary' data-queue="{:url('sync')}">刷新账户金额</button>
+<!--{/if}-->
+{/block}
+
+{block name="content"}
+<div class="think-box-shadow">
+    {include file='user/admin/index_search'}
+    <table class="layui-table margin-top-10" lay-skin="line">
+        {notempty name='list'}
+        <thead>
+        <tr>
+            <th class='list-table-check-td think-checkbox'>
+                <label><input data-auto-none data-check-target='.list-check-box' type='checkbox'></label>
+            </th>
+            <th class='nowrap'>用户信息</th>
+            <th class='nowrap'>推荐人信息</th>
+            <th class='nowrap'>余额统计</th>
+            <th class='nowrap'>返利统计</th>
+            <th class='nowrap'>团队统计</th>
+            <th class='nowrap'>用户状态</th>
+            <th class='nowrap'></th>
+        </tr>
+        </thead>
+        {/notempty}
+        <tbody>
+        {foreach $list as $key=>$vo}
+        <tr>
+            <td class='list-table-check-td think-checkbox'>
+                <label><input class="list-check-box" type='checkbox' value='{$vo.id}'></label>
+            </td>
+            <td class="nowrap">
+                <div class="headimg headimg-md" data-lazy-src="{$vo.headimg|default='__ROOT__/static/theme/img/headimg.png'}" data-tips-image></div>
+                <div class="inline-block">
+                    <div>
+                        {notempty name='vo.username'}
+                        用户姓名：<span class="color-blue">{$vo.username|default='-'}</span>
+                        {else}
+                        用户昵称：<span class="color-blue">{$vo.nickname|default='-'}</span>
+                        {/notempty}
+                    </div>
+                    <div>用户手机：<span class="color-blue">{$vo.phone|default='-'}</span></div>
+                    <div>用户等级：[ <b class="color-red">VIP{$vo.vip_code}</b> ] <b class="color-red">{$vo.vip_name}</b></div>
+                </div>
+            </td>
+            <td class="nowrap">
+                {notempty name='vo.from'}
+                <div class="headimg headimg-md" data-lazy-src="{$vo.from.headimg|default='__ROOT__/static/theme/img/headimg.png'}" data-tips-image></div>
+                <div class="inline-block text-middle">
+                    <div>
+                        {notempty name='vo.from.username'}
+                        用户姓名：<span class="color-blue">{$vo.from.username|default='-'}</span>
+                        {else}
+                        用户昵称：<span class="color-blue">{$vo.from.nickname|default='-'}</span>
+                        {/notempty}
+                    </div>
+                    <div>用户手机：<span>{$vo.from.phone|default='-'}</span></div>
+                    <div>用户等级：[ <b class="color-red">VIP{$vo.from.vip_code}</b> ] <b class="color-red">{$vo.from.vip_name}</b></div>
+                </div>
+                {else}
+                <div class="color-desc">没有推荐人</div>
+                {/notempty}
+            </td>
+            <td class="nowrap sub-strong-blue sub-strong-s14">
+                <div>累计充值 <b>{$vo.balance_total+0}</b> 元</div>
+                <div>已经交易 <b>{$vo.balance_used+0}</b> 元</div>
+                <div>可用余额 <b>{:round($vo.balance_total-$vo.balance_used,2)+0}</b> 元</div>
+            </td>
+            <td class="nowrap sub-strong-blue sub-strong-s14">
+                <div>累计返利 <b>{$vo.rebate_total+0}</b><span class="color-red font-w7" data-tips-text="未到账">+{$vo.rebate_lock+0}</span> 元</div>
+                <div>已经提现 <b>{$vo.rebate_used+0}</b> 元</div>
+                <div>剩余提现 <b>{:round($vo.rebate_total-$vo.rebate_used,2)+0}</b> 元</div>
+            </td>
+            <td class="nowrap sub-strong-blue sub-strong-s14">
+                <div>全部团队 <b>{$vo.teams_users_total}</b> 人 ( 业绩 <b>{$vo.teams_amount_total+0}</b> 元 )</div>
+                <div>直属团队 <b>{$vo.teams_users_direct}</b> 人 ( 业绩 <b>{$vo.teams_amount_direct+0}</b> 元 )</div>
+                <div>间接团队 <b>{$vo.teams_users_indirect}</b> 人 ( 业绩 <b>{$vo.teams_amount_indirect+0}</b> 元 )</div>
+            </td>
+            <td class="nowrap">
+                <div>累计交易：<b class="color-blue font-s14">{$vo.order_amount_total+0}</b> 元</div>
+                <div>使用状态：{if $vo.status eq 0}<b class="color-red">已冻结</b>{elseif $vo.status eq 1}<b class="color-green">已激活</b>{/if}
+                    <!--{notempty name='vo.pids'}--><b class="margin-left-5 color-green">永久绑定</b><!--{else}-->
+                    {notempty name='vo.pid0'}<b class="margin-left-5 color-red">临时绑定</b>{else}<b class="margin-left-5 color-desc">没有绑定</b>{/notempty}
+                    <!--{/notempty}-->
+                </div>
+                <div>注册时间：{$vo.create_at|format_datetime}</div>
+            </td>
+            <td class="nowrap">
+
+                <!--{if auth("parent") and false}-->
+                <a class="layui-btn layui-btn-sm layui-btn-primary" data-iframe="{:url('parent')}?uid={$vo.id}" data-width="900px">修改上级</a>
+                <!--{/if}-->
+
+                <!--{if auth("user_balance/add")}-->
+                <a class="layui-btn layui-btn-sm layui-btn-primary" data-modal="{:url('user_balance/add')}?uid={$vo.id}" data-title="充值账户余额">充 值</a>
+                <!--{/if}-->
+
+                <!--{if auth("state") and $vo.status eq 1}-->
+                <a class="layui-btn layui-btn-sm layui-btn-danger" data-action="{:url('state')}" data-confirm="账号冻结后将不能下单和提现，确认吗？" data-value="id#{$vo.id};status#0">冻 结</a>
+                <!--{/if}-->
+
+                <!--{if auth("state") and $vo.status eq 0}-->
+                <a class="layui-btn layui-btn-sm layui-btn-normal" data-action="{:url('state')}" data-value="id#{$vo.id};status#1">解 冻</a>
+                <!--{/if}-->
+            </td>
+        </tr>
+        {/foreach}
+        </tbody>
+    </table>
+    {empty name='list'}<span class="notdata">没有记录哦</span>{else}{$pagehtml|raw|default=''}{/empty}
+</div>
+{/block}
