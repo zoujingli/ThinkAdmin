@@ -78,10 +78,8 @@ class Upgrade extends Controller
     {
         if ($this->request->isGet()) {
             $this->prizes = RebateService::PRIZES;
+            $vo['number'] = $vo['number'] ?? $this->app->db->name($this->table)->max('number') + 1;
             $vo['rebate_rule'] = str2arr($vo['rebate_rule'] ?? '');
-            if (empty($vo['number'])) {
-                $vo['number'] = $this->app->db->name($this->table)->max('number') + 1;
-            }
         } else {
             $vo['utime'] = time();
             $vo['rebate_rule'] = arr2str($vo['rebate_rule'] ?? []);
@@ -99,7 +97,7 @@ class Upgrade extends Controller
             // 检查升级条件配置
             $count = 0;
             foreach ($vo as $k => $v) if (is_numeric(stripos($k, '_status'))) $count += $v;
-            if (empty($count)) $this->error('升级条件不能为空！');
+            if (empty($count) && $vo['number'] > 0) $this->error('升级条件不能为空！');
         }
     }
 
@@ -112,9 +110,9 @@ class Upgrade extends Controller
     {
         if ($state) {
             $order = 'number asc,utime desc';
-            if (input('old_number', 100) < input('number', '0')) $order = 'number asc,utime asc';
+            if (input('old_number', 100) <= input('number', 0)) $order = 'number asc,utime asc';
             foreach ($this->app->db->name($this->table)->order($order)->cursor() as $k => $vo) {
-                $this->app->db->name($this->table)->where(['id' => $vo['id']])->update(['number' => $k + 1]);
+                $this->app->db->name($this->table)->where(['id' => $vo['id']])->update(['number' => $k]);
             }
         }
     }
