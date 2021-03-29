@@ -89,7 +89,11 @@
 
 <script>
     $('[data-batchset]').on('click', function () {
-        layer.prompt({title: '请输入库存数值', formType: 0}, function (value, index) {
+        layer.prompt({
+            title: '请输入库存数量【 取值范围：1 - 999999 】', formType: 0, value: 1, success: function ($fn) {
+                $fn.find('.layui-layer-input').attr({'data-value-min': 1, 'data-value-max': 999999, 'data-blur-number': 0});
+            }
+        }, function (value, index) {
             layer.close(index), $('[name^="goods_stock"]').val(parseInt(value) || 0);
         });
     });

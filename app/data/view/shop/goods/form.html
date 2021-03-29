@@ -345,7 +345,13 @@
             $rootScope.specs = angular.fromJson(angular.element('#GoodsSpecs').val() || '[{"name":"默认分组","list":[{"name":"默认规格","check":true}]}]');
             /*! 批量设置数值 */
             $rootScope.batchSet = function (name, fixed) {
-                layer.prompt({title: '请输入数值', formType: 0}, function (value, index) {
+                layer.prompt({
+                    title: '请输入数量【 取值范围：1 - 999999 】',
+                    formType: 0, value: (1).toFixed(fixed), success: function ($fn) {
+                        var min = (1).toFixed(fixed), max = (999999).toFixed(fixed);
+                        $fn.find('.layui-layer-input').attr({'data-value-min': min, 'data-value-max': max, 'data-blur-number': fixed});
+                    }
+                }, function (value, index) {
                     layer.close(index), $rootScope.$apply(function () {
                         if (fixed !== null) value = (parseFloat(value) || 0).toFixed(fixed);
                         $rootScope.items.forEach(function (rows) {

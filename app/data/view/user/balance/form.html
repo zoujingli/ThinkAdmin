@@ -39,7 +39,7 @@
         <label class="layui-form-item relative block">
             <span class="color-green font-w7">充值账户余额</span>
             <span class="color-desc margin-left-5">Amount</span>
-            <input class="layui-input" data-blur-number="2" maxlength="10" name="amount" placeholder="请输入充值账户余额" required value="{$vo.amount|default='0.00'}">
+            <input class="layui-input" data-blur-number="2" data-value-max="999999999.99" maxlength="12" name="amount" placeholder="请输入充值账户余额" required value="{$vo.amount|default='0.00'}">
             <span class="help-block">请输入要充值的金额，充值后可以使用此余额购买商品</span>
         </label>
 
