@@ -7,7 +7,7 @@
                 <div class="layui-col-xs3 block relative">
                     <span class="color-green label-required-prev">等级序号</span><span class="margin-left-5 color-desc">Number</span>
                     <select class="layui-select" name="number">
-                        {for start="1" end="10" name="i"}{if isset($vo.number) and $vo.number eq $i}
+                        {for start="0" end="10" name="i"}{if isset($vo.number) and $vo.number eq $i}
                         <option selected value="{$i}">当前 VIP {$vo.number} 等级</option>
                         {else}
                         <option value="{$i}">设置 VIP {$i} 等级</option>
@@ -111,8 +111,8 @@
         </fieldset>
 
         <div class="hr-line-dashed"></div>
-        {notempty name='vo.id'}<input name='id' type='hidden' value='{$vo.id}'>{/notempty}
-        {notempty name='vo.number'}<input name='old_number' type='hidden' value='{$vo.number}'>{/notempty}
+        {if isset($vo.id)}<input name='id' type='hidden' value='{$vo.id}'>{/if}
+        {if isset($vo.number)}<input name='old_number' type='hidden' value='{$vo.number}'>{/if}
 
         <div class="layui-form-item text-center">
             <button class="layui-btn" type='submit'>保存数据</button>
