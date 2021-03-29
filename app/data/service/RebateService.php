@@ -309,8 +309,7 @@ class RebateService extends Service
         $vips = $this->app->db->name('DataBaseUpgrade')->whereLike('rebate_rule', '%,' . self::PRIZE_05 . ',%')->column('number');
         $users = $this->app->db->name('DataUser')->whereIn('vip_code', $vips)->whereIn('id', $puids)->orderField('id', $puids)->select()->toArray();
         // 查询需要计算奖励的商品
-        $map = [['order_no', '=', $this->order['order_no']], ['discount_rate', '<', 100]];
-        foreach ($this->app->db->name('ShopOrderItem')->where($map)->cursor() as $item) {
+        foreach ($this->app->db->name('ShopOrderItem')->where(['order_no' => $this->order['order_no']])->cursor() as $item) {
             $itemJson = $this->app->db->name('DataBaseDiscount')->where(['status' => 1, 'deleted' => 0])->value('items');
             if (!empty($itemJson) && is_array($rules = json_decode($itemJson, true))) {
                 [$tVip, $tRate] = [$item['vip_code'], $item['discount_rate']];
@@ -399,6 +398,7 @@ class RebateService extends Service
      */
     private function _prize07(): bool
     {
+        if (empty($this->from1)) return false;
         if ($this->order['order_no'] !== $this->user['vip_order']) return false;
         if (!$this->isPrizeStatus(self::PRIZE_07, $this->from1['vip_code'])) return false;
         // 创建返利奖励记录
