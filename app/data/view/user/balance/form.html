@@ -54,7 +54,7 @@
                 <option value="{$upgrade.number|default=0}">升级到 [ {$upgrade.number|default='0'} ] {$upgrade.name|default=''}</option>
                 {/if}{/foreach}
             </select>
-            <span class="help-block">请选择目标升级等级，当用户等级少于当前等级时会进行用户升级操作</span>
+            <span class="help-block">请选择目标升级等级，当用户低于当前等级时会进行用户升级操作</span>
         </div>
 
         <div class="layui-form-item relative block">
