@@ -30,7 +30,9 @@ class Login extends Controller
      */
     protected function initialize()
     {
-        $this->type = $this->request->header('api-name', input('api'));
+        // 接收接口类型
+        $this->type = $this->request->request('api');
+        $this->type = $this->type ?: $this->request->header('api-name');
         $this->type = $this->type ?: $this->request->header('api-type');
         $this->type = $this->type ?: UserAdminService::API_TYPE_WAP;
         if (empty(UserAdminService::TYPES[$this->type])) {
