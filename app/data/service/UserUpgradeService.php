@@ -107,7 +107,7 @@ class UserUpgradeService extends Service
             $orderNo = null;
         }
         // 后台余额充值升级
-        $tmpCode = $this->app->db->name('DataUserBalance')->where(['uid' => $uid, 'deleted' => 0])->max('vip_upgrade');
+        $tmpCode = $this->app->db->name('DataUserBalance')->where(['uid' => $uid, 'deleted' => 0])->max('upgrade');
         if ($tmpCode > $vipCode) {
             $map = ['status' => 1, 'number' => $tmpCode];
             $upgrade = $this->app->db->name('DataBaseUpgrade')->where($map)->find();

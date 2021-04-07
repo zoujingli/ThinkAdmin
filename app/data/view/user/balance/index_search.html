@@ -19,9 +19,9 @@
         <div class="layui-form-item layui-inline">
             <label class="layui-form-label">升级等级</label>
             <div class="layui-input-inline">
-                <select class="layui-select" name="vip_upgrade">
+                <select class="layui-select" name="upgrade">
                     <option value="">-- 全部 --</option>
-                    {foreach $upgrades as $upgrade}{if input('vip_upgrade') eq $upgrade.number}
+                    {foreach $upgrades as $upgrade}{if input('upgrade') eq $upgrade.number}
                     <option selected value="{$upgrade.number|default=0}">[ {$upgrade.number|default='0'} ] {$upgrade.name|default=''}</option>
                     {else}
                     <option value="{$upgrade.number|default=0}">[ {$upgrade.number|default='0'} ] {$upgrade.name|default=''}</option>

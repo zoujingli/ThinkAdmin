@@ -38,7 +38,7 @@ class Balance extends Controller
         // 现有余额类型
         $this->names = $this->app->db->name($this->table)->group('name')->column('name');
         // 创建查询对象
-        $query = $this->_query($this->table)->equal('name,vip_upgrade');
+        $query = $this->_query($this->table)->equal('name,upgrade');
         // 用户搜索查询
         $db = $this->_query('DataUser')->like('phone#user_phone,nickname#user_nickname')->db();
         if ($db->getOptions('where')) $query->whereRaw("uid in {$db->field('id')->buildSql()}");
