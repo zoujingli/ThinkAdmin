@@ -52,8 +52,7 @@ class Order extends Controller
         // 状态数据统计
         $this->total = ['t0' => 0, 't1' => 0, 't2' => 0, 't3' => 0, 't4' => 0, 't5' => 0, 't6' => 0, 'ta' => 0];
         foreach ($this->app->db->name($this->table)->field('status,count(1) total')->group('status')->cursor() as $vo) {
-            $this->total["t{$vo['status']}"] = $vo['total'];
-            $this->total["ta"] += $vo['total'];
+            [$this->total["t{$vo['status']}"] = $vo['total'], $this->total["ta"] += $vo['total']];
         }
         // 订单列表查询
         $query = $this->_query($this->table);
