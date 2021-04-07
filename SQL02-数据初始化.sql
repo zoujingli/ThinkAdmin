@@ -11,7 +11,7 @@
  Target Server Version : 80018
  File Encoding         : 65001
 
- Date: 07/04/2021 13:56:31
+ Date: 07/04/2021 14:28:39
 */
 
 SET NAMES utf8mb4;
@@ -24,19 +24,19 @@ DROP TABLE IF EXISTS `base_postage_region`;
 CREATE TABLE `base_postage_region`  (
   `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'ID',
   `pid` int(11) UNSIGNED NULL DEFAULT 0 COMMENT '上级PID',
-  `first` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT '' COMMENT '首字母',
-  `short` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT '' COMMENT '区域简称',
-  `name` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT '' COMMENT '区域名称',
+  `first` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '首字母',
+  `short` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '区域简称',
+  `name` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '区域名称',
   `level` tinyint(4) NULL DEFAULT 0 COMMENT '区域层级',
-  `pinyin` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT '' COMMENT '区域拼音',
-  `code` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT '' COMMENT '区域邮编',
+  `pinyin` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '区域拼音',
+  `code` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '区域邮编',
   `status` tinyint(1) UNSIGNED NULL DEFAULT 1 COMMENT '使用状态',
-  `lng` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT '' COMMENT '所在经度',
-  `lat` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT '' COMMENT '所在纬度',
+  `lng` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '所在经度',
+  `lat` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '所在纬度',
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `idx_base_postage_region_pid`(`pid`) USING BTREE,
   INDEX `idx_base_postage_region_name`(`name`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 4019 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '数据-快递-区域' ROW_FORMAT = COMPACT;
+) ENGINE = InnoDB AUTO_INCREMENT = 4019 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '数据-快递-区域' ROW_FORMAT = COMPACT;
 
 -- ----------------------------
 -- Records of base_postage_region
@@ -3785,39 +3785,6 @@ INSERT INTO `base_postage_region` VALUES (4015, 3999, NULL, '大埔区', '大埔
 INSERT INTO `base_postage_region` VALUES (4016, 3999, NULL, '荃湾区', '荃湾区', 3, 'quanwan', NULL, 1, NULL, NULL);
 INSERT INTO `base_postage_region` VALUES (4017, 3999, NULL, '元朗区', '元朗区', 3, 'yuanlang', NULL, 1, NULL, NULL);
 INSERT INTO `base_postage_region` VALUES (4018, 2291, 'D', '儋州', '儋州市', 2, 'danzhou', '571700', 1, NULL, NULL);
-
--- ----------------------------
--- Table structure for base_user_upgrade
--- ----------------------------
-DROP TABLE IF EXISTS `base_user_upgrade`;
-CREATE TABLE `base_user_upgrade`  (
-  `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `name` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '用户级别名称',
-  `number` tinyint(2) NULL DEFAULT 0 COMMENT '用户级别序号',
-  `rebate_rule` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '用户奖利规则',
-  `upgrade_type` tinyint(1) NULL DEFAULT 0 COMMENT '会员升级规则(0单个,1同时)',
-  `goods_vip_status` tinyint(1) NULL DEFAULT 0 COMMENT '入会礼包状态',
-  `order_amount_status` tinyint(1) NULL DEFAULT 0 COMMENT '订单金额状态',
-  `order_amount_number` decimal(20, 2) NULL DEFAULT 0.00 COMMENT '订单金额累计',
-  `teams_users_status` tinyint(1) NULL DEFAULT 0 COMMENT '团队人数状态',
-  `teams_users_number` bigint(20) NULL DEFAULT 0 COMMENT '团队人数累计',
-  `teams_direct_status` tinyint(1) NULL DEFAULT 0 COMMENT '直推人数状态',
-  `teams_direct_number` bigint(20) NULL DEFAULT 0 COMMENT '直推人数累计',
-  `teams_indirect_status` tinyint(1) NULL DEFAULT 0 COMMENT '间推人数状态',
-  `teams_indirect_number` bigint(20) NULL DEFAULT 0 COMMENT '间推人数累计',
-  `remark` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '用户级别描述',
-  `utime` bigint(20) NULL DEFAULT 0 COMMENT '等级更新时间',
-  `status` tinyint(1) NULL DEFAULT 1 COMMENT '用户等级状态(1使用,0禁用)',
-  `create_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP COMMENT '等级创建时间',
-  PRIMARY KEY (`id`) USING BTREE,
-  INDEX `idx_base_user_upgrade_status`(`status`) USING BTREE,
-  INDEX `idx_base_user_upgrade_number`(`number`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 6 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '数据-用户-等级' ROW_FORMAT = COMPACT;
-
--- ----------------------------
--- Records of base_user_upgrade
--- ----------------------------
-INSERT INTO `base_user_upgrade` VALUES (5, '普通用户', 0, ',,', 1, 0, 0, 0.00, 0, 0, 0, 0, 0, 0, '', 1617767744, 1, '2021-04-07 11:55:44');
 
 -- ----------------------------
 -- Table structure for system_config
