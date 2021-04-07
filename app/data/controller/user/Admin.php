@@ -35,7 +35,7 @@ class Admin extends Controller
         foreach ($levels as $k => $v) $totals["t{$k}"] = ['name' => $v['name'], 'count' => 0, 'vips' => $k];
         $totals['to'] = ['name' => '其他用户', 'count' => 0, 'vips' => ''];
         foreach ($this->app->db->name($this->table)->field('vip_code vip,count(1) count')->group('vip_code')->cursor() as $v) {
-            [$name, $count, $totals['ta']['count']] = ["t{$v['vip']}", $v['count'], $v['count']];
+            [$name, $count] = ["t{$v['vip']}", $v['count'], $totals['ta']['count'] += $v['count']];
             isset($totals[$name]) ? $totals[$name]['count'] += $count : $totals['to']['count'] += $count;
         }
         if (empty($totals['to']['count'])) unset($totals['to']);
