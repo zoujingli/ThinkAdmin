@@ -36,7 +36,7 @@ class UserUpgrade extends Command
                 UserUpgradeService::instance()->upgrade($user['id']);
                 $this->queue->message($total, $count, "完成计算用户 [{$user['id']}] 的等级", 1);
             }
-            $this->setQueueSuccess("此次共处理 {$total} 计算用户等级。");
+            $this->setQueueSuccess("此次共重新计算 {$total} 个用户等级。");
         } catch (\Exception $exception) {
             $this->setQueueError($exception->getMessage());
         }
