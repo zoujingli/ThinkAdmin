@@ -18,13 +18,13 @@
     </div>
     <div class="layui-card-body">
         <div class="layui-btn-group shadow-mini nowrap">
-            {if $app->isDebug()}
+            <!--{if $app->isDebug()}-->
             <a class="layui-btn layui-btn-sm layui-btn-active">以开发模式运行</a>
-            <a class="layui-btn layui-btn-sm layui-btn-primary" data-load="{:url('admin/api.plugs/debug')}?state=1">以产品模式运行</a>
-            {else}
-            <a class="layui-btn layui-btn-sm layui-btn-primary" data-load="{:url('admin/api.plugs/debug')}?state=0">以开发模式运行</a>
+            <a class="layui-btn layui-btn-sm layui-btn-primary" data-confirm="确定要切换产品模式运行吗？" data-load="{:url('admin/api.plugs/debug')}?state=1">以产品模式运行</a>
+            <!--{else}-->
+            <a class="layui-btn layui-btn-sm layui-btn-primary" data-confirm="确定要切换开发模式运行吗？" data-load="{:url('admin/api.plugs/debug')}?state=0">以开发模式运行</a>
             <a class="layui-btn layui-btn-sm layui-btn-active">以产品模式运行</a>
-            {/if}
+            <!--{/if}-->
         </div>
         <div class="margin-top-20">
             <p><b>开发模式</b>：开发人员或在功能调试时使用，系统异常时会显示详细的错误信息，同时还会记录操作日志及数据库 SQL 语句信息。</p>
