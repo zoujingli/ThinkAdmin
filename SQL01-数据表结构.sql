@@ -11,7 +11,7 @@
  Target Server Version : 80018
  File Encoding         : 65001
 
- Date: 07/04/2021 14:32:47
+ Date: 07/04/2021 14:40:56
 */
 
 SET NAMES utf8mb4;
@@ -963,9 +963,9 @@ CREATE TABLE `wechat_keys`  (
 DROP TABLE IF EXISTS `wechat_media`;
 CREATE TABLE `wechat_media`  (
   `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT,
-  `appid` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT '' COMMENT '公众号ID',
   `md5` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT '' COMMENT '文件md5',
   `type` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT '' COMMENT '媒体类型',
+  `appid` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT '' COMMENT '公众号ID',
   `media_id` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT '' COMMENT '永久素材MediaID',
   `local_url` varchar(300) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT '' COMMENT '本地文件链接',
   `media_url` varchar(300) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT '' COMMENT '远程图片链接',
