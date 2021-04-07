@@ -43,11 +43,16 @@ abstract class Auth extends Controller
      */
     protected function initialize()
     {
-        // 接口数据类型
-        $this->type = $this->request->header('api-name') ?: input('api');
+        // 接收接口类型
+        $this->type = $this->request->request('api');
+        $this->type = $this->type ?: $this->request->header('api-name');
         $this->type = $this->type ?: $this->request->header('api-type');
-        if (empty($this->type) || empty(UserAdminService::TYPES[$this->type])) {
-            $this->error("接口支付未定义！");
+        // 检查接口类型
+        if (empty($this->type)) {
+            $this->error("未获取到接口类型字段！");
+        }
+        if (isset(UserAdminService::TYPES[$this->type])) {
+            $this->error("接口类型[{$this->type}]未定义！");
         }
         // 获取用户数据
         $this->user = $this->getUser();
@@ -84,7 +89,7 @@ abstract class Auth extends Controller
     protected function checkUserStatus()
     {
         if (empty($this->user['status'])) {
-            $this->error('抱歉，账户已被冻结！');
+            $this->error('账户已经被冻结！');
         }
     }
 

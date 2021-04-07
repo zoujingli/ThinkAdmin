@@ -37,9 +37,7 @@ class Center extends Auth
             'base_weight.default'   => '',
             'base_birthday.default' => '',
         ]);
-        foreach ($data as $key => $vo) {
-            if ($vo === '') unset($data[$key]);
-        }
+        foreach ($data as $key => $vo) if ($vo === '') unset($data[$key]);
         if (empty($data)) $this->error('没有修改的数据！');
         if ($this->app->db->name($this->table)->where(['id' => $this->uuid])->update($data) !== false) {
             $this->success('更新资料成功！', $this->getUser());

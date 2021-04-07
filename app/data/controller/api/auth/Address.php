@@ -45,7 +45,7 @@ class Address extends Auth
             unset($data['code']);
             $count = $this->app->db->name($this->table)->where($data)->count();
             if ($count > 0) $this->error('抱歉，该地址已经存在！');
-            $data['code'] = CodeExtend::uniqidDate(12, 'A');
+            $data['code'] = CodeExtend::uniqidDate(20, 'A');
             if ($this->app->db->name($this->table)->insert($data) === false) {
                 $this->error('添加地址失败！');
             }
@@ -78,7 +78,7 @@ class Address extends Auth
     }
 
     /**
-     * 修改收货地址状态
+     * 修改地址状态
      * @throws \think\db\exception\DbException
      */
     public function state()
@@ -124,7 +124,7 @@ class Address extends Auth
     }
 
     /**
-     * 获取指定的收货地址
+     * 获取指定的地址
      * @param string $code
      * @return null|array
      * @throws \think\db\exception\DataNotFoundException
