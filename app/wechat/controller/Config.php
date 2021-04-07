@@ -71,7 +71,7 @@ class Config extends Controller
             }
             sysoplog('微信授权配置', '修改微信授权配置成功');
             $location = url('wechat/config/options')->build() . '?uniqid=' . uniqid();
-            $this->success('微信参数修改成功！', sysuri('admin/index/index') . "#{$location}");
+            $this->success('微信授权修改成功！', sysuri('admin/index/index') . "#{$location}");
         }
     }
 
