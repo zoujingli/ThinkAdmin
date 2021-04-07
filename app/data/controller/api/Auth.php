@@ -89,7 +89,7 @@ abstract class Auth extends Controller
     protected function checkUserStatus()
     {
         if (empty($this->user['status'])) {
-            $this->error('账户已经被冻结！');
+            $this->error('账户已被冻结！');
         }
     }
 
