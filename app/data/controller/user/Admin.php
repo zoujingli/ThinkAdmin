@@ -30,16 +30,18 @@ class Admin extends Controller
     public function index()
     {
         // 用户等级分组
-        $levels = UserUpgradeService::instance()->levels();
-        $totals = ['ta' => ['name' => '全部用户', 'count' => 0, 'vips' => '']];
-        foreach ($levels as $k => $v) $totals["t{$k}"] = ['name' => $v['name'], 'count' => 0, 'vips' => $k];
-        $totals['to'] = ['name' => '其他用户', 'count' => 0, 'vips' => ''];
+        [$ts, $ls] = [[], UserUpgradeService::instance()->levels()];
+        $ts['ta'] = ['vip' => '', 'name' => '全部用户', 'count' => 0];
+        foreach ($ls as $k => $v) $ts["t{$k}"] = ['vip' => $k, 'name' => $v['name'], 'count' => 0,];
+        $ts['to'] = ['vip' => '', 'name' => '其他用户', 'count' => 0];
+        // 等级分组统计
         foreach ($this->app->db->name($this->table)->field('vip_code vip,count(1) count')->group('vip_code')->cursor() as $v) {
-            [$name, $count] = ["t{$v['vip']}", $v['count'], $totals['ta']['count'] += $v['count']];
-            isset($totals[$name]) ? $totals[$name]['count'] += $count : $totals['to']['count'] += $count;
+            [$name, $count] = ["t{$v['vip']}", $v['count'], $ts['ta']['count'] += $v['count']];
+            isset($ts[$name]) ? $ts[$name]['count'] += $count : $ts['to']['count'] += $count;
         }
-        if (empty($totals['to']['count'])) unset($totals['to']);
-        $this->total = $totals;
+        if (empty($ts['to']['count'])) unset($ts['to']);
+        $this->total = $ts;
+
         // 设置页面标题
         $this->title = '普通用户管理';
         // 创建查询对象
@@ -47,7 +49,7 @@ class Admin extends Controller
         // 数据筛选选项
         $this->type = ltrim(input('type', 'ta'), 't');
         if (is_numeric($this->type)) $query->where(['vip_code' => $this->type]);
-        elseif ($this->type === 'o') $query->whereNotIn('vip_code', array_keys($levels));
+        elseif ($this->type === 'o') $query->whereNotIn('vip_code', array_keys($ls));
         // 用户搜索查询
         $db = $this->_query($this->table)->equal('vip_code#from_vipcode')->like('phone#from_phone,username|nickname#from_username')->db();
         if ($db->getOptions('where')) $query->whereRaw("pid1 in {$db->field('id')->buildSql()}");

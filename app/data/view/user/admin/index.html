@@ -11,12 +11,12 @@
     <ul class="layui-tab-title notselect sub-strong-text">
         {foreach $total as $k=>$v}{if isset($type) and 't'.$type eq $k}
         <li class="layui-this" data-open="{:url('index')}?type={$k}">
-            {if is_numeric($v.vips)}[<b class="margin-col-5">VIP{$v.vips}</b>]<span class="padding-left-5"></span>{/if}
+            {if is_numeric($v.vip)}<span class="color-desc margin-right-5">[<b class="margin-col-5">VIP{$v.vip}</b>]</span>{/if}
             <b>{$v.name}</b><sup class="layui-badge border-radius">{$v.count|default=0}</sup>
         </li>
         {else}
         <li data-open="{:url('index')}?type={$k}">
-            {if is_numeric($v.vips)}[<b class="margin-col-5">VIP{$v.vips}</b>]<span class="padding-left-5"></span>{/if}
+            {if is_numeric($v.vip)}<span class="color-desc margin-right-5">[<b class="margin-col-5">VIP{$v.vip}</b>]</span>{/if}
             <b>{$v.name}</b><sup class="layui-badge border-radius">{$v.count|default=0}</sup>
         </li>
         {/if}{/foreach}
