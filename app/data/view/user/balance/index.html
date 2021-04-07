@@ -42,7 +42,7 @@
             </td>
             <td class="nowrap">
                 <div>交易金额：{if $vo.amount>=0}<b class="color-green">{$vo.amount+0}</b>{else}<b class="color-blue">{$vo.amount+0}</b>{/if} 元</div>
-                <div>升级等级：{if $vo.vip_upgrade>0}<span class="color-red">升级到</span> [ <b class="color-red">VIP{$vo.vip_upgrade}</b> ] <b class="color-red">{$vo.vip_upgradeinfo.name|default=''}</b>{else}<span class="color-desc">不进行用户升级</span>{/if}</div>
+                <div>升级等级：{if $vo.upgrade>0}<span class="color-red">升级到</span> [ <b class="color-red">VIP{$vo.upgrade}</b> ] <b class="color-red">{$vo.upgradeinfo.name|default=''}</b>{else}<span class="color-desc">不进行用户升级</span>{/if}</div>
                 <div>操作时间：<span>{$vo.create_at|format_datetime}</span></div>
             </td>
             <td class="nowrap sub-strong-blue">

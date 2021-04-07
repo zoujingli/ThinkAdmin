@@ -57,7 +57,7 @@ class Balance extends Controller
         $users = $this->app->db->name('SystemUser')->whereIn('id', $uids)->column('username', 'id');
         $this->upgrades = UserUpgradeService::instance()->levels();
         foreach ($data as &$vo) {
-            $vo['vip_upgradeinfo'] = $this->upgrades[$vo['vip_upgrade']] ?? [];
+            $vo['upgradeinfo'] = $this->upgrades[$vo['upgrade']] ?? [];
             $vo['create_byname'] = $users[$vo['create_by']] ?? '';
         }
     }
@@ -91,7 +91,7 @@ class Balance extends Controller
         }
         if ($this->request->isPost()) {
             $data['create_by'] = AdminService::instance()->getUserId();
-            if (empty(floatval($data['amount'])) && empty($data['vip_upgrade'])) {
+            if (empty(floatval($data['amount'])) && empty($data['upgrade'])) {
                 $this->error('金额为零并且没有升级行为！');
             }
         }
