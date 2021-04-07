@@ -12,6 +12,7 @@ use think\Response;
  * Class Wechat
  * @package app\data\controller\api
  * @example 域名请修改为自己的地址，放到网页代码合适位置
+ * <meta name="referrer" content="always">
  * <script src="https://your.domain.com/data/api.wechat/oauth?mode=1"></script>
  *
  * 授权模式支持两种模块，参数 mode=0 时为静默授权，mode=1 时为完整授权
@@ -101,6 +102,7 @@ class Wechat extends Controller
     <head>
         <meta charset="utf-8">
         <title>微信网页授权测试</title>
+        <meta name="referrer" content="always">
         <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=0">
         <style>pre{padding:20px;overflow:auto;margin-top:10px;background:#ccc;border-radius:6px;}</style>
     </head>
