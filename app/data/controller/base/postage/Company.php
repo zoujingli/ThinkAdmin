@@ -18,7 +18,7 @@ class Company extends Controller
      * 绑定数据表
      * @var string
      */
-    private $table = 'DataBasePostageCompany';
+    private $table = 'BasePostageCompany';
 
     /**
      * 快递公司管理

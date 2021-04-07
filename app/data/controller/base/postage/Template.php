@@ -17,7 +17,7 @@ class Template extends Controller
      * 绑定数据表
      * @var string
      */
-    private $table = 'DataBasePostageTemplate';
+    private $table = 'BasePostageTemplate';
 
     /**
      * 快递邮费模板

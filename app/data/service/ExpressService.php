@@ -28,7 +28,7 @@ class ExpressService extends Service
     {
         if (empty($codes)) return [0, $truckCount, '', '邮费模板编码为空！'];
         $map = [['status', '=', 1], ['deleted', '=', 0], ['code', 'in', $codes]];
-        $template = $this->app->db->name('DataBasePostageTemplate')->where($map)->order('sort desc,id desc')->find();
+        $template = $this->app->db->name('BasePostageTemplate')->where($map)->order('sort desc,id desc')->find();
         if (empty($template)) return [0, $truckCount, '', '邮费模板编码无效！'];
         $rule = json_decode($template['normal'] ?: '[]', true) ?: [];
         foreach (json_decode($template['content'] ?: '[]', true) ?: [] as $item) {
@@ -57,7 +57,7 @@ class ExpressService extends Service
     public function templates(): array
     {
         $map = ['status' => 1, 'deleted' => 0];
-        $query = $this->app->db->name('DataBasePostageTemplate')->where($map);
+        $query = $this->app->db->name('BasePostageTemplate')->where($map);
         return $query->order('sort desc,id desc')->column('code,name,normal,content', 'code');
     }
 

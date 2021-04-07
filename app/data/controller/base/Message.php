@@ -15,7 +15,7 @@ class Message extends Controller
      * 绑定数据表
      * @var string
      */
-    private $table = 'DataBaseMessage';
+    private $table = 'BaseUserMessage';
 
     /**
      * 系统通知管理

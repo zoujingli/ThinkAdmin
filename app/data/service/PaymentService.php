@@ -202,7 +202,7 @@ abstract class PaymentService
         try {
             if (empty($payment)) {
                 $map = ['code' => $code, 'status' => 1, 'deleted' => 0];
-                $payment = app()->db->name('DataBasePayment')->where($map)->find();
+                $payment = app()->db->name('BaseUserPayment')->where($map)->find();
             }
             if (empty($payment)) {
                 throw new Exception("支付参数[#{$code}]禁用关闭");

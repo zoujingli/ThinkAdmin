@@ -105,7 +105,7 @@ class OrderService extends Service
     {
         if ($disId > 0) {
             $map = ['id' => $disId, 'status' => 1, 'deleted' => 0];
-            $discount = $this->app->db->name('DataBaseDiscount')->where($map)->value('items');
+            $discount = $this->app->db->name('BaseUserDiscount')->where($map)->value('items');
             $disitems = json_decode($discount ?: '[]', true) ?: [];
             if (is_array($disitems) && count($disitems) > 0) foreach ($disitems as $vo) {
                 if ($vo['level'] == $vipCode) $disRate = floatval($vo['discount']);
