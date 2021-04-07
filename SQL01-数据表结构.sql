@@ -1,17 +1,17 @@
 /*
  Navicat MySQL Data Transfer
 
- Source Server         : server.cuci.cc
+ Source Server         : anyon.localhost
  Source Server Type    : MySQL
- Source Server Version : 50562
+ Source Server Version : 80018
  Source Host           : localhost:3306
  Source Schema         : admin_v6
 
  Target Server Type    : MySQL
- Target Server Version : 50562
+ Target Server Version : 80018
  File Encoding         : 65001
 
- Date: 27/03/2021 14:30:02
+ Date: 07/04/2021 11:29:47
 */
 
 SET NAMES utf8mb4;
@@ -33,7 +33,7 @@ CREATE TABLE `data_base_discount`  (
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `idx_data_base_discount_status`(`status`) USING BTREE,
   INDEX `idx_data_base_discount_deleted`(`deleted`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '数据-基础-折扣' ROW_FORMAT = Compact;
+) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '数据-基础-折扣' ROW_FORMAT = COMPACT;
 
 -- ----------------------------
 -- Table structure for data_base_message
@@ -120,7 +120,7 @@ CREATE TABLE `data_base_postage_region`  (
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `idx_data_base_postage_region_pid`(`pid`) USING BTREE,
   INDEX `idx_data_base_postage_region_name`(`name`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 4019 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '数据-快递-区域' ROW_FORMAT = Compact;
+) ENGINE = InnoDB AUTO_INCREMENT = 4019 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '数据-快递-区域' ROW_FORMAT = COMPACT;
 
 -- ----------------------------
 -- Table structure for data_base_postage_template
@@ -168,7 +168,7 @@ CREATE TABLE `data_base_upgrade`  (
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `idx_data_base_upgrade_status`(`status`) USING BTREE,
   INDEX `idx_data_base_upgrade_number`(`number`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 5 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '数据-用户-等级' ROW_FORMAT = Compact;
+) ENGINE = InnoDB AUTO_INCREMENT = 5 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '数据-用户-等级' ROW_FORMAT = COMPACT;
 
 -- ----------------------------
 -- Table structure for data_news_item
@@ -412,7 +412,7 @@ CREATE TABLE `data_user_rebate`  (
   INDEX `idx_data_user_rebate_code`(`code`) USING BTREE,
   INDEX `idx_data_user_rebate_name`(`name`) USING BTREE,
   INDEX `idx_data_user_rebate_status`(`status`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 53 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '数据-用户-返利' ROW_FORMAT = Compact;
+) ENGINE = InnoDB AUTO_INCREMENT = 53 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '数据-用户-返利' ROW_FORMAT = COMPACT;
 
 -- ----------------------------
 -- Table structure for data_user_token
@@ -474,7 +474,7 @@ CREATE TABLE `data_user_transfer`  (
   INDEX `idx_data_user_transfer_appid`(`appid`) USING BTREE,
   INDEX `idx_data_user_transfer_openid`(`openid`) USING BTREE,
   INDEX `idx_data_user_transfer_audit_status`(`audit_status`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '数据-用户-提现' ROW_FORMAT = Compact;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '数据-用户-提现' ROW_FORMAT = COMPACT;
 
 -- ----------------------------
 -- Table structure for shop_goods
