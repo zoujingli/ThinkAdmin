@@ -85,17 +85,17 @@ class RebateService extends Service
         $map = ['id' => $this->order['uid'], 'deleted' => 0];
         $this->user = $this->app->db->name('DataUser')->where($map)->find();
         if (empty($this->user)) throw new Exception('用户不存在');
-        // 获取直接推荐人数据
+        // 获取直接代理数据
         if ($this->order['puid1'] > 0) {
             $map = ['id' => $this->order['puid1']];
             $this->from1 = $this->app->db->name('DataUser')->where($map)->find();
-            if (empty($this->from1)) throw new Exception('直接推荐人不存在');
+            if (empty($this->from1)) throw new Exception('直接代理不存在');
         }
-        // 获取间接推荐人数据
+        // 获取间接代理数据
         if ($this->order['puid2'] > 0) {
             $map = ['id' => $this->order['puid2']];
             $this->from2 = $this->app->db->name('DataUser')->where($map)->find();
-            if (empty($this->from2)) throw new Exception('间接推荐人不存在');
+            if (empty($this->from2)) throw new Exception('间接代理不存在');
         }
         // 批量发放配置奖励
         foreach (self::PRIZES as $vo) if (method_exists($this, $vo['func'])) {

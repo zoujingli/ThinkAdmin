@@ -29,14 +29,30 @@ class Admin extends Controller
      */
     public function index()
     {
+        // 用户等级分组
+        $levels = UserUpgradeService::instance()->levels();
+        $totals = ['ta' => ['name' => '全部用户', 'count' => 0, 'vips' => '']];
+        foreach ($levels as $k => $v) $totals["t{$k}"] = ['name' => $v['name'], 'count' => 0, 'vips' => $k];
+        $totals['to'] = ['name' => '其他用户', 'count' => 0, 'vips' => ''];
+        foreach ($this->app->db->name($this->table)->field('vip_code vip,count(1) count')->group('vip_code')->cursor() as $v) {
+            [$name, $count, $totals['ta']['count']] = ["t{$v['vip']}", $v['count'], $v['count']];
+            isset($totals[$name]) ? $totals[$name]['count'] += $count : $totals['to']['count'] += $count;
+        }
+        if (empty($totals['to']['count'])) unset($totals['to']);
+        $this->total = $totals;
+        // 设置页面标题
         $this->title = '普通用户管理';
-        $query = $this->_query($this->table);
+        // 创建查询对象
+        $query = $this->_query($this->table)->order('id desc');
+        // 数据筛选选项
+        $this->type = ltrim(input('type', 'ta'), 't');
+        if (is_numeric($this->type)) $query->where(['vip_code' => $this->type]);
+        elseif ($this->type === 'o') $query->whereNotIn('vip_code', array_keys($levels));
         // 用户搜索查询
-        $db = $this->_query('DataUser')->equal('vip_code#from_vipcode')->like('phone#from_phone,username|nickname#from_username')->db();
+        $db = $this->_query($this->table)->equal('vip_code#from_vipcode')->like('phone#from_phone,username|nickname#from_username')->db();
         if ($db->getOptions('where')) $query->whereRaw("pid1 in {$db->field('id')->buildSql()}");
         // 数据查询分页
-        $query->like('phone,username|nickname#username')->equal('status,vip_code');
-        $query->order('id desc')->dateBetween('create_at')->page();
+        $query->like('phone,username|nickname#username')->equal('status,vip_code')->dateBetween('create_at')->page();
     }
 
     /**
@@ -59,7 +75,7 @@ class Admin extends Controller
     public function parent()
     {
         $data = $this->_vali(['pid.default' => '', 'uid.require' => '待操作UID不能为空']);
-        if ($data['uid'] === $data['pid']) $this->error('推荐人不能是自己');
+        if ($data['uid'] === $data['pid']) $this->error('代理不能是自己');
         if (empty($data['pid'])) {
             $map = [['id', '<>', $data['uid']], ['deleted', '=', 0]];
             $query = $this->_query($this->table)->where($map)->equal('status,vip_code');
@@ -68,10 +84,10 @@ class Admin extends Controller
             $user = $this->app->db->name('DataUser')->where(['id' => $data['uid']])->find();
             $parent = $this->app->db->name('DataUser')->where(['id' => $data['pid']])->find();
             if (empty($user)) $this->error('读取用户数据失败！');
-            if (empty($parent)) $this->error('读取推荐人数据失败！');
+            if (empty($parent)) $this->error('读取代理数据失败！');
             $this->app->db->transaction(function () use ($data, $user, $parent) {
-                if (empty($parent['vip_code'])) $this->error('推荐人无推荐资格');
-                if (is_numeric(strpos($parent['path'], "-{$data['uid']}-"))) $this->error('推荐人不能绑下属');
+                if (empty($parent['vip_code'])) $this->error('代理无推荐资格');
+                if (is_numeric(strpos($parent['path'], "-{$data['uid']}-"))) $this->error('代理不能绑下属');
                 // 组装当前用户上级数据
                 $path = rtrim($parent['path'] ?: '-', '-') . "-{$parent['id']}-";
 //                $this->app->db->name('DataUser')->where(['id' => $data['uid']])->update([
@@ -92,7 +108,7 @@ class Admin extends Controller
 //                }
             });
             exit;
-            $this->success('修改推荐人成功！');
+            $this->success('修改代理成功！');
         } catch (\think\exception\HttpResponseException $exception) {
             throw $exception;
         } catch (\Exception $exception) {

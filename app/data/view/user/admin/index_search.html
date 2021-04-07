@@ -21,10 +21,10 @@
             <div class="layui-input-inline">
                 <select class="layui-select" name="vip_code">
                     <option value="">-- 全部 --</option>
-                    {foreach $upgrades as $upgrade}{if input('vip_code') eq $upgrade.number}
-                    <option selected value="{$upgrade.number|default=0}">[ {$upgrade.number|default='0'} ] {$upgrade.name|default=''}</option>
+                    {foreach $upgrades as $upgrade}{if input('vip_code') eq $upgrade.number.''}
+                    <option selected value="{$upgrade.number|default=0}">[ VIP{$upgrade.number|default='0'} ] {$upgrade.name|default=''}</option>
                     {else}
-                    <option value="{$upgrade.number|default=0}">[ {$upgrade.number|default='0'} ] {$upgrade.name|default=''}</option>
+                    <option value="{$upgrade.number|default=0}">[ VIP{$upgrade.number|default='0'} ] {$upgrade.name|default=''}</option>
                     {/if}{/foreach}
                 </select>
             </div>
@@ -32,29 +32,29 @@
         <!--{/notempty}-->
 
         <div class="layui-form-item layui-inline">
-            <label class="layui-form-label">推荐人手机</label>
+            <label class="layui-form-label">代理手机</label>
             <label class="layui-input-inline">
-                <input class="layui-input" name="from_phone" placeholder="请输入推荐人手机" value="{:input('from_phone')}">
+                <input class="layui-input" name="from_phone" placeholder="请输入代理手机" value="{:input('from_phone')}">
             </label>
         </div>
 
         <div class="layui-form-item layui-inline">
-            <label class="layui-form-label">推荐人昵称</label>
+            <label class="layui-form-label">代理昵称</label>
             <label class="layui-input-inline">
-                <input class="layui-input" name="from_username" placeholder="请输入推荐人昵称" value="{:input('from_username')}">
+                <input class="layui-input" name="from_username" placeholder="请输入代理昵称" value="{:input('from_username')}">
             </label>
         </div>
 
         <!--{notempty name='upgrades'}-->
         <div class="layui-form-item layui-inline">
-            <label class="layui-form-label">推荐人等级</label>
+            <label class="layui-form-label">代理等级</label>
             <div class="layui-input-inline">
                 <select class="layui-select" name="from_vipcode">
                     <option value="">-- 全部 --</option>
-                    {foreach $upgrades as $upgrade}{if input('from_vipcode') eq $upgrade.number}
-                    <option selected value="{$upgrade.number|default=0}">[ {$upgrade.number|default='0'} ] {$upgrade.name|default=''}</option>
+                    {foreach $upgrades as $upgrade}{if input('from_vipcode') eq $upgrade.number.''}
+                    <option selected value="{$upgrade.number|default=0}">[ VIP{$upgrade.number|default='0'} ] {$upgrade.name|default=''}</option>
                     {else}
-                    <option value="{$upgrade.number|default=0}">[ {$upgrade.number|default='0'} ] {$upgrade.name|default=''}</option>
+                    <option value="{$upgrade.number|default=0}">[ VIP{$upgrade.number|default='0'} ] {$upgrade.name|default=''}</option>
                     {/if}{/foreach}
                 </select>
             </div>

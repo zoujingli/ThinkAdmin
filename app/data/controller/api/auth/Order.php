@@ -61,13 +61,13 @@ class Order extends Auth
         [$items, $order, $truckType, $allowPayments] = [[], [], -1, null];
         $order['uid'] = $this->uuid;
         $order['order_no'] = CodeExtend::uniqidDate(18, 'N');
-        // 推荐人处理
+        // 代理处理
         $order['puid1'] = input('from', $this->user['pid1']);
         if ($order['puid1'] == $this->uuid) $order['puid1'] = 0;
         if ($order['puid1'] > 0) {
             $map = ['id' => $order['puid1'], 'status' => 1];
             $order['puid2'] = $this->app->db->name('DataUser')->where($map)->value('pid2');
-            if (is_null($order['puid2'])) $this->error('推荐人异常');
+            if (is_null($order['puid2'])) $this->error('代理异常');
         }
         // 订单商品处理
         foreach (explode('||', $rules) as $rule) {
