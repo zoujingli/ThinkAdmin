@@ -9,8 +9,12 @@
 <button data-action='{:url("blackDel")}' data-rule="openid#{key}" data-csrf="{:systoken('blackDel')}" class='layui-btn layui-btn-sm layui-btn-primary'>移出黑名单</button>
 <!--{/if}-->
 
+<!--{if auth("truncate")}-->
+<button data-load='{:url("truncate")}' data-confirm="确定要清空所有用户数据吗？" class='layui-btn layui-btn-sm layui-btn-primary'>清空用户数据</button>
+<!--{/if}-->
+
 <!--{if auth("sync")}-->
-<button data-queue='{:url("sync")}' data-confirm="是否要创建后台任务同步用户数据？" class='layui-btn layui-btn-sm layui-btn-primary'>同步用户数据</button>
+<button data-queue='{:url("sync")}' data-confirm="确定要创建同步用户数据的后台任务？" class='layui-btn layui-btn-sm layui-btn-primary'>同步用户数据</button>
 <!--{/if}-->
 {/block}
 

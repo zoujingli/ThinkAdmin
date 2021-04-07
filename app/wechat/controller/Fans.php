@@ -75,6 +75,23 @@ class Fans extends Controller
     }
 
     /**
+     * 清空用户数据
+     * @auth true
+     */
+    public function truncate()
+    {
+        try {
+            $this->_query('WechatFans')->empty();
+            $this->_query('WechatFansTags')->empty();
+            $this->success('清空用户数据成功！');
+        } catch (\think\exception\HttpResponseException $exception) {
+            throw  $exception;
+        } catch (\Exception $exception) {
+            $this->error("清空用户数据失败，{$exception->getMessage()}");
+        }
+    }
+
+    /**
      * 删除用户信息
      * @auth true
      * @throws \think\db\exception\DbException
