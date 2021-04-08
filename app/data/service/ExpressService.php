@@ -69,7 +69,7 @@ class ExpressService extends Service
      */
     public function region(int $level = 3, ?int $status = null): array
     {
-        $query = $this->app->db->name('DataBasePostageRegion');
+        $query = $this->app->db->name('BasePostageRegion');
         if (is_numeric($level)) $query->where('level', '<=', $level);
         if (is_numeric($status)) $query->where(['status' => $status]);
         $items = DataExtend::arr2tree($query->column('id,pid,name,status', 'id'), 'id', 'pid', 'subs');
