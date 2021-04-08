@@ -4,6 +4,10 @@
 <!--{if auth("sync")}-->
 <button class='layui-btn layui-btn-sm layui-btn-primary' data-queue="{:url('sync')}">刷新账户金额</button>
 <!--{/if}-->
+
+<!--{if auth("base.upgrade/sync")}-->
+<button class='layui-btn layui-btn-sm layui-btn-primary' data-queue="{:url('base.upgrade/sync')}">刷新用户等级</button>
+<!--{/if}-->
 {/block}
 
 {block name="content"}

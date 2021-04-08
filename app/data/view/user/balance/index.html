@@ -8,7 +8,7 @@
 
 {block name="content"}
 <div class="layui-badge layui-bg-cyan text-left notselect block shadow margin-0 padding-10 padding-left-20 border-radius-5 font-s15">
-    余额统计：累计已充值余额 {$balance.0|default=0.00} 元，已使用 {$balance.1|default=0.00} 元，剩余可使用 {$balance.0-$balance.1} 元。
+    余额统计：累计已充值余额 <b>{$balance.0|default=0.00}</b> 元，已使用 <b>{$balance.1|default=0.00}</b> 元，剩余可使用 <b>{$balance.0-$balance.1}</b> 元。
 </div>
 <div class="think-box-shadow margin-top-10">
     {include file='user/balance/index_search'}
