@@ -54,6 +54,6 @@ class VoucherPaymentService extends PaymentService
         if ($order['status'] !== 2) throw new Exception("不可发起支付");
         if (empty($paymentImage)) throw new Exception('支付凭证不能为空');
         $this->updateOrder($orderNo, CodeExtend::uniqidDate(20), $paymentAmount, '单据凭证支付', $paymentImage);
-        return ['info' => '支付凭证上传成功！', 'status' => 1];
+        return ['code' => 1, 'info' => '支付凭证上传成功！'];
     }
 }
