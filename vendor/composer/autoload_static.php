@@ -361,6 +361,7 @@ class ComposerStaticInit6dcb8a18f830adceacf76408fbd14a53
         'app\\data\\controller\\shop\\Mark' => __DIR__ . '/../..' . '/app/data/controller/shop/Mark.php',
         'app\\data\\controller\\shop\\Order' => __DIR__ . '/../..' . '/app/data/controller/shop/Order.php',
         'app\\data\\controller\\shop\\Send' => __DIR__ . '/../..' . '/app/data/controller/shop/Send.php',
+        'app\\data\\controller\\total\\Portal' => __DIR__ . '/../..' . '/app/data/controller/total/Portal.php',
         'app\\data\\controller\\user\\Admin' => __DIR__ . '/../..' . '/app/data/controller/user/Admin.php',
         'app\\data\\controller\\user\\Balance' => __DIR__ . '/../..' . '/app/data/controller/user/Balance.php',
         'app\\data\\controller\\user\\Message' => __DIR__ . '/../..' . '/app/data/controller/user/Message.php',

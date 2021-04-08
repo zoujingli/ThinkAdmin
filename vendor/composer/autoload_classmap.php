@@ -232,6 +232,7 @@ return array(
     'app\\data\\controller\\shop\\Mark' => $baseDir . '/app/data/controller/shop/Mark.php',
     'app\\data\\controller\\shop\\Order' => $baseDir . '/app/data/controller/shop/Order.php',
     'app\\data\\controller\\shop\\Send' => $baseDir . '/app/data/controller/shop/Send.php',
+    'app\\data\\controller\\total\\Portal' => $baseDir . '/app/data/controller/total/Portal.php',
     'app\\data\\controller\\user\\Admin' => $baseDir . '/app/data/controller/user/Admin.php',
     'app\\data\\controller\\user\\Balance' => $baseDir . '/app/data/controller/user/Balance.php',
     'app\\data\\controller\\user\\Message' => $baseDir . '/app/data/controller/user/Message.php',
