@@ -73,20 +73,19 @@ class UserUpgradeService extends Service
     {
         $user = $this->app->db->name('DataUser')->where(['id' => $uid])->find();
         if (empty($user)) return true;
-        // 开始处理等级
-        $query = $this->app->db->name('BaseUserUpgrade')->where(['number' => 0]);
-        [$vipName, $vipCode] = [$query->value('name') ?: '普通用户', 0];
-        // 统计个人订单金额
+        // 初始化等级参数
+        $levels = $this->levels();
+        [$vipName, $vipCode, $vipTeam] = [$levels[0]['name'] ?? '普通用户', 0, []];
+        // 统计用户数据
+        foreach ($levels as $key => $level) if ($level['upgrade_team'] === 1) $vipTeam[] = $key;
         $orderAmount = $this->app->db->name('ShopOrder')->where("uid={$uid} and status>=4")->sum('amount_total');
-        // 统计下属团队人数
-        $vips = $this->app->db->name('BaseUserUpgrade')->where(['status' => 1, 'upgrade_team' => 1])->column('number');
-        $teamsDirect = $this->app->db->name('DataUser')->where(['pid1' => $uid])->whereIn('vip_code', $vips)->count();
-        $teamsIndirect = $this->app->db->name('DataUser')->where(['pid2' => $uid])->whereIn('vip_code', $vips)->count();
-        $teamsUsers = $this->app->db->name('DataUser')->where(['pid1|pid2' => $uid])->whereIn('vip_code', $vips)->count();
+        $teamsDirect = $this->app->db->name('DataUser')->where(['pid1' => $uid])->whereIn('vip_code', $vipTeam)->count();
+        $teamsIndirect = $this->app->db->name('DataUser')->where(['pid2' => $uid])->whereIn('vip_code', $vipTeam)->count();
+        $teamsAllUsers = $teamsDirect + $teamsIndirect;
         // 动态计算用户等级
-        foreach ($this->app->db->name('BaseUserUpgrade')->where(['status' => 1])->order('number desc')->cursor() as $item) {
+        foreach ($levels as $item) {
             $l1 = empty($item['goods_vip_status']) || $user['buy_vip_entry'] > 0;
-            $l2 = empty($item['teams_users_status']) || $item['teams_users_number'] <= $teamsUsers;
+            $l2 = empty($item['teams_users_status']) || $item['teams_users_number'] <= $teamsAllUsers;
             $l3 = empty($item['order_amount_status']) || $item['order_amount_number'] <= $orderAmount;
             $l4 = empty($item['teams_direct_status']) || $item['teams_direct_number'] <= $teamsDirect;
             $l5 = empty($item['teams_indirect_status']) || $item['teams_indirect_number'] <= $teamsIndirect;
@@ -102,19 +101,15 @@ class UserUpgradeService extends Service
         // 购买入会商品升级
         $query = $this->app->db->name('ShopOrderItem')->alias('b')->join('shop_order a', 'b.order_no=a.order_no');
         $tmpCode = $query->whereRaw("a.uid={$uid} and a.payment_status=1 and a.status>=4 and b.vip_entry=1")->max('b.vip_upgrade');
-        if ($tmpCode > $vipCode) {
-            $map = ['status' => 1, 'number' => $tmpCode];
-            $upgrade = $this->app->db->name('BaseUserUpgrade')->where($map)->find();
-            if (!empty($upgrade)) [$vipName, $vipCode] = [$upgrade['name'], $upgrade['number']];
+        if ($tmpCode > $vipCode && isset($levels[$tmpCode])) {
+            [$vipName, $vipCode] = [$levels[$tmpCode]['name'], $levels[$tmpCode]['number']];
         } else {
             $orderNo = null;
         }
         // 后台余额充值升级
         $tmpCode = $this->app->db->name('DataUserBalance')->where(['uid' => $uid, 'deleted' => 0])->max('upgrade');
-        if ($tmpCode > $vipCode) {
-            $map = ['status' => 1, 'number' => $tmpCode];
-            $upgrade = $this->app->db->name('BaseUserUpgrade')->where($map)->find();
-            if (!empty($upgrade)) [$vipName, $vipCode] = [$upgrade['name'], $upgrade['number']];
+        if ($tmpCode > $vipCode && isset($levels[$tmpCode])) {
+            [$vipName, $vipCode] = [$levels[$tmpCode]['name'], $levels[$tmpCode]['number']];
         }
         // 统计用户订单金额
         $orderAmountTotal = $this->app->db->name('ShopOrder')->whereRaw("uid={$uid} and status>=4")->sum('amount_goods');
@@ -124,7 +119,7 @@ class UserUpgradeService extends Service
         $data = [
             'vip_name'              => $vipName,
             'vip_code'              => $vipCode,
-            'teams_users_total'     => $teamsUsers,
+            'teams_users_total'     => $teamsAllUsers,
             'teams_users_direct'    => $teamsDirect,
             'teams_users_indirect'  => $teamsIndirect,
             'teams_amount_total'    => $teamsAmountDirect + $teamsAmountIndirect,
