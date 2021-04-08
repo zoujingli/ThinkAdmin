@@ -51,7 +51,7 @@ abstract class Auth extends Controller
         if (empty($this->type)) {
             $this->error("未获取到接口类型字段！");
         }
-        if (isset(UserAdminService::TYPES[$this->type])) {
+        if (!isset(UserAdminService::TYPES[$this->type])) {
             $this->error("接口类型[{$this->type}]未定义！");
         }
         // 获取用户数据
