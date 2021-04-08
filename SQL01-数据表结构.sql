@@ -11,7 +11,7 @@
  Target Server Version : 80018
  File Encoding         : 65001
 
- Date: 07/04/2021 14:40:56
+ Date: 08/04/2021 10:07:25
 */
 
 SET NAMES utf8mb4;
@@ -152,6 +152,7 @@ CREATE TABLE `base_user_upgrade`  (
   `number` tinyint(2) NULL DEFAULT 0 COMMENT '用户级别序号',
   `rebate_rule` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT '' COMMENT '用户奖利规则',
   `upgrade_type` tinyint(1) NULL DEFAULT 0 COMMENT '会员升级规则(0单个,1同时)',
+  `upgrade_team` tinyint(1) NULL DEFAULT 1 COMMENT '团队人数统计(0不计,1累计)',
   `goods_vip_status` tinyint(1) NULL DEFAULT 0 COMMENT '入会礼包状态',
   `order_amount_status` tinyint(1) NULL DEFAULT 0 COMMENT '订单金额状态',
   `order_amount_number` decimal(20, 2) NULL DEFAULT 0.00 COMMENT '订单金额累计',

@@ -49,9 +49,9 @@
             <select class="layui-select" lay-filter="upgrade" name="upgrade">
                 <option value="0">-- 不升级 --</option>
                 {foreach $upgrades as $upgrade}{if isset($vo.upgrade) and $vo.upgrade eq $upgrade.number}
-                <option selected value="{$upgrade.number|default=0}">升级到 [ {$upgrade.number|default='0'} ] {$upgrade.name|default=''}</option>
+                <option selected value="{$upgrade.number|default=0}">升级到 [ VIP{$upgrade.number|default='0'} ] {$upgrade.name|default=''}</option>
                 {else}
-                <option value="{$upgrade.number|default=0}">升级到 [ {$upgrade.number|default='0'} ] {$upgrade.name|default=''}</option>
+                <option value="{$upgrade.number|default=0}">升级到 [ VIP{$upgrade.number|default='0'} ] {$upgrade.name|default=''}</option>
                 {/if}{/foreach}
             </select>
             <span class="help-block">请选择目标升级等级，当用户低于当前等级时会进行用户升级操作</span>

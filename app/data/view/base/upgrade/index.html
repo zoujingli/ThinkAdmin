@@ -26,6 +26,7 @@
             <th class="text-left nowrap">用户等级</th>
             <th class="text-left nowrap">升级规则</th>
             <th class="text-center nowrap">入会礼包</th>
+            <th class="text-center nowrap">团队计数</th>
             <th class="text-center nowrap">团队总数</th>
             <th class="text-center nowrap">直属团队</th>
             <th class="text-center nowrap">间接团队</th>
@@ -45,6 +46,7 @@
             <td class="text-left nowrap"> [ <span class="color-blue">{$vo.number}</span> ] {$vo.name|default=''}</td>
             <td class="text-left nowrap">{if $vo.upgrade_type eq 1}<span class="color-green">全部完成</span>{else}<span class="color-blue">任何条件</span>{/if}</td>
             <td class="text-center nowrap">{if $vo.goods_vip_status>0}<b class="layui-icon layui-icon-ok-circle color-green"></b> {else} - {/if}</td>
+            <td class="text-center nowrap">{if $vo.upgrade_team>0}<b class="layui-icon layui-icon-ok-circle color-green"></b> {else} - {/if}</td>
             <td class="text-center nowrap">{if $vo.teams_users_status>0} <b class="color-green">{$vo.teams_users_number}</b> 人 {else} - {/if}</td>
             <td class="text-center nowrap">{if $vo.teams_direct_status>0} <b class="color-green">{$vo.teams_direct_number}</b> 人 {else} - {/if}</td>
             <td class="text-center nowrap">{if $vo.teams_indirect_status>0} <b class="color-green">{$vo.teams_indirect_number}</b> 人 {else} - {/if}</td>
