@@ -61,14 +61,40 @@ class Admin extends Controller
      * 数据列表处理
      * @param array $data
      */
-    protected function _page_filter(array &$data)
+    protected function _index_page_filter(array &$data)
     {
         $this->upgrades = UserUpgradeService::instance()->levels();
         UserAdminService::instance()->buildByUid($data, 'pid1', 'from');
     }
 
     /**
-     * 修改用户上传
+     * 用户团队关系
+     * @auth true
+     * @menu true
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\DbException
+     * @throws \think\db\exception\ModelNotFoundException
+     */
+    public function teams()
+    {
+        $this->title = '用户团队关系';
+        $map = ['pid1' => input('from', 0)];
+        $this->_query($this->table)->where($map)->page(false);
+    }
+
+    /**
+     * 数据列表处理
+     * @param array $data
+     */
+    protected function _teams_page_filter(array &$data)
+    {
+        $uids = array_unique(array_column($data, 'id'));
+        $subCount = $this->app->db->name($this->table)->whereIn('pid1', $uids)->group('pid1')->column('count(1) count', 'pid1');
+        foreach ($data as &$vo) $vo['subCount'] = $subCount[$vo['id']] ?? 0;
+    }
+
+    /**
+     * 修改用户推荐人
      * @auth true
      * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\DbException
@@ -139,5 +165,4 @@ class Admin extends Controller
             'status.require' => '状态值不能为空！',
         ]));
     }
-
 }
