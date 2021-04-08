@@ -81,11 +81,11 @@ class UserUpgradeService extends Service
         $orderAmount = $this->app->db->name('ShopOrder')->where("uid={$uid} and status>=4")->sum('amount_total');
         $teamsDirect = $this->app->db->name('DataUser')->where(['pid1' => $uid])->whereIn('vip_code', $vipTeam)->count();
         $teamsIndirect = $this->app->db->name('DataUser')->where(['pid2' => $uid])->whereIn('vip_code', $vipTeam)->count();
-        $teamsAllUsers = $teamsDirect + $teamsIndirect;
+        $teamsUsers = $teamsDirect + $teamsIndirect;
         // 动态计算用户等级
         foreach ($levels as $item) {
             $l1 = empty($item['goods_vip_status']) || $user['buy_vip_entry'] > 0;
-            $l2 = empty($item['teams_users_status']) || $item['teams_users_number'] <= $teamsAllUsers;
+            $l2 = empty($item['teams_users_status']) || $item['teams_users_number'] <= $teamsUsers;
             $l3 = empty($item['order_amount_status']) || $item['order_amount_number'] <= $orderAmount;
             $l4 = empty($item['teams_direct_status']) || $item['teams_direct_number'] <= $teamsDirect;
             $l5 = empty($item['teams_indirect_status']) || $item['teams_indirect_number'] <= $teamsIndirect;
@@ -119,7 +119,7 @@ class UserUpgradeService extends Service
         $data = [
             'vip_name'              => $vipName,
             'vip_code'              => $vipCode,
-            'teams_users_total'     => $teamsAllUsers,
+            'teams_users_total'     => $teamsUsers,
             'teams_users_direct'    => $teamsDirect,
             'teams_users_indirect'  => $teamsIndirect,
             'teams_amount_total'    => $teamsAmountDirect + $teamsAmountIndirect,
