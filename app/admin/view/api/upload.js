@@ -29,6 +29,7 @@ define(['md5'], function (SparkMD5, allowMime) {
                                 if (parseInt(ret.code) === 404) {
                                     file.xurl = ret.data.url;
                                     option.uploader.config.url = ret.data.server;
+                                    option.uploader.config.data.key = ret.data.xkey;
                                     option.uploader.config.data.xkey = ret.data.xkey;
                                     option.uploader.config.data.safe = ret.data.safe;
                                     option.uploader.config.data.uptype = ret.data.uptype;
