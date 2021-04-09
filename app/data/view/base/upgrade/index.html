@@ -43,7 +43,7 @@
             <td class='list-table-check-td think-checkbox'>
                 <label><input class="list-check-box" type='checkbox' value='{$vo.id}'></label>
             </td>
-            <td class="text-left nowrap"> [ <span class="color-blue">{$vo.number}</span> ] {$vo.name|default=''}</td>
+            <td class="text-left nowrap"> [ <span class="color-blue">VIP{$vo.number}</span> ] {$vo.name|default=''}</td>
             <td class="text-left nowrap">{if $vo.upgrade_type eq 1}<span class="color-green">全部完成</span>{else}<span class="color-blue">任何条件</span>{/if}</td>
             <td class="text-center nowrap">{if $vo.goods_vip_status>0}<b class="layui-icon layui-icon-ok-circle color-green"></b> {else} - {/if}</td>
             <td class="text-center nowrap">{if $vo.upgrade_team>0}<b class="layui-icon layui-icon-ok-circle color-green"></b> {else} - {/if}</td>
