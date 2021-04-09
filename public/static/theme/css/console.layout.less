@@ -384,7 +384,11 @@
     .icon {
       &-add, &-sub {
         display: inline-block;
-        vertical-align: middle
+        vertical-align: middle;
+
+        &::before {
+          content: none;
+        }
       }
 
       &-add {
