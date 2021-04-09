@@ -20,11 +20,17 @@ fieldset {
 
 .layui-tab {
   .layui-tab-title {
+    background: #E0E0E0;
     border-top-left-radius: @boxBorderRadius;
     border-top-right-radius: @boxBorderRadius;
 
     > li:first-child {
+      margin-left: 0 !important;
       border-top-left-radius: @boxBorderRadius;
+
+      &:after {
+        border-left: none
+      }
     }
   }
 
