@@ -34,11 +34,9 @@
             });
             return childrens;
         };
-        this.getData = function (that, index) {
-            index = $.msg.loading();
+        this.getData = function (that) {
             $.form.load('{:url("apply")}', {id: '{$vo.id}', action: 'get'}, 'post', function (ret) {
-                that.data = that.renderChildren(ret.data, 1);
-                return $.msg.close(index), that.showTree(), false;
+                return (that.data = that.renderChildren(ret.data, 1)), that.showTree(), false;
             });
         };
         this.showTree = function () {

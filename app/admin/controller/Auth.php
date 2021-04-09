@@ -110,7 +110,7 @@ class Auth extends Controller
             $this->app->db->name('SystemAuthNode')->where($map)->delete();
             $this->app->db->name('SystemAuthNode')->insertAll($data);
             sysoplog('系统权限管理', "配置系统权限[{$map['auth']}]授权成功");
-            $this->success('权限授权修改成功！', 'javascript:history.back()');
+            $this->success('访问权限修改成功！', 'javascript:history.back()');
         } else {
             $this->title = '权限配置节点';
             $this->_form($this->table, 'apply');
