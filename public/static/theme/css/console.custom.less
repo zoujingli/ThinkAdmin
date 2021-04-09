@@ -6,9 +6,9 @@
   font-size: 13px;
   text-align: center;
   line-height: 22px;
-  border-radius: @borderRadius;
+  border-radius: @boxBorderRadius;
   letter-spacing: 6px;
-  border: 1px solid @borderColor;
+  border: 1px solid @boxBorderColor;
   background-color: #f2f2f2;
 }
 
@@ -51,11 +51,11 @@
 }
 
 .shadow {
-  box-shadow: @maxShadow;
+  box-shadow: @maxOuterShadow;
 }
 
 .shadow-mini {
-  box-shadow: @minShadow;
+  box-shadow: @minOuterShadow;
 }
 
 .shadow-none {
@@ -80,8 +80,8 @@
 .think-box-shadow {
   padding: 20px !important;
   background: #fff !important;
-  box-shadow: @maxShadow;
-  border-radius: @borderRadius;
+  box-shadow: @maxOuterShadow;
+  border-radius: @boxBorderRadius;
 
   > form.layui-card {
     box-shadow: none;
@@ -360,7 +360,7 @@
       padding: 15px 25px;
       position: relative;
       line-height: 3em;
-      border-radius: @borderRadius;
+      border-radius: @boxBorderRadius;
       box-shadow: 0 2px 3px 0 rgba(0, 0, 0, .2);
 
       > div:nth-child(2) {
@@ -400,7 +400,7 @@
         color: #333;
         width: 30px;
         height: 30px;
-        border: 1px solid @borderColor;
+        border: 1px solid @boxBorderColor;
         overflow: hidden;
         font-size: 12px;
         text-align: center;
@@ -454,11 +454,11 @@
   }
 
   &-line {
-    border: 1px solid @borderColor;
+    border: 1px solid @boxBorderColor;
   }
 
   &-bottom-line {
-    border-bottom: 1px solid @borderColor;
+    border-bottom: 1px solid @boxBorderColor;
   }
 
   &-top-0 {

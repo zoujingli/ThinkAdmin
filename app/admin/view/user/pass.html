@@ -5,7 +5,7 @@
                 <span class="color-green font-w7">登录用户账号</span>
                 <span class="color-desc margin-left-5">Username</span>
                 <!--{if isset($vo) and isset($vo.username)}-->
-                <input disabled value='{$vo.username|default=""}' class="layui-input layui-bg-gray">
+                <input disabled value='{$vo.username|default=""}' class="layui-input layui-disabled">
                 <!--{else}-->
                 <input name="username" value='{$vo.username|default=""}' required pattern="^.{4,}$" placeholder="请输入4位及以上字符登录用户账号" class="layui-input">
                 <!--{/if}-->

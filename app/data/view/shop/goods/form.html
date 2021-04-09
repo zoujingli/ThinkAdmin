@@ -196,12 +196,12 @@
                     </label>
                     <div class="pull-right">
                         <a class="layui-btn layui-btn-sm layui-btn-primary goods-spec-btn" ng-click="addSpecVal(x.list)">增加</a>
-                        <a class="layui-btn layui-btn-sm layui-btn-primary goods-spec-btn" ng-class="{false:'layui-bg-gray'}[$index>0]" ng-click="upSpecRow(specs,$index)">上移</a>
-                        <a class="layui-btn layui-btn-sm layui-btn-primary goods-spec-btn" ng-class="{false:'layui-bg-gray'}[$index<specs.length-1]" ng-click="dnSpecRow(specs,$index)">下移</a>
+                        <a class="layui-btn layui-btn-sm layui-btn-primary goods-spec-btn" ng-class="{false:'layui-btn-disabled'}[$index>0]" ng-click="upSpecRow(specs,$index)">上移</a>
+                        <a class="layui-btn layui-btn-sm layui-btn-primary goods-spec-btn" ng-class="{false:'layui-btn-disabled'}[$index<specs.length-1]" ng-click="dnSpecRow(specs,$index)">下移</a>
                         <a class="layui-btn layui-btn-sm layui-btn-primary goods-spec-btn" ng-click="delSpecRow(specs,$index)" ng-if="specs.length>1">删除</a>
                     </div>
                 </div>
-                <div class="goods-spec-box padding-10 margin-0 layui-bg-gray block relative" ng-if="x.list && x.list.length > 0">
+                <div class="goods-spec-box padding-10 margin-0 block relative" ng-if="x.list && x.list.length > 0">
                     <label class="label-required-null inline-block margin-right-10 margin-bottom-5 relative nowrap" ng-repeat="xx in x.list">
                         <input lay-ignore ng-click="xx.check=checkListChecked(x.list,$event.target.checked)" ng-model="xx.check" type="checkbox">
                         <input ng-blur="xx.name=trimSpace(xx.name)" ng-keyup="xx.name=$event.target.value" ng-model="xx.name" placeholder="请输入规格" required type="text">
@@ -217,13 +217,13 @@
                 <thead>
                 <tr>
                     <th class="nowrap" ng-repeat="x in navas track by $index"><b ng-bind="x"></b></th>
-                    <th class="text-center nowrap pointer" data-tips-text="批量设置商品SKU" ng-click="batchSet('sku',null)" width="12%"><b>商品SKU</b> <i class="layui-icon">&#xe63c;</i></th>
-                    <th class="text-center nowrap pointer" data-tips-text="批量设置市场价格" ng-click="batchSet('market',2)" width="10%"><b>市场价格</b> <i class="layui-icon">&#xe63c;</i></th>
-                    <th class="text-center nowrap pointer" data-tips-text="批量设置销售价格" ng-click="batchSet('selling',2)" width="10%"><b>销售价格</b> <i class="layui-icon">&#xe63c;</i></th>
-                    <th class="text-center nowrap pointer" data-tips-text="批量设置奖励余额" ng-click="batchSet('balance',2)" width="10%"><b>奖励余额</b> <i class="layui-icon">&#xe63c;</i></th>
-                    <th class="text-center nowrap pointer layui-hide" data-tips-text="批量设置奖励积分" ng-click="batchSet('integral',0)" width="10%"><b>奖励积分</b> <i class="layui-icon">&#xe63c;</i></th>
-                    <th class="text-center nowrap pointer" data-tips-text="批量设置虚拟销量" ng-click="batchSet('virtual',0)" width="10%"><b>虚拟销量</b> <i class="layui-icon">&#xe63c;</i></th>
-                    <th class="text-center nowrap pointer" data-tips-text="批量设置快递计件" ng-click="batchSet('express',0)" width="10%"><b>快递计件</b> <i class="layui-icon">&#xe63c;</i></th>
+                    <th class="text-center nowrap pointer" data-tips-text="批量设置商品SKU" ng-click="batchSet('sku',null,'请输入商品SKU代码')" width="12%"><b>商品SKU</b> <i class="layui-icon">&#xe63c;</i></th>
+                    <th class="text-center nowrap pointer" data-tips-text="批量设置市场价格" ng-click="batchSet('market',2,'请输入商品市场价格')" width="10%"><b>市场价格</b> <i class="layui-icon">&#xe63c;</i></th>
+                    <th class="text-center nowrap pointer" data-tips-text="批量设置销售价格" ng-click="batchSet('selling',2,'请输入商品市销售价格')" width="10%"><b>销售价格</b> <i class="layui-icon">&#xe63c;</i></th>
+                    <th class="text-center nowrap pointer" data-tips-text="批量设置奖励余额" ng-click="batchSet('balance',2,'请输入赠送账户余额')" width="10%"><b>奖励余额</b> <i class="layui-icon">&#xe63c;</i></th>
+                    <th class="text-center nowrap pointer layui-hide" data-tips-text="批量设置奖励积分" ng-click="batchSet('integral',0,'请输入赠送用户积分')" width="10%"><b>奖励积分</b> <i class="layui-icon">&#xe63c;</i></th>
+                    <th class="text-center nowrap pointer" data-tips-text="批量设置虚拟销量" ng-click="batchSet('virtual',0,'请输入虚拟销量数值')" width="10%"><b>虚拟销量</b> <i class="layui-icon">&#xe63c;</i></th>
+                    <th class="text-center nowrap pointer" data-tips-text="批量设置快递计件" ng-click="batchSet('express',0,'请输入快递计费基数')" width="10%"><b>快递计件</b> <i class="layui-icon">&#xe63c;</i></th>
                     <th class="text-center nowrap pointer" width="08%"><b>销售状态</b></th>
                 </tr>
                 </thead>
@@ -344,10 +344,10 @@
             $rootScope.cache = angular.fromJson(angular.element('#GoodsItems').val() || '[]') || {};
             $rootScope.specs = angular.fromJson(angular.element('#GoodsSpecs').val() || '[{"name":"默认分组","list":[{"name":"默认规格","check":true}]}]');
             /*! 批量设置数值 */
-            $rootScope.batchSet = function (name, fixed) {
+            $rootScope.batchSet = function (name, fixed, title) {
                 layer.prompt({
-                    title: '请输入数量【 取值范围：1 - 999999 】',
-                    formType: 0, value: (1).toFixed(fixed), success: function ($fn) {
+                    title: title || (fixed === null ? '请输入内容' : '请输入数量【 取值范围：1 - 999999 】'),
+                    formType: 0, value: fixed === null ? '' : (1).toFixed(fixed), success: function ($fn) {
                         var min = (1).toFixed(fixed), max = (999999).toFixed(fixed);
                         $fn.find('.layui-layer-input').attr({'data-value-min': min, 'data-value-max': max, 'data-blur-number': fixed});
                     }

@@ -11,6 +11,7 @@
     top: 50px;
     bottom: 0;
     overflow: auto;
+    background: #eee;
 
     > .layui-card {
       overflow: visible;
@@ -29,7 +30,7 @@
         position: fixed;
         background: #fff;
         line-height: 50px;
-        box-shadow: @maxShadow;
+        box-shadow: @maxOuterShadow;
       }
 
       > .layui-card-header + .layui-card-body {
@@ -42,7 +43,7 @@
 
         > .layui-tab.layui-tab-card {
           border: none;
-          box-shadow: @maxShadow;
+          box-shadow: @maxOuterShadow;
         }
 
         > .layui-tab.layui-tab-card > .layui-tab-content.think-box-shadow {
@@ -272,8 +273,8 @@
   height: 580px;
   position: relative;
   background: url(../img/wechat/mobile_head.png) no-repeat 0 0;
-  box-shadow: @minShadow;
-  border-radius: @borderRadius;
+  box-shadow: @minOuterShadow;
+  border-radius: @boxBorderRadius;
 
   .mobile-header {
     color: #fff;
@@ -301,7 +302,7 @@
     border: 1px solid #ccc;
     position: absolute;
     background: #f5f5f5;
-    border-radius: 0 0 @borderRadius @borderRadius;
+    border-radius: 0 0 @boxBorderRadius @boxBorderRadius;
 
     iframe {
       width: 100%;
@@ -319,7 +320,7 @@
     padding-left: 43px;
     background: url(../img/wechat/mobile_foot.png) no-repeat 0 0;
     list-style-type: none;
-    border-radius: 0 0 @borderRadius @borderRadius;
+    border-radius: 0 0 @boxBorderRadius @boxBorderRadius;
 
     li {
       float: left;

@@ -2,10 +2,10 @@
 
 fieldset {
   margin: 0 0 10px 0;
-  border: 1px solid @borderColor;
+  border: 1px solid @boxBorderColor;
   padding: 10px 20px 5px 20px;
   background: #fff;
-  border-radius: @borderRadius;
+  border-radius: @boxBorderRadius;
 
   legend {
     color: #666;
@@ -15,22 +15,22 @@ fieldset {
 }
 
 .layui-tab, .layui-card {
-  border-radius: @borderRadius;
+  border-radius: @boxBorderRadius;
 }
 
 .layui-tab {
   .layui-tab-title {
-    border-top-left-radius: @borderRadius;
-    border-top-right-radius: @borderRadius;
+    border-top-left-radius: @boxBorderRadius;
+    border-top-right-radius: @boxBorderRadius;
 
     > li:first-child {
-      border-top-left-radius: @borderRadius;
+      border-top-left-radius: @boxBorderRadius;
     }
   }
 
   .layui-tab-content {
-    border-bottom-left-radius: @borderRadius;
-    border-bottom-right-radius: @borderRadius;
+    border-bottom-left-radius: @boxBorderRadius;
+    border-bottom-right-radius: @boxBorderRadius;
   }
 
   > .layui-tab-content {
@@ -50,11 +50,15 @@ fieldset {
 }
 
 .layui-code {
-  border-radius: @borderRadius;
+  border-radius: @boxBorderRadius;
 }
 
 .layui-btn {
   border: 1px solid #009688;
+
+  &:hover:not(.layui-btn-disabled) {
+    box-shadow: @maxInsetShadow;
+  }
 
   &-warm {
     border: 1px solid #FFB800;
@@ -69,7 +73,11 @@ fieldset {
   }
 
   &-disabled {
-    border: 1px solid @borderColor;
+    border: 1px solid @boxBorderColor;
+  }
+
+  &-primary {
+    background: #fff;
   }
 
   &-group {
@@ -138,7 +146,8 @@ fieldset {
     width: auto !important;
     height: 32px;
     padding: 0 8px;
-    line-height: 32px
+    line-height: 32px;
+    border-color: @inputBorderColor;
   }
 
   .layui-input-inline {
@@ -150,13 +159,15 @@ fieldset {
       width: 100%;
       height: 32px;
       padding: 0 8px;
-      line-height: 32px
+      line-height: 32px;
+      border-color: @inputBorderColor;
     }
   }
 
   .layui-form-select dl {
     top: 31px;
-    padding: 0
+    padding: 0;
+    border-color: @inputBorderActiveColor;
   }
 }
 
@@ -191,7 +202,12 @@ fieldset {
 }
 
 .layui-input, .layui-select {
-  line-height: 38px
+  line-height: 38px;
+  border-color: @inputBorderColor;
+
+  &:hover, &:active, &:focus {
+    border-color: @inputBorderActiveColor;
+  }
 }
 
 .layui-disabled, .layui-disabled:hover {
@@ -220,7 +236,7 @@ label.think-radio, label.think-checkbox {
     width: 18px;
     height: 18px;
     cursor: pointer;
-    border: 1px solid @borderColor;
+    border: 1px solid @radioBorderColor;
     position: relative;
     background: #fff;
     margin-right: 5px;
@@ -292,14 +308,14 @@ label.think-radio, label.think-checkbox {
   div.headimg {
     width: 35px;
     height: 35px;
-    border: 1px solid @borderColor;
+    border: 1px solid @boxBorderColor;
     display: inline-block;
     overflow: hidden;
     text-align: center;
     margin-right: 5px;
     border-radius: 50%;
     vertical-align: middle;
-    box-shadow: @minShadow;
+    box-shadow: @minOuterShadow;
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center center;
@@ -349,7 +365,7 @@ label.think-radio, label.think-checkbox {
       color: #666;
       padding: 2px;
       font-size: 9pt;
-      border: 1px solid @borderColor;
+      border: 1px solid @inputBorderColor;
       text-align: center;
       line-height: 18px
     }
