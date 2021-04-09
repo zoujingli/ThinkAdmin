@@ -37,6 +37,8 @@ class UserUpgrade extends Command
                 $this->queue->message($total, $count, "完成计算用户 [{$user['id']}] 的等级", 1);
             }
             $this->setQueueSuccess("此次共重新计算 {$total} 个用户等级。");
+        } catch (Exception $exception) {
+            throw $exception;
         } catch (\Exception $exception) {
             $this->setQueueError($exception->getMessage());
         }
