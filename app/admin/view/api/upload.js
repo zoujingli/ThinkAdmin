@@ -25,12 +25,11 @@ define(['md5'], function (SparkMD5, allowMime) {
                     md5file(file).then(function (file) {
                         option.element.triggerHandler('upload.hash', file);
                         jQuery.ajax("{:url('admin/api.upload/state')}", {
-                            data: {xkey: file.xkey, uptype: option.uptype, safe: option.safe, name: file.name}, method: 'post', success: function (ret) {
+                            data: {key: file.xkey, uptype: option.uptype, safe: option.safe, name: file.name}, method: 'post', success: function (ret) {
                                 if (parseInt(ret.code) === 404) {
                                     file.xurl = ret.data.url;
                                     option.uploader.config.url = ret.data.server;
-                                    option.uploader.config.data.key = ret.data.xkey;
-                                    option.uploader.config.data.xkey = ret.data.xkey;
+                                    option.uploader.config.data.key = ret.data.key;
                                     option.uploader.config.data.safe = ret.data.safe;
                                     option.uploader.config.data.uptype = ret.data.uptype;
                                     if (ret.data.uptype === 'qiniu') {

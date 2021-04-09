@@ -62,26 +62,26 @@ class Upload extends Controller
     public function state()
     {
         [$this->name, $this->safe] = [input('name', null), $this->getSafe()];
-        $data = ['uptype' => $this->getType(), 'xkey' => input('xkey'), 'safe' => intval($this->safe)];
-        if ($info = Storage::instance($data['uptype'])->info($data['xkey'], $this->safe, $this->name)) {
+        $data = ['uptype' => $this->getType(), 'safe' => intval($this->safe), 'key' => input('key')];
+        if ($info = Storage::instance($data['uptype'])->info($data['key'], $this->safe, $this->name)) {
             $data['url'] = $info['url'];
             $this->success('文件已经上传', $data, 200);
         } elseif ('local' === $data['uptype']) {
-            $data['url'] = LocalStorage::instance()->url($data['xkey'], $this->safe, $this->name);
+            $data['url'] = LocalStorage::instance()->url($data['key'], $this->safe, $this->name);
             $data['server'] = LocalStorage::instance()->upload();
         } elseif ('qiniu' === $data['uptype']) {
-            $data['url'] = QiniuStorage::instance()->url($data['xkey'], $this->safe, $this->name);
-            $data['token'] = QiniuStorage::instance()->buildUploadToken($data['xkey'], 3600, $this->name);
+            $data['url'] = QiniuStorage::instance()->url($data['key'], $this->safe, $this->name);
+            $data['token'] = QiniuStorage::instance()->buildUploadToken($data['key'], 3600, $this->name);
             $data['server'] = QiniuStorage::instance()->upload();
         } elseif ('alioss' === $data['uptype']) {
-            $token = AliossStorage::instance()->buildUploadToken($data['xkey'], 3600, $this->name);
+            $token = AliossStorage::instance()->buildUploadToken($data['key'], 3600, $this->name);
             $data['url'] = $token['siteurl'];
             $data['policy'] = $token['policy'];
             $data['signature'] = $token['signature'];
             $data['OSSAccessKeyId'] = $token['keyid'];
             $data['server'] = AliossStorage::instance()->upload();
         } elseif ('txcos' === $data['uptype']) {
-            $token = TxcosStorage::instance()->buildUploadToken($data['xkey'], 3600, $this->name);
+            $token = TxcosStorage::instance()->buildUploadToken($data['key'], 3600, $this->name);
             $data['url'] = $token['siteurl'];
             $data['q-ak'] = $token['q-ak'];
             $data['policy'] = $token['policy'];
@@ -114,7 +114,7 @@ class Upload extends Controller
         if (in_array($this->extension, ['php', 'sh'])) {
             return json(['uploaded' => false, 'error' => ['message' => '可执行文件禁止上传到本地服务器']]);
         }
-        [$this->safe, $this->uptype, $this->name] = [$this->getSafe(), $this->getType(), input('xkey')];
+        [$this->uptype, $this->safe, $this->name] = [$this->getType(), $this->getSafe(), input('key')];
         if (empty($this->name)) $this->name = Storage::name($file->getPathname(), $this->extension, '', 'md5_file');
         if ($this->uptype === 'local') {
             $local = LocalStorage::instance();
