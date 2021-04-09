@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="zh">
-
 <head>
     <title>{block name="title"}{$title|default=''}{if !empty($title)} · {/if}{:sysconf('site_name')}{/block}</title>
     <meta charset="utf-8">
@@ -11,14 +10,13 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
     <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=0.4">
     <link rel="shortcut icon" href="{:sysconf('site_icon')}">
-    <link rel="stylesheet" href="__ROOT__/static/plugs/awesome/fonts.css?at={:date('md')}">
     <link rel="stylesheet" href="__ROOT__/static/plugs/layui/css/layui.css?at={:date('md')}">
+    <link rel="stylesheet" href="__ROOT__/static/theme/css/iconfont.css?at={:date('md')}">
     <link rel="stylesheet" href="__ROOT__/static/theme/css/console.css?at={:date('md')}">
     {block name="style"}{/block}
     <script>window.tapiRoot = '{:sysuri("admin/index/index",[],false)}'</script>
     <script src="__ROOT__/static/plugs/jquery/pace.min.js"></script>
 </head>
-
 <body class="layui-layout-body">
 {block name='body'}
 <div class="layui-layout layui-layout-admin layui-layout-left-hide">
@@ -30,5 +28,4 @@
 <script src="__ROOT__/static/admin.js"></script>
 {block name='script'}{/block}
 </body>
-
 </html>

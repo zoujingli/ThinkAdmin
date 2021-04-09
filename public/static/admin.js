@@ -216,6 +216,8 @@ $(function () {
         };
         /*! 异步加载的数据 */
         this.load = function (url, data, method, callback, loading, tips, time, headers) {
+            // 如果主页面 loader 显示中，绝对不显示 loading 图标
+            loading = $('.think-page-loader').is(':visible') ? false : loading;
             var index = loading !== false ? $.msg.loading(tips) : 0;
             if (typeof data === 'object' && typeof data['_token_'] === 'string') {
                 headers = headers || {}, headers['User-Form-Token'] = data['_token_'], delete data['_token_'];
@@ -256,7 +258,7 @@ $(function () {
         };
         /*! 打开一个iframe窗口 */
         this.iframe = function (url, title, area) {
-            return layer.open({title: title || '窗口', type: 2, area: area || ['800px', '580px'], fix: true, maxmin: false, content: url});
+            return layer.open({title: title || '窗口', type: 2, area: area || ['800px', '580px'], anim: 2, fixed: true, maxmin: false, content: url});
         };
         /*! 加载 HTML 到弹出层 */
         this.modal = function (url, data, title, callback, loading, tips, area) {
@@ -742,7 +744,7 @@ $(function () {
     /*! 注册 data-icon 事件行为 */
     $body.on('click', '[data-icon]', function () {
         var location = tapiRoot + '/api.plugs/icon', field = this.dataset.icon || this.dataset.field || 'icon';
-        $.form.iframe(location + (location.indexOf('?') > -1 ? '&' : '?') + 'field=' + field, '图标选择');
+        $.form.iframe(location + (location.indexOf('?') > -1 ? '&' : '?') + 'field=' + field, '图标选择', ['800px', '600px']);
     });
 
     /*! 注册 data-copy 事件行为 */
@@ -888,6 +890,11 @@ $(function () {
             event.target.src = baseRoot + 'theme/img/404_icon.png';
         }
     }, true);
+
+    /*! 延时关闭加载动画 */
+    setTimeout(function () {
+        $('.think-page-loader').fadeOut();
+    }, 600);
 
     /*! 系统菜单表单页面初始化 */
     $.menu.listen(), $.vali.listen(), $.form.reInit($body);
