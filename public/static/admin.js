@@ -217,7 +217,7 @@ $(function () {
         /*! 异步加载的数据 */
         this.load = function (url, data, method, callback, loading, tips, time, headers) {
             // 如果主页面 loader 显示中，绝对不显示 loading 图标
-            loading = $('.think-page-loader').is(':visible') ? false : loading;
+            loading = $('.layui-page-loader').is(':visible') ? false : loading;
             var index = loading !== false ? $.msg.loading(tips) : 0;
             if (typeof data === 'object' && typeof data['_token_'] === 'string') {
                 headers = headers || {}, headers['User-Form-Token'] = data['_token_'], delete data['_token_'];
@@ -893,8 +893,8 @@ $(function () {
 
     /*! 延时关闭加载动画 */
     setTimeout(function () {
-        $('.think-page-loader').fadeOut();
-    }, 600);
+        $('.layui-page-loader').fadeOut();
+    }, 800);
 
     /*! 系统菜单表单页面初始化 */
     $.menu.listen(), $.vali.listen(), $.form.reInit($body);
