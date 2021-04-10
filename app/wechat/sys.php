@@ -13,10 +13,17 @@
 // | github 代码仓库：https://github.com/zoujingli/ThinkAdmin
 // +----------------------------------------------------------------------
 
+use app\wechat\command\Auto;
+use app\wechat\command\Fans;
+use app\wechat\service\AutoService;
 use think\Console;
 
 if (app()->request->isCli()) {
     Console::starting(function (Console $console) {
-        $console->addCommand('app\wechat\command\Fans');
+        $console->addCommands([Fans::class, Auto::class]);
+    });
+} else {
+    app()->event->listen('WechatFansSubscribe', function ($openid) {
+        AutoService::instance()->register($openid);
     });
 }

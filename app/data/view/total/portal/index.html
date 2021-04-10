@@ -38,11 +38,8 @@
     </div>
 </div>
 
-<div class="think-box-shadow margin-top-15">
-    <div id="main1" style="width:100%;height:400px"></div>
-</div>
-
 <div class="layui-row layui-col-space15 margin-top-10">
+
     <div class="layui-col-xs12 layui-col-md6">
         <div class="think-box-shadow">
             <div id="main2" style="width:100%;height:350px"></div>
@@ -50,7 +47,27 @@
     </div>
     <div class="layui-col-xs12 layui-col-md6">
         <div class="think-box-shadow">
+            <div id="main4" style="width:100%;height:350px"></div>
+        </div>
+    </div>
+    <div class="layui-col-xs12 layui-col-md6">
+        <div class="think-box-shadow">
+            <div id="main5" style="width:100%;height:350px"></div>
+        </div>
+    </div>
+    <div class="layui-col-xs12 layui-col-md6">
+        <div class="think-box-shadow">
+            <div id="main6" style="width:100%;height:350px"></div>
+        </div>
+    </div>
+    <div class="layui-col-xs12 layui-col-md6">
+        <div class="think-box-shadow">
             <div id="main3" style="width:100%;height:350px"></div>
+        </div>
+    </div>
+    <div class="layui-col-xs12 layui-col-md6">
+        <div class="think-box-shadow">
+            <div id="main7" style="width:100%;height:350px"></div>
         </div>
     </div>
 </div>
@@ -64,71 +81,8 @@
 
     require(['echarts'], function (echarts) {
         var data1 = JSON.parse($('#jsondata1').html());
-        var list1 = data1.map(function (item) {
-            return item[0];
-        });
-        var chart1 = echarts.init(document.getElementById('main1'));
-        window.addEventListener("resize", function () {
-            chart1.resize()
-        });
-
-        chart1.setOption({
-            title: [
-                {left: '12%', text: '近十天用户数量趋势'},
-                {left: '45%', text: '近十天订单数量趋势'},
-                {left: '78%', text: '近十天交易金额趋势'}
-            ],
-            tooltip: {trigger: 'axis', show: true, axisPointer: {type: 'cross', label: {}}},
-            xAxis: [
-                {data: list1, gridIndex: 0},
-                {data: list1, gridIndex: 1},
-                {data: list1, gridIndex: 2}
-            ],
-            yAxis: [
-                {
-                    splitLine: {show: false}, gridIndex: 0, type: 'value', axisLabel: {
-                        formatter: '{value} 人'
-                    }
-                },
-                {
-                    splitLine: {show: false}, gridIndex: 1, type: 'value', axisLabel: {
-                        formatter: '{value} 单'
-                    }
-                },
-                {
-                    splitLine: {show: false}, gridIndex: 2, type: 'value', axisLabel: {
-                        formatter: '{value} 元'
-                    }
-                }
-            ],
-            grid: [
-                {left: '04%', right: '67%', top: '25%'},
-                {left: '37%', right: '34%', top: '25%'},
-                {left: '70%', right: '01%', top: '25%'}
-            ],
-            series: [
-                {
-                    type: 'line', showSymbol: true, xAxisIndex: 0, yAxisIndex: 0,
-                    label: {normal: {position: 'top', formatter: '{c} 人', show: true}},
-                    data: data1.map(function (item) {
-                        return item[1];
-                    }),
-                },
-                {
-                    type: 'line', showSymbol: true, xAxisIndex: 1, yAxisIndex: 1,
-                    label: {normal: {position: 'top', formatter: '{c} 单', show: true}},
-                    data: data1.map(function (item) {
-                        return item[2];
-                    }),
-                },
-                {
-                    type: 'line', showSymbol: true, xAxisIndex: 2, yAxisIndex: 2,
-                    label: {normal: {position: 'top', formatter: '{c} 元', show: true}},
-                    data: data1.map(function (item) {
-                        return item[3];
-                    }),
-                }
-            ]
+        var days = data1.map(function (item) {
+            return item['当天日期'];
         });
 
         var data2 = JSON.parse($('#jsondata2').html());
@@ -160,33 +114,144 @@
             ]
         });
 
-        var chart3 = echarts.init(document.getElementById('main3'));
-        window.addEventListener("resize", function () {
-            chart3.resize()
-        });
-
-        chart3.setOption({
-            title: [{left: 'center', text: '近十天代理收益统计'}],
-            tooltip: {trigger: 'axis', show: true, axisPointer: {type: 'cross', label: {}}},
-            xAxis: [{data: list1, gridIndex: 0}],
-            yAxis: [
-                {
-                    splitLine: {show: false}, gridIndex: 0, type: 'value', axisLabel: {
-                        formatter: '{value} 元'
+        (function (charts) {
+            window.addEventListener("resize", function () {
+                charts.resize()
+            });
+            charts.setOption({
+                title: [{left: 'center', text: '近十天代理收益统计'}],
+                tooltip: {trigger: 'axis', show: true, axisPointer: {type: 'cross', label: {}}},
+                xAxis: [{data: days, gridIndex: 0}],
+                yAxis: [
+                    {
+                        splitLine: {show: true}, gridIndex: 0, type: 'value', axisLabel: {
+                            formatter: '{value} 元'
+                        }
                     }
-                }
-            ],
-            grid: [{left: '10%', right: '3%', top: '25%'}],
-            series: [
-                {
-                    type: 'line', showSymbol: true, xAxisIndex: 0, yAxisIndex: 0,
-                    label: {normal: {position: 'top', formatter: '{c} 元', show: true}},
-                    data: data1.map(function (item) {
-                        return item[4];
-                    }),
-                }
-            ]
-        });
+                ],
+                grid: [{left: '10%', right: '3%', top: '25%'}],
+                series: [
+                    {
+                        type: 'line', showSymbol: true, xAxisIndex: 0, yAxisIndex: 0,
+                        label: {normal: {position: 'top', formatter: '{c} 元', show: true}},
+                        data: data1.map(function (item) {
+                            return item['返利金额'];
+                        }),
+                    }
+                ]
+            });
+        })(echarts.init(document.getElementById('main3')));
+
+        (function (charts) {
+            window.addEventListener("resize", function () {
+                charts.resize()
+            });
+            charts.setOption({
+                title: [{left: 'center', text: '近十天用户增涨趋势'}],
+                tooltip: {trigger: 'axis', show: true, axisPointer: {type: 'cross', label: {}}},
+                xAxis: [{data: days, gridIndex: 0}],
+                yAxis: [
+                    {
+                        splitLine: {show: true}, gridIndex: 0, type: 'value', axisLabel: {
+                            formatter: '{value} 人'
+                        }
+                    }
+                ],
+                grid: [{left: '10%', right: '3%', top: '25%'}],
+                series: [
+                    {
+                        type: 'line', showSymbol: true, xAxisIndex: 0, yAxisIndex: 0,
+                        label: {normal: {position: 'top', formatter: '{c} 人', show: true}},
+                        data: data1.map(function (item) {
+                            return item['增加用户'];
+                        }),
+                    }
+                ]
+            });
+        })(echarts.init(document.getElementById('main4')));
+
+        (function (charts) {
+            window.addEventListener("resize", function () {
+                charts.resize()
+            });
+            charts.setOption({
+                title: [{left: 'center', text: '近十天订单数量趋势'}],
+                tooltip: {trigger: 'axis', show: true, axisPointer: {type: 'cross', label: {}}},
+                xAxis: [{data: days, gridIndex: 0}],
+                yAxis: [
+                    {
+                        splitLine: {show: true}, gridIndex: 0, type: 'value', axisLabel: {
+                            formatter: '{value} 单'
+                        }
+                    }
+                ],
+                grid: [{left: '10%', right: '3%', top: '25%'}],
+                series: [
+                    {
+                        type: 'line', showSymbol: true, xAxisIndex: 0, yAxisIndex: 0,
+                        label: {normal: {position: 'top', formatter: '{c} 单', show: true}},
+                        data: data1.map(function (item) {
+                            return item['订单数量'];
+                        }),
+                    }
+                ]
+            });
+        })(echarts.init(document.getElementById('main5')));
+
+        (function (charts) {
+            window.addEventListener("resize", function () {
+                charts.resize()
+            });
+            charts.setOption({
+                title: [{left: 'center', text: '近十天交易金额趋势'}],
+                grid: [{left: '10%', right: '3%', top: '25%'}],
+                tooltip: {
+                    trigger: 'axis',
+                },
+                xAxis: [{data: days, gridIndex: 0}],
+                yAxis: [{type: 'value', splitLine: {show: true}, gridIndex: 0, axisLabel: {formatter: '{value} 元'}}],
+                series: [
+                    {
+                        type: 'line', showSymbol: true, xAxisIndex: 0, yAxisIndex: 0,
+                        label: {position: 'top', formatter: '{c} 元', show: true},
+                        data: data1.map(function (item) {
+                            return item['订单金额'];
+                        }),
+                    }
+                ]
+            });
+        })(echarts.init(document.getElementById('main6')));
+
+        (function (charts) {
+            window.addEventListener("resize", function () {
+                charts.resize()
+            });
+            charts.setOption({
+                title: [{text: '近十天账户余额趋势'}],
+                legend: {data: ['充值余额', '消费余额']},
+                tooltip: {trigger: 'axis'},
+                xAxis: [{data: days, gridIndex: 0}],
+                yAxis: [{type: 'value', splitLine: {show: true}, gridIndex: 0, axisLabel: {formatter: '{value} 元'}}],
+                series: [
+                    {
+                        name: '充值余额',
+                        type: 'line',
+                        label: {position: 'top', formatter: '{c} 元', show: true},
+                        data: data1.map(function (item) {
+                            return item['充值余额'];
+                        }),
+                    },
+                    {
+                        name: '消费余额',
+                        type: 'line',
+                        label: {formatter: '{c} 元', show: true},
+                        data: data1.map(function (item) {
+                            return item['消费余额'];
+                        }),
+                    },
+                ]
+            });
+        })(echarts.init(document.getElementById('main7')));
     });
 </script>
 

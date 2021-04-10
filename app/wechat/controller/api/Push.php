@@ -156,9 +156,10 @@ class Push extends Controller
     {
         switch (strtolower($this->receive['event'])) {
             case 'unsubscribe':
+                $this->app->event->trigger('WechatFansUnSubscribe', $this->openid);
                 return $this->_setUserInfo(false);
             case 'subscribe':
-                $this->_setUserInfo(true);
+                [$this->app->event->trigger('WechatFansSubscribe', $this->openid), $this->_setUserInfo(true)];
                 if (isset($this->receive['eventkey']) && is_string($this->receive['eventkey'])) {
                     if (($key = preg_replace('/^qrscene_/i', '', $this->receive['eventkey']))) {
                         return $this->_keys("WechatKeys#keys#{$key}", false, true);

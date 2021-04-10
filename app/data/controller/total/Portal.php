@@ -23,17 +23,23 @@ class Portal extends Controller
         $this->orderTotal = $this->app->db->name('ShopOrder')->cache(true, 60)->whereRaw('status >= 4')->count();
         $this->amountTotal = $this->app->db->name('ShopOrder')->cache(true, 60)->whereRaw('status >= 4')->sum('amount_total');
         // 近七天用户及交易趋势
-        $this->days = [];
-        for ($i = 15; $i >= 0; $i--) {
-            $date = date('Y-m-d', strtotime("-{$i}days"));
-            $this->days[] = [
-                date('m-d', strtotime("-{$i}days")),
-                $this->app->db->name('DataUser')->cache(true, 60)->whereLike('create_at', "{$date}%")->count(),
-                $this->app->db->name('ShopOrder')->cache(true, 60)->whereLike('create_at', "{$date}%")->whereRaw('status>=4')->count(),
-                $this->app->db->name('ShopOrder')->cache(true, 60)->whereLike('create_at', "{$date}%")->whereRaw('status>=4')->sum('amount_total'),
-                $this->app->db->name('DataUserRebate')->cache(true, 60)->whereLike('create_at', "{$date}%")->sum('amount'),
-            ];
+        $this->days = $this->app->cache->get('portals', []);
+        if (empty($this->days)) {
+            for ($i = 15; $i >= 0; $i--) {
+                $date = date('Y-m-d', strtotime("-{$i}days"));
+                $this->days[] = [
+                    '当天日期' => date('m-d', strtotime("-{$i}days")),
+                    '增加用户' => $this->app->db->name('DataUser')->cache(true, 60)->whereLike('create_at', "{$date}%")->count(),
+                    '订单数量' => $this->app->db->name('ShopOrder')->cache(true, 60)->whereLike('create_at', "{$date}%")->whereRaw('status>=4')->count(),
+                    '订单金额' => $this->app->db->name('ShopOrder')->cache(true, 60)->whereLike('create_at', "{$date}%")->whereRaw('status>=4')->sum('amount_total'),
+                    '返利金额' => $this->app->db->name('DataUserRebate')->cache(true, 60)->whereLike('create_at', "{$date}%")->sum('amount'),
+                    '充值余额' => $this->app->db->name('DataUserBalance')->cache(true, 60)->whereLike('create_at', "{$date}%")->whereRaw('amount>0 and deleted=0')->sum('amount'),
+                    '消费余额' => $this->app->db->name('DataUserBalance')->cache(true, 60)->whereLike('create_at', "{$date}%")->whereRaw('amount<0 and deleted=0')->sum('amount'),
+                ];
+            }
+            $this->app->cache->set('portals', $this->days, 60);
         }
+
         // 会员级别分布统计
         $levels = $this->app->db->name('BaseUserUpgrade')->where(['status' => 1])->order('number asc')->column('number code,name,0 count', 'number');
         foreach ($this->app->db->name('DataUser')->field('count(1) count,vip_code level')->group('vip_code')->cursor() as $vo) {

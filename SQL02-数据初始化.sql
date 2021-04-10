@@ -11,7 +11,7 @@
  Target Server Version : 80018
  File Encoding         : 65001
 
- Date: 07/04/2021 14:33:12
+ Date: 10/04/2021 17:27:54
 */
 
 SET NAMES utf8mb4;
@@ -3841,7 +3841,7 @@ CREATE TABLE `system_menu`  (
   `create_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `idx_system_menu_status`(`status`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 98 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci COMMENT = '系统-菜单' ROW_FORMAT = COMPACT;
+) ENGINE = InnoDB AUTO_INCREMENT = 99 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci COMMENT = '系统-菜单' ROW_FORMAT = COMPACT;
 
 -- ----------------------------
 -- Records of system_menu
@@ -3889,6 +3889,8 @@ INSERT INTO `system_menu` VALUES (93, 90, '用户提现管理', 'layui-icon layu
 INSERT INTO `system_menu` VALUES (94, 68, '页面内容管理', 'layui-icon layui-icon-read', 'data/base.config/pagehome', 'data/base.config/pagehome', '', '_self', 20, 0, '2021-02-24 08:49:16');
 INSERT INTO `system_menu` VALUES (95, 68, '邀请二维码设置', 'layui-icon layui-icon-cols', 'data/base.config/cropper', 'data/base.config/cropper', '', '_self', 0, 1, '2021-03-01 09:53:59');
 INSERT INTO `system_menu` VALUES (97, 90, '用户返利管理', 'layui-icon layui-icon-transfer', 'data/user.rebate/index', 'data/user.rebate/index', '', '_self', 600, 1, '2021-03-12 10:06:49');
+INSERT INTO `system_menu` VALUES (98, 0, '首 页', '', 'data/total.portal/index', 'data/total.portal/index', '', '_self', 400, 1, '2021-04-10 13:43:19');
+INSERT INTO `system_menu` VALUES (99, 60, '关注自动回复', 'layui-icon layui-icon-release', 'wechat/auto/index', 'wechat/auto/index', '', '_self', 0, 1, '2021-04-10 15:56:54');
 
 -- ----------------------------
 -- Table structure for system_user
@@ -3921,6 +3923,6 @@ CREATE TABLE `system_user`  (
 -- ----------------------------
 -- Records of system_user
 -- ----------------------------
-INSERT INTO `system_user` VALUES (10000, 'admin', '21232f297a57a5a743894a0e4a801fc3', '系统管理员', 'https://xhtwxapp.cdn.xiaoding.shop/cf/23526f451784ff137f161b8fe18d5a.png', ',,', '', '', '', '127.0.0.1', '2021-04-07 11:27:31', 141, '', 1, 0, 0, '2015-11-13 15:14:22');
+INSERT INTO `system_user` VALUES (10000, 'admin', '21232f297a57a5a743894a0e4a801fc3', '系统管理员', 'https://xhtwxapp.cdn.xiaoding.shop/cf/23526f451784ff137f161b8fe18d5a.png', ',,', '', '', '', '127.0.0.1', '2021-04-10 13:42:51', 142, '', 1, 0, 0, '2015-11-13 15:14:22');
 
 SET FOREIGN_KEY_CHECKS = 1;
