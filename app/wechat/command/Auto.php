@@ -88,8 +88,9 @@ class Auto extends Command
         if ($type === 'news') {
             [$item, $news] = [MediaService::instance()->news($data['news_id']), []];
             if (!empty($item['articles'])) {
+                $host = sysconf('base.site_host');
                 foreach ($item['articles'] as $vo) array_push($news, [
-                    'url'   => url("@wechat/api.view/item/id/{$vo['id']}", [], false, true)->build(),
+                    'url'   => url("@wechat/api.view/item/id/{$vo['id']}", [], false, $host)->build(),
                     'title' => $vo['title'], 'picurl' => $vo['local_url'], 'description' => $vo['digest'],
                 ]);
                 $result = $this->_sendMessage('news', ['articles' => $news]);
