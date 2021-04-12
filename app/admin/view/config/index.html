@@ -20,15 +20,15 @@
         <div class="layui-btn-group shadow-mini nowrap">
             <!--{if $app->isDebug()}-->
             <a class="layui-btn layui-btn-sm layui-btn-active">以开发模式运行</a>
-            <a class="layui-btn layui-btn-sm layui-btn-primary" data-confirm="确定要切换到产品模式运行吗？" data-load="{:url('admin/api.plugs/debug')}?state=1">以产品模式运行</a>
+            <a class="layui-btn layui-btn-sm layui-btn-primary" data-confirm="确定要切换到生产模式运行吗？" data-load="{:url('admin/api.plugs/debug')}?state=1">以生产模式运行</a>
             <!--{else}-->
             <a class="layui-btn layui-btn-sm layui-btn-primary" data-confirm="确定要切换到开发模式运行吗？" data-load="{:url('admin/api.plugs/debug')}?state=0">以开发模式运行</a>
-            <a class="layui-btn layui-btn-sm layui-btn-active">以产品模式运行</a>
+            <a class="layui-btn layui-btn-sm layui-btn-active">以生产模式运行</a>
             <!--{/if}-->
         </div>
         <div class="margin-top-20">
             <p><b>开发模式</b>：开发人员或在功能调试时使用，系统异常时会显示详细的错误信息，同时还会记录操作日志及数据库 SQL 语句信息。</p>
-            <p><b>产品模式</b>：项目正式部署上线后使用，系统异常时统一显示 “{:config('app.error_message')}”，只记录重要的异常日志信息，强烈推荐上线后使用此模式。</p>
+            <p><b>生产模式</b>：项目正式部署上线后使用，系统异常时统一显示 “{:config('app.error_message')}”，只记录重要的异常日志信息，强烈推荐上线后使用此模式。</p>
         </div>
     </div>
 </div>
