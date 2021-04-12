@@ -41,7 +41,7 @@
             </thead>
             <tbody>
             {foreach $list as $key=>$vo}
-            <tr data-dbclick>
+            <tr data-dbclick class="{if $vo.status eq 0 and isset($type) and $type eq 'index'}layui-hide{/if}">
                 <td class='list-table-check-td think-checkbox'>
                     <label><input class="list-check-box" value='{$vo.ids}' type='checkbox'></label>
                 </td>
