@@ -63,7 +63,7 @@ require.config({
         'xlsx': ['plugs/jquery/xlsx.min'],
         'excel': ['plugs/jquery/excel.xlsx'],
         'base64': ['plugs/jquery/base64.min'],
-        'upload': [tapiRoot + '/api.upload/?'],
+        'upload': [tapiRoot + '/api.upload/index?'],
         'angular': ['plugs/angular/angular.min'],
         'cropper': ['plugs/cropper/cropper.min'],
         'echarts': ['plugs/echarts/echarts.min'],
