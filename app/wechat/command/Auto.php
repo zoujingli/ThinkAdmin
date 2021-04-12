@@ -24,7 +24,7 @@ class Auto extends Command
      */
     protected function configure()
     {
-        $this->setName('xadmin:fanauto');
+        $this->setName('xadmin:fansmsg');
         $this->addArgument('openid', Argument::OPTIONAL, 'wechat user openid', '');
         $this->addArgument('autocode', Argument::OPTIONAL, 'wechat auto message', '');
         $this->setDescription('Wechat Users Push AutoMessage for ThinkAdmin');
@@ -71,7 +71,7 @@ class Auto extends Command
     private function _buildMessage(array $data)
     {
         $type = strtolower($data['type']);
-        $result = [0, '待发货的消息不符合规则'];
+        $result = [0, '待发送的消息不符合规则'];
         if ($type === 'text' && !empty($data['content'])) {
             $result = $this->_sendMessage('text', ['content' => $data['content']]);
         }
@@ -87,9 +87,9 @@ class Auto extends Command
         }
         if ($type === 'news') {
             [$item, $news] = [MediaService::instance()->news($data['news_id']), []];
-            if (!empty($item['articles'])) {
-                $host = sysconf('base.site_host');
-                foreach ($item['articles'] as $vo) array_push($news, [
+            if (isset($item['articles']) && is_array($item['articles'])) {
+                $host = sysconf('base.site_host') ?: true;
+                foreach ($item['articles'] as $vo) if (empty($news)) array_push($news, [
                     'url'   => url("@wechat/api.view/item/id/{$vo['id']}", [], false, $host)->build(),
                     'title' => $vo['title'], 'picurl' => $vo['local_url'], 'description' => $vo['digest'],
                 ]);
@@ -128,7 +128,7 @@ class Auto extends Command
             WechatService::WeChatCustom()->send([
                 $type => $data, 'touser' => $this->openid, 'msgtype' => $type,
             ]);
-            return [1, '微信消息推送成功'];
+            return [1, '向微信用户推送消息成功'];
         } catch (\Exception $exception) {
             return [0, $exception->getMessage()];
         }
