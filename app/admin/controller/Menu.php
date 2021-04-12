@@ -46,7 +46,12 @@ class Menu extends Controller
     public function index()
     {
         $this->title = '系统菜单管理';
-        $this->_page($this->table, false);
+        $query = $this->_query($this->table);
+        // 状态选项卡处理
+        $this->type = input('type', 'index');
+        if ($this->type === 'index') $query->where(['status' => 1]);
+        // 数据查询与分页
+        $query->page(false, true);
     }
 
     /**
