@@ -1,3 +1,19 @@
+<style>
+    [data-level-zero] {
+        top: -10px;
+        left: -10px;
+        right: -10px;
+        bottom: -10px;
+        color: #fff;
+        position: absolute;
+        font-size: 24px;
+        text-align: center;
+        line-height: 180px;
+        border-radius: 5px;
+        background: rgba(0, 0, 0, 0.6);
+    }
+</style>
+
 <form action="{:request()->url()}" autocomplete="off" class="layui-form layui-card" data-auto="true" method="post">
     <div class="layui-card-body padding-left-40">
 
@@ -6,7 +22,7 @@
             <div class="layui-form-item layui-row layui-col-space15">
                 <div class="layui-col-xs3 block relative">
                     <b class="color-green label-required-prev">等级序号</b><span class="margin-left-5 color-desc">Serial</span>
-                    <select class="layui-select" name="number">
+                    <select class="layui-select" name="number" lay-filter="number">
                         {for start="0" end="10" name="i"}{if isset($vo.number) and $vo.number eq $i}
                         <option selected value="{$i}">当前 VIP {$vo.number} 等级</option>
                         {else}
@@ -54,7 +70,7 @@
 
         <fieldset class="layui-form-item">
             <legend><span class="layui-badge layui-bg-cyan">升级条件</span></legend>
-            <div class="font-s13">
+            <div class="font-s13 relative">
                 <label class="layui-form-item block relative think-checkbox notselect">
                     {if isset($vo.goods_vip_status) and $vo.goods_vip_status eq 1}
                     ① <input checked lay-ignore name="goods_vip_status" type="checkbox" value="1">开启
@@ -107,6 +123,7 @@
                     <input class="inline-block text-center" data-blur-number="2" name="order_amount_number" style="width:80px" value="{$vo.order_amount_number|default='0'}">
                     元；
                 </label>
+                <div data-level-zero class="layui-hide notselect">默认等级，无需配置升级规则</div>
             </div>
         </fieldset>
 
@@ -138,5 +155,15 @@
         </div>
     </div>
 
-    <script>form.render()</script>
+    <script>
+
+        (function ($ele) {
+            form.render(), form.on('select(number)', apply);
+            apply({value: parseInt("{$vo.number|default='0'}")});
+
+            function apply(data) {
+                data.value > 0 ? $ele.addClass('layui-hide') : $ele.removeClass('layui-hide');
+            }
+        })($('[data-level-zero]'));
+    </script>
 </form>
