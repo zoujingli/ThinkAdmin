@@ -15,13 +15,13 @@
     <ul class="layui-tab-title notselect">
         {foreach $total as $k=>$v}{if isset($type) and 't'.$type eq $k}
         <li class="layui-this" data-open="{:url('index')}?type={$k}">
-            {if is_numeric($v.vip)}<span class="color-desc margin-right-5">[<b class="margin-col-5">VIP{$v.vip}</b>]</span>{/if}
-            <b>{$v.name}</b><sup class="layui-badge border-radius">{$v.count|default=0}</sup>
+            {if is_numeric($v.vip)}<span class="color-red margin-right-5">[<span class="margin-col-5">VIP{$v.vip}</span>]</span>{/if}
+            <span>{$v.name}</span><sup class="layui-badge border-radius">{$v.count|default=0}</sup>
         </li>
         {else}
         <li data-open="{:url('index')}?type={$k}">
-            {if is_numeric($v.vip)}<span class="color-desc margin-right-5">[<b class="margin-col-5">VIP{$v.vip}</b>]</span>{/if}
-            <b>{$v.name}</b><sup class="layui-badge border-radius">{$v.count|default=0}</sup>
+            {if is_numeric($v.vip)}<span class="color-desc margin-right-5">[<span class="margin-col-5">VIP{$v.vip}</span>]</span>{/if}
+            <span>{$v.name}</span><sup class="layui-badge border-radius">{$v.count|default=0}</sup>
         </li>
         {/if}{/foreach}
     </ul>
