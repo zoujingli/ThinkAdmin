@@ -56,13 +56,25 @@ class Menu extends Controller
      */
     protected function _index_page_filter(array &$data)
     {
+        $data = DataExtend::arr2tree($data);
+        // 回收站过滤有效菜单
+        if ($this->type === 'recycle') foreach ($data as $k1 => &$p1) {
+            if (!empty($p1['sub'])) foreach ($p1['sub'] as $k2 => &$p2) {
+                if (!empty($p2['sub'])) foreach ($p2['sub'] as $k3 => $p3) {
+                    if ($p3['status'] > 0) unset($p2['sub'][$k3]);
+                }
+                if (empty($p2['sub']) && ($p2['url'] === '#' or $p1['status'] > 0)) unset($p1['sub'][$k2]);
+            }
+            if (empty($p1['sub']) && ($p1['url'] === '#' or $p1['status'] > 0)) unset($data[$k1]);
+        }
+        // 菜单数据树数据变平化
+        $data = DataExtend::arr2table($data);
         foreach ($data as &$vo) {
             if ($vo['url'] !== '#' && !preg_match('#^https?://#', $vo['url'])) {
                 $vo['url'] = trim(url($vo['url']) . ($vo['params'] ? "?{$vo['params']}" : ''), '\\/');
             }
             $vo['ids'] = join(',', DataExtend::getArrSubIds($data, $vo['id']));
         }
-        $data = DataExtend::arr2table($data);
     }
 
     /**

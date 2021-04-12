@@ -1,12 +1,16 @@
 {extend name='main'}
 
 {block name="button"}
-<!--{if auth("add")}-->
+<!--{if $type eq 'index' and auth("add")}-->
 <button data-modal='{:url("add")}' data-title="添加菜单" class='layui-btn layui-btn-sm layui-btn-primary'>添加菜单</button>
 <!--{/if}-->
 
-<!--{if auth("remove")}-->
-<button data-action='{:url("remove")}' data-csrf="{:systoken('remove')}" data-rule="id#{key}" class='layui-btn layui-btn-sm layui-btn-primary'>删除菜单</button>
+<!--{if $type eq 'index' and auth("state")}-->
+<button data-action='{:url("state")}' data-csrf="{:systoken('state')}" data-rule="id#{key};status#0" class='layui-btn layui-btn-sm layui-btn-primary'>禁用菜单</button>
+<!--{/if}-->
+
+<!--{if $type eq 'recycle' and auth("state")}-->
+<button data-action='{:url("state")}' data-csrf="{:systoken('state')}" data-rule="id#{key};status#1" class='layui-btn layui-btn-sm layui-btn-primary'>激活菜单</button>
 <!--{/if}-->
 {/block}
 
@@ -22,7 +26,7 @@
     </ul>
     <div class="layui-tab-content">
         {empty name='list'}
-        <blockquote class="layui-elem-quote">没 有 记 录 哦！</blockquote>
+        <div class="notdata">没有记录哦</div>
         {else}
         <table class="layui-table" lay-skin="line">
             <thead>
@@ -41,7 +45,7 @@
             </thead>
             <tbody>
             {foreach $list as $key=>$vo}
-            <tr data-dbclick class="{if $vo.status eq 0 and isset($type) and $type eq 'index'}layui-hide{/if}">
+            <tr data-dbclick class="{if ($type eq 'index' and $vo.status eq 0)}layui-hide{/if}">
                 <td class='list-table-check-td think-checkbox'>
                     <label><input class="list-check-box" value='{$vo.ids}' type='checkbox'></label>
                 </td>
@@ -53,6 +57,9 @@
                 <td class='layui-hide-xs'>{$vo.url}</td>
                 <td class='text-center nowrap'>{eq name='vo.status' value='0'}<span class="color-red">已禁用</span>{else}<span class="color-green">已激活</span>{/eq}</td>
                 <td class='text-center nowrap notselect'>
+
+                    {if isset($type) and $type eq 'index'}
+
                     {if auth("add")}
                     <!--{if $vo.spt < 2}-->
                     <a class="layui-btn layui-btn-xs layui-btn-primary" data-title="添加子菜单" data-modal='{:url("add")}?pid={$vo.id}'>添 加</a>
@@ -69,13 +76,21 @@
                     <a class="layui-btn layui-btn-warm layui-btn-xs" data-confirm="确定要禁用菜单吗？" data-action="{:url('state')}" data-value="id#{$vo.ids};status#0" data-csrf="{:systoken('state')}">禁 用</a>
                     <!--{/if}-->
 
-                    <!--{if $vo.status eq 0 and auth("state")}-->
-                    <a class="layui-btn layui-btn-warm layui-btn-xs" data-action="{:url('state')}" data-value="id#{$vo.ids};status#1" data-csrf="{:systoken('state')}">激 活</a>
+                    {else}
+
+                    <!--{if auth("state")}-->
+                    <a class="layui-btn layui-btn-warm layui-btn-xs" data-confirm="确定要激活菜单吗？" data-action="{:url('state')}" data-value="id#{$vo.ids};status#1" data-csrf="{:systoken('state')}">激 活</a>
                     <!--{/if}-->
 
-                    <!--{if auth("remove")}-->
-                    <a class="layui-btn layui-btn-danger layui-btn-xs" data-confirm="确定要删除数据吗?" data-action="{:url('remove')}" data-value="id#{$vo.ids}" data-csrf="{:systoken('remove')}">删 除</a>
+                    <!--{if auth("remove") and ($vo.spc<1 or $vo.status<1)}-->
+                    <a class="layui-btn layui-btn-danger layui-btn-xs" data-confirm="确定要删除菜单吗?" data-action="{:url('remove')}" data-value="id#{$vo.ids}" data-csrf="{:systoken('remove')}">删 除</a>
                     <!--{/if}-->
+
+                    <!--{if auth("remove") and $vo.spc>0 and $vo.status>0}-->
+                    <a class="layui-btn layui-btn-disabled layui-btn-xs">删 除</a>
+                    <!--{/if}-->
+
+                    {/if}
                 </td>
             </tr>
             {/foreach}
