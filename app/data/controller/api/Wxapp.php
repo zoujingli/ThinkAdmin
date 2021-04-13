@@ -77,26 +77,19 @@ class Wxapp extends Controller
     {
         try {
             $input = $this->_vali([
-                'code.default'        => '', // code 与 session_key 二选一
-                'session_key.default' => '', // code 与 session_key 二选一
-                'iv.require'          => '解密向量不能为空！',
-                'encrypted.require'   => '加密内容不能为空！',
+                'iv.require'        => '解密向量不能为空！',
+                'code.require'      => '授权CODE不能为空！',
+                'encrypted.require' => '加密内容不能为空！',
             ]);
-            if (empty($input['session_key'])) {
-                if (empty($input['code'])) $this->error('登录凭证code不能为空！');
-                [, , $input['session_key']] = $this->_getSessionKey($input['code']);
-            }
+            [$openid, $unionid, $input['session_key']] = $this->_getSessionKey($input['code']);
             $result = Crypt::instance($this->config)->decode($input['iv'], $input['session_key'], $input['encrypted']);
-
-            if (is_array($result) && isset($result['openId']) && isset($result['avatarUrl']) && isset($result['nickName'])) {
+            if (is_array($result) && isset($result['avatarUrl']) && isset($result['nickName'])) {
                 $sex = ['未知', '男', '女'][$result['gender']] ?? '未知';
-                $map = empty($result['unionId']) ? [$this->field => $result['openId']] : ['unionid' => $result['unionId']];
-                $data = [$this->field => $result['openId'], 'headimg' => $result['avatarUrl'], 'nickname' => $result['nickName'], 'base_sex' => $sex];
+                $map = empty($result['unionId']) ? [$this->field => $openid] : ['unionid' => $unionid];
+                $data = [$this->field => $openid, 'headimg' => $result['avatarUrl'], 'nickname' => $result['nickName'], 'base_sex' => $sex];
                 $this->success('数据解密成功！', UserAdminService::instance()->set($map, array_merge($map, $data), $this->type, true));
-            } elseif (is_array($result) && isset($result['phoneNumber'])) {
-                $this->success('数据解密成功！', $result);
             } elseif (is_array($result)) {
-                $this->success('解码成功', $result);
+                $this->success('数据解密成功！', $result);
             } else {
                 $this->error('数据处理失败，请稍候再试！');
             }
