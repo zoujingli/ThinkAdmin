@@ -37,9 +37,9 @@
                 操作账号：<span class="font-w7">{$vo.username|default='-'}</span><br>
                 操作节点：<span class="color-desc">{$vo.node|default='-'}</span>
             </td>
-            <td class='text-left nowrap padding-row-0 padding-right-0'>
-                <p class="color-text layui-elip">{$vo.action|default='-'}</p>
-                <span class="color-desc">{$vo.content|default='-'}</span>
+            <td class='text-left padding-row-0 padding-right-0'>
+                <p class="color-text layui-elip" style='max-width:600px'>{$vo.action|default='-'}</p>
+                <p class="color-desc layui-elip" style='max-width:600px'>{$vo.content|default='-'}</p>
             </td>
             <td class='text-left nowrap'>
                 <p class="color-text">{$vo.geoip|default='-'}</p>
