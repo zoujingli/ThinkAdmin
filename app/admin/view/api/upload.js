@@ -13,6 +13,7 @@ define(['md5'], function (SparkMD5, allowMime) {
         });
         /*! 初始化上传组件 */
         option.uploader = layui.upload.render({
+            url: '{:url("admin/api.upload/file")}',
             auto: false, elem: element, accept: 'file', multiple: option.multiple,
             exts: option.exts.join('|'), acceptMime: option.mimes.join(','), choose: function (object) {
                 option.element.triggerHandler('upload.choose', option.files = object.pushFile());
