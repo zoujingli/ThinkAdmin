@@ -137,7 +137,8 @@
                 grid: [{left: '10%', right: '3%', top: '25%'}],
                 series: [
                     {
-                        smooth: true,
+                        smooth: true, showBackground: true,
+                        areaStyle: {color: 'rgba(180, 180, 180, 0.5)'},
                         type: 'line', showSymbol: true, xAxisIndex: 0, yAxisIndex: 0,
                         label: {normal: {position: 'top', formatter: '{c} 元', show: true}},
                         data: data1.map(function (item) {
@@ -166,7 +167,8 @@
                 grid: [{left: '10%', right: '3%', top: '25%'}],
                 series: [
                     {
-                        smooth: true,
+                        smooth: true, showBackground: true,
+                        areaStyle: {color: 'rgba(180, 180, 180, 0.5)'},
                         type: 'line', showSymbol: true, xAxisIndex: 0, yAxisIndex: 0,
                         label: {normal: {position: 'top', formatter: '{c} 人', show: true}},
                         data: data1.map(function (item) {
@@ -195,7 +197,8 @@
                 grid: [{left: '10%', right: '3%', top: '25%'}],
                 series: [
                     {
-                        smooth: true,
+                        smooth: true, showBackground: true,
+                        areaStyle: {color: 'rgba(180, 180, 180, 0.5)'},
                         type: 'line', showSymbol: true, xAxisIndex: 0, yAxisIndex: 0,
                         label: {normal: {position: 'top', formatter: '{c} 单', show: true}},
                         data: data1.map(function (item) {
@@ -220,7 +223,8 @@
                 yAxis: [{type: 'value', splitLine: {show: true}, gridIndex: 0, axisLabel: {formatter: '{value} 元'}}],
                 series: [
                     {
-                        smooth: true,
+                        smooth: true, showBackground: true,
+                        areaStyle: {color: 'rgba(180, 180, 180, 0.5)'},
                         type: 'line', showSymbol: true, xAxisIndex: 0, yAxisIndex: 0,
                         label: {position: 'top', formatter: '{c} 元', show: true},
                         data: data1.map(function (item) {
@@ -243,18 +247,18 @@
                 yAxis: [{type: 'value', splitLine: {show: true}, gridIndex: 0, axisLabel: {formatter: '{value} 元'}}],
                 series: [
                     {
-                        name: '充值余额',
-                        type: 'line',
-                        smooth: true,
+                        name: '充值余额', type: 'line',
+                        smooth: true, showBackground: true,
+                        areaStyle: {color: 'rgba(180, 180, 180, 0.5)'},
                         label: {position: 'top', formatter: '{c} 元', show: true},
                         data: data1.map(function (item) {
                             return item['充值余额'];
                         }),
                     },
                     {
-                        name: '消费余额',
-                        type: 'line',
-                        smooth: true,
+                        name: '消费余额', type: 'line',
+                        smooth: true, showBackground: true,
+                        areaStyle: {color: 'rgba(180, 180, 180, 0.5)'},
                         label: {formatter: '{c} 元', show: true},
                         data: data1.map(function (item) {
                             return item['消费余额'];
@@ -277,8 +281,7 @@
                 series: [
                     {
                         type: 'line',
-                        smooth: true,
-                        showBackground: true,
+                        smooth: true, showBackground: true,
                         areaStyle: {color: 'rgba(180, 180, 180, 0.5)'},
                         label: {formatter: '{c} 元', showSymbol: false, show: true},
                         data: data1.map(function (item) {
