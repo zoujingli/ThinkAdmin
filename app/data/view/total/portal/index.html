@@ -70,6 +70,11 @@
             <div id="main7" style="width:100%;height:350px"></div>
         </div>
     </div>
+    <div class="layui-col-xs12">
+        <div class="think-box-shadow">
+            <div id="main8" style="width:100%;height:350px"></div>
+        </div>
+    </div>
 </div>
 
 <label class="layui-hide">
@@ -132,6 +137,7 @@
                 grid: [{left: '10%', right: '3%', top: '25%'}],
                 series: [
                     {
+                        smooth: true,
                         type: 'line', showSymbol: true, xAxisIndex: 0, yAxisIndex: 0,
                         label: {normal: {position: 'top', formatter: '{c} 元', show: true}},
                         data: data1.map(function (item) {
@@ -160,6 +166,7 @@
                 grid: [{left: '10%', right: '3%', top: '25%'}],
                 series: [
                     {
+                        smooth: true,
                         type: 'line', showSymbol: true, xAxisIndex: 0, yAxisIndex: 0,
                         label: {normal: {position: 'top', formatter: '{c} 人', show: true}},
                         data: data1.map(function (item) {
@@ -188,6 +195,7 @@
                 grid: [{left: '10%', right: '3%', top: '25%'}],
                 series: [
                     {
+                        smooth: true,
                         type: 'line', showSymbol: true, xAxisIndex: 0, yAxisIndex: 0,
                         label: {normal: {position: 'top', formatter: '{c} 单', show: true}},
                         data: data1.map(function (item) {
@@ -212,6 +220,7 @@
                 yAxis: [{type: 'value', splitLine: {show: true}, gridIndex: 0, axisLabel: {formatter: '{value} 元'}}],
                 series: [
                     {
+                        smooth: true,
                         type: 'line', showSymbol: true, xAxisIndex: 0, yAxisIndex: 0,
                         label: {position: 'top', formatter: '{c} 元', show: true},
                         data: data1.map(function (item) {
@@ -236,6 +245,7 @@
                     {
                         name: '充值余额',
                         type: 'line',
+                        smooth: true,
                         label: {position: 'top', formatter: '{c} 元', show: true},
                         data: data1.map(function (item) {
                             return item['充值余额'];
@@ -244,6 +254,7 @@
                     {
                         name: '消费余额',
                         type: 'line',
+                        smooth: true,
                         label: {formatter: '{c} 元', show: true},
                         data: data1.map(function (item) {
                             return item['消费余额'];
@@ -252,6 +263,37 @@
                 ]
             });
         })(echarts.init(document.getElementById('main7')));
+
+        (function (charts) {
+            window.addEventListener("resize", function () {
+                charts.resize()
+            });
+            charts.setOption({
+                grid: [{left: '10%', right: '3%', top: '25%'}],
+                title: [{left: 'center', text: '近十天平台余额趋势'}],
+                tooltip: {trigger: 'axis'},
+                xAxis: [{data: days, gridIndex: 0}],
+                yAxis: [{type: 'value', splitLine: {show: true}, gridIndex: 0, axisLabel: {formatter: '{value} 元'}}],
+                series: [
+                    {
+                        type: 'line',
+                        smooth: true,
+                        showBackground: true,
+                        areaStyle: {color: 'rgba(180, 180, 180, 0.5)'},
+                        label: {formatter: '{c} 元', showSymbol: false, show: true},
+                        data: data1.map(function (item) {
+                            return item['剩余余额'];
+                        }),
+                        markLine: {
+                            data: [[
+                                {x: '90%', symbol: 'none', yAxis: 'max'},
+                                {symbol: 'circle', label: {position: 'start', formatter: '最大 {c} 元'}, type: 'max', name: '最高点'}
+                            ]]
+                        }
+                    }
+                ]
+            });
+        })(echarts.init(document.getElementById('main8')));
     });
 </script>
 

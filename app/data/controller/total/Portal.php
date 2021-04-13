@@ -33,6 +33,7 @@ class Portal extends Controller
                     '订单数量' => $this->app->db->name('ShopOrder')->whereLike('create_at', "{$date}%")->whereRaw('status>=4')->count(),
                     '订单金额' => $this->app->db->name('ShopOrder')->whereLike('create_at', "{$date}%")->whereRaw('status>=4')->sum('amount_total'),
                     '返利金额' => $this->app->db->name('DataUserRebate')->whereLike('create_at', "{$date}%")->sum('amount'),
+                    '剩余余额' => $this->app->db->name('DataUserBalance')->whereRaw("create_at<='{$date} 23:59:59' and deleted=0")->sum('amount'),
                     '充值余额' => $this->app->db->name('DataUserBalance')->whereLike('create_at', "{$date}%")->whereRaw('amount>0 and deleted=0')->sum('amount'),
                     '消费余额' => $this->app->db->name('DataUserBalance')->whereLike('create_at', "{$date}%")->whereRaw('amount<0 and deleted=0')->sum('amount'),
                 ];
