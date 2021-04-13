@@ -27,44 +27,38 @@
 </div>
 
 <script>
-    // 默认绘制位置数据
-    var defaData = JSON.parse($('#DefaPostion').val() || '{}');
-
     // 加载插件并显示界面
     require(['cropper'], function (Cropper) {
-        (function (image, cropper) {
-            cropper = new Cropper(image, {
-                aspectRatio: 1,
-                ready() {
-                    if (typeof defaData === 'object') {
-                        cropper.setData(defaData);
-                    }
-                },
-                crop() {
+        (function (image, defaData, options, cropper) {
+
+            // 初始化图片背景
+            cropper = new Cropper(image, options = {
+                aspectRatio: 1, ready() {
+                    if (typeof defaData === 'object') cropper.setData(defaData);
+                }, crop() {
                     $('#inputImage').val(image.src);
                     $('#inputData').val(JSON.stringify(cropper.getData()));
                 },
             });
-            // 背景图片切换
+
+            // 背景图片上传并切换
             $('[data-upload-image]').uploadFile(function (url) {
-                image.src = url;
-                console.log(cropper)
-                // cropper.refresh();
-                // cropper.resize();
-                cropper.replace(url, true).reset();
+                (image.src = url), cropper.destroy();
+                cropper = new Cropper(image, options);
             });
-            // 保存设置参数
+
+            // 保存图片配置参数
             $('[data-upload-commit]').on('click', function () {
                 $.form.load('{:url("")}', {image: image.src, postion: JSON.stringify(cropper.getData())}, 'post');
             });
-        })(document.getElementById('target'));
+        })(document.getElementById('target'), JSON.parse($('#DefaPostion').val() || '{}'));
+
+        // 窗口大小重置事件
+        $(window).on('resize', function () {
+            (function (height) {
+                $('#ContentBox').css('minHeight', height + 'px')
+            })($('.layui-layout-admin>.layui-body').height() - 120);
+        }).trigger('resize');
     });
-
-    $(window).on('resize', function () {
-        (function (height) {
-            $('#ContentBox').css('minHeight', height + 'px')
-        })($('.layui-layout-admin>.layui-body').height() - 120);
-    }).trigger('resize');
-
 </script>
 {/block}
