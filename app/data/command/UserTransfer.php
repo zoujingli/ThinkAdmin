@@ -157,7 +157,7 @@ class UserTransfer extends Command
     {
         $user = $this->app->db->name('DataUser')->where(['id' => $uid])->find();
         if (empty($user)) return null;
-        $appid1 = sysdata('data.wxapp_appid');
+        $appid1 = sysconf('data.wxapp_appid');
         if (strtolower(sysconf('wechat.type')) === 'api') {
             $appid2 = sysconf('wechat.appid');
         } else {
@@ -214,7 +214,7 @@ class UserTransfer extends Command
     {
         $config = $this->getConfig($item['uid']);
         [$config['appid'], $config['openid']] = [$item['appid'], $item['openid']];
-        $result = TransfersBank::instance($config)->query($item['partner_trade_no']);
+        $result = TransfersBank::instance($config)->query($item['trade_no']);
         if ($result['return_code'] === 'SUCCESS' && $result['result_code'] === 'SUCCESS') {
             if ($result['status'] === 'SUCCESS') {
                 $this->app->db->name('DataUserTransfer')->where(['code' => $item['code']])->update([
@@ -252,7 +252,7 @@ class UserTransfer extends Command
     {
         $config = $this->getConfig($item['uid']);
         [$config['appid'], $config['openid']] = [$item['appid'], $item['openid']];
-        $result = Transfers::instance($config)->query($item['partner_trade_no']);
+        $result = Transfers::instance($config)->query($item['trade_no']);
         if ($result['return_code'] === 'SUCCESS' && $result['result_code'] === 'SUCCESS') {
             $this->app->db->name('DataUserTransfer')->where(['code' => $item['code']])->update([
                 'status'      => 5,
