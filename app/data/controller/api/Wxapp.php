@@ -87,6 +87,7 @@ class Wxapp extends Controller
                 [, , $input['session_key']] = $this->_getSessionKey($input['code']);
             }
             $result = Crypt::instance($this->config)->decode($input['iv'], $input['session_key'], $input['encrypted']);
+
             if (is_array($result) && isset($result['openId']) && isset($result['avatarUrl']) && isset($result['nickName'])) {
                 $sex = ['未知', '男', '女'][$result['gender']] ?? '未知';
                 $map = empty($result['unionId']) ? [$this->field => $result['openId']] : ['unionid' => $result['unionId']];
@@ -94,6 +95,8 @@ class Wxapp extends Controller
                 $this->success('数据解密成功！', UserAdminService::instance()->set($map, array_merge($map, $data), $this->type, true));
             } elseif (is_array($result) && isset($result['phoneNumber'])) {
                 $this->success('数据解密成功！', $result);
+            } elseif (is_array($result)) {
+                $this->success('解码成功', $result);
             } else {
                 $this->error('数据处理失败，请稍候再试！');
             }
