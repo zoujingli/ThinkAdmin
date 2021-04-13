@@ -61,22 +61,3 @@
     {empty name='list'}<span class="notdata">没有记录哦</span>{else}{$pagehtml|raw|default=''}{/empty}
 </div>
 {/block}
-
-{block name='script'}
-<script>
-    (function (layers) {
-        $('body').off('click', '[data-tips-desc]').on('click', '[data-tips-desc]', function () {
-            return layers.push(layer.tips($(this).find('textarea').html(), this, {tips: 3, time: 0, maxWidth: 500})), false;
-        }).off('click', '.layui-body').on('click', '.layui-body', function () {
-            layers.forEach(function (value, index) {
-                layer.close(value), delete layers[index];
-            });
-        });
-        $(window).on('hashchange', function () {
-            layers.forEach(function (value, index) {
-                layer.close(value), delete layers[index];
-            });
-        });
-    })([]);
-</script>
-{/block}
