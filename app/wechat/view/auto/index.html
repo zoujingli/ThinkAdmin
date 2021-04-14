@@ -26,8 +26,8 @@
             </th>
             <th class="text-left nowrap">消息编号</th>
             <th class="text-left nowrap">延迟时间</th>
-            <th class="text-left nowrap">消息类型</th>
-            <th class="text-left nowrap">预览</th>
+            <th class="text-center nowrap">消息类型</th>
+            <th class="text-center nowrap">预览</th>
             <th class="text-left nowrap">添加时间</th>
             <th class="text-left nowrap">状态</th>
             <th></th>
@@ -42,20 +42,20 @@
             </td>
             <td class="text-left nowrap">{$vo.code}</td>
             <td class="text-left nowrap">{$vo.time}</td>
-            <td class="text-left nowrap">{$vo.type}</td>
-            <td class="text-left nowrap notselect">
+            <td class="text-center nowrap">{$vo.type}</td>
+            <td class="text-center nowrap notselect">
                 {if $vo.type eq '音乐'}
-                <a data-phone-view='{:url("@wechat/api.view/music")}?title={$vo.music_title|urlencode}&desc={$vo.music_desc|urlencode}'>预览 <i class="fa fa-eye"></i></a>
+                <a data-phone-view='{:url("@wechat/api.view/music")}?title={$vo.music_title|urlencode}&desc={$vo.music_desc|urlencode}'>预览</a>
                 {elseif in_array($vo.type,['文字','转客服'])}
-                <a data-phone-view='{:url("@wechat/api.view/text")}?content={$vo.content|urlencode}'>预览 <i class="fa fa-eye"></i></a>
+                <a data-phone-view='{:url("@wechat/api.view/text")}?content={$vo.content|urlencode}'>预览</a>
                 {elseif $vo.type eq '图片'}
-                <a data-phone-view='{:url("@wechat/api.view/image")}?content={$vo.image_url|urlencode}'>预览 <i class="fa fa-eye"></i></a>
+                <a data-phone-view='{:url("@wechat/api.view/image")}?content={$vo.image_url|urlencode}'>预览</a>
                 {elseif $vo.type eq '图文'}
-                <a data-phone-view='{:url("@wechat/api.view/news")}?id={$vo.news_id}'>预览 <i class="fa fa-eye"></i></a>
+                <a data-phone-view='{:url("@wechat/api.view/news")}?id={$vo.news_id}'>预览</a>
                 {elseif $vo.type eq '视频'}
-                <a data-phone-view='{:url("@wechat/api.view/video")}?title={$vo.video_title|urlencode}&desc={$vo.video_desc|urlencode}&url={$vo.video_url|urlencode}'>预览 <i class="fa fa-eye"></i></a>
+                <a data-phone-view='{:url("@wechat/api.view/video")}?title={$vo.video_title|urlencode}&desc={$vo.video_desc|urlencode}&url={$vo.video_url|urlencode}'>预览</a>
                 {elseif $vo.type eq '语音'}
-                <a data-phone-view='{:url("@wechat/api.view/voice")}?content={$vo.voice_url|urlencode}'>预览 <i class="fa fa-eye"></i></a>
+                <a data-phone-view='{:url("@wechat/api.view/voice")}?content={$vo.voice_url|urlencode}'>预览</a>
                 {else} {$vo.content} {/if}
             </td>
             <td class="text-left nowrap">{$vo.create_at|format_datetime}</td>
