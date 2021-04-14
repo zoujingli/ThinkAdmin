@@ -65,8 +65,12 @@ class Wechat extends Controller
     /**
      * 加载网页授权数据
      * @return \think\Response
+     * @throws \WeChat\Exceptions\InvalidResponseException
+     * @throws \WeChat\Exceptions\LocalCacheException
      * @throws \think\admin\Exception
+     * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\DbException
+     * @throws \think\db\exception\ModelNotFoundException
      */
     public function oauth(): Response
     {
@@ -77,10 +81,11 @@ class Wechat extends Controller
             $script[] = 'alert("Wechat WebOauth failed.")';
         } else {
             $data = $result['fansinfo'] ?? [];
-            $data['openid2'] = $data['openid'];
+            $data[$this->field] = $data['openid'];
             $data['base_sex'] = ['未知', '男', '女'][$data['sex']] ?? '未知';
+            if (isset($result['unionid'])) $data['unionid'] = $result['unionid'];
             if (isset($data['headimgurl'])) $data['headimg'] = $data['headimgurl'];
-            $map = isset($data['unionid']) ? ['unionid' => $data['unionid']] : [$this->field => $result['openid']];
+            $map = UserAdminService::instance()->getUserUniMap($this->field, $data[$this->field], $data['unionid'] ?? '');
             $result['userinfo'] = UserAdminService::instance()->set($map, array_merge($map, $data), $this->type, true);
             $script[] = "window.WeChatOpenid='{$result['openid']}'";
             $script[] = 'window.WeChatFansInfo=' . json_encode($result['fansinfo'], JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT);

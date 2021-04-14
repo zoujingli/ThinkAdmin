@@ -62,10 +62,11 @@ class Wxapp extends Controller
      */
     public function session()
     {
-        $input = $this->_vali(['code.require' => '登录凭证code不能为空！']);
-        [$openid, $unionid, $sessionKey] = $this->_getSessionKey($input['code']);
-        $map = empty($unionid) ? [$this->field => $openid] : ['unionid' => $unionid];
-        $data = array_merge($map, [$this->field => $openid, 'session_key' => $sessionKey]);
+        $input = $this->_vali(['code.require' => '登录凭证CODE不能为空！']);
+        [$openid, $unionid, $session] = $this->_getSessionKey($input['code']);
+        $map = UserAdminService::instance()->getUserUniMap($this->field, $openid, $unionid);
+        $data = [$this->field => $openid, 'session_key' => $session];
+        if (!empty($unionid)) $data['unionid'] = $unionid;
         $this->success('授权换取成功！', UserAdminService::instance()->set($map, $data, $this->type, true));
     }
 
@@ -84,10 +85,11 @@ class Wxapp extends Controller
             [$openid, $unionid, $input['session_key']] = $this->_getSessionKey($input['code']);
             $result = Crypt::instance($this->config)->decode($input['iv'], $input['session_key'], $input['encrypted']);
             if (is_array($result) && isset($result['avatarUrl']) && isset($result['nickName'])) {
-                $sex = ['未知', '男', '女'][$result['gender']] ?? '未知';
-                $map = empty($result['unionId']) ? [$this->field => $openid] : ['unionid' => $unionid];
-                $data = [$this->field => $openid, 'headimg' => $result['avatarUrl'], 'nickname' => $result['nickName'], 'base_sex' => $sex];
-                $this->success('数据解密成功！', UserAdminService::instance()->set($map, array_merge($map, $data), $this->type, true));
+                $data = [$this->field => $openid, 'nickname' => $result['nickName'], 'headimg' => $result['avatarUrl']];
+                $data['base_sex'] = ['-', '男', '女'][$result['gender']] ?? '-';
+                if (!empty($unionid)) $data['unionid'] = $unionid;
+                $map = UserAdminService::instance()->getUserUniMap($this->field, $openid, $unionid);
+                $this->success('数据解密成功！', UserAdminService::instance()->set($map, $data, $this->type, true));
             } elseif (is_array($result)) {
                 $this->success('数据解密成功！', $result);
             } else {

@@ -111,6 +111,24 @@ class UserAdminService extends Service
     }
 
     /**
+     * 获取用户查询条件
+     * @param string $field 认证字段
+     * @param string $openid 用户OPENID值
+     * @param string $unionid 用户UNIONID值
+     * @return array
+     */
+    public function getUserUniMap(string $field, string $openid, string $unionid = ''): array
+    {
+        if (!empty($unionid)) {
+            [$map1, $map2] = [[['unionid', 'eq', $unionid]], [[$field, 'eq', $openid]]];
+            if ($uid = $this->app->db->name('DataUser')->whereOr([$map1, $map2])->value('id')) {
+                return ['id' => $uid];
+            }
+        }
+        return [$field => $openid];
+    }
+
+    /**
      * 列表绑定用户数据
      * @param array $list 原数据列表
      * @param string $keys 用户UID字段
