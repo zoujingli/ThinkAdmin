@@ -117,7 +117,7 @@ class Wxapp extends Controller
             $result = Crypt::instance($this->config)->session($code);
             if (isset($result['openid']) && isset($result['session_key'])) {
                 $this->app->cache->set($code, $result, 60);
-                return [$result['openid'], $cache['unionid'] ?? '', $result['session_key']];
+                return [$result['openid'], $result['unionid'] ?? '', $result['session_key']];
             } elseif (isset($result['errmsg'])) {
                 $this->error($result['errmsg']);
             } else {

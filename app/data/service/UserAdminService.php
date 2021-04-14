@@ -120,7 +120,7 @@ class UserAdminService extends Service
     public function getUserUniMap(string $field, string $openid, string $unionid = ''): array
     {
         if (!empty($unionid)) {
-            [$map1, $map2] = [[['unionid', 'eq', $unionid]], [[$field, 'eq', $openid]]];
+            [$map1, $map2] = [[['unionid', '=', $unionid]], [[$field, '=', $openid]]];
             if ($uid = $this->app->db->name('DataUser')->whereOr([$map1, $map2])->value('id')) {
                 return ['id' => $uid];
             }
