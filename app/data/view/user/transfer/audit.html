@@ -2,7 +2,6 @@
 
     <div class="layui-card-body padding-left-40">
 
-
         <div class="layui-row layui-form-item layui-col-space15">
             <label class="layui-col-xs3">
                 <span class="color-green font-w7">提现单号</span>
@@ -21,7 +20,6 @@
                 <input class='layui-input layui-disabled layui-bg-gray' disabled value='{$vo.type|default="-"}'>
             </label>
         </div>
-
 
         {in name='vo.type' value='wechat_qrcode,alipay_qrcode'}
         <fieldset class="layui-form-item">
@@ -83,9 +81,9 @@
 
             {if $vo.status eq 2}
             <!--{in name='vo.type' value='wechat_wallet,wechat_banks'}-->
-            {php} $types = [2=>'审核已通过', 3=>'自动打款']; {/php}
+            {php} $types = [2=>'审核通过', 3=>'自动打款']; {/php}
             <!--{else}-->
-            {php} $types = [2=>'审核已通过', 3=>'线下打款']; {/php}
+            {php} $types = [2=>'审核通过', 3=>'准备打款', 4=>'已经打款']; {/php}
             <!--{/in}-->
             {/if}
 
@@ -93,7 +91,7 @@
             <!--{in name='vo.type' value='wechat_wallet,wechat_banks'}-->
             {php} $types = [3=>'正在打款']; {/php}
             <!--{else}-->
-            {php} $types = [3=>'线下打款', 4=>'已经打款']; {/php}
+            {php} $types = [3=>'准备打款', 4=>'已经打款']; {/php}
             <!--{/in}-->
             {/if}
 

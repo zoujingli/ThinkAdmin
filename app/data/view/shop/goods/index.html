@@ -80,18 +80,15 @@
                     </div>
                 </td>
                 <td class='nowrap'>
-                    <div>创建时间：{$vo.create_at|format_datetime}</div>
-                    <div>
-                        {eq name='vo.status' value='0'}<span class="layui-badge">已下架</span>{else}<span class="layui-badge layui-bg-green">销售中</span>{/eq}
-                        {eq name='vo.vip_entry' value='0'}<span class="layui-badge layui-bg-blue">非入会礼包</span>{else}<span class="layui-badge layui-bg-green">是入会礼包</span>{/eq}
-                        {eq name='vo.truck_type' value='0'}<span class="layui-badge layui-bg-blue">无需发货</span>{else}<span class="layui-badge layui-bg-green">需要发货</span>{/eq}
-                        {eq name='vo.rebate_type' value='0'}<span class="layui-badge layui-bg-blue">非返利商品</span>{else}<span class="layui-badge layui-bg-green">是返利商品</span>{/eq}
+                    累计库存 <b>{$vo.stock_total}</b> 件，剩余库存 <b>{$vo.stock_total-$vo.stock_sales}</b> 件 ( 已销售 <b>{$vo.stock_sales}</b> 件 )
+                    <div class="notselect margin-top-5">
+                        {eq name='vo.status' value='0'}<span class="layui-badge layui-bg-gray layui-border-red">已下架</span>{else}<span class="layui-badge layui-bg-gray layui-border-green">销售中</span>{/eq}
+                        {eq name='vo.vip_entry' value='0'}<span class="layui-badge layui-bg-gray layui-border-blue">非入会礼包</span>{else}<span class="layui-badge layui-bg-gray layui-border-green">是入会礼包</span>{/eq}
+                        {eq name='vo.truck_type' value='0'}<span class="layui-badge layui-bg-gray layui-border-blue">无需发货</span>{else}<span class="layui-badge layui-bg-gray layui-border-green">需要发货</span>{/eq}
+                        {eq name='vo.rebate_type' value='0'}<span class="layui-badge layui-bg-gray layui-border-blue">非返利商品</span>{else}<span class="layui-badge layui-bg-gray layui-border-green">是返利商品</span>{/eq}
                     </div>
                 </td>
                 <td class='nowrap sub-strong-blue'>
-                    <div class="margin-bottom-5">
-                        剩余库存 <b>{$vo.stock_total-$vo.stock_sales}</b> 件 ( 已销售 <b>{$vo.stock_sales}</b> 件 )
-                    </div>
 
                     <!--{if auth('copy')}-->
                     <a class="layui-btn layui-btn-xs layui-btn-normal" data-open='{:url("copy")}?code={$vo.code}'>复 制</a>
