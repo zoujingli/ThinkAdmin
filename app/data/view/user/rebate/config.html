@@ -183,10 +183,17 @@
                                                 {/if}
                                             </legend>
                                             <div class="layui-form-item">
+                                                {php} $key = 'direct_type_vip_'.$level['number']; {/php}
+                                                {php} $data[$key] = $data[$key] ?? 1; {/php}
+                                                {foreach [1 => '奖励固定金额 / 每单',2 => '按订单参与的返利金额比例'] as $k => $v}
+                                                {if isset($data[$key]) and $data[$key] eq $k}
+                                                <input checked class="layui-input" name="{$key}" title="{$v}" type="radio" value="{$k}">
+                                                {else}
+                                                <input class="layui-input" name="{$key}" title="{$v}" type="radio" value="{$k}">
+                                                {/if}{/foreach}
                                                 {php} $key = 'direct_value_vip_'.$level['number']; {/php}
-                                                <input class="layui-input" name="direct_type_vip_{$level.number}" type="hidden" value="2">
                                                 <label class="block nowrap">
-                                                    <span class="color-blue"><b>请输入团队业绩金额比例</b>（ 如：比例填写 10.00 表示 10.00% ）</span>
+                                                    <span class="color-blue"><b>请输入奖励金额或返利金额比例</b>（ 如：比例填写 10.00 表示 10.00% 或 10.00 元 ）</span>
                                                     <input class="layui-input" data-blur-number="4" name="{$key}" placeholder="请输入奖励金额或返利金额比例" type="text" value="{$data[$key]??'0.0000'}">
                                                 </label>
                                             </div>
@@ -205,10 +212,17 @@
                                                 {/if}
                                             </legend>
                                             <div class="layui-form-item nowrap">
+                                                {php} $key = 'indirect_type_vip_'.$level['number']; {/php}
+                                                {php} $data[$key] = $data[$key] ?? 1; {/php}
+                                                {foreach [1 => '奖励固定金额 / 每单',2 => '按订单参与的返利金额比例'] as $k => $v}
+                                                {if isset($data[$key]) and $data[$key] eq $k}
+                                                <input checked class="layui-input" name="{$key}" title="{$v}" type="radio" value="{$k}">
+                                                {else}
+                                                <input class="layui-input" name="{$key}" title="{$v}" type="radio" value="{$k}">
+                                                {/if}{/foreach}
                                                 {php} $key = 'indirect_value_vip_'.$level['number']; {/php}
-                                                <input class="layui-input" name="indirect_type_vip_{$level.number}" type="hidden" value="2">
                                                 <label class="block">
-                                                    <span class="color-blue"><b>请输入团队业绩金额比例</b>（ 如：比例填写 10.00 表示 10.00% ）</span>
+                                                    <span class="color-blue"><b>请输入奖励金额或返利金额比例</b>（ 如：比例填写 10.00 表示 10.00% 或 10.00 元 ）</span>
                                                     <input class="layui-input" data-blur-number="4" name="{$key}" placeholder="请输入奖励金额或返利金额比例" type="text" value="{$data[$key]??'0.0000'}">
                                                 </label>
                                             </div>

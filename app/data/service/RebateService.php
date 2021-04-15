@@ -262,11 +262,16 @@ class RebateService extends Service
         $key = "{$this->user['vip_code']}";
         $map = ['type' => self::PRIZE_03, 'order_no' => $this->order['order_no'], 'order_uid' => $this->order['uid']];
         if ($this->config("direct_state_vip_{$key}") && $this->app->db->name($this->table)->where($map)->count() < 1) {
-            $rate = $this->config("direct_value_vip_{$key}");
-            $name = "{$this->name(self::PRIZE_03)}，订单 {$rate}%";
-            $amount = floatval($rate * $this->order['rebate_amount'] / 100);
+            $value = $this->config("direct_value_vip_{$key}");
+            if ($this->config("direct_type_vip_{$key}") == 1) {
+                $val = floatval($value ?: '0.00');
+                $name = "{$this->name(self::PRIZE_03)}，每人 {$val} 元";
+            } else {
+                $val = floatval($value * $this->order['rebate_amount'] / 100);
+                $name = "{$this->name(self::PRIZE_03)}，订单 {$value}%";
+            }
             // 写入返利记录
-            $this->writeRabate($this->from1['id'], $map, $name, $amount);
+            $this->writeRabate($this->from1['id'], $map, $name, $val);
         }
         return true;
     }
@@ -285,11 +290,16 @@ class RebateService extends Service
         $key = "{$this->user['vip_code']}";
         $map = ['type' => self::PRIZE_04, 'order_no' => $this->order['order_no'], 'order_uid' => $this->order['uid']];
         if ($this->config("indirect_state_vip_{$key}") && $this->app->db->name($this->table)->where($map)->count() < 1) {
-            $rate = $this->config("indirect_value_vip_{$key}");
-            $name = "{$this->name(self::PRIZE_04)}，订单 {$rate}%";
-            $amount = floatval($rate * $this->order['rebate_amount'] / 100);
+            $value = $this->config("indirect_value_vip_{$key}");
+            if ($this->config("indirect_type_vip_{$key}") == 1) {
+                $val = floatval($value ?: '0.00');
+                $name = "{$this->name(self::PRIZE_03)}，每人 {$val} 元";
+            } else {
+                $val = floatval($value * $this->order['rebate_amount'] / 100);
+                $name = "{$this->name(self::PRIZE_03)}，订单 {$value}%";
+            }
             // 写入返利记录
-            $this->writeRabate($this->from2['id'], $map, $name, $amount);
+            $this->writeRabate($this->from2['id'], $map, $name, $val);
         }
         return true;
     }
