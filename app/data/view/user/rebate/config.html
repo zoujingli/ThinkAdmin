@@ -14,7 +14,7 @@
                             <div class="layui-form-item">
                                 {php} $data['settl_type'] = $data['settl_type'] ?? 1; {/php}
                                 {foreach [1 => '支付后立即到账', 2 => '确认收货后到账'] as $key => $val}{if $data.settl_type eq $key}
-                                <input checked class="layui-input" name="settl_type" title="{$val}" type="radio" value="{$key}">
+                                <input class="layui-input" name="settl_type" title="{$val}" type="radio" value="{$key}" checked>
                                 {else}
                                 <input class="layui-input" name="settl_type" title="{$val}" type="radio" value="{$key}">
                                 {/if}{/foreach}
@@ -27,7 +27,7 @@
                             <div class="layui-form-item">
                                 {php} $data['teams_type'] = $data['teams_type'] ?? 1; {/php}
                                 {foreach [1 => '实时结算'] as $key=>$val}{if $data.teams_type eq $key}
-                                <input checked class="layui-input" name="teams_type" title="{$val}" type="radio" value="{$key}">
+                                <input class="layui-input" name="teams_type" title="{$val}" type="radio" value="{$key}" checked>
                                 {else}
                                 <input class="layui-input" name="teams_type" title="{$val}" type="radio" value="{$key}">
                                 {/if}{/foreach}
@@ -58,20 +58,16 @@
                                     </legend>
                                     <div class="layui-form-item">
                                         <div class="layui-row layui-col-space20">
-                                            <div class="layui-col-xs6">
-                                                <label class="block">
-                                                    {php} $key = 'equal_value_vip_1_'.$level['number']; {/php}
-                                                    <span><b class="color-blue">请输入直属上级奖励金额</b><br>如：比例填写 10.00 表示 10.00 元</span>
-                                                    <input class="layui-input" data-blur-number="2" name="{$key}" placeholder="请输入奖励金额" type="text" value="{$data[$key]??'0.00'}">
-                                                </label>
-                                            </div>
-                                            <div class="layui-col-xs6">
-                                                <label class="block">
-                                                    {php} $key = 'equal_value_vip_2_'.$level['number']; {/php}
-                                                    <span><b class="color-blue">请输入上上级奖励金额</b><br>如：比例填写 10.00 表示 10.00 元</span>
-                                                    <input class="layui-input" data-blur-number="2" name="{$key}" placeholder="请输入奖励金额" type="text" value="{$data[$key]??'0.00'}">
-                                                </label>
-                                            </div>
+                                            <label class="layui-col-xs6">
+                                                {php} $key = 'equal_value_vip_1_'.$level['number']; {/php}
+                                                <span><b class="color-blue">请输入直属上级奖励金额</b><br>如：比例填写 10.00 表示 10.00 元</span>
+                                                <input class="layui-input" data-blur-number="2" name="{$key}" placeholder="请输入奖励金额" type="text" value="{$data[$key]??'0.00'}">
+                                            </label>
+                                            <label class="layui-col-xs6">
+                                                {php} $key = 'equal_value_vip_2_'.$level['number']; {/php}
+                                                <span><b class="color-blue">请输入上上级奖励金额</b><br>如：比例填写 10.00 表示 10.00 元</span>
+                                                <input class="layui-input" data-blur-number="2" name="{$key}" placeholder="请输入奖励金额" type="text" value="{$data[$key]??'0.00'}">
+                                            </label>
                                         </div>
                                     </div>
                                 </fieldset>
@@ -110,7 +106,7 @@
                                                         <input name="{$key}" type="hidden" value="0">
                                                         {php} $data[$key] = $data[$key] ?? 0; {/php}
                                                         {if isset($data[$key]) and $data[$key] eq 1}
-                                                        <input checked lay-skin="switch" lay-text="已启用首推奖励|已停用首推奖励" name="{$key}" type="checkbox" value="1">
+                                                        <input lay-skin="switch" lay-text="已启用首推奖励|已停用首推奖励" name="{$key}" type="checkbox" value="1" checked>
                                                         {else}
                                                         <input lay-skin="switch" lay-text="已启用首推奖励|已停用首推奖励" name="{$key}" type="checkbox" value="1">
                                                         {/if}
@@ -121,13 +117,12 @@
                                                         {php} $data[$key] = $data[$key] ?? 1; {/php}
                                                         {foreach [1 => '奖励固定金额 / 每单',2 => '按订单参与的返利金额比例'] as $k => $v}
                                                         {if isset($data[$key]) and $data[$key] eq $k}
-                                                        <input checked class="layui-input" name="{$key}" title="{$v}" type="radio" value="{$k}">
+                                                        <input class="layui-input" name="{$key}" title="{$v}" type="radio" value="{$k}" checked>
                                                         {else}
                                                         <input class="layui-input" name="{$key}" title="{$v}" type="radio" value="{$k}">
                                                         {/if}{/foreach}
-                                                        {php} $key = 'frist_value_vip_'.$level['number'].'_'.$l['number']; {/php}
-                                                        <input name="{$key}" type="hidden" value="0.0000">
                                                         <label class="block relative">
+                                                            {php} $key = 'frist_value_vip_'.$level['number'].'_'.$l['number']; {/php}
                                                             <span class="color-blue"><b>请输入奖励金额或返利金额比例</b>（ 如：比例填写 10.00 表示 10.00% 或 10.00 元 ）</span>
                                                             <input class="layui-input" data-blur-number="4" name="{$key}" placeholder="请输入奖励金额或返利金额比例" type="text" value="{$data[$key]??'0.00000'}">
                                                         </label>
@@ -141,7 +136,7 @@
                                                         <input name="{$key}" type="hidden" value="0">
                                                         {php} $data[$key] = $data[$key] ?? 0; {/php}
                                                         {if isset($data[$key]) and $data[$key] eq 1}
-                                                        <input checked lay-skin="switch" lay-text="已启用复购奖励|已停用复购奖励" name="{$key}" type="checkbox" value="1">
+                                                        <input lay-skin="switch" lay-text="已启用复购奖励|已停用复购奖励" name="{$key}" type="checkbox" value="1" checked>
                                                         {else}
                                                         <input lay-skin="switch" lay-text="已启用复购奖励|已停用复购奖励" name="{$key}" type="checkbox" value="1">
                                                         {/if}
@@ -151,12 +146,12 @@
                                                         {php} $data[$key] = $data[$key] ?? 1; {/php}
                                                         {foreach [1 => '奖励固定金额 / 每单', 2 => '按订单参与的返利金额比例'] as $k => $v}
                                                         {if isset($data[$key]) and $data[$key] eq $k}
-                                                        <input checked class="layui-input" name="{$key}" title="{$v}" type="radio" value="{$k}">
+                                                        <input class="layui-input" name="{$key}" title="{$v}" type="radio" value="{$k}" checked>
                                                         {else}
                                                         <input class="layui-input" name="{$key}" title="{$v}" type="radio" value="{$k}">
                                                         {/if}{/foreach}
-                                                        {php} $key = 'repeat_value_vip_'.$level['number'].'_'.$l['number']; {/php}
                                                         <label class="block relative">
+                                                            {php} $key = 'repeat_value_vip_'.$level['number'].'_'.$l['number']; {/php}
                                                             <span class="color-blue"><b>请输入奖励金额或返利金额比例</b>（ 如：比例填写 10.00 表示 10.00% 或 10.00 元 ）</span>
                                                             <input class="layui-input" data-blur-number="4" name="{$key}" placeholder="请输入奖励金额或返利金额比例" type="text" value="{$data[$key]??'0.0000'}">
                                                         </label>
@@ -177,7 +172,7 @@
                                                 <input name="{$key}" type="hidden" value="0">
                                                 {php} $data[$key] = $data[$key] ?? 0; {/php}
                                                 {if isset($data[$key]) and $data[$key] eq 1}
-                                                <input checked lay-skin="switch" lay-text="已启用 {$level.name} 的直属团队奖励|已停用 {$level.name} 的直属团队奖励" name="{$key}" type="checkbox" value="1">
+                                                <input lay-skin="switch" lay-text="已启用 {$level.name} 的直属团队奖励|已停用 {$level.name} 的直属团队奖励" name="{$key}" type="checkbox" value="1" checked>
                                                 {else}
                                                 <input lay-skin="switch" lay-text="已启用 {$level.name} 的直属团队奖励|已停用 {$level.name} 的直属团队奖励" name="{$key}" type="checkbox" value="1">
                                                 {/if}
@@ -187,12 +182,12 @@
                                                 {php} $data[$key] = $data[$key] ?? 1; {/php}
                                                 {foreach [1 => '奖励固定金额 / 每单',2 => '按订单参与的返利金额比例'] as $k => $v}
                                                 {if isset($data[$key]) and $data[$key] eq $k}
-                                                <input checked class="layui-input" name="{$key}" title="{$v}" type="radio" value="{$k}">
+                                                <input class="layui-input" name="{$key}" title="{$v}" type="radio" value="{$k}" checked>
                                                 {else}
                                                 <input class="layui-input" name="{$key}" title="{$v}" type="radio" value="{$k}">
                                                 {/if}{/foreach}
-                                                {php} $key = 'direct_value_vip_'.$level['number']; {/php}
                                                 <label class="block nowrap">
+                                                    {php} $key = 'direct_value_vip_'.$level['number']; {/php}
                                                     <span class="color-blue"><b>请输入奖励金额或返利金额比例</b>（ 如：比例填写 10.00 表示 10.00% 或 10.00 元 ）</span>
                                                     <input class="layui-input" data-blur-number="4" name="{$key}" placeholder="请输入奖励金额或返利金额比例" type="text" value="{$data[$key]??'0.0000'}">
                                                 </label>
@@ -206,7 +201,7 @@
                                                 <input name="{$key}" type="hidden" value="0">
                                                 {php} $data[$key] = $data[$key] ?? 0; {/php}
                                                 {if isset($data[$key]) and $data[$key] eq 1}
-                                                <input checked lay-skin="switch" lay-text="已启用 {$level.name} 的间接团队奖励|已停用 {$level.name} 的间接团队奖励" name="{$key}" type="checkbox" value="1">
+                                                <input lay-skin="switch" lay-text="已启用 {$level.name} 的间接团队奖励|已停用 {$level.name} 的间接团队奖励" name="{$key}" type="checkbox" value="1" checked>
                                                 {else}
                                                 <input lay-skin="switch" lay-text="已启用 {$level.name} 的间接团队奖励|已停用 {$level.name} 的间接团队奖励" name="{$key}" type="checkbox" value="1">
                                                 {/if}
@@ -216,12 +211,12 @@
                                                 {php} $data[$key] = $data[$key] ?? 1; {/php}
                                                 {foreach [1 => '奖励固定金额 / 每单',2 => '按订单参与的返利金额比例'] as $k => $v}
                                                 {if isset($data[$key]) and $data[$key] eq $k}
-                                                <input checked class="layui-input" name="{$key}" title="{$v}" type="radio" value="{$k}">
+                                                <input class="layui-input" name="{$key}" title="{$v}" type="radio" value="{$k}" checked>
                                                 {else}
                                                 <input class="layui-input" name="{$key}" title="{$v}" type="radio" value="{$k}">
                                                 {/if}{/foreach}
-                                                {php} $key = 'indirect_value_vip_'.$level['number']; {/php}
                                                 <label class="block">
+                                                    {php} $key = 'indirect_value_vip_'.$level['number']; {/php}
                                                     <span class="color-blue"><b>请输入奖励金额或返利金额比例</b>（ 如：比例填写 10.00 表示 10.00% 或 10.00 元 ）</span>
                                                     <input class="layui-input" data-blur-number="4" name="{$key}" placeholder="请输入奖励金额或返利金额比例" type="text" value="{$data[$key]??'0.0000'}">
                                                 </label>
@@ -248,13 +243,12 @@
                                                 {php} $data[$key] = $data[$key] ?? 1; {/php}
                                                 {foreach [1 => '奖励固定金额 / 每单',2 => '按订单参与的返利金额比例'] as $k => $v}
                                                 {if isset($data[$key]) and $data[$key] eq $k}
-                                                <input checked class="layui-input" name="{$key}" title="{$v}" type="radio" value="{$k}">
+                                                <input class="layui-input" name="{$key}" title="{$v}" type="radio" value="{$k}" checked>
                                                 {else}
                                                 <input class="layui-input" name="{$key}" title="{$v}" type="radio" value="{$k}">
                                                 {/if}{/foreach}
-                                                {php} $key = 'upgrade_value_vip_'.$level['number']; {/php}
-                                                <input class="layui-input" name="upgrade_type_vip_{$level.number}" type="hidden" value="2">
                                                 <label class="block">
+                                                    {php} $key = 'upgrade_value_vip_'.$level['number']; {/php}
                                                     <span class="color-blue"><b>请输入固定奖励金额</b>（ 如：比例填写 10.00 表示 10.00 元或 10.00% ）<b class="color-red">仅针对订单升级有效！</b></span>
                                                     <input class="layui-input" data-blur-number="4" name="{$key}" placeholder="请输入奖励金额或返利金额比例" type="text" value="{$data[$key]??'0.0000'}">
                                                 </label>
@@ -278,7 +272,7 @@
                                                 {php} $data[$key] = $data[$key] ?? 1; {/php}
                                                 {foreach [1 => '不累计未发管理奖金额', 2 => '累计未发放管理奖金'] as $k => $v}
                                                 {if isset($data[$key]) and $data[$key] eq $k}
-                                                <input checked class="layui-input" name="{$key}" title="{$v}" type="radio" value="{$k}">
+                                                <input class="layui-input" name="{$key}" title="{$v}" type="radio" value="{$k}" checked>
                                                 {else}
                                                 <input class="layui-input" name="{$key}" title="{$v}" type="radio" value="{$k}">
                                                 {/if}{/foreach}
