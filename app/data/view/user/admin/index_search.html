@@ -101,16 +101,16 @@
             items.push(['用户编号', '小程序OPENID', '公众号OPNID', '用户姓名', '用户等级', '累计充值余额', '已使用余额', '累计返利金额', '锁定返利金额', '已提现金额', '注册时间']);
             data.forEach(function (item) {
                 items.push([
-                    item.id,
+                    {v: item.id, t: 'n'},
                     item.openid1,
                     item.openid2,
                     item.username || item.nickname || '',
                     item.vip_name,
-                    item.balance_total,
-                    item.balance_used,
-                    item.rebate_total,
-                    item.rebate_lock,
-                    item.rebate_used,
+                    {v: item.balance_total, t: 'n'},
+                    {v: item.balance_used, t: 'n'},
+                    {v: item.rebate_total, t: 'n'},
+                    {v: item.rebate_lock, t: 'n'},
+                    {v: item.rebate_used, t: 'n'},
                     item.create_at || '',
                 ]);
             });
