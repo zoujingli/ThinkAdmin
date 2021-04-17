@@ -9,7 +9,7 @@
 {block name="content"}
 <div class="layui-tab layui-tab-card">
     <ul class="layui-tab-title notselect">
-        {php}$types = ['ta' => '全部订单', 't2' => '待支付的订单', 't3' => '待审核的订单', 't4' => '待发货的订单', 't5' => '待收货的订单', 't6' => '已完成的订单', 't0' => '已取消的订单'];{/php}
+        {php}$types = ['ta' => '全部订单', 't2' => '等待支付', 't3' => '等待审核', 't4' => '等待发货', 't5' => '等待收货', 't6' => '已经完成', 't0' => '已经取消'];{/php}
         {foreach $types as $k=>$v}{if isset($type) and 't'.$type eq $k}
         <li class="layui-this" data-open="{:url('index')}?type={$k}">{$v}<sup class="layui-badge border-radius">{$total[$k]??0}</sup></li>
         {else}
@@ -59,13 +59,13 @@
                     </div>
                 </td>
                 <td class='nowrap'>
-                    {eq name='vo.status' value='0'}<span class="layui-badge layui-badge-middle layui-bg-gray layui-border-cyan" data-tips-text="{$vo.cancel_remark}">已取消</span>{/eq}
-                    {eq name='vo.status' value='1'}<span class="layui-badge layui-badge-middle layui-bg-red">预订单</span>{/eq}
-                    {eq name='vo.status' value='2'}<span class="layui-badge layui-badge-middle layui-bg-red">待付款</span>{/eq}
-                    {eq name='vo.status' value='3'}<span class="layui-badge layui-badge-middle layui-bg-orange">待审核</span>{/eq}
-                    {eq name='vo.status' value='4'}<span class="layui-badge layui-badge-middle layui-bg-black">待发货</span>{/eq}
-                    {eq name='vo.status' value='5'}<span class="layui-badge layui-badge-middle layui-bg-green">已发货</span>{/eq}
-                    {eq name='vo.status' value='6'}<span class="layui-badge layui-badge-middle layui-bg-blue">已完成</span>{/eq}
+                    {eq name='vo.status' value='0'}<span class="layui-badge layui-badge-middle layui-bg-gray layui-border-cyan" data-tips-text="{$vo.cancel_remark}">已经取消</span>{/eq}
+                    {eq name='vo.status' value='1'}<span class="layui-badge layui-badge-middle layui-bg-red">预购订单</span>{/eq}
+                    {eq name='vo.status' value='2'}<span class="layui-badge layui-badge-middle layui-bg-red">等待待付款</span>{/eq}
+                    {eq name='vo.status' value='3'}<span class="layui-badge layui-badge-middle layui-bg-orange">等待审核</span>{/eq}
+                    {eq name='vo.status' value='4'}<span class="layui-badge layui-badge-middle layui-bg-black">等待发货</span>{/eq}
+                    {eq name='vo.status' value='5'}<span class="layui-badge layui-badge-middle layui-bg-green">已经发货</span>{/eq}
+                    {eq name='vo.status' value='6'}<span class="layui-badge layui-badge-middle layui-bg-blue">已经完成</span>{/eq}
                     <div class="inline-block text-middle">
                         <div class="sub-strong-blue">
                             订单单号：<b>{$vo.order_no|default=''}</b>
