@@ -34,7 +34,7 @@
             <label class="layui-input-inline">
                 <select class="layui-select" name="status">
                     <option value="">-- 全部 --</option>
-                    {foreach ['已取消的订单','待发货的订单','已发货的订单'] as $k=>$v}
+                    {foreach ['已经取消','等待发货','已经发货'] as $k=>$v}
                     {if input('status') eq $k.''}
                     <option selected value="{$k}">{$v}</option>
                     {else}
