@@ -54,11 +54,11 @@
         </tbody>
     </table>
     {empty name='list'}<span class="notdata">没有记录哦</span>{else}{$pagehtml|raw|default=''}{/empty}
-    <div class="absolute" style="bottom:5px;right:10px">
-        <!--{if auth("add")}-->
+    <!--{if auth("add")}-->
+    <div class="fixed" style="bottom:5px;right:10px">
         <button class='layui-btn layui-btn-sm' data-modal='{:url("add")}' data-title="添加标签" data-width="500px" type="button">添加标签</button>
-        <!--{/if}-->
     </div>
+    <!--{/if}-->
 </div>
 {/block}
 
