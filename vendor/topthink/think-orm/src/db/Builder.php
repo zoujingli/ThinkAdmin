@@ -136,7 +136,7 @@ abstract class Builder
         }
 
         if (empty($fields)) {
-            if ('*' == $options['field']) {
+            if (empty($options['field']) || '*' == $options['field']) {
                 $fields = array_keys($bind);
             } else {
                 $fields = $options['field'];
@@ -1125,7 +1125,7 @@ abstract class Builder
                 $this->parseTable($query, $options['table']),
                 $this->parseDistinct($query, $options['distinct']),
                 $this->parseExtra($query, $options['extra']),
-                $this->parseField($query, $options['field']),
+                $this->parseField($query, $options['field'] ?? '*'),
                 $this->parseJoin($query, $options['join']),
                 $this->parseWhere($query, $options['where']),
                 $this->parseGroup($query, $options['group']),
@@ -1187,7 +1187,7 @@ abstract class Builder
         $bind = $query->getFieldsBindType();
 
         // 获取合法的字段
-        if ('*' == $options['field']) {
+        if (empty($options['field']) || '*' == $options['field']) {
             $allowFields = array_keys($bind);
         } else {
             $allowFields = $options['field'];

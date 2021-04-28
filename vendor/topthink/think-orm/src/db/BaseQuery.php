@@ -1163,10 +1163,6 @@ abstract class BaseQuery
             $this->parseView($options);
         }
 
-        if (!isset($options['field'])) {
-            $options['field'] = '*';
-        }
-
         foreach (['data', 'order', 'join', 'union'] as $name) {
             if (!isset($options[$name])) {
                 $options[$name] = [];

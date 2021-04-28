@@ -449,6 +449,7 @@ return array(
     'think\\event\\AppInit' => $vendorDir . '/topthink/framework/src/think/event/AppInit.php',
     'think\\event\\HttpEnd' => $vendorDir . '/topthink/framework/src/think/event/HttpEnd.php',
     'think\\event\\HttpRun' => $vendorDir . '/topthink/framework/src/think/event/HttpRun.php',
+    'think\\event\\LogRecord' => $vendorDir . '/topthink/framework/src/think/event/LogRecord.php',
     'think\\event\\LogWrite' => $vendorDir . '/topthink/framework/src/think/event/LogWrite.php',
     'think\\event\\RouteLoaded' => $vendorDir . '/topthink/framework/src/think/event/RouteLoaded.php',
     'think\\exception\\ClassNotFoundException' => $vendorDir . '/topthink/framework/src/think/exception/ClassNotFoundException.php',

@@ -104,13 +104,14 @@ class ProcessService extends Service
     /**
      * 查询相关进程列表
      * @param string $command 任务指令
+     * @param string $name 执行名称
      * @return array
      */
-    public function query(string $command): array
+    public function query(string $command, $name = 'php.exe'): array
     {
         $list = [];
         if ($this->iswin()) {
-            $lines = $this->exec('wmic process where name="php.exe" get processid,CommandLine', true);
+            $lines = $this->exec('wmic process where name="' . $name . '" get processid,CommandLine', true);
             foreach ($lines as $line) if ($this->_issub($line, $command) !== false) {
                 $attr = explode(' ', $this->_space($line));
                 $list[] = ['pid' => array_pop($attr), 'cmd' => join(' ', $attr)];

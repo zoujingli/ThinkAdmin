@@ -578,6 +578,7 @@ class ComposerStaticInit3e3e984682c06e656fe76c5d84347fb3
         'think\\event\\AppInit' => __DIR__ . '/..' . '/topthink/framework/src/think/event/AppInit.php',
         'think\\event\\HttpEnd' => __DIR__ . '/..' . '/topthink/framework/src/think/event/HttpEnd.php',
         'think\\event\\HttpRun' => __DIR__ . '/..' . '/topthink/framework/src/think/event/HttpRun.php',
+        'think\\event\\LogRecord' => __DIR__ . '/..' . '/topthink/framework/src/think/event/LogRecord.php',
         'think\\event\\LogWrite' => __DIR__ . '/..' . '/topthink/framework/src/think/event/LogWrite.php',
         'think\\event\\RouteLoaded' => __DIR__ . '/..' . '/topthink/framework/src/think/event/RouteLoaded.php',
         'think\\exception\\ClassNotFoundException' => __DIR__ . '/..' . '/topthink/framework/src/think/exception/ClassNotFoundException.php',
