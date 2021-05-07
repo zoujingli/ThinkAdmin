@@ -169,13 +169,16 @@ class Goods extends Controller
             if (empty($data['slider'])) $this->error('轮播图片不能为空！');
             if (empty($data['payment'])) $this->error('支付方式不能为空！');
             // 商品规格保存
+            [$data['price_market'], $data['price_selling']] = [0, 0];
             [$count, $items] = [0, array_column(json_decode($data['data_items'], true), 0)];
-            foreach ($items as $item) $count += intval($item['status']);
+            foreach ($items as $item) if ($item['status'] > 0) {
+                if ($data['price_market'] > $item['market']) $data['price_market'] = $item['market'];
+                if ($data['price_selling'] > $item['selling']) $data['price_selling'] = $item['selling'];
+                $count++;
+            }
             if (empty($count)) $this->error('无效的的商品价格信息！');
             $data['marks'] = arr2str($data['marks'] ?? []);
             $data['payment'] = arr2str($data['payment'] ?? []);
-            if (empty($data['price_market'])) $data['price_market'] = min(array_column($items, 'market'));
-            if (empty($data['price_selling'])) $data['price_selling'] = min(array_column($items, 'selling'));
             $this->app->db->name('ShopGoodsItem')->where(['goods_code' => $data['code']])->update(['status' => 0]);
             foreach ($items as $item) data_save('ShopGoodsItem', [
                 'goods_sku'       => $item['sku'],
