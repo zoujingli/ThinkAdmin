@@ -172,8 +172,8 @@ class Goods extends Controller
             [$data['price_market'], $data['price_selling']] = [0, 0];
             [$count, $items] = [0, array_column(json_decode($data['data_items'], true), 0)];
             foreach ($items as $item) if ($item['status'] > 0) {
-                if ($data['price_market'] > $item['market']) $data['price_market'] = $item['market'];
-                if ($data['price_selling'] > $item['selling']) $data['price_selling'] = $item['selling'];
+                if ($data['price_market'] === 0 || $data['price_market'] > $item['market']) $data['price_market'] = $item['market'];
+                if ($data['price_selling'] === 0 || $data['price_selling'] > $item['selling']) $data['price_selling'] = $item['selling'];
                 $count++;
             }
             if (empty($count)) $this->error('无效的的商品价格信息！');
