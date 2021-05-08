@@ -232,11 +232,12 @@ abstract class PaymentService
 
     /**
      * 获取支付类型
+     * @param array $types 默认返回支付
      * @return array
      */
-    public static function getTypeAll(): array
+    public static function getTypeAll(array $types = []): array
     {
-        [$types, $binds] = [[], array_keys(UserAdminService::TYPES)];
+        $binds = array_keys(UserAdminService::TYPES);
         foreach (self::TYPES as $k => $v) if (isset($v['bind'])) {
             if (array_intersect($v['bind'], $binds)) $types[$k] = $v;
         }
@@ -245,12 +246,12 @@ abstract class PaymentService
 
     /**
      * 筛选可用的支付类型
-     * @param string $api
+     * @param string $api 指定接口类型
+     * @param array $types 默认返回支付
      * @return array
      */
-    public static function getTypeApi(string $api = ''): array
+    public static function getTypeApi(string $api = '', array $types = []): array
     {
-        $types = [];
         foreach (self::TYPES as $type => $attr) {
             if (in_array($api, $attr['bind'])) $types[] = $type;
         }
@@ -292,8 +293,11 @@ abstract class PaymentService
     protected function createPaymentAction(string $orderNo, string $paymentTitle, string $paymentAmount)
     {
         $this->app->db->name('DataUserPayment')->insert([
-            'payment_code' => $this->code, 'payment_type' => $this->type,
-            'order_amount' => $paymentAmount, 'order_name' => $paymentTitle, 'order_no' => $orderNo,
+            'payment_code' => $this->code,
+            'payment_type' => $this->type,
+            'order_no'     => $orderNo,
+            'order_name'   => $paymentTitle,
+            'order_amount' => $paymentAmount,
         ]);
     }
 
