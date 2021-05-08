@@ -50,6 +50,7 @@
         <div class="layui-hide" data-payment-type="wechat">{include file='base/payment/form_wechat'}</div>
         <div class="layui-hide" data-payment-type="alipay">{include file='base/payment/form_alipay'}</div>
         <div class="layui-hide" data-payment-type="joinpay">{include file='base/payment/form_joinpay'}</div>
+        <div class="layui-hide" data-payment-type="voucher">{include file='base/payment/form_voucher'}</div>
 
         <div class="layui-form-item relative layui-hide">
             <span class="color-green font-w7">支付描述</span>
@@ -89,6 +90,8 @@
                 $('[data-payment-type]').not($('[data-payment-type="alipay"]').removeClass('layui-hide')).addClass('layui-hide');
             } else if (data.value.indexOf('joinpay') > -1) {
                 $('[data-payment-type]').not($('[data-payment-type="joinpay"]').removeClass('layui-hide')).addClass('layui-hide');
+            } else if (data.value.indexOf('voucher') > -1) {
+                $('[data-payment-type]').not($('[data-payment-type="voucher"]').removeClass('layui-hide')).addClass('layui-hide');
             } else {
                 $('[data-payment-type]').addClass('layui-hide');
             }
