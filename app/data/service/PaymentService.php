@@ -254,7 +254,7 @@ abstract class PaymentService
         foreach (self::TYPES as $type => $attr) {
             if (in_array($api, $attr['bind'])) $types[] = $type;
         }
-        return $types;
+        return array_unique($types);
     }
 
     /**

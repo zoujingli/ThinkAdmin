@@ -304,7 +304,7 @@ class Order extends Auth
         // 读取支付通道配置
         $query = $this->app->db->name('BaseUserPayment')->where(['status' => 1, 'deleted' => 0]);
         $query->whereIn('code', str2arr($payments))->whereIn('type', PaymentService::getTypeApi($this->type));
-        $result = $query->order('sort desc,id desc')->column('type,code,name,cover,content', 'code');
+        $result = $query->order('sort desc,id desc')->column('type,code,name,cover,content,remark', 'code');
         foreach ($result as &$vo) $vo['content'] = ['voucher_qrcode' => json_decode($vo['content'])->voucher_qrcode ?? ''];
         $this->success('获取支付参数数据', array_values($result));
     }
