@@ -35,7 +35,7 @@ class Order extends Controller
     protected function initialize()
     {
         parent::initialize();
-        $this->payments = PaymentService::types();
+        $this->payments = PaymentService::getTypeAll();
     }
 
     /**

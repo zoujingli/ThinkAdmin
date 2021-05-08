@@ -234,13 +234,27 @@ abstract class PaymentService
      * 获取支付类型
      * @return array
      */
-    public static function types(): array
+    public static function getTypeAll(): array
     {
         $types = [];
         foreach (self::TYPES as $k => $v) if (isset($v['bind'])) {
             if (array_intersect($v['bind'], array_keys(UserAdminService::TYPES))) {
                 $types[$k] = $v;
             }
+        }
+        return $types;
+    }
+
+    /**
+     * 筛选可用的支付类型
+     * @param string $api
+     * @return array
+     */
+    public static function getTypeByApi(string $api = ''): array
+    {
+        $types = [];
+        foreach (self::TYPES as $type => $attr) {
+            if (in_array($api, $attr['bind'])) $types[] = $type;
         }
         return $types;
     }

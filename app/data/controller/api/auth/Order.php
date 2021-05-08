@@ -304,10 +304,12 @@ class Order extends Auth
         $data = $this->_vali(['uid.value' => $this->uuid, 'order_no.require' => '单号不能为空']);
         $payments = $this->app->db->name('ShopOrder')->where($data)->value('payment_allow');
         if (empty($payments)) $this->error('获取订单支付参数失败');
-        [$map, $types] = [['status' => 1, 'deleted' => 0], []];
-        foreach (PaymentService::TYPES as $type => $arr) if (in_array($this->type, $arr['bind'])) $types[] = $type;
-        $query = $this->app->db->name('BaseUserPayment')->where($map)->whereIn('type', $types)->whereIn('code', str2arr($payments));
-        $this->success('获取支付参数数据', $query->order('sort desc,id desc')->field('type,code,name,cover')->select()->toArray());
+        // 读取支付通道配置
+        $query = $this->app->db->name('BaseUserPayment')->field('type,code,name,cover,content')->order('sort desc,id desc');
+        $query->where(['status' => 1, 'deleted' => 0])->whereIn('code', str2arr($payments))->whereIn('type', PaymentService::getTypeByApi($this->type));
+        $this->success('获取支付参数数据', $query->withAttr('content', function ($content) {
+            return json_encode($content, true);
+        })->select()->toArray());
     }
 
     /**
