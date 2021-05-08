@@ -15,7 +15,6 @@
 
 namespace app\index\controller;
 
-use app\wechat\service\AutoService;
 use think\admin\Controller;
 
 /**
@@ -27,10 +26,5 @@ class Index extends Controller
     public function index()
     {
         $this->redirect(sysuri('admin/login/index'));
-    }
-
-    public function test()
-    {
-        dump(AutoService::instance()->parseTimeString('00小时00分01秒'));
     }
 }

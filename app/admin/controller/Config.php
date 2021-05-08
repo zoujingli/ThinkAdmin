@@ -91,8 +91,9 @@ class Config extends Controller
         } else {
             $post = $this->request->post();
             if (!empty($post['storage']['allow_exts'])) {
+                $deny = ['sh', 'bat', 'cmd', 'exe', 'php', 'asp'];
                 $exts = array_unique(explode(',', strtolower($post['storage']['allow_exts'])));
-                if (sort($exts) && in_array('php', $exts)) $this->error('禁止上传可执行的文件！');
+                if (sort($exts) && in_array('php', $deny)) $this->error('禁止上传可执行的文件！');
                 $post['storage']['allow_exts'] = join(',', $exts);
             }
             foreach ($post as $name => $value) sysconf($name, $value);

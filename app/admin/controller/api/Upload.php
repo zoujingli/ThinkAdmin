@@ -97,7 +97,6 @@ class Upload extends Controller
      * 文件上传入口
      * @login true
      * @return Json
-     * @throws \think\admin\Exception
      * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\DbException
      * @throws \think\db\exception\ModelNotFoundException
@@ -105,26 +104,33 @@ class Upload extends Controller
     public function file(): Json
     {
         if (!($file = $this->getFile()) || empty($file)) {
-            return json(['uploaded' => false, 'error' => ['message' => '文件上传异常，文件可能过大或未上传']]);
+            return json(['uploaded' => false, 'error' => ['message' => '文件上传异常，文件过大或未上传！']]);
         }
         $this->extension = strtolower($file->getOriginalExtension());
         if (!in_array($this->extension, explode(',', strtolower(sysconf('storage.allow_exts'))))) {
-            return json(['uploaded' => false, 'error' => ['message' => '文件上传类型受限，请在后台配置']]);
+            return json(['uploaded' => false, 'error' => ['message' => '文件类型受限，请在后台配置规则！']]);
         }
-        if (in_array($this->extension, ['php', 'sh'])) {
-            return json(['uploaded' => false, 'error' => ['message' => '可执行文件禁止上传到本地服务器']]);
+        if (in_array($this->extension, ['sh', 'bat', 'cmd', 'exe', 'php', 'asp'])) {
+            return json(['uploaded' => false, 'error' => ['message' => '文件安全保护，可执行文件禁止上传！']]);
         }
         [$this->uptype, $this->safe, $this->name] = [$this->getType(), $this->getSafe(), input('key')];
         if (empty($this->name)) $this->name = Storage::name($file->getPathname(), $this->extension, '', 'md5_file');
-        if ($this->uptype === 'local') {
-            $local = LocalStorage::instance();
-            $realpath = dirname($realname = $local->path($this->name, $this->safe));
-            file_exists($realpath) && is_dir($realpath) || mkdir($realpath, 0755, true);
-            @rename($file->getPathname(), $realname);
-            $info = $local->info($this->name, $this->safe, $file->getOriginalName());
-        } else {
-            $bina = file_get_contents($file->getRealPath());
-            $info = Storage::instance($this->uptype)->set($this->name, $bina, $this->safe, $file->getOriginalName());
+        try {
+            if ($this->uptype === 'local') {
+                $local = LocalStorage::instance();
+                $realpath = dirname($realname = $local->path($this->name, $this->safe));
+                file_exists($realpath) && is_dir($realpath) || mkdir($realpath, 0755, true);
+                if (rename($file->getPathname(), $realname)) {
+                    $info = $local->info($this->name, $this->safe, $file->getOriginalName());
+                } else {
+                    return json(['uploaded' => false, 'error' => ['message' => '文件移动处理失败！']]);
+                }
+            } else {
+                $bina = file_get_contents($file->getRealPath());
+                $info = Storage::instance($this->uptype)->set($this->name, $bina, $this->safe, $file->getOriginalName());
+            }
+        } catch (\Exception $exception) {
+            return json(['uploaded' => false, 'error' => ['message' => $exception->getMessage()]]);
         }
         if (is_array($info) && isset($info['url'])) {
             return json(['uploaded' => true, 'filename' => $this->name, 'url' => $this->safe ? $this->name : $info['url']]);
@@ -165,7 +171,12 @@ class Upload extends Controller
     private function getFile(): UploadedFile
     {
         try {
-            return $this->request->file('file');
+            $file = $this->request->file('file');
+            if ($file instanceof UploadedFile) {
+                return $file;
+            } else {
+                $this->error('读取文件对象失败！');
+            }
         } catch (\Exception $exception) {
             $this->error(lang($exception->getMessage()));
         }

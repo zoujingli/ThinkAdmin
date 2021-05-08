@@ -107,7 +107,7 @@ class ProcessService extends Service
      * @param string $name 执行名称
      * @return array
      */
-    public function query(string $command, $name = 'php.exe'): array
+    public function query(string $command, string $name = 'php.exe'): array
     {
         $list = [];
         if ($this->iswin()) {
@@ -145,7 +145,7 @@ class ProcessService extends Service
     /**
      * 立即执行指令
      * @param string $command 执行指令
-     * @param boolean $outarr 返回类型
+     * @param array|boolean $outarr 返回类型
      * @return string|array
      */
     public function exec(string $command, $outarr = false)
