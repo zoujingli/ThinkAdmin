@@ -306,9 +306,9 @@ class Order extends Auth
         if (empty($payments)) $this->error('获取订单支付参数失败');
         // 读取支付通道配置
         $query = $this->app->db->name('BaseUserPayment')->field('type,code,name,cover,content')->order('sort desc,id desc');
-        $query->where(['status' => 1, 'deleted' => 0])->whereIn('code', str2arr($payments))->whereIn('type', PaymentService::getTypeByApi($this->type));
+        $query->where(['status' => 1, 'deleted' => 0])->whereIn('code', str2arr($payments))->whereIn('type', PaymentService::getTypeApi($this->type));
         $this->success('获取支付参数数据', $query->withAttr('content', function ($content) {
-            return json_encode($content, true);
+            return json_decode($content, true);
         })->select()->toArray());
     }
 

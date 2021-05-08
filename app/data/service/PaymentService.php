@@ -236,11 +236,9 @@ abstract class PaymentService
      */
     public static function getTypeAll(): array
     {
-        $types = [];
+        [$types, $binds] = [[], array_keys(UserAdminService::TYPES)];
         foreach (self::TYPES as $k => $v) if (isset($v['bind'])) {
-            if (array_intersect($v['bind'], array_keys(UserAdminService::TYPES))) {
-                $types[$k] = $v;
-            }
+            if (array_intersect($v['bind'], $binds)) $types[$k] = $v;
         }
         return $types;
     }
@@ -250,7 +248,7 @@ abstract class PaymentService
      * @param string $api
      * @return array
      */
-    public static function getTypeByApi(string $api = ''): array
+    public static function getTypeApi(string $api = ''): array
     {
         $types = [];
         foreach (self::TYPES as $type => $attr) {
