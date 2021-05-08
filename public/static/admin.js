@@ -115,9 +115,9 @@ $(function () {
         /*! 确认对话框 */
         this.confirm = function (msg, ok, no) {
             return layer.confirm(msg, {title: '操作确认', btn: ['确认', '取消']}, function (idx) {
-                (typeof ok === 'function' && ok.call(this, index)), that.close(idx);
+                (typeof ok === 'function' && ok.call(this, idx)), that.close(idx);
             }, function (idx) {
-                (typeof no === 'function' && no.call(this, index)), that.close(idx);
+                (typeof no === 'function' && no.call(this, idx)), that.close(idx);
             });
         };
         /*! 显示成功类型的消息 */
