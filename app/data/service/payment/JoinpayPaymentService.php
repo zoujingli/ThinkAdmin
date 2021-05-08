@@ -102,7 +102,7 @@ class JoinpayPaymentService extends PaymentService
      * @param array $data
      * @return array
      */
-    private function _doReuest($data = []): array
+    private function _doReuest(array $data = []): array
     {
         $data['hmac'] = $this->_doSign($data);
         return json_decode(HttpExtend::post($this->uri, $data), true);

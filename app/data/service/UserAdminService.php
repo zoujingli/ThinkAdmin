@@ -85,10 +85,12 @@ class UserAdminService extends Service
      */
     public function get(int $uuid, ?string $type = null): array
     {
-        $user = $this->app->db->name('DataUser')->where(['id' => $uuid, 'deleted' => 0])->findOrEmpty();
+        $map = ['id' => $uuid, 'deleted' => 0];
+        $user = $this->app->db->name('DataUser')->where($map)->find();
         if (empty($user)) throw new Exception('指定UID用户不存在');
         if (!is_null($type)) {
-            $data = $this->app->db->name('DataUserToken')->where(['uid' => $uuid, 'type' => $type])->findOrEmpty();
+            $map = ['uid' => $uuid, 'type' => $type];
+            $data = $this->app->db->name('DataUserToken')->where($map)->find();
             if (empty($data)) {
                 [$state, $info, $data] = UserTokenService::instance()->token($uuid, $type);
                 if (empty($state) || empty($data)) throw new Exception($info);

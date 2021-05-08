@@ -61,6 +61,7 @@ class BalancePyamentService extends PaymentService
         try {
             // 扣减用户余额
             $this->app->db->transaction(function () use ($order, $paymentAmount) {
+                // 更新订单余额
                 $this->app->db->name('ShopOrder')->where(['order_no' => $order['order_no']])->update([
                     'payment_balance' => $paymentAmount,
                 ]);

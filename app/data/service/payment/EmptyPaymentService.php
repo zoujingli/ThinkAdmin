@@ -60,6 +60,6 @@ class EmptyPaymentService extends PaymentService
         $this->createPaymentAction($orderNo, $paymentTitle, $paymentAmount);
         // 更新支付行为
         $this->updatePaymentAction($orderNo, CodeExtend::uniqidDate(20), $paymentAmount, '无需支付');
-        return ['code' => 1, 'info' => '无需支付'];
+        return ['code' => 1, 'info' => '订单无需支付'];
     }
 }
