@@ -1,0 +1,39 @@
+<div class="layui-side notselect">
+    <a class="layui-logo layui-elip" href="{:url('@')}" title="{:sysconf('app_name')}">
+        {:sysconf('app_name')} {if sysconf('app_version')}<sup>{:sysconf('app_version')}</sup>{/if}
+    </a>
+    <a class="layui-logo-mini layui-elip" href="{:url('@')}" title="{:sysconf('app_name')}">
+        <span class="headimg headimg-xs" data-lazy-src="{:sysconf('site_icon')}"></span>
+    </a>
+    <div class="layui-side-scroll">
+        {foreach $menus as $one}{notempty name='one.sub'}
+        <ul class="layui-nav layui-nav-tree layui-hide" data-menu-layout="m-{$one.id}">
+            {foreach $one.sub as $two}{empty name='two.sub'}
+            <li class="layui-nav-item">
+                <a data-target-tips="{$two.title}" data-menu-node="m-{$one.id}-{$two.id}" data-open="{$two.url}">
+                    <span class='{$two.icon|default="layui-icon layui-icon-link"}'></span>
+                    <span class="nav-text">{$two.title|default=''}</span>
+                </a>
+            </li>
+            {else}
+            <li class="layui-nav-item" data-submenu-layout='m-{$one.id}-{$two.id}'>
+                <a data-target-tips="{$two.title}" style="background:#393D49">
+                    <span class='nav-icon layui-hide {$two.icon|default="layui-icon layui-icon-triangle-d"}'></span>
+                    <span class="nav-text">{$two.title|default=''}</span>
+                </a>
+                <dl class="layui-nav-child">
+                    {foreach $two.sub as $thr}
+                    <dd>
+                        <a data-target-tips="{$thr.title}" data-open="{$thr.url}" data-menu-node="m-{$one.id}-{$two.id}-{$thr.id}">
+                            <span class='nav-icon {$thr.icon|default="layui-icon layui-icon-link"}'></span>
+                            <span class="nav-text">{$thr.title|default=''}</span>
+                        </a>
+                    </dd>
+                    {/foreach}
+                </dl>
+            </li>
+            {/empty}{/foreach}
+        </ul>
+        {/notempty}{/foreach}
+    </div>
+</div>

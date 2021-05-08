@@ -1,17 +1,201 @@
 @import "console.config.less";
 
 .layui-layout {
+  > .layui-header {
+    left: 200px;
+    right: 0;
+    height: 50px;
+    position: absolute;
+    color: @TopHeaderTextColor !important;
+    background: @TopHeaderBackColor !important;
+
+    > ul.layui-nav {
+      margin: 0;
+      padding: 0;
+
+      .layui-logo-hide {
+        width: 50px !important;
+        padding: 0 !important;
+        display: none;
+        text-align: center;
+      }
+
+      &.layui-layout-left {
+        left: 0;
+      }
+
+      .layui-nav-item > a {
+        height: 50px;
+        padding: 0 18px;
+        overflow: hidden;
+        line-height: 50px;
+
+        &:hover {
+          color: @TopHeaderNavHoverTextColor
+        }
+
+        .layui-icon {
+          font-size: 16px !important;
+        }
+      }
+    }
+
+    .layui-nav-item {
+      height: 50px;
+      line-height: 50px;
+
+      > a {
+        color: @TopHeaderNavNormalTextColor !important;
+        background: @TopHeaderNavNormalBackColor !important;
+
+        &:hover {
+          color: @TopHeaderNavHoverTextColor !important;
+          background: @TopHeaderNavHoverBackColor !important;
+        }
+      }
+
+      &.layui-this > a {
+        color: @TopHeaderNavActiveTextColor !important;
+        background: @TopHeaderNavActiveBackColor !important;
+      }
+
+      .layui-nav-child {
+        top: 50px;
+        border: 0;
+        padding: 0;
+        line-height: 48px;
+        border-radius: 0;
+
+        + a.layui-elip {
+          padding-right: 35px;
+
+          img {
+            width: 20px;
+            height: 20px;
+            margin-right: 5px;
+            border-radius: 50%;
+          }
+        }
+
+        &.layui-show + a {
+          background: #fff;
+        }
+
+        dd {
+          a {
+            padding: 0;
+            margin-top: 1px;
+            text-align: center;
+
+            .layui-icon {
+              margin-right: 5px;
+            }
+          }
+        }
+      }
+    }
+
+    .layui-nav-bar, .layui-nav-item:after {
+      display: none !important
+    }
+  }
+
   > .layui-side {
-    top: 50px;
+    top: 0;
     bottom: 0;
-    overflow: auto
+    position: fixed;
+    overflow: hidden;
+    background-color: @LeftMainBackColor;
+
+    .layui-logo,
+    .layui-logo-mini {
+      color: #fff;
+      width: auto;
+      height: 50px;
+      display: block;
+      position: relative;
+      font-size: 18px;
+      text-align: center;
+      line-height: 49px;
+      border-bottom: 1px solid rgba(0, 0, 0, .15);
+
+      sup {
+        font-size: 9px;
+        line-height: 9px;
+        padding-left: 5px;
+      }
+    }
+
+    .layui-logo-mini {
+      color: #fff;
+      display: none;
+      font-size: 18px;
+      line-height: 49px;
+    }
+
+    .layui-nav-bar {
+      display: none !important;
+    }
+
+    .layui-side-scroll {
+      top: 51px;
+      bottom: 0;
+      width: 100% !important;
+      height: 100% !important;
+      overflow: auto;
+      position: absolute;
+
+      &::-webkit-scrollbar {
+        width: 3px !important;
+
+        &-track {
+          background: #ccc !important
+        }
+
+        &-thumb {
+          background-color: #666 !important
+        }
+      }
+
+      .layui-nav-item {
+        border-bottom: 1px solid rgba(0, 0, 0, .2);
+
+        .layui-nav-child {
+          background-color: @LeftMainSubBackColor;
+        }
+
+        dd, dd > a {
+          color: @LeftMainNavNormalTextColor;
+          background-color: @LeftMainNavNormalBackColor;
+        }
+
+        dd.layui-this, dd.layui-this > a {
+          color: @LeftMainNavActiveTextColor;
+          background-color: @LeftMainNavActiveBackColor;
+        }
+
+        a {
+          height: 45px;
+          display: block;
+          line-height: 45px;
+
+          &:hover {
+            background: hsla(0, 0%, 39%, .2) !important
+          }
+
+          .nav-icon, .nav-text {
+            padding-left: 5px
+          }
+        }
+      }
+    }
   }
 
   > .layui-body {
     top: 50px;
     bottom: 0;
     overflow: auto;
-    background: #eee;
+    background: @BodyMainBackColor;
 
     > .layui-card {
       overflow: visible;
@@ -30,7 +214,7 @@
         position: fixed;
         background: #fff;
         line-height: 50px;
-        box-shadow: @maxOuterShadow;
+        box-shadow: @MaxOuterShadow;
       }
 
       > .layui-card-header + .layui-card-body {
@@ -43,7 +227,7 @@
 
         > .layui-tab.layui-tab-card {
           border: none;
-          box-shadow: @maxOuterShadow;
+          box-shadow: @MaxOuterShadow;
         }
 
         > .layui-tab.layui-tab-card > .layui-tab-content.think-box-shadow {
@@ -54,568 +238,94 @@
   }
 }
 
-/* 页面布局 - 头部 */
-.layui-header {
-  height: 50px;
-  background: #393D49 !important;
-
-  [data-target-menu-type] {
-    border-left: 1px solid rgba(0, 0, 0, 0);
-    border-right: 1px solid rgba(0, 0, 0, .15);
+.layui-layout-left-mini {
+  .layui-header {
+    left: 50px;
   }
 
-  .layui-layout-left, .layui-layout-right {
-    margin: 0;
-    padding: 0
-  }
+  > .layui-body {
+    left: 50px;
 
-  .layui-logo {
-    color: #fff;
-    width: 199px;
-    height: auto;
-    font-size: 18px;
-    line-height: 49px;
-    border-right: 1px solid rgba(0, 0, 0, .15);
-    border-bottom: 1px solid rgba(0, 0, 0, .15);
-
-    sup {
-      font-size: 9px;
-      line-height: 9px;
-      padding-left: 5px;
-    }
-  }
-
-  .layui-nav-item {
-    height: 50px;
-    line-height: 50px;
-
-    &.layui-this {
-      background: #009688
-    }
-
-    > a {
-      color: #fff !important
-    }
-
-    .layui-nav-child {
-      top: 49px;
-      border: 0;
-      padding: 0;
-      background: #eef;
-      line-height: 45px;
-
-      + a.layui-elip {
-        padding-right: 35px;
-
-        img {
-          width: 20px;
-          height: 20px;
-          border-radius: 50%
-        }
-
-        span {
-          padding-left: 5px;
-        }
-      }
-
-      &.layui-show + a {
-        background: #fff;
-
-        span {
-          color: #333
-        }
-      }
-
-      dd {
-        background: #fff;
-
-        a {
-          padding: 0;
-          color: #333;
-          margin-top: 1px;
-          text-align: center;
-
-          .layui-icon {
-            margin-right: 5px;
-          }
-        }
+    > .layui-card {
+      > .layui-card-header {
+        left: 50px;
       }
     }
   }
 
-  .layui-nav-bar, .layui-nav-item:after {
-    display: none !important
-  }
-
-  .layui-layout-right {
-    > li > a {
-      border-left: 1px solid rgba(0, 0, 0, .15);
-      border-right: 1px solid rgba(0, 0, 0, 0);
-    }
-  }
-}
-
-/* 页面布局 - 左则 */
-.layui-layout {
   > .layui-side {
-    .layui-nav-bar {
+
+    .layui-logo {
+      display: none;
+    }
+
+    .layui-logo-mini {
+      display: block;
+    }
+
+    .layui-nav-more {
       display: none !important
     }
 
-    .layui-side-scroll {
-      width: 100% !important
-    }
-
     .layui-nav-item {
-      border-bottom: 1px solid rgba(0, 0, 0, .2);
-
       a {
-        height: 45px;
-        display: block;
-        line-height: 45px;
-        color: #fff !important;
-
-        &:hover {
-          background: hsla(0, 0%, 39%, .2) !important
-        }
-
-        .nav-icon, .nav-text {
-          padding-left: 5px
-        }
+        padding: 0
       }
 
-      &ed {
-        border-bottom: none !important;
-      }
-    }
-
-    .layui-nav-tree-top a {
-      height: 28px !important;
-      line-height: 28px !important
-    }
-  }
-
-  &.layui-layout-left-mini {
-    > .layui-body {
-      left: 50px;
-
-      > .layui-card {
-        > .layui-card-header {
-          left: 50px;
-        }
-      }
-    }
-
-    > .layui-side {
-      .layui-nav-more {
-        display: none !important
+      .nav-text {
+        display: none
       }
 
-      .layui-nav-item {
-        a {
-          padding: 0
-        }
-
-        .nav-text {
-          display: none
-        }
-
-        .nav-icon {
-          display: inline-block !important;
-          padding: 0 !important
-        }
-
-        .layui-nav-child {
-          padding: 0;
-          display: block !important;
-          background-color: rgba(0, 0, 0, .3) !important
-        }
+      .nav-icon {
+        padding: 0 !important;
+        display: inline-block !important;
       }
 
-      &, .layui-nav-tree, .layui-side-scroll {
-        width: 50px;
-        text-align: center
-      }
-    }
-
-    [data-target-menu-type] i {
-      display: inline-block;
-      transform: rotate(180deg);
-      -ms-transform: rotate(180deg);
-      -webkit-transform: rotate(180deg);
-    }
-  }
-
-  &.layui-layout-left-hide {
-    > .layui-body {
-      left: 0 !important;
-
-      > .layui-card {
-        > .layui-card-header {
-          left: 0 !important;
-        }
-      }
-    }
-
-    > .layui-side {
-      display: none
-    }
-
-    [data-target-menu-type] {
-      display: none;
-    }
-  }
-}
-
-/** 手机盒子及微信菜单 */
-.mobile-preview {
-  width: 317px;
-  height: 580px;
-  position: relative;
-  background: url(../img/wechat/mobile_head.png) no-repeat 0 0;
-  box-shadow: @minOuterShadow;
-  border-radius: @boxBorderRadius;
-
-  .mobile-header {
-    color: #fff;
-    width: auto;
-    margin: 0 30px;
-    overflow: hidden;
-    font-size: 15px;
-    padding-top: 30px;
-    text-align: center;
-    white-space: nowrap;
-    text-overflow: ellipsis;
-    word-wrap: normal;
-    user-select: none;
-    -moz-user-select: none;
-    -webkit-user-select: none;
-    pointer-events: none;
-    -webkit-pointer-events: none;
-  }
-
-  .mobile-body {
-    top: 60px;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    border: 1px solid #ccc;
-    position: absolute;
-    background: #f5f5f5;
-    border-radius: 0 0 @boxBorderRadius @boxBorderRadius;
-
-    iframe {
-      width: 100%;
-      height: 100%
-    }
-  }
-
-  .mobile-footer {
-    left: 0;
-    right: 0;
-    bottom: 0;
-    margin: 0;
-    border: 1px solid #ccc;
-    position: absolute;
-    padding-left: 43px;
-    background: url(../img/wechat/mobile_foot.png) no-repeat 0 0;
-    list-style-type: none;
-    border-radius: 0 0 @boxBorderRadius @boxBorderRadius;
-
-    li {
-      float: left;
-      width: 33.33%;
-      position: relative;
-      text-align: center;
-      line-height: 50px;
-
-      a {
-        width: auto;
-        color: #616161;
-        border: 1px solid hsla(0, 0%, 100%, 0);
-        display: block;
-        overflow: hidden;
-        word-wrap: normal;
-        margin-top: -1px;
-        border-left: 1px solid #e7e7eb;
-        white-space: nowrap;
-        text-overflow: ellipsis;
-        margin-bottom: -1px;
-        text-decoration: none;
-
-        &:hover {
-          background: rgba(0, 0, 0, .02)
-        }
-
-        &.active {
-          border: 1px solid #44b549 !important;
-          box-shadow: 0 0 1px #44b549
-        }
-
-        span:before {
-          width: 1px;
-          height: 1px;
-          content: '';
-          display: inline-block
-        }
-      }
-
-      > .close {
-        top: 1px;
-        right: 1px;
-        width: 18px;
-        height: 18px;
-        display: none;
-        cursor: pointer;
-        position: absolute;
-        text-align: center;
-        line-height: 18px
-      }
-
-      &:hover > .close {
-        display: inline-block;
-
-        &:hover {
-          color: #fff !important;
-          background: #999 !important
-        }
-      }
-    }
-
-    .icon {
-      &-add, &-sub {
-        display: inline-block;
-        vertical-align: middle;
-
-        &::before {
-          content: none;
-        }
-      }
-
-      &-add {
-        width: 14px;
-        height: 14px;
-        border-bottom: none !important;
-        background: url(../img/wechat/index.png) 0 0 no-repeat
-      }
-
-      &-sub {
-        width: 7px;
-        height: 7px;
-        margin-right: 2px;
-        background: url(../img/wechat/index.png) 0 -3pc no-repeat
-      }
-    }
-
-    .sub-menu {
-      width: 100%;
-      bottom: 60px;
-      margin: -1px;
-      display: block;
-      position: absolute;
-      border: 1px solid #d0d0d0;
-      background-color: #fafafa;
-
-      ul li {
-        float: none;
-        width: 100%;
+      .layui-nav-child {
         padding: 0;
-        z-index: 11;
-        display: block;
-
-        a {
-          padding: 0 5px;
-          border: 1px solid hsla(0, 0%, 100%, 0);
-
-          &.bottom-border {
-            margin: -1px -1px 0;
-            border-bottom: 1px solid #e7e7eb
-          }
-        }
-
-        &:last-child a.bottom-border {
-          border-bottom-color: #fff
-        }
+        display: block !important;
+        background-color: rgba(0, 0, 0, .3) !important
       }
     }
 
-    .arrow {
-      left: 50%;
-      position: absolute;
-      margin-left: -6px;
+    &, .layui-nav-tree, .layui-side-scroll {
+      width: 50px;
+      text-align: center;
     }
+  }
 
-    .arrow_in, .arrow_out {
-      width: 0;
-      height: 0;
-      z-index: 10;
-      border: 6px dashed transparent;
-      display: inline-block;
-      border-top-style: solid;
-      border-bottom-width: 0;
-    }
-
-    .arrow_in {
-      bottom: -5px;
-      z-index: 3;
-      border-top-color: #fafafa
-    }
-
-    .arrow_out {
-      bottom: -6px;
-      z-index: 2;
-      border-top-color: #d0d0d0
-    }
+  [data-target-menu-type] i {
+    display: inline-block;
+    transform: rotate(180deg);
+    -ms-transform: rotate(180deg);
+    -webkit-transform: rotate(180deg);
   }
 }
 
-/* 下拉样式 */
-.layui-nav {
-  .layui-nav-item {
-    .layui-nav-more {
-      top: 0;
-      right: 15px;
-      width: auto;
-      height: auto;
-      border: none;
-      margin-top: 0;
-      font-size: 14px;
-      font-style: normal;
-      font-family: "layui-icon" !important;
-      -moz-osx-font-smoothing: grayscale;
-      -webkit-font-smoothing: antialiased;
+.layui-layout-left-hide {
+  > .layui-body {
+    left: 0 !important;
 
-      &::before {
-        content: "\e619"
+    > .layui-card {
+      > .layui-card-header {
+        left: 0 !important;
       }
     }
+  }
 
-    & .layui-nav-mored, &ed .layui-nav-more {
-      border: none;
-      margin-top: 0;
-      transform: rotate(180deg);
-      -o-transform: rotate(180deg);
-      -ms-transform: rotate(180deg);
-      -moz-transform: rotate(180deg);
-      -webkit-transform: rotate(180deg)
+  > .layui-header {
+    left: 0 !important;
+
+    .layui-logo-hide {
+      display: inline-block !important;
     }
   }
-}
 
-/*! 重置 Iframe 页面样式 */
-.iframe-pagination {
-  padding: 20px 20px 45px 20px;
-
-  .pagination-container {
-    left: 0;
-    right: 0;
-    bottom: 0;
-    padding: 5px 20px;
-    position: fixed;
-    background: #fff;
-    border-top: 1px solid #ddd;
-  }
-}
-
-/*! 首页加载动画 */
-.layui-page-loader {
-  top: 0;
-  width: 100%;
-  height: 100%;
-  z-index: 9999999;
-  position: fixed;
-  background-color: #E9E7E7;
-
-  .loader {
-    top: 50%;
-    width: 50px;
-    height: 50px;
-    margin: -30px auto 40px;
-    z-index: 999999;
-    position: relative;
-    background-color: #E9E7E7;
+  > .layui-side {
+    display: none !important;
   }
 
-  .loader:before {
-    top: 59px;
-    left: 0;
-    width: 50px;
-    height: 7px;
-    opacity: 0.1;
-    content: "";
-    background: #000;
-    border-radius: 50%;
-    position: absolute;
-    animation: shadow .5s linear infinite;
-  }
-
-  .loader:after {
-    top: 0;
-    left: 0;
-    width: 50px;
-    height: 50px;
-    content: "";
-    position: absolute;
-    border-radius: 3px;
-    background-color: #5FB878;
-    animation: loading .5s linear infinite;
-  }
-}
-
-@-webkit-keyframes loading {
-  17% {
-    border-bottom-right-radius: 3px;
-  }
-  25% {
-    transform: translateY(9px) rotate(22.5deg);
-  }
-  50% {
-    transform: translateY(18px) scale(1, 0.9) rotate(45deg);
-    border-bottom-right-radius: 40px;
-  }
-  75% {
-    transform: translateY(9px) rotate(67.5deg);
-  }
-  100% {
-    transform: translateY(0) rotate(90deg);
-  }
-}
-
-@keyframes loading {
-  17% {
-    border-bottom-right-radius: 3px;
-  }
-  25% {
-    transform: translateY(9px) rotate(22.5deg);
-  }
-  50% {
-    border-bottom-right-radius: 40px;
-    transform: translateY(18px) scale(1, 0.9) rotate(45deg);
-  }
-  75% {
-    transform: translateY(9px) rotate(67.5deg);
-  }
-  100% {
-    transform: translateY(0) rotate(90deg);
-  }
-}
-
-@-webkit-keyframes shadow {
-  0%,
-  100% {
-    transform: scale(1, 1);
-  }
-  50% {
-    transform: scale(1.2, 1);
-  }
-}
-
-@keyframes shadow {
-  0%,
-  100% {
-    transform: scale(1, 1);
-  }
-  50% {
-    transform: scale(1.2, 1);
+  [data-target-menu-type] {
+    display: none !important;
   }
 }

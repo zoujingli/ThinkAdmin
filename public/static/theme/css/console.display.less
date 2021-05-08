@@ -1,11 +1,55 @@
 @import "console.config.less";
 
+.headimg {
+  width: 35px;
+  height: 35px;
+  border: 1px solid @BoxBorderRadius;
+  display: inline-block;
+  overflow: hidden;
+  text-align: center;
+  margin-right: 5px;
+  border-radius: 50%;
+  vertical-align: middle;
+  box-shadow: @MinOuterShadow;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center center;
+
+  &-no {
+    border: none;
+    box-shadow: none;
+    border-radius: 0;
+  }
+
+  &-xs {
+    width: 28px;
+    height: 28px;
+  }
+
+  &-md {
+    width: 55px;
+    height: 55px;
+  }
+
+  > img {
+    width: 110%;
+    height: 110%;
+    max-width: 110%;
+    max-height: 110%;
+    margin: -5% 0 0 -5%;
+  }
+
+  & + * {
+    vertical-align: middle;
+  }
+}
+
 fieldset {
   margin: 0 0 10px 0;
-  border: 1px solid @boxBorderColor;
+  border: 1px solid @BoxBorderColor;
   padding: 10px 20px 5px 20px;
   background: #fff;
-  border-radius: @boxBorderRadius;
+  border-radius: @BoxBorderRadius;
 
   legend {
     color: #666;
@@ -15,18 +59,18 @@ fieldset {
 }
 
 .layui-tab, .layui-card {
-  border-radius: @boxBorderRadius;
+  border-radius: @BoxBorderColor;
 }
 
 .layui-tab {
   .layui-tab-title {
-    border-top-left-radius: @boxBorderRadius;
-    border-top-right-radius: @boxBorderRadius;
+    border-top-left-radius: @BoxBorderColor;
+    border-top-right-radius: @BoxBorderColor;
 
     > li:first-child {
       padding: 0 15px 0 17px;
       margin-left: 0 !important;
-      border-top-left-radius: @boxBorderRadius;
+      border-top-left-radius: @BoxBorderColor;
 
       &:after {
         border-left: none
@@ -35,8 +79,8 @@ fieldset {
   }
 
   .layui-tab-content {
-    border-bottom-left-radius: @boxBorderRadius;
-    border-bottom-right-radius: @boxBorderRadius;
+    border-bottom-left-radius: @BoxBorderColor;
+    border-bottom-right-radius: @BoxBorderColor;
   }
 
   > .layui-tab-content {
@@ -56,14 +100,14 @@ fieldset {
 }
 
 .layui-code {
-  border-radius: @boxBorderRadius;
+  border-radius: @BoxBorderColor;
 }
 
 .layui-btn {
   border: 1px solid #009688;
 
   &:hover:not(.layui-btn-disabled) {
-    box-shadow: @maxInsetShadow;
+    box-shadow: @MaxInsetShadow;
   }
 
   &-warm {
@@ -79,7 +123,7 @@ fieldset {
   }
 
   &-disabled {
-    border: 1px solid @boxBorderColor;
+    border: 1px solid @BoxBorderRadius;
   }
 
   &-primary {
@@ -154,7 +198,7 @@ fieldset {
     height: 32px;
     padding: 0 8px;
     line-height: 32px;
-    border-color: @inputBorderColor;
+    border-color: @InputBorderNormalColor;
   }
 
   .layui-input-inline {
@@ -167,14 +211,14 @@ fieldset {
       height: 32px;
       padding: 0 8px;
       line-height: 32px;
-      border-color: @inputBorderColor;
+      border-color: @InputBorderNormalColor;
     }
   }
 
   .layui-form-select dl {
     top: 31px;
     padding: 0;
-    border-color: @inputBorderActiveColor;
+    border-color: @InputBorderActiveColor;
   }
 }
 
@@ -210,10 +254,10 @@ fieldset {
 
 .layui-input, .layui-select {
   line-height: 38px;
-  border-color: @inputBorderColor;
+  border-color: @InputBorderNormalColor;
 
   &:hover, &:active, &:focus {
-    border-color: @inputBorderActiveColor;
+    border-color: @InputBorderActiveColor;
   }
 }
 
@@ -243,7 +287,7 @@ label.think-radio, label.think-checkbox {
     width: 18px;
     height: 18px;
     cursor: pointer;
-    border: 1px solid @radioBorderColor;
+    border: 1px solid @RadioBorderNormalColor;
     position: relative;
     background: #fff;
     margin-right: 5px;
@@ -312,50 +356,6 @@ label.think-radio, label.think-checkbox {
     padding-left: 5px;
   }
 
-  div.headimg {
-    width: 35px;
-    height: 35px;
-    border: 1px solid @boxBorderColor;
-    display: inline-block;
-    overflow: hidden;
-    text-align: center;
-    margin-right: 5px;
-    border-radius: 50%;
-    vertical-align: middle;
-    box-shadow: @minOuterShadow;
-    background-size: cover;
-    background-repeat: no-repeat;
-    background-position: center center;
-
-    &-no {
-      border: none;
-      box-shadow: none;
-      border-radius: 0;
-    }
-
-    &-xs {
-      width: 28px;
-      height: 28px;
-    }
-
-    &-md {
-      width: 55px;
-      height: 55px;
-    }
-
-    > img {
-      width: 110%;
-      height: 110%;
-      max-width: 110%;
-      max-height: 110%;
-      margin: -5% 0 0 -5%;
-    }
-
-    & + * {
-      vertical-align: middle;
-    }
-  }
-
   .list-table-sort-td {
     width: 10px !important;
     text-align: center !important;
@@ -372,7 +372,7 @@ label.think-radio, label.think-checkbox {
       color: #666;
       padding: 2px;
       font-size: 9pt;
-      border: 1px solid @inputBorderColor;
+      border: 1px solid @InputBorderNormalColor;
       text-align: center;
       line-height: 18px
     }
@@ -456,5 +456,359 @@ label.think-radio, label.think-checkbox {
       overflow: hidden;
       white-space: nowrap;
     }
+  }
+}
+
+
+/** 手机盒子及微信菜单 */
+.mobile-preview {
+  width: 317px;
+  height: 580px;
+  position: relative;
+  background: url(../img/wechat/mobile_head.png) no-repeat 0 0;
+  box-shadow: @MinOuterShadow;
+  border-radius: @BoxBorderColor;
+
+  .mobile-header {
+    color: #fff;
+    width: auto;
+    margin: 0 30px;
+    overflow: hidden;
+    font-size: 15px;
+    padding-top: 30px;
+    text-align: center;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    word-wrap: normal;
+    user-select: none;
+    -moz-user-select: none;
+    -webkit-user-select: none;
+    pointer-events: none;
+    -webkit-pointer-events: none;
+  }
+
+  .mobile-body {
+    top: 60px;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    border: 1px solid #ccc;
+    position: absolute;
+    background: #f5f5f5;
+    border-radius: 0 0 @BoxBorderColor @BoxBorderColor;
+
+    iframe {
+      width: 100%;
+      height: 100%
+    }
+  }
+
+  .mobile-footer {
+    left: 0;
+    right: 0;
+    bottom: 0;
+    margin: 0;
+    border: 1px solid #ccc;
+    position: absolute;
+    padding-left: 43px;
+    background: url(../img/wechat/mobile_foot.png) no-repeat 0 0;
+    list-style-type: none;
+    border-radius: 0 0 @BoxBorderColor @BoxBorderColor;
+
+    li {
+      float: left;
+      width: 33.33%;
+      position: relative;
+      text-align: center;
+      line-height: 50px;
+
+      a {
+        width: auto;
+        color: #616161;
+        border: 1px solid hsla(0, 0%, 100%, 0);
+        display: block;
+        overflow: hidden;
+        word-wrap: normal;
+        margin-top: -1px;
+        border-left: 1px solid #e7e7eb;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        margin-bottom: -1px;
+        text-decoration: none;
+
+        &:hover {
+          background: rgba(0, 0, 0, .02)
+        }
+
+        &.active {
+          border: 1px solid #44b549 !important;
+          box-shadow: 0 0 1px #44b549
+        }
+
+        span:before {
+          width: 1px;
+          height: 1px;
+          content: '';
+          display: inline-block
+        }
+      }
+
+      > .close {
+        top: 1px;
+        right: 1px;
+        width: 18px;
+        height: 18px;
+        display: none;
+        cursor: pointer;
+        position: absolute;
+        text-align: center;
+        line-height: 18px
+      }
+
+      &:hover > .close {
+        display: inline-block;
+
+        &:hover {
+          color: #fff !important;
+          background: #999 !important
+        }
+      }
+    }
+
+    .icon {
+      &-add, &-sub {
+        display: inline-block;
+        vertical-align: middle;
+
+        &::before {
+          content: none;
+        }
+      }
+
+      &-add {
+        width: 14px;
+        height: 14px;
+        border-bottom: none !important;
+        background: url(../img/wechat/index.png) 0 0 no-repeat
+      }
+
+      &-sub {
+        width: 7px;
+        height: 7px;
+        margin-right: 2px;
+        background: url(../img/wechat/index.png) 0 -3pc no-repeat
+      }
+    }
+
+    .sub-menu {
+      width: 100%;
+      bottom: 60px;
+      margin: -1px;
+      display: block;
+      position: absolute;
+      border: 1px solid #d0d0d0;
+      background-color: #fafafa;
+
+      ul li {
+        float: none;
+        width: 100%;
+        padding: 0;
+        z-index: 11;
+        display: block;
+
+        a {
+          padding: 0 5px;
+          border: 1px solid hsla(0, 0%, 100%, 0);
+
+          &.bottom-border {
+            margin: -1px -1px 0;
+            border-bottom: 1px solid #e7e7eb
+          }
+        }
+
+        &:last-child a.bottom-border {
+          border-bottom-color: #fff
+        }
+      }
+    }
+
+    .arrow {
+      left: 50%;
+      position: absolute;
+      margin-left: -6px;
+    }
+
+    .arrow_in, .arrow_out {
+      width: 0;
+      height: 0;
+      z-index: 10;
+      border: 6px dashed transparent;
+      display: inline-block;
+      border-top-style: solid;
+      border-bottom-width: 0;
+    }
+
+    .arrow_in {
+      bottom: -5px;
+      z-index: 3;
+      border-top-color: #fafafa
+    }
+
+    .arrow_out {
+      bottom: -6px;
+      z-index: 2;
+      border-top-color: #d0d0d0
+    }
+  }
+}
+
+/* 下拉样式 */
+.layui-nav {
+  .layui-nav-item {
+    .layui-nav-more {
+      top: 0;
+      right: 15px;
+      width: auto;
+      height: auto;
+      border: none;
+      margin-top: 0;
+      font-size: 14px;
+      font-style: normal;
+      font-family: "layui-icon" !important;
+      -moz-osx-font-smoothing: grayscale;
+      -webkit-font-smoothing: antialiased;
+
+      &::before {
+        content: "\e619"
+      }
+    }
+
+    & .layui-nav-mored, &ed .layui-nav-more {
+      border: none;
+      margin-top: 0;
+      transform: rotate(180deg);
+      -o-transform: rotate(180deg);
+      -ms-transform: rotate(180deg);
+      -moz-transform: rotate(180deg);
+      -webkit-transform: rotate(180deg)
+    }
+  }
+}
+
+/*! 重置 Iframe 页面样式 */
+.iframe-pagination {
+  padding: 20px 20px 45px 20px;
+
+  .pagination-container {
+    left: 0;
+    right: 0;
+    bottom: 0;
+    padding: 5px 20px;
+    position: fixed;
+    background: #fff;
+    border-top: 1px solid #ddd;
+  }
+}
+
+/*! 首页加载动画 */
+.layui-page-loader {
+  top: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 9999999;
+  position: fixed;
+  background-color: #E9E7E7;
+
+  .loader {
+    top: 50%;
+    width: 50px;
+    height: 50px;
+    margin: -30px auto 40px;
+    z-index: 999999;
+    position: relative;
+    background-color: #E9E7E7;
+  }
+
+  .loader:before {
+    top: 59px;
+    left: 0;
+    width: 50px;
+    height: 7px;
+    opacity: 0.1;
+    content: "";
+    background: #000;
+    border-radius: 50%;
+    position: absolute;
+    animation: shadow .5s linear infinite;
+  }
+
+  .loader:after {
+    top: 0;
+    left: 0;
+    width: 50px;
+    height: 50px;
+    content: "";
+    position: absolute;
+    border-radius: 3px;
+    background-color: #5FB878;
+    animation: loading .5s linear infinite;
+  }
+}
+
+@-webkit-keyframes loading {
+  17% {
+    border-bottom-right-radius: 3px;
+  }
+  25% {
+    transform: translateY(9px) rotate(22.5deg);
+  }
+  50% {
+    transform: translateY(18px) scale(1, 0.9) rotate(45deg);
+    border-bottom-right-radius: 40px;
+  }
+  75% {
+    transform: translateY(9px) rotate(67.5deg);
+  }
+  100% {
+    transform: translateY(0) rotate(90deg);
+  }
+}
+
+@keyframes loading {
+  17% {
+    border-bottom-right-radius: 3px;
+  }
+  25% {
+    transform: translateY(9px) rotate(22.5deg);
+  }
+  50% {
+    border-bottom-right-radius: 40px;
+    transform: translateY(18px) scale(1, 0.9) rotate(45deg);
+  }
+  75% {
+    transform: translateY(9px) rotate(67.5deg);
+  }
+  100% {
+    transform: translateY(0) rotate(90deg);
+  }
+}
+
+@-webkit-keyframes shadow {
+  0%,
+  100% {
+    transform: scale(1, 1);
+  }
+  50% {
+    transform: scale(1.2, 1);
+  }
+}
+
+@keyframes shadow {
+  0%,
+  100% {
+    transform: scale(1, 1);
+  }
+  50% {
+    transform: scale(1.2, 1);
   }
 }
