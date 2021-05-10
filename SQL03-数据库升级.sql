@@ -47,4 +47,6 @@ CREATE TABLE IF NOT EXISTS `wechat_auto`  (
   INDEX `idx_wechat_auto_code`(`code`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci COMMENT = '微信-回复' ROW_FORMAT = COMPACT;
 
+ALTER TABLE `system_queue` MODIFY COLUMN `title` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '' COMMENT '任务名称' AFTER `code`;
+
 SET FOREIGN_KEY_CHECKS = 1;
