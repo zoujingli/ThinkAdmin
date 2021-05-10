@@ -279,20 +279,19 @@ $(function () {
         };
         /*! 加载 HTML 到弹出层 */
         this.modal = function (url, data, title, callback, loading, tips, area) {
-            this.load(url, data, 'GET', function (res, index) {
+            this.load(url, data, 'GET', function (res) {
                 if (typeof (res) === 'object') return $.msg.auto(res), false;
-                index = layer.open({
-                    type: 1, btn: false, area: area || "800px", content: res, title: title || '', success: function (dom, index) {
-                        $(dom).find('[data-close]').off('click').on('click', function () {
-                            if (this.dataset.confirm) return $.msg.confirm(this.dataset.confirm, function (_index) {
-                                layer.close(_index), layer.close(index);
-                            }), false;
-                            layer.close(index);
-                        });
-                        $.form.reInit($(dom));
+                $.msg.idx.push(layer.open({
+                    type: 1, btn: false, area: area || "800px", content: res, title: title || '', success: function ($dom, idx) {
+                        $dom.off('click', '[data-close]').on('click', '[data-close]', function () {
+                            (function (confirm, callback) {
+                                confirm ? $.msg.confirm(confirm, callback) : callback();
+                            })(this.dataset.confirm, function () {
+                                layer.close(idx);
+                            });
+                        }), $.form.reInit($dom);
                     }
-                });
-                $.msg.idx.push(index);
+                }));
                 return (typeof callback === 'function') && callback.call(that);
             }, loading, tips);
         };
@@ -640,17 +639,19 @@ $(function () {
     }
 
     /*! 注册 data-load 事件行为 */
-    onEvent('click', '[data-load]', function () {
-        var url = this.dataset.load, tips = this.dataset.tips, time = this.dataset.time;
-        this.dataset.confirm ? $.msg.confirm(this.dataset.confirm, function () {
-            $.form.load(url, {}, 'get', null, true, tips, time);
-        }) : $.form.load(url, {}, 'get', null, true, tips, time);
+    onEvent('click', '[data-load]', function (e) {
+        (function (confirm, callback) {
+            confirm ? $.msg.confirm(confirm, callback) : callback();
+        })(e.target.dataset.confirm, function () {
+            $.form.load(e.target.dataset.load, {}, 'get', null, true, e.target.dataset.tips, e.target.dataset.time);
+        });
     });
 
     /*! 注册 data-serach 表单搜索行为 */
     onEvent('submit', 'form.form-search', function () {
-        var url = $(this).attr('action').replace(/&?page=\d+/g, ''), split = url.indexOf('?') === -1 ? '?' : '&';
+        var url = $(this).attr('action').replace(/&?page=\d+/g, '');
         if ((this.method || 'get').toLowerCase() === 'get') {
+            var split = url.indexOf('?') === -1 ? '?' : '&';
             if (location.href.indexOf('spm=') > -1) {
                 return location.href = '#' + $.menu.parseUri(url + split + $(this).serialize());
             } else {
@@ -819,8 +820,8 @@ $(function () {
 
     /*! 表单编辑返回操作 */
     onEvent('click', '[data-history-back]', function () {
-        $.msg.confirm(this.dataset.historyBack || '确定要返回吗？', function (index) {
-            history.back(), $.msg.close(index);
+        $.msg.confirm(this.dataset.historyBack || '确定要返回吗？', function () {
+            history.back();
         })
     });
 

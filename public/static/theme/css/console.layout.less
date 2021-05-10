@@ -144,6 +144,12 @@
       overflow: auto;
       position: absolute;
 
+      &:after {
+        height: 50px;
+        display: block;
+        content: '';
+      }
+
       &::-webkit-scrollbar {
         width: 3px !important;
 
@@ -160,6 +166,7 @@
         border-bottom: 1px solid rgba(0, 0, 0, .2);
 
         .layui-nav-child {
+          padding: 0;
           background-color: @LeftMainSubBackColor;
         }
 
@@ -177,9 +184,12 @@
           height: 45px;
           display: block;
           line-height: 45px;
+          padding-top: 0;
+          padding-bottom: 0;
 
           &:hover {
-            background: hsla(0, 0%, 39%, .2) !important
+            color: @LeftMainNavHoverTextColor;
+            background: @LeftMainNavHoverBackColor
           }
 
           .nav-icon, .nav-text {

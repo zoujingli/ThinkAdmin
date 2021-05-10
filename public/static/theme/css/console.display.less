@@ -58,18 +58,18 @@ fieldset {
 }
 
 .layui-tab, .layui-card {
-  border-radius: @BoxBorderColor;
+  border-radius: @BoxBorderRadius;
 }
 
 .layui-tab {
   .layui-tab-title {
-    border-top-left-radius: @BoxBorderColor;
-    border-top-right-radius: @BoxBorderColor;
+    border-top-left-radius: @BoxBorderRadius;
+    border-top-right-radius: @BoxBorderRadius;
 
     > li:first-child {
       padding: 0 15px 0 17px;
       margin-left: 0 !important;
-      border-top-left-radius: @BoxBorderColor;
+      border-top-left-radius: @BoxBorderRadius;
 
       &:after {
         border-left: none
@@ -78,8 +78,8 @@ fieldset {
   }
 
   .layui-tab-content {
-    border-bottom-left-radius: @BoxBorderColor;
-    border-bottom-right-radius: @BoxBorderColor;
+    border-bottom-left-radius: @BoxBorderRadius;
+    border-bottom-right-radius: @BoxBorderRadius;
   }
 
   > .layui-tab-content {
@@ -99,7 +99,7 @@ fieldset {
 }
 
 .layui-code {
-  border-radius: @BoxBorderColor;
+  border-radius: @BoxBorderRadius;
 }
 
 .layui-btn {
@@ -122,7 +122,7 @@ fieldset {
   }
 
   &-disabled {
-    border: 1px solid @BoxBorderRadius;
+    border: 1px solid @BoxBorderColor;
   }
 
   &-primary {
@@ -466,7 +466,7 @@ label.think-radio, label.think-checkbox {
   position: relative;
   background: url(../img/wechat/mobile_head.png) no-repeat 0 0;
   box-shadow: @MinOuterShadow;
-  border-radius: @BoxBorderColor;
+  border-radius: @BoxBorderRadius;
 
   .mobile-header {
     color: #fff;
@@ -494,7 +494,7 @@ label.think-radio, label.think-checkbox {
     border: 1px solid #ccc;
     position: absolute;
     background: #f5f5f5;
-    border-radius: 0 0 @BoxBorderColor @BoxBorderColor;
+    border-radius: 0 0 @BoxBorderRadius @BoxBorderRadius;
 
     iframe {
       width: 100%;
@@ -512,7 +512,7 @@ label.think-radio, label.think-checkbox {
     padding-left: 43px;
     background: url(../img/wechat/mobile_foot.png) no-repeat 0 0;
     list-style-type: none;
-    border-radius: 0 0 @BoxBorderColor @BoxBorderColor;
+    border-radius: 0 0 @BoxBorderRadius @BoxBorderRadius;
 
     li {
       float: left;
@@ -670,6 +670,7 @@ label.think-radio, label.think-checkbox {
       width: auto;
       height: auto;
       border: none;
+      padding: 0;
       margin-top: 0;
       font-size: 14px;
       font-style: normal;
@@ -716,7 +717,7 @@ label.think-radio, label.think-checkbox {
   height: 100%;
   z-index: 9999999;
   position: fixed;
-  background-color: #E9E7E7;
+  background-color: @LoadBackColor;
 
   .loader {
     top: 50%;
@@ -725,7 +726,7 @@ label.think-radio, label.think-checkbox {
     margin: -30px auto 40px;
     z-index: 999999;
     position: relative;
-    background-color: #E9E7E7;
+    background-color: @LoadBackColor;
   }
 
   .loader:before {
