@@ -736,10 +736,8 @@ $(function () {
 
     /*! 表单元素失去焦点时数字 */
     onEvent('blur', '[data-blur-number]', function () {
-        var min = this.dataset.valueMin;
-        var max = this.dataset.valueMax;
-        var value = parseFloat(this.value) || 0;
-        var fiexd = parseInt(this.dataset.blurNumber || 0);
+        var min = this.dataset.valueMin, max = this.dataset.valueMax;
+        var value = parseFloat(this.value) || 0, fiexd = parseInt(this.dataset.blurNumber || 0);
         if (typeof min !== 'undefined' && value < min) value = min;
         if (typeof max !== 'undefined' && value > max) value = max;
         this.value = parseFloat(value).toFixed(fiexd);
@@ -826,17 +824,18 @@ $(function () {
     });
 
     /*! 异步任务状态监听与展示 */
-    onEvent('click', '[data-queue]', function (action) {
-        action = this.dataset.queue || '';
-        if (action.length < 1) return $.msg.tips('任务地址不能为空！');
-        this.doRuntime = function (index) {
-            $.form.load(action, {}, 'post', function (ret) {
+    onEvent('click', '[data-queue]', function (e) {
+        if (!e.target.dataset.queue) {
+            $.msg.tips('请求地址不能为空！');
+        } else (function (confirm, callback) {
+            confirm ? $.msg.confirm(confirm, callback) : callback();
+        })(this.dataset.confirm, function () {
+            $.form.load(e.target.dataset.queue, {}, 'post', function (ret) {
                 if (typeof ret.data === 'string' && ret.data.indexOf('Q') === 0) {
                     return $.loadQueue(ret.data, true), false;
                 }
-            }), $.msg.close(index);
-        };
-        this.dataset.confirm ? $.msg.confirm(this.dataset.confirm, this.doRuntime) : this.doRuntime(0);
+            });
+        });
     });
     $.loadQueue = function (code, doScript, doAjax) {
         layer.open({
