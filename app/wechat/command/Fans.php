@@ -47,7 +47,6 @@ class Fans extends Command
      * 执行指令
      * @param Input $input
      * @param Output $output
-     * @return void
      * @throws \think\admin\Exception
      */
     protected function execute(Input $input, Output $output)

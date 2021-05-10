@@ -33,7 +33,6 @@ class Auto extends Command
     /**
      * @param Input $input
      * @param Output $output
-     * @return void
      * @throws \WeChat\Exceptions\InvalidResponseException
      * @throws \WeChat\Exceptions\LocalCacheException
      * @throws \think\admin\Exception
@@ -54,13 +53,12 @@ class Auto extends Command
         if (empty($data)) $this->setQueueError("Message Data Query failed");
 
         // 发送微信客服消息
-        $this->_buildMessage($data);
+        $this->buildMessage($data);
     }
 
     /**
      * 关键字处理
      * @param array $data
-     * @return void
      * @throws \WeChat\Exceptions\InvalidResponseException
      * @throws \WeChat\Exceptions\LocalCacheException
      * @throws \think\admin\Exception
@@ -68,21 +66,21 @@ class Auto extends Command
      * @throws \think\db\exception\DbException
      * @throws \think\db\exception\ModelNotFoundException
      */
-    private function _buildMessage(array $data)
+    private function buildMessage(array $data)
     {
         $type = strtolower($data['type']);
         $result = [0, '待发送的消息不符合规则'];
         if ($type === 'text' && !empty($data['content'])) {
-            $result = $this->_sendMessage('text', ['content' => $data['content']]);
+            $result = $this->sendMessage('text', ['content' => $data['content']]);
         }
         if ($type === 'voice' && !empty($data['voice_url'])) {
             if ($mediaId = MediaService::instance()->upload($data['voice_url'], 'voice')) {
-                $result = $this->_sendMessage('voice', ['media_id' => $mediaId]);
+                $result = $this->sendMessage('voice', ['media_id' => $mediaId]);
             }
         }
         if ($type === 'image' && !empty($data['image_url'])) {
             if ($mediaId = MediaService::instance()->upload($data['image_url'], 'image')) {
-                $result = $this->_sendMessage('image', ['media_id' => $mediaId]);
+                $result = $this->sendMessage('image', ['media_id' => $mediaId]);
             }
         }
         if ($type === 'news') {
@@ -93,12 +91,12 @@ class Auto extends Command
                     'url'   => url("@wechat/api.view/item/id/{$vo['id']}", [], false, $host)->build(),
                     'title' => $vo['title'], 'picurl' => $vo['local_url'], 'description' => $vo['digest'],
                 ]);
-                $result = $this->_sendMessage('news', ['articles' => $news]);
+                $result = $this->sendMessage('news', ['articles' => $news]);
             }
         }
         if ($type === 'music' && !empty($data['music_url']) && !empty($data['music_title']) && !empty($data['music_desc'])) {
             $mediaId = $data['music_image'] ? MediaService::instance()->upload($data['music_image'], 'image') : '';
-            $result = $this->_sendMessage('music', [
+            $result = $this->sendMessage('music', [
                 'hqmusicurl'  => $data['music_url'], 'musicurl' => $data['music_url'],
                 'description' => $data['music_desc'], 'title' => $data['music_title'], 'thumb_media_id' => $mediaId,
             ]);
@@ -106,7 +104,7 @@ class Auto extends Command
         if ($type === 'video' && !empty($data['video_url']) && !empty($data['video_desc']) && !empty($data['video_title'])) {
             $video = ['title' => $data['video_title'], 'introduction' => $data['video_desc']];
             if ($mediaId = MediaService::instance()->upload($data['video_url'], 'video', $video)) {
-                $result = $this->_sendMessage('video', ['media_id' => $mediaId, 'title' => $data['video_title'], 'description' => $data['video_desc']]);
+                $result = $this->sendMessage('video', ['media_id' => $mediaId, 'title' => $data['video_title'], 'description' => $data['video_desc']]);
             }
         }
         if (empty($result[0])) {
@@ -122,7 +120,7 @@ class Auto extends Command
      * @param array $data 消息对象
      * @return array
      */
-    private function _sendMessage(string $type, array $data): array
+    private function sendMessage(string $type, array $data): array
     {
         try {
             WechatService::WeChatCustom()->send([
