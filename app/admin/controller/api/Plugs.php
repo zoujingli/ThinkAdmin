@@ -17,8 +17,6 @@ namespace app\admin\controller\api;
 
 use think\admin\Controller;
 use think\admin\service\AdminService;
-use think\admin\service\SystemService;
-use think\exception\HttpResponseException;
 
 /**
  * 通用插件管理
@@ -40,25 +38,6 @@ class Plugs extends Controller
     }
 
     /**
-     * 当前运行模式
-     * @login true
-     */
-    public function debug()
-    {
-        if (AdminService::instance()->isSuper()) if (input('state')) {
-            SystemService::instance()->setRuntime('product');
-            sysoplog('系统运维管理', '由开发模式切换为生产模式');
-            $this->success('已切换为生产模式！');
-        } else {
-            SystemService::instance()->setRuntime('debug');
-            sysoplog('系统运维管理', '由生产模式切换为开发模式');
-            $this->success('已切换为开发模式！');
-        } else {
-            $this->error('只有超级管理员才能操作！');
-        }
-    }
-
-    /**
      * 优化数据库
      * @login true
      */
@@ -67,75 +46,6 @@ class Plugs extends Controller
         if (AdminService::instance()->isSuper()) {
             sysoplog('系统运维管理', '创建数据库优化任务');
             $this->_queue('优化数据库所有数据表', 'xadmin:database optimize');
-        } else {
-            $this->error('只有超级管理员才能操作！');
-        }
-    }
-
-    /**
-     * 清理系统配置
-     * @login true
-     */
-    public function clearConfig()
-    {
-        if (AdminService::instance()->isSuper()) try {
-            $this->app->db->transaction(function () {
-                [$tmpdata, $newdata] = [[], []];
-                foreach ($this->app->db->name('SystemConfig')->order('type,name asc')->cursor() as $item) {
-                    $tmpdata[$item['type']][$item['name']] = $item['value'];
-                }
-                foreach ($tmpdata as $type => $items) foreach ($items as $name => $value) {
-                    $newdata[] = ['type' => $type, 'name' => $name, 'value' => $value];
-                }
-                $this->_query('SystemConfig')->empty()->insertAll($newdata);
-            });
-            $this->app->cache->delete('SystemConfig');
-            sysoplog('系统运维管理', '清理系统参数配置成功');
-            $this->success('清理系统配置成功！');
-        } catch (HttpResponseException $exception) {
-            throw $exception;
-        } catch (\Exception $exception) {
-            $this->error($exception->getMessage());
-        } else {
-            $this->error('只有超级管理员才能操作！');
-        }
-    }
-
-    /**
-     * 网站压缩发布
-     * @login true
-     */
-    public function pushRuntime()
-    {
-        if (AdminService::instance()->isSuper()) try {
-            AdminService::instance()->clearCache();
-            SystemService::instance()->pushRuntime();
-            sysoplog('系统运维管理', '刷新并创建网站路由缓存');
-            $this->success('网站缓存加速成功！');
-        } catch (HttpResponseException $exception) {
-            throw $exception;
-        } catch (\Exception $exception) {
-            $this->error($exception->getMessage());
-        } else {
-            $this->error('只有超级管理员才能操作！');
-        }
-    }
-
-    /**
-     * 清理运行缓存
-     * @login true
-     */
-    public function clearRuntime()
-    {
-        if (AdminService::instance()->isSuper()) try {
-            AdminService::instance()->clearCache();
-            SystemService::instance()->clearRuntime();
-            sysoplog('系统运维管理', '清理网站日志及缓存数据');
-            $this->success('清空缓存日志成功！');
-        } catch (HttpResponseException $exception) {
-            throw $exception;
-        } catch (\Exception $exception) {
-            $this->error($exception->getMessage());
         } else {
             $this->error('只有超级管理员才能操作！');
         }

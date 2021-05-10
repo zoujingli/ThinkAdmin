@@ -327,6 +327,7 @@ class ComposerStaticInit3e3e984682c06e656fe76c5d84347fb3
         'app\\admin\\controller\\User' => __DIR__ . '/../..' . '/app/admin/controller/User.php',
         'app\\admin\\controller\\api\\Plugs' => __DIR__ . '/../..' . '/app/admin/controller/api/Plugs.php',
         'app\\admin\\controller\\api\\Queue' => __DIR__ . '/../..' . '/app/admin/controller/api/Queue.php',
+        'app\\admin\\controller\\api\\Runtime' => __DIR__ . '/../..' . '/app/admin/controller/api/Runtime.php',
         'app\\admin\\controller\\api\\Update' => __DIR__ . '/../..' . '/app/admin/controller/api/Update.php',
         'app\\admin\\controller\\api\\Upload' => __DIR__ . '/../..' . '/app/admin/controller/api/Upload.php',
         'app\\data\\command\\OrderClean' => __DIR__ . '/../..' . '/app/data/command/OrderClean.php',

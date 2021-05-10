@@ -2,7 +2,7 @@
 
 {block name="button"}
 <!--{if session('user.username') eq 'admin'}-->
-<a class="layui-btn layui-btn-sm layui-btn-primary" data-load="{:url('admin/api.plugs/clearConfig')}">清理无效配置</a>
+<a class="layui-btn layui-btn-sm layui-btn-primary" data-load="{:url('admin/api.runtime/config')}">清理无效配置</a>
 <!--{/if}-->
 
 <!--{if auth('system')}-->
@@ -20,9 +20,9 @@
         <div class="layui-btn-group shadow-mini nowrap">
             <!--{if $app->isDebug()}-->
             <a class="layui-btn layui-btn-sm layui-btn-active">以开发模式运行</a>
-            <a class="layui-btn layui-btn-sm layui-btn-primary" data-confirm="确定要切换到生产模式运行吗？" data-load="{:url('admin/api.plugs/debug')}?state=1">以生产模式运行</a>
+            <a class="layui-btn layui-btn-sm layui-btn-primary" data-confirm="确定要切换到生产模式运行吗？" data-load="{:url('admin/api.runtime/debug')}?state=1">以生产模式运行</a>
             <!--{else}-->
-            <a class="layui-btn layui-btn-sm layui-btn-primary" data-confirm="确定要切换到开发模式运行吗？" data-load="{:url('admin/api.plugs/debug')}?state=0">以开发模式运行</a>
+            <a class="layui-btn layui-btn-sm layui-btn-primary" data-confirm="确定要切换到开发模式运行吗？" data-load="{:url('admin/api.runtime/debug')}?state=0">以开发模式运行</a>
             <a class="layui-btn layui-btn-sm layui-btn-active">以生产模式运行</a>
             <!--{/if}-->
         </div>

@@ -198,6 +198,7 @@ return array(
     'app\\admin\\controller\\User' => $baseDir . '/app/admin/controller/User.php',
     'app\\admin\\controller\\api\\Plugs' => $baseDir . '/app/admin/controller/api/Plugs.php',
     'app\\admin\\controller\\api\\Queue' => $baseDir . '/app/admin/controller/api/Queue.php',
+    'app\\admin\\controller\\api\\Runtime' => $baseDir . '/app/admin/controller/api/Runtime.php',
     'app\\admin\\controller\\api\\Update' => $baseDir . '/app/admin/controller/api/Update.php',
     'app\\admin\\controller\\api\\Upload' => $baseDir . '/app/admin/controller/api/Upload.php',
     'app\\data\\command\\OrderClean' => $baseDir . '/app/data/command/OrderClean.php',
