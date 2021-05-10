@@ -35,18 +35,19 @@ class MediaService extends Service
      * @throws \think\db\exception\DbException
      * @throws \think\db\exception\ModelNotFoundException
      */
-    public function news($id, $map = []): array
+    public function news($id, array $map = []): array
     {
         // 文章主体数据
-        $query = $this->app->db->name('WechatNews');
-        $data = $query->where(['id' => $id])->where($map)->find();
+        $where = ['id' => $id, 'is_deleted' => 0];
+        $data = $this->app->db->name('WechatNews')->where($where)->where($map)->find();
         if (empty($data)) return [];
         // 文章内容编号
-        [$data['articles'], $articleIds] = [[], explode(',', $data['article_id'])];
-        if (empty($data['article_id']) || empty($articleIds)) return $data;
+        $data['articles'] = [];
+        $data['articleids'] = str2arr($data['article_id']);
+        if (empty($data['articleids'])) return $data;
         // 文章内容集合
         $query = $this->app->db->name('WechatNewsArticle');
-        $query->whereIn('id', $articleIds)->orderField('id', $articleIds);
+        $query->whereIn('id', $data['articleids'])->orderField('id', $data['articleids']);
         $data['articles'] = $query->withoutField('create_by,create_at')->select()->toArray();
         return $data;
     }
