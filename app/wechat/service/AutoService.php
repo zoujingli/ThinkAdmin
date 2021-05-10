@@ -23,9 +23,8 @@ class AutoService extends Service
     public function register(string $openid)
     {
         foreach ($this->app->db->name('WechatAuto')->where(['status' => 1])->order('time asc')->cursor() as $vo) {
-            $time = $this->parseTimeString($vo['time']);
-            $name = "向 {$openid} 推送 {$vo['code']} 客服消息";
-            QueueService::instance()->register($name, "xadmin:fansmsg {$openid} {$vo['code']}", $time);
+            [$name, $time] = ["推送客服消息 {$vo['code']}#{$openid}", $this->parseTimeString($vo['time'])];
+            QueueService::instance()->register($name, "xadmin:fansmsg {$openid} {$vo['code']}", $time, [], 1);
         }
     }
 
