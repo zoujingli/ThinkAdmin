@@ -903,7 +903,9 @@ $(function () {
 
     /*! 延时关闭加载动画 */
     window.addEventListener('load', function () {
-        $('body>.layui-page-loader').fadeOut();
+        setTimeout(function () {
+            $('body>.layui-page-loader').fadeOut();
+        }, 500);
     }, true);
 
     /*! 图片加载异常处理 */
