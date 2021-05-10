@@ -806,7 +806,7 @@ $(function () {
                 }
             });
         };
-        return (img.src = src), defer;
+        return (img.src = src), defer.resolve();
     };
 
     /*! 注册 data-phone-view 事件行为 */
@@ -902,6 +902,11 @@ $(function () {
         })(code)
     };
 
+    /*! 延时关闭加载动画 */
+    window.addEventListener('load', function () {
+        $('body>.layui-page-loader').fadeOut();
+    }, true);
+
     /*! 图片加载异常处理 */
     document.addEventListener('error', function (event) {
         var elem = event.target;
@@ -909,11 +914,6 @@ $(function () {
             event.target.src = baseRoot + 'theme/img/404_icon.png';
         }
     }, true);
-
-    /*! 延时关闭加载动画 */
-    setTimeout(function () {
-        $('.layui-page-loader').fadeOut();
-    }, 800);
 
     /*! 系统菜单表单页面初始化 */
     $.menu.listen(), $.vali.listen(), $.form.reInit($body);
