@@ -87,7 +87,7 @@ class Auto extends Controller
     protected function _form_filter(array &$data)
     {
         if (empty($data['code'])) {
-            $data['code'] = CodeExtend::uniqidNumber(18, 'AUTO');
+            $data['code'] = CodeExtend::uniqidNumber(18, 'AM');
         }
         if ($this->request->isGet()) {
             $public = dirname($this->request->basefile(true));
