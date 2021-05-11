@@ -35,6 +35,18 @@ class Upload extends Controller
 {
 
     /**
+     * 文件上传方式
+     * @var string
+     */
+    private $type;
+
+    /**
+     * 文件上传模式
+     * @var boolean
+     */
+    private $safe;
+
+    /**
      * 文件上传JS支持
      * @return Response
      * @throws \think\db\exception\DataNotFoundException
@@ -44,7 +56,7 @@ class Upload extends Controller
     public function index(): Response
     {
         $data = ['exts' => []];
-        foreach (explode(',', sysconf('storage.allow_exts')) as $ext) {
+        foreach (str2arr(sysconf('storage.allow_exts')) as $ext) {
             $data['exts'][$ext] = Storage::mime($ext);
         }
         $template = realpath(__DIR__ . '/../../view/api/upload.js');
@@ -91,7 +103,7 @@ class Upload extends Controller
             $data['q-sign-algorithm'] = $token['q-sign-algorithm'];
             $data['server'] = TxcosStorage::instance()->upload();
         }
-        $this->success('获取授权参数', $data, 404);
+        $this->success('获取上传授权参数', $data, 404);
     }
 
     /**
@@ -104,20 +116,20 @@ class Upload extends Controller
      */
     public function file(): Json
     {
-        if (!($file = $this->getFile()) || empty($file)) {
+        if (!($file = $this->getFile())->isValid()) {
             return json(['uploaded' => false, 'error' => ['message' => '文件上传异常，文件过大或未上传！']]);
         }
-        $this->extension = strtolower($file->getOriginalExtension());
-        if (!in_array($this->extension, explode(',', strtolower(sysconf('storage.allow_exts'))))) {
+        $extension = strtolower($file->getOriginalExtension());
+        if (!in_array($extension, str2arr(sysconf('storage.allow_exts')))) {
             return json(['uploaded' => false, 'error' => ['message' => '文件类型受限，请在后台配置规则！']]);
         }
-        if (in_array($this->extension, ['sh', 'bat', 'cmd', 'exe', 'php', 'asp'])) {
+        if (in_array($extension, ['sh', 'asp', 'bat', 'cmd', 'exe', 'php'])) {
             return json(['uploaded' => false, 'error' => ['message' => '文件安全保护，可执行文件禁止上传！']]);
         }
-        [$this->uptype, $this->safe, $this->name] = [$this->getType(), $this->getSafe(), input('key')];
-        if (empty($this->name)) $this->name = Storage::name($file->getPathname(), $this->extension, '', 'md5_file');
+        [$this->type, $this->safe] = [$this->getType(), $this->getSafe()];
+        $this->name = input('key') ?: Storage::name($file->getPathname(), $extension, '', 'md5_file');
         try {
-            if ($this->uptype === 'local') {
+            if ($this->type === 'local') {
                 $local = LocalStorage::instance();
                 $realpath = dirname($realname = $local->path($this->name, $this->safe));
                 file_exists($realpath) && is_dir($realpath) || mkdir($realpath, 0755, true);
@@ -128,7 +140,7 @@ class Upload extends Controller
                 }
             } else {
                 $bina = file_get_contents($file->getRealPath());
-                $info = Storage::instance($this->uptype)->set($this->name, $bina, $this->safe, $file->getOriginalName());
+                $info = Storage::instance($this->type)->set($this->name, $bina, $this->safe, $file->getOriginalName());
             }
         } catch (\Exception $exception) {
             return json(['uploaded' => false, 'error' => ['message' => $exception->getMessage()]]);
@@ -158,11 +170,11 @@ class Upload extends Controller
      */
     private function getType(): string
     {
-        $this->uptype = strtolower(input('uptype', ''));
-        if (!in_array($this->uptype, ['local', 'qiniu', 'alioss', 'txcos'])) {
-            $this->uptype = strtolower(sysconf('storage.type'));
+        $this->type = strtolower(input('uptype', ''));
+        if (!in_array($this->type, ['local', 'qiniu', 'alioss', 'txcos'])) {
+            $this->type = strtolower(sysconf('storage.type'));
         }
-        return strtolower($this->uptype);
+        return strtolower($this->type);
     }
 
     /**
