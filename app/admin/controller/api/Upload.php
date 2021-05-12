@@ -49,7 +49,7 @@ class Upload extends Controller
     private $safe;
 
     /**
-     * 文件上传JS支持
+     * 文件上传脚本
      * @return Response
      * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\DbException
@@ -67,7 +67,7 @@ class Upload extends Controller
     }
 
     /**
-     * 检查文件上传已经上传
+     * 文件上传检查
      * @login true
      * @throws \think\admin\Exception
      * @throws \think\db\exception\DataNotFoundException
