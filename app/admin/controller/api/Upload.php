@@ -17,11 +17,13 @@
 namespace app\admin\controller\api;
 
 use think\admin\Controller;
+use think\admin\extend\ImageExtend;
 use think\admin\Storage;
 use think\admin\storage\AliossStorage;
 use think\admin\storage\LocalStorage;
 use think\admin\storage\QiniuStorage;
 use think\admin\storage\TxcosStorage;
+use think\exception\HttpResponseException;
 use think\file\UploadedFile;
 use think\Response;
 use think\response\Json;
@@ -120,6 +122,7 @@ class Upload extends Controller
             return json(['uploaded' => false, 'error' => ['message' => '文件上传异常，文件过大或未上传！']]);
         }
         $extension = strtolower($file->getOriginalExtension());
+        [$pathname, $original] = [$file->getPathname(), $file->getOriginalName()];
         if (!in_array($extension, str2arr(sysconf('storage.allow_exts')))) {
             return json(['uploaded' => false, 'error' => ['message' => '文件类型受限，请在后台配置规则！']]);
         }
@@ -127,21 +130,25 @@ class Upload extends Controller
             return json(['uploaded' => false, 'error' => ['message' => '文件安全保护，可执行文件禁止上传！']]);
         }
         [$this->type, $this->safe] = [$this->getType(), $this->getSafe()];
-        $this->name = input('key') ?: Storage::name($file->getPathname(), $extension, '', 'md5_file');
+        $this->name = input('key') ?: Storage::name($pathname, $extension, '', 'md5_file');
         try {
             if ($this->type === 'local') {
                 $local = LocalStorage::instance();
-                $realpath = dirname($realname = $local->path($this->name, $this->safe));
-                file_exists($realpath) && is_dir($realpath) || mkdir($realpath, 0755, true);
-                if (rename($file->getPathname(), $realname)) {
-                    $info = $local->info($this->name, $this->safe, $file->getOriginalName());
-                } else {
-                    return json(['uploaded' => false, 'error' => ['message' => '文件移动处理失败！']]);
+                $distname = $local->path($this->name, $this->safe);
+                $file->move(dirname($distname), basename($distname));
+                $info = $local->info($this->name, $this->safe, $original);
+                if (in_array($extension, ['jpg', 'gif', 'png', 'bmp', 'jpeg', 'wbmp'])) {
+                    [$status, $message] = (new ImageExtend($distname))->compress($distname);
+                    if (empty($status) && $local->del($this->name)) {
+                        return json(['uploaded' => false, 'error' => ['message' => $message]]);
+                    }
                 }
             } else {
-                $bina = file_get_contents($file->getRealPath());
-                $info = Storage::instance($this->type)->set($this->name, $bina, $this->safe, $file->getOriginalName());
+                $bina = file_get_contents($pathname);
+                $info = Storage::instance($this->type)->set($this->name, $bina, $this->safe, $original);
             }
+        } catch (HttpResponseException $exception) {
+            throw $exception;
         } catch (\Exception $exception) {
             return json(['uploaded' => false, 'error' => ['message' => $exception->getMessage()]]);
         }
@@ -188,8 +195,10 @@ class Upload extends Controller
             if ($file instanceof UploadedFile) {
                 return $file;
             } else {
-                $this->error('读取文件对象失败！');
+                $this->error('未获取到上传的文件对象！');
             }
+        } catch (HttpResponseException $exception) {
+            throw $exception;
         } catch (\Exception $exception) {
             $this->error(lang($exception->getMessage()));
         }

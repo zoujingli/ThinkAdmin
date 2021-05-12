@@ -32,7 +32,7 @@ private static $installed = array (
     'aliases' => 
     array (
     ),
-    'reference' => 'd9f0f0bdb0a35ab7eb7e56f35a470ee069efb900',
+    'reference' => 'f00305015a80eabe31474a75c9147214cb9d8585',
     'name' => 'zoujingli/thinkadmin',
   ),
   'versions' => 
@@ -171,7 +171,7 @@ private static $installed = array (
       array (
         0 => '9999999-dev',
       ),
-      'reference' => 'aef0fcd19d5ad9c49ed2da1001243a5d5d9c9ca2',
+      'reference' => '202f84ff3aabdc4cde3f8d1f0933a05cdd4d7172',
     ),
     'zoujingli/thinkadmin' => 
     array (
@@ -180,7 +180,7 @@ private static $installed = array (
       'aliases' => 
       array (
       ),
-      'reference' => 'd9f0f0bdb0a35ab7eb7e56f35a470ee069efb900',
+      'reference' => 'f00305015a80eabe31474a75c9147214cb9d8585',
     ),
     'zoujingli/wechat-developer' => 
     array (

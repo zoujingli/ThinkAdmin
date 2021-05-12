@@ -325,6 +325,7 @@ return array(
     'think\\admin\\extend\\DataExtend' => $vendorDir . '/zoujingli/think-library/src/extend/DataExtend.php',
     'think\\admin\\extend\\ExcelExtend' => $vendorDir . '/zoujingli/think-library/src/extend/ExcelExtend.php',
     'think\\admin\\extend\\HttpExtend' => $vendorDir . '/zoujingli/think-library/src/extend/HttpExtend.php',
+    'think\\admin\\extend\\ImageExtend' => $vendorDir . '/zoujingli/think-library/src/extend/ImageExtend.php',
     'think\\admin\\extend\\JsonRpcClient' => $vendorDir . '/zoujingli/think-library/src/extend/JsonRpcClient.php',
     'think\\admin\\extend\\JsonRpcServer' => $vendorDir . '/zoujingli/think-library/src/extend/JsonRpcServer.php',
     'think\\admin\\extend\\Parsedown' => $vendorDir . '/zoujingli/think-library/src/extend/Parsedown.php',
