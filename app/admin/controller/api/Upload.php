@@ -17,7 +17,6 @@
 namespace app\admin\controller\api;
 
 use think\admin\Controller;
-use think\admin\extend\ImageExtend;
 use think\admin\Storage;
 use think\admin\storage\AliossStorage;
 use think\admin\storage\LocalStorage;
@@ -138,9 +137,9 @@ class Upload extends Controller
                 $file->move(dirname($distname), basename($distname));
                 $info = $local->info($this->name, $this->safe, $original);
                 if (in_array($extension, ['jpg', 'gif', 'png', 'bmp', 'jpeg', 'wbmp'])) {
-                    [$status, $message] = (new ImageExtend($distname))->compress($distname);
-                    if (empty($status) && $local->del($this->name)) {
-                        return json(['uploaded' => false, 'error' => ['message' => $message]]);
+                    [$width, $height] = getimagesize($distname);
+                    if ($width < 1 || $height < 1 && $local->del($this->name)) {
+                        return json(['uploaded' => false, 'error' => ['message' => '图片尺寸读取失败！']]);
                     }
                 }
             } else {
