@@ -454,7 +454,6 @@ class ComposerStaticInit3e3e984682c06e656fe76c5d84347fb3
         'think\\admin\\extend\\DataExtend' => __DIR__ . '/..' . '/zoujingli/think-library/src/extend/DataExtend.php',
         'think\\admin\\extend\\ExcelExtend' => __DIR__ . '/..' . '/zoujingli/think-library/src/extend/ExcelExtend.php',
         'think\\admin\\extend\\HttpExtend' => __DIR__ . '/..' . '/zoujingli/think-library/src/extend/HttpExtend.php',
-        'think\\admin\\extend\\ImageExtend' => __DIR__ . '/..' . '/zoujingli/think-library/src/extend/ImageExtend.php',
         'think\\admin\\extend\\JsonRpcClient' => __DIR__ . '/..' . '/zoujingli/think-library/src/extend/JsonRpcClient.php',
         'think\\admin\\extend\\JsonRpcServer' => __DIR__ . '/..' . '/zoujingli/think-library/src/extend/JsonRpcServer.php',
         'think\\admin\\extend\\Parsedown' => __DIR__ . '/..' . '/zoujingli/think-library/src/extend/Parsedown.php',

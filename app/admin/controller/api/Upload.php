@@ -139,7 +139,7 @@ class Upload extends Controller
                 if (in_array($extension, ['jpg', 'gif', 'png', 'bmp', 'jpeg', 'wbmp'])) {
                     [$width, $height] = getimagesize($distname);
                     if ($width < 1 || $height < 1 && $local->del($this->name)) {
-                        return json(['uploaded' => false, 'error' => ['message' => '图片尺寸读取失败！']]);
+                        return json(['uploaded' => false, 'error' => ['message' => '图片读取尺寸失败！']]);
                     }
                 }
             } else {
