@@ -137,9 +137,12 @@ class Upload extends Controller
                 $file->move(dirname($distname), basename($distname));
                 $info = $local->info($this->name, $this->safe, $original);
                 if (in_array($extension, ['jpg', 'gif', 'png', 'bmp', 'jpeg', 'wbmp'])) {
+                    if ($this->imgNotSafe($distname) && $local->del($this->name)) {
+                        return json(['uploaded' => false, 'error' => ['message' => '图片未通过安全检查！']]);
+                    }
                     [$width, $height] = getimagesize($distname);
                     if (($width < 1 || $height < 1) && $local->del($this->name)) {
-                        return json(['uploaded' => false, 'error' => ['message' => '图片读取尺寸失败！']]);
+                        return json(['uploaded' => false, 'error' => ['message' => '读取图片的尺寸失败！']]);
                     }
                 }
             } else {
@@ -201,6 +204,28 @@ class Upload extends Controller
         } catch (\Exception $exception) {
             $this->error(lang($exception->getMessage()));
         }
+    }
+
+    /**
+     * 检查图片是否安全
+     * @param string $filename
+     * @return boolean
+     */
+    private function imgNotSafe(string $filename): bool
+    {
+        $source = fopen($filename, 'rb');
+        if (($size = filesize($filename)) > 512) {
+            $hexs = bin2hex(fread($source, 512));
+            fseek($source, $size - 512);
+            $hexs .= bin2hex(fread($source, 512));
+        } else {
+            $hexs = bin2hex(fread($source, $size));
+        }
+        if (is_resource($source)) fclose($source);
+        $bins = hex2bin($hexs);
+        /* 匹配十六进制中的 <% ( ) %> 或 <? ( ) ?> 或 <script | /script> */
+        foreach (['<?', '<%', '<script'] as $key) if (stripos($bins, $key) !== false) return true;
+        return preg_match("/(3c25.*?28.*?29.*?253e)|(3c3f.*?28.*?29.*?3f3e)|(3C534352495054)|(2F5343524950543E)|(3C736372697074)|(2F7363726970743E)/is", $hexs);
     }
 
 }
