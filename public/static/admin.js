@@ -830,7 +830,7 @@ $(function () {
             $.msg.tips('请求地址不能为空！');
         } else (function (confirm, callback) {
             confirm ? $.msg.confirm(confirm, callback) : callback();
-        })(this.dataset.confirm, function () {
+        })(e.target.dataset.confirm, function () {
             $.form.load(e.target.dataset.queue, {}, 'post', function (ret) {
                 if (typeof ret.data === 'string' && ret.data.indexOf('Q') === 0) {
                     return $.loadQueue(ret.data, true), false;
