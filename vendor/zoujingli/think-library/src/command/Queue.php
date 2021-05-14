@@ -17,13 +17,20 @@ declare (strict_types=1);
 
 namespace think\admin\command;
 
+use Error;
+use Exception;
 use Psr\Log\NullLogger;
 use think\admin\Command;
+use think\admin\service\QueueService;
 use think\Collection;
 use think\console\Input;
 use think\console\input\Argument;
 use think\console\input\Option;
 use think\console\Output;
+use think\db\exception\DataNotFoundException;
+use think\db\exception\DbException;
+use think\db\exception\ModelNotFoundException;
+use Throwable;
 
 /**
  * 异步任务管理指令
@@ -128,9 +135,9 @@ class Queue extends Command
 
     /**
      * 停止所有任务
-     * @throws \think\db\exception\DataNotFoundException
-     * @throws \think\db\exception\DbException
-     * @throws \think\db\exception\ModelNotFoundException
+     * @throws DataNotFoundException
+     * @throws DbException
+     * @throws ModelNotFoundException
      */
     protected function stopAction()
     {
@@ -144,9 +151,9 @@ class Queue extends Command
 
     /**
      * 启动后台任务
-     * @throws \think\db\exception\DataNotFoundException
-     * @throws \think\db\exception\DbException
-     * @throws \think\db\exception\ModelNotFoundException
+     * @throws DataNotFoundException
+     * @throws DbException
+     * @throws ModelNotFoundException
      */
     protected function startAction()
     {
@@ -166,9 +173,9 @@ class Queue extends Command
 
     /**
      * 查询所有任务
-     * @throws \think\db\exception\DataNotFoundException
-     * @throws \think\db\exception\DbException
-     * @throws \think\db\exception\ModelNotFoundException
+     * @throws DataNotFoundException
+     * @throws DbException
+     * @throws ModelNotFoundException
      */
     protected function queryAction()
     {
@@ -182,7 +189,7 @@ class Queue extends Command
 
     /**
      * 清理所有任务
-     * @throws \Exception
+     * @throws Exception
      */
     protected function cleanAction()
     {
@@ -211,9 +218,9 @@ class Queue extends Command
 
     /**
      * 查询兼听状态
-     * @throws \think\db\exception\DataNotFoundException
-     * @throws \think\db\exception\DbException
-     * @throws \think\db\exception\ModelNotFoundException
+     * @throws DataNotFoundException
+     * @throws DbException
+     * @throws ModelNotFoundException
      */
     protected function statusAction()
     {
@@ -226,7 +233,7 @@ class Queue extends Command
 
     /**
      * 立即监听任务
-     * @throws \think\db\exception\DbException
+     * @throws DbException
      */
     protected function listenAction()
     {
@@ -247,7 +254,7 @@ class Queue extends Command
                     $this->process->thinkCreate($args);
                     $this->output->writeln("># Created new process -> [{$vo['code']}] {$vo['title']}");
                 }
-            } catch (\Exception $exception) {
+            } catch (Exception $exception) {
                 $this->app->db->name($this->table)->where(['code' => $vo['code']])->update([
                     'status' => 4, 'outer_time' => time(), 'exec_desc' => $exception->getMessage(),
                 ]);
@@ -259,7 +266,7 @@ class Queue extends Command
 
     /**
      * 执行指定的任务内容
-     * @throws \think\db\exception\DbException
+     * @throws DbException
      */
     protected function doRunAction()
     {
@@ -279,7 +286,7 @@ class Queue extends Command
                     'enter_time' => microtime(true), 'attempts' => $this->app->db->raw('attempts+1'),
                     'outer_time' => 0, 'exec_pid' => getmypid(), 'exec_desc' => '', 'status' => 2,
                 ]);
-                $this->queue->progress(2, '>>> 任务处理开始 <<<', 0);
+                $this->queue->progress(2, '>>> 任务处理开始 <<<', '0');
                 // 执行任务内容
                 defined('WorkQueueCall') or define('WorkQueueCall', true);
                 defined('WorkQueueCode') or define('WorkQueueCode', $this->code);
@@ -288,7 +295,7 @@ class Queue extends Command
                     $class = $this->app->make($command, [], true);
                     if ($class instanceof \think\admin\Queue) {
                         $this->updateQueue(3, $class->initialize($this->queue)->execute($this->queue->data) ?: '');
-                    } elseif ($class instanceof \think\admin\service\QueueService) {
+                    } elseif ($class instanceof QueueService) {
                         $this->updateQueue(3, $class->initialize($this->queue->code)->execute($this->queue->data) ?: '');
                     } else {
                         throw new \think\admin\Exception("自定义 {$command} 未继承 Queue 或 QueueService");
@@ -299,7 +306,7 @@ class Queue extends Command
                     $this->updateQueue(3, $this->app->console->call(array_shift($attr), $attr)->fetch(), false);
                 }
             }
-        } catch (\Exception | \Throwable | \Error  $exception) {
+        } catch (Exception | Throwable | Error  $exception) {
             $code = $exception->getCode();
             if (intval($code) !== 3) $code = 4;
             $this->updateQueue($code, $exception->getMessage());
@@ -311,7 +318,7 @@ class Queue extends Command
      * @param integer $status 任务状态
      * @param string $message 消息内容
      * @param boolean $isSplit 是否分隔
-     * @throws \think\db\exception\DbException
+     * @throws DbException
      */
     protected function updateQueue(int $status, string $message, bool $isSplit = true)
     {
@@ -327,7 +334,7 @@ class Queue extends Command
             $this->queue->progress($status, ">>> {$desc[0]} <<<");
         }
         if ($status == 3) {
-            $this->queue->progress($status, '>>> 任务处理完成 <<<', 100);
+            $this->queue->progress($status, '>>> 任务处理完成 <<<', '100.00');
         } elseif ($status == 4) {
             $this->queue->progress($status, '>>> 任务处理失败 <<<');
         }
@@ -335,7 +342,7 @@ class Queue extends Command
         if (isset($this->queue->record['loops_time']) && $this->queue->record['loops_time'] > 0) {
             try {
                 $this->queue->initialize($this->code)->reset($this->queue->record['loops_time']);
-            } catch (\Exception | \Throwable | \Error  $exception) {
+            } catch (Exception | Throwable | Error  $exception) {
                 $this->app->log->error("Queue {$this->queue->record['code']} Loops Failed. {$exception->getMessage()}");
             }
         }

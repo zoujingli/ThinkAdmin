@@ -15,6 +15,7 @@
 
 namespace think\admin;
 
+use Closure;
 use think\admin\command\Database;
 use think\admin\command\Install;
 use think\admin\command\Queue;
@@ -95,7 +96,7 @@ class Library extends Service
                 $this->app->middleware->add(LoadLangPack::class);
             }
             // 注册访问处理中间键
-            $this->app->middleware->add(function (Request $request, \Closure $next) {
+            $this->app->middleware->add(function (Request $request, Closure $next) {
                 $header = [];
                 if (($origin = $request->header('origin', '*')) !== '*') {
                     $header['Access-Control-Allow-Origin'] = $origin;

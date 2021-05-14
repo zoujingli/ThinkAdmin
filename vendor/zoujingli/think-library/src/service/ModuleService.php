@@ -251,6 +251,8 @@ class ModuleService extends Service
             } else {
                 return [false, $file['type'], $file['name']];
             }
+        } else {
+            return [false, 'non', '未知操作'];
         }
     }
 

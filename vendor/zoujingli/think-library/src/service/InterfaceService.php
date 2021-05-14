@@ -17,10 +17,15 @@ declare (strict_types=1);
 
 namespace think\admin\service;
 
+use stdClass;
+use think\admin\Exception;
 use think\admin\extend\HttpExtend;
 use think\admin\helper\ValidateHelper;
 use think\admin\Service;
 use think\App;
+use think\db\exception\DataNotFoundException;
+use think\db\exception\DbException;
+use think\db\exception\ModelNotFoundException;
 use think\exception\HttpResponseException;
 
 /**
@@ -64,9 +69,9 @@ class InterfaceService extends Service
      * 接口服务初始化
      * InterfaceService constructor.
      * @param App $app
-     * @throws \think\db\exception\DataNotFoundException
-     * @throws \think\db\exception\DbException
-     * @throws \think\db\exception\ModelNotFoundException
+     * @throws DataNotFoundException
+     * @throws DbException
+     * @throws ModelNotFoundException
      */
     public function __construct(App $app)
     {
@@ -132,7 +137,7 @@ class InterfaceService extends Service
     /**
      * 获取请求数据
      * @param boolean $check 验证数据
-     * @return mixed
+     * @return array|InterfaceService
      */
     public function getInput(bool $check = true)
     {
@@ -187,7 +192,7 @@ class InterfaceService extends Service
         if ($this->debug) {
             return $this->app->request->request();
         } else {
-            if (empty($this->input)) $this->getInput(true);
+            if (empty($this->input)) $this->getInput();
             return json_decode($this->input['data'], true) ?: [];
         }
     }
@@ -200,8 +205,8 @@ class InterfaceService extends Service
      */
     public function error($info, $data = '{-null-}', $code = 0): void
     {
-        if ($data === '{-null-}') $data = new \stdClass();
-        $this->baseResponse(lang('think_library_response_success'), ['code' => $code, 'info' => $info, 'data' => $data], 1);
+        if ($data === '{-null-}') $data = new stdClass();
+        $this->baseResponse(lang('think_library_response_success'), ['code' => $code, 'info' => $info, 'data' => $data]);
     }
 
     /**
@@ -212,8 +217,8 @@ class InterfaceService extends Service
      */
     public function success($info, $data = '{-null-}', $code = 1): void
     {
-        if ($data === '{-null-}') $data = new \stdClass();
-        $this->baseResponse(lang('think_library_response_success'), ['code' => $code, 'info' => $info, 'data' => $data], 1);
+        if ($data === '{-null-}') $data = new stdClass();
+        $this->baseResponse(lang('think_library_response_success'), ['code' => $code, 'info' => $info, 'data' => $data]);
     }
 
     /**
@@ -249,7 +254,7 @@ class InterfaceService extends Service
         $array = $this->_buildSign($data);
         throw new HttpResponseException(json([
             'code'  => $code, 'info' => $info, 'time' => $array['time'], 'sign' => $array['sign'],
-            'appid' => input('appid', null), 'nostr' => $array['nostr'], 'data' => $data,
+            'appid' => input('appid'), 'nostr' => $array['nostr'], 'data' => $data,
         ]));
     }
 
@@ -258,13 +263,13 @@ class InterfaceService extends Service
      * @param string $uri 接口地址
      * @param array $data 请求数据
      * @return array
-     * @throws \think\admin\Exception
+     * @throws Exception
      */
     public function doRequest(string $uri, array $data = []): array
     {
         $result = json_decode(HttpExtend::post($this->baseurl . $uri, $this->_buildSign($data)), true);
-        if (empty($result)) throw new \think\admin\Exception(lang('think_library_response_failed'));
-        if (empty($result['code'])) throw new \think\admin\Exception($result['info']);
+        if (empty($result)) throw new Exception(lang('think_library_response_failed'));
+        if (empty($result['code'])) throw new Exception($result['info']);
         return $result['data'] ?? [];
     }
 

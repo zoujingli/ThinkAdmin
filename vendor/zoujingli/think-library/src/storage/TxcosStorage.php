@@ -4,8 +4,12 @@ declare (strict_types=1);
 
 namespace think\admin\storage;
 
+use think\admin\Exception;
 use think\admin\extend\HttpExtend;
 use think\admin\Storage;
+use think\db\exception\DataNotFoundException;
+use think\db\exception\DbException;
+use think\db\exception\ModelNotFoundException;
 
 /**
  * 腾讯云COS存储支持
@@ -40,10 +44,10 @@ class TxcosStorage extends Storage
 
     /**
      * 初始化入口
-     * @throws \think\admin\Exception
-     * @throws \think\db\exception\DataNotFoundException
-     * @throws \think\db\exception\DbException
-     * @throws \think\db\exception\ModelNotFoundException
+     * @throws Exception
+     * @throws DataNotFoundException
+     * @throws DbException
+     * @throws ModelNotFoundException
      */
     protected function initialize()
     {
@@ -58,17 +62,17 @@ class TxcosStorage extends Storage
         if ($type === 'auto') $this->prefix = "//{$domain}";
         elseif ($type === 'http') $this->prefix = "http://{$domain}";
         elseif ($type === 'https') $this->prefix = "https://{$domain}";
-        else throw new \think\admin\Exception('未配置腾讯云COS访问域名哦');
+        else throw new Exception('未配置腾讯云COS访问域名哦');
     }
 
     /**
      * 获取当前实例对象
      * @param null|string $name
      * @return TxcosStorage
-     * @throws \think\admin\Exception
-     * @throws \think\db\exception\DataNotFoundException
-     * @throws \think\db\exception\DbException
-     * @throws \think\db\exception\ModelNotFoundException
+     * @throws Exception
+     * @throws DataNotFoundException
+     * @throws DbException
+     * @throws ModelNotFoundException
      */
     public static function instance(?string $name = null)
     {
@@ -102,9 +106,9 @@ class TxcosStorage extends Storage
      * 根据文件名读取文件内容
      * @param string $name 文件名称
      * @param boolean $safe 安全模式
-     * @return false|string
+     * @return string
      */
-    public function get(string $name, bool $safe = false)
+    public function get(string $name, bool $safe = false): string
     {
         return static::curlGet($this->url($name, $safe));
     }

@@ -17,6 +17,9 @@ declare (strict_types=1);
 
 namespace think\admin\service;
 
+use ReflectionClass;
+use ReflectionException;
+use ReflectionMethod;
 use think\admin\Service;
 
 /**
@@ -101,7 +104,7 @@ class NodeService extends Service
      * 获取所有控制器入口
      * @param boolean $force
      * @return array
-     * @throws \ReflectionException
+     * @throws ReflectionException
      */
     public function getMethods(bool $force = false): array
     {
@@ -121,10 +124,10 @@ class NodeService extends Service
             if (preg_match("|^([\w/]+)/(\w+)/controller/(.+)\.php$|i", $name, $matches)) {
                 [, $namespace, $appname, $classname] = $matches;
                 $addons = preg_match('|/addons$|', $namespace) ? 'addons-' : '';
-                $class = new \ReflectionClass(strtr("{$namespace}/{$appname}/controller/{$classname}", '/', '\\'));
+                $class = new ReflectionClass(strtr("{$namespace}/{$appname}/controller/{$classname}", '/', '\\'));
                 $prefix = strtolower(strtr("{$addons}{$appname}/{$this->nameTolower($classname)}", '\\', '/'));
                 $data[$prefix] = $this->_parseComment($class->getDocComment() ?: '', $classname);
-                foreach ($class->getMethods(\ReflectionMethod::IS_PUBLIC) as $method) {
+                foreach ($class->getMethods(ReflectionMethod::IS_PUBLIC) as $method) {
                     if (in_array($metname = $method->getName(), $ignores)) continue;
                     $data[strtolower("{$prefix}/{$metname}")] = $this->_parseComment($method->getDocComment() ?: '', $metname);
                 }

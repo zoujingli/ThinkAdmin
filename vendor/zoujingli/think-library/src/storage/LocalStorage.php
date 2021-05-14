@@ -17,7 +17,11 @@ declare (strict_types=1);
 
 namespace think\admin\storage;
 
+use Exception;
 use think\admin\Storage;
+use think\db\exception\DataNotFoundException;
+use think\db\exception\DbException;
+use think\db\exception\ModelNotFoundException;
 
 /**
  * 本地存储支持
@@ -29,9 +33,9 @@ class LocalStorage extends Storage
 
     /**
      * 初始化入口
-     * @throws \think\db\exception\DataNotFoundException
-     * @throws \think\db\exception\DbException
-     * @throws \think\db\exception\ModelNotFoundException
+     * @throws DataNotFoundException
+     * @throws DbException
+     * @throws ModelNotFoundException
      */
     protected function initialize()
     {
@@ -51,9 +55,9 @@ class LocalStorage extends Storage
      * @param null|string $name
      * @return static
      * @throws \think\admin\Exception
-     * @throws \think\db\exception\DataNotFoundException
-     * @throws \think\db\exception\DbException
-     * @throws \think\db\exception\ModelNotFoundException
+     * @throws DataNotFoundException
+     * @throws DbException
+     * @throws ModelNotFoundException
      */
     public static function instance(?string $name = null)
     {
@@ -76,9 +80,9 @@ class LocalStorage extends Storage
             if (file_put_contents($path, $file)) {
                 return $this->info($name, $safe, $attname);
             }
-        } catch (\Exception $exception) {
-            return [];
+        } catch (Exception $exception) {
         }
+        return [];
     }
 
     /**

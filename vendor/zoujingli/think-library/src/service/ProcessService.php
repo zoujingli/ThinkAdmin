@@ -18,6 +18,9 @@ declare (strict_types=1);
 namespace think\admin\service;
 
 use think\admin\Service;
+use think\db\exception\DataNotFoundException;
+use think\db\exception\DbException;
+use think\db\exception\ModelNotFoundException;
 
 /**
  * 系统进程管理服务
@@ -32,11 +35,11 @@ class ProcessService extends Service
      * @param string $args 指定参数
      * @param boolean $simple 指令内容
      * @return string
-     * @throws \think\db\exception\DataNotFoundException
-     * @throws \think\db\exception\DbException
-     * @throws \think\db\exception\ModelNotFoundException
+     * @throws DataNotFoundException
+     * @throws DbException
+     * @throws ModelNotFoundException
      */
-    public function think(string $args = '', $simple = false): string
+    public function think(string $args = '', bool $simple = false): string
     {
         if ($simple) {
             return trim("{$this->app->getRootPath()}think {$args}");
@@ -50,9 +53,9 @@ class ProcessService extends Service
      * 检查 Think 运行进程
      * @param string $args
      * @return array
-     * @throws \think\db\exception\DataNotFoundException
-     * @throws \think\db\exception\DbException
-     * @throws \think\db\exception\ModelNotFoundException
+     * @throws DataNotFoundException
+     * @throws DbException
+     * @throws ModelNotFoundException
      */
     public function thinkQuery(string $args): array
     {
@@ -64,22 +67,13 @@ class ProcessService extends Service
      * @param string $args 执行参数
      * @param integer $usleep 延时时间
      * @return ProcessService
-     * @throws \think\db\exception\DataNotFoundException
-     * @throws \think\db\exception\DbException
-     * @throws \think\db\exception\ModelNotFoundException
+     * @throws DataNotFoundException
+     * @throws DbException
+     * @throws ModelNotFoundException
      */
-    public function thinkCreate(string $args, $usleep = 0): ProcessService
+    public function thinkCreate(string $args, int $usleep = 0): ProcessService
     {
         return $this->create($this->think($args), $usleep);
-    }
-
-    /**
-     * 获取当前应用版本
-     * @return string
-     */
-    public function version(): string
-    {
-        return ModuleService::instance()->getVersion();
     }
 
     /**
@@ -88,7 +82,7 @@ class ProcessService extends Service
      * @param integer $usleep 延时时间
      * @return $this
      */
-    public function create(string $command, $usleep = 0): ProcessService
+    public function create(string $command, int $usleep = 0): ProcessService
     {
         if ($this->iswin()) {
             $this->exec(__DIR__ . "/bin/console.exe {$command}");
@@ -103,22 +97,22 @@ class ProcessService extends Service
 
     /**
      * 查询相关进程列表
-     * @param string $command 任务指令
-     * @param string $name 执行名称
+     * @param string $cmd 任务指令
+     * @param string $name 程序名称
      * @return array
      */
-    public function query(string $command, string $name = 'php.exe'): array
+    public function query(string $cmd, string $name = 'php.exe'): array
     {
         $list = [];
         if ($this->iswin()) {
             $lines = $this->exec('wmic process where name="' . $name . '" get processid,CommandLine', true);
-            foreach ($lines as $line) if ($this->_issub($line, $command) !== false) {
+            foreach ($lines as $line) if ($this->_issub($line, $cmd) !== false) {
                 $attr = explode(' ', $this->_space($line));
                 $list[] = ['pid' => array_pop($attr), 'cmd' => join(' ', $attr)];
             }
         } else {
-            $lines = $this->exec("ps ax|grep -v grep|grep \"{$command}\"", true);
-            foreach ($lines as $line) if ($this->_issub($line, $command) !== false) {
+            $lines = $this->exec("ps ax|grep -v grep|grep \"{$cmd}\"", true);
+            foreach ($lines as $line) if ($this->_issub($line, $cmd) !== false) {
                 $attr = explode(' ', $this->_space($line));
                 [$pid] = [array_shift($attr), array_shift($attr), array_shift($attr), array_shift($attr)];
                 $list[] = ['pid' => $pid, 'cmd' => join(' ', $attr)];
@@ -145,7 +139,7 @@ class ProcessService extends Service
     /**
      * 立即执行指令
      * @param string $command 执行指令
-     * @param array|boolean $outarr 返回类型
+     * @param boolean|array $outarr 返回类型
      * @return string|array
      */
     public function exec(string $command, $outarr = false)
@@ -166,12 +160,11 @@ class ProcessService extends Service
     /**
      * 清除空白字符过滤
      * @param string $content
-     * @param string $tochar
      * @return string
      */
-    private function _space(string $content, string $tochar = ' '): string
+    private function _space(string $content): string
     {
-        return preg_replace('|\s+|', $tochar, strtr(trim($content), '\\', '/'));
+        return preg_replace('|\s+|', ' ', strtr(trim($content), '\\', '/'));
     }
 
     /**

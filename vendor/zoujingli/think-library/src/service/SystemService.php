@@ -17,7 +17,12 @@ declare (strict_types=1);
 
 namespace think\admin\service;
 
+use Exception;
 use think\admin\Service;
+use think\App;
+use think\db\exception\DataNotFoundException;
+use think\db\exception\DbException;
+use think\db\exception\ModelNotFoundException;
 use think\db\Query;
 use think\helper\Str;
 
@@ -44,16 +49,16 @@ class SystemService extends Service
     /**
      * 设置配置数据
      * @param string $name 配置名称
-     * @param string $value 配置内容
-     * @return integer
-     * @throws \think\db\exception\DataNotFoundException
-     * @throws \think\db\exception\DbException
-     * @throws \think\db\exception\ModelNotFoundException
+     * @param mixed $value 配置内容
+     * @return integer|string
+     * @throws DataNotFoundException
+     * @throws DbException
+     * @throws ModelNotFoundException
      */
     public function set(string $name, $value = '')
     {
         $this->data = [];
-        [$type, $field] = $this->_parse($name, 'base');
+        [$type, $field] = $this->_parse($name);
         if (is_array($value)) {
             $count = 0;
             foreach ($value as $kk => $vv) {
@@ -74,9 +79,9 @@ class SystemService extends Service
      * @param string $name
      * @param string $default
      * @return array|mixed|string
-     * @throws \think\db\exception\DataNotFoundException
-     * @throws \think\db\exception\DbException
-     * @throws \think\db\exception\ModelNotFoundException
+     * @throws DataNotFoundException
+     * @throws DbException
+     * @throws ModelNotFoundException
      */
     public function get(string $name = '', string $default = '')
     {
@@ -85,7 +90,7 @@ class SystemService extends Service
                 $this->data[$item['type']][$item['name']] = $item['value'];
             });
         }
-        [$type, $field, $outer] = $this->_parse($name, 'base');
+        [$type, $field, $outer] = $this->_parse($name);
         if (empty($name)) {
             return $this->data;
         } elseif (isset($this->data[$type])) {
@@ -101,31 +106,40 @@ class SystemService extends Service
 
     /**
      * 数据增量保存
-     * @param Query|string $dbQuery 数据查询对象
+     * @param Query|string $query 数据查询对象
      * @param array $data 需要保存的数据
      * @param string $key 更新条件查询主键
-     * @param array $where 额外更新查询条件
+     * @param array $map 额外更新查询条件
      * @return boolean|integer 失败返回 false, 成功返回主键值或 true
-     * @throws \think\db\exception\DataNotFoundException
-     * @throws \think\db\exception\DbException
-     * @throws \think\db\exception\ModelNotFoundException
+     * @throws DataNotFoundException
+     * @throws DbException
+     * @throws ModelNotFoundException
      */
-    public function save($dbQuery, array $data, string $key = 'id', array $where = [])
+    public function save($query, array $data, string $key = 'id', array $map = [])
     {
-        $val = $data[$key] ?? null;
-        $query = (is_string($dbQuery) ? $this->app->db->name($dbQuery) : $dbQuery)->master()->strict(false)->where($where);
-        if (empty($where[$key])) is_string($val) && strpos($val, ',') !== false ? $query->whereIn($key, explode(',', $val)) : $query->where([$key => $val]);
-        return is_array($info = (clone $query)->find()) && !empty($info) ? ($query->update($data) !== false ? ($info[$key] ?? true) : false) : $query->insertGetId($data);
+        if (is_string($query)) $query = $this->app->db->name($query);
+        [$query, $value] = [$query->master()->strict(false)->where($map), $data[$key] ?? null];
+        if (empty($map[$key])) if (is_string($value) && strpos($value, ',') !== false) {
+            $query->whereIn($key, str2arr($value));
+        } else {
+            $query->where([$key => $value]);
+        }
+        if (($info = (clone $query)->find()) && !empty($info)) {
+            $query->update($data);
+            return $info[$key] ?? true;
+        } else {
+            return $query->insertGetId($data);
+        }
     }
 
     /**
      * 解析缓存名称
      * @param string $rule 配置名称
-     * @param string $type 配置类型
      * @return array
      */
-    private function _parse(string $rule, string $type = 'base'): array
+    private function _parse(string $rule): array
     {
+        $type = 'base';
         if (stripos($rule, '.') !== false) {
             [$type, $rule] = explode('.', $rule, 2);
         }
@@ -154,9 +168,9 @@ class SystemService extends Service
      * @param string $name
      * @param mixed $value
      * @return boolean
-     * @throws \think\db\exception\DataNotFoundException
-     * @throws \think\db\exception\DbException
-     * @throws \think\db\exception\ModelNotFoundException
+     * @throws DataNotFoundException
+     * @throws DbException
+     * @throws ModelNotFoundException
      */
     public function setData(string $name, $value)
     {
@@ -185,9 +199,9 @@ class SystemService extends Service
     public function getData(string $name, $default = [])
     {
         try {
-            $value = $this->app->db->name('SystemData')->where(['name' => $name])->value('value', null);
+            $value = $this->app->db->name('SystemData')->where(['name' => $name])->value('value');
             return is_null($value) ? $default : unserialize($value);
-        } catch (\Exception $exception) {
+        } catch (Exception $exception) {
             return $default;
         }
     }
@@ -227,7 +241,7 @@ class SystemService extends Service
      * @param string|null $file 文件名称
      * @return false|int
      */
-    public function putDebug($data, $new = false, $file = null)
+    public function putDebug($data, bool $new = false, ?string $file = null)
     {
         if (is_null($file)) $file = $this->app->getRootPath() . 'runtime' . DIRECTORY_SEPARATOR . date('Ymd') . '.log';
         $str = (is_string($data) ? $data : ((is_array($data) || is_object($data)) ? print_r($data, true) : var_export($data, true))) . PHP_EOL;
@@ -339,9 +353,9 @@ class SystemService extends Service
 
     /**
      * 初始化并运行主程序
-     * @param null|\think\App $app
+     * @param null|App $app
      */
-    public function doInit(?\think\App $app = null): void
+    public function doInit(?App $app = null): void
     {
         $this->app = $app ?: $this->app;
         $this->app->debug($this->isDebug());

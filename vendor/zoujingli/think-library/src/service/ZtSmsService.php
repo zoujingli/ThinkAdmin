@@ -19,6 +19,9 @@ namespace think\admin\service;
 
 use think\admin\extend\HttpExtend;
 use think\admin\Service;
+use think\db\exception\DataNotFoundException;
+use think\db\exception\DbException;
+use think\db\exception\ModelNotFoundException;
 
 /**
  * 新助通短信接口服务
@@ -47,9 +50,9 @@ class ZtSmsService extends Service
 
     /**
      * 短信服务初始化
-     * @throws \think\db\exception\DataNotFoundException
-     * @throws \think\db\exception\DbException
-     * @throws \think\db\exception\ModelNotFoundException
+     * @throws DataNotFoundException
+     * @throws DbException
+     * @throws ModelNotFoundException
      */
     protected function initialize()
     {
@@ -94,9 +97,9 @@ class ZtSmsService extends Service
      * @param integer $wait 等待时间
      * @param string $template 模板编码
      * @return array
-     * @throws \think\db\exception\DataNotFoundException
-     * @throws \think\db\exception\DbException
-     * @throws \think\db\exception\ModelNotFoundException
+     * @throws DataNotFoundException
+     * @throws DbException
+     * @throws ModelNotFoundException
      */
     public function sendVerifyCode(string $phone, int $wait = 120, string $template = 'ztsms.register_verify'): array
     {
@@ -108,7 +111,7 @@ class ZtSmsService extends Service
             return [1, '短信验证码已经发送！', ['time' => $dtime]];
         }
         // 生成新的验证码
-        $code = rand(100000, 999999);
+        $code = (string)rand(100000, 999999);
         $this->app->cache->set($ckey, ['code' => $code, 'time' => $time], 600);
         // 尝试发送短信内容
         $content = sysconf($template) ?: '您的验证码为{code}，请在十分钟内完成操作！';

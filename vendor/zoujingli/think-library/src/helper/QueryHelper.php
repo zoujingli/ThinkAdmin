@@ -18,6 +18,10 @@ declare (strict_types=1);
 namespace think\admin\helper;
 
 use think\admin\Helper;
+use think\Db;
+use think\db\exception\DataNotFoundException;
+use think\db\exception\DbException;
+use think\db\exception\ModelNotFoundException;
 use think\db\Query;
 
 /**
@@ -25,7 +29,7 @@ use think\db\Query;
  * Class QueryHelper
  * @package think\admin\helper
  * @see \think\db\Query
- * @mixin \think\db\Query
+ * @mixin Query
  */
 class QueryHelper extends Helper
 {
@@ -37,7 +41,7 @@ class QueryHelper extends Helper
 
     /**
      * 获取当前Db操作对象
-     * @return \think\db\Query
+     * @return Db|Query
      */
     public function db()
     {
@@ -46,14 +50,14 @@ class QueryHelper extends Helper
 
     /**
      * 逻辑器初始化
-     * @param string|Query $dbQuery
+     * @param string|Query|Db $dbQuery
      * @param array|string|null $input 输入数据
      * @return $this
      */
     public function init($dbQuery, $input = null): QueryHelper
     {
         $this->query = $this->buildQuery($dbQuery);
-        $this->input = $this->_getInputData($input);
+        $this->input = $this->getInputData($input);
         return $this;
     }
 
@@ -67,7 +71,7 @@ class QueryHelper extends Helper
      */
     public function like($fields, string $split = '', $input = null, string $alias = '#'): QueryHelper
     {
-        $data = $this->_getInputData($input ?: $this->input);
+        $data = $this->getInputData($input ?: $this->input);
         foreach (is_array($fields) ? $fields : explode(',', $fields) as $field) {
             [$dk, $qk] = [$field, $field];
             if (stripos($field, $alias) !== false) {
@@ -89,7 +93,7 @@ class QueryHelper extends Helper
      */
     public function equal($fields, $input = null, string $alias = '#'): QueryHelper
     {
-        $data = $this->_getInputData($input ?: $this->input);
+        $data = $this->getInputData($input ?: $this->input);
         foreach (is_array($fields) ? $fields : explode(',', $fields) as $field) {
             [$dk, $qk] = [$field, $field];
             if (stripos($field, $alias) !== false) {
@@ -112,7 +116,7 @@ class QueryHelper extends Helper
      */
     public function in($fields, string $split = ',', $input = null, string $alias = '#'): QueryHelper
     {
-        $data = $this->_getInputData($input ?: $this->input);
+        $data = $this->getInputData($input ?: $this->input);
         foreach (is_array($fields) ? $fields : explode(',', $fields) as $field) {
             [$dk, $qk] = [$field, $field];
             if (stripos($field, $alias) !== false) {
@@ -174,15 +178,15 @@ class QueryHelper extends Helper
      * 实例化分页管理器
      * @param boolean $page 是否启用分页
      * @param boolean $display 是否渲染模板
-     * @param boolean $total 集合分页记录数
+     * @param boolean|int $total 集合分页记录数
      * @param integer $limit 集合每页记录数
      * @param string $template 模板文件名称
-     * @return mixed
-     * @throws \think\db\exception\DataNotFoundException
-     * @throws \think\db\exception\DbException
-     * @throws \think\db\exception\ModelNotFoundException
+     * @return array
+     * @throws DataNotFoundException
+     * @throws DbException
+     * @throws ModelNotFoundException
      */
-    public function page(bool $page = true, bool $display = true, $total = false, int $limit = 0, string $template = '')
+    public function page(bool $page = true, bool $display = true, $total = false, int $limit = 0, string $template = ''): array
     {
         return PageHelper::instance()->init($this->query, $page, $display, $total, $limit, $template);
     }
@@ -223,7 +227,7 @@ class QueryHelper extends Helper
      */
     private function _setBetweenWhere($fields, string $split = ' ', $input = null, string $alias = '#', ?callable $callback = null): QueryHelper
     {
-        $data = $this->_getInputData($input ?: $this->input);
+        $data = $this->getInputData($input ?: $this->input);
         foreach (is_array($fields) ? $fields : explode(',', $fields) as $field) {
             [$dk, $qk] = [$field, $field];
             if (stripos($field, $alias) !== false) {
@@ -246,7 +250,7 @@ class QueryHelper extends Helper
      * @param array|string|null $input
      * @return array
      */
-    private function _getInputData($input): array
+    private function getInputData($input): array
     {
         if (is_array($input)) {
             return $input;

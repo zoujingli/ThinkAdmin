@@ -19,6 +19,9 @@ use think\admin\service\QueueService;
 use think\admin\service\SystemService;
 use think\admin\service\TokenService;
 use think\admin\Storage;
+use think\db\exception\DataNotFoundException;
+use think\db\exception\DbException;
+use think\db\exception\ModelNotFoundException;
 use think\db\Query;
 
 if (!function_exists('p')) {
@@ -29,7 +32,7 @@ if (!function_exists('p')) {
      * @param null|string $file 保存文件名称
      * @return false|int
      */
-    function p($data, $new = false, $file = null)
+    function p($data, bool $new = false, ?string $file = null)
     {
         return SystemService::instance()->putDebug($data, $new, $file);
     }
@@ -66,11 +69,11 @@ if (!function_exists('sysconf')) {
      * @param string $name 参数名称
      * @param mixed $value 参数内容
      * @return mixed
-     * @throws \think\db\exception\DataNotFoundException
-     * @throws \think\db\exception\DbException
-     * @throws \think\db\exception\ModelNotFoundException
+     * @throws DataNotFoundException
+     * @throws DbException
+     * @throws ModelNotFoundException
      */
-    function sysconf($name = '', $value = null)
+    function sysconf(string $name = '', $value = null)
     {
         if (is_null($value) && is_string($name)) {
             return SystemService::instance()->get($name);
@@ -85,9 +88,9 @@ if (!function_exists('sysdata')) {
      * @param string $name 数据名称
      * @param mixed $value 数据内容
      * @return mixed
-     * @throws \think\db\exception\DataNotFoundException
-     * @throws \think\db\exception\DbException
-     * @throws \think\db\exception\ModelNotFoundException
+     * @throws DataNotFoundException
+     * @throws DbException
+     * @throws ModelNotFoundException
      */
     function sysdata(string $name, $value = null)
     {
@@ -109,9 +112,9 @@ if (!function_exists('sysqueue')) {
      * @param integer $loops 循环等待时间
      * @return string
      * @throws \think\admin\Exception
-     * @throws \think\db\exception\DataNotFoundException
-     * @throws \think\db\exception\DbException
-     * @throws \think\db\exception\ModelNotFoundException
+     * @throws DataNotFoundException
+     * @throws DbException
+     * @throws ModelNotFoundException
      */
     function sysqueue(string $title, string $command, int $later = 0, array $data = [], int $rscript = 1, int $loops = 0): string
     {
@@ -229,7 +232,7 @@ if (!function_exists('debase64url')) {
      */
     function debase64url(string $string): string
     {
-        return base64_decode(str_pad(strtr($string, '-_', '+/'), strlen($string) % 4, '=', STR_PAD_RIGHT));
+        return base64_decode(str_pad(strtr($string, '-_', '+/'), strlen($string) % 4, '='));
     }
 }
 if (!function_exists('http_get')) {
@@ -266,9 +269,9 @@ if (!function_exists('data_save')) {
      * @param string $key 条件主键限制
      * @param array $where 其它的where条件
      * @return boolean|integer
-     * @throws \think\db\exception\DataNotFoundException
-     * @throws \think\db\exception\DbException
-     * @throws \think\db\exception\ModelNotFoundException
+     * @throws DataNotFoundException
+     * @throws DbException
+     * @throws ModelNotFoundException
      */
     function data_save($dbQuery, array $data, string $key = 'id', array $where = [])
     {
@@ -299,7 +302,7 @@ if (!function_exists('format_datetime')) {
      * @param string $format 输出格式
      * @return string
      */
-    function format_datetime($datetime, $format = 'Y年m月d日 H:i:s'): string
+    function format_datetime($datetime, string $format = 'Y年m月d日 H:i:s'): string
     {
         if (empty($datetime)) return '-';
         if (is_numeric($datetime)) {

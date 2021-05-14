@@ -16,6 +16,7 @@ declare (strict_types=1);
 
 namespace think\admin\multiple;
 
+use InvalidArgumentException;
 use think\admin\service\NodeService;
 use think\route\Url;
 
@@ -99,7 +100,7 @@ class BuildUrl extends Url
         }
         if ($url) {
             $checkDomain = $domain && is_string($domain) ? $domain : null;
-            $checkName = isset($name) ? $name : $url . (isset($info['query']) ? '?' . $info['query'] : '');
+            $checkName = $name ?? $url . (isset($info['query']) ? '?' . $info['query'] : '');
             $rule = $this->route->getName($checkName, $checkDomain);
             if (empty($rule) && isset($info['query'])) {
                 $rule = $this->route->getName($url, $checkDomain);
@@ -116,7 +117,7 @@ class BuildUrl extends Url
                 $url = $this->app->http->getName() . '/' . $url;
             }
         } elseif (!empty($rule) && isset($name)) {
-            throw new \InvalidArgumentException('route name not exists:' . $name);
+            throw new InvalidArgumentException('route name not exists:' . $name);
         } else {
             // 检测URL绑定
             $bind = $this->route->getDomainBind($domain && is_string($domain) ? $domain : null);

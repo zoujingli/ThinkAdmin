@@ -17,8 +17,12 @@ declare (strict_types=1);
 
 namespace think\admin\service;
 
+use ReflectionException;
 use think\admin\extend\DataExtend;
 use think\admin\Service;
+use think\db\exception\DataNotFoundException;
+use think\db\exception\DbException;
+use think\db\exception\ModelNotFoundException;
 
 /**
  * 系统权限管理服务
@@ -69,7 +73,7 @@ class AdminService extends Service
      * --- 需要读取缓存或扫描所有节点
      * @param null|string $node
      * @return boolean
-     * @throws \ReflectionException
+     * @throws ReflectionException
      */
     public function check(?string $node = ''): bool
     {
@@ -95,7 +99,7 @@ class AdminService extends Service
      * 获取授权节点列表
      * @param array $checkeds
      * @return array
-     * @throws \ReflectionException
+     * @throws ReflectionException
      */
     public function getTree(array $checkeds = []): array
     {
@@ -121,9 +125,9 @@ class AdminService extends Service
      * 初始化用户权限
      * @param boolean $force 强刷权限
      * @return $this
-     * @throws \think\db\exception\DataNotFoundException
-     * @throws \think\db\exception\DbException
-     * @throws \think\db\exception\ModelNotFoundException
+     * @throws DataNotFoundException
+     * @throws DbException
+     * @throws ModelNotFoundException
      */
     public function apply(bool $force = false): AdminService
     {

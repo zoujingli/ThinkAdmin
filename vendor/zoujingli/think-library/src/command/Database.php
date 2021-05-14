@@ -59,9 +59,9 @@ class Database extends Command
      */
     protected function _repair(): void
     {
-        $this->setQueueProgress("正在获取需要修复的数据表", 0);
+        $this->setQueueProgress("正在获取需要修复的数据表", '0');
         [$tables, $total, $count] = SystemService::instance()->getTables();
-        $this->setQueueProgress("总共需要修复 {$total} 张数据表", 0);
+        $this->setQueueProgress("总共需要修复 {$total} 张数据表", '0');
         foreach ($tables as $table) {
             $this->queue->message($total, ++$count, "正在修复数据表 {$table}");
             $this->app->db->query("REPAIR TABLE `{$table}`");
@@ -76,9 +76,9 @@ class Database extends Command
      */
     protected function _optimize(): void
     {
-        $this->setQueueProgress("正在获取需要优化的数据表", 0);
+        $this->setQueueProgress("正在获取需要优化的数据表", '0');
         [$tables, $total, $count] = SystemService::instance()->getTables();
-        $this->setQueueProgress("总共需要优化 {$total} 张数据表", 0);
+        $this->setQueueProgress("总共需要优化 {$total} 张数据表", '0');
         foreach ($tables as $table) {
             $this->queue->message($total, ++$count, "正在优化数据表 {$table}");
             $this->app->db->query("OPTIMIZE TABLE `{$table}`");

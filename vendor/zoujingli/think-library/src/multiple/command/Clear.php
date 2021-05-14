@@ -31,7 +31,7 @@ class Clear extends Command
     protected function configure()
     {
         $this->setName('clear')->addArgument('app', Argument::OPTIONAL, 'app name');
-        $this->addOption('path', 'd', Option::VALUE_OPTIONAL, 'path to clear', null);
+        $this->addOption('path', 'd', Option::VALUE_OPTIONAL, 'path to clear');
         $this->addOption('cache', 'c', Option::VALUE_NONE, 'clear cache file');
         $this->addOption('log', 'l', Option::VALUE_NONE, 'clear log file');
         $this->addOption('dir', 'r', Option::VALUE_NONE, 'clear empty dir');
@@ -42,7 +42,7 @@ class Clear extends Command
     /**
      * @param Input $input
      * @param Output $output
-     * @return int|void|null
+     * @return void
      */
     protected function execute(Input $input, Output $output)
     {
@@ -55,7 +55,7 @@ class Clear extends Command
         } else {
             $path = $input->getOption('path') ?: $runtimePath;
         }
-        $rmdir = $input->getOption('dir') ? true : false;
+        $rmdir = (bool)$input->getOption('dir');
         // --expire 仅当 --cache 时生效
         $expire = $input->getOption('expire') && $input->getOption('cache');
         $this->clear(rtrim($path, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR, $rmdir, $expire);

@@ -18,6 +18,9 @@ declare (strict_types=1);
 namespace think\admin\helper;
 
 use think\admin\Helper;
+use think\db\exception\DataNotFoundException;
+use think\db\exception\DbException;
+use think\db\exception\ModelNotFoundException;
 use think\db\Query;
 
 /**
@@ -36,12 +39,12 @@ class PageHelper extends Helper
      * @param boolean|integer $total 集合分页记录数
      * @param integer $limit 集合每页记录数
      * @param string $template 模板文件名称
-     * @return array|mixed|void
-     * @throws \think\db\exception\DataNotFoundException
-     * @throws \think\db\exception\DbException
-     * @throws \think\db\exception\ModelNotFoundException
+     * @return array
+     * @throws DataNotFoundException
+     * @throws DbException
+     * @throws ModelNotFoundException
      */
-    public function init($dbQuery, bool $page = true, bool $display = true, $total = false, int $limit = 0, string $template = '')
+    public function init($dbQuery, bool $page = true, bool $display = true, $total = false, int $limit = 0, string $template = ''): array
     {
         $this->query = $this->buildQuery($dbQuery);
         // 数据列表排序自动处理
@@ -50,9 +53,7 @@ class PageHelper extends Helper
         if (!$this->query->getOptions('order')) $this->_orderAction();
         // 列表分页及结果集处理
         if ($page) {
-            if ($limit > 0) {
-                $limit = intval($limit);
-            } else {
+            if (empty($limit)) {
                 $limit = $this->app->request->get('limit', $this->app->cookie->get('limit', 20));
                 if (intval($this->app->request->get('not_cache_limit', 0)) < 1) {
                     $this->app->cookie->set('limit', ($limit = intval($limit >= 10 ? $limit : 20)) . '');
@@ -60,7 +61,7 @@ class PageHelper extends Helper
             }
             [$options, $query] = ['', $this->app->request->get()];
             $pager = $this->query->paginate(['list_rows' => $limit, 'query' => $query], $total);
-            foreach ([10, 20, 30, 40, 50, 60, 70, 80, 90, 100, 110, 120, 130, 140, 150, 160, 170, 180, 190, 200] as $num) {
+            foreach ([10, 20, 30, 40, 50, 60, 70, 80, 90, 100, 110, 120, 130, 140, 150, 160, 170, 180, 190, 200, 300, 400, 500, 600] as $num) {
                 [$query['limit'], $query['page'], $selects] = [$num, 1, $limit === $num ? 'selected' : ''];
                 if (stripos($this->app->request->get('spm', '-'), 'm-') === 0) {
                     $url = sysuri('admin/index/index') . '#' . $this->app->request->baseUrl() . '?' . urldecode(http_build_query($query));
@@ -77,9 +78,10 @@ class PageHelper extends Helper
             } else {
                 $this->class->assign('pagehtml', $pagehtml);
             }
-            $result = ['page' => ['limit' => intval($limit), 'total' => intval($pager->total()), 'pages' => intval($pager->lastPage()), 'current' => intval($pager->currentPage())], 'list' => $pager->items()];
+            $result = ['page' => ['limit' => $limit, 'total' => $pager->total(), 'pages' => $pager->lastPage(), 'current' => $pager->currentPage()], 'list' => $pager->items()];
         } else {
-            $result = ['list' => $this->query->select()->toArray()];
+            $pager = $this->query->select();
+            $result = ['page' => ['limit' => $pager->count(), 'total' => 1, 'pages' => 1, 'current' => 1], 'list' => $pager->toArray()];
         }
         if (false !== $this->class->callback('_page_filter', $result['list']) && $display) {
             if ($this->app->request->get('output') === 'json') {
@@ -87,15 +89,14 @@ class PageHelper extends Helper
             } else {
                 $this->class->fetch($template, $result);
             }
-        } else {
-            return $result;
         }
+        return $result;
     }
 
     /**
      * 执行列表排序操作
      * POST 提交 {action:sort,PK:$PK,SORT:$SORT}
-     * @throws \think\db\exception\DbException
+     * @throws DbException
      */
     private function _sortAction()
     {

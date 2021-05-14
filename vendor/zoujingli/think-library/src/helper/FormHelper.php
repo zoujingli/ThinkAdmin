@@ -18,6 +18,10 @@ declare (strict_types=1);
 namespace think\admin\helper;
 
 use think\admin\Helper;
+use think\Db;
+use think\db\exception\DataNotFoundException;
+use think\db\exception\DbException;
+use think\db\exception\ModelNotFoundException;
 use think\db\Query;
 
 /**
@@ -30,15 +34,15 @@ class FormHelper extends Helper
 
     /**
      * 逻辑器初始化
-     * @param string|Query $dbQuery
+     * @param string|Db|Query $dbQuery
      * @param string $template 模板名称
      * @param string $field 指定数据主键
      * @param array $where 额外更新条件
      * @param array $data 表单扩展数据
      * @return array|boolean|mixed|void
-     * @throws \think\db\exception\DataNotFoundException
-     * @throws \think\db\exception\DbException
-     * @throws \think\db\exception\ModelNotFoundException
+     * @throws DataNotFoundException
+     * @throws DbException
+     * @throws ModelNotFoundException
      */
     public function init($dbQuery, string $template = '', string $field = '', array $where = [], array $data = [])
     {

@@ -89,7 +89,7 @@ class TokenService extends Service
      * @param null|string $node 授权节点
      * @return boolean
      */
-    public function checkFormToken($token = null, $node = null): bool
+    public function checkFormToken(?string $token = null, ?string $node = null): bool
     {
         $cache = $this->_getCacheItem($token ?: $this->getInputToken());
         if (empty($cache['node']) || empty($cache['time'])) return false;
@@ -101,7 +101,7 @@ class TokenService extends Service
      * @param null|string $token
      * @return $this
      */
-    public function clearFormToken($token = null)
+    public function clearFormToken(?string $token = null): TokenService
     {
         $this->_delCacheItem($token ?: $this->getInputToken());
         return $this;
@@ -112,7 +112,7 @@ class TokenService extends Service
      * @param null|string $node
      * @return array
      */
-    public function buildFormToken($node = null): array
+    public function buildFormToken(?string $node = null): array
     {
         $cnode = NodeService::instance()->fullnode($node);
         [$token, $time] = [uniqid() . rand(100000, 999999), time()];
@@ -132,12 +132,10 @@ class TokenService extends Service
      * 设置缓存数据
      * @param string $token
      * @param array $value
-     * @return static
      */
     private function _setCacheItem(string $token, array $value)
     {
         $this->cache[$token] = $value;
-        return $this;
     }
 
     /**
@@ -152,13 +150,12 @@ class TokenService extends Service
     /**
      * 获取指定缓存
      * @param string $token
-     * @param array $default
      * @return mixed
      */
-    private function _getCacheItem(string $token, $default = [])
+    private function _getCacheItem(string $token)
     {
         $this->_clearTimeoutCache();
-        return $this->cache[$token] ?? $default;
+        return $this->cache[$token] ?? [];
     }
 
     /**

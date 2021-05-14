@@ -32,7 +32,7 @@ class ValidateHelper extends Helper
      * @param array $rules 验证规则（ 验证信息数组 ）
      * @param string|array $input 输入内容 ( post. 或 get. )
      * @param callable|null $callable 异常处理操作
-     * @return array|void
+     * @return array
      *  age.require => message // 最大值限定
      *  age.between:1,120 => message // 范围限定
      *  name.require => message // 必填内容

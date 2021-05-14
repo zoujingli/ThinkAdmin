@@ -37,7 +37,7 @@ abstract class Helper
 
     /**
      * 数据库实例
-     * @var Query
+     * @var Db|Query
      */
     public $query;
 

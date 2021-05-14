@@ -19,6 +19,9 @@ namespace think\admin\service;
 
 use think\admin\extend\HttpExtend;
 use think\admin\Service;
+use think\db\exception\DataNotFoundException;
+use think\db\exception\DbException;
+use think\db\exception\ModelNotFoundException;
 
 /**
  * 旧助通短信接口服务
@@ -64,9 +67,9 @@ class MessageService extends Service
 
     /**
      * @return $this
-     * @throws \think\db\exception\DataNotFoundException
-     * @throws \think\db\exception\DbException
-     * @throws \think\db\exception\ModelNotFoundException
+     * @throws DataNotFoundException
+     * @throws DbException
+     * @throws ModelNotFoundException
      */
     protected function initialize(): MessageService
     {
@@ -160,9 +163,9 @@ class MessageService extends Service
      * @param integer $wait 等待时间
      * @param string $type 短信模板
      * @return array
-     * @throws \think\db\exception\DataNotFoundException
-     * @throws \think\db\exception\DbException
-     * @throws \think\db\exception\ModelNotFoundException
+     * @throws DataNotFoundException
+     * @throws DbException
+     * @throws ModelNotFoundException
      */
     public function sendChinaSmsByCode($phone, int $wait = 120, string $type = 'sms_reg_template'): array
     {
@@ -171,7 +174,7 @@ class MessageService extends Service
             $dtime = ($cache['time'] + $wait < time()) ? 0 : ($wait - time() + $cache['time']);
             return [1, '短信验证码已经发送！', ['time' => $dtime]];
         }
-        [$code, $content] = [rand(1000, 9999), sysconf($type)];
+        [$code, $content] = [rand(1000, 9999) . '', sysconf($type)];
         if (empty($content) || stripos($content, '{code}') === false) {
             $content = '您的验证码为{code}，请在十分钟内完成操作！';
         }
@@ -216,6 +219,8 @@ class MessageService extends Service
             return ['code' => 0, 'num' => '0', 'msg' => 'tkey不正确！'];
         } elseif ($result > -4) {
             return ['code' => 0, 'num' => '0', 'msg' => '用户不存在或用户停用！'];
+        } else {
+            return ['code' => 0, 'num' => '0', 'msg' => '未知错误原因！'];
         }
     }
 
@@ -241,9 +246,9 @@ class MessageService extends Service
      * @param integer|string $mobile 手机号码
      * @param string $content 发送内容
      * @return boolean
-     * @throws \think\db\exception\DataNotFoundException
-     * @throws \think\db\exception\DbException
-     * @throws \think\db\exception\ModelNotFoundException
+     * @throws DataNotFoundException
+     * @throws DbException
+     * @throws ModelNotFoundException
      */
     public function sendGlobeSms($code, $mobile, string $content): bool
     {

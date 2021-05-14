@@ -18,6 +18,8 @@ declare (strict_types=1);
 namespace think\admin\helper;
 
 use think\admin\Helper;
+use think\Db;
+use think\db\exception\DbException;
 use think\db\Query;
 
 /**
@@ -29,17 +31,17 @@ class DeleteHelper extends Helper
 {
     /**
      * 逻辑器初始化
-     * @param string|Query $dbQuery
+     * @param string|Db|Query $dbQuery
      * @param string $field 操作数据主键
      * @param array $where 额外更新条件
-     * @return boolean|null|void
-     * @throws \think\db\exception\DbException
+     * @return boolean|null
+     * @throws DbException
      */
-    public function init($dbQuery, string $field = '', array $where = [])
+    public function init($dbQuery, string $field = '', array $where = []): ?bool
     {
         $query = $this->buildQuery($dbQuery);
         $field = $field ?: ($query->getPk() ?: 'id');
-        $value = $this->app->request->post($field, null);
+        $value = $this->app->request->post($field);
         // 查询限制处理
         if (!empty($where)) $query->where($where);
         if (!isset($where[$field]) && is_string($value)) {
