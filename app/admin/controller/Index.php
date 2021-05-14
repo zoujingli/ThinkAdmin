@@ -55,7 +55,7 @@ class Index extends Controller
     /**
      * 修改用户资料
      * @login true
-     * @param integer $id 用户ID
+     * @param mixed $id 用户ID
      * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\DbException
      * @throws \think\db\exception\ModelNotFoundException
@@ -71,9 +71,20 @@ class Index extends Controller
     }
 
     /**
+     * 资料修改后处理
+     * @param bool $status
+     */
+    protected function _info_form_result(bool $status)
+    {
+        if ($status) {
+            $this->success('用户资料修改成功！', 'javascript:location.reload()');
+        }
+    }
+
+    /**
      * 修改当前用户密码
      * @login true
-     * @param integer $id
+     * @param mixed $id
      * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\DbException
      * @throws \think\db\exception\ModelNotFoundException

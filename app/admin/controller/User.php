@@ -201,6 +201,7 @@ class User extends Controller
         if ($result) {
             $id = input('id') ?: 0;
             sysoplog('系统用户管理', "修改系统用户[{$id}]成功");
+            $this->success('用户资料修改成功！', 'javascript:location.reload()');
         }
     }
 

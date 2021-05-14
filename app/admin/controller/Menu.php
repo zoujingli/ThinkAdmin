@@ -138,17 +138,6 @@ class Menu extends Controller
     }
 
     /**
-     * 菜单编辑成功后刷新页面
-     * @param bool $state
-     */
-    protected function _form_result(bool $state)
-    {
-        if ($state) {
-            $this->success('系统菜单修改成功！', 'javascript:location.reload()');
-        }
-    }
-
-    /**
      * 修改菜单状态
      * @auth true
      * @throws \think\db\exception\DbException
@@ -182,6 +171,7 @@ class Menu extends Controller
         if ($result) {
             $id = $this->app->db->name($this->table)->getLastInsID();
             sysoplog('系统菜单管理', "添加系统菜单[{$id}]成功");
+            $this->success('系统菜单添加成功！', 'javascript:location.reload()');
         }
     }
 
@@ -194,6 +184,7 @@ class Menu extends Controller
         if ($result) {
             $id = input('id') ?: 0;
             sysoplog('系统菜单管理', "修改系统菜单[{$id}]成功");
+            $this->success('系统菜单修改成功！', 'javascript:location.reload()');
         }
     }
 
@@ -206,6 +197,7 @@ class Menu extends Controller
         if ($result) {
             [$id, $state] = [input('id'), input('status')];
             sysoplog('系统菜单管理', ($state ? '激活' : '禁用') . "系统菜单[{$id}]成功");
+            $this->success('系统菜单修改成功！', 'javascript:location.reload()');
         }
     }
 
@@ -218,7 +210,7 @@ class Menu extends Controller
         if ($result) {
             $id = input('id') ?: 0;
             sysoplog('系统菜单管理', "删除系统菜单[{$id}]成功");
+            $this->success('系统菜单删除成功！', 'javascript:location.reload()');
         }
     }
-
 }
