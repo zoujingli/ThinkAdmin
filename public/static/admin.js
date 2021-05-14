@@ -105,13 +105,34 @@ $(function () {
         that = this, this.idx = [], this.shade = [0.02, '#000'];
         /*! 关闭消息框 */
         this.close = function (index) {
-            return layer.close(index);
+            if (index !== null) return layer.close(index);
+            for (var i in this.idx) that.close(this.idx[i]);
+            this.idx = [];
         };
         /*! 弹出警告框 */
         this.alert = function (msg, call) {
-            return (function (idx) {
-                return that.idx.push(idx), idx;
-            })(layer.alert(msg, {end: call, scrollbar: false}));
+            var idx = layer.alert(msg, {end: call, scrollbar: false});
+            return that.idx.push(idx), idx;
+        };
+        /*! 显示成功类型的消息 */
+        this.success = function (msg, time, call) {
+            var idx = layer.msg(msg, {icon: 1, shade: this.shade, scrollbar: false, end: call, time: (time || 2) * 1000, shadeClose: true});
+            return that.idx.push(idx), idx;
+        };
+        /*! 显示失败类型的消息 */
+        this.error = function (msg, time, call) {
+            var idx = layer.msg(msg, {icon: 2, shade: this.shade, scrollbar: false, time: (time || 3) * 1000, end: call, shadeClose: true});
+            return that.idx.push(idx), idx;
+        };
+        /*! 状态消息提示 */
+        this.tips = function (msg, time, call) {
+            var idx = layer.msg(msg, {time: (time || 3) * 1000, shade: this.shade, end: call, shadeClose: true});
+            return that.idx.push(idx), idx;
+        };
+        /*! 显示加载提示 */
+        this.loading = function (msg, call) {
+            var idx = msg ? layer.msg(msg, {icon: 16, scrollbar: false, shade: this.shade, time: 0, end: call}) : layer.load(2, {time: 0, scrollbar: false, shade: this.shade, end: call});
+            return that.idx.push(idx), idx;
         };
         /*! 确认对话框 */
         this.confirm = function (msg, ok, no) {
@@ -121,35 +142,7 @@ $(function () {
                 (typeof no === 'function' && no.call(this, idx)), that.close(idx);
             });
         };
-        /*! 显示成功类型的消息 */
-        this.success = function (msg, time, call) {
-            return (function (idx) {
-                return that.idx.push(idx), idx;
-            })(layer.msg(msg, {icon: 1, shade: this.shade, scrollbar: false, end: call, time: (time || 2) * 1000, shadeClose: true}));
-        };
-        /*! 显示失败类型的消息 */
-        this.error = function (msg, time, call) {
-            return (function (idx) {
-                return that.idx.push(idx), idx;
-            })(layer.msg(msg, {icon: 2, shade: this.shade, scrollbar: false, time: (time || 3) * 1000, end: call, shadeClose: true}));
-        };
-        /*! 状态消息提示 */
-        this.tips = function (msg, time, call) {
-            return (function (idx) {
-                return that.idx.push(idx), idx;
-            })(layer.msg(msg, {time: (time || 3) * 1000, shade: this.shade, end: call, shadeClose: true}));
-        };
-        /*! 显示正在加载中的提示 */
-        this.loading = function (msg, call) {
-            return (function (idx) {
-                return that.idx.push(idx), idx;
-            })(msg ? layer.msg(msg, {
-                icon: 16, scrollbar: false, shade: this.shade, time: 0, end: call
-            }) : layer.load(2, {
-                time: 0, scrollbar: false, shade: this.shade, end: call
-            }));
-        };
-        /*! 自动处理显示返回的Json数据 */
+        /*! 自动处理JSON数据 */
         this.auto = function (ret, time) {
             var url = ret.url || (typeof ret.data === 'string' ? ret.data : '');
             var msg = ret.msg || (typeof ret.info === 'string' ? ret.info : '');
@@ -157,10 +150,7 @@ $(function () {
                 return url ? (location.href = url) : $.form.reload();
             }
             return (parseInt(ret.code) === 1) ? this.success(msg, time, function () {
-                url ? (location.href = url) : $.form.reload();
-                that.idx.forEach(function (idx) {
-                    that.close(idx)
-                }), that.idx = [];
+                (url ? (location.href = url) : $.form.reload()), that.close(null);
             }) : this.error(msg, 3, function () {
                 url ? location.href = url : '';
             });
@@ -173,8 +163,10 @@ $(function () {
         /*! 内容区选择器 */
         this.selecter = '.layui-layout-admin>.layui-body';
         /*! 刷新当前页面 */
-        this.reload = function () {
-            self === top ? window.onhashchange.call(this) : location.reload();
+        this.reload = function (force) {
+            if (force) top.location.reload();
+            else if (self !== top) location.reload();
+            else window.onhashchange.call(this);
         };
         /*! 内容区域动态加载后初始化 */
         this.reInit = function ($dom) {
@@ -188,16 +180,14 @@ $(function () {
             }), $dom.find('input[data-date-range]').map(function () {
                 this.setAttribute('autocomplete', 'off');
                 laydate.render({
-                    type: this.dataset.dateRange || 'date',
-                    range: true, elem: this, done: function (value) {
+                    type: this.dataset.dateRange || 'date', range: true, elem: this, done: function (value) {
                         $(this.elem).val(value).trigger('change');
                     }
                 });
             }), $dom.find('input[data-date-input]').map(function () {
                 this.setAttribute('autocomplete', 'off');
                 laydate.render({
-                    type: this.dataset.dateInput || 'date',
-                    range: false, elem: this, done: function (value) {
+                    type: this.dataset.dateInput || 'date', range: false, elem: this, done: function (value) {
                         $(this.elem).val(value).trigger('change');
                     }
                 });
@@ -641,10 +631,11 @@ $(function () {
 
     /*! 注册 data-load 事件行为 */
     onEvent('click', '[data-load]', function (e) {
+        var dataset = e.currentTarget.dataset;
         (function (confirm, callback) {
             confirm ? $.msg.confirm(confirm, callback) : callback();
-        })(e.target.dataset.confirm, function () {
-            $.form.load(e.target.dataset.load, {}, 'get', null, true, e.target.dataset.tips, e.target.dataset.time);
+        })(dataset.confirm, function () {
+            $.form.load(dataset.load, {}, 'get', null, true, dataset.tips, dataset.time);
         });
     });
 
@@ -664,8 +655,8 @@ $(function () {
 
     /*! 注册 data-modal 事件行为 */
     onEvent('click', '[data-modal]', function () {
-        var area = this.dataset.area || this.dataset.width || '800px';
-        return $.form.modal(this.dataset.modal, 'open_type=modal', this.dataset.title || this.innerText || '编辑', undefined, undefined, undefined, area);
+        var dataset = this.dataset, area = dataset.area || dataset.width || '800px';
+        return $.form.modal(dataset.modal, 'open_type=modal', dataset.title || this.innerText || '编辑', undefined, undefined, undefined, area);
     });
 
     /*! 注册 data-open 事件行为 */
@@ -688,9 +679,10 @@ $(function () {
     });
 
     /*! 注册 data-check 事件行为 */
-    onEvent('click', '[data-check-target]', function (event) {
+    onEvent('click', '[data-check-target]', function (e) {
+        var target = e.currentTarget;
         $(this.dataset.checkTarget).map(function () {
-            (this.checked = !!event.target.checked), $(this).trigger('change');
+            (this.checked = !!target.checked), $(this).trigger('change');
         });
     });
 
@@ -826,12 +818,10 @@ $(function () {
 
     /*! 异步任务状态监听与展示 */
     onEvent('click', '[data-queue]', function (e) {
-        if (!e.target.dataset.queue) {
-            $.msg.tips('请求地址不能为空！');
-        } else (function (confirm, callback) {
+        (function (confirm, callback) {
             confirm ? $.msg.confirm(confirm, callback) : callback();
-        })(e.target.dataset.confirm, function () {
-            $.form.load(e.target.dataset.queue, {}, 'post', function (ret) {
+        })(e.currentTarget.dataset.confirm, function () {
+            $.form.load(e.currentTarget.dataset.queue, {}, 'post', function (ret) {
                 if (typeof ret.data === 'string' && ret.data.indexOf('Q') === 0) {
                     return $.loadQueue(ret.data, true), false;
                 }
@@ -913,7 +903,7 @@ $(function () {
     document.addEventListener('error', function (event) {
         var elem = event.target;
         if (elem.nodeName === 'IMG') {
-            event.target.src = baseRoot + 'theme/img/404_icon.png';
+            elem.src = baseRoot + 'theme/img/404_icon.png';
         }
     }, true);
 
