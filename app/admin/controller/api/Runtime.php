@@ -39,7 +39,7 @@ class Runtime extends Controller
             AdminService::instance()->clearCache();
             SystemService::instance()->pushRuntime();
             sysoplog('系统运维管理', '刷新并创建网站路由缓存');
-            $this->success('网站缓存加速成功！');
+            $this->success('网站缓存加速成功！', 'javascript:location.reload()');
         } catch (HttpResponseException $exception) {
             throw $exception;
         } catch (\Exception $exception) {
@@ -59,7 +59,7 @@ class Runtime extends Controller
             AdminService::instance()->clearCache();
             SystemService::instance()->clearRuntime();
             sysoplog('系统运维管理', '清理网站日志及缓存数据');
-            $this->success('清空缓存日志成功！');
+            $this->success('清空缓存日志成功！', 'javascript:location.reload()');
         } catch (HttpResponseException $exception) {
             throw $exception;
         } catch (\Exception $exception) {
@@ -78,11 +78,11 @@ class Runtime extends Controller
         if (AdminService::instance()->isSuper()) if (input('state')) {
             SystemService::instance()->setRuntime('product');
             sysoplog('系统运维管理', '由开发模式切换为生产模式');
-            $this->success('已切换为生产模式！');
+            $this->success('已切换为生产模式！', 'javascript:location.reload()');
         } else {
             SystemService::instance()->setRuntime('debug');
             sysoplog('系统运维管理', '由生产模式切换为开发模式');
-            $this->success('已切换为开发模式！');
+            $this->success('已切换为开发模式！', 'javascript:location.reload()');
         } else {
             $this->error('只有超级管理员才能操作！');
         }
@@ -107,7 +107,7 @@ class Runtime extends Controller
             });
             $this->app->cache->delete('SystemConfig');
             sysoplog('系统运维管理', '清理系统参数配置成功');
-            $this->success('清理系统配置成功！');
+            $this->success('清理系统配置成功！', 'javascript:location.reload()');
         } catch (HttpResponseException $exception) {
             throw $exception;
         } catch (\Exception $exception) {
