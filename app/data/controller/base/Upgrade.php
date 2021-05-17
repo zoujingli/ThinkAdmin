@@ -78,7 +78,9 @@ class Upgrade extends Controller
     {
         if ($this->request->isGet()) {
             $this->prizes = RebateService::PRIZES;
-            $vo['number'] = $vo['number'] ?? $this->app->db->name($this->table)->max('number') + 1;
+            if (!isset($vo['number'])) {
+                $vo['number'] = $this->app->db->name($this->table)->order('number desc')->value('number', -1) + 1;
+            }
             $vo['rebate_rule'] = str2arr($vo['rebate_rule'] ?? '');
         } else {
             $vo['utime'] = time();
