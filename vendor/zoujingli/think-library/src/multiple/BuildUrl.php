@@ -43,21 +43,23 @@ class BuildUrl extends Url
         } elseif (0 === strpos($url, '@')) {
             $url = substr($url, 1);
         } elseif ('' === $url) {
-            $url = $this->app->http->getName() . '/' . $request->controller() . '/' . $request->action();
+            $node = NodeService::instance()->getCurrent();
+            $url = $this->app->route->buildUrl($node)->suffix(false)->domain(false)->build();
         } else {
             $path = explode('/', $url);
             $action = empty($path) ? $request->action() : array_pop($path);
-            $controller = empty($path) ? $request->controller() : array_pop($path);
-            $app = empty($path) ? $this->app->http->getName() : array_pop($path);
-            $url = NodeService::nameTolower($controller) . '/' . $action;
+            $contrl = empty($path) ? $request->controller() : array_pop($path);
+            $module = empty($path) ? $this->app->http->getName() : array_pop($path);
+            // 拼装新的链接地址
+            $url = NodeService::nameTolower($contrl) . '/' . $action;
             $bind = $this->app->config->get('app.domain_bind', []);
-            if ($key = array_search($app, $bind)) {
-                isset($bind[$_SERVER['SERVER_NAME']]) && $domain = $_SERVER['SERVER_NAME'];
+            if ($key = array_search($module, $bind)) {
+                if (isset($bind[$_SERVER['SERVER_NAME']])) $domain = $_SERVER['SERVER_NAME'];
                 $domain = is_bool($domain) ? $key : $domain;
-            } elseif ($key = array_search($app, $this->app->config->get('app.app_map', []))) {
+            } elseif ($key = array_search($module, $this->app->config->get('app.app_map', []))) {
                 $url = $key . '/' . $url;
             } else {
-                $url = $app . '/' . $url;
+                $url = $module . '/' . $url;
             }
         }
         return $url;
