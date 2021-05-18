@@ -896,7 +896,7 @@ $(function () {
     window.addEventListener('load', function () {
         setTimeout(function () {
             $('body>.layui-page-loader').fadeOut();
-        }, 500);
+        }, 200);
     }, true);
 
     /*! 图片加载异常处理 */
