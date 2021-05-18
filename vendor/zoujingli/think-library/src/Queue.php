@@ -62,16 +62,13 @@ abstract class Queue
     abstract public function execute(array $data = []);
 
     /**
-     * 设置任务的进度
-     * @param null|string $message 进度消息
-     * @param null|string $progress 进度数值
-     * @param integer $backline 回退行数
-     * @return Queue
+     * 设置失败的消息
+     * @param string $message 消息内容
+     * @throws Exception
      */
-    protected function setQueueProgress(?string $message = null, ?string $progress = null, int $backline = 0): Queue
+    protected function setQueueError(string $message): void
     {
-        $this->queue->progress(2, $message, $progress, $backline);
-        return $this;
+        $this->queue->error($message);
     }
 
     /**
@@ -85,12 +82,29 @@ abstract class Queue
     }
 
     /**
-     * 设置失败的消息
-     * @param string $message 消息内容
-     * @throws Exception
+     * 更新任务进度
+     * @param integer $total 记录总和
+     * @param integer $count 当前记录
+     * @param string $message 文字描述
+     * @param integer $backline 回退行数
+     * @return static
      */
-    protected function setQueueError(string $message): void
+    protected function setQueueMessage(int $total, int $count, string $message = '', int $backline = 0): Queue
     {
-        $this->queue->error($message);
+        $this->queue->message($total, $count, $message, $backline);
+        return $this;
+    }
+
+    /**
+     * 设置任务的进度
+     * @param null|string $message 进度消息
+     * @param null|string $progress 进度数值
+     * @param integer $backline 回退行数
+     * @return Queue
+     */
+    protected function setQueueProgress(?string $message = null, ?string $progress = null, int $backline = 0): Queue
+    {
+        $this->queue->progress(2, $message, $progress, $backline);
+        return $this;
     }
 }

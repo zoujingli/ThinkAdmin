@@ -273,7 +273,7 @@ class SystemService extends Service
         $this->app->console->call("optimize:schema", ["--connection={$connection}"]);
         foreach (NodeService::instance()->getModules() as $module) {
             $path = $this->app->getRootPath() . 'runtime' . DIRECTORY_SEPARATOR . $module;
-            file_exists($path) && is_dir($path) or mkdir($path, 0755, true);
+            file_exists($path) && is_dir($path) || mkdir($path, 0755, true);
             $this->app->console->call("optimize:route", [$module]);
         }
     }
@@ -314,8 +314,9 @@ class SystemService extends Service
         $rows[] = "mode = {$data['mode']}";
         foreach ($data['appmap'] as $key => $item) $rows[] = "appmap[{$key}] = {$item}";
         foreach ($data['domain'] as $key => $item) $rows[] = "domain[{$key}] = {$item}";
-        $filename = $this->app->getRootPath() . 'runtime/.env';
-        file_put_contents($filename, "[RUNTIME]\n" . join("\n", $rows));
+        // 数据配置保存文件
+        $env = $this->app->getRootPath() . 'runtime/.env';
+        file_put_contents($env, "[RUNTIME]\n" . join("\n", $rows));
         return $this->bindRuntime($data);
     }
 
@@ -327,8 +328,8 @@ class SystemService extends Service
      */
     public function getRuntime(?string $name = null, array $default = [])
     {
-        $filename = $this->app->getRootPath() . 'runtime/.env';
-        if (file_exists($filename)) $this->app->env->load($filename);
+        $env = $this->app->getRootPath() . 'runtime/.env';
+        if (file_exists($env)) $this->app->env->load($env);
         $data = [
             'mode'   => $this->app->env->get('RUNTIME_MODE') ?: 'debug',
             'appmap' => $this->app->env->get('RUNTIME_APPMAP') ?: [],

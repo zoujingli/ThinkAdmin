@@ -1,15 +1,16 @@
 <?php
 
 // +----------------------------------------------------------------------
-// | ThinkPHP [ WE CAN DO IT JUST THINK ]
+// | ThinkAdmin
 // +----------------------------------------------------------------------
-// | Copyright (c) 2006~2019 http://thinkphp.cn All rights reserved.
+// | 版权所有 2014~2021 广州楚才信息科技有限公司 [ http://www.cuci.cc ]
 // +----------------------------------------------------------------------
-// | Licensed ( http://www.apache.org/licenses/LICENSE-2.0 )
+// | 官方网站: https://gitee.com/zoujingli/ThinkLibrary
 // +----------------------------------------------------------------------
-// | Author: liu21st <liu21st@gmail.com>
+// | 开源协议 ( https://mit-license.org )
 // +----------------------------------------------------------------------
-// 以下代码来自 topthink/think-multi-app，有部分修改以兼容 ThinkAdmin 的需求
+// | gitee 代码仓库：https://gitee.com/zoujingli/ThinkLibrary
+// | github 代码仓库：https://github.com/zoujingli/ThinkLibrary
 // +----------------------------------------------------------------------
 
 declare (strict_types=1);
@@ -64,7 +65,7 @@ class Multiple
      * @param Closure $next
      * @return Response
      */
-    public function handle(Request $request, Closure $next)
+    public function handle(Request $request, Closure $next): Response
     {
         if (!$this->parseMultiApp()) return $next($request);
         return $this->app->middleware->pipeline('app')->send($request)->then(function ($request) use ($next) {
@@ -121,14 +122,12 @@ class Multiple
                     $appName = $map['*'];
                 } else {
                     $appName = $name ?: $defaultApp;
-                    if (stripos($appName, 'addons-') !== 0) {
-                        if (!is_dir($this->path ?: $this->app->getBasePath() . $appName)) {
-                            if ($this->app->config->get('app.app_express', false)) {
-                                $this->setApp($defaultApp);
-                                return true;
-                            } else {
-                                return false;
-                            }
+                    if (!is_dir($this->path ?: $this->app->getBasePath() . $appName)) {
+                        if ($this->app->config->get('app.app_express', false)) {
+                            $this->setApp($defaultApp);
+                            return true;
+                        } else {
+                            return false;
                         }
                     }
                 }
@@ -149,19 +148,13 @@ class Multiple
     private function setApp(string $appName): void
     {
         $space = $this->app->config->get('app.app_namespace') ?: 'app';
-        if (stripos($appName, 'addons-') === 0) {
-            $appName = substr($appName, strlen('addons-'));
-            $this->app->setNamespace("{$space}\\addons\\{$appName}");
-            $appPath = $this->path ?: $this->app->getBasePath() . 'addons' . DIRECTORY_SEPARATOR . $appName . DIRECTORY_SEPARATOR;
-        } else {
-            $this->app->setNamespace("{$space}\\{$appName}");
-            $appPath = $this->path ?: $this->app->getBasePath() . $appName . DIRECTORY_SEPARATOR;
-        }
+        $appPath = $this->path ?: $this->app->getBasePath() . $appName . DIRECTORY_SEPARATOR;
+        // 动态设置多应用变量
         $this->app->setAppPath($appPath);
+        $this->app->setNamespace("{$space}\\{$appName}");
         $this->app->http->name($appName);
         if (is_dir($appPath)) {
-            $this->app->setRuntimePath($this->app->getRuntimePath() . $appName . DIRECTORY_SEPARATOR);
-            $this->app->http->setRoutePath($this->app->getAppPath() . 'route' . DIRECTORY_SEPARATOR);
+            $this->app->http->setRoutePath($appPath . 'route' . DIRECTORY_SEPARATOR);
             $this->loadApp($appPath);
         }
     }
@@ -199,11 +192,7 @@ class Multiple
      */
     private function scriptName(): string
     {
-        if (isset($_SERVER['SCRIPT_FILENAME'])) {
-            $file = $_SERVER['SCRIPT_FILENAME'];
-        } elseif (isset($_SERVER['argv'][0])) {
-            $file = realpath($_SERVER['argv'][0]);
-        }
-        return isset($file) ? pathinfo($file, PATHINFO_FILENAME) : '';
+        $file = $_SERVER['SCRIPT_FILENAME'] ?? ($_SERVER['argv'][0] ?? '');
+        return empty($file) ? '' : pathinfo($file, PATHINFO_FILENAME);
     }
 }

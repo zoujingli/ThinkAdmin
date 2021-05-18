@@ -159,12 +159,6 @@ class BuildUrl extends Url
                 $file = 'index.php';
             }
         }
-        /*=====- 插件 Addons URL 处理 - 开始 -=====*/
-        if (preg_match("#^{$depr}addons-{$app}({$depr}|\.|$)#i", $uri)) {
-            [$pre, $suf] = explode($depr, $url . $depr, 2);
-            if ($pre === $app) $url = rtrim("addons-{$app}{$depr}{$suf}", $depr);
-        }
-        /*=====- 插件 Addons URL 处理 - 结束 -=====*/
         $url = rtrim($file, '/') . '/' . ltrim($url, '/');
         // URL后缀
         if ('/' == substr($url, -1) || '' == $url) {

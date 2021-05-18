@@ -466,7 +466,6 @@ class ComposerStaticInit0ec6378467f464339c264d61cf644c03
         'think\\admin\\multiple\\BuildUrl' => __DIR__ . '/..' . '/zoujingli/think-library/src/multiple/BuildUrl.php',
         'think\\admin\\multiple\\Multiple' => __DIR__ . '/..' . '/zoujingli/think-library/src/multiple/Multiple.php',
         'think\\admin\\multiple\\command\\Build' => __DIR__ . '/..' . '/zoujingli/think-library/src/multiple/command/Build.php',
-        'think\\admin\\multiple\\command\\Clear' => __DIR__ . '/..' . '/zoujingli/think-library/src/multiple/command/Clear.php',
         'think\\admin\\service\\AdminService' => __DIR__ . '/..' . '/zoujingli/think-library/src/service/AdminService.php',
         'think\\admin\\service\\CaptchaService' => __DIR__ . '/..' . '/zoujingli/think-library/src/service/CaptchaService.php',
         'think\\admin\\service\\ExpressService' => __DIR__ . '/..' . '/zoujingli/think-library/src/service/ExpressService.php',

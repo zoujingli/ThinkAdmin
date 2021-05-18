@@ -51,12 +51,12 @@ class Replace extends Command
     {
         $search = $input->getArgument('search');
         $repalce = $input->getArgument('replace');
-        if ($search === '') $this->queue->error('查找替换字符内容不能为空！');
-        if ($repalce === '') $this->queue->error('目标替换字符内容不能为空！');
+        if ($search === '') $this->setQueueError('查找替换字符内容不能为空！');
+        if ($repalce === '') $this->setQueueError('目标替换字符内容不能为空！');
         [$tables, $total, $count] = SystemService::instance()->getTables();
         foreach ($tables as $table) {
             $data = [];
-            $this->queue->message($total, ++$count, sprintf("准备替换数据表 %s", Str::studly($table)));
+            $this->setQueueMessage($total, ++$count, sprintf("准备替换数据表 %s", Str::studly($table)));
             foreach ($this->app->db->table($table)->getFields() as $field => $attrs) {
                 if (preg_match('/char|text/', $attrs['type'])) {
                     $data[$field] = $this->app->db->raw(sprintf('REPLACE(`%s`,"%s","%s")', $field, $search, $repalce));
@@ -64,14 +64,14 @@ class Replace extends Command
             }
             if (count($data) > 0) {
                 if ($this->app->db->table($table)->where('1=1')->update($data) !== false) {
-                    $this->queue->message($total, $count, sprintf("成功替换数据表 %s", Str::studly($table)), 1);
+                    $this->setQueueMessage($total, $count, sprintf("成功替换数据表 %s", Str::studly($table)), 1);
                 } else {
-                    $this->queue->message($total, $count, sprintf("失败替换数据表 %s", Str::studly($table)), 1);
+                    $this->setQueueMessage($total, $count, sprintf("失败替换数据表 %s", Str::studly($table)), 1);
                 }
             } else {
-                $this->queue->message($total, $count, sprintf("无需替换数据表 %s", Str::studly($table)), 1);
+                $this->setQueueMessage($total, $count, sprintf("无需替换数据表 %s", Str::studly($table)), 1);
             }
         }
-        $this->queue->success('批量替换成功');
+        $this->setQueueSuccess("批量替换 {$total} 张数据表成功");
     }
 }

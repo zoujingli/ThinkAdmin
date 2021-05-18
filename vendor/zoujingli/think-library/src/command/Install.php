@@ -153,5 +153,4 @@ class Install extends Command
     {
         return true;
     }
-
 }

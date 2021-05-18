@@ -81,6 +81,7 @@ abstract class Command extends \think\console\Command
             $this->queue->error($message);
         } elseif (is_string($message)) {
             $this->output->writeln($message);
+            exit("\r\n");
         }
         return $this;
     }
@@ -97,6 +98,7 @@ abstract class Command extends \think\console\Command
             $this->queue->success($message);
         } elseif (is_string($message)) {
             $this->output->writeln($message);
+            exit("\r\n");
         }
         return $this;
     }

@@ -337,7 +337,6 @@ return array(
     'think\\admin\\multiple\\BuildUrl' => $vendorDir . '/zoujingli/think-library/src/multiple/BuildUrl.php',
     'think\\admin\\multiple\\Multiple' => $vendorDir . '/zoujingli/think-library/src/multiple/Multiple.php',
     'think\\admin\\multiple\\command\\Build' => $vendorDir . '/zoujingli/think-library/src/multiple/command/Build.php',
-    'think\\admin\\multiple\\command\\Clear' => $vendorDir . '/zoujingli/think-library/src/multiple/command/Clear.php',
     'think\\admin\\service\\AdminService' => $vendorDir . '/zoujingli/think-library/src/service/AdminService.php',
     'think\\admin\\service\\CaptchaService' => $vendorDir . '/zoujingli/think-library/src/service/CaptchaService.php',
     'think\\admin\\service\\ExpressService' => $vendorDir . '/zoujingli/think-library/src/service/ExpressService.php',

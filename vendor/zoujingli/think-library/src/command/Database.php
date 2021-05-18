@@ -63,11 +63,11 @@ class Database extends Command
         [$tables, $total, $count] = SystemService::instance()->getTables();
         $this->setQueueProgress("总共需要修复 {$total} 张数据表", '0');
         foreach ($tables as $table) {
-            $this->queue->message($total, ++$count, "正在修复数据表 {$table}");
+            $this->setQueueMessage($total, ++$count, "正在修复数据表 {$table}");
             $this->app->db->query("REPAIR TABLE `{$table}`");
-            $this->queue->message($total, $count, "完成修复数据表 {$table}", 1);
+            $this->setQueueMessage($total, $count, "完成修复数据表 {$table}", 1);
         }
-        $this->queue->success("已完成对 {$total} 张数据表修复操作");
+        $this->setQueueSuccess("已完成对 {$total} 张数据表修复操作");
     }
 
     /**
@@ -80,11 +80,11 @@ class Database extends Command
         [$tables, $total, $count] = SystemService::instance()->getTables();
         $this->setQueueProgress("总共需要优化 {$total} 张数据表", '0');
         foreach ($tables as $table) {
-            $this->queue->message($total, ++$count, "正在优化数据表 {$table}");
+            $this->setQueueMessage($total, ++$count, "正在优化数据表 {$table}");
             $this->app->db->query("OPTIMIZE TABLE `{$table}`");
-            $this->queue->message($total, $count, "完成优化数据表 {$table}", 1);
+            $this->setQueueMessage($total, $count, "完成优化数据表 {$table}", 1);
         }
-        $this->queue->success("已完成对 {$total} 张数据表优化操作");
+        $this->setQueueSuccess("已完成对 {$total} 张数据表优化操作");
     }
 
 }

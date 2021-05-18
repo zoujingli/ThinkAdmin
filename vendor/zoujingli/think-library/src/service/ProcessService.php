@@ -17,6 +17,7 @@ declare (strict_types=1);
 
 namespace think\admin\service;
 
+use think\admin\Library;
 use think\admin\Service;
 use think\db\exception\DataNotFoundException;
 use think\db\exception\DbException;
@@ -98,7 +99,7 @@ class ProcessService extends Service
     /**
      * 查询相关进程列表
      * @param string $cmd 任务指令
-     * @param string $name 程序名称
+     * @param string $name 进程名称
      * @return array
      */
     public function query(string $cmd, string $name = 'php.exe'): array
@@ -155,6 +156,15 @@ class ProcessService extends Service
     public function iswin(): bool
     {
         return PATH_SEPARATOR === ';';
+    }
+
+    /**
+     * 读取组件版本号
+     * @return string
+     */
+    public function version(): string
+    {
+        return Library::VERSION;
     }
 
     /**

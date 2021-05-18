@@ -60,7 +60,7 @@ abstract class Helper
 
     /**
      * 获取数据库对象
-     * @param string|Query $dbQuery
+     * @param string|Db|Query $dbQuery
      * @return Db|Query
      */
     protected function buildQuery($dbQuery)

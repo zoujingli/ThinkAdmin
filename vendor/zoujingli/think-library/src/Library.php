@@ -70,7 +70,7 @@ class Library extends Service
         // 替换 ThinkPHP 地址
         $this->app->bind('think\route\Url', BuildUrl::class);
         // 替换 ThinkPHP 指令
-        $this->commands(['build' => Build::class, 'clear' => Clear::class]);
+        $this->commands(['build' => Build::class]);
         // 注册 ThinkAdmin 指令
         $this->commands([Queue::class, Install::class, Version::class, Database::class, Replace::class]);
         // 动态应用运行参数
@@ -120,10 +120,5 @@ class Library extends Service
         // 动态加载应用初始化系统函数
         [$ds, $base] = [DIRECTORY_SEPARATOR, $this->app->getBasePath()];
         foreach (glob("{$base}*{$ds}sys.php") as $file) includeFile($file);
-        // 动态加载插件初始化系统函数
-        $base = "{$this->app->getBasePath()}addons{$ds}";
-        if (file_exists($base) && is_dir($base)) {
-            foreach (glob("{$base}*{$ds}sys.php") as $file) includeFile($file);
-        }
     }
 }

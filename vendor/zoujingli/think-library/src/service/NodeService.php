@@ -50,11 +50,7 @@ class NodeService extends Service
      */
     public function getCurrent(string $type = ''): string
     {
-        $space = $this->app->getNamespace();
         $prefix = strtolower($this->app->http->getName());
-        if (preg_match("|\\\\addons\\\\{$prefix}$|", $space)) {
-            $prefix = "addons-{$prefix}";
-        }
         // 获取应用前缀节点
         if ($type === 'module') return $prefix;
         // 获取控制器前缀节点
@@ -123,9 +119,8 @@ class NodeService extends Service
             $name = substr($file, strlen(strtr($this->app->getRootPath(), '\\', '/')) - 1);
             if (preg_match("|^([\w/]+)/(\w+)/controller/(.+)\.php$|i", $name, $matches)) {
                 [, $namespace, $appname, $classname] = $matches;
-                $addons = preg_match('|/addons$|', $namespace) ? 'addons-' : '';
                 $class = new ReflectionClass(strtr("{$namespace}/{$appname}/controller/{$classname}", '/', '\\'));
-                $prefix = strtolower(strtr("{$addons}{$appname}/{$this->nameTolower($classname)}", '\\', '/'));
+                $prefix = strtolower(strtr("{$appname}/{$this->nameTolower($classname)}", '\\', '/'));
                 $data[$prefix] = $this->_parseComment($class->getDocComment() ?: '', $classname);
                 foreach ($class->getMethods(ReflectionMethod::IS_PUBLIC) as $method) {
                     if (in_array($metname = $method->getName(), $ignores)) continue;
