@@ -36,28 +36,38 @@ class UserUpgradeService extends Service
     {
         $user = $this->app->db->name('DataUser')->where(['id' => $uid])->find();
         if (empty($user)) return [0, '用户查询失败'];
-        if (!empty($user['pids'])) return [1, '已绑定代理'];
+        if ($user['pids']) return [1, '已经绑定代理'];
         // 检查代理用户
         if (empty($pid)) $pid = $user['pid0'];
-        if (empty($pid)) return [0, '绑定代理不存在'];
-        if ($uid == $pid) return [0, '代理不能是自己'];
+        if (empty($pid)) return [0, '绑定的代理不存在'];
+        if ($uid == $pid) return [0, '不能绑定自己为代理'];
         // 检查代理资格
-        $parant = $this->app->db->name('DataUser')->where(['id' => $pid])->find();
-        if (empty($parant['vip_code'])) return [0, '代理无推荐资格'];
-        if (stripos($parant['path'], "-{$uid}-") !== false) return [0, '不能绑定下属'];
+        $agent = $this->app->db->name('DataUser')->where(['id' => $pid])->find();
+        if (empty($agent['vip_code'])) return [0, '代理无推荐资格'];
+        if (stripos($agent['path'], "-{$uid}-") !== false) return [0, '不能绑定下属'];
         // 组装代理数据
-        $path = rtrim($parant['path'] ?: '-', '-') . "-{$parant['id']}-";
-        $data = [
-            'pid0' => $parant['id'], 'pid1' => $parant['id'], 'pid2' => $parant['pid1'],
-            'pids' => intval($force), 'path' => $path, 'layer' => substr_count($path, '-'),
-        ];
-        // 更新用户代理
-        if ($this->app->db->name('DataUser')->where(['id' => $uid])->update($data) !== false) {
-            $this->upgrade($uid);
-            return [1, '绑定代理成功'];
-        } else {
-            return [0, '绑定代理失败'];
-        }
+        $result = [0, '绑定代理失败'];
+        $this->app->db->transaction(function () use ($user, $agent, $force, &$result) {
+            // 更新用户代理
+            $path1 = rtrim($agent['path'] ?: '-', '-') . "-{$agent['id']}-";
+            $data1 = ['pid0' => $agent['id'], 'pid1' => $agent['id'], 'pid2' => $agent['pid1']];
+            $data2 = ['pids' => intval($force), 'path' => $path1, 'layer' => substr_count($path1, '-')];
+            $this->app->db->name('DataUser')->where(['id' => $user['id']])->update(array_merge($data1, $data2));
+            // 更新下级代理
+            $path2 = "{$user['path']}{$user['id']}-";
+            if ($this->app->db->name('DataUser')->whereLike('path', "{$path2}%")->count() > 0) {
+                foreach ($this->app->db->name('DataUser')->whereLike('path', "{$path2}%")->order('layer desc')->select() as $vo) {
+                    $attr = array_reverse(str2arr($path3 = preg_replace("#^{$path2}#", "{$path1}{$user['id']}-", $vo['path']), '-'));
+                    $this->app->db->name('DataUser')->where(['id' => $vo['id']])->update([
+                        'pid0' => $attr[0] ?? 0, 'pid1' => $attr[0] ?? 0, 'pid2' => $attr[1] ?? 0, 'path' => $path3, 'layer' => substr_count($path3, '-'),
+                    ]);
+                }
+            }
+            // 更新用户等级
+            $this->upgrade($user['id'], true);
+            $result = [1, '绑定代理成功'];
+        });
+        return $result;
     }
 
     /**

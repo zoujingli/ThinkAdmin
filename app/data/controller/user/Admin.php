@@ -61,7 +61,7 @@ class Admin extends Controller
      * 数据列表处理
      * @param array $data
      */
-    protected function _index_page_filter(array &$data)
+    protected function _page_filter(array &$data)
     {
         $this->upgrades = UserUpgradeService::instance()->levels();
         UserAdminService::instance()->buildByUid($data, 'pid1', 'from');
@@ -94,7 +94,24 @@ class Admin extends Controller
     }
 
     /**
-     * 修改用户推荐人
+     * 永久绑定代理
+     * @auth true
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\DbException
+     * @throws \think\db\exception\ModelNotFoundException
+     */
+    public function forever()
+    {
+        $map = $this->_vali(['id.require' => '用户ID不能为空！']);
+        $user = $this->app->db->name($this->table)->where($map)->find();
+        if (empty($user) || empty($user['pid0'])) $this->error('用户不符合操作要求！');
+        [$status, $message] = UserUpgradeService::instance()->bindAgent($user['id'], $user['pid0'], true);
+        $status && sysoplog('前端用户管理', "后台修改用户[{$map['uid']}]的代理为永久状态");
+        empty($status) ? $this->error($message) : $this->success($message);
+    }
+
+    /**
+     * 绑定上级代理
      * @auth true
      * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\DbException
@@ -102,45 +119,23 @@ class Admin extends Controller
      */
     public function parent()
     {
-        $data = $this->_vali(['pid.default' => '', 'uid.require' => '待操作UID不能为空']);
-        if ($data['uid'] === $data['pid']) $this->error('代理不能是自己');
-        if (empty($data['pid'])) {
-            $map = [['id', '<>', $data['uid']], ['deleted', '=', 0]];
-            $query = $this->_query($this->table)->where($map)->equal('status,vip_code');
-            $query->like('phone,username|nickname#username')->dateBetween('create_at')->order('id desc')->page();
-        } else try {
-            $user = $this->app->db->name('DataUser')->where(['id' => $data['uid']])->find();
-            $parent = $this->app->db->name('DataUser')->where(['id' => $data['pid']])->find();
-            if (empty($user)) $this->error('读取用户数据失败！');
-            if (empty($parent)) $this->error('读取代理数据失败！');
-            $this->app->db->transaction(function () use ($data, $user, $parent) {
-                if (empty($parent['vip_code'])) $this->error('代理无推荐资格');
-                if (is_numeric(strpos($parent['path'], "-{$data['uid']}-"))) $this->error('代理不能绑下属');
-                // 组装当前用户上级数据
-                $path = rtrim($parent['path'] ?: '-', '-') . "-{$parent['id']}-";
-//                $this->app->db->name('DataUser')->where(['id' => $data['uid']])->update([
-//                    'pid0' => $parent['id'], 'pid1' => $parent['id'], 'pid2' => $parent['pid1'],
-//                    'path' => $path, 'layer' => substr_count($path, '-'),
-//                ]);
-                // 替换原来用户的下级用户
-                $newPath = rtrim($path, '-') . "-{$user['id']}-";
-                $oldPath = rtrim($user['path'], '-') . "-{$user['id']}-";
-                foreach ($this->app->db->name('DataUser')->whereLike('path', "{$oldPath}%")->cursor() as $vo) {
-                    dump($vo);
-                }
-//                $this->app->db->name('DataUser')->whereLike('path', "{$oldPath}%")->update([
-//                    'path' => $this->app->db->raw("replace(path,'{$oldPath}','{$newPath}')"),
-//                ]);
-//                foreach (array_reverse(array_unique(array_merge(str2arr($newPath), str2arr($oldPath)))) as $uid) {
-//                    UserUpgradeService::instance()->upgrade($uid);
-//                }
-            });
-            exit;
-            $this->success('修改代理成功！');
-        } catch (\think\exception\HttpResponseException $exception) {
-            throw $exception;
-        } catch (\Exception $exception) {
-            $this->error($exception->getMessage());
+        if ($this->request->isGet()) {
+            $this->upgrades = UserUpgradeService::instance()->levels();
+            $data = $this->_vali(['uid.require' => '待操作UID不能为空！']);
+            // 排除下级用户
+            $path = $this->app->db->name($this->table)->where(['id' => $data['uid']])->value('path', '-');
+            $subids = $this->app->db->name($this->table)->whereLike('path', "{$path}{$data['uid']}-%")->column('id');
+            $query = $this->_query($this->table)->order('id desc')->whereNotIn('id', array_merge($subids, array_values($data)));
+            // 用户搜索查询
+            $db = $this->_query($this->table)->equal('vip_code#from_vipcode')->like('phone#from_phone,username|nickname#from_username')->db();
+            if ($db->getOptions('where')) $query->whereRaw("pid1 in {$db->field('id')->buildSql()}");
+            // 数据查询分页
+            $query->like('phone,username|nickname#username')->equal('status,vip_code')->dateBetween('create_at')->page();
+        } else {
+            $data = $this->_vali(['pid.require' => '待绑定代理不能为空！', 'uid.require' => '待操作用户不能为空！']);
+            [$status, $message] = UserUpgradeService::instance()->bindAgent($data['uid'], $data['pid'], false);
+            $status && sysoplog('前端用户管理', "后台修改用户[{$data['uid']}]的代理为[{$data['pid']}]");
+            empty($status) ? $this->error($message) : $this->success($message);
         }
     }
 

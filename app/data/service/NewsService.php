@@ -17,7 +17,7 @@ class NewsService extends Service
      * @param array $total 查询统计
      * @throws \think\db\exception\DbException
      */
-    public function syncNewsTotal(string $code, $total = []): void
+    public function syncNewsTotal(string $code, array $total = []): void
     {
         $query = $this->app->db->name('DataNewsXCollect')->field('type,count(1) count');
         foreach ($query->where(['code' => $code, 'status' => 2])->group('type')->cursor() as $item) {

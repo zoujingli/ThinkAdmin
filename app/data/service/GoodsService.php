@@ -32,7 +32,7 @@ class GoodsService extends Service
      * @throws \think\db\exception\DbException
      * @throws \think\db\exception\ModelNotFoundException
      */
-    public function getCateTree($type = 'arr2tree'): array
+    public function getCateTree(string $type = 'arr2tree'): array
     {
         $map = ['deleted' => 0, 'status' => 1];
         $query = $this->app->db->name('ShopGoodsCate')->where($map)->order('sort desc,id desc');
@@ -44,7 +44,7 @@ class GoodsService extends Service
      * @param boolean $simple 简化数据
      * @return array
      */
-    public function getCateData($simple = true): array
+    public function getCateData(bool $simple = true): array
     {
         $map = ['status' => 1, 'deleted' => 0];
         $cates = $this->app->db->name('ShopGoodsCate')->where($map)->column('id,pid,name', 'id');
@@ -126,7 +126,7 @@ class GoodsService extends Service
      * @throws \think\db\exception\DbException
      * @throws \think\db\exception\ModelNotFoundException
      */
-    public function bindData(array &$data = [], $simple = true): array
+    public function bindData(array &$data = [], bool $simple = true): array
     {
         [$cates, $codes] = [$this->getCateData(), array_unique(array_column($data, 'code'))];
         $marks = $this->app->db->name('ShopGoodsMark')->where(['status' => 1])->column('name');

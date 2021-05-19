@@ -889,17 +889,17 @@
     },
     {
         "name": "zoujingli/wechat-developer",
-        "version": "v1.2.30",
-        "version_normalized": "1.2.30.0",
+        "version": "v1.2.31",
+        "version_normalized": "1.2.31.0",
         "source": {
             "type": "git",
             "url": "https://github.com/zoujingli/WeChatDeveloper.git",
-            "reference": "4ba213dceae358c028dd23a0572e0c85cb6be2aa"
+            "reference": "0cf699c725f69d66657a50e60d22f71c9e5a5e16"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/zoujingli/WeChatDeveloper/zipball/4ba213dceae358c028dd23a0572e0c85cb6be2aa",
-            "reference": "4ba213dceae358c028dd23a0572e0c85cb6be2aa",
+            "url": "https://api.github.com/repos/zoujingli/WeChatDeveloper/zipball/0cf699c725f69d66657a50e60d22f71c9e5a5e16",
+            "reference": "0cf699c725f69d66657a50e60d22f71c9e5a5e16",
             "shasum": "",
             "mirrors": [
                 {
@@ -919,7 +919,7 @@
             "ext-xml": "*",
             "php": ">=5.4"
         },
-        "time": "2021-04-15T03:16:50+00:00",
+        "time": "2021-05-19T06:25:20+00:00",
         "type": "library",
         "installation-source": "dist",
         "autoload": {
@@ -946,7 +946,7 @@
             }
         ],
         "description": "WeChat platform and WeChat payment development tools",
-        "homepage": "https://github.com/zoujingli/WeChatDeveloper",
+        "homepage": "https://github.com/kentwangit/WeChatDeveloper",
         "keywords": [
             "WeChatDeveloper",
             "WeMini",

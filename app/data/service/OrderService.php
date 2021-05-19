@@ -88,9 +88,7 @@ class OrderService extends Service
         $lastMap = [['uid', '=', $uid], ['status', '>=', 4], ['payment_status', '=', 1]];
         $lastDate = $query->where($lastMap)->order('payment_datetime desc')->value('payment_datetime');
         // 更新用户支付信息
-        $this->app->db->name('DataUser')->where(['id' => $uid])->update([
-            'buy_vip_entry' => $entry, 'buy_last_date' => $lastDate,
-        ]);
+        $this->app->db->name('DataUser')->where(['id' => $uid])->update(['buy_vip_entry' => $entry, 'buy_last_date' => $lastDate]);
         return $entry;
     }
 
@@ -123,7 +121,7 @@ class OrderService extends Service
      * @throws \think\db\exception\DbException
      * @throws \think\db\exception\ModelNotFoundException
      */
-    public function buildData(array &$data = [], $from = true): array
+    public function buildData(array &$data = [], bool $from = true): array
     {
         if (empty($data)) return $data;
         // 关联发货信息
@@ -139,9 +137,9 @@ class OrderService extends Service
         if ($from) UserAdminService::instance()->buildByUid($data, 'puid1', 'from', $fields);
         foreach ($data as &$vo) {
             [$vo['sales'], $vo['truck'], $vo['items']] = [0, $trucks[$vo['order_no']] ?? [], []];
-            foreach ($items as $item) if ($vo['order_no'] === $item['order_no']) {
-                $vo['sales'] += $item['stock_sales'];
-                $vo['items'][] = $item;
+            foreach ($items as $it) if ($vo['order_no'] === $it['order_no']) {
+                $vo['sales'] += $it['stock_sales'];
+                $vo['items'][] = $it;
             }
         }
         return $data;

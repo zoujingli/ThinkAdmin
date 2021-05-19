@@ -330,6 +330,7 @@ class ComposerStaticInit0ec6378467f464339c264d61cf644c03
         'app\\admin\\controller\\api\\Update' => __DIR__ . '/../..' . '/app/admin/controller/api/Update.php',
         'app\\admin\\controller\\api\\Upload' => __DIR__ . '/../..' . '/app/admin/controller/api/Upload.php',
         'app\\data\\command\\OrderClean' => __DIR__ . '/../..' . '/app/data/command/OrderClean.php',
+        'app\\data\\command\\UserAgent' => __DIR__ . '/../..' . '/app/data/command/UserAgent.php',
         'app\\data\\command\\UserAmount' => __DIR__ . '/../..' . '/app/data/command/UserAmount.php',
         'app\\data\\command\\UserTransfer' => __DIR__ . '/../..' . '/app/data/command/UserTransfer.php',
         'app\\data\\command\\UserUpgrade' => __DIR__ . '/../..' . '/app/data/command/UserUpgrade.php',

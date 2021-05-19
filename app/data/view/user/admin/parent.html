@@ -2,13 +2,12 @@
 
 {block name="content"}
 <div class="iframe-pagination">
-    {include file='user/index_search'}
+    {include file='user/admin/parent_search'}
     <table class="layui-table margin-top-10" lay-skin="line">
         {notempty name='list'}
         <thead>
         <tr>
             <th class='nowrap'>用户信息</th>
-            <th class='nowrap'>代理信息</th>
             <th class='nowrap'>注册时间</th>
             <th class='nowrap'></th>
         </tr>
@@ -60,10 +59,10 @@
                 使用状态：{if $vo.status eq 0}<b class="color-red margin-right-5">已冻结</b>{elseif $vo.status eq 1}<b class="color-green margin-right-5">已激活</b>{/if}<br>
                 注册时间：{$vo.create_at|format_datetime}
             </td>
-            <td class="nowrap">
+            <td class="nowrap text-right">
 
                 <!--{if auth("parent")}-->
-                <a class="layui-btn layui-btn-sm layui-btn-primary" data-modal="{:url('parent')}?uid={:input('uid')}&pid={$vo.id}">确认选择</a>
+                <a class="layui-btn layui-btn-sm layui-btn-primary" data-parent-uid="{:input('uid')}" data-parent-pid="{$vo.id}">确认选择</a>
                 <!--{/if}-->
 
             </td>
@@ -73,4 +72,18 @@
     </table>
     {empty name='list'}<span class="notdata">没有记录哦</span>{else}{$pagehtml|raw|default=''}{/empty}
 </div>
+{/block}
+
+{block name='script'}
+<script>
+    $('body').off('click', '[data-parent-uid]').on('click', '[data-parent-uid]', function () {
+        $.queue()
+        $.form.load('{:sysuri()}', {uid: this.dataset.parentUid, pid: this.dataset.parentPid}, 'post', function (ret) {
+            if (ret.code > 0) return $.msg.success(ret.info, 3, function () {
+                top.layer.close(top.layer.getFrameIndex(window.name));
+                top.$.form.reload();
+            }), false;
+        });
+    });
+</script>
 {/block}

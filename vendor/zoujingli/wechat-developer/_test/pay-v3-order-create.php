@@ -14,10 +14,10 @@ try {
         'appid'        => 'wx60a43dd8161666d4',
         'mchid'        => $config['mch_id'],
         'description'  => '商品描述',
-        'out_trade_no' => date("YmdHis"),
+        'out_trade_no' => (string)time(),
         'notify_url'   => 'https://thinkadmin.top',
         'payer'        => ['openid' => 'o38gps3vNdCqaggFfrBRCRikwlWY'],
-        'amount'       => ['total' => 1, 'currency' => 'CNY'],
+        'amount'       => ['total' => 2, 'currency' => 'CNY'],
     ]);
 
     echo '<pre>';

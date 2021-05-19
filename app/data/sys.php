@@ -1,6 +1,7 @@
 <?php
 
 use app\data\command\OrderClean;
+use app\data\command\UserAgent;
 use app\data\command\UserAmount;
 use app\data\command\UserTransfer;
 use app\data\command\UserUpgrade;
@@ -15,6 +16,7 @@ $app = app();
 if ($app->request->isCli()) {
     Console::starting(function (Console $console) {
         $console->addCommand(OrderClean::class);
+        $console->addCommand(UserAgent::class);
         $console->addCommand(UserAmount::class);
         $console->addCommand(UserUpgrade::class);
         $console->addCommand(UserTransfer::class);
