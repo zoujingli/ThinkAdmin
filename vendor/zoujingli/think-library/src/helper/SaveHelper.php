@@ -54,10 +54,10 @@ class SaveHelper extends Helper
             return false;
         }
         // 执行更新操作
-        $query->where($where)->update($data);
+        $result = $query->where($where)->update($data) !== false;
         // 结果回调处理
         if (false === $this->class->callback('_save_result', $result)) {
-            return true;
+            return $result;
         }
         // 回复前端结果
         if ($result !== false) {
