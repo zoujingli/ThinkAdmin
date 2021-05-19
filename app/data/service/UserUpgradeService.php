@@ -41,6 +41,7 @@ class UserUpgradeService extends Service
         if (empty($pid)) $pid = $user['pid0'];
         if (empty($pid)) return [0, '绑定代理不存在'];
         if ($uid == $pid) return [0, '代理不能是自己'];
+        // 检查代理资格
         $parant = $this->app->db->name('DataUser')->where(['id' => $pid])->find();
         if (empty($parant['vip_code'])) return [0, '代理无推荐资格'];
         if (stripos($parant['path'], "-{$uid}-") !== false) return [0, '不能绑定下属'];
@@ -48,7 +49,7 @@ class UserUpgradeService extends Service
         $path = rtrim($parant['path'] ?: '-', '-') . "-{$parant['id']}-";
         $data = [
             'pid0' => $parant['id'], 'pid1' => $parant['id'], 'pid2' => $parant['pid1'],
-            'pids' => $force ? 1 : 0, 'path' => $path, 'layer' => substr_count($path, '-'),
+            'pids' => intval($force), 'path' => $path, 'layer' => substr_count($path, '-'),
         ];
         // 更新用户代理
         if ($this->app->db->name('DataUser')->where(['id' => $uid])->update($data) !== false) {
