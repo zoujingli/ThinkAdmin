@@ -65,7 +65,7 @@ class Transfer extends Controller
      * @throws \think\db\exception\DbException
      * @throws \think\db\exception\ModelNotFoundException
      */
-    private function _sysdata($tpl = '')
+    private function _sysdata(string $tpl = '')
     {
         if ($this->request->isGet()) {
             $this->data = sysdata($this->skey);

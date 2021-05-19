@@ -163,7 +163,7 @@ class JoinpayPaymentService extends PaymentService
     protected function initialize(): JoinpayPaymentService
     {
         $this->appid = $this->params['joinpay_appid'];
-        $this->trade = $this->params['joinpay_trade'];;
+        $this->trade = $this->params['joinpay_trade'];
         $this->mchid = $this->params['joinpay_mch_id'];
         $this->mchkey = $this->params['joinpay_mch_key'];
         return $this;

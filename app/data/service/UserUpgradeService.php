@@ -65,7 +65,7 @@ class UserUpgradeService extends Service
                 }
             }
             // 更新用户等级
-            $this->upgrade($user['id'], true);
+            $this->upgrade($user['id']);
             $result = [1, '绑定代理成功'];
         });
         return $result;

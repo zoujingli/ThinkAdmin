@@ -58,7 +58,7 @@ class OrderService extends Service
         // 尝试绑定代理用户
         if (empty($user['pids']) && ($order['puid1'] > 0 || $user['pid1'] > 0)) {
             $puid1 = $order['puid1'] > 0 ? $order['puid1'] : $user['pid0'];
-            UserUpgradeService::instance()->bindAgent($user['id'], $puid1, 1);
+            UserUpgradeService::instance()->bindAgent($user['id'], $puid1);
         }
         // 重置用户信息并绑定订单
         $user = $this->app->db->name('DataUser')->where(['id' => $order['uid']])->find();
