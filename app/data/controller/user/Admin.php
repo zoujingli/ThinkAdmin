@@ -105,7 +105,7 @@ class Admin extends Controller
         $map = $this->_vali(['id.require' => '用户ID不能为空！']);
         $user = $this->app->db->name($this->table)->where($map)->find();
         if (empty($user) || empty($user['pid0'])) $this->error('用户不符合操作要求！');
-        [$status, $message] = UserUpgradeService::instance()->bindAgent($user['id'], $user['pid0'], true);
+        [$status, $message] = UserUpgradeService::instance()->bindAgent($user['id'], $user['pid0'], 1);
         $status && sysoplog('前端用户管理', "后台修改用户[{$map['id']}]的代理为永久状态");
         empty($status) ? $this->error($message) : $this->success($message);
     }
@@ -130,10 +130,10 @@ class Admin extends Controller
             $db = $this->_query($this->table)->equal('vip_code#from_vipcode')->like('phone#from_phone,username|nickname#from_username')->db();
             if ($db->getOptions('where')) $query->whereRaw("pid1 in {$db->field('id')->buildSql()}");
             // 数据查询分页
-            $query->like('phone,username|nickname#username')->equal('status,vip_code')->dateBetween('create_at')->page();
+            $query->like('phone,username|nickname#username')->whereRaw('vip_code>0')->equal('status,vip_code')->dateBetween('create_at')->page();
         } else {
             $data = $this->_vali(['pid.require' => '待绑定代理不能为空！', 'uid.require' => '待操作用户不能为空！']);
-            [$status, $message] = UserUpgradeService::instance()->bindAgent($data['uid'], $data['pid'], false);
+            [$status, $message] = UserUpgradeService::instance()->bindAgent($data['uid'], $data['pid'], 2);
             $status && sysoplog('前端用户管理', "后台修改用户[{$data['uid']}]的代理为[{$data['pid']}]");
             empty($status) ? $this->error($message) : $this->success($message);
         }

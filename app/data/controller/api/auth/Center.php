@@ -149,7 +149,7 @@ class Center extends Auth
     public function bindFrom()
     {
         $data = $this->_vali(['from.require' => '邀请人不能为空']);
-        [$state, $message] = UserUpgradeService::instance()->bindAgent($this->uuid, $data['from'], false);
+        [$state, $message] = UserUpgradeService::instance()->bindAgent($this->uuid, $data['from'], 0);
         if ($state) {
             $this->success($message, UserAdminService::instance()->total($this->uuid));
         } else {

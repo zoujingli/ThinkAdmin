@@ -10,6 +10,7 @@
             <th class='nowrap'>用户信息</th>
             <th class='nowrap'>注册时间</th>
             <th class='nowrap'></th>
+            <th></th>
         </tr>
         </thead>
         {/notempty}
@@ -60,11 +61,9 @@
                 注册时间：{$vo.create_at|format_datetime}
             </td>
             <td class="nowrap text-right">
-
                 <!--{if auth("parent")}-->
-                <a class="layui-btn layui-btn-sm layui-btn-primary" data-parent-uid="{:input('uid')}" data-parent-pid="{$vo.id}">确认选择</a>
+                <a class="layui-btn layui-btn-sm layui-btn-primary" data-parent-uid="{:input('uid')}" data-parent-pid="{$vo.id}">选择绑定</a>
                 <!--{/if}-->
-
             </td>
         </tr>
         {/foreach}
@@ -77,7 +76,6 @@
 {block name='script'}
 <script>
     $('body').off('click', '[data-parent-uid]').on('click', '[data-parent-uid]', function () {
-        $.queue()
         $.form.load('{:sysuri()}', {uid: this.dataset.parentUid, pid: this.dataset.parentPid}, 'post', function (ret) {
             if (ret.code > 0) return $.msg.success(ret.info, 3, function () {
                 top.layer.close(top.layer.getFrameIndex(window.name));

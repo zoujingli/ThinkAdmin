@@ -26,17 +26,17 @@ class UserUpgradeService extends Service
      * 尝试绑定上级代理
      * @param integer $uid 用户UID
      * @param integer $pid 代理UID
-     * @param boolean $force 正式绑定
+     * @param integer $mod 操作类型（0临时绑定, 1永久绑定, 2强行绑定）
      * @return array
      * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\DbException
      * @throws \think\db\exception\ModelNotFoundException
      */
-    public function bindAgent(int $uid, int $pid = 0, bool $force = true): array
+    public function bindAgent(int $uid, int $pid = 0, int $mod = 1): array
     {
         $user = $this->app->db->name('DataUser')->where(['id' => $uid])->find();
         if (empty($user)) return [0, '用户查询失败'];
-        if ($user['pids']) return [1, '已经绑定代理'];
+        if ($user['pids'] && in_array($mod, [0, 1])) return [1, '已经绑定代理'];
         // 检查代理用户
         if (empty($pid)) $pid = $user['pid0'];
         if (empty($pid)) return [0, '绑定的代理不存在'];
@@ -47,12 +47,13 @@ class UserUpgradeService extends Service
         if (stripos($agent['path'], "-{$uid}-") !== false) return [0, '不能绑定下属'];
         // 组装代理数据
         $result = [0, '绑定代理失败'];
-        $this->app->db->transaction(function () use ($user, $agent, $force, &$result) {
+        $this->app->db->transaction(function () use ($user, $agent, $mod, &$result) {
             // 更新用户代理
             $path1 = rtrim($agent['path'] ?: '-', '-') . "-{$agent['id']}-";
-            $data1 = ['pid0' => $agent['id'], 'pid1' => $agent['id'], 'pid2' => $agent['pid1']];
-            $data2 = ['pids' => intval($force), 'path' => $path1, 'layer' => substr_count($path1, '-')];
-            $this->app->db->name('DataUser')->where(['id' => $user['id']])->update(array_merge($data1, $data2));
+            $this->app->db->name('DataUser')->where(['id' => $user['id']])->update([
+                'pid0' => $agent['id'], 'pid1' => $agent['id'], 'pid2' => $agent['pid1'],
+                'pids' => $mod > 0 ? 1 : 0, 'path' => $path1, 'layer' => substr_count($path1, '-'),
+            ]);
             // 更新下级代理
             $path2 = "{$user['path']}{$user['id']}-";
             if ($this->app->db->name('DataUser')->whereLike('path', "{$path2}%")->count() > 0) {

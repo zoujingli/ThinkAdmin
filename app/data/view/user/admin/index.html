@@ -100,7 +100,12 @@
                 <td class="nowrap">
                     <div>累计交易：<b class="color-blue font-s14">{$vo.order_amount_total+0}</b> 元</div>
                     <div>使用状态：{if $vo.status eq 0}<b class="color-red">已冻结</b>{elseif $vo.status eq 1}<b class="color-green">已激活</b>{/if}
-                        <!--{notempty name='vo.pids'}--><b class="margin-left-5 color-green">永久绑定</b><!--{else}-->
+                        <!--{notempty name='vo.pids'}-->
+                        <b class="margin-left-5 color-green">永久绑定</b>
+                        <!--{if auth('parent')}-->
+                        <a data-width="1080px" data-height="700px" data-iframe="{:url('parent')}?uid={$vo.id}" class="margin-left-5 notselect">更改绑定</a>
+                        <!--{/if}-->
+                        <!--{else}-->
                         {notempty name='vo.pid0'}
                         <b class="margin-left-5 color-red">临时绑定</b>
                         <!--{if auth('forever')}-->
@@ -109,7 +114,7 @@
                         {else}
                         <b class="margin-left-5 color-desc">没有绑定</b>
                         <!--{if auth('parent')}-->
-                        <a data-width="1080px" data-iframe="{:url('parent')}?uid={$vo.id}" class="margin-left-5 notselect">设置绑定</a>
+                        <a data-width="1080px" data-height="700px" data-iframe="{:url('parent')}?uid={$vo.id}" class="margin-left-5 notselect">设置绑定</a>
                         <!--{/if}-->
                         {/notempty}
                         <!--{/notempty}-->
