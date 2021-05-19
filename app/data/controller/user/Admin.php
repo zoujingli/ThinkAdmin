@@ -106,7 +106,7 @@ class Admin extends Controller
         $user = $this->app->db->name($this->table)->where($map)->find();
         if (empty($user) || empty($user['pid0'])) $this->error('用户不符合操作要求！');
         [$status, $message] = UserUpgradeService::instance()->bindAgent($user['id'], $user['pid0'], true);
-        $status && sysoplog('前端用户管理', "后台修改用户[{$map['uid']}]的代理为永久状态");
+        $status && sysoplog('前端用户管理', "后台修改用户[{$map['id']}]的代理为永久状态");
         empty($status) ? $this->error($message) : $this->success($message);
     }
 
