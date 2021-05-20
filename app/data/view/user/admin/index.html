@@ -98,7 +98,11 @@
                     <div>间接团队 <b>{$vo.teams_users_indirect}</b> 人 ( 业绩 <b>{$vo.teams_amount_indirect+0}</b> 元 )</div>
                 </td>
                 <td class="nowrap">
-                    <div>累计交易：<b class="color-blue font-s14">{$vo.order_amount_total+0}</b> 元</div>
+                    <div>
+                        累计交易：<b class="color-blue font-s14">{$vo.order_amount_total+0}</b> 元
+                        {if $vo.buy_vip_entry}<b class="color-green margin-left-5">已入会</b>{else}<b class="color-desc margin-left-5">未入会</b>{/if}
+                    </div>
+                    <div>注册时间：{$vo.create_at|format_datetime}</div>
                     <div>使用状态：{if $vo.status eq 0}<b class="color-red">已冻结</b>{elseif $vo.status eq 1}<b class="color-green">已激活</b>{/if}
                         <!--{notempty name='vo.pids'}-->
                         <b class="margin-left-5 color-green">永久绑定</b>
@@ -109,7 +113,7 @@
                         {notempty name='vo.pid0'}
                         <b class="margin-left-5 color-red">临时绑定</b>
                         <!--{if auth('forever')}-->
-                        <a data-confirm="设置之后不能撤回操作，确认操作吗？" data-load="{:url('forever')}?id={$vo.id}" class="margin-left-5 notselect">改为永久</a>
+                        <a data-confirm="改为永久绑定其代理后不能撤回，确认修改吗？" data-load="{:url('forever')}?id={$vo.id}" class="margin-left-5 notselect">改为永久</a>
                         <!--{/if}-->
                         {else}
                         <b class="margin-left-5 color-desc">没有绑定</b>
@@ -118,8 +122,11 @@
                         <!--{/if}-->
                         {/notempty}
                         <!--{/notempty}-->
+                        <!--{if auth('unbind')}-->
+                        <a data-confirm="取消绑定后只能在后台设置其代理，确认取消吗？" data-load="{:url('unbind')}?id={$vo.id}" class="margin-left-5 notselect">取消绑定</a>
+                        <!--{/if}-->
                     </div>
-                    <div>注册时间：{$vo.create_at|format_datetime}</div>
+
                 </td>
                 <td class="nowrap">
 

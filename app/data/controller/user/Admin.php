@@ -111,6 +111,27 @@ class Admin extends Controller
     }
 
     /**
+     * 取消上级代理
+     * @auth true
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\DbException
+     * @throws \think\db\exception\ModelNotFoundException
+     */
+    public function unbind()
+    {
+        $map = $this->_vali(['id.require' => '用户ID不能为空！']);
+        $user = $this->app->db->name($this->table)->where($map)->find();
+        if (empty($user)) $this->error('用户不符合操作要求！');
+        // 修改指定用户代理数据
+        $this->app->db->name($this->table)->where(['id' => $user['id']])->update([
+            'pid0' => 0, 'pid1' => 0, 'pid2' => 0, 'pids' => 1, 'path' => '-', 'layer' => 1,
+        ]);
+        // 刷新用户等级及上级等级
+        UserUpgradeService::instance()->upgrade($user['id'], true);
+        $this->success('取消上级代理成功！');
+    }
+
+    /**
      * 绑定上级代理
      * @auth true
      * @throws \think\db\exception\DataNotFoundException
