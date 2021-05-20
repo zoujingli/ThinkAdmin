@@ -28,14 +28,6 @@ class Goods extends Controller
     protected $cateLevel;
 
     /**
-     * 控制器初始化
-     */
-    protected function initialize()
-    {
-        $this->cateLevel = GoodsService::instance()->getCateMax();
-    }
-
-    /**
      * 商品数据管理
      * @auth true
      * @menu true

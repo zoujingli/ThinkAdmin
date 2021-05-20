@@ -59,20 +59,12 @@ class GoodsService extends Service
             }
             $cates[$id]['ids'] = array_reverse($cates[$id]['ids']);
             $cates[$id]['names'] = array_reverse($cates[$id]['names']);
-            if ($simple && count($cates[$id]['names']) !== $this->getCateMax()) {
-                unset($cates[$key]);
+            if (isset($pky) && $simple && in_array($cates[$pky]['name'], $cates[$id]['names'])) {
+                unset($cates[$pky]);
             }
+            $pky = $key;
         }
         return $cates;
-    }
-
-    /**
-     * 最大分类等级
-     * @return integer
-     */
-    public function getCateMax(): int
-    {
-        return 3;
     }
 
     /**

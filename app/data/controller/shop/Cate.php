@@ -2,7 +2,6 @@
 
 namespace app\data\controller\shop;
 
-use app\data\service\GoodsService;
 use think\admin\Controller;
 use think\admin\extend\DataExtend;
 
@@ -20,20 +19,6 @@ class Cate extends Controller
     private $table = 'ShopGoodsCate';
 
     /**
-     * 最大分类等级
-     * @var integer
-     */
-    protected $cateLevel;
-
-    /**
-     * 控制器初始化
-     */
-    protected function initialize()
-    {
-        $this->cateLevel = GoodsService::instance()->getCateMax();
-    }
-
-    /**
      * 商品分类管理
      * @auth true
      * @menu true
@@ -43,7 +28,7 @@ class Cate extends Controller
      */
     public function index()
     {
-        $this->title = "商品分类管理（最大{$this->cateLevel}级）";
+        $this->title = "商品分类管理";
         $query = $this->_query($this->table)->like('name')->dateBetween('create_at');
         $query->equal('status')->where(['deleted' => 0])->order('sort desc,id desc')->page(false);
     }
@@ -97,8 +82,8 @@ class Cate extends Controller
             $data['pid'] = intval($data['pid'] ?? input('pid', '0'));
             $cates = $this->app->db->name($this->table)->where(['deleted' => 0])->order('sort desc,id desc')->select()->toArray();
             $this->cates = DataExtend::arr2table(array_merge($cates, [['id' => '0', 'pid' => '-1', 'name' => '顶部分类']]));
-            if (isset($data['id'])) foreach ($this->cates as $key => $cate) if ($cate['id'] === $data['id']) $data = $cate;
-            foreach ($this->cates as $key => $cate) if ($cate['spt'] >= $this->cateLevel || (isset($data['spt']) && $data['spt'] <= $cate['spt'])) {
+            if (isset($data['id'])) foreach ($this->cates as $cate) if ($cate['id'] === $data['id']) $data = $cate;
+            foreach ($this->cates as $key => $cate) if ((isset($data['spt']) && $data['spt'] <= $cate['spt'])) {
                 unset($this->cates[$key]);
             }
         }

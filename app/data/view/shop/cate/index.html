@@ -40,13 +40,9 @@
             <td class='text-center nowrap'>{eq name='vo.status' value='0'}<span class="color-red">已禁用</span>{else}<span class="color-green">已激活</span>{/eq}</td>
             <td class='text-center nowrap notselect'>
 
-                {if auth("add")}
-                <!--{if $vo.spt < $cateLevel-1}-->
+                <!--{if auth("add")}-->
                 <a class="layui-btn layui-btn-xs layui-btn-primary" data-modal='{:url("add")}?pid={$vo.id}' data-title="添加子分类">添 加</a>
-                <!--{else}-->
-                <a class="layui-btn layui-btn-xs layui-btn-disabled">添 加</a>
                 <!--{/if}-->
-                {/if}
 
                 <!--{if auth("edit")}-->
                 <a class="layui-btn layui-btn-xs" data-dbclick data-modal='{:url("edit")}?id={$vo.id}' data-title="编辑分类">编 辑</a>
