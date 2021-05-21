@@ -111,7 +111,7 @@ class Admin extends Controller
     }
 
     /**
-     * 取消上级代理
+     * 设为总部用户
      * @auth true
      * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\DbException
@@ -128,8 +128,8 @@ class Admin extends Controller
         ]);
         // 刷新用户等级及上级等级
         UserUpgradeService::instance()->upgrade($user['id'], true);
-        sysoplog('前端用户管理', "取消用户[{$map['id']}]绑定的上级代理");
-        $this->success('取消上级代理成功！');
+        sysoplog('前端用户管理', "设置用户[{$map['id']}]为总部用户");
+        $this->success('设为总部用户成功！');
     }
 
     /**
