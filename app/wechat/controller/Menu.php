@@ -153,7 +153,7 @@ class Menu extends Controller
             case 'location_select':
             case 'scancode_waitmsg':
             case 'pic_photo_or_album':
-                return ['name' => $item['name'], 'type' => $item['type'], 'key' => isset($item['key']) ? $item['key'] : $item['type']];
+                return ['name' => $item['name'], 'type' => $item['type'], 'key' => $item['key'] ?? $item['type']];
             case 'click':
                 if (empty($item['key'])) $this->error('匹配规则存在空的选项');
                 return ['name' => $item['name'], 'type' => $item['type'], 'key' => $item['key']];
