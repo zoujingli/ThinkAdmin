@@ -119,14 +119,14 @@
                         {/notempty}
                         <!--{/notempty}-->
                         <!--{if auth('unbind')}-->
-                        <a data-confirm="设为总部后只能在后台设置其代理，确认设置吗？" data-load="{:url('unbind')}?id={$vo.id}" class="margin-left-5 notselect">设为总部</a>
+                        <a data-confirm="设为总部用户后只能在后台设置其代理，确认设置吗？" data-load="{:url('unbind')}?id={$vo.id}" class="margin-left-5 notselect">设为总部</a>
                         <!--{/if}-->
                     </div>
                     <div>
                         <span>用户状态：</span>
                         <span>{if $vo.status eq 0}<b class="color-red">已冻结</b>{elseif $vo.status eq 1}<b class="color-green">已激活</b>{/if}</span>
                         <span class="margin-left-5">{if $vo.buy_vip_entry}<b class="color-green">已入会</b>{else}<b class="color-desc">未入会</b>{/if}</span>
-                        <span class="margin-left-5">已累计交易 <b class="color-blue font-s14">{$vo.order_amount_total+0}</b> 元</span>
+                        <span class="margin-left-5">累计交易 <b class="color-blue font-s14">{$vo.order_amount_total+0}</b> 元</span>
                     </div>
                 </td>
                 <td class="nowrap">
