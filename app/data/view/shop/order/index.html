@@ -102,13 +102,13 @@
                     <div>收货信息：{$vo.truck.address_name|default='--'}<span class="margin-left-5 color-blue">{$vo.truck.address_phone|default=''}</span></div>
                     <div>收货地址：{$vo.truck.address_province|default='--'}{$vo.truck.address_city|default=''}{$vo.truck.address_area|default=''}{$vo.truck.address_content|default=''}</div>
                     <div>发货状态：<!--{if empty($vo.truck.send_number)}--><span class="layui-badge layui-bg-black">未发货</span><!--{else}--><span class="layui-badge layui-bg-blue">{$vo.truck.company_name|default='--'}</span>
-                        <a class="layui-badge layui-bg-orange" data-modal="{:url('truckQuery')}?code={$vo.truck.company_code|default=''}&number={$vo.truck.send_number|default=''}" data-title="快递查询">{$vo.truck.send_number|default='--'}</a>
+                        <a class="layui-badge layui-bg-orange" data-modal="{:url('shop.send/query')}?code={$vo.truck.company_code|default=''}&number={$vo.truck.send_number|default=''}" data-title="快递查询">{$vo.truck.send_number|default='--'}</a>
                         <!--{/if}-->
 
-                        <!--{if auth('truck') and $vo.status eq 3}-->
-                        <a class="margin-left-5" data-modal="{:url('truck')}?order_no={$vo.order_no}" data-title="填写订单信息">填写发货</a>
-                        <!--{elseif auth('truck') and $vo.status eq 4}-->
-                        <a class="margin-left-5" data-modal="{:url('truck')}?order_no={$vo.order_no}" data-title="修改发货信息">修改发货</a>
+                        <!--{if auth('shop.send/truck') and $vo.status eq 3}-->
+                        <a class="margin-left-5" data-modal="{:url('shop.send/truck')}?order_no={$vo.order_no}" data-title="填写订单信息">填写发货</a>
+                        <!--{elseif auth('shop.send/truck') and $vo.status eq 4}-->
+                        <a class="margin-left-5" data-modal="{:url('shop.send/truck')}?order_no={$vo.order_no}" data-title="修改发货信息">修改发货</a>
                         <!--{/if}-->
 
                         <!--{if auth('cancel') and in_array($vo.status, [1,2,3])}-->

@@ -19,9 +19,9 @@
                     <span class="color-green font-w7 label-required-prev">收货所在区域</span>
                     <span class="color-desc margin-left-5">（原区域：{$vo.address_province|default='--'} - {$vo.address_city|default=''} - {$vo.address_area|default=''} ）</span>
                     <div class="layui-row layui-col-space10">
-                        <label class="layui-col-xs4"><select class="layui-select block full-width" lay-ignore name="form_province"></select></label>
-                        <label class="layui-col-xs4"><select class="layui-select block full-width" lay-ignore name="form_city"></select></label>
-                        <label class="layui-col-xs4"><select class="layui-select block full-width" lay-ignore name="form_area"></select></label>
+                        <label class="layui-col-xs4"><select class="layui-select" lay-filter="form_province" name="form_province"></select></label>
+                        <label class="layui-col-xs4"><select class="layui-select" lay-filter="form_city" name="form_city"></select></label>
+                        <label class="layui-col-xs4"><select class="layui-select" lay-filter="form_area" name="form_area"></select></label>
                     </div>
                 </div>
 
@@ -75,14 +75,17 @@
 
     <script>
         require(['pcasunzips'], function () {
-            (function (province, city, area) {
-                new PCAS("form_province", "form_city", "form_area", province, city, area);
-                window.form.render();
-            })('{$vo.address_province|default=""}', '{$vo.address_city|default=""}', '{$vo.address_area|default=""}');
+            (function (prov, city, area, refresh) {
+                new PCAS("form_province", "form_city", "form_area", prov, city, area);
+                refresh(), form.on('select(form_province)', refresh), form.on('select(form_city)', refresh), form.on('select(form_area)', refresh);
+            })('{$vo.address_province|default=""}', '{$vo.address_city|default=""}', '{$vo.address_area|default=""}', function (data) {
+                (data && $(data.elem).trigger('change')), setTimeout(layui.form.render, 100);
+            });
         });
+
         $('[data-express-query]').on('click', function () {
             (function (code, number) {
-                $.form.modal('{:url("truckQuery")}', {code: code, number: number}, '快递追踪查询')
+                $.form.modal('{:url("shop.send/query")}', {code: code, number: number}, '快递追踪查询')
             })($('[data-truck-code]').val(), $('[data-truck-number]').val());
         });
     </script>
