@@ -110,7 +110,6 @@ class Upload extends Controller
     /**
      * 文件上传入口
      * @login true
-     * @return Json
      * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\DbException
      * @throws \think\db\exception\ModelNotFoundException
@@ -118,15 +117,15 @@ class Upload extends Controller
     public function file(): Json
     {
         if (!($file = $this->getFile())->isValid()) {
-            return json(['uploaded' => false, 'error' => ['message' => '文件上传异常，文件过大或未上传！']]);
+            $this->error('文件上传异常，文件过大或未上传！');
         }
         $extension = strtolower($file->getOriginalExtension());
         [$pathname, $original] = [$file->getPathname(), $file->getOriginalName()];
         if (!in_array($extension, str2arr(sysconf('storage.allow_exts')))) {
-            return json(['uploaded' => false, 'error' => ['message' => '文件类型受限，请在后台配置规则！']]);
+            $this->error('文件类型受限，请在后台配置规则！');
         }
         if (in_array($extension, ['sh', 'asp', 'bat', 'cmd', 'exe', 'php'])) {
-            return json(['uploaded' => false, 'error' => ['message' => '文件安全保护，可执行文件禁止上传！']]);
+            $this->error('文件安全保护，可执行文件禁止上传！');
         }
         [$this->type, $this->safe] = [$this->getType(), $this->getSafe()];
         $this->name = input('key') ?: Storage::name($pathname, $extension, '', 'md5_file');
@@ -138,26 +137,26 @@ class Upload extends Controller
                 $info = $local->info($this->name, $this->safe, $original);
                 if (in_array($extension, ['jpg', 'gif', 'png', 'bmp', 'jpeg', 'wbmp'])) {
                     if ($this->imgNotSafe($distname) && $local->del($this->name)) {
-                        return json(['uploaded' => false, 'error' => ['message' => '图片未通过安全检查！']]);
+                        $this->error('图片未通过安全检查！');
                     }
                     [$width, $height] = getimagesize($distname);
                     if (($width < 1 || $height < 1) && $local->del($this->name)) {
-                        return json(['uploaded' => false, 'error' => ['message' => '读取图片的尺寸失败！']]);
+                        $this->error('读取图片的尺寸失败！');
                     }
                 }
             } else {
                 $bina = file_get_contents($pathname);
                 $info = Storage::instance($this->type)->set($this->name, $bina, $this->safe, $original);
             }
+            if (isset($info['url'])) {
+                $this->success('文件上传成功！', ['url' => $this->safe ? $this->name : $info['url']]);
+            } else {
+                $this->error('文件处理失败，请稍候再试！');
+            }
         } catch (HttpResponseException $exception) {
             throw $exception;
         } catch (\Exception $exception) {
-            return json(['uploaded' => false, 'error' => ['message' => $exception->getMessage()]]);
-        }
-        if (is_array($info) && isset($info['url'])) {
-            return json(['uploaded' => true, 'filename' => $this->name, 'url' => $this->safe ? $this->name : $info['url']]);
-        } else {
-            return json(['uploaded' => false, 'error' => ['message' => '文件处理失败，请稍候再试！']]);
+            $this->error($exception->getMessage());
         }
     }
 

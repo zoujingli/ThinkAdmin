@@ -191,12 +191,8 @@ $(function () {
                         $(this.elem).val(value).trigger('change');
                     }
                 });
-            }), $dom.find('[data-file]:not([data-inited])').map(function (index, elem, $this, field) {
-                $this = $(elem), field = this.dataset.field || 'file';
-                if (!$this.data('input')) $this.data('input', $('[name="' + field + '"]').get(0));
-                $this.uploadFile(function (url, file) {
-                    $($this.data('input')).data('file', file).val(url).trigger('change');
-                });
+            }), $dom.find('[data-file]:not([data-inited])').map(function () {
+                $(this).uploadFile();
             }), $dom.find('[data-lazy-src]:not([data-lazy-loaded])').each(function () {
                 if (this.dataset.lazyLoaded !== 'true') {
                     if (this.nodeName === 'IMG') {
@@ -531,12 +527,12 @@ $(function () {
     };
 
     /*! 全局文件上传入口 */
-    $.fn.uploadFile = function (callback) {
-        if (this.attr('data-inited')) return false;
-        var that = this, mode = this.attr('data-file') || 'one';
-        this.attr('data-inited', true).attr('data-multiple', (mode !== 'btn' && mode !== 'one') ? 1 : 0);
+    $.fn.uploadFile = function (callable) {
+        if (this.data('inited')) return false;
+        var that = this, mode = this.data('file') || 'one';
+        this.data('inited', true).data('multiple', mode !== 'one' ? 1 : 0);
         require(['upload'], function (apply) {
-            apply.call(this, that, callback);
+            apply.call(this, that, callable);
         });
     };
 
@@ -544,9 +540,8 @@ $(function () {
     $.fn.uploadOneImage = function () {
         return this.each(function ($in, $tpl) {
             $in = $(this), $tpl = $('<a data-file="one" class="uploadimage transition"><span class="layui-icon">&#x1006;</span></a>');
-            $tpl.attr('data-type', $in.data('type') || 'png,jpg,gif').attr('data-size', $in.data('size') || 0);
-            $tpl.attr('data-field', $in.attr('name') || 'image').data('input', this);
-            $tpl.find('span').on('click', function (event) {
+            $tpl.attr('data-size', $in.data('size') || 0).attr('data-type', $in.data('type') || 'png,jpg,gif');
+            $tpl.attr('data-field', $in.attr('name') || 'image').data('input', this).find('span').on('click', function (event) {
                 event.stopPropagation(), $tpl.attr('style', ''), $in.val('');
             });
             $in.attr('name', $tpl.attr('data-field')).after($tpl).on('change', function () {
