@@ -23,7 +23,6 @@ use think\admin\command\Replace;
 use think\admin\command\Version;
 use think\admin\multiple\BuildUrl;
 use think\admin\multiple\command\Build;
-use think\admin\multiple\command\Clear;
 use think\admin\multiple\Multiple;
 use think\admin\service\AdminService;
 use think\admin\service\SystemService;

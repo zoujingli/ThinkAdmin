@@ -1,4 +1,4 @@
-{if session('user.username') eq 'admin'}
+<!--{if isset($isSuper) and $isSuper}-->
 <fieldset class="margin-bottom-15">
     <legend class="notselect">服务状态</legend>
     <div class="layui-code border-0 margin-top-0">
@@ -9,7 +9,7 @@
     </div>
     <script>$('[data-queue-message]').load('{:url("admin/api.queue/status")}')</script>
 </fieldset>
-{/if}
+<!--{/if}-->
 
 <fieldset>
     <legend>条件搜索</legend>

@@ -46,7 +46,7 @@ class Queue extends Controller
      */
     public function index()
     {
-        if (AdminService::instance()->isSuper()) {
+        if ($this->isSuper = AdminService::instance()->isSuper()) {
             $process = ProcessService::instance();
             if ($process->iswin() || empty($_SERVER['USER'])) {
                 $this->command = $process->think('xadmin:queue start');

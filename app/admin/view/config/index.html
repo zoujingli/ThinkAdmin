@@ -1,7 +1,7 @@
 {extend name="main"}
 
 {block name="button"}
-<!--{if session('user.username') eq 'admin'}-->
+<!--{if isset($isSuper) and $isSuper}-->
 <a class="layui-btn layui-btn-sm layui-btn-primary" data-load="{:url('admin/api.runtime/config')}">清理无效配置</a>
 <!--{/if}-->
 

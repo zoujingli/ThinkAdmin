@@ -33,6 +33,21 @@ class User extends Controller
     private $table = 'SystemUser';
 
     /**
+     * 超级用户名称
+     * @var string
+     */
+    protected $superName;
+
+    /**
+     * 控制器初始化
+     */
+    protected function initialize()
+    {
+        // 超级用户名称
+        $this->superName = $this->app->config->get('app.super_user', 'admin');
+    }
+
+    /**
      * 系统用户管理
      * @auth true
      * @menu true
@@ -43,6 +58,7 @@ class User extends Controller
     public function index()
     {
         $this->title = '系统用户管理';
+
         $query = $this->_query($this->table);
         $query->equal('status')->dateBetween('login_at,create_at');
         $query->like('username,contact_phone#phone,contact_mail#mail');

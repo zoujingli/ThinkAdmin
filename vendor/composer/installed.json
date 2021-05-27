@@ -849,12 +849,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/zoujingli/ThinkLibrary.git",
-                "reference": "0c3fd320b8056d6a73d9b0db4ca8e97cf7bbf5e1"
+                "reference": "cdf95212d42ba02af227e02395259dc4bee9e610"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zoujingli/ThinkLibrary/zipball/0c3fd320b8056d6a73d9b0db4ca8e97cf7bbf5e1",
-                "reference": "0c3fd320b8056d6a73d9b0db4ca8e97cf7bbf5e1",
+                "url": "https://api.github.com/repos/zoujingli/ThinkLibrary/zipball/cdf95212d42ba02af227e02395259dc4bee9e610",
+                "reference": "cdf95212d42ba02af227e02395259dc4bee9e610",
                 "shasum": "",
                 "mirrors": [
                     {
@@ -871,7 +871,8 @@
                 "ext-mbstring": "*",
                 "topthink/framework": "^6.0"
             },
-            "time": "2021-05-19T04:39:49+00:00",
+            "time": "2021-05-27T01:59:28+00:00",
+            "default-branch": true,
             "type": "library",
             "extra": {
                 "think": {
@@ -901,6 +902,13 @@
             ],
             "description": "ThinkPHP v6.0 Development Library",
             "homepage": "http://thinkadmin.top",
+            "support": {
+                "email": "zoujingli@qq.com",
+                "forum": "https://thinkadmin.top",
+                "issues": "https://gitee.com/zoujingli/ThinkLibrary/issues",
+                "source": "https://gitee.com/zoujingli/ThinkLibrary",
+                "wiki": "https://thinkadmin.top"
+            },
             "install-path": "../zoujingli/think-library"
         },
         {

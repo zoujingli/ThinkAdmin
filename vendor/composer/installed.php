@@ -6,7 +6,7 @@
     'aliases' => 
     array (
     ),
-    'reference' => 'ba13afacdba9747fab47a87d5b67ec177dc398fa',
+    'reference' => '3cc374d1349454a0a8410869d7a9452461017e24',
     'name' => 'zoujingli/thinkadmin',
   ),
   'versions' => 
@@ -145,7 +145,7 @@
       array (
         0 => '9999999-dev',
       ),
-      'reference' => '0c3fd320b8056d6a73d9b0db4ca8e97cf7bbf5e1',
+      'reference' => 'cdf95212d42ba02af227e02395259dc4bee9e610',
     ),
     'zoujingli/thinkadmin' => 
     array (
@@ -154,7 +154,7 @@
       'aliases' => 
       array (
       ),
-      'reference' => 'ba13afacdba9747fab47a87d5b67ec177dc398fa',
+      'reference' => '3cc374d1349454a0a8410869d7a9452461017e24',
     ),
     'zoujingli/wechat-developer' => 
     array (

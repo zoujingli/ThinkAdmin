@@ -58,7 +58,7 @@
             <span class="color-green font-w7">访问权限</span>
             <span class="color-desc margin-left-5">Authorize</span>
             <div class="layui-textarea">
-                {if isset($vo.username) and $vo.username eq 'admin'}
+                {if isset($vo.username) and $vo.username eq $superName}
                 <span class="color-desc">超级用户不需要配置权限</span>
                 {elseif empty($authorizes)}
                 <span class="color-desc">未配置权限</span>

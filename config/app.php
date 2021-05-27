@@ -19,6 +19,8 @@ return [
     'app_namespace'    => '',
     // 是否启用路由
     'with_route'       => true,
+    // 超级用户账号
+    'super_user'       => 'admin',
     // 应用快速访问
     'app_express'      => true,
     // 默认应用

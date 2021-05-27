@@ -48,6 +48,7 @@ class Index extends Controller
             $this->redirect(sysuri('admin/login/index'));
         } else {
             $this->title = '系统管理后台';
+            $this->isSuper = AdminService::instance()->isSuper();
             $this->fetch();
         }
     }
