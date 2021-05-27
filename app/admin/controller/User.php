@@ -17,6 +17,7 @@
 namespace app\admin\controller;
 
 use think\admin\Controller;
+use think\admin\service\AdminService;
 
 /**
  * 系统用户管理
@@ -44,7 +45,7 @@ class User extends Controller
     protected function initialize()
     {
         // 超级用户名称
-        $this->superName = $this->app->config->get('app.super_user', 'admin');
+        $this->superName = AdminService::instance()->getSuperName();
     }
 
     /**

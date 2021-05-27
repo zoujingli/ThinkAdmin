@@ -47,7 +47,16 @@ class AdminService extends Service
      */
     public function isSuper(): bool
     {
-        return $this->getUserName() === $this->app->config->get('app.super_user', 'admin');
+        return $this->getUserName() === $this->getSuperName();
+    }
+
+    /**
+     * 获取超级用户账号
+     * @return string
+     */
+    public function getSuperName(): string
+    {
+        return $this->app->config->get('app.super_user', 'admin');
     }
 
     /**
