@@ -1,33 +1,34 @@
 define(['md5'], function (SparkMD5, allowMime) {
     allowMime = JSON.parse('{$exts|raw}');
     return function (element, callable) {
+
         /*! 初始化变量 */
-        var opt = {element: $(element), exts: [], mimes: [], files: {}, cache: {}, load: 0};
+        var opt = {element: $(element), exts: [], mimes: [], files: {}, cache: {}, load: 0, count: {total: 0, uploaded: 0}};
         opt.element.data('input', opt.element.data('input') || $('input[name="' + (opt.element.data('field') || 'file') + '"]:not([type=file])'));
-        opt.safe = opt.element.data('safe') ? 1 : 0, opt.input = $(opt.element.data('input')), opt.hload = opt.element.data('hide-load') ? 1 : 0;
-        opt.count = {total: 0, uploaded: 0}, opt.size = opt.element.data('size') || 0, opt.multiple = opt.element.data('multiple') > 0;
-        opt.uptype = opt.safe ? 'local' : opt.element.attr('data-uptype') || '';
+        opt.safe = opt.element.data('safe') ? 1 : 0, opt.hide = opt.element.data('hide-load') ? 1 : 0;
+        opt.size = opt.element.data('size') || 0, opt.mult = opt.element.data('multiple') > 0;
+        opt.type = opt.safe ? 'local' : opt.element.attr('data-uptype') || '';
 
         /*! 文件选择筛选 */
         $((opt.element.data('type') || '').split(',')).map(function (i, ext) {
             if (allowMime[ext]) opt.exts.push(ext), opt.mimes.push(allowMime[ext]);
         });
+
         /*! 初始化上传组件 */
         opt.uploader = layui.upload.render({
-            url: '{:url("admin/api.upload/file")}',
-            auto: false, elem: element, accept: 'file', multiple: opt.multiple,
+            url: '{:sysuri("admin/api.upload/file")}', auto: false, elem: element, accept: 'file', multiple: opt.mult,
             exts: opt.exts.join('|'), acceptMime: opt.mimes.join(','), choose: function (object) {
                 opt.element.triggerHandler('upload.choose', opt.files = object.pushFile());
                 opt.uploader.config.elem.next().val(''), layui.each(opt.files, function (index, file) {
                     if (opt.size > 0 && file.size > opt.size) {
                         return delete opt.files[index], $.msg.tips('文件大小超出上传限制！');
                     }
-                    opt.load = opt.hload || $.msg.loading('上传进度 <span data-upload-progress>0%</span>');
+                    opt.load = opt.hide || $.msg.loading('上传进度 <span data-upload-progress>0%</span>');
                     opt.count.total++, file.index = index, opt.cache[index] = file, delete opt.files[index];
                     md5file(file).then(function (file) {
                         opt.element.triggerHandler('upload.hash', file);
                         jQuery.ajax("{:url('admin/api.upload/state')}", {
-                            data: {key: file.xkey, uptype: opt.uptype, safe: opt.safe, name: file.name}, method: 'post', success: function (ret) {
+                            data: {key: file.xkey, uptype: opt.type, safe: opt.safe, name: file.name}, method: 'post', success: function (ret) {
                                 if (parseInt(ret.code) === 404) {
                                     file.xurl = ret.data.url;
                                     opt.uploader.config.url = ret.data.server;
@@ -77,18 +78,18 @@ define(['md5'], function (SparkMD5, allowMime) {
                 if (typeof callable === 'function') {
                     callable.call(opt.element, opt.cache[idx].xurl, opt.cache['id']);
                 } else {
-                    opt.multiple < 1 && opt.input.val(opt.cache[idx].xurl).trigger('change');
+                    opt.mult < 1 && $(opt.element.data('input')).val(opt.cache[idx].xurl).trigger('change');
                 }
 
-                (opt.hload || $.msg.close(opt.load)), opt.element.html(opt.element.data('html'));
+                (opt.hide || $.msg.close(opt.load)), opt.element.html(opt.element.data('html'));
                 opt.element.triggerHandler('upload.done', {file: opt.cache[idx], data: ret});
 
                 /*! 所有文件上传完成后结果处理 */
                 if (++opt.count.uploaded >= opt.count.total) {
-                    if (opt.multiple > 0) {
+                    if (opt.mult > 0) {
                         var urls = [];
                         for (var i in opt.cache) urls.push(opt.cache[i].xurl)
-                        opt.input.val(urls.join('|')).trigger('change');
+                        $(opt.element.data('input')).val(urls.join('|')).trigger('change');
                     }
                     opt.element.triggerHandler('upload.complete', {file: opt.cache});
                     (opt.cache = [], opt.files = []), opt.uploader.reload();
