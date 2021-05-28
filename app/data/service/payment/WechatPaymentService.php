@@ -58,11 +58,7 @@ class WechatPaymentService extends PaymentService
                 // 返回支付参数
                 return $this->payment->jsapiParams($info['prepay_id']);
             }
-            if (isset($info['err_code_des'])) {
-                throw new Exception($info['err_code_des']);
-            } else {
-                throw new Exception('获取预支付码失败！');
-            }
+            throw new Exception($info['err_code_des'] ?? '获取预支付码失败！');
         } catch (Exception $exception) {
             throw $exception;
         } catch (\Exception $exception) {

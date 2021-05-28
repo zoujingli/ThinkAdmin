@@ -1,12 +1,13 @@
 define(['md5'], function (SparkMD5, allowMime) {
     allowMime = JSON.parse('{$exts|raw}');
-    return function (element, callable, completeCallable) {
+    return function (element, callable) {
         /*! 初始化变量 */
         var opt = {element: $(element), exts: [], mimes: [], files: {}, cache: {}, load: 0};
-        opt.count = {total: 0, uploaded: 0}, opt.size = opt.element.data('size') || 0;
-        opt.safe = opt.element.data('safe') ? 1 : 0, opt.hload = opt.element.data('hide-load') ? 1 : 0;
-        opt.field = opt.element.data('field') || 'file', opt.input = $('input[name="' + opt.field + '"]:not([type=file])');
-        opt.uptype = opt.safe ? 'local' : opt.element.attr('data-uptype') || '', opt.multiple = opt.element.data('multiple') > 0;
+        opt.element.data('input', opt.element.data('input') || $('input[name="' + (opt.element.data('field') || 'file') + '"]:not([type=file])'));
+        opt.safe = opt.element.data('safe') ? 1 : 0, opt.input = $(opt.element.data('input')), opt.hload = opt.element.data('hide-load') ? 1 : 0;
+        opt.count = {total: 0, uploaded: 0}, opt.size = opt.element.data('size') || 0, opt.multiple = opt.element.data('multiple') > 0;
+        opt.uptype = opt.safe ? 'local' : opt.element.attr('data-uptype') || '';
+
         /*! 文件选择筛选 */
         $((opt.element.data('type') || '').split(',')).map(function (i, ext) {
             if (allowMime[ext]) opt.exts.push(ext), opt.mimes.push(allowMime[ext]);
