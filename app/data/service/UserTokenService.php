@@ -82,9 +82,10 @@ class UserTokenService extends Service
     public function token(int $uuid, string $type): array
     {
         // 清理无效认证数据
-        $map1 = [['uid', '=', $uuid], ['type', '=', $type]];
-        $map2 = [['time', '<', $time = time()], ['token', '<>', 'token']];
-        $this->app->db->name('DataUserToken')->whereOr([$map1, $map2])->delete();
+        $map0 = [['token', '<>', 'token']];
+        $map1 = [['time', '<', $time = time()]];
+        $map2 = [['type', '=', $type], ['uid', '=', $uuid]];
+        $this->app->db->name('DataUserToken')->where($map0)->whereOr([$map1, $map2])->delete();
         // 创建新的认证数据
         do $map = ['type' => $type, 'token' => md5(uniqid() . rand(100, 999))];
         while ($this->app->db->name('DataUserToken')->where($map)->count() > 0);
