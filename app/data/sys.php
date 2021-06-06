@@ -14,6 +14,7 @@ use think\Console;
 $app = app();
 
 if ($app->request->isCli()) {
+    // 动态注册操作指令
     Console::starting(function (Console $console) {
         $console->addCommand(OrderClean::class);
         $console->addCommand(UserAgent::class);
