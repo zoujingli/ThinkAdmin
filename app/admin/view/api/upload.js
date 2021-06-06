@@ -3,14 +3,19 @@ define(['md5'], function (SparkMD5, allowMime) {
     return function (element, callable) {
 
         /*! 初始化变量 */
-        var opt = {element: $(element), exts: [], mimes: [], files: {}, cache: {}, load: 0, count: {total: 0, uploaded: 0}};
-        opt.element.data('input', opt.element.data('input') || $('input[name="' + (opt.element.data('field') || 'file') + '"]:not([type=file])'));
-        opt.safe = opt.element.data('safe') ? 1 : 0, opt.hide = opt.element.data('hide-load') ? 1 : 0;
-        opt.size = opt.element.data('size') || 0, opt.mult = opt.element.data('multiple') > 0;
-        opt.type = opt.safe ? 'local' : opt.element.attr('data-uptype') || '';
+        var opt = {elem: $(element), exts: [], mimes: [], files: {}, cache: {}, load: 0, count: {total: 0, uploaded: 0}};
+        opt.size = opt.elem.data('size') || 0, opt.mult = opt.elem.data('multiple') > 0;
+        opt.safe = opt.elem.data('safe') ? 1 : 0, opt.hide = opt.elem.data('hide-load') ? 1 : 0;
+        opt.type = opt.safe ? 'local' : opt.elem.attr('data-uptype') || '';
+
+        /*! 查找表单元素, 如果没有找到将不会自动写值 */
+        if (!opt.elem.data('input') && opt.elem.data('field')) {
+            var $input = $('input[name="' + opt.elem.data('field') + '"]:not([type=file])');
+            opt.elem.data('input', $input.size() > 0 ? $input.get(0) : null);
+        }
 
         /*! 文件选择筛选 */
-        $((opt.element.data('type') || '').split(',')).map(function (i, ext) {
+        $((opt.elem.data('type') || '').split(',')).map(function (i, ext) {
             if (allowMime[ext]) opt.exts.push(ext), opt.mimes.push(allowMime[ext]);
         });
 
@@ -18,15 +23,13 @@ define(['md5'], function (SparkMD5, allowMime) {
         opt.uploader = layui.upload.render({
             url: '{:sysuri("admin/api.upload/file")}', auto: false, elem: element, accept: 'file', multiple: opt.mult,
             exts: opt.exts.join('|'), acceptMime: opt.mimes.join(','), choose: function (object) {
-                opt.element.triggerHandler('upload.choose', opt.files = object.pushFile());
+                opt.elem.triggerHandler('upload.choose', opt.files = object.pushFile());
                 opt.uploader.config.elem.next().val(''), layui.each(opt.files, function (index, file) {
-                    if (opt.size > 0 && file.size > opt.size) {
-                        return delete opt.files[index], $.msg.tips('文件大小超出上传限制！');
-                    }
+                    if (opt.size > 0 && file.size > opt.size) return delete opt.files[index], $.msg.tips('文件大小超出限制！');
                     opt.load = opt.hide || $.msg.loading('上传进度 <span data-upload-progress>0%</span>');
                     opt.count.total++, file.index = index, opt.cache[index] = file, delete opt.files[index];
                     md5file(file).then(function (file) {
-                        opt.element.triggerHandler('upload.hash', file);
+                        opt.elem.triggerHandler('upload.hash', file);
                         jQuery.ajax("{:url('admin/api.upload/state')}", {
                             data: {key: file.xkey, uptype: opt.type, safe: opt.safe, name: file.name}, method: 'post', success: function (ret) {
                                 if (parseInt(ret.code) === 404) {
@@ -65,9 +68,7 @@ define(['md5'], function (SparkMD5, allowMime) {
                 });
             }, progress: function (number) {
                 $('[data-upload-progress]').html(number + '%');
-                opt.element.triggerHandler('upload.progress', {
-                    number: number, event: arguments[2], file: arguments[3]
-                });
+                opt.elem.triggerHandler('upload.progress', {number: number, event: arguments[2], file: arguments[3]});
             }, done: function (ret, idx) {
 
                 /*! 检查单个文件上传返回的结果 */
@@ -76,22 +77,22 @@ define(['md5'], function (SparkMD5, allowMime) {
 
                 /*! 单个文件上传成功结果处理 */
                 if (typeof callable === 'function') {
-                    callable.call(opt.element, opt.cache[idx].xurl, opt.cache['id']);
-                } else {
-                    opt.mult < 1 && $(opt.element.data('input')).val(opt.cache[idx].xurl).trigger('change');
+                    callable.call(opt.elem, opt.cache[idx].xurl, opt.cache['id']);
+                } else if (opt.mult < 1 && opt.elem.data('input')) {
+                    $(opt.elem.data('input')).val(opt.cache[idx].xurl).trigger('change');
                 }
 
-                (opt.hide || $.msg.close(opt.load)), opt.element.html(opt.element.data('html'));
-                opt.element.triggerHandler('upload.done', {file: opt.cache[idx], data: ret});
+                (opt.hide || $.msg.close(opt.load)), opt.elem.html(opt.elem.data('html'));
+                opt.elem.triggerHandler('upload.done', {file: opt.cache[idx], data: ret});
 
                 /*! 所有文件上传完成后结果处理 */
                 if (++opt.count.uploaded >= opt.count.total) {
-                    if (opt.mult > 0) {
+                    if (opt.mult > 0 && opt.elem.data('input')) {
                         var urls = [];
                         for (var i in opt.cache) urls.push(opt.cache[i].xurl)
-                        $(opt.element.data('input')).val(urls.join('|')).trigger('change');
+                        $(opt.elem.data('input')).val(urls.join('|')).trigger('change');
                     }
-                    opt.element.triggerHandler('upload.complete', {file: opt.cache});
+                    opt.elem.triggerHandler('upload.complete', {file: opt.cache});
                     (opt.cache = [], opt.files = []), opt.uploader.reload();
                 }
             }

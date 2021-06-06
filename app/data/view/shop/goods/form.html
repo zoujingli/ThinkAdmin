@@ -24,7 +24,7 @@
             <span class="color-green font-w7 label-required-prev">所属分类</span>
             <span class="color-desc margin-left-5">Category Name</span>
             <select class="layui-select" lay-search name="cateids">
-                {foreach $cates as $cate}{if in_array($cate.id, $cate.ids)}
+                {foreach $cates as $cate}{if in_array($cate.id, $vo.cateids)}
                 <option selected value="{:arr2str($cate.ids)}">{:join(' ＞ ', $cate.names)}</option>
                 {else}
                 <option value="{:arr2str($cate.ids)}">{:join(' ＞ ', $cate.names)}</option>

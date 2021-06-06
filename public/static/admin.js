@@ -538,14 +538,14 @@ $(function () {
 
     /*! 上传单张图片 */
     $.fn.uploadOneImage = function () {
-        return this.each(function ($in, $tpl) {
-            $in = $(this), $tpl = $('<a data-file="one" class="uploadimage transition"><span class="layui-icon">&#x1006;</span></a>');
-            $tpl.attr('data-size', $in.data('size') || 0).attr('data-type', $in.data('type') || 'png,jpg,gif');
-            $tpl.attr('data-field', $in.attr('name') || 'image').data('input', this).find('span').on('click', function (event) {
-                event.stopPropagation(), $tpl.attr('style', ''), $in.val('');
+        return this.each(function ($in, $bt) {
+            $in = $(this), $bt = $('<a data-file="one" class="uploadimage transition"><span class="layui-icon">&#x1006;</span></a>');
+            $bt.attr('data-size', $in.data('size') || 0).attr('data-file', 'one').attr('data-type', $in.data('type') || 'png,jpg,gif');
+            $bt.attr('input', $in.get(0)).data('input', this).find('span').on('click', function (event) {
+                event.stopPropagation(), $bt.attr('style', ''), $in.val('');
             });
-            $in.attr('name', $tpl.attr('data-field')).after($tpl).on('change', function () {
-                if (this.value) $tpl.css('backgroundImage', 'url(' + encodeURI(this.value) + ')');
+            $in.attr('name', $bt.attr('data-field')).after($bt).on('change', function () {
+                if (this.value) $bt.css('backgroundImage', 'url(' + encodeURI(this.value) + ')');
             }).trigger('change');
         }), this;
     };
@@ -553,27 +553,26 @@ $(function () {
     /*! 上传多张图片 */
     $.fn.uploadMultipleImage = function () {
         return this.each(function () {
-            var $button = $('<a class="uploadimage"></a>'), images = this.value ? this.value.split('|') : [];
-            var $input = $(this), name = $input.attr('name') || 'umt-image', type = $input.data('type') || 'png,jpg,gif';
-            $button.attr('data-type', type).attr('data-field', name).attr('data-file', 'mut').data('input', this);
-            $input.attr('name', name).after($button), $button.uploadFile(function (src) {
-                images.push(src), $input.val(images.join('|')), showImageContainer([src]);
+            var $in = $(this), $bt = $('<a class="uploadimage"></a>'), imgs = this.value ? this.value.split('|') : [];
+            $bt.attr('data-size', $in.data('size') || 0).attr('data-file', 'mut').attr('data-type', $in.data('type') || 'png,jpg,gif');
+            $in.after($bt), $bt.uploadFile(function (src) {
+                imgs.push(src), $in.val(imgs.join('|')), showImageContainer([src]);
             });
-            if (images.length > 0) showImageContainer(images);
+            if (imgs.length > 0) showImageContainer(imgs);
 
             function showImageContainer(srcs) {
                 $(srcs).each(function (idx, src, $image) {
                     $image = $('<div class="uploadimage uploadimagemtl transition"><a class="layui-icon margin-right-5">&#xe602;</a><a class="layui-icon margin-right-5">&#x1006;</a><a class="layui-icon margin-right-5">&#xe603;</a></div>');
                     $image.attr('data-tips-image', encodeURI(src)).css('backgroundImage', 'url(' + encodeURI(src) + ')').on('click', 'a', function (event, index, prevs, $item) {
-                        event.stopPropagation(), $item = $(this).parent(), index = $(this).index(), prevs = $button.prevAll('div.uploadimage').length;
+                        event.stopPropagation(), $item = $(this).parent(), index = $(this).index(), prevs = $bt.prevAll('div.uploadimage').length;
                         if (index === 0 && $item.index() !== prevs) $item.next().after($item);
                         else if (index === 2 && $item.index() > 1) $item.prev().before($item);
                         else if (index === 1) $item.remove();
-                        images = [], $button.prevAll('.uploadimage').map(function () {
-                            images.push($(this).attr('data-tips-image'));
+                        imgs = [], $bt.prevAll('.uploadimage').map(function () {
+                            imgs.push($(this).attr('data-tips-image'));
                         });
-                        images.reverse(), $input.val(images.join('|'));
-                    }), $button.before($image);
+                        imgs.reverse(), $in.val(imgs.join('|'));
+                    }), $bt.before($image);
                 });
             };
         }), this;
