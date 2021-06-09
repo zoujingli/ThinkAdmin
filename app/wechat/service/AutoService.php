@@ -38,7 +38,7 @@ class AutoService extends Service
     {
         foreach ($this->app->db->name('WechatAuto')->where(['status' => 1])->order('time asc')->cursor() as $vo) {
             [$name, $time] = ["推送客服消息 {$vo['code']}#{$openid}", $this->parseTimeString($vo['time'])];
-            QueueService::instance()->register($name, "xadmin:fansmsg {$openid} {$vo['code']}", $time, [], 1);
+            QueueService::instance()->register($name, "xadmin:fansmsg {$openid} {$vo['code']}", $time, []);
         }
     }
 
