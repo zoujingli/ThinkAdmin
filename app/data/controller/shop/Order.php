@@ -62,7 +62,7 @@ class Order extends Controller
         if ($db->getOptions('where')) $query->whereRaw("order_no in {$db->field('order_no')->buildSql()}");
         // 用户搜索查询
         $db = $this->_query('DataUser')->like('phone#user_phone,nickname#user_nickname')->db();
-        if ($db->getOptions('where')) $query->whereRaw("uid in {$db->field('id')->buildSql()}");
+        if ($db->getOptions('where')) $query->whereRaw("uuid in {$db->field('id')->buildSql()}");
         // 代理搜索查询
         $db = $this->_query('DataUser')->like('phone#from_phone,nickname#from_nickname')->db();
         if ($db->getOptions('where')) $query->whereRaw("puid1 in {$db->field('id')->buildSql()}");

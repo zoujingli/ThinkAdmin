@@ -100,10 +100,10 @@ class UserTransferService extends Service
     public function amount(int $uuid): array
     {
         if ($uuid > 0) {
-            $locks = abs($this->app->db->name('DataUserTransfer')->whereRaw("uid='{$uuid}' and status=3")->sum('amount'));
-            $total = abs($this->app->db->name('DataUserTransfer')->whereRaw("uid='{$uuid}' and status>=1")->sum('amount'));
-            $count = abs($this->app->db->name('DataUserTransfer')->whereRaw("uid='{$uuid}' and status>=4")->sum('amount'));
-            $audit = abs($this->app->db->name('DataUserTransfer')->whereRaw("uid='{$uuid}' and status>=1 and status<3")->sum('amount'));
+            $locks = abs($this->app->db->name('DataUserTransfer')->whereRaw("uuid='{$uuid}' and status=3")->sum('amount'));
+            $total = abs($this->app->db->name('DataUserTransfer')->whereRaw("uuid='{$uuid}' and status>=1")->sum('amount'));
+            $count = abs($this->app->db->name('DataUserTransfer')->whereRaw("uuid='{$uuid}' and status>=4")->sum('amount'));
+            $audit = abs($this->app->db->name('DataUserTransfer')->whereRaw("uuid='{$uuid}' and status>=1 and status<3")->sum('amount'));
         } else {
             $locks = abs($this->app->db->name('DataUserTransfer')->whereRaw("status=3")->sum('amount'));
             $total = abs($this->app->db->name('DataUserTransfer')->whereRaw("status>=1")->sum('amount'));

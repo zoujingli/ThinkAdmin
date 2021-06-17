@@ -37,7 +37,7 @@ class UserTokenService extends Service
             $map = ['type' => $type, 'token' => $token];
             $data = $this->app->db->name('DataUserToken')->where($map)->find();
         }
-        if (empty($data) || empty($data['uid'])) {
+        if (empty($data) || empty($data['uuid'])) {
             return [0, '请重新登录，登录认证无效', 0, 0];
         } elseif ($token !== 'token' && $data['time'] < time()) {
             return [0, '请重新登录，登录认证失效', 0, 0];
@@ -45,7 +45,7 @@ class UserTokenService extends Service
             return [0, '请重新登录，客户端已更换', 0, 0];
         } else {
             $this->expire($type, $token);
-            return [1, '登录验证成功', $data['uid'], $data['time']];
+            return [1, '登录验证成功', $data['uuid'], $data['time']];
         }
     }
 
@@ -84,13 +84,13 @@ class UserTokenService extends Service
         // 清理无效认证数据
         $time = time();
         $map1 = [['token', '<>', 'token'], ['time', '<', $time]];
-        $map2 = [['token', '<>', 'token'], ['type', '=', $type], ['uid', '=', $uuid]];
+        $map2 = [['token', '<>', 'token'], ['type', '=', $type], ['uuid', '=', $uuid]];
         $this->app->db->name('DataUserToken')->whereOr([$map1, $map2])->delete();
         // 创建新的认证数据
         do $map = ['type' => $type, 'token' => md5(uniqid() . rand(100, 999))];
         while ($this->app->db->name('DataUserToken')->where($map)->count() > 0);
         // 写入用户认证数据
-        $data = array_merge($map, ['uid' => $uuid, 'time' => $time + $this->expire, 'tokenv' => $this->_buildTokenVerify()]);
+        $data = array_merge($map, ['uuid' => $uuid, 'time' => $time + $this->expire, 'tokenv' => $this->_buildTokenVerify()]);
         if ($this->app->db->name('DataUserToken')->insert($data) !== false) {
             return [1, '刷新认证成功', $data];
         } else {

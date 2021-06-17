@@ -92,7 +92,7 @@ class Transfer extends Controller
         $query = $this->_query($this->table)->order('id desc');
         // 用户条件搜索
         $db = $this->_query('DataUser')->like('phone,username|nickname#nickname')->db();
-        if ($db->getOptions('where')) $query->whereRaw("uid in {$db->field('id')->buildSql()}");
+        if ($db->getOptions('where')) $query->whereRaw("uuid in {$db->field('id')->buildSql()}");
         // 数据列表处理
         $query->equal('type,status')->dateBetween('create_at')->page();
     }

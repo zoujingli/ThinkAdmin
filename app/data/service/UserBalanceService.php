@@ -28,14 +28,14 @@ class UserBalanceService extends Service
         if (empty($order)) throw new \think\admin\Exception('需处理的订单状态异常');
 
         if ($order['reward_balance'] > 0) data_save('DataUserBalance', [
-            'uid'    => $order['uid'],
+            'uuid'   => $order['uuid'],
             'code'   => "CZ{$order['order_no']}",
             'name'   => "订单余额充值",
             'remark' => "来自订单 {$order['order_no']} 的余额充值 {$order['reward_balance']} 元",
             'amount' => $order['reward_balance'],
         ], 'code');
 
-        return $this->amount($order['uid']);
+        return $this->amount($order['uuid']);
     }
 
     /**
@@ -48,12 +48,12 @@ class UserBalanceService extends Service
     public function amount(int $uuid, array $nots = []): array
     {
         if ($uuid > 0) {
-            $total = abs($this->app->db->name('DataUserBalance')->whereRaw("uid='{$uuid}' and amount>0 and deleted=0")->sum('amount'));
-            $count = abs($this->app->db->name('DataUserBalance')->whereRaw("uid='{$uuid}' and amount<0 and deleted=0")->sum('amount'));
+            $total = abs($this->app->db->name('DataUserBalance')->whereRaw("uuid='{$uuid}' and amount>0 and deleted=0")->sum('amount'));
+            $count = abs($this->app->db->name('DataUserBalance')->whereRaw("uuid='{$uuid}' and amount<0 and deleted=0")->sum('amount'));
             if (empty($nots)) {
                 $this->app->db->name('DataUser')->where(['id' => $uuid])->update(['balance_total' => $total, 'balance_used' => $count]);
             } else {
-                $count -= $this->app->db->name('DataUserBalance')->whereRaw("uid={$uuid}")->whereIn('code', $nots)->sum('amount');
+                $count -= $this->app->db->name('DataUserBalance')->whereRaw("uuid={$uuid}")->whereIn('code', $nots)->sum('amount');
             }
         } else {
             $total = abs($this->app->db->name('DataUserBalance')->whereRaw("amount>0 and deleted=0")->sum('amount'));

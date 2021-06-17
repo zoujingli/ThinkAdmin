@@ -41,7 +41,7 @@ class Balance extends Controller
         $query = $this->_query($this->table)->equal('name,upgrade');
         // 用户搜索查询
         $db = $this->_query('DataUser')->like('phone#user_phone,nickname#user_nickname')->db();
-        if ($db->getOptions('where')) $query->whereRaw("uid in {$db->field('id')->buildSql()}");
+        if ($db->getOptions('where')) $query->whereRaw("uuid in {$db->field('id')->buildSql()}");
         // 数据查询分页
         $query->where(['deleted' => 0])->like('code,remark')->dateBetween('create_at')->order('id desc')->page();
     }
@@ -71,8 +71,8 @@ class Balance extends Controller
      */
     public function add()
     {
-        $data = $this->_vali(['uid.require' => '用户UID不能为空！']);
-        $this->user = $this->app->db->name('DataUser')->where(['id' => $data['uid']])->find();
+        $data = $this->_vali(['uuid.require' => '用户UID不能为空！']);
+        $this->user = $this->app->db->name('DataUser')->where(['id' => $data['uuid']])->find();
         if (empty($this->user)) $this->error('待充值的用户不存在！');
         $this->_form($this->table, 'form');
     }
@@ -105,9 +105,9 @@ class Balance extends Controller
      */
     protected function _form_result(bool $state, array $data)
     {
-        if ($state && isset($data['uid'])) {
-            UserBalanceService::instance()->amount($data['uid']);
-            UserUpgradeService::instance()->upgrade($data['uid']);
+        if ($state && isset($data['uuid'])) {
+            UserBalanceService::instance()->amount($data['uuid']);
+            UserUpgradeService::instance()->upgrade($data['uuid']);
         }
     }
 
@@ -132,8 +132,8 @@ class Balance extends Controller
         if ($state) {
             $map = [['id', 'in', str2arr(input('id', ''))]];
             foreach ($this->app->db->name($this->table)->where($map)->cursor() as $vo) {
-                UserBalanceService::instance()->amount($vo['uid']);
-                UserUpgradeService::instance()->upgrade($vo['uid']);
+                UserBalanceService::instance()->amount($vo['uuid']);
+                UserUpgradeService::instance()->upgrade($vo['uuid']);
             }
         }
     }

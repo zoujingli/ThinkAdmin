@@ -25,7 +25,7 @@ class News extends Auth
     public function addComment()
     {
         $data = $this->_vali([
-            'uid.value'     => $this->uuid,
+            'uuid.value'    => $this->uuid,
             'type.value'    => 4,
             'status.value'  => 1,
             'code.require'  => '文章不能为空！',
@@ -47,7 +47,7 @@ class News extends Auth
      */
     public function getComment()
     {
-        $query = $this->_query($this->table)->where(['uid' => $this->uuid, 'type' => 4]);
+        $query = $this->_query($this->table)->where(['uuid' => $this->uuid, 'type' => 4]);
         $result = $query->whereIn('status', [1, 2])->order('id desc')->page(true, false, false, 15);
         NewsService::instance()->buildListByUidAndCode($result);
         $this->success('获取评论列表成功', $result);
@@ -60,7 +60,7 @@ class News extends Auth
     public function delComment()
     {
         $data = $this->_vali([
-            'uid.value'    => $this->uuid,
+            'uuid.value'   => $this->uuid,
             'type.value'   => 4,
             'id.require'   => '评论编号不能为空！',
             'code.require' => '文章编号不能为空！',
@@ -79,7 +79,7 @@ class News extends Auth
     public function addCollect()
     {
         $data = $this->_vali([
-            'uid.value'    => $this->uuid,
+            'uuid.value'   => $this->uuid,
             'type.value'   => 1,
             'status.value' => 2,
             'code.require' => '文章编号不能为空！',
@@ -102,7 +102,7 @@ class News extends Auth
     public function delCollect()
     {
         $data = $this->_vali([
-            'uid.value'    => $this->uuid,
+            'uuid.value'   => $this->uuid,
             'type.value'   => 1,
             'code.require' => '文章编号不能为空！',
         ]);
@@ -120,7 +120,7 @@ class News extends Auth
      */
     public function getCollect()
     {
-        $map = ['uid' => $this->uuid, 'type' => 1];
+        $map = ['uuid' => $this->uuid, 'type' => 1];
         $query = $this->_query('DataNewsXCollect')->where($map);
         $result = $query->order('id desc')->page(true, false, false, 15);
         NewsService::instance()->buildListByUidAndCode($result['list']);
@@ -134,7 +134,7 @@ class News extends Auth
     public function addLike()
     {
         $data = $this->_vali([
-            'uid.value'    => $this->uuid,
+            'uuid.value'   => $this->uuid,
             'type.value'   => 2,
             'status.value' => 2,
             'code.require' => '文章编号不能为空！',
@@ -157,7 +157,7 @@ class News extends Auth
     public function delLike()
     {
         $data = $this->_vali([
-            'uid.value'    => $this->uuid,
+            'uuid.value'   => $this->uuid,
             'type.value'   => 2,
             'code.require' => '文章编号不能为空！',
         ]);
@@ -176,7 +176,7 @@ class News extends Auth
     public function getLike()
     {
         $query = $this->_query('DataNewsXCollect');
-        $query->where(['uid' => $this->uuid, 'type' => 2, 'status' => 2]);
+        $query->where(['uuid' => $this->uuid, 'type' => 2, 'status' => 2]);
         $result = $query->order('id desc')->page(true, false, false, 15);
         NewsService::instance()->buildListByUidAndCode($result['list']);
         $this->success('获取点赞记录成功！', $result);
@@ -189,7 +189,7 @@ class News extends Auth
     public function addHistory()
     {
         $data = $this->_vali([
-            'uid.value'    => $this->uuid,
+            'uuid.value'   => $this->uuid,
             'type.value'   => 2,
             'status.value' => 2,
             'code.require' => '文章编号不能为空！',
@@ -208,7 +208,7 @@ class News extends Auth
     public function getHistory()
     {
         $query = $this->_query('DataNewsXCollect');
-        $query->where(['uid' => $this->uuid, 'type' => 3, 'status' => 2]);
+        $query->where(['uuid' => $this->uuid, 'type' => 3, 'status' => 2]);
         $result = $query->order('id desc')->page(true, false, false, 15);
         NewsService::instance()->buildListByUidAndCode($result['list']);
         $this->success('获取浏览历史成功！', $result);

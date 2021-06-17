@@ -37,7 +37,7 @@ class Order extends Auth
      */
     public function get()
     {
-        $map = ['uid' => $this->uuid, 'deleted_status' => 0];
+        $map = ['uuid' => $this->uuid, 'deleted_status' => 0];
         $query = $this->_query('ShopOrder')->in('status')->equal('order_no');
         $result = $query->where($map)->order('id desc')->page(true, false, false, 20);
         if (count($result['list']) > 0) OrderService::instance()->buildData($result['list']);
@@ -59,7 +59,7 @@ class Order extends Auth
         if (empty($rules)) $this->error('商品不能为空');
         // 订单数据
         [$items, $order, $truckType, $allowPayments] = [[], [], -1, null];
-        $order['uid'] = $this->uuid;
+        $order['uuid'] = $this->uuid;
         $order['order_no'] = CodeExtend::uniqidDate(18, 'N');
         // 代理处理
         $order['puid1'] = input('from', $this->user['pid1']);
@@ -81,7 +81,7 @@ class Order extends Auth
             if ($truckType !== $goodsInfo['truck_type']) $this->error('不能混合下单');
             // 限制购买数量
             if (isset($goods['limit_max_num']) && $goods['limit_max_num'] > 0) {
-                $map = [['a.uid', '=', $this->uuid], ['a.status', 'in', [2, 3, 4, 5]], ['b.goods_code', '=', $goods['code']]];
+                $map = [['a.uuid', '=', $this->uuid], ['a.status', 'in', [2, 3, 4, 5]], ['b.goods_code', '=', $goods['code']]];
                 $buys = $this->app->db->name('StoreOrder')->alias('a')->join('store_order_item b', 'a.order_no=b.order_no')->where($map)->sum('b.stock_sales');
                 if ($buys + $count > $goods['limit_max_num']) $this->error('超过限购数量');
             }
@@ -103,7 +103,7 @@ class Order extends Auth
             [$discountId, $discountRate] = OrderService::instance()->discount($goodsInfo['discount_id'], $this->user['vip_code']);
             // 订单详情处理
             $items[] = [
-                'uid'             => $order['uid'],
+                'uuid'            => $order['uuid'],
                 'order_no'        => $order['order_no'],
                 // 商品信息字段
                 'goods_name'      => $goodsInfo['name'],
@@ -205,16 +205,16 @@ class Order extends Auth
     public function express()
     {
         $data = $this->_vali([
-            'uid.value'        => $this->uuid,
+            'uuid.value'       => $this->uuid,
             'code.require'     => '地址不能为空',
             'order_no.require' => '单号不能为空',
         ]);
         // 用户收货地址
-        $map = ['uid' => $this->uuid, 'code' => $data['code']];
+        $map = ['uuid' => $this->uuid, 'code' => $data['code']];
         $addr = $this->app->db->name('DataUserAddress')->where($map)->find();
         if (empty($addr)) $this->error('收货地址异常');
         // 订单状态检查
-        $map = ['uid' => $this->uuid, 'order_no' => $data['order_no']];
+        $map = ['uuid' => $this->uuid, 'order_no' => $data['order_no']];
         $tCount = $this->app->db->name('ShopOrderItem')->where($map)->sum('truck_number');
         // 根据地址计算运费
         $map = ['status' => 1, 'deleted' => 0, 'order_no' => $data['order_no']];
@@ -232,16 +232,16 @@ class Order extends Auth
     public function perfect()
     {
         $data = $this->_vali([
-            'uid.value'        => $this->uuid,
+            'uuid.value'       => $this->uuid,
             'code.require'     => '地址不能为空',
             'order_no.require' => '单号不能为空',
         ]);
         // 用户收货地址
-        $map = ['uid' => $this->uuid, 'code' => $data['code'], 'deleted' => 0];
+        $map = ['uuid' => $this->uuid, 'code' => $data['code'], 'deleted' => 0];
         $addr = $this->app->db->name('DataUserAddress')->where($map)->find();
         if (empty($addr)) $this->error('收货地址异常');
         // 订单状态检查
-        $map1 = ['uid' => $this->uuid, 'order_no' => $data['order_no']];
+        $map1 = ['uuid' => $this->uuid, 'order_no' => $data['order_no']];
         $order = $this->app->db->name('ShopOrder')->where($map1)->whereIn('status', [1, 2])->find();
         if (empty($order)) $this->error('不能修改地址');
         if (empty($order['truck_type'])) $this->success('无需快递配送', ['order_no' => $order['order_no']]);
@@ -252,7 +252,7 @@ class Order extends Auth
         [$amount, $tCount, $tCode, $remark] = ExpressService::instance()->amount($tCodes, $addr['province'], $addr['city'], $tCount);
         // 创建订单发货信息
         $express = [
-            'template_code'   => $tCode, 'template_count' => $tCount, 'uid' => $this->uuid,
+            'template_code'   => $tCode, 'template_count' => $tCount, 'uuid' => $this->uuid,
             'template_remark' => $remark, 'template_amount' => $amount, 'status' => 1,
         ];
         $express['order_no'] = $data['order_no'];
@@ -282,7 +282,7 @@ class Order extends Auth
         if ($update['amount_real'] <= 0) $update['amount_real'] = 0.00;
         if ($update['amount_total'] <= 0) $update['amount_total'] = 0.00;
         // 更新用户订单数据
-        $map = ['uid' => $this->uuid, 'order_no' => $data['order_no']];
+        $map = ['uuid' => $this->uuid, 'order_no' => $data['order_no']];
         if ($this->app->db->name('ShopOrder')->where($map)->update($update) !== false) {
             // 触发订单确认事件
             $this->app->event->trigger('ShopOrderPerfect', $order['order_no']);
@@ -298,7 +298,7 @@ class Order extends Auth
      */
     public function channel()
     {
-        $data = $this->_vali(['uid.value' => $this->uuid, 'order_no.require' => '单号不能为空']);
+        $data = $this->_vali(['uuid.value' => $this->uuid, 'order_no.require' => '单号不能为空']);
         $payments = $this->app->db->name('ShopOrder')->where($data)->value('payment_allow');
         if (empty($payments)) $this->error('获取订单支付参数失败');
         // 读取支付通道配置
@@ -318,7 +318,7 @@ class Order extends Auth
     public function payment()
     {
         $data = $this->_vali([
-            'uid.value'             => $this->uuid,
+            'uuid.value'            => $this->uuid,
             'order_no.require'      => '单号不能为空',
             'order_remark.default'  => '',
             'payment_code.require'  => '支付不能为空',
@@ -443,7 +443,7 @@ class Order extends Auth
      */
     private function getOrderData(): array
     {
-        $map = $this->_vali(['uid.value' => $this->uuid, 'order_no.require' => '单号不能为空']);
+        $map = $this->_vali(['uuid.value' => $this->uuid, 'order_no.require' => '单号不能为空']);
         $order = $this->app->db->name('ShopOrder')->where($map)->find();
         if (empty($order)) $this->error('读取订单失败');
         return [$map, $order];
@@ -455,7 +455,7 @@ class Order extends Auth
     public function total()
     {
         $data = ['t0' => 0, 't1' => 0, 't2' => 0, 't3' => 0, 't4' => 0, 't5' => 0, 't6' => 0];
-        $query = $this->app->db->name('ShopOrder')->where(['uid' => $this->uuid, 'deleted_status' => 0]);
+        $query = $this->app->db->name('ShopOrder')->where(['uuid' => $this->uuid, 'deleted_status' => 0]);
         foreach ($query->field('status,count(1) count')->group('status')->cursor() as $item) {
             $data["t{$item['status']}"] = $item['count'];
         }

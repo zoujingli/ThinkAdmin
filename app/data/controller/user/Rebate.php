@@ -42,7 +42,7 @@ class Rebate extends Controller
         if ($db->getOptions('where')) $query->whereRaw("order_uid in {$db->field('id')->buildSql()}");
         // 代理条件查询
         $db = $this->_query('DataUser')->like('nickname#agent_nickname,phone#agent_phone')->db();
-        if ($db->getOptions('where')) $query->whereRaw("uid in {$db->field('id')->buildSql()}");
+        if ($db->getOptions('where')) $query->whereRaw("uuid in {$db->field('id')->buildSql()}");
         // 查询分页
         $query->dateBetween('create_at')->order('id desc')->page();
     }
@@ -56,14 +56,14 @@ class Rebate extends Controller
      */
     protected function _index_page_filter(array &$data)
     {
-        $uids = array_merge(array_column($data, 'uid'), array_column($data, 'order_uid'));
+        $uids = array_merge(array_column($data, 'uuid'), array_column($data, 'order_uid'));
         $userItem = $this->app->db->name('DataUser')->whereIn('id', array_unique($uids))->select();
         $goodsItem = $this->app->db->name('ShopOrderItem')->whereIn('order_no', array_unique(array_column($data, 'order_no')))->select();
         foreach ($data as &$vo) {
             $vo['type'] = RebateService::instance()->name($vo['type']);
             [$vo['user'], $vo['agent'], $vo['list']] = [[], [], []];
             foreach ($userItem as $user) {
-                if ($user['id'] === $vo['uid']) $vo['agent'] = $user;
+                if ($user['id'] === $vo['uuid']) $vo['agent'] = $user;
                 if ($user['id'] === $vo['order_uid']) $vo['user'] = $user;
             }
             foreach ($goodsItem as $goods) {

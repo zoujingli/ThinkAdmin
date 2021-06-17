@@ -27,7 +27,7 @@ class Rebate extends Auth
     public function get()
     {
         $date = trim(input('date', date('Y-m')), '-');
-        [$map, $year] = [['uid' => $this->uuid], substr($date, 0, 4)];
+        [$map, $year] = [['uuid' => $this->uuid], substr($date, 0, 4)];
         $query = $this->_query($this->table)->where($map)->equal('type,status')->whereLike('date', "{$date}%");
         $this->success('获取返利统计', array_merge($query->order('id desc')->page(true, false, false, 10), [
             'total' => [

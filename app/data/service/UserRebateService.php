@@ -20,9 +20,9 @@ class UserRebateService extends Service
     public function amount(int $uuid): array
     {
         if ($uuid > 0) {
-            $count = $this->app->db->name('DataUserTransfer')->whereRaw("uid='{$uuid}' and status>0")->sum('amount');
-            $total = $this->app->db->name('DataUserRebate')->whereRaw("uid='{$uuid}' and status=1 and deleted=0")->sum('amount');
-            $locks = $this->app->db->name('DataUserRebate')->whereRaw("uid='{$uuid}' and status=0 and deleted=0")->sum('amount');
+            $count = $this->app->db->name('DataUserTransfer')->whereRaw("uuid='{$uuid}' and status>0")->sum('amount');
+            $total = $this->app->db->name('DataUserRebate')->whereRaw("uuid='{$uuid}' and status=1 and deleted=0")->sum('amount');
+            $locks = $this->app->db->name('DataUserRebate')->whereRaw("uuid='{$uuid}' and status=0 and deleted=0")->sum('amount');
             $this->app->db->name('DataUser')->where(['id' => $uuid])->update(['rebate_total' => $total, 'rebate_used' => $count, 'rebate_lock' => $locks]);
         } else {
             $count = $this->app->db->name('DataUserTransfer')->whereRaw("status>0")->sum('amount');
@@ -48,7 +48,7 @@ class UserRebateService extends Service
 
         $map = [['status', '=', 0], ['order_no', 'like', "{$orderNo}%"]];
         $this->app->db->name('DataUserRebate')->where($map)->update(['status' => 1]);
-        if (UserUpgradeService::instance()->upgrade($order['uid'])) {
+        if (UserUpgradeService::instance()->upgrade($order['uuid'])) {
             return [1, '重新计算用户金额成功！'];
         } else {
             return [0, '重新计算用户金额失败！'];

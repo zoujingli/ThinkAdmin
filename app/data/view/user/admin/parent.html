@@ -62,7 +62,7 @@
             </td>
             <td class="nowrap text-right">
                 <!--{if auth("parent")}-->
-                <a class="layui-btn layui-btn-sm layui-btn-primary" data-parent-uid="{:input('uid')}" data-parent-pid="{$vo.id}">选择绑定</a>
+                <a class="layui-btn layui-btn-sm layui-btn-primary" data-parent-uuid="{:input('uuid')}" data-parent-pid="{$vo.id}">选择绑定</a>
                 <!--{/if}-->
             </td>
         </tr>
@@ -75,8 +75,8 @@
 
 {block name='script'}
 <script>
-    $('body').off('click', '[data-parent-uid]').on('click', '[data-parent-uid]', function () {
-        $.form.load('{:sysuri()}', {uid: this.dataset.parentUid, pid: this.dataset.parentPid}, 'post', function (ret) {
+    $('body').off('click', '[data-parent-uuid]').on('click', '[data-parent-uuid]', function () {
+        $.form.load('{:sysuri()}', {uuid: this.dataset.parentUid, pid: this.dataset.parentPid}, 'post', function (ret) {
             if (ret.code > 0) return $.msg.success(ret.info, 3, function () {
                 top.layer.close(top.layer.getFrameIndex(window.name));
                 top.$.form.reload();

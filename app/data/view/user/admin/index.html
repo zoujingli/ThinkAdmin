@@ -103,7 +103,7 @@
                         代理关联：<!--{notempty name='vo.pids'}-->
                         <b class="color-green">永久绑定</b>
                         <!--{if auth('parent')}-->
-                        <a data-width="1080px" data-height="700px" data-iframe="{:url('parent')}?uid={$vo.id}" class="margin-left-5 notselect">更改绑定</a>
+                        <a data-width="1080px" data-height="700px" data-iframe="{:url('parent')}?uuid={$vo.id}" class="margin-left-5 notselect">更改绑定</a>
                         <!--{/if}-->
                         <!--{else}-->
                         {notempty name='vo.pid0'}
@@ -114,7 +114,7 @@
                         {else}
                         <b class="color-desc">没有绑定</b>
                         <!--{if auth('parent')}-->
-                        <a data-width="1080px" data-height="700px" data-iframe="{:url('parent')}?uid={$vo.id}" class="margin-left-5 notselect">设置绑定</a>
+                        <a data-width="1080px" data-height="700px" data-iframe="{:url('parent')}?uuid={$vo.id}" class="margin-left-5 notselect">设置绑定</a>
                         <!--{/if}-->
                         {/notempty}
                         <!--{/notempty}-->
@@ -132,11 +132,11 @@
                 <td class="nowrap">
 
                     <!--{if auth("parent") and false}-->
-                    <a class="layui-btn layui-btn-sm layui-btn-primary" data-iframe="{:url('parent')}?uid={$vo.id}" data-width="900px">修改上级</a>
+                    <a class="layui-btn layui-btn-sm layui-btn-primary" data-iframe="{:url('parent')}?uuid={$vo.id}" data-width="900px">修改上级</a>
                     <!--{/if}-->
 
                     <!--{if auth("user.balance/add")}-->
-                    <a class="layui-btn layui-btn-sm layui-btn-primary" data-modal="{:url('user.balance/add')}?uid={$vo.id}" data-title="充值账户余额">充 值</a>
+                    <a class="layui-btn layui-btn-sm layui-btn-primary" data-modal="{:url('user.balance/add')}?uuid={$vo.id}" data-title="充值账户余额">充 值</a>
                     <!--{/if}-->
 
                     <!--{if auth("state") and $vo.status eq 1}-->

@@ -45,7 +45,7 @@ class NewsService extends Service
             foreach ($list as &$vo) $vo['record'] = $items[$vo['code']] ?? [];
             /*! 绑定用户数据 */
             $colls = 'id,phone,nickname,username,headimg,status';
-            UserAdminService::instance()->buildByUid($list, 'uid', 'user', $colls);
+            UserAdminService::instance()->buildByUid($list, 'uuid', 'user', $colls);
         }
         return $list;
     }
@@ -53,16 +53,16 @@ class NewsService extends Service
     /**
      * 获取列表状态
      * @param array $list 数据列表
-     * @param integer $uid 用户UID
+     * @param integer $uuid 用户UID
      * @return array
      */
-    public function buildData(array &$list, int $uid = 0): array
+    public function buildData(array &$list, int $uuid = 0): array
     {
         if (count($list) > 0) {
             [$code2, $code1] = [[], []];
             $marks = $this->app->db->name('DataNewsMark')->where(['status' => 1])->column('name');
-            if ($uid > 0) {
-                $map = [['uid', '=', $uid], ['code', 'in', array_unique(array_column($list, 'code'))]];
+            if ($uuid > 0) {
+                $map = [['uuid', '=', $uuid], ['code', 'in', array_unique(array_column($list, 'code'))]];
                 $code1 = $this->app->db->name('DataNewsXCollect')->where($map)->where(['type' => 1])->column('code');
                 $code2 = $this->app->db->name('DataNewsXCollect')->where($map)->where(['type' => 2])->column('code');
             }

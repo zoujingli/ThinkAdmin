@@ -6,9 +6,9 @@
     <script>
         (function (inst1) {
             // 加载指定用户下级
-            function loaded(uid) {
+            function loaded(uuid) {
                 var deferred = jQuery.Deferred();
-                $.form.load('{:url("teams")}', {output: 'json', from: uid}, 'get', function (ret) {
+                $.form.load('{:url("teams")}', {output: 'json', from: uuid}, 'get', function (ret) {
                         var data = [];
                         ret.data.list.forEach(function (item) {
                             data.push({

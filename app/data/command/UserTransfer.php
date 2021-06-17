@@ -98,7 +98,7 @@ class UserTransfer extends Command
      */
     private function createTransferBank(array $item): array
     {
-        $config = $this->getConfig($item['uid']);
+        $config = $this->getConfig($item['uuid']);
         return [$config, TransfersBank::instance($config)->create([
             'partner_trade_no' => $item['code'],
             'enc_bank_no'      => $item['bank_code'],
@@ -111,14 +111,14 @@ class UserTransfer extends Command
 
     /**
      * 获取微信提现参数
-     * @param int $uid
+     * @param int $uuid
      * @return array
      * @throws Exception
      * @throws DataNotFoundException
      * @throws DbException
      * @throws ModelNotFoundException
      */
-    private function getConfig(int $uid): array
+    private function getConfig(int $uuid): array
     {
         $data = sysdata('TransferWxpay');
         if (empty($data)) throw new Exception('未配置微信提现商户');
@@ -131,7 +131,7 @@ class UserTransfer extends Command
             $local->set($file2, $data['wechat_mch_cert_text'], true);
         }
         // 获取用户支付信息
-        $result = $this->getWechatInfo($uid, $data['wechat_type']);
+        $result = $this->getWechatInfo($uuid, $data['wechat_type']);
         if (empty($result)) throw new Exception('无法读取打款数据');
         return [
             'appid'      => $result[0],
@@ -146,16 +146,16 @@ class UserTransfer extends Command
 
     /**
      * 根据配置获取用户OPENID
-     * @param int $uid
+     * @param int $uuid
      * @param string $type
      * @return mixed|null
      * @throws DataNotFoundException
      * @throws DbException
      * @throws ModelNotFoundException
      */
-    private function getWechatInfo(int $uid, string $type): ?array
+    private function getWechatInfo(int $uuid, string $type): ?array
     {
-        $user = $this->app->db->name('DataUser')->where(['id' => $uid])->find();
+        $user = $this->app->db->name('DataUser')->where(['id' => $uuid])->find();
         if (empty($user)) return null;
         $appid1 = sysconf('data.wxapp_appid');
         if (strtolower(sysconf('wechat.type')) === 'api') {
@@ -189,7 +189,7 @@ class UserTransfer extends Command
      */
     private function createTransferWallet(array $item): array
     {
-        $config = $this->getConfig($item['uid']);
+        $config = $this->getConfig($item['uuid']);
         return [$config, Transfers::instance($config)->create([
             'openid'           => $config['openid'],
             'amount'           => intval($item['amount'] - $item['charge_amount']) * 100,
@@ -212,7 +212,7 @@ class UserTransfer extends Command
      */
     private function queryTransferBank(array $item)
     {
-        $config = $this->getConfig($item['uid']);
+        $config = $this->getConfig($item['uuid']);
         [$config['appid'], $config['openid']] = [$item['appid'], $item['openid']];
         $result = TransfersBank::instance($config)->query($item['trade_no']);
         if ($result['return_code'] === 'SUCCESS' && $result['result_code'] === 'SUCCESS') {
@@ -233,7 +233,7 @@ class UserTransfer extends Command
                     'change_desc' => '微信提现打款失败',
                 ]);
                 // 刷新用户可提现余额
-                UserRebateService::instance()->amount($item['uid']);
+                UserRebateService::instance()->amount($item['uuid']);
             }
         }
     }
@@ -250,7 +250,7 @@ class UserTransfer extends Command
      */
     private function queryTransferWallet(array $item)
     {
-        $config = $this->getConfig($item['uid']);
+        $config = $this->getConfig($item['uuid']);
         [$config['appid'], $config['openid']] = [$item['appid'], $item['openid']];
         $result = Transfers::instance($config)->query($item['trade_no']);
         if ($result['return_code'] === 'SUCCESS' && $result['result_code'] === 'SUCCESS') {

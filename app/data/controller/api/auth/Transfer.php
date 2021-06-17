@@ -41,7 +41,7 @@ class Transfer extends Auth
         $transfers = UserTransferService::instance()->config('transfer');
         if (empty($transfers[$data['type']]['state'])) $this->error('提现方式已停用！');
         // 提现数据补充
-        $data['uid'] = $this->uuid;
+        $data['uuid'] = $this->uuid;
         $data['date'] = date('Y-m-d');
         $data['code'] = CodeExtend::uniqidDate(20, 'T');
         // 提现状态处理
@@ -83,7 +83,7 @@ class Transfer extends Auth
             $this->error('转账方式不存在！');
         }
         // 当日提现次数限制
-        $map = ['uid' => $this->uuid, 'type' => $data['type'], 'date' => $data['date']];
+        $map = ['uuid' => $this->uuid, 'type' => $data['type'], 'date' => $data['date']];
         $count = $this->app->db->name($this->table)->where($map)->count();
         if ($count >= $transfers[$data['type']]['dayNumber']) $this->error("当日提现次数受限");
         // 提现金额范围控制
@@ -110,10 +110,10 @@ class Transfer extends Auth
      */
     public function get()
     {
-        $query = $this->_query($this->table)->where(['uid' => $this->uuid]);
+        $query = $this->_query($this->table)->where(['uuid' => $this->uuid]);
         $result = $query->like('date,code')->in('status')->order('id desc')->page(true, false, false, 10);
         // 统计历史数据
-        $map = [['uid', '=', $this->uuid], ['status', '>', 0]];
+        $map = [['uuid', '=', $this->uuid], ['status', '>', 0]];
         [$total, $count, $locks] = UserRebateService::instance()->amount($this->uuid);
         $this->success('获取提现成功', array_merge($result, [
             'total' => [
@@ -132,7 +132,7 @@ class Transfer extends Auth
      */
     public function cancel()
     {
-        $data = $this->_vali(['uid.value' => $this->uuid, 'code.require' => '单号不能为空！']);
+        $data = $this->_vali(['uuid.value' => $this->uuid, 'code.require' => '单号不能为空！']);
         $this->app->db->name($this->table)->where($data)->whereIn('status', [1, 2, 3])->update([
             'status' => 0, 'change_time' => date("Y-m-d H:i:s"), 'change_desc' => '用户主动取消提现',
         ]);
@@ -146,7 +146,7 @@ class Transfer extends Auth
      */
     public function confirm()
     {
-        $data = $this->_vali(['uid.value' => $this->uuid, 'code.require' => '单号不能为空！']);
+        $data = $this->_vali(['uuid.value' => $this->uuid, 'code.require' => '单号不能为空！']);
         $this->app->db->name($this->table)->where($data)->whereIn('status', [4])->update([
             'status' => 5, 'change_time' => date("Y-m-d H:i:s"), 'change_desc' => '用户主动确认收款',
         ]);

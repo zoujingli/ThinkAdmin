@@ -89,7 +89,7 @@ class UserAdminService extends Service
         $user = $this->app->db->name('DataUser')->where($map)->find();
         if (empty($user)) throw new Exception('指定UID用户不存在');
         if (!is_null($type)) {
-            $map = ['uid' => $uuid, 'type' => $type];
+            $map = ['uuid' => $uuid, 'type' => $type];
             $data = $this->app->db->name('DataUserToken')->where($map)->find();
             if (empty($data)) {
                 [$state, $info, $data] = UserTokenService::instance()->token($uuid, $type);
@@ -123,8 +123,8 @@ class UserAdminService extends Service
     {
         if (!empty($unionid)) {
             [$map1, $map2] = [[['unionid', '=', $unionid]], [[$field, '=', $openid]]];
-            if ($uid = $this->app->db->name('DataUser')->whereOr([$map1, $map2])->value('id')) {
-                return ['id' => $uid];
+            if ($uuid = $this->app->db->name('DataUser')->whereOr([$map1, $map2])->value('id')) {
+                return ['id' => $uuid];
             }
         }
         return [$field => $openid];
@@ -138,7 +138,7 @@ class UserAdminService extends Service
      * @param string $cols 返回用户字段
      * @return array
      */
-    public function buildByUid(array &$list, string $keys = 'uid', string $bind = 'user', string $cols = '*'): array
+    public function buildByUid(array &$list, string $keys = 'uuid', string $bind = 'user', string $cols = '*'): array
     {
         if (count($list) < 1) return $list;
         $uids = array_unique(array_column($list, $keys));

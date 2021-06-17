@@ -143,10 +143,10 @@ class Admin extends Controller
     {
         if ($this->request->isGet()) {
             $this->upgrades = UserUpgradeService::instance()->levels();
-            $data = $this->_vali(['uid.require' => '待操作UID不能为空！']);
+            $data = $this->_vali(['uuid.require' => '待操作UID不能为空！']);
             // 排除下级用户
-            $path = $this->app->db->name($this->table)->where(['id' => $data['uid']])->value('path', '-');
-            $subids = $this->app->db->name($this->table)->whereLike('path', "{$path}{$data['uid']}-%")->column('id');
+            $path = $this->app->db->name($this->table)->where(['id' => $data['uuid']])->value('path', '-');
+            $subids = $this->app->db->name($this->table)->whereLike('path', "{$path}{$data['uuid']}-%")->column('id');
             $query = $this->_query($this->table)->order('id desc')->whereNotIn('id', array_merge($subids, array_values($data)));
             // 用户搜索查询
             $db = $this->_query($this->table)->equal('vip_code#from_vipcode')->like('phone#from_phone,username|nickname#from_username')->db();
@@ -154,9 +154,9 @@ class Admin extends Controller
             // 数据查询分页
             $query->like('phone,username|nickname#username')->whereRaw('vip_code>0')->equal('status,vip_code')->dateBetween('create_at')->page();
         } else {
-            $data = $this->_vali(['pid.require' => '待绑定代理不能为空！', 'uid.require' => '待操作用户不能为空！']);
-            [$status, $message] = UserUpgradeService::instance()->bindAgent($data['uid'], $data['pid'], 2);
-            $status && sysoplog('前端用户管理', "修改用户[{$data['uid']}]的代理为用户[{$data['pid']}]");
+            $data = $this->_vali(['pid.require' => '待绑定代理不能为空！', 'uuid.require' => '待操作用户不能为空！']);
+            [$status, $message] = UserUpgradeService::instance()->bindAgent($data['uuid'], $data['pid'], 2);
+            $status && sysoplog('前端用户管理', "修改用户[{$data['uuid']}]的代理为用户[{$data['pid']}]");
             empty($status) ? $this->error($message) : $this->success($message);
         }
     }
