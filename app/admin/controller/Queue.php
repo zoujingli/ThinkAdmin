@@ -54,15 +54,18 @@ class Queue extends Controller
                 $this->command = "sudo -u {$_SERVER['USER']} {$process->think('xadmin:queue start')}";
             }
         }
+
         // 任务状态统计
         $this->total = ['dos' => 0, 'pre' => 0, 'oks' => 0, 'ers' => 0];
         $query = $this->app->db->name($this->table)->field('status,count(1) count');
-        foreach ($query->group('status')->select()->toArray() as $item) {
+        $query->group('status')->select()->map(function ($item) {
             if ($item['status'] === 1) $this->total['pre'] = $item['count'];
             if ($item['status'] === 2) $this->total['dos'] = $item['count'];
             if ($item['status'] === 3) $this->total['oks'] = $item['count'];
             if ($item['status'] === 4) $this->total['ers'] = $item['count'];
-        }
+        });
+
+        // 页面变量赋值
         $this->title = '系统任务管理';
         $this->iswin = ProcessService::instance()->iswin();
         // 任务列表查询及分页
