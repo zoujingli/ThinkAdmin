@@ -59,19 +59,16 @@ class User extends Controller
     public function index()
     {
         $this->title = '系统用户管理';
-
         $query = $this->_query($this->table);
-        $query->equal('status')->dateBetween('login_at,create_at');
-        $query->like('username,contact_phone#phone,contact_mail#mail');
         // 加载对应数据列表
-        $this->type = input('type', 'all');
-        if ($this->type === 'all') {
+        if (($this->type = input('type', 'all')) === 'all') {
             $query->where(['is_deleted' => 0, 'status' => 1]);
         } elseif ($this->type = 'recycle') {
             $query->where(['is_deleted' => 0, 'status' => 0]);
         }
         // 列表排序并显示
-        $query->order('sort desc,id desc')->page();
+        $query->equal('status')->like('username,contact_phone#phone,contact_mail#mail');
+        $query->dateBetween('login_at,create_at')->order('sort desc,id desc')->page();
     }
 
     /**
@@ -120,7 +117,7 @@ class User extends Controller
                 'repassword.require'          => '重复密码不能为空！',
                 'repassword.confirm:password' => '两次输入的密码不一致！',
             ]);
-            if (data_save($this->table, ['id' => $data['id'], 'password' => md5($data['password'])], 'id')) {
+            if (data_save($this->table, ['id' => $data['id'], 'password' => md5($data['password'])])) {
                 sysoplog('系统用户管理', "修改用户[{$data['id']}]密码成功");
                 $this->success('密码修改成功，请使用新密码登录！', '');
             } else {
