@@ -20,7 +20,7 @@ class UserAgent extends Command
         $this->setName('xdata:UserAgent');
         $this->addArgument('uuid', Argument::OPTIONAL, '目标用户', '');
         $this->addArgument('puid', Argument::OPTIONAL, '上级代理', '');
-        $this->setDescription('重新设置用户上级代理, 参数：uuid puid');
+        $this->setDescription('重新设置用户上级代理, 参数：UUID PUID');
     }
 
     /**
@@ -34,16 +34,16 @@ class UserAgent extends Command
      */
     protected function execute(Input $input, Output $output)
     {
-        [$uuid, $pid] = [$input->getArgument('uuid'), $input->getArgument('pid')];
+        [$uuid, $puid] = [$input->getArgument('uuid'), $input->getArgument('puid')];
         if (empty($uuid)) $this->setQueueError("参数UID无效，请传入正确的参数!");
-        if (empty($pid)) $this->setQueueError("参数PID无效，请传入正确的参数!");
+        if (empty($puid)) $this->setQueueError("参数PID无效，请传入正确的参数!");
 
         // 检查当前用户资料
         $user = $this->app->db->name('DataUser')->where(['id' => $uuid])->find();
         if (empty($user)) $this->setQueueError("读取用户数据失败!");
 
         // 检查上级代理用户
-        $parant = $this->app->db->name('DataUser')->where(['id' => $pid])->find();
+        $parant = $this->app->db->name('DataUser')->where(['id' => $puid])->find();
         if (empty($parant)) $this->setQueueError('读取代理数据失败!');
 
         // 检查异常关系处理

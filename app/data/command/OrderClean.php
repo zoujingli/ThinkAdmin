@@ -41,9 +41,7 @@ class OrderClean extends Command
     private function _autoCancelOrder()
     {
         try {
-            $map = [];
-            $map[] = ['status', '<', 3];
-            $map[] = ['payment_status', '=', 0];
+            $map = [['status', '<', 3], ['payment_status', '=', 0]];
             $map[] = ['create_at', '<', date('Y-m-d H:i:s', strtotime('-30 minutes'))];
             [$total, $count] = [$this->app->db->name('ShopOrder')->where($map)->count(), 0];
             $this->app->db->name('ShopOrder')->where($map)->select()->map(function ($item) use ($total, &$count) {
@@ -69,9 +67,7 @@ class OrderClean extends Command
     private function _autoRemoveOrder()
     {
         try {
-            $map = [];
-            $map[] = ['status', '=', 0];
-            $map[] = ['payment_status', '=', 0];
+            $map = [['status', '=', 0], ['payment_status', '=', 0]];
             $map[] = ['create_at', '<', date('Y-m-d H:i:s', strtotime('-3 days'))];
             [$total, $count] = [$this->app->db->name('ShopOrder')->where($map)->count(), 0];
             foreach ($this->app->db->name('ShopOrder')->where($map)->cursor() as $item) {
