@@ -25,35 +25,35 @@ class UserUpgradeService extends Service
     /**
      * 尝试绑定上级代理
      * @param integer $uuid 用户UID
-     * @param integer $pid 代理UID
-     * @param integer $mod 操作类型（0临时绑定, 1永久绑定, 2强行绑定）
+     * @param integer $pid0 代理UID
+     * @param integer $mode 操作类型（0临时绑定, 1永久绑定, 2强行绑定）
      * @return array
      * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\DbException
      * @throws \think\db\exception\ModelNotFoundException
      */
-    public function bindAgent(int $uuid, int $pid = 0, int $mod = 1): array
+    public function bindAgent(int $uuid, int $pid0 = 0, int $mode = 1): array
     {
         $user = $this->app->db->name('DataUser')->where(['id' => $uuid])->find();
         if (empty($user)) return [0, '用户查询失败'];
-        if ($user['pids'] && in_array($mod, [0, 1])) return [1, '已经绑定代理'];
+        if ($user['pids'] && in_array($mode, [0, 1])) return [1, '已经绑定代理'];
         // 检查代理用户
-        if (empty($pid)) $pid = $user['pid0'];
-        if (empty($pid)) return [0, '绑定的代理不存在'];
-        if ($uuid == $pid) return [0, '不能绑定自己为代理'];
+        if (empty($pid0)) $pid0 = $user['pid0'];
+        if (empty($pid0)) return [0, '绑定的代理不存在'];
+        if ($uuid == $pid0) return [0, '不能绑定自己为代理'];
         // 检查代理资格
-        $agent = $this->app->db->name('DataUser')->where(['id' => $pid])->find();
+        $agent = $this->app->db->name('DataUser')->where(['id' => $pid0])->find();
         if (empty($agent['vip_code'])) return [0, '代理无推荐资格'];
         if (stripos($agent['path'], "-{$uuid}-") !== false) return [0, '不能绑定下属'];
         // 组装代理数据
 
         try {
-            $this->app->db->transaction(function () use ($user, $agent, $mod) {
+            $this->app->db->transaction(function () use ($user, $agent, $mode) {
                 // 更新用户代理
                 $path1 = rtrim($agent['path'] ?: '-', '-') . "-{$agent['id']}-";
                 $this->app->db->name('DataUser')->where(['id' => $user['id']])->update([
                     'pid0' => $agent['id'], 'pid1' => $agent['id'], 'pid2' => $agent['pid1'],
-                    'pids' => $mod > 0 ? 1 : 0, 'path' => $path1, 'layer' => substr_count($path1, '-'),
+                    'pids' => $mode > 0 ? 1 : 0, 'path' => $path1, 'layer' => substr_count($path1, '-'),
                 ]);
                 // 更新下级代理
                 $path2 = "{$user['path']}{$user['id']}-";
