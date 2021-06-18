@@ -157,10 +157,19 @@ class SystemService extends Service
      */
     public function sysuri(string $url = '', array $vars = [], $suffix = true, $domain = false): string
     {
-        [$hm, $bs] = [$this->app->config->get('route.url_html_suffix', 'html'), $this->app->route->buildUrl('@')->suffix(false)->domain($domain)->build()];
-        [$d1, $d2, $d3] = [$this->app->config->get('app.default_app'), Str::snake($this->app->config->get('route.default_controller')), $this->app->config->get('route.default_action')];
-        $pattern = ["#^({$bs}){$d1}/{$d2}/{$d3}(\.{$hm}|^\w|\?|$)?#i", "#^({$bs}[\w\.]+)/{$d2}/{$d3}(\.{$hm}|^\w|\?|$)#i", "#^({$bs}[\w\.]+)(/[\w\.]+)/{$d3}(\.{$hm}|^\w|$)#i"];
-        return preg_replace($pattern, ['$1$2', '$1$2', '$1$2$3'], $this->app->route->buildUrl($url, $vars)->suffix($suffix)->domain($domain)->build());
+        $ext = $this->app->config->get('route.url_html_suffix', 'html');
+        $pre = $this->app->route->buildUrl('@')->suffix(false)->domain($domain)->build();
+        $uri = $this->app->route->buildUrl($url, $vars)->suffix($suffix)->domain($domain)->build();
+        // 默认节点配置数据
+        $app = $this->app->config->get('app.default_app');
+        $act = Str::lower($this->app->config->get('route.default_action'));
+        $ctr = Str::snake($this->app->config->get('route.default_controller'));
+        // 替换省略链接路径
+        return preg_replace([
+            "#^({$pre}){$app}/{$ctr}/{$act}(\.{$ext}|^\w|\?|$)?#i",
+            "#^({$pre}[\w\.]+)/{$ctr}/{$act}(\.{$ext}|^\w|\?|$)#i",
+            "#^({$pre}[\w\.]+)(/[\w\.]+)/{$act}(\.{$ext}|^\w|\?|$)#i",
+        ], ['$1$2', '$1$2', '$1$2$3'], $uri);
     }
 
     /**
