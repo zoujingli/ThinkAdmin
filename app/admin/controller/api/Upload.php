@@ -36,18 +36,6 @@ class Upload extends Controller
 {
 
     /**
-     * 文件上传方式
-     * @var string
-     */
-    private $type;
-
-    /**
-     * 文件上传模式
-     * @var boolean
-     */
-    private $safe;
-
-    /**
      * 文件上传脚本
      * @return Response
      * @throws \think\db\exception\DataNotFoundException
@@ -75,27 +63,27 @@ class Upload extends Controller
      */
     public function state()
     {
-        [$this->name, $this->safe] = [input('name', null), $this->getSafe()];
-        $data = ['uptype' => $this->getType(), 'safe' => intval($this->safe), 'key' => input('key')];
-        if ($info = Storage::instance($data['uptype'])->info($data['key'], $this->safe, $this->name)) {
+        [$name, $safe] = [input('name'), $this->getSafe()];
+        $data = ['uptype' => $this->getType(), 'safe' => intval($safe), 'key' => input('key')];
+        if ($info = Storage::instance($data['uptype'])->info($data['key'], $safe, $name)) {
             $data['url'] = $info['url'];
             $this->success('文件已经上传', $data, 200);
         } elseif ('local' === $data['uptype']) {
-            $data['url'] = LocalStorage::instance()->url($data['key'], $this->safe, $this->name);
+            $data['url'] = LocalStorage::instance()->url($data['key'], $safe, $name);
             $data['server'] = LocalStorage::instance()->upload();
         } elseif ('qiniu' === $data['uptype']) {
-            $data['url'] = QiniuStorage::instance()->url($data['key'], $this->safe, $this->name);
-            $data['token'] = QiniuStorage::instance()->buildUploadToken($data['key'], 3600, $this->name);
+            $data['url'] = QiniuStorage::instance()->url($data['key'], $safe, $name);
+            $data['token'] = QiniuStorage::instance()->buildUploadToken($data['key'], 3600, $name);
             $data['server'] = QiniuStorage::instance()->upload();
         } elseif ('alioss' === $data['uptype']) {
-            $token = AliossStorage::instance()->buildUploadToken($data['key'], 3600, $this->name);
+            $token = AliossStorage::instance()->buildUploadToken($data['key'], 3600, $name);
             $data['url'] = $token['siteurl'];
             $data['policy'] = $token['policy'];
             $data['signature'] = $token['signature'];
             $data['OSSAccessKeyId'] = $token['keyid'];
             $data['server'] = AliossStorage::instance()->upload();
         } elseif ('txcos' === $data['uptype']) {
-            $token = TxcosStorage::instance()->buildUploadToken($data['key'], 3600, $this->name);
+            $token = TxcosStorage::instance()->buildUploadToken($data['key'], 3600, $name);
             $data['url'] = $token['siteurl'];
             $data['q-ak'] = $token['q-ak'];
             $data['policy'] = $token['policy'];
@@ -119,37 +107,41 @@ class Upload extends Controller
         if (!($file = $this->getFile())->isValid()) {
             $this->error('文件上传异常，文件过大或未上传！');
         }
+        $safeMode = $this->getSafe();
         $extension = strtolower($file->getOriginalExtension());
-        [$pathname, $original] = [$file->getPathname(), $file->getOriginalName()];
+        $saveName = input('key') ?: Storage::name($file->getPathname(), $extension, '', 'md5_file');
+        // 检查文件后缀是否被恶意修改
+        if (ltrim(strtolower(strrchr($saveName, '.')), '.') !== $extension) {
+            $this->error('文件后缀异常，请重新上传文件！');
+        }
+        // 屏蔽禁止上传指定后缀的文件
         if (!in_array($extension, str2arr(sysconf('storage.allow_exts')))) {
             $this->error('文件类型受限，请在后台配置规则！');
         }
         if (in_array($extension, ['sh', 'asp', 'bat', 'cmd', 'exe', 'php'])) {
-            $this->error('文件安全保护，可执行文件禁止上传！');
+            $this->error('文件安全保护，禁止上传可执行文件！');
         }
-        [$this->type, $this->safe] = [$this->getType(), $this->getSafe()];
-        $this->name = input('key') ?: Storage::name($pathname, $extension, '', 'md5_file');
         try {
-            if ($this->type === 'local') {
+            if ($this->getType() === 'local') {
                 $local = LocalStorage::instance();
-                $distname = $local->path($this->name, $this->safe);
-                $file->move(dirname($distname), basename($distname));
-                $info = $local->info($this->name, $this->safe, $original);
+                $distName = $local->path($saveName, $safeMode);
+                $file->move(dirname($distName), basename($distName));
+                $info = $local->info($saveName, $safeMode, $file->getOriginalName());
                 if (in_array($extension, ['jpg', 'gif', 'png', 'bmp', 'jpeg', 'wbmp'])) {
-                    if ($this->imgNotSafe($distname) && $local->del($this->name)) {
+                    if ($this->imgNotSafe($distName) && $local->del($saveName)) {
                         $this->error('图片未通过安全检查！');
                     }
-                    [$width, $height] = getimagesize($distname);
-                    if (($width < 1 || $height < 1) && $local->del($this->name)) {
+                    [$width, $height] = getimagesize($distName);
+                    if (($width < 1 || $height < 1) && $local->del($saveName)) {
                         $this->error('读取图片的尺寸失败！');
                     }
                 }
             } else {
-                $bina = file_get_contents($pathname);
-                $info = Storage::instance($this->type)->set($this->name, $bina, $this->safe, $original);
+                $bina = file_get_contents($file->getPathname());
+                $info = Storage::instance($this->getType())->set($saveName, $bina, $safeMode, $file->getOriginalName());
             }
             if (isset($info['url'])) {
-                $this->success('文件上传成功！', ['url' => $this->safe ? $this->name : $info['url']]);
+                $this->success('文件上传成功！', ['url' => $safeMode ? $saveName : $info['url']]);
             } else {
                 $this->error('文件处理失败，请稍候再试！');
             }
@@ -178,11 +170,12 @@ class Upload extends Controller
      */
     private function getType(): string
     {
-        $this->type = strtolower(input('uptype', ''));
-        if (!in_array($this->type, ['local', 'qiniu', 'alioss', 'txcos'])) {
-            $this->type = strtolower(sysconf('storage.type'));
+        $type = strtolower(input('uptype', ''));
+        if (in_array($type, ['local', 'qiniu', 'alioss', 'txcos'])) {
+            return $type;
+        } else {
+            return strtolower(sysconf('storage.type'));
         }
-        return strtolower($this->type);
     }
 
     /**
