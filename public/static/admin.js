@@ -430,34 +430,32 @@ $(function () {
                 if (need && this.isEmpty(input)) return this.remind(input);
                 return this.isRegex(input) ? (this.hideError(input), true) : this.remind(input);
             };
-            /*! 验证标志 */
+            /*! 显示验证标志 */
             this.remind = function (input) {
                 if (!this.isVisible(input)) return true;
-                this.showError(input, input.getAttribute('title') || input.getAttribute('placeholder') || '输入错误');
-                return false;
+                return this.showError(input, input.getAttribute('title') || input.getAttribute('placeholder') || '输入错误'), false;
             };
             /*! 错误消息显示 */
-            this.showError = function (ele, content) {
-                $(ele).addClass('validate-error'), this.insertError(ele);
-                $($(ele).data('input-info')).addClass('layui-anim layui-anim-fadein').css({width: 'auto'}).html(content);
+            this.showError = function (ele, tips) {
+                $(ele).addClass('validate-error');
+                this.insertError(ele).addClass('layui-anim-fadein').css({width: 'auto'}).html(tips);
             };
             /*! 错误消息消除 */
             this.hideError = function (ele) {
-                $(ele).removeClass('validate-error'), this.insertError(ele);
-                $($(ele).data('input-info')).removeClass('layui-anim-fadein').css({width: '30px'}).html('');
+                $(ele).removeClass('validate-error');
+                this.insertError(ele).removeClass('layui-anim-fadein').css({width: '30px'}).html('');
             };
-            /*! 错误消息标签插入 */
+            /*! 错误标签插入 */
             this.insertError = function (ele) {
-                if ($(ele).data('input-info')) return true;
+                if ($(ele).data('input-info')) return $(ele).data('input-info');
                 var $next = $(ele).nextAll('.input-right-icon'), right = ($next ? $next.width() + parseFloat($next.css('right') || '0') : 0) + 10;
-                var $html = $('<span style="color:#a44;display:block;position:absolute;font-size:12px;z-index:2;text-align:center;pointer-events:none"></span>');
+                var $html = $('<span class="absolute block layui-anim text-center font-s12" style="color:#a44;z-index:2;pointer-events:none"></span>');
                 var style = {top: $(ele).position().top + 'px', right: right + 'px', lineHeight: $(ele).css('height'), paddingBottom: $(ele).css('paddingBottom')};
-                $(ele).data('input-info', $html.css(style).insertAfter(ele));
+                return $(ele).data('input-info', $html.css(style).insertAfter(ele)), $html;
             };
             /*! 表单验证入口 */
             this.check = function (form, callback) {
-                $(form).attr("novalidate", "novalidate");
-                $(form).find(that.tags).map(function () {
+                $(form).attr("novalidate", "novalidate").find(that.tags).map(function () {
                     this.bindEventMethod = function () {
                         that.checkInput(this);
                     };
