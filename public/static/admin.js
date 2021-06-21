@@ -448,9 +448,11 @@ $(function () {
             };
             /*! 错误消息标签插入 */
             this.insertError = function (ele) {
-                var $html = $('<span style="padding-right:12px;color:#a94442;position:absolute;right:0;font-size:12px;z-index:2;display:block;width:34px;text-align:center;pointer-events:none"></span>');
-                $html.css({top: $(ele).position().top + 'px', paddingBottom: $(ele).css('paddingBottom'), lineHeight: $(ele).css('height')});
-                $(ele).data('input-info') || $(ele).data('input-info', $html.insertAfter(ele));
+                if ($(ele).data('input-info')) return true;
+                var $next = $(ele).nextAll('.input-right-icon'), right = ($next ? $next.width() + parseFloat($next.css('right') || '0') : 0) + 10;
+                var $html = $('<span style="color:#a44;display:block;position:absolute;font-size:12px;z-index:2;text-align:center;pointer-events:none"></span>');
+                var style = {top: $(ele).position().top + 'px', right: right + 'px', lineHeight: $(ele).css('height'), paddingBottom: $(ele).css('paddingBottom')};
+                $(ele).data('input-info', $html.css(style).insertAfter(ele));
             };
             /*! 表单验证入口 */
             this.check = function (form, callback) {
