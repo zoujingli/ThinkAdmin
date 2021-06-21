@@ -42,7 +42,7 @@ if (typeof Array.prototype.some !== 'function') {
 if (typeof jQuery === 'undefined') window.$ = window.jQuery = layui.$;
 window.form = layui.form, window.layer = layui.layer, window.laydate = layui.laydate;
 
-/*! 应用根路径 */
+/*! 脚本应用根路径 */
 window.appRoot = (function (src) {
     return src.pop(), src.pop(), src.join('/') + '/';
 })(document.scripts[document.scripts.length - 1].src.split('/'));
