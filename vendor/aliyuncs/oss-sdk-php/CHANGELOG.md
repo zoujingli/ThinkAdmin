@@ -1,5 +1,15 @@
 # ChangeLog - Aliyun OSS SDK for PHP
 
+## v2.4.2 / 2021-06-04
+* Compatible with PHP8.
+* Fixed: compatible with PHP5.4.
+* Fixed: the signature is incorrect in some scenarios
+* Update: change $requestUrl from a member variable to a local variable.
+
+## v2.4.1 / 2020-09-29
+* Fixed: the getBucketPolicy bug.
+
+
 ## v2.4.0 / 2020-08-31
 
 * Added: disable Expect: 100-continue

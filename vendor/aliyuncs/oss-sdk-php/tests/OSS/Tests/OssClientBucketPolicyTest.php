@@ -29,9 +29,10 @@ class OssClientBucketPolicyTest extends TestOssClientBase
         try {
             $this->ossClient->deleteBucketPolicy($this->bucket);
             $policy = $this->ossClient->getBucketPolicy($this->bucket);
+            $this->assertTrue(false);
         } catch (OssException $e) {
             $this->assertTrue(true);
-            $this->assertEquals("NoSuchBucketPolicy", $e->getCode());
+            $this->assertEquals("NoSuchBucketPolicy", $e->getErrorCode());
         }
 
         try {

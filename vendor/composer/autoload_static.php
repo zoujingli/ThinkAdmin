@@ -23,6 +23,7 @@ class ComposerStaticInit4d241e9f8bb10d006cd7432f945fdb5b
         'W' => 
         array (
             'WePay\\' => 6,
+            'WePayV3\\' => 8,
             'WeOpen\\' => 7,
             'WeMini\\' => 7,
             'WeChat\\' => 7,
@@ -61,6 +62,10 @@ class ComposerStaticInit4d241e9f8bb10d006cd7432f945fdb5b
         'WePay\\' => 
         array (
             0 => __DIR__ . '/..' . '/zoujingli/wechat-developer/WePay',
+        ),
+        'WePayV3\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/zoujingli/wechat-developer/WePayV3',
         ),
         'WeOpen\\' => 
         array (
@@ -107,6 +112,7 @@ class ComposerStaticInit4d241e9f8bb10d006cd7432f945fdb5b
         'AliPay\\Transfer' => __DIR__ . '/..' . '/zoujingli/wechat-developer/AliPay/Transfer.php',
         'AliPay\\Wap' => __DIR__ . '/..' . '/zoujingli/wechat-developer/AliPay/Wap.php',
         'AliPay\\Web' => __DIR__ . '/..' . '/zoujingli/wechat-developer/AliPay/Web.php',
+        'Composer\\InstalledVersions' => __DIR__ . '/..' . '/composer/InstalledVersions.php',
         'Endroid\\QrCode\\Bundle\\Controller\\QrCodeController' => __DIR__ . '/..' . '/endroid/qr-code/src/Bundle/Controller/QrCodeController.php',
         'Endroid\\QrCode\\Bundle\\DependencyInjection\\Configuration' => __DIR__ . '/..' . '/endroid/qr-code/src/Bundle/DependencyInjection/Configuration.php',
         'Endroid\\QrCode\\Bundle\\DependencyInjection\\EndroidQrCodeExtension' => __DIR__ . '/..' . '/endroid/qr-code/src/Bundle/DependencyInjection/EndroidQrCodeExtension.php',
@@ -304,8 +310,14 @@ class ComposerStaticInit4d241e9f8bb10d006cd7432f945fdb5b
         'WeOpen\\Login' => __DIR__ . '/..' . '/zoujingli/weopen-developer/WeOpen/Login.php',
         'WeOpen\\MiniApp' => __DIR__ . '/..' . '/zoujingli/weopen-developer/WeOpen/MiniApp.php',
         'WeOpen\\Service' => __DIR__ . '/..' . '/zoujingli/weopen-developer/WeOpen/Service.php',
+        'WePayV3\\Cert' => __DIR__ . '/..' . '/zoujingli/wechat-developer/WePayV3/Cert.php',
+        'WePayV3\\Contracts\\BasicWePay' => __DIR__ . '/..' . '/zoujingli/wechat-developer/WePayV3/Contracts/BasicWePay.php',
+        'WePayV3\\Contracts\\DecryptAes' => __DIR__ . '/..' . '/zoujingli/wechat-developer/WePayV3/Contracts/DecryptAes.php',
+        'WePayV3\\Order' => __DIR__ . '/..' . '/zoujingli/wechat-developer/WePayV3/Order.php',
+        'WePayV3\\Refund' => __DIR__ . '/..' . '/zoujingli/wechat-developer/WePayV3/Refund.php',
         'WePay\\Bill' => __DIR__ . '/..' . '/zoujingli/wechat-developer/WePay/Bill.php',
         'WePay\\Coupon' => __DIR__ . '/..' . '/zoujingli/wechat-developer/WePay/Coupon.php',
+        'WePay\\Custom' => __DIR__ . '/..' . '/zoujingli/wechat-developer/WePay/Custom.php',
         'WePay\\Order' => __DIR__ . '/..' . '/zoujingli/wechat-developer/WePay/Order.php',
         'WePay\\Redpack' => __DIR__ . '/..' . '/zoujingli/wechat-developer/WePay/Redpack.php',
         'WePay\\Refund' => __DIR__ . '/..' . '/zoujingli/wechat-developer/WePay/Refund.php',
@@ -358,7 +370,9 @@ class ComposerStaticInit4d241e9f8bb10d006cd7432f945fdb5b
         'library\\tools\\JsonRpcServer' => __DIR__ . '/..' . '/zoujingli/think-library/src/tools/JsonRpcServer.php',
         'library\\tools\\Node' => __DIR__ . '/..' . '/zoujingli/think-library/src/tools/Node.php',
         'library\\tools\\Options' => __DIR__ . '/..' . '/zoujingli/think-library/src/tools/Options.php',
+        'think\\composer\\LibraryInstaller' => __DIR__ . '/..' . '/topthink/think-installer/src/LibraryInstaller.php',
         'think\\composer\\Plugin' => __DIR__ . '/..' . '/topthink/think-installer/src/Plugin.php',
+        'think\\composer\\Promise' => __DIR__ . '/..' . '/topthink/think-installer/src/Promise.php',
         'think\\composer\\ThinkExtend' => __DIR__ . '/..' . '/topthink/think-installer/src/ThinkExtend.php',
         'think\\composer\\ThinkFramework' => __DIR__ . '/..' . '/topthink/think-installer/src/ThinkFramework.php',
         'think\\composer\\ThinkTesting' => __DIR__ . '/..' . '/topthink/think-installer/src/ThinkTesting.php',

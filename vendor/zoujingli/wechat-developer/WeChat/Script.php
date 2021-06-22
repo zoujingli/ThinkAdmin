@@ -60,7 +60,7 @@ class Script extends BasicWeChat
                 throw new InvalidResponseException('Invalid Resoponse Ticket.', '0');
             }
             $ticket = $result['ticket'];
-            Tools::setCache($cache_name, $ticket, 5000);
+            Tools::setCache($cache_name, $ticket, 7000);
         }
         return $ticket;
     }

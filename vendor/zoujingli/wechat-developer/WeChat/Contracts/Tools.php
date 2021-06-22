@@ -110,10 +110,11 @@ class Tools
         if (is_string($filename) && file_exists($filename)) {
             if (is_null($postname)) $postname = basename($filename);
             if (is_null($mimetype)) $mimetype = self::getExtMine(pathinfo($filename, 4));
-            if (function_exists('curl_file_create')) {
-                return curl_file_create($filename, $mimetype, $postname);
+            if (class_exists('CURLFile')) {
+                return new \CURLFile($filename, $mimetype, $postname);
+            } else {
+                return "@{$filename};filename={$postname};type={$mimetype}";
             }
-            return "@{$filename};filename={$postname};type={$mimetype}";
         }
         return $filename;
     }
@@ -182,7 +183,7 @@ class Tools
      */
     public static function arr2json($data)
     {
-        $json = json_encode(self::buildEnEmojiData($data), JSON_UNESCAPED_UNICODE);
+        $json = json_encode($data, JSON_UNESCAPED_UNICODE);
         return $json === '[]' ? '{}' : $json;
     }
 
@@ -425,7 +426,7 @@ class Tools
             return call_user_func_array(self::$cache_callable['get'], func_get_args());
         }
         $file = self::_getCacheName($name);
-        if (file_exists($file) && ($content = file_get_contents($file))) {
+        if (file_exists($file) && is_file($file) && ($content = file_get_contents($file))) {
             $data = unserialize($content);
             if (isset($data['expired']) && (intval($data['expired']) === 0 || intval($data['expired']) >= time())) {
                 return $data['value'];

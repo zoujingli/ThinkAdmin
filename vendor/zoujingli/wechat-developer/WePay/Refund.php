@@ -16,6 +16,7 @@ namespace WePay;
 
 use WeChat\Contracts\BasicWePay;
 use WeChat\Contracts\Tools;
+use WeChat\Exceptions\InvalidDecryptException;
 use WeChat\Exceptions\InvalidResponseException;
 
 /**
@@ -55,6 +56,7 @@ class Refund extends BasicWePay
     /**
      * 获取退款通知
      * @return array
+     * @throws InvalidDecryptException
      * @throws InvalidResponseException
      */
     public function getNotify()
@@ -63,16 +65,14 @@ class Refund extends BasicWePay
         if (!isset($data['return_code']) || $data['return_code'] !== 'SUCCESS') {
             throw new InvalidResponseException('获取退款通知XML失败！');
         }
-        if (!class_exists('Prpcrypt', false)) {
-            include dirname(__DIR__) . '/WeChat/Contracts/Prpcrypt.php';
+        try {
+            $key = md5($this->config->get('mch_key'));
+            $decrypt = base64_decode($data['req_info']);
+            $response = openssl_decrypt($decrypt, 'aes-256-ecb', $key, OPENSSL_RAW_DATA);
+            $data['result'] = Tools::xml2arr($response);
+            return $data;
+        } catch (\Exception $exception) {
+            throw new InvalidDecryptException($exception->getMessage(), $exception->getCode());
         }
-        $pc = new \Prpcrypt(md5($this->config->get('mch_key')));
-        $array = $pc->decrypt(base64_decode($data['req_info']));
-        if (intval($array[0]) > 0) {
-            throw new InvalidResponseException($array[1], $array[0]);
-        }
-        $data['decode'] = $array[1];
-        return $data;
     }
-
 }

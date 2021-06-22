@@ -9,6 +9,7 @@ return array(
     'think\\composer\\' => array($vendorDir . '/topthink/think-installer/src'),
     'library\\' => array($vendorDir . '/zoujingli/think-library/src'),
     'WePay\\' => array($vendorDir . '/zoujingli/wechat-developer/WePay'),
+    'WePayV3\\' => array($vendorDir . '/zoujingli/wechat-developer/WePayV3'),
     'WeOpen\\' => array($vendorDir . '/zoujingli/weopen-developer/WeOpen'),
     'WeMini\\' => array($vendorDir . '/zoujingli/wechat-developer/WeMini', $vendorDir . '/zoujingli/weopen-developer/WeMini'),
     'WeChat\\' => array($vendorDir . '/zoujingli/wechat-developer/WeChat', $vendorDir . '/zoujingli/weopen-developer/WeChat'),

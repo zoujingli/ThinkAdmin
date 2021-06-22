@@ -1132,7 +1132,8 @@ class OssClient
         $options[self::OSS_OBJECT] = '/';
         $options[self::OSS_SUB_RESOURCE] = 'policy';
         $response = $this->auth($options);
-        return $response->body;
+        $result = new BodyResult($response);
+        return $result->getData();
     }
 
     /**
@@ -2842,10 +2843,10 @@ class OssClient
             $non_signable_resource .= $conjunction . $query_string;
             $conjunction = '&';
         }
-        $this->requestUrl = $scheme . $hostname . $resource_uri . $signable_query_string . $non_signable_resource;
+        $requestUrl = $scheme . $hostname . $resource_uri . $signable_query_string . $non_signable_resource;
 
         //Creates the request
-        $request = new RequestCore($this->requestUrl, $this->requestProxy);
+        $request = new RequestCore($requestUrl, $this->requestProxy);
         $request->set_useragent($this->generateUserAgent());
         // Streaming uploads
         if (isset($options[self::OSS_FILE_UPLOAD])) {
@@ -2942,10 +2943,10 @@ class OssClient
         $request->add_header('Authorization', 'OSS ' . $this->accessKeyId . ':' . $signature);
 
         if (isset($options[self::OSS_PREAUTH]) && (integer)$options[self::OSS_PREAUTH] > 0) {
-            $signed_url = $this->requestUrl . $conjunction . self::OSS_URL_ACCESS_KEY_ID . '=' . rawurlencode($this->accessKeyId) . '&' . self::OSS_URL_EXPIRES . '=' . $options[self::OSS_PREAUTH] . '&' . self::OSS_URL_SIGNATURE . '=' . rawurlencode($signature);
+            $signed_url = $requestUrl . $conjunction . self::OSS_URL_ACCESS_KEY_ID . '=' . rawurlencode($this->accessKeyId) . '&' . self::OSS_URL_EXPIRES . '=' . $options[self::OSS_PREAUTH] . '&' . self::OSS_URL_SIGNATURE . '=' . rawurlencode($signature);
             return $signed_url;
         } elseif (isset($options[self::OSS_PREAUTH])) {
-            return $this->requestUrl;
+            return $requestUrl;
         }
 
         if ($this->timeout !== 0) {
@@ -2961,7 +2962,7 @@ class OssClient
             throw(new OssException('RequestCoreException: ' . $e->getMessage()));
         }
         $response_header = $request->get_response_header();
-        $response_header['oss-request-url'] = $this->requestUrl;
+        $response_header['oss-request-url'] = $requestUrl;
         $response_header['oss-redirects'] = $this->redirects;
         $response_header['oss-stringtosign'] = $string_to_sign;
         $response_header['oss-requestheaders'] = $request->request_headers;
@@ -3256,7 +3257,12 @@ class OssClient
 
         $queryStringSorted = substr($queryStringSorted, 0, -1);
 
-        return $explodeResult[0] . '?' . $queryStringSorted;
+        $result = '';
+        for ($i = 0; $i < $index -1; $i++)
+        {
+            $result .= $explodeResult[$i] . '?';
+        }
+        return $result . $queryStringSorted;
     }
 
     /**
@@ -3502,8 +3508,8 @@ class OssClient
     );
     // OssClient version information
     const OSS_NAME = "aliyun-sdk-php";
-    const OSS_VERSION = "2.4.0";
-    const OSS_BUILD = "20200831";
+    const OSS_VERSION = "2.4.2";
+    const OSS_BUILD = "20210604";
     const OSS_AUTHOR = "";
     const OSS_OPTIONS_ORIGIN = 'Origin';
     const OSS_OPTIONS_REQUEST_METHOD = 'Access-Control-Request-Method';
@@ -3516,7 +3522,6 @@ class OssClient
 
     // user's domain type. It could be one of the four: OSS_HOST_TYPE_NORMAL, OSS_HOST_TYPE_IP, OSS_HOST_TYPE_SPECIAL, OSS_HOST_TYPE_CNAME
     private $hostType = self::OSS_HOST_TYPE_NORMAL;
-    private $requestUrl;
     private $requestProxy = null;
     private $accessKeyId;
     private $accessKeySecret;
