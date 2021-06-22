@@ -273,6 +273,7 @@ if (!function_exists('data_save')) {
      * @throws DataNotFoundException
      * @throws DbException
      * @throws ModelNotFoundException
+     * @throws \think\admin\Exception
      */
     function data_save($dbQuery, array $data, string $key = 'id', array $where = [])
     {

@@ -107,11 +107,11 @@ class Install extends Command
                 $this->rules = array_merge($this->rules, $bind['rules']);
                 $this->ignore = array_merge($this->ignore, $bind['ignore']);
             }
-            [$this->installFile(), $this->installData()];
+            $this->installFile() && $this->installData();
         } elseif (isset($this->bind[$this->name])) {
             $this->rules = $this->bind[$this->name]['rules'] ?? [];
             $this->ignore = $this->bind[$this->name]['ignore'] ?? [];
-            [$this->installFile(), $this->installData()];
+            $this->installFile() && $this->installData();
         } else {
             $this->output->writeln("The specified module {$this->name} is not configured with install rules");
         }

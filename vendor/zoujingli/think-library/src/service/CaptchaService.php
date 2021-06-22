@@ -40,7 +40,7 @@ class CaptchaService extends Service
      * @param array $config
      * @return static
      */
-    public function initialize(array $config = [])
+    public function initialize(array $config = []): CaptchaService
     {
         // 动态配置属性
         foreach ($config as $k => $v) if (isset($this->$k)) $this->$k = $v;
@@ -64,7 +64,7 @@ class CaptchaService extends Service
      * @param array $config
      * @return $this
      */
-    public function config(array $config = [])
+    public function config(array $config = []): CaptchaService
     {
         return $this->initialize($config);
     }
@@ -140,7 +140,7 @@ class CaptchaService extends Service
      * 创建验证码图片
      * @return string
      */
-    private function createImage()
+    private function createImage(): string
     {
         // 生成背景
         $img = imagecreatetruecolor($this->width, $this->height);
