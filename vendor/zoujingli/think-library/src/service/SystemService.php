@@ -25,6 +25,7 @@ use think\db\exception\DbException;
 use think\db\exception\ModelNotFoundException;
 use think\db\Query;
 use think\helper\Str;
+use think\Model;
 
 /**
  * 系统参数管理服务
@@ -106,7 +107,7 @@ class SystemService extends Service
 
     /**
      * 数据增量保存
-     * @param Query|string $query 数据查询对象
+     * @param Model|Query|string $query 数据查询对象
      * @param array $data 需要保存的数据
      * @param string $key 更新条件查询主键
      * @param array $map 额外更新查询条件
@@ -117,6 +118,7 @@ class SystemService extends Service
      */
     public function save($query, array $data, string $key = 'id', array $map = [])
     {
+        if ($query instanceof Model) $query = $query->db();
         if (is_string($query)) $query = $this->app->db->name($query);
         [$query, $value] = [$query->master()->strict(false)->where($map), $data[$key] ?? null];
         if (empty($map[$key])) if (is_string($value) && strpos($value, ',') !== false) {
@@ -125,6 +127,7 @@ class SystemService extends Service
             $query->where([$key => $value]);
         }
         if (($info = (clone $query)->find()) && !empty($info)) {
+            if ($info instanceof Model) $info = $info->toArray();
             $query->update($data);
             return $info[$key] ?? true;
         } else {

@@ -18,11 +18,11 @@ declare (strict_types=1);
 namespace think\admin\helper;
 
 use think\admin\Helper;
-use think\Db;
 use think\db\exception\DataNotFoundException;
 use think\db\exception\DbException;
 use think\db\exception\ModelNotFoundException;
 use think\db\Query;
+use think\Model;
 
 /**
  * 搜索条件处理器
@@ -41,16 +41,16 @@ class QueryHelper extends Helper
 
     /**
      * 获取当前Db操作对象
-     * @return Db|Query
+     * @return Query
      */
-    public function db()
+    public function db(): Query
     {
         return $this->query;
     }
 
     /**
      * 逻辑器初始化
-     * @param string|Query|Db $dbQuery
+     * @param Model|Query|string $dbQuery
      * @param array|string|null $input 输入数据
      * @return $this
      */

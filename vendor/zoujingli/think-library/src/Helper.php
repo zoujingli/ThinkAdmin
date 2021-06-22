@@ -19,8 +19,9 @@ namespace think\admin;
 
 use think\App;
 use think\Container;
-use think\Db;
+use think\db\BaseQuery;
 use think\db\Query;
+use think\Model;
 
 /**
  * 控制器挂件
@@ -36,8 +37,14 @@ abstract class Helper
     public $app;
 
     /**
-     * 数据库实例
-     * @var Db|Query
+     * 数据模型实例
+     * @var Model
+     */
+    public $model;
+
+    /**
+     * 数据查询实例
+     * @var Query
      */
     public $query;
 
@@ -60,12 +67,19 @@ abstract class Helper
 
     /**
      * 获取数据库对象
-     * @param string|Db|Query $dbQuery
-     * @return Db|Query
+     * @param Model|Query|string $dbQuery
+     * @return Query|mixed
      */
     protected function buildQuery($dbQuery)
     {
-        return is_string($dbQuery) ? $this->app->db->name($dbQuery) : $dbQuery;
+        if (is_string($dbQuery)) {
+            $this->query = $this->app->db->name($dbQuery);
+        } elseif ($dbQuery instanceof \think\Model) {
+            $this->query = $dbQuery->db();
+        } elseif ($dbQuery instanceof BaseQuery) {
+            $this->query = $dbQuery;
+        }
+        return $this->query;
     }
 
     /**

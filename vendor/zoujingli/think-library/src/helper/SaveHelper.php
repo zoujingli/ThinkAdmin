@@ -20,6 +20,7 @@ namespace think\admin\helper;
 use think\admin\Helper;
 use think\db\exception\DbException;
 use think\db\Query;
+use think\Model;
 
 /**
  * 数据更新管理器
@@ -31,7 +32,7 @@ class SaveHelper extends Helper
 
     /**
      * 逻辑器初始化
-     * @param Query|string $dbQuery
+     * @param Model|Query|string $dbQuery
      * @param array $data 表单扩展数据
      * @param string $field 数据对象主键
      * @param array $where 额外更新条件

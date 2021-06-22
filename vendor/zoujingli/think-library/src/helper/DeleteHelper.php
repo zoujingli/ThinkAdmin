@@ -18,9 +18,9 @@ declare (strict_types=1);
 namespace think\admin\helper;
 
 use think\admin\Helper;
-use think\Db;
 use think\db\exception\DbException;
 use think\db\Query;
+use think\Model;
 
 /**
  * 通用删除管理器
@@ -31,7 +31,7 @@ class DeleteHelper extends Helper
 {
     /**
      * 逻辑器初始化
-     * @param string|Db|Query $dbQuery
+     * @param Model|Query|string $dbQuery
      * @param string $field 操作数据主键
      * @param array $where 额外更新条件
      * @return boolean|null
@@ -45,7 +45,7 @@ class DeleteHelper extends Helper
         // 查询限制处理
         if (!empty($where)) $query->where($where);
         if (!isset($where[$field]) && is_string($value)) {
-            $query->whereIn($field, explode(',', $value));
+            $query->whereIn($field, str2arr($value));
         }
         // 前置回调处理
         if (false === $this->class->callback('_delete_filter', $query, $where)) {

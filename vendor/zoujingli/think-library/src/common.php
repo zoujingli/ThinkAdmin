@@ -23,6 +23,7 @@ use think\db\exception\DataNotFoundException;
 use think\db\exception\DbException;
 use think\db\exception\ModelNotFoundException;
 use think\db\Query;
+use think\Model;
 
 if (!function_exists('p')) {
     /**
@@ -264,7 +265,7 @@ if (!function_exists('http_post')) {
 if (!function_exists('data_save')) {
     /**
      * 数据增量保存
-     * @param Query|string $dbQuery
+     * @param Model|Query|string $dbQuery
      * @param array $data 需要保存或更新的数据
      * @param string $key 条件主键限制
      * @param array $where 其它的where条件

@@ -594,17 +594,17 @@
         },
         {
             "name": "topthink/think-helper",
-            "version": "v3.1.4",
-            "version_normalized": "3.1.4.0",
+            "version": "v3.1.5",
+            "version_normalized": "3.1.5.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/top-think/think-helper.git",
-                "reference": "c28d37743bda4a0455286ca85b17b5791d626e10"
+                "reference": "f98e3ad44acd27ae85a4d923b1bdfd16c6d8d905"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/top-think/think-helper/zipball/c28d37743bda4a0455286ca85b17b5791d626e10",
-                "reference": "c28d37743bda4a0455286ca85b17b5791d626e10",
+                "url": "https://api.github.com/repos/top-think/think-helper/zipball/f98e3ad44acd27ae85a4d923b1bdfd16c6d8d905",
+                "reference": "f98e3ad44acd27ae85a4d923b1bdfd16c6d8d905",
                 "shasum": "",
                 "mirrors": [
                     {
@@ -616,7 +616,7 @@
             "require": {
                 "php": ">=7.1.0"
             },
-            "time": "2019-11-08T08:01:10+00:00",
+            "time": "2021-06-21T06:17:31+00:00",
             "type": "library",
             "installation-source": "dist",
             "autoload": {
@@ -638,6 +638,10 @@
                 }
             ],
             "description": "The ThinkPHP6 Helper Package",
+            "support": {
+                "issues": "https://github.com/top-think/think-helper/issues",
+                "source": "https://github.com/top-think/think-helper/tree/v3.1.5"
+            },
             "install-path": "../topthink/think-helper"
         },
         {
@@ -849,12 +853,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/zoujingli/ThinkLibrary.git",
-                "reference": "283b25735511092a6c1c48e4d55b919cf1e09e30"
+                "reference": "611043ad1974ab0926868bb44b1b2491fee13114"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zoujingli/ThinkLibrary/zipball/283b25735511092a6c1c48e4d55b919cf1e09e30",
-                "reference": "283b25735511092a6c1c48e4d55b919cf1e09e30",
+                "url": "https://api.github.com/repos/zoujingli/ThinkLibrary/zipball/611043ad1974ab0926868bb44b1b2491fee13114",
+                "reference": "611043ad1974ab0926868bb44b1b2491fee13114",
                 "shasum": "",
                 "mirrors": [
                     {
@@ -871,7 +875,7 @@
                 "ext-mbstring": "*",
                 "topthink/framework": "^6.0"
             },
-            "time": "2021-06-18T08:57:57+00:00",
+            "time": "2021-06-22T07:23:58+00:00",
             "default-branch": true,
             "type": "library",
             "extra": {

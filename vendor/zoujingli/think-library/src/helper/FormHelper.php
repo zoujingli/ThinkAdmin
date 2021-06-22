@@ -18,11 +18,11 @@ declare (strict_types=1);
 namespace think\admin\helper;
 
 use think\admin\Helper;
-use think\Db;
 use think\db\exception\DataNotFoundException;
 use think\db\exception\DbException;
 use think\db\exception\ModelNotFoundException;
 use think\db\Query;
+use think\Model;
 
 /**
  * 表单视图管理器
@@ -34,7 +34,7 @@ class FormHelper extends Helper
 
     /**
      * 逻辑器初始化
-     * @param string|Db|Query $dbQuery
+     * @param Model|Query|string $dbQuery
      * @param string $template 模板名称
      * @param string $field 指定数据主键
      * @param array $where 额外更新条件
@@ -48,7 +48,7 @@ class FormHelper extends Helper
     {
         $query = $this->buildQuery($dbQuery);
         $field = $field ?: ($query->getPk() ?: 'id');
-        $value = input($field, $data[$field] ?? null);
+        $value = $data[$field] ?? input($field);
         if ($this->app->request->isGet()) {
             if ($value !== null) {
                 $find = $query->where([$field => $value])->where($where)->find();

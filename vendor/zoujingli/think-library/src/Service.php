@@ -45,18 +45,16 @@ abstract class Service
 
     /**
      * 初始化服务
-     * @return static
      */
     protected function initialize()
     {
-        return $this;
     }
 
     /**
      * 静态实例对象
      * @param array $var 实例参数
      * @param boolean $new 创建新实例
-     * @return static
+     * @return static|mixed
      */
     public static function instance(array $var = [], bool $new = false)
     {

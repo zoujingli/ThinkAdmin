@@ -5,7 +5,7 @@
         'type' => 'project',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
-        'reference' => '43a8afea8902a5269d27519ebb31caa0705e2c82',
+        'reference' => '9b4e299239c063b71f431d974c0754fadb9a6624',
         'name' => 'zoujingli/thinkadmin',
         'dev' => false,
     ),
@@ -92,12 +92,12 @@
             'dev_requirement' => false,
         ),
         'topthink/think-helper' => array(
-            'pretty_version' => 'v3.1.4',
-            'version' => '3.1.4.0',
+            'pretty_version' => 'v3.1.5',
+            'version' => '3.1.5.0',
             'type' => 'library',
             'install_path' => __DIR__ . '/../topthink/think-helper',
             'aliases' => array(),
-            'reference' => 'c28d37743bda4a0455286ca85b17b5791d626e10',
+            'reference' => 'f98e3ad44acd27ae85a4d923b1bdfd16c6d8d905',
             'dev_requirement' => false,
         ),
         'topthink/think-orm' => array(
@@ -144,7 +144,7 @@
             'aliases' => array(
                 0 => '9999999-dev',
             ),
-            'reference' => '283b25735511092a6c1c48e4d55b919cf1e09e30',
+            'reference' => '611043ad1974ab0926868bb44b1b2491fee13114',
             'dev_requirement' => false,
         ),
         'zoujingli/thinkadmin' => array(
@@ -153,7 +153,7 @@
             'type' => 'project',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
-            'reference' => '43a8afea8902a5269d27519ebb31caa0705e2c82',
+            'reference' => '9b4e299239c063b71f431d974c0754fadb9a6624',
             'dev_requirement' => false,
         ),
         'zoujingli/wechat-developer' => array(

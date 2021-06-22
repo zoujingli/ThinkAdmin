@@ -58,7 +58,7 @@ class MenuService extends Service
     public function getTree(): array
     {
         $query = $this->app->db->name('SystemMenu');
-        $query->where(['status' => '1'])->order('sort desc,id asc');
+        $query->where(['status' => 1])->order('sort desc,id asc');
         return $this->_buildData(DataExtend::arr2tree($query->select()->toArray()));
     }
 

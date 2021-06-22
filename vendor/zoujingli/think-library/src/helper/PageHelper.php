@@ -22,6 +22,7 @@ use think\db\exception\DataNotFoundException;
 use think\db\exception\DbException;
 use think\db\exception\ModelNotFoundException;
 use think\db\Query;
+use think\Model;
 
 /**
  * 列表处理管理器
@@ -33,7 +34,7 @@ class PageHelper extends Helper
 
     /**
      * 逻辑器初始化
-     * @param string|Query $dbQuery
+     * @param Model|Query|string $dbQuery
      * @param boolean $page 是否启用分页
      * @param boolean $display 是否渲染模板
      * @param boolean|integer $total 集合分页记录数
@@ -48,9 +49,18 @@ class PageHelper extends Helper
     {
         $this->query = $this->buildQuery($dbQuery);
         // 数据列表排序自动处理
-        if ($this->app->request->isPost()) $this->_sortAction();
-        // 列表设置默认排序处理
-        if (!$this->query->getOptions('order')) $this->_orderAction();
+        if ($this->app->request->isPost() && $this->app->request->post('action') === 'sort') {
+            if (in_array('sort', $this->query->getTableFields())) {
+                if ($this->app->request->has($pk = $this->query->getPk() ?: 'id', 'post')) {
+                    $map = [$pk => $this->app->request->post($pk, 0)];
+                    $data = ['sort' => intval($this->app->request->post('sort', 0))];
+                    if ($this->app->db->table($this->query->getTable())->where($map)->update($data) !== false) {
+                        $this->class->success(lang('think_library_sort_success'), '');
+                    }
+                }
+            }
+            $this->class->error(lang('think_library_sort_error'));
+        }
         // 列表分页及结果集处理
         if ($page) {
             if (empty($limit)) {
@@ -92,40 +102,4 @@ class PageHelper extends Helper
         }
         return $result;
     }
-
-    /**
-     * 执行列表排序操作
-     * POST 提交 {action:sort,PK:$PK,SORT:$SORT}
-     * @throws DbException
-     */
-    private function _sortAction()
-    {
-        if ($this->app->request->post('action') === 'sort') {
-            if (method_exists($this->query, 'getTableFields') && in_array('sort', $this->query->getTableFields())) {
-                $pk = $this->query->getPk() ?: 'id';
-                if ($this->app->request->has($pk, 'post')) {
-                    $map = [$pk => $this->app->request->post($pk, 0)];
-                    $data = ['sort' => intval($this->app->request->post('sort', 0))];
-                    if ($this->app->db->table($this->query->getTable())->where($map)->update($data) !== false) {
-                        $this->class->success(lang('think_library_sort_success'), '');
-                    }
-                }
-            }
-            $this->class->error(lang('think_library_sort_error'));
-        }
-    }
-
-    /**
-     * 列表默认排序处理
-     * 未配置排序规则时自动按SORT排序
-     */
-    private function _orderAction()
-    {
-        if (method_exists($this->query, 'getTableFields')) {
-            if (in_array('sort', $this->query->getTableFields())) {
-                $this->query->order('sort desc');
-            }
-        }
-    }
-
 }
