@@ -115,12 +115,11 @@ class SystemService extends Service
      * @throws DataNotFoundException
      * @throws DbException
      * @throws ModelNotFoundException
-     * @throws \think\admin\Exception
      */
     public function save($query, array $data, string $key = 'id', array $map = [])
     {
         $query = is_string($query) ? $this->app->db->name($query) : ($query instanceof Model ? $query->db() : $query);
-        if (!$query instanceof Query) throw new \think\admin\Exception('数据库操作对象异常！');
+        if (!$query instanceof Query) throw new ModelNotFoundException('数据库操作对象异常！');
         [$value] = [$data[$key] ?? null, $query->master()->strict(false)->where($map)];
         if (empty($map[$key])) if (is_string($value) && strpos($value, ',') !== false) {
             $query->whereIn($key, str2arr($value));
