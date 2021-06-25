@@ -63,35 +63,25 @@ class PageHelper extends Helper
         }
         // 列表分页及结果集处理
         if ($page) {
-            if (empty($limit)) {
+            if ($limit <= 1) {
                 $limit = $this->app->request->get('limit', $this->app->cookie->get('limit', 20));
                 if (intval($this->app->request->get('not_cache_limit', 0)) < 1) {
-                    $this->app->cookie->set('limit', ($limit = intval($limit >= 10 ? $limit : 20)) . '');
+                    $this->app->cookie->set('limit', ($limit = intval($limit >= 5 ? $limit : 20)) . '');
                 }
             }
-            [$options, $query] = ['', $this->app->request->get()];
+            $query = $this->app->request->get();
             $pager = $this->query->paginate(['list_rows' => $limit, 'query' => $query], $total);
-            foreach ([10, 20, 30, 40, 50, 60, 70, 80, 90, 100, 110, 120, 130, 140, 150, 160, 170, 180, 190, 200, 300, 400, 500, 600] as $num) {
-                [$query['limit'], $query['page'], $selects] = [$num, 1, $limit === $num ? 'selected' : ''];
-                if (stripos($this->app->request->get('spm', '-'), 'm-') === 0) {
-                    $url = sysuri('admin/index/index') . '#' . $this->app->request->baseUrl() . '?' . urldecode(http_build_query($query));
-                } else {
-                    $url = $this->app->request->baseUrl() . '?' . urldecode(http_build_query($query));
-                }
-                $options .= "<option data-num='{$num}' value='{$url}' {$selects}>{$num}</option>";
+            [$data, $opts] = [$pager->toArray(), ''];
+            foreach ([10, 20, 30, 40, 50, 60, 70, 80, 90, 100, 110, 120, 130, 140, 150, 160, 170, 180, 190, 200] as $num) {
+                $url = $this->app->request->baseUrl() . '?' . urldecode(http_build_query(array_merge($query, ['limit' => $num, 'page' => 1])));
+                $opts .= sprintf('<option data-num="%d" value="%s" %s>%d</option>', $num, $url, $limit === $num ? 'selected' : '', $num);
             }
-            $selects = "<select onchange='location.href=this.options[this.selectedIndex].value' data-auto-none>{$options}</select>";
-            $pagetext = lang('think_library_page_html', [$pager->total(), $selects, $pager->lastPage(), $pager->currentPage()]);
-            $pagehtml = "<div class='pagination-container nowrap'><span>{$pagetext}</span>{$pager->render()}</div>";
-            if (stripos($this->app->request->get('spm', '-'), 'm-') === 0) {
-                $this->class->assign('pagehtml', preg_replace('|href="(.*?)"|', 'data-open="$1" onclick="return false" href="$1"', $pagehtml));
-            } else {
-                $this->class->assign('pagehtml', $pagehtml);
-            }
-            $result = ['page' => ['limit' => $limit, 'total' => $pager->total(), 'pages' => $pager->lastPage(), 'current' => $pager->currentPage()], 'list' => $pager->items()];
+            $select = "<select onchange='location.href=this.options[this.selectedIndex].value'>{$opts}</select>";
+            $pagehtml = lang('think_library_page_html', [$data['total'], $select, $data['last_page'], $data['current_page']]);
+            $this->class->assign('pagehtml', "<div class='pagination-container nowrap'><span>{$pagehtml}</span>{$pager->render()}</div>");
+            $result = ['page' => ['limit' => $data['per_page'], 'total' => $data['total'], 'pages' => $data['last_page'], 'current' => $data['current_page']], 'list' => $data['data']];
         } else {
-            $pager = $this->query->select();
-            $result = ['page' => ['limit' => $pager->count(), 'total' => 1, 'pages' => 1, 'current' => 1], 'list' => $pager->toArray()];
+            $result = ['list' => $this->query->select()->toArray()];
         }
         if (false !== $this->class->callback('_page_filter', $result['list']) && $display) {
             if ($this->app->request->get('output') === 'json') {
