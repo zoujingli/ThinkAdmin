@@ -110,20 +110,11 @@ class WechatService extends Service
             [$appid, $appkey] = [sysconf('wechat.thr_appid'), sysconf('wechat.thr_appkey')];
             $data = ['class' => $name, 'appid' => $appid, 'time' => time(), 'nostr' => uniqid()];
             $data['sign'] = md5("{$data['class']}#{$appid}#{$appkey}#{$data['time']}#{$data['nostr']}");
+            // 创建远程连接，默认使用 JSON RPC 方式
             $token = enbase64url(json_encode($data, JSON_UNESCAPED_UNICODE));
-            $location = "https://open.cuci.cc/service/api.client/_TYPE_?not_init_session=1&token={$token}";
-            if (class_exists('Yar_Client')) {
-                $client = new \Yar_Client(str_replace('_TYPE_', 'yar', $location));
-            } else {
-                $client = new JsonRpcClient(str_replace('_TYPE_', 'jsonrpc', $location));
-            }
-            try {
-                $exception = new \think\admin\Exception($client->getMessage(), $client->getCode());
-            } catch (\Exception  $exception) {
-                $exception = null;
-            }
-            if ($exception instanceof \Exception) {
-                throw $exception;
+            $client = new JsonRpcClient("https://open.cuci.cc/service/api.client/jsonrpc?not_init_session=1&token={$token}");
+            if (is_numeric(stripos($client->__call('_get_class_name_', []), 'Exception'))) {
+                throw new \think\admin\Exception($client->getMessage(), $client->getCode());
             }
             return $client;
         }

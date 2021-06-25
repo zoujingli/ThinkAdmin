@@ -55,7 +55,7 @@ class JsonRpcClient
      * @return mixed
      * @throws Exception
      */
-    public function __call(string $method, array $params)
+    public function __call(string $method, array $params = [])
     {
         // Performs the HTTP POST
         $options = [
