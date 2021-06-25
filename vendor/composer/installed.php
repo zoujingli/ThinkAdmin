@@ -5,7 +5,7 @@
         'type' => 'project',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
-        'reference' => '9e41e91010789c2b2c3556ff002e9e190202da39',
+        'reference' => '7a248e66f6a412da167217d21e73491933955daa',
         'name' => 'zoujingli/thinkadmin',
         'dev' => false,
     ),
@@ -144,7 +144,7 @@
             'aliases' => array(
                 0 => '9999999-dev',
             ),
-            'reference' => 'd24cae2f0ba60e6e2067e232a2baffd8cf67a4ee',
+            'reference' => '8297ed9968f49cbf04ef0912ce4a57e96ac10e69',
             'dev_requirement' => false,
         ),
         'zoujingli/thinkadmin' => array(
@@ -153,7 +153,7 @@
             'type' => 'project',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
-            'reference' => '9e41e91010789c2b2c3556ff002e9e190202da39',
+            'reference' => '7a248e66f6a412da167217d21e73491933955daa',
             'dev_requirement' => false,
         ),
         'zoujingli/wechat-developer' => array(

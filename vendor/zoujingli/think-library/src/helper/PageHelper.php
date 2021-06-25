@@ -74,6 +74,7 @@ class PageHelper extends Helper
             [$data, $opts] = [$pager->toArray(), ''];
             foreach ([10, 20, 30, 40, 50, 60, 70, 80, 90, 100, 110, 120, 130, 140, 150, 160, 170, 180, 190, 200] as $num) {
                 $url = $this->app->request->baseUrl() . '?' . urldecode(http_build_query(array_merge($query, ['limit' => $num, 'page' => 1])));
+                if (stripos($this->app->request->get('spm', '-'), 'm-') === 0) $url = sysuri('admin/index/index') . '#' . $url;
                 $opts .= sprintf('<option data-num="%d" value="%s" %s>%d</option>', $num, $url, $limit === $num ? 'selected' : '', $num);
             }
             $select = "<select onchange='location.href=this.options[this.selectedIndex].value'>{$opts}</select>";
