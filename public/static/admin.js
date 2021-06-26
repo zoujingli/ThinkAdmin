@@ -207,12 +207,12 @@ $(function () {
                 $(this).uploadFile();
             }), $dom.find('[data-lazy-src]:not([data-lazy-loaded])').each(function () {
                 if (this.dataset.lazyLoaded !== 'true') {
+                    this.dataset.lazyLoaded = "true";
                     if (this.nodeName === 'IMG') {
                         this.src = this.dataset.lazySrc;
                     } else {
                         this.style.backgroundImage = 'url(' + this.dataset.lazySrc + ')';
                     }
-                    this.dataset.lazyLoaded = "true";
                 }
             });
         };
@@ -267,21 +267,21 @@ $(function () {
             });
         };
         /*! 加载 HTML 到目标位置 */
-        this.open = function (url, data, callable, loading, tips) {
+        this.open = function (url, data, call, load, tips) {
             this.load(url, data, 'get', function (ret) {
                 return (typeof ret === 'object' ? $.msg.auto(ret) : that.show(ret)), false;
-            }, loading, tips);
+            }, load, tips);
         };
         /*! 打开一个iframe窗口 */
-        this.iframe = function (url, title, area) {
-            return layer.open({title: title || '窗口', type: 2, area: area || ['800px', '580px'], anim: 2, fixed: true, maxmin: false, content: url});
+        this.iframe = function (url, name, area) {
+            return layer.open({title: name || '窗口', type: 2, area: area || ['800px', '580px'], anim: 2, fixed: true, maxmin: false, content: url});
         };
         /*! 加载 HTML 到弹出层 */
-        this.modal = function (url, data, title, callable, loading, tips, area) {
+        this.modal = function (url, data, name, call, load, tips, area) {
             this.load(url, data, 'GET', function (res) {
                 if (typeof (res) === 'object') return $.msg.auto(res), false;
                 $.msg.idx.push(layer.open({
-                    type: 1, btn: false, area: area || "800px", content: res, title: title || '', success: function ($dom, idx) {
+                    type: 1, btn: false, area: area || "800px", content: res, title: name || '', success: function ($dom, idx) {
                         $dom.off('click', '[data-close]').on('click', '[data-close]', function () {
                             (function (confirm, callable) {
                                 confirm ? $.msg.confirm(confirm, callable) : callable();
@@ -291,8 +291,8 @@ $(function () {
                         }), $.form.reInit($dom);
                     }
                 }));
-                return (typeof callable === 'function') && callable.call(that);
-            }, loading, tips);
+                return (typeof call === 'function') && call.call(that);
+            }, load, tips);
         };
     };
 
@@ -400,10 +400,6 @@ $(function () {
             this.trim = function (str) {
                 return str.replace(/(^\s*)|(\s*$)/g, '');
             };
-            /*! 标签元素是否可见 */
-            this.isVisible = function (ele) {
-                return $(ele).is(':visible');
-            };
             /*! 检测属性是否有定义 */
             this.hasProp = function (ele, prop) {
                 if (typeof prop !== "string") return false;
@@ -444,13 +440,13 @@ $(function () {
             };
             /*! 显示验证标志 */
             this.remind = function (input) {
-                if (!this.isVisible(input)) return true;
+                if (!$(input).is(':visible')) return true;
                 return this.showError(input, input.getAttribute('title') || input.getAttribute('placeholder') || '输入错误'), false;
             };
             /*! 错误消息显示 */
-            this.showError = function (ele, tips) {
+            this.showError = function (ele, tip) {
                 $(ele).addClass('validate-error');
-                this.insertError(ele).addClass('layui-anim-fadein').css({width: 'auto'}).html(tips);
+                this.insertError(ele).addClass('layui-anim-fadein').css({width: 'auto'}).html(tip);
             };
             /*! 错误消息消除 */
             this.hideError = function (ele) {
@@ -731,9 +727,9 @@ $(function () {
 
     /*! 注册 data-modal 事件行为 */
     onEvent('click', '[data-modal]', function () {
-        var emap = this.dataset, data = {open_type: 'modal'}, area = emap.area || emap.width || '800px';
+        var emap = this.dataset, data = {open_type: 'modal'}, un = undefined;
         if (emap.rule && (applyRuleValue(this, data)) === false) return false;
-        return $.form.modal(emap.modal, data, emap.title || this.innerText || '编辑', undefined, undefined, undefined, area);
+        return $.form.modal(emap.modal, data, emap.title || this.innerText || '编辑', un, un, un, emap.area || emap.width || '800px');
     });
 
     /*! 注册 data-iframe 事件行为 */
@@ -836,7 +832,7 @@ $(function () {
                 '</div>'
         });
         (function loadprocess(code, that) {
-            that = this, this.$box = $('[data-queue-load=' + code + ']');
+            that = this, that.$box = $('[data-queue-load=' + code + ']');
             if (doAjax === false || that.$box.length < 1) return false;
             this.$code = that.$box.find('code'), this.$name = that.$box.find('[data-message-title]');
             this.$percent = that.$box.find('.layui-progress div'), this.runCache = function (code, index, value) {
