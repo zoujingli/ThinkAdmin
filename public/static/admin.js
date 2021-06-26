@@ -14,15 +14,15 @@
 
 /*! 数组兼容处理 */
 if (typeof Array.prototype.forEach !== 'function') {
-    Array.prototype.forEach = function (callback, context) {
+    Array.prototype.forEach = function (callable, context) {
         typeof context === "undefined" ? context = window : null;
-        for (var i in this) callback.call(context, this[i], i, this)
+        for (var i in this) callable.call(context, this[i], i, this)
     };
 }
 
 if (typeof Array.prototype.every !== 'function') {
-    Array.prototype.every = function (callback) {
-        for (var i in this) if (callback(this[i], i, this) === false) {
+    Array.prototype.every = function (callable) {
+        for (var i in this) if (callable(this[i], i, this) === false) {
             return false;
         }
         return true;
@@ -30,8 +30,8 @@ if (typeof Array.prototype.every !== 'function') {
 }
 
 if (typeof Array.prototype.some !== 'function') {
-    Array.prototype.some = function (callback) {
-        for (var i in this) if (callback(this[i], i, this) === true) {
+    Array.prototype.some = function (callable) {
+        for (var i in this) if (callable(this[i], i, this) === true) {
             return true;
         }
         return false;
@@ -95,9 +95,23 @@ define('jquery', [], function () {
 $(function () {
     window.$body = $('body');
 
-    /*! 注册单项事件 */
-    function onEvent(event, select, callback) {
-        return $body.off(event, select).on(event, select, callback);
+    /*! 注册单次事件 */
+    function onEvent(event, select, callable) {
+        return $body.off(event, select).on(event, select, callable);
+    }
+
+    /*! 读取 data-rule 绑定 table 值 */
+    function applyRuleValue(elem, data) {
+        var rule = elem.dataset.value || (function (rule, array) {
+            $(elem.dataset.target || 'input[type=checkbox].list-check-box').map(function () {
+                this.checked && array.push(this.value);
+            });
+            return array.length > 0 ? rule.replace('{key}', array.join(',')) : '';
+        })(elem.dataset.rule || '', []) || '';
+        if (rule.length < 1) return $.msg.tips('请选择需要更改的数据！'), false;
+        return rule.split(';').forEach(function (item) {
+            data[item.split('#')[0]] = item.split('#')[1];
+        }), data;
     }
 
     /*! 消息组件实例 */
@@ -178,15 +192,13 @@ $(function () {
                     $parent.prevAll('label').addClass('label-required-next');
                 }
             }), $dom.find('input[data-date-range]').map(function () {
-                this.setAttribute('autocomplete', 'off');
-                laydate.render({
+                this.setAttribute('autocomplete', 'off'), laydate.render({
                     type: this.dataset.dateRange || 'date', range: true, elem: this, done: function (value) {
                         $(this.elem).val(value).trigger('change');
                     }
                 });
             }), $dom.find('input[data-date-input]').map(function () {
-                this.setAttribute('autocomplete', 'off');
-                laydate.render({
+                this.setAttribute('autocomplete', 'off'), laydate.render({
                     type: this.dataset.dateInput || 'date', range: false, elem: this, done: function (value) {
                         $(this.elem).val(value).trigger('change');
                     }
@@ -206,7 +218,7 @@ $(function () {
         };
         /*! 在内容区显示视图 */
         this.show = function (html) {
-            $(this.selecter).html(html), this.reInit($(this.selecter)), setTimeout(function () {
+            $(this.selecter).html(html), setTimeout(function () {
                 that.reInit($(that.selecter));
             }, 500);
         };
@@ -219,10 +231,10 @@ $(function () {
             }
         };
         /*! 异步加载的数据 */
-        this.load = function (url, data, method, callback, loading, tips, time, headers) {
+        this.load = function (url, data, method, callable, loading, tips, time, headers) {
             // 如果主页面 loader 显示中，绝对不显示 loading 图标
             loading = $('.layui-page-loader').is(':visible') ? false : loading;
-            var index = loading !== false ? $.msg.loading(tips) : 0;
+            var loadidx = loading !== false ? $.msg.loading(tips) : 0;
             if (typeof data === 'object' && typeof data['_token_'] === 'string') {
                 headers = headers || {}, headers['User-Form-Token'] = data['_token_'], delete data['_token_'];
             }
@@ -247,15 +259,15 @@ $(function () {
                         this.success(XMLHttpRequest.responseText);
                     }
                 }, success: function (ret) {
-                    if (typeof callback === 'function' && callback.call(that, ret) === false) return false;
+                    if (typeof callable === 'function' && callable.call(that, ret) === false) return false;
                     return typeof ret === 'object' ? $.msg.auto(ret, time || ret.wait || undefined) : that.show(ret);
                 }, complete: function () {
-                    $.msg.close(index);
+                    $.msg.close(loadidx);
                 }
             });
         };
         /*! 加载 HTML 到目标位置 */
-        this.open = function (url, data, callback, loading, tips) {
+        this.open = function (url, data, callable, loading, tips) {
             this.load(url, data, 'get', function (ret) {
                 return (typeof ret === 'object' ? $.msg.auto(ret) : that.show(ret)), false;
             }, loading, tips);
@@ -265,21 +277,21 @@ $(function () {
             return layer.open({title: title || '窗口', type: 2, area: area || ['800px', '580px'], anim: 2, fixed: true, maxmin: false, content: url});
         };
         /*! 加载 HTML 到弹出层 */
-        this.modal = function (url, data, title, callback, loading, tips, area) {
+        this.modal = function (url, data, title, callable, loading, tips, area) {
             this.load(url, data, 'GET', function (res) {
                 if (typeof (res) === 'object') return $.msg.auto(res), false;
                 $.msg.idx.push(layer.open({
                     type: 1, btn: false, area: area || "800px", content: res, title: title || '', success: function ($dom, idx) {
                         $dom.off('click', '[data-close]').on('click', '[data-close]', function () {
-                            (function (confirm, callback) {
-                                confirm ? $.msg.confirm(confirm, callback) : callback();
+                            (function (confirm, callable) {
+                                confirm ? $.msg.confirm(confirm, callable) : callable();
                             })(this.dataset.confirm, function () {
                                 layer.close(idx);
                             });
                         }), $.form.reInit($dom);
                     }
                 }));
-                return (typeof callback === 'function') && callback.call(that);
+                return (typeof callable === 'function') && callable.call(that);
             }, loading, tips);
         };
     };
@@ -378,7 +390,7 @@ $(function () {
     };
 
     /*! 注册对象到Jq */
-    $.vali = function (form, callback, options) {
+    $.vali = function (form, callable, options) {
         return (new function (that) {
             /*! 表单元素 */
             that = this, this.tags = 'input,textarea,select';
@@ -454,7 +466,7 @@ $(function () {
                 return $(ele).data('input-info', $html.css(style).insertAfter(ele)), $html;
             };
             /*! 表单验证入口 */
-            this.check = function (form, callback) {
+            this.check = function (form, callable) {
                 $(form).attr("novalidate", "novalidate").find(that.tags).map(function () {
                     this.bindEventMethod = function () {
                         that.checkInput(this);
@@ -464,11 +476,11 @@ $(function () {
                     }
                 });
                 $(form).bind("submit", function (event) {
-                    if (that.checkAllInput() && typeof callback === 'function') {
+                    if (that.checkAllInput() && typeof callable === 'function') {
                         if (typeof CKEDITOR === 'object' && typeof CKEDITOR.instances === 'object') {
                             for (var i in CKEDITOR.instances) CKEDITOR.instances[i].updateElement();
                         }
-                        callback.call(this, $(form).formToJson());
+                        callable.call(this, $(form).formToJson());
                     }
                     return event.preventDefault(), false;
                 }).find('[data-form-loaded]').map(function () {
@@ -477,7 +489,7 @@ $(function () {
                 });
                 return $(form).data('validate', this);
             };
-        }).check(form, callback, options);
+        }).check(form, callable, options);
     };
 
     /*! 自动监听规则内表单 */
@@ -485,7 +497,7 @@ $(function () {
         $('form[data-auto]').map(function (index, form) {
             if (this.dataset.listen === 'true') return true;
             $(this).attr('data-listen', 'true').vali(function (data) {
-                var call = form.dataset.callback || '_default_callback';
+                var call = form.dataset.callable || '_default_callable';
                 var type = form.method || 'POST', tips = form.dataset.tips || undefined;
                 var time = form.dataset.time || undefined, href = form.action || location.href;
                 $.form.load(href, data, type, window[call] || undefined, true, tips, time);
@@ -494,8 +506,8 @@ $(function () {
     };
 
     /*! 注册对象到JqFn */
-    $.fn.vali = function (callback, options) {
-        return $.vali(this, callback, options);
+    $.fn.vali = function (callable, options) {
+        return $.vali(this, callable, options);
     };
 
     /*! 表单转JSON */
@@ -623,16 +635,6 @@ $(function () {
         });
     }
 
-    /*! 注册 data-load 事件行为 */
-    onEvent('click', '[data-load]', function (e) {
-        var dataset = e.currentTarget.dataset;
-        (function (confirm, callback) {
-            confirm ? $.msg.confirm(confirm, callback) : callback();
-        })(dataset.confirm, function () {
-            $.form.load(dataset.load, {}, 'get', null, true, dataset.tips, dataset.time);
-        });
-    });
-
     /*! 注册 data-serach 表单搜索行为 */
     onEvent('submit', 'form.form-search', function () {
         var url = $(this).attr('action').replace(/&?page=\d+/g, '');
@@ -647,24 +649,15 @@ $(function () {
         $.form.load(url, this, 'post');
     });
 
-    /*! 注册 data-modal 事件行为 */
-    onEvent('click', '[data-modal]', function () {
-        var dataset = this.dataset, area = dataset.area || dataset.width || '800px';
-        return $.form.modal(dataset.modal, 'open_type=modal', dataset.title || this.innerText || '编辑', undefined, undefined, undefined, area);
-    });
-
-    /*! 注册 data-open 事件行为 */
-    onEvent('click', '[data-open]', function () {
-        if (this.dataset.open.match(/^https?:/)) {
-            location.href = this.dataset.open;
-        } else {
-            $.form.href(this.dataset.open, this);
-        }
-    });
-
-    /*! 注册 data-dbclick 事件行为 */
-    onEvent('dblclick', '[data-dbclick]', function () {
-        $(this).find(this.dataset.dbclick || '[data-dbclick]').trigger('click');
+    /*! 注册 data-load 事件行为 */
+    onEvent('click', '[data-load]', function () {
+        var emap = this.dataset, data = {};
+        if (this.dataset.rule && (applyRuleValue(this, data)) === false) return false;
+        (function (confirm, callable) {
+            confirm ? $.msg.confirm(confirm, callable) : callable();
+        })(emap.confirm, function () {
+            $.form.load(emap.load, data, 'get', null, true, emap.tips, emap.time);
+        });
     });
 
     /*! 注册 data-reload 事件行为 */
@@ -672,59 +665,37 @@ $(function () {
         $.form.reload();
     });
 
+    /*! 注册 data-dbclick 事件行为 */
+    onEvent('dblclick', '[data-dbclick]', function () {
+        $(this).find(this.dataset.dbclick || '[data-dbclick]').trigger('click');
+    });
+
     /*! 注册 data-check 事件行为 */
-    onEvent('click', '[data-check-target]', function (e) {
-        var target = e.currentTarget;
+    onEvent('click', '[data-check-target]', function () {
+        var target = this;
         $(this.dataset.checkTarget).map(function () {
             (this.checked = !!target.checked), $(this).trigger('change');
         });
     });
 
-    /*! 注册 data-action 事件行为 */
-    onEvent('click', '[data-action]', function () {
-        var data = {}, time = this.dataset.time, action = this.dataset.action;
-        var loading = this.dataset.loading, method = this.dataset.method || 'post';
-        var rule = this.dataset.value || (function (elem, rule, ids) {
-            $(elem.dataset.target || 'input[type=checkbox].list-check-box').map(function () {
-                (this.checked) && ids.push(this.value);
-            });
-            return ids.length > 0 ? rule.replace('{key}', ids.join(',')) : '';
-        })(this, this.dataset.rule || '', []) || '';
-        if (rule.length < 1) return $.msg.tips('请选择需要更改的数据！');
-        rule.split(';').forEach(function (rule) {
-            if (rule.length < 2) return $.msg.tips('异常的数据操作规则，请修改规则！');
-            data[rule.split('#')[0]] = rule.split('#')[1];
-        });
-        data['_token_'] = this.dataset.token || this.dataset.csrf || '--';
-        var load = loading !== 'false', tips = typeof loading === 'string' ? loading : undefined;
-        this.dataset.confirm ? $.msg.confirm(this.dataset.confirm, function () {
-            $.form.load(action, data, method, false, load, tips, time);
-        }) : $.form.load(action, data, method, false, load, tips, time);
-    });
-
     /*! 表单元素失焦时提交 */
     onEvent('blur', '[data-action-blur]', function () {
-        var data = {}, that = this, $this = $(this), action = this.dataset.actionBlur;
-        var time = this.dataset.time, loading = this.dataset.loading || false, load = loading !== 'false';
-        var tips = typeof loading === 'string' ? loading : undefined, method = this.dataset.method || 'post';
-        var attrs = (this.dataset.value || '').replace('{value}', $this.val()).split(';');
-        for (var i in attrs) {
-            if (attrs[i].length < 2) return $.msg.tips('异常的数据操作规则，请修改规则！');
-            data[attrs[i].split('#')[0]] = attrs[i].split('#')[1];
-        }
-        that.callback = function (ret) {
-            return $this.css('border', (ret && ret.code) ? '1px solid #e6e6e6' : '1px solid red'), false;
-        };
-        data['_token_'] = this.dataset.token || this.dataset.csrf || '--';
-        this.dataset.confirm ? $.msg.confirm(this.dataset.confirm, function () {
-            $.form.load(action, data, method, that.callback, load, tips, time);
-        }) : $.form.load(action, data, method, that.callback, load, tips, time);
+        var that = $(this), emap = this.dataset, data = {'_token_': emap.token || emap.csrf || '--'};
+        var attrs = (emap.value || '').replace('{value}', that.val()).split(';');
+        for (var i in attrs) data[attrs[i].split('#')[0]] = attrs[i].split('#')[1];
+        (function (confirm, callable) {
+            confirm ? $.msg.confirm(confirm, callable) : callable();
+        })(emap.confirm, function () {
+            $.form.load(emap.actionBlur, data, emap.method || 'post', function (ret) {
+                return that.css('border', (ret && ret.code) ? '1px solid #e6e6e6' : '1px solid red'), false;
+            }, emap.loading !== 'false', emap.loading, emap.time)
+        });
     });
 
     /*! 表单元素失去焦点时数字 */
     onEvent('blur', '[data-blur-number]', function () {
-        var min = this.dataset.valueMin, max = this.dataset.valueMax;
-        var value = parseFloat(this.value) || 0, fiexd = parseInt(this.dataset.blurNumber || 0);
+        var emap = this.dataset, min = emap.valueMin, max = emap.valueMax;
+        var value = parseFloat(this.value) || 0, fiexd = parseInt(emap.blurNumber || 0);
         if (typeof min !== 'undefined' && value < min) value = min;
         if (typeof max !== 'undefined' && value > max) value = max;
         this.value = parseFloat(value).toFixed(fiexd);
@@ -737,10 +708,41 @@ $(function () {
         }
     });
 
+    /*! 注册 data-open 事件行为 */
+    onEvent('click', '[data-open]', function () {
+        if (this.dataset.open.match(/^https?:/)) {
+            location.href = this.dataset.open;
+        } else {
+            $.form.href(this.dataset.open, this);
+        }
+    });
+
+    /*! 注册 data-action 事件行为 */
+    onEvent('click', '[data-action]', function () {
+        var emap = this.dataset, data = {'_token_': emap.token || emap.csrf || '--'};
+        var load = emap.loading !== 'false', tips = typeof load === 'string' ? load : undefined;
+        if ((applyRuleValue(this, data)) === false) return false;
+        (function (confirm, callable) {
+            confirm ? $.msg.confirm(confirm, callable) : callable();
+        })(emap.confirm, function () {
+            $.form.load(emap.action, data, emap.method || 'post', false, load, tips, emap.time)
+        });
+    });
+
+    /*! 注册 data-modal 事件行为 */
+    onEvent('click', '[data-modal]', function () {
+        var emap = this.dataset, data = {open_type: 'modal'}, area = emap.area || emap.width || '800px';
+        if (emap.rule && (applyRuleValue(this, data)) === false) return false;
+        return $.form.modal(emap.modal, data, emap.title || this.innerText || '编辑', undefined, undefined, undefined, area);
+    });
+
     /*! 注册 data-iframe 事件行为 */
     onEvent('click', '[data-iframe]', function () {
-        $(this).attr('data-index', $.form.iframe(this.dataset.iframe, this.dataset.title || this.innerText || '窗口', this.dataset.area || [
-            this.dataset.width || '800px', this.dataset.height || '580px'
+        var emap = this.dataset, data = {open_type: 'iframe'};
+        if (emap.rule && (applyRuleValue(this, data)) === false) return false;
+        var frame = emap.iframe + (emap.iframe.indexOf('?') > -1 ? '&' : '?') + $.param(data);
+        $(this).attr('data-index', $.form.iframe(frame, emap.title || this.innerText || '窗口', emap.area || [
+            emap.width || '800px', emap.height || '580px'
         ]));
     });
 
@@ -812,8 +814,8 @@ $(function () {
 
     /*! 异步任务状态监听与展示 */
     onEvent('click', '[data-queue]', function (e) {
-        (function (confirm, callback) {
-            confirm ? $.msg.confirm(confirm, callback) : callback();
+        (function (confirm, callable) {
+            confirm ? $.msg.confirm(confirm, callable) : callable();
         })(e.currentTarget.dataset.confirm, function () {
             $.form.load(e.currentTarget.dataset.queue, {}, 'post', function (ret) {
                 if (typeof ret.data === 'string' && ret.data.indexOf('Q') === 0) {
