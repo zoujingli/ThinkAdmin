@@ -463,13 +463,12 @@ $(function () {
             };
             /*! 表单验证入口 */
             this.check = function (form, callable) {
-                $(form).attr("novalidate", "novalidate").find(that.tags).map(function () {
-                    this.bindEventMethod = function () {
-                        that.checkInput(this);
-                    };
-                    for (var e in that.checkEvent) if (that.checkEvent[e] === true) {
-                        $(this).off(e, this.bindEventMethod).on(e, this.bindEventMethod);
-                    }
+                $(form).attr('novalidate', 'novalidate').find(that.tags).map(function (idx, input) {
+                    (function (evt) {
+                        for (var e in that.checkEvent) if (that.checkEvent[e]) $(input).off(e, evt).on(e, evt);
+                    })(function () {
+                        that.checkInput(input);
+                    });
                 });
                 $(form).bind("submit", function (event) {
                     if (that.checkAllInput() && typeof callable === 'function') {
