@@ -5,6 +5,7 @@
 .vscode
 *.log
 .DS_Store
+/vendor
 /runtime
 /safefile
 /nbproject
