@@ -48,8 +48,7 @@ class Menu extends Controller
     {
         $this->title = '系统菜单管理';
         $this->type = input('type', 'index');
-        $query = $this->_query($this->table);
-        $query->order('sort desc,id asc')->page(false, true);
+        $this->_query($this->table)->order('sort desc,id asc')->page(false, true);
     }
 
     /**
