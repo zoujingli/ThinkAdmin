@@ -76,7 +76,7 @@
 {block name='script'}
 <script>
     $('body').off('click', '[data-parent-uuid]').on('click', '[data-parent-uuid]', function () {
-        $.form.load('{:sysuri()}', {uuid: this.dataset.parentUid, pid: this.dataset.parentPid}, 'post', function (ret) {
+        $.form.load('{:sysuri()}', {uuid: this.dataset.parentUuid, pid: this.dataset.parentPid}, 'post', function (ret) {
             if (ret.code > 0) return $.msg.success(ret.info, 3, function () {
                 top.layer.close(top.layer.getFrameIndex(window.name));
                 top.$.form.reload();
