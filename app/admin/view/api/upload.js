@@ -88,8 +88,9 @@ define(['md5'], function (SparkMD5, allowMime) {
                 /*! 所有文件上传完成后结果处理 */
                 if (++opt.count.uploaded >= opt.count.total) {
                     if (opt.mult > 0 && opt.elem.data('input')) {
-                        var urls = [];
-                        for (var i in opt.cache) urls.push(opt.cache[i].xurl)
+                        var urls = opt.elem.data('input').value || [];
+                        if (typeof urls === 'string') urls = urls.split('|');
+                        for (var i in opt.cache) urls.push(opt.cache[i].xurl);
                         $(opt.elem.data('input')).val(urls.join('|')).trigger('change');
                     }
                     opt.elem.triggerHandler('upload.complete', {file: opt.cache});
