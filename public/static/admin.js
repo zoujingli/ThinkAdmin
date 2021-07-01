@@ -536,9 +536,8 @@ $(function () {
     /*! 全局文件上传入口 */
     $.fn.uploadFile = function (callable) {
         if (this.data('inited')) return false;
-        var that = this, mode = this.data('file') || 'one';
-        this.data('inited', true).data('multiple', mode !== 'one' ? 1 : 0);
-        require(['upload'], function (apply) {
+        var that = this, mult = 'one|btn'.indexOf(this.data('file') || 'one') < 0 ? 1 : 0;
+        this.data('inited', true).data('multiple', mult), require(['upload'], function (apply) {
             apply.call(this, that, callable);
         });
     };
