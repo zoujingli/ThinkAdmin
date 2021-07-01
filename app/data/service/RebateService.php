@@ -20,6 +20,7 @@ class RebateService extends Service
     const PRIZE_05 = 'PRIZE05';
     const PRIZE_06 = 'PRIZE06';
     const PRIZE_07 = 'PRIZE07';
+    const PRIZE_08 = 'PRIZE08';
 
     const PRIZES = [
         self::PRIZE_01 => ['code' => self::PRIZE_01, 'name' => '首推奖励', 'func' => '_prize01'],
@@ -29,6 +30,7 @@ class RebateService extends Service
         self::PRIZE_05 => ['code' => self::PRIZE_05, 'name' => '差额奖励', 'func' => '_prize05'],
         self::PRIZE_06 => ['code' => self::PRIZE_06, 'name' => '管理奖励', 'func' => '_prize06'],
         self::PRIZE_07 => ['code' => self::PRIZE_07, 'name' => '升级奖励', 'func' => '_prize07'],
+        self::PRIZE_08 => ['code' => self::PRIZE_08, 'name' => '平推返利', 'func' => '_prize08'],
     ];
 
     /**
@@ -427,5 +429,21 @@ class RebateService extends Service
             $this->writeRabate($this->from1['id'], $map, $name, $val);
         }
         return true;
+    }
+
+    /**
+     * 用户平推奖励发放
+     * @return boolean
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\DbException
+     * @throws \think\db\exception\ModelNotFoundException
+     */
+    private function _prize08(): bool
+    {
+        if (empty($this->from1)) return false;
+        $map = ['vip_code' => $this->user['vip_code']];
+        $uuids = array_reverse(str2arr(trim($this->user['path'], '-'), '-'));
+        $puids = $this->app->db->name('DataUser')->whereIn('id', $uuids)->orderField('id', $uuids)->where($map)->column('id');
+        if (count($puids) < 2) return false;
     }
 }
