@@ -9,7 +9,7 @@ use WePay\Order;
 /**
  * 微信官方公众号支持
  * Class WechatPaymentService
- * @package app\store\service\payment
+ * @package app\data\service\payment
  */
 class WechatPaymentService extends PaymentService
 {

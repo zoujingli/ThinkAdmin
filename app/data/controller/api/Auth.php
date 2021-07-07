@@ -10,7 +10,7 @@ use think\exception\HttpResponseException;
 /**
  * 接口授权认证基类
  * Class Auth
- * @package app\store\controller\api
+ * @package app\data\controller\api
  */
 abstract class Auth extends Controller
 {

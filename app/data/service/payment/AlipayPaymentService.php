@@ -8,7 +8,7 @@ use think\admin\Exception;
 /**
  * 支付宝支付基础服务
  * Class AlipayPaymentService
- * @package app\store\service\payment
+ * @package app\data\service\payment
  */
 class AlipayPaymentService extends PaymentService
 {

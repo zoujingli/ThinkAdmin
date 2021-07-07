@@ -9,7 +9,7 @@ use think\db\exception\DbException;
 /**
  * 用户数据管理服务
  * Class UserAdminService
- * @package app\store\service
+ * @package app\data\service
  */
 class UserAdminService extends Service
 {

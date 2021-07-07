@@ -9,7 +9,7 @@ use think\admin\extend\HttpExtend;
 /**
  * 汇聚支付基础服务
  * Class JoinpayPaymentService
- * @package app\store\service\payment
+ * @package app\data\service\payment
  */
 class JoinpayPaymentService extends PaymentService
 {
