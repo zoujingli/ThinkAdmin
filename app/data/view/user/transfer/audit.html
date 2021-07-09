@@ -95,6 +95,10 @@
             <!--{/in}-->
             {/if}
 
+            {if $vo.status eq 4}
+            {php} $types =[4=>'已经打款']; {/php}
+            {/if}
+
             <div class="layui-textarea" style="min-height:auto;padding:10px 0 13px 18px">
                 {foreach($types as $k => $v)}{if $k eq $vo.status}
                 <input checked name="status" title="{$v}" type="radio" value='{$k}'>
