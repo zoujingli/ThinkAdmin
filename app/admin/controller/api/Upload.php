@@ -25,7 +25,6 @@ use think\admin\storage\TxcosStorage;
 use think\exception\HttpResponseException;
 use think\file\UploadedFile;
 use think\Response;
-use think\response\Json;
 
 /**
  * 文件上传接口
@@ -102,7 +101,7 @@ class Upload extends Controller
      * @throws \think\db\exception\DbException
      * @throws \think\db\exception\ModelNotFoundException
      */
-    public function file(): Json
+    public function file()
     {
         if (!($file = $this->getFile())->isValid()) {
             $this->error('文件上传异常，文件过大或未上传！');
