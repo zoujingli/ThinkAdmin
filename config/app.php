@@ -17,12 +17,12 @@
 return [
     // 应用命名空间
     'app_namespace'    => '',
+    // 应用快速访问
+    'app_express'      => true,
     // 是否启用路由
     'with_route'       => true,
     // 超级用户账号
     'super_user'       => 'admin',
-    // 应用快速访问
-    'app_express'      => true,
     // 默认应用
     'default_app'      => 'index',
     // 默认时区
