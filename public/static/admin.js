@@ -492,10 +492,14 @@ $(function () {
         $('form[data-auto]').map(function (index, form) {
             if (this.dataset.listen === 'true') return true;
             $(this).attr('data-listen', 'true').vali(function (data) {
-                var call = form.dataset.callable || '_default_callable';
-                var type = form.method || 'POST', tips = form.dataset.tips || undefined;
-                var time = form.dataset.time || undefined, href = form.action || location.href;
-                $.form.load(href, data, type, window[call] || undefined, true, tips, time);
+                var type = form.method || 'POST', href = form.action || location.href;
+                var call = window[form.dataset.callable || '_default_callable'] || undefined;
+                var tips = form.dataset.tips || undefined, time = form.dataset.time || undefined;
+                (function (confirm, callable) {
+                    confirm ? $.msg.confirm(confirm, callable) : callable();
+                })(form.dataset.confirm, function () {
+                    $.form.load(href, data, type, call, true, tips, time);
+                });
             });
         });
     };
