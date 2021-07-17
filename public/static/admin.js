@@ -778,8 +778,8 @@ $(function () {
     });
     $.previewImage = function (src, area) {
         var img = new Image(), defer = $.Deferred(), load = $.msg.loading();
-        img.style.height = 'auto', img.style.width = area || '480px';
-        img.style.display = 'none', img.style.background = '#FFFFFF';
+        img.style.background = '#FFFFFF', img.referrerPolicy = 'no-referrer';
+        img.style.height = 'auto', img.style.width = area || '480px', img.style.display = 'none';
         document.body.appendChild(img), img.onerror = function () {
             $.msg.close(load), defer.reject();
         }, img.onload = function () {
