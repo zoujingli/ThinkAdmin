@@ -437,37 +437,25 @@
                 for (var i in data) if (data[i].check) return check;
                 return true;
             };
+            /*! 下移整行规格分组 */
+            $rootScope.dnSpecRow = function (items, index) {
+                if (index + 1 < items.length) (function (item) {
+                    items.splice(index + 1, 1), items.splice(index, 0, item);
+                })(items[index + 1]);
+            };
+            /*! 上移整行规格分组 */
+            $rootScope.upSpecRow = function (items, index) {
+                if (index > 0) (function (item) {
+                    items.splice(index - 1, 1), items.splice(index, 0, item);
+                })(items[index - 1]);
+            };
+            /*! 移除整行规格分组 */
+            $rootScope.delSpecRow = function (items, index) {
+                items.splice(index, 1)
+            };
             /*! 增加整行规格分组 */
             $rootScope.addSpecRow = function (data) {
                 data.push({name: '规格分组' + data.length, list: [{name: '规格属性', check: true}]})
-            };
-            /*! 下移整行规格分组 */
-            $rootScope.dnSpecRow = function (data, $index) {
-                var temp = [], self = data[$index];
-                if ($index > data.length - 2) return false;
-                data.forEach(function (item, index) {
-                    if (parseInt(index) !== parseInt($index)) temp.push(item);
-                    if (parseInt(index) === parseInt($index) + 1) temp.push(self);
-                });
-                return $rootScope.specs = temp;
-            };
-            /*! 上移整行规格分组 */
-            $rootScope.upSpecRow = function (data, $index) {
-                var temp = [], self = data[$index];
-                if ($index < 1) return false;
-                data.forEach(function (item, index) {
-                    if (parseInt(index) === parseInt($index) - 1) temp.push(self);
-                    if (parseInt(index) !== parseInt($index)) temp.push(item);
-                });
-                return $rootScope.specs = temp;
-            };
-            /*! 移除整行规格分组 */
-            $rootScope.delSpecRow = function (data, $index) {
-                var temp = [];
-                data.forEach(function (item, index) {
-                    if (parseInt(index) !== parseInt($index)) temp.push(item);
-                });
-                return $rootScope.specs = temp;
             };
             /*! 增加分组的属性 */
             $rootScope.addSpecVal = function (data) {
