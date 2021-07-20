@@ -102,16 +102,34 @@ $(function () {
 
     /*! 读取 data-rule 绑定 table 值 */
     function applyRuleValue(elem, data) {
-        var rule = elem.dataset.value || (function (rule, array) {
-            $(elem.dataset.target || 'input[type=checkbox].list-check-box').map(function () {
-                this.checked && array.push(this.value);
+        // 新 tableId 规则兼容处理
+        if (elem.dataset.tableId && elem.dataset.rule) {
+            var idx1, idx2, temp, regx, field, rule = {};
+            var json = layui.table.checkStatus(elem.dataset.tableId).data;
+            layui.each(elem.dataset.rule.split(';'), function (idx, item, attr) {
+                (attr = item.split('#', 2)), rule[attr[0]] = attr[1];
             });
-            return array.length > 0 ? rule.replace('{key}', array.join(',')) : '';
-        })(elem.dataset.rule || '', []) || '';
-        if (rule.length < 1) return $.msg.tips('请选择需要更改的数据！'), false;
-        return rule.split(';').forEach(function (item) {
-            data[item.split('#')[0]] = item.split('#')[1];
-        }), data;
+            for (idx1 in rule) {
+                temp = [], regx = new RegExp(/^{(.*?)}$/);
+                if (regx.test(rule[idx1]) && (field = rule[idx1].replace(regx, '$1'))) {
+                    for (idx2 in json) if (json[idx2][field]) temp.push(json[idx2][field]);
+                    if (temp.length < 1) return $.msg.tips('请选择需要更改的数据！'), false;
+                    data[idx1] = temp.join(',');
+                }
+            }
+            return data;
+        } else {
+            var value = elem.dataset.value || (function (rule, array) {
+                $(elem.dataset.target || 'input[type=checkbox].list-check-box').map(function () {
+                    this.checked && array.push(this.value);
+                });
+                return array.length > 0 ? rule.replace('{key}', array.join(',')) : '';
+            })(elem.dataset.rule || '', []) || '';
+            if (value.length < 1) return $.msg.tips('请选择需要更改的数据！'), false;
+            return value.split(';').forEach(function (item) {
+                data[item.split('#')[0]] = item.split('#')[1];
+            }), data;
+        }
     }
 
     /*! 消息组件实例 */
@@ -633,6 +651,60 @@ $(function () {
         });
     }
 
+    /*! 组件 LayUI table 功能封装 */
+    $.fn.layTable = function (options) {
+        return this.each(function (idx, elem) {
+            // 拦截异常标签对象
+            if (this.nodeName !== 'TABLE') return new Error('It is not a table tag.');
+            // 动态初始化数据表
+            this.id = this.id || 't' + Math.random().toString().replace('0.', '');
+            this.dataset.filter = this.getAttribute('lay-filter') || this.id;
+            this.setAttribute('lay-filter', this.dataset.filter);
+            // 标准化请求参数，初始化排序参数，表格插件初始化参数
+            var data = {}, sort = options.initSort || options.sort || {}, option = {
+                id: elem.id, elem: elem, url: options.url || elem.dataset.url || '', where: getWhere(),
+                limit: options.limit || 15, cols: options.cols || [[]], page: options.page !== false,
+            };
+            // 延用工具条配置
+            if (options.title) option.title = options.title;
+            if (options.toolbar) option.toolbar = options.toolbar;
+            if (options.defaultToolbar) option.defaultToolbar = top.defaultToolbar;
+            if (sort.field && sort.type) option.initSort = sort;
+            // 实例化表单组件
+            layui.table.render(option);
+            // 排序事件处理
+            layui.table.on('sort(' + this.dataset.filter + ')', function (object) {
+                (sort = object), $(elem).trigger('reload')
+            });
+            // 绑定选择项对象
+            var checked = options.checked || this.dataset.targetChecked;
+            if (checked) $body.find(checked).map(function () {
+                $(this).attr('data-table-id', elem.id);
+            });
+            // 搜索表单处理
+            var search = options.search || this.dataset.targetSearch;
+            if (search) $body.off('submit', 'form.form-search').on('submit', search, function () {
+                (data.page = 1), (data = $.extend(data, $(this).formToJson())), $(elem).trigger('reload');
+            });
+            // 绑定重载事件
+            $(this).bind('reload', function () {
+                var config = {where: getWhere()};
+                if (sort.field && sort.type) config.initSort = sort;
+                layui.table.reload(elem.id, config);
+            });
+
+            // 获取查询数据
+            function getWhere() {
+                data['output'] = 'layui.table';
+                if (sort.field && sort.type) {
+                    data['_order_'] = sort.type;
+                    data['_field_'] = sort.field;
+                }
+                return data;
+            }
+        });
+    }
+
     /*! 注册 data-serach 表单搜索行为 */
     onEvent('submit', 'form.form-search', function () {
         var url = $(this).attr('action').replace(/&?page=\d+/g, '');
@@ -723,7 +795,12 @@ $(function () {
         (function (confirm, callable) {
             confirm ? $.msg.confirm(confirm, callable) : callable();
         })(emap.confirm, function () {
-            $.form.load(emap.action, data, emap.method || 'post', false, load, tips, emap.time)
+            var callable = !emap.tableId ? false : function (ret) {
+                if (ret.code > 0) return $.msg.success(ret.info, 3, function () {
+                    $('#' + emap.tableId).trigger('reload');
+                }), false;
+            }
+            $.form.load(emap.action, data, emap.method || 'post', callable, load, tips, emap.time)
         });
     });
 

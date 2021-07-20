@@ -16,8 +16,10 @@
 
 namespace app\admin\controller;
 
+use Exception;
 use think\admin\Controller;
 use think\admin\service\AdminService;
+use think\exception\HttpResponseException;
 
 /**
  * 系统日志管理
@@ -47,21 +49,22 @@ class Oplog extends Controller
         $this->isSupper = AdminService::instance()->isSuper();
         $this->actions = $this->app->db->name($this->table)->distinct(true)->column('action');
         $query = $this->_query($this->table)->dateBetween('create_at')->order('id desc');
-        $query->like('action,node,content,username,geoip')->page();
+        $query->like('action,node,content,username,geoip')->layTable();
     }
 
     /**
      * 列表数据处理
      * @auth true
      * @param array $data
-     * @throws \Exception
+     * @throws Exception
      */
     protected function _index_page_filter(array &$data)
     {
-        $ip = new \Ip2Region();
+        $region = new \Ip2Region();
         foreach ($data as &$vo) {
-            $isp = $ip->btreeSearch($vo['geoip']);
-            $vo['isp'] = str_replace(['内网IP', '0', '|'], '', $isp['region'] ?? '');
+            $isp = $region->btreeSearch($vo['geoip']);
+            $vo['geoisp'] = str_replace(['内网IP', '0', '|'], '', $isp['region'] ?? '') ?: '-';
+            $vo['create_at'] = format_datetime($vo['create_at']);
         }
     }
 
@@ -75,9 +78,9 @@ class Oplog extends Controller
             $this->_query($this->table)->empty();
             sysoplog('系统运维管理', '成功清理所有日志数据');
             $this->success('日志清理成功！');
-        } catch (\think\exception\HttpResponseException $exception) {
+        } catch (HttpResponseException $exception) {
             throw $exception;
-        } catch (\Exception $exception) {
+        } catch (Exception $exception) {
             $this->error("日志清理失败，{$exception->getMessage()}");
         }
     }
@@ -89,7 +92,6 @@ class Oplog extends Controller
      */
     public function remove()
     {
-        $this->_applyFormToken();
         $this->_delete($this->table);
     }
 
