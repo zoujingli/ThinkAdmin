@@ -684,7 +684,7 @@ $(function () {
             // 搜索表单处理
             var search = options.search || this.dataset.targetSearch;
             if (search) $body.off('submit', 'form.form-search').on('submit', search, function () {
-                (data.page = 1), (data = $.extend(data, $(this).formToJson())), $(elem).trigger('reload');
+                (data = $.extend(data, $(this).formToJson())), $(elem).trigger('reload');
             });
             // 绑定重载事件
             $(this).bind('reload', function () {
