@@ -663,7 +663,7 @@ $(function () {
             // 标准化请求参数，初始化排序参数，表格插件初始化参数
             var data = {}, sort = options.initSort || options.sort || {}, option = {
                 id: elem.id, elem: elem, url: options.url || elem.dataset.url || '', where: getWhere(),
-                limit: options.limit || 15, cols: options.cols || [[]], page: options.page !== false,
+                limit: options.limit || 20, cols: options.cols || [[]], page: options.page !== false,
             };
             // 延用工具条配置
             if (sort.field && sort.type) option.initSort = sort;
@@ -687,13 +687,14 @@ $(function () {
             // 搜索表单处理
             var search = options.search || this.dataset.targetSearch;
             if (search) $body.off('submit', 'form.form-search').on('submit', search, function () {
-                (data = $.extend(data, $(this).formToJson())), $(elem).trigger('reload');
+                data = $.extend(data, $(this).formToJson());
+                $(elem).trigger('reload', {where: getWhere(), page: {curr: 1}});
             });
             // 绑定重载事件
-            $(this).bind('reload', function () {
-                var config = {where: getWhere()};
-                if (sort.field && sort.type) config.initSort = sort;
-                layui.table.reload(elem.id, config);
+            $(this).bind('reload', function (e, opts) {
+                opts = opts || {where: getWhere()};
+                if (sort.field && sort.type) opts.initSort = sort;
+                layui.table.reload(elem.id, opts);
             });
 
             // 获取查询数据
