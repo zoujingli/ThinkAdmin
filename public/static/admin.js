@@ -654,8 +654,6 @@ $(function () {
     /*! 组件 LayUI table 功能封装 */
     $.fn.layTable = function (options) {
         return this.each(function (idx, elem) {
-            // 拦截异常标签对象
-            if (this.nodeName !== 'TABLE') return new Error('It is not a table tag.');
             // 动态初始化数据表
             this.id = this.id || 't' + Math.random().toString().replace('0.', '');
             this.dataset.dataFilter = this.getAttribute('lay-filter') || this.id;
@@ -665,14 +663,17 @@ $(function () {
             opt.id = elem.id, opt.elem = elem, opt.url = options.url || elem.dataset.url || location.href;
             opt.page = options.page !== false, opt.limit = options.limit || 20, opt.cols = options.cols || [[]];
             // 实例表格组件
-            $(this).data('this', layui.table.render(bindData(opt)));
-            // 绑定重载事件
-            $(this).bind('reload', function (event, opts) {
-                layui.table.reload(elem.id, bindData(opts || {}));
-            });
+            var table = layui.table.render(bindData(opt));
+            table.bind = function (name, callable) {
+                return layui.table.on(name + '(' + elem.dataset.dataFilter + ')', callable), table;
+            }
             // 排序事件处理
-            layui.table.on('sort(' + this.dataset.dataFilter + ')', function (object) {
+            table.bind('sort', function (object) {
                 (sort = object), $(elem).trigger('reload')
+            });
+            // 绑定生成对象，绑定重载事件
+            $(this).data('this', table).bind('reload', function (event, opts) {
+                layui.table.reload(elem.id, bindData(opts || {}));
             });
             // 搜索表单处理
             var search = options.search || this.dataset.targetSearch;
