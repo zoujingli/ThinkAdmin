@@ -16,12 +16,14 @@
 
 .layui-layout {
   > .layui-header {
-    left: 200px;
+    left: @LayoutDefaLeftSzie;
     right: 0;
     height: 50px;
     position: absolute;
     color: @TopHeaderTextColor !important;
     background: @TopHeaderBackColor !important;
+    border-bottom: @TopHeaderBottomLine !important;
+    box-sizing: content-box;
 
     > ul.layui-nav {
       margin: 0;
@@ -82,7 +84,7 @@
       }
 
       .layui-nav-child {
-        top: 50px;
+        top: 51px;
         border: 0;
         padding: 0;
         line-height: 48px;
@@ -117,7 +119,8 @@
       }
     }
 
-    .layui-nav-bar, .layui-nav-item:after {
+    .layui-nav-bar,
+    .layui-nav-item:after {
       display: none !important
     }
   }
@@ -125,6 +128,7 @@
   > .layui-side {
     top: 0;
     bottom: 0;
+    width: @LayoutDefaLeftSzie;
     position: fixed;
     overflow: hidden;
     background-color: @LeftMainBackColor;
@@ -165,6 +169,10 @@
       overflow: auto;
       position: absolute;
 
+      .layui-nav-tree {
+        width: @LayoutDefaLeftSzie;
+      }
+
       &:after {
         height: 50px;
         display: block;
@@ -196,7 +204,8 @@
           background-color: @LeftMainNavNormalBackColor;
         }
 
-        dd.layui-this, dd.layui-this > a {
+        dd.layui-this,
+        dd.layui-this > a {
           color: @LeftMainNavActiveTextColor;
           background-color: @LeftMainNavActiveBackColor;
         }
@@ -213,7 +222,8 @@
             background: @LeftMainNavHoverBackColor
           }
 
-          .nav-icon, .nav-text {
+          .nav-icon,
+          .nav-text {
             padding-left: 5px
           }
         }
@@ -223,46 +233,62 @@
 
   > .layui-body {
     top: 50px;
-    bottom: 0;
-    overflow: auto;
-    background: @BodyMainBackColor;
+    left: @LayoutDefaLeftSzie;
+    padding: 0;
 
     > .layui-card {
-      overflow: visible;
-      position: absolute;
-      min-width: 100%;
-      min-height: 100%;
-      box-shadow: none;
+      box-shadow: none !important;
       background: none !important;
 
+
+      > .layui-card-body {
+        top: 0;
+        width: 100%;
+        bottom: 0;
+        padding: 0;
+        z-index: 2;
+        overflow: auto;
+        position: absolute;
+        box-sizing: border-box;
+        background: @BodyMainBackColor;
+
+        > .layui-card-table {
+          padding: 15px;
+          box-sizing: border-box;
+        }
+
+        > .layui-card-html {
+          padding: 15px;
+          min-width: 100%;
+          position: absolute;
+          box-sizing: border-box;
+        }
+
+        > div > .layui-tab.layui-tab-card {
+          border: none;
+          box-shadow: @ShadowMaxOuter;
+
+          & > .layui-tab-content.think-box-shadow {
+            box-shadow: none;
+          }
+        }
+      }
+
       > .layui-card-header {
-        left: 200px;
+        top: 50px;
+        left: @LayoutDefaLeftSzie;
         right: 0;
-        z-index: 3;
         height: 45px;
         border: none;
+        z-index: 3;
         padding: 0 15px;
         position: fixed;
         background: #fff;
         line-height: 45px;
-        box-shadow: @MaxOuterShadow;
-      }
+        box-shadow: @ShadowMaxOuter;
 
-      > .layui-card-header + .layui-card-body {
-        top: 45px;
-      }
-
-      > .layui-card-body {
-        z-index: 2;
-        padding: 15px;
-
-        > .layui-tab.layui-tab-card {
-          border: none;
-          box-shadow: @MaxOuterShadow;
-        }
-
-        > .layui-tab.layui-tab-card > .layui-tab-content.think-box-shadow {
-          box-shadow: none;
+        & + .layui-card-body {
+          top: 45px;
         }
       }
     }
@@ -271,15 +297,15 @@
 
 .layui-layout-left-mini {
   .layui-header {
-    left: 50px;
+    left: @LayoutMiniLeftSize;
   }
 
   > .layui-body {
-    left: 50px;
+    left: @LayoutMiniLeftSize;
 
     > .layui-card {
       > .layui-card-header {
-        left: 50px;
+        left: @LayoutMiniLeftSize;
       }
     }
   }
@@ -319,8 +345,8 @@
       }
     }
 
-    &, .layui-nav-tree, .layui-side-scroll {
-      width: 50px;
+    &, .layui-nav-tree, .layui-side-scroll, .layui-side-scroll .layui-nav-tree {
+      width: @LayoutMiniLeftSize;
       text-align: center;
     }
   }

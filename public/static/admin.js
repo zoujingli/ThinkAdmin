@@ -658,22 +658,25 @@ $(function () {
             if (this.nodeName !== 'TABLE') return new Error('It is not a table tag.');
             // 动态初始化数据表
             this.id = this.id || 't' + Math.random().toString().replace('0.', '');
-            this.dataset.filter = this.getAttribute('lay-filter') || this.id;
-            this.setAttribute('lay-filter', this.dataset.filter);
+            this.dataset.dataFilter = this.getAttribute('lay-filter') || this.id;
+            this.setAttribute('lay-filter', this.dataset.dataFilter);
             // 标准化请求参数，初始化排序参数，表格插件初始化参数
             var data = {}, sort = options.initSort || options.sort || {}, option = {
                 id: elem.id, elem: elem, url: options.url || elem.dataset.url || '', where: getWhere(),
                 limit: options.limit || 15, cols: options.cols || [[]], page: options.page !== false,
             };
             // 延用工具条配置
-            if (options.title) option.title = options.title;
-            if (options.toolbar) option.toolbar = options.toolbar;
-            if (options.defaultToolbar) option.defaultToolbar = top.defaultToolbar;
             if (sort.field && sort.type) option.initSort = sort;
+            if (options.title !== undefined) option.title = options.title;
+            if (options.width !== undefined) option.width = options.width;
+            if (options.height !== undefined) option.height = options.height;
+            if (options.toolbar !== undefined) option.toolbar = options.toolbar;
+            if (options.defaultToolbar !== undefined) option.defaultToolbar = options.defaultToolbar;
+
             // 实例化表单组件
-            layui.table.render(option);
+            $(this).data('this', layui.table.render(option));
             // 排序事件处理
-            layui.table.on('sort(' + this.dataset.filter + ')', function (object) {
+            layui.table.on('sort(' + this.dataset.dataFilter + ')', function (object) {
                 (sort = object), $(elem).trigger('reload')
             });
             // 绑定选择项对象

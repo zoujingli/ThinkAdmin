@@ -1,4 +1,4 @@
-{extend name='main'}
+{extend name='table'}
 
 {block name="button"}
 <!--{if auth("clear")}-->
@@ -12,14 +12,14 @@
 {block name="content"}
 <div class="think-box-shadow">
     {include file='oplog/index_search'}
-    <table id="oplog" data-url="{:sysuri()}" class="layui-hide" data-target-search="form.form-search"></table>
+    <table id="oplog" data-url="{:sysuri()}" data-target-search="form.form-search"></table>
 </div>
 {/block}
 
 {block name='script'}
 <script>
     $(function () {
-        $('table').layTable({
+        $('#oplog').layTable({
             sort: {field: 'id', type: 'desc'},
             cols: [[
                 {checkbox: true},

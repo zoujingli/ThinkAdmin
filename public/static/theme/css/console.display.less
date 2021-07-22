@@ -119,7 +119,7 @@ fieldset {
   border: 1px solid #009688;
 
   &:hover:not(.layui-btn-disabled) {
-    box-shadow: @MaxInsetShadow;
+    box-shadow: @ShadowMaxInset;
   }
 
   &-warm {
@@ -167,6 +167,11 @@ fieldset {
         border-color: #009688;
       }
     }
+  }
+
+  .layui-icon {
+    float: left;
+    margin-right: 5px;
   }
 
   & + .layui-btn {
@@ -353,6 +358,7 @@ label.think-radio, label.think-checkbox {
   }
 }
 
+
 .layui-table {
   td, th {
     font-size: 12px;
@@ -394,6 +400,24 @@ label.think-radio, label.think-checkbox {
     input {
       margin: 0 !important;
       vertical-align: middle
+    }
+  }
+}
+
+.layui-table-page {
+  .layui-laypage {
+    .layui-laypage-prev,
+    .layui-laypage-next {
+      padding: 0 8px;
+      border-radius: 3px;
+    }
+
+    .layui-laypage-prev {
+      margin-left: 0 !important;
+    }
+
+    .layui-laypage-next {
+      margin-right: 6px !important;
     }
   }
 }
@@ -473,7 +497,7 @@ label.think-radio, label.think-checkbox {
   height: 580px;
   position: relative;
   background: url(../img/wechat/mobile_head.png) no-repeat 0 0;
-  box-shadow: @MinOuterShadow;
+  box-shadow: @ShadowMinOuter;
   border-radius: @BoxBorderRadius;
 
   .mobile-header {

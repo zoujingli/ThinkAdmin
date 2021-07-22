@@ -15,7 +15,7 @@
 {/block}
 
 {block name="content"}
-<div class="layui-tab layui-tab-card think-bg-white">
+<div class="layui-tab layui-tab-card">
     <ul class="layui-tab-title">
         {foreach ['index'=>'系统菜单','recycle'=>'回 收 站'] as $k=>$v}
         {if isset($type) and $type eq $k}
@@ -62,32 +62,32 @@
 
                     {if auth("add")}
                     <!--{if $vo.spt < 2}-->
-                    <a class="layui-btn layui-btn-xs layui-btn-primary" data-title="添加子菜单" data-modal='{:url("add")}?pid={$vo.id}'>添 加</a>
+                    <a class="layui-btn layui-btn-sm layui-btn-primary" data-title="添加子菜单" data-modal='{:url("add")}?pid={$vo.id}'>添 加</a>
                     <!--{else}-->
-                    <a class="layui-btn layui-btn-xs layui-btn-disabled">添 加</a>
+                    <a class="layui-btn layui-btn-sm layui-btn-disabled">添 加</a>
                     <!--{/if}-->
                     {/if}
 
                     <!--{if auth("edit")}-->
-                    <a data-dbclick class="layui-btn layui-btn-xs" data-title="编辑菜单" data-modal='{:url("edit")}?id={$vo.id}'>编 辑</a>
+                    <a data-dbclick class="layui-btn layui-btn-sm" data-title="编辑菜单" data-modal='{:url("edit")}?id={$vo.id}'>编 辑</a>
                     <!--{/if}-->
 
                     <!--{if $vo.status eq 1 and auth("state")}-->
-                    <a class="layui-btn layui-btn-warm layui-btn-xs" data-confirm="确定要禁用菜单吗？" data-action="{:url('state')}" data-value="id#{$vo.ids};status#0" data-csrf="{:systoken('state')}">禁 用</a>
+                    <a class="layui-btn layui-btn-warm layui-btn-sm" data-confirm="确定要禁用菜单吗？" data-action="{:url('state')}" data-value="id#{$vo.ids};status#0" data-csrf="{:systoken('state')}">禁 用</a>
                     <!--{/if}-->
 
                     {else}
 
                     <!--{if auth("state")}-->
-                    <a class="layui-btn layui-btn-warm layui-btn-xs" data-confirm="确定要激活菜单吗？" data-action="{:url('state')}" data-value="id#{$vo.ids};status#1" data-csrf="{:systoken('state')}">激 活</a>
+                    <a class="layui-btn layui-btn-warm layui-btn-sm" data-confirm="确定要激活菜单吗？" data-action="{:url('state')}" data-value="id#{$vo.ids};status#1" data-csrf="{:systoken('state')}">激 活</a>
                     <!--{/if}-->
 
                     <!--{if auth("remove") and ($vo.spc<1 or $vo.status<1)}-->
-                    <a class="layui-btn layui-btn-danger layui-btn-xs" data-confirm="确定要删除菜单吗?" data-action="{:url('remove')}" data-value="id#{$vo.ids}" data-csrf="{:systoken('remove')}">删 除</a>
+                    <a class="layui-btn layui-btn-danger layui-btn-sm" data-confirm="确定要删除菜单吗?" data-action="{:url('remove')}" data-value="id#{$vo.ids}" data-csrf="{:systoken('remove')}">删 除</a>
                     <!--{/if}-->
 
                     <!--{if auth("remove") and $vo.spc>0 and $vo.status>0}-->
-                    <a class="layui-btn layui-btn-disabled layui-btn-xs">删 除</a>
+                    <a class="layui-btn layui-btn-disabled layui-btn-sm">删 除</a>
                     <!--{/if}-->
 
                     {/if}

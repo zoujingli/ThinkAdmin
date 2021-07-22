@@ -19,44 +19,47 @@
 
 // 输入框边线颜色
 @RadioBorderNormalColor: #CCC;
-@InputBorderNormalColor: #E9E9E9;
+@InputBorderNormalColor: #EEE;
 @InputBorderActiveColor: #DDD;
 
 // 基础阴影样式配置
-@MinOuterShadow: 0 2px 3px 0 rgba(0, 0, 0, .11);
-@MaxOuterShadow: 0 2px 3px 0 rgba(0, 0, 0, .22);
-@MinInsetShadow: 0 2px 5px 0 rgba(0, 0, 0, .11) inset;
-@MaxInsetShadow: 0 2px 20px 0 rgba(0, 0, 0, .11) inset;
+@ShadowMinOuter: 0 2px 3px 0 rgba(0, 0, 0, .11);
+@ShadowMaxOuter: 0 2px 3px 0 rgba(0, 0, 0, .22);
+@ShadowMinInset: 0 2px 5px 0 rgba(0, 0, 0, .11) inset;
+@ShadowMaxInset: 0 2px 20px 0 rgba(0, 0, 0, .11) inset;
 
 // 导航条颜色配置
 @TopHeaderTextColor: #333;
-@TopHeaderBackColor: #393D49;
+@TopHeaderBackColor: #FFF;
+@TopHeaderBottomLine: 1px solid #098;
+@TopHeaderNavNormalTextColor: @TopHeaderTextColor;
+@TopHeaderNavNormalBackColor: @TopHeaderBackColor;
 
 // 导航条按钮颜色
-@TopHeaderNavHoverTextColor: #EFEFEF;
-@TopHeaderNavHoverBackColor: rgba(0, 0, 0, 0.1);
-
-@TopHeaderNavNormalTextColor: #EEE;
-@TopHeaderNavNormalBackColor: rgba(0, 0, 0, 0);
-
-@TopHeaderNavActiveTextColor: #FFF;
-@TopHeaderNavActiveBackColor: #098;
+@TopHeaderNavHoverTextColor: #000;
+@TopHeaderNavHoverBackColor: rgba(0, 0, 0, 0.05);
+@TopHeaderNavActiveTextColor: #000;
+@TopHeaderNavActiveBackColor: rgba(0, 0, 0, 0.1);
 
 // 左侧菜单布局颜色
 @LeftMainBackColor: #393D49 !important;
 @LeftMainSubBackColor: rgba(0, 0, 0, .3) !important;
 
 @LeftMainNavHoverBackColor: hsla(0, 0%, 39%, .2) !important;
-@LeftMainNavHoverTextColor: #fff;
+@LeftMainNavHoverTextColor: #FFF;
 
 @LeftMainNavNormalBackColor: none;
-@LeftMainNavNormalTextColor: #fff;
+@LeftMainNavNormalTextColor: #FFF;
 
 @LeftMainNavActiveBackColor: #098;
-@LeftMainNavActiveTextColor: #fff;
+@LeftMainNavActiveTextColor: #FFF;
 
 // 加载页面背景颜色
-@LoadBackColor: #E9E7E7;
+@LoadBackColor: #EEE;
 
 // 窗口页面背景颜色
 @BodyMainBackColor: #EEE;
+
+// 左侧菜单大小
+@LayoutMiniLeftSize: 50px;
+@LayoutDefaLeftSzie: 200px;

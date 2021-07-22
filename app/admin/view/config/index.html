@@ -45,12 +45,13 @@
             {if auth('storage')}<a data-title="配置{$v}" data-modal="{:url('storage')}?type={$k}" class="layui-btn layui-btn-sm layui-btn-primary">{$v}</a>{else}<a class="layui-btn layui-btn-sm layui-btn-primary">{$v}</a>{/if}
             {/if}{/foreach}
         </div>
-        <div class="margin-top-20 nowrap">
+        <div class="margin-top-20 nowrap" style="float:left;width:100%">
             <p><b>本地服务器存储</b>：文件直接上传到本地服务器的 `static/upload` 目录，不支持大文件上传，占用服务器磁盘空间，访问时消耗服务器带宽流量。</p>
             <p><b>七牛云对象存储</b>：文件直接上传到七牛云存储空间，支持大文件上传，不占用服务器空间及服务器带宽流量，支持 CDN 加速访问，访问量大时推荐使用。</p>
             <p><b>阿里云OSS存储</b>：文件直接上传到阿里云 OSS 存储空间，支持大文件上传，不占用服务器空间及服务器带宽流量，支持 CDN 加速访问，访问量大时推荐使用。</p>
             <p><b>腾讯云COS存储</b>：文件直接上传到腾讯云 COS 存储空间，支持大文件上传，不占用服务器空间及服务器带宽流量，支持 CDN 加速访问，访问量大时推荐使用。</p>
         </div>
+        <div style="clear: both"></div>
     </div>
 </div>
 
@@ -63,7 +64,7 @@
             <span class="color-green font-w7">网站名称</span><span class="margin-left-5 color-desc">Website</span>
             <label class="relative block">
                 <input readonly value="{:sysconf('site_name')}" class="layui-input layui-bg-gray">
-                <a data-copy="{:sysconf('site_name')}" class="iconfont icon-copy input-right-icon"></a>
+                <a data-copy="{:sysconf('site_name')}" class="layui-icon layui-icon-release input-right-icon"></a>
             </label>
             <div class="help-block">网站名称及网站图标，将显示在浏览器的标签上。</div>
         </div>
@@ -71,7 +72,7 @@
             <span class="color-green font-w7">管理程序名称</span><span class="margin-left-5 color-desc">Name</span>
             <label class="relative block">
                 <input readonly value="{:sysconf('app_name')}" class="layui-input layui-bg-gray">
-                <a data-copy="{:sysconf('app_name')}" class="iconfont icon-copy input-right-icon"></a>
+                <a data-copy="{:sysconf('app_name')}" class="layui-icon layui-icon-release input-right-icon"></a>
             </label>
             <div class="help-block">管理程序名称，将显示在后台左上角标题。</div>
         </div>
@@ -79,7 +80,7 @@
             <span class="color-green font-w7">管理程序版本</span><span class="margin-left-5 color-desc">Version</span>
             <label class="relative block">
                 <input readonly value="{:sysconf('app_version')}" class="layui-input layui-bg-gray">
-                <a data-copy="{:sysconf('app_version')}" class="iconfont icon-copy input-right-icon"></a>
+                <a data-copy="{:sysconf('app_version')}" class="layui-icon layui-icon-release input-right-icon"></a>
             </label>
             <div class="help-block">管理程序版本，将显示在后台左上角标题。</div>
         </div>
@@ -87,7 +88,7 @@
             <span class="color-green font-w7">公网备案号</span><span class="margin-left-5 color-desc">Baian</span>
             <label class="relative block">
                 <input readonly value="{:sysconf('beian')?:'-'}" class="layui-input layui-bg-gray">
-                <a data-copy="{:sysconf('beian')}" class="iconfont icon-copy input-right-icon"></a>
+                <a data-copy="{:sysconf('beian')}" class="layui-icon layui-icon-release input-right-icon"></a>
             </label>
             <p class="help-block">公网备案号，可以在<a target="_blank" href="http://beian.miit.gov.cn">备案管理中心</a>查询获取，将在登录页面下面显示。</p>
         </div>
@@ -95,7 +96,7 @@
             <span class="color-green font-w7">网站备案号</span><span class="margin-left-5 color-desc">Miitbeian</span>
             <label class="relative block">
                 <input readonly value="{:sysconf('miitbeian')?:'-'}" class="layui-input layui-bg-gray">
-                <a data-copy="{:sysconf('miitbeian')}" class="iconfont icon-copy input-right-icon"></a>
+                <a data-copy="{:sysconf('miitbeian')}" class="layui-icon layui-icon-release input-right-icon"></a>
             </label>
             <div class="help-block">网站备案号，可以在<a target="_blank" href="http://beian.miit.gov.cn">备案管理中心</a>查询获取，将显示在登录页面下面。</div>
         </div>
@@ -103,7 +104,7 @@
             <span class="color-green font-w7">网站版权信息</span><span class="margin-left-5 color-desc">Copyright</span>
             <label class="relative block">
                 <input readonly value="{:sysconf('site_copy')}" class="layui-input layui-bg-gray">
-                <a data-copy="{:sysconf('site_copy')}" class="iconfont icon-copy input-right-icon"></a>
+                <a data-copy="{:sysconf('site_copy')}" class="layui-icon layui-icon-release input-right-icon"></a>
             </label>
             <div class="help-block">网站版权信息，在后台登录页面显示版本信息并链接到备案到信息备案管理系统。</div>
         </div>

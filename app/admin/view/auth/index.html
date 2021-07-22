@@ -40,8 +40,8 @@
             <td class='list-table-sort-td'>
                 <label><input data-action-blur="{:request()->url()}" data-value="id#{$vo.id};action#sort;sort#{value}" data-loading="false" value="{$vo.sort}" class="list-sort-input"></label>
             </td>
-            <td class='text-left'>{$vo.title|default='-'}</td>
-            <td class='text-left'>{$vo.desc|default="没有写描述哦！"}</td>
+            <td class='text-left nowrap'>{$vo.title|default='-'}</td>
+            <td class='text-left nowrap'>{$vo.desc|default="没有写描述哦！"}</td>
             <td class="text-left nowrap">{$vo.create_at|format_datetime}</td>
             <td class='text-left nowrap'>{eq name='vo.status' value='0'}<span class="color-red">已禁用</span>{else}<span class="color-green">已激活</span>{/eq}</td>
             <td class='text-left nowrap'>
