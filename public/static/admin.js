@@ -660,51 +660,41 @@ $(function () {
             this.id = this.id || 't' + Math.random().toString().replace('0.', '');
             this.dataset.dataFilter = this.getAttribute('lay-filter') || this.id;
             this.setAttribute('lay-filter', this.dataset.dataFilter);
-            // 标准化请求参数，初始化排序参数，表格插件初始化参数
-            var data = {}, sort = options.initSort || options.sort || {}, option = {
-                id: elem.id, elem: elem, url: options.url || elem.dataset.url || '', where: getWhere(),
-                limit: options.limit || 20, cols: options.cols || [[]], page: options.page !== false,
-            };
-            // 延用工具条配置
-            if (sort.field && sort.type) option.initSort = sort;
-            if (options.title !== undefined) option.title = options.title;
-            if (options.width !== undefined) option.width = options.width;
-            if (options.height !== undefined) option.height = options.height;
-            if (options.toolbar !== undefined) option.toolbar = options.toolbar;
-            if (options.defaultToolbar !== undefined) option.defaultToolbar = options.defaultToolbar;
-
-            // 实例化表单组件
-            $(this).data('this', layui.table.render(option));
+            // 插件初始化参数
+            var opt = options || {}, data = opt.where || {}, sort = opt.initSort || opt.sort || {};
+            opt.id = elem.id, opt.elem = elem, opt.url = options.url || elem.dataset.url || location.href;
+            opt.page = options.page !== false, opt.limit = options.limit || 20, opt.cols = options.cols || [[]];
+            // 实例表格组件
+            $(this).data('this', layui.table.render(bindData(opt)));
+            // 绑定重载事件
+            $(this).bind('reload', function (event, opts) {
+                layui.table.reload(elem.id, bindData(opts || {}));
+            });
             // 排序事件处理
             layui.table.on('sort(' + this.dataset.dataFilter + ')', function (object) {
                 (sort = object), $(elem).trigger('reload')
+            });
+            // 搜索表单处理
+            var search = options.search || this.dataset.targetSearch;
+            if (search) $body.off('submit', search).on('submit', search, function () {
+                data = $.extend(data, $(this).formToJson());
+                $(elem).trigger('reload', bindData({page: {curr: 1}}));
             });
             // 绑定选择项对象
             var checked = options.checked || this.dataset.targetChecked;
             if (checked) $body.find(checked).map(function () {
                 $(this).attr('data-table-id', elem.id);
             });
-            // 搜索表单处理
-            var search = options.search || this.dataset.targetSearch;
-            if (search) $body.off('submit', 'form.form-search').on('submit', search, function () {
-                data = $.extend(data, $(this).formToJson());
-                $(elem).trigger('reload', {where: getWhere(), page: {curr: 1}});
-            });
-            // 绑定重载事件
-            $(this).bind('reload', function (e, opts) {
-                opts = opts || {where: getWhere()};
-                if (sort.field && sort.type) opts.initSort = sort;
-                layui.table.reload(elem.id, opts);
-            });
 
-            // 获取查询数据
-            function getWhere() {
+            // 生成初始化参数
+            function bindData(opts) {
                 data['output'] = 'layui.table';
                 if (sort.field && sort.type) {
+                    opts.initSort = sort;
                     data['_order_'] = sort.type;
                     data['_field_'] = sort.field;
                 }
-                return data;
+                return (opts['where'] = data), opts;
             }
         });
     }
