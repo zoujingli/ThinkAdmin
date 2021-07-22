@@ -10,7 +10,7 @@
                     <span class="color-green font-w7">登录账号</span>
                     <span class="color-desc margin-left-5">User Name</span>
                     {if isset($vo) and isset($vo.username)}
-                    <input disabled value='{$vo.username|default=""}' class="layui-input layui-disabled">
+                    <input disabled value='{$vo.username|default=""}' class="layui-input think-bg-gray">
                     {else}
                     <input name="username" value='{$vo.username|default=""}' required pattern="^.{4,}$" placeholder="请输入登录账号" class="layui-input">
                     {/if}
