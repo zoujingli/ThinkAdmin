@@ -68,7 +68,7 @@ class User extends Controller
         }
         // 列表排序并显示
         $query->equal('status')->like('username,contact_phone#phone,contact_mail#mail');
-        $query->dateBetween('login_at,create_at')->order('sort desc,id desc')->page();
+        $query->dateBetween('login_at,create_at')->layTable();
     }
 
     /**
@@ -165,7 +165,6 @@ class User extends Controller
     public function state()
     {
         $this->_checkInput();
-        $this->_applyFormToken();
         $this->_save($this->table, $this->_vali([
             'status.in:0,1'  => '状态值范围异常！',
             'status.require' => '状态值不能为空！',
@@ -180,7 +179,6 @@ class User extends Controller
     public function remove()
     {
         $this->_checkInput();
-        $this->_applyFormToken();
         $this->_delete($this->table);
     }
 
