@@ -45,7 +45,7 @@ class Auth extends Controller
     {
         $this->title = '系统权限管理';
         $query = $this->_query($this->table)->dateBetween('create_at');
-        $query->like('title,desc')->equal('status')->order('sort desc,id desc')->page();
+        $query->like('title,desc')->equal('status')->layTable();
     }
 
     /**
@@ -81,7 +81,6 @@ class Auth extends Controller
      */
     public function state()
     {
-        $this->_applyFormToken();
         $this->_save($this->table, $this->_vali([
             'status.in:0,1'  => '状态值范围异常！',
             'status.require' => '状态值不能为空！',
@@ -125,7 +124,6 @@ class Auth extends Controller
      */
     public function remove()
     {
-        $this->_applyFormToken();
         $this->_delete($this->table);
     }
 

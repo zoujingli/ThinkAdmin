@@ -11,7 +11,7 @@
             {foreach $one.sub as $two}{empty name='two.sub'}
             <li class="layui-nav-item">
                 <a data-target-tips="{$two.title}" data-menu-node="m-{$one.id}-{$two.id}" data-open="{$two.url}">
-                    <span class='{$two.icon|default="layui-icon layui-icon-link"}'></span>
+                    <span class='nav-icon {$two.icon|default="layui-icon layui-icon-senior"}'></span>
                     <span class="nav-text">{$two.title|default=''}</span>
                 </a>
             </li>
@@ -25,7 +25,7 @@
                     {foreach $two.sub as $thr}
                     <dd>
                         <a data-target-tips="{$thr.title}" data-open="{$thr.url}" data-menu-node="m-{$one.id}-{$two.id}-{$thr.id}">
-                            <span class='nav-icon {$thr.icon|default="layui-icon layui-icon-link"}'></span>
+                            <span class='nav-icon {$thr.icon|default="layui-icon layui-icon-senior"}'></span>
                             <span class="nav-text">{$thr.title|default=''}</span>
                         </a>
                     </dd>

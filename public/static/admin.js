@@ -115,6 +115,8 @@ $(function () {
                     for (idx2 in json) if (json[idx2][field]) temp.push(json[idx2][field]);
                     if (temp.length < 1) return $.msg.tips('请选择需要更改的数据！'), false;
                     data[idx1] = temp.join(',');
+                } else {
+                    data[idx1] = rule[idx1];
                 }
             }
             return data;
@@ -474,9 +476,9 @@ $(function () {
             /*! 错误标签插入 */
             this.insertError = function (ele) {
                 if ($(ele).data('input-info')) return $(ele).data('input-info');
+                var $html = $('<span class="absolute block layui-anim text-center font-s12 notselect" style="color:#a44;z-index:2"></span>');
                 var $next = $(ele).nextAll('.input-right-icon'), right = ($next ? $next.width() + parseFloat($next.css('right') || '0') : 0) + 10;
-                var $html = $('<span class="absolute block layui-anim text-center font-s12" style="color:#a44;z-index:2;pointer-events:none"></span>');
-                var style = {top: $(ele).position().top + 'px', right: right + 'px', lineHeight: $(ele).css('height'), paddingBottom: $(ele).css('paddingBottom')};
+                var style = {top: $(ele).position().top + 'px', right: right + 'px', lineHeight: ele.nodeName === 'TEXTAREA' ? '32px' : $(ele).css('height')};
                 return $(ele).data('input-info', $html.css(style).insertAfter(ele)), $html;
             };
             /*! 表单验证入口 */
@@ -655,33 +657,35 @@ $(function () {
     $.fn.layTable = function (options) {
         return this.each(function (idx, elem) {
             // 动态初始化数据表
-            this.id = this.id || 't' + Math.random().toString().replace('0.', '');
-            this.dataset.dataFilter = this.getAttribute('lay-filter') || this.id;
-            this.setAttribute('lay-filter', this.dataset.dataFilter);
+            this.id = this.id || 't' + Math.random().toString().replace('.', '');
+            this.dataset.dataId = this.getAttribute('lay-filter') || this.id;
+            this.setAttribute('lay-filter', this.dataset.dataId);
             // 插件初始化参数
             var opt = options || {}, data = opt.where || {}, sort = opt.initSort || opt.sort || {};
             opt.id = elem.id, opt.elem = elem, opt.url = options.url || elem.dataset.url || location.href;
-            opt.page = options.page !== false, opt.limit = options.limit || 20, opt.cols = options.cols || [[]];
-            // 实例表格组件
-            var table = layui.table.render(bindData(opt));
-            table.bind = function (name, callable) {
-                return layui.table.on(name + '(' + elem.dataset.dataFilter + ')', callable), table;
-            }
-            // 排序事件处理
-            table.bind('sort', function (object) {
+            opt.page = options.page !== false ? (options.page || true) : false, opt.autoSort = options.autoSort === true;
+            opt.limit = options.limit || 20, opt.cols = options.cols || [[]], opt.done = function () {
+                $(elem).next().find(".layui-btn:not([data-table-id])").attr('data-table-id', elem.id);
+            };
+            // 实例并绑定对象
+            $(this).data('this', layui.table.render(bindData(opt)));
+            // 绑定实例重载事件
+            $(this).bind('reload', function (event, object) {
+                data = $.extend({}, data, (object || {}).where || {});
+                layui.table.reload(elem.id, bindData(object || {}));
+            }).bind('row sort tool edit radio toolbar checkbox rowDouble', function (evt, call) {
+                layui.table.on(evt.type + '(' + elem.dataset.dataId + ')', call)
+            }).bind('setFullHeight', function () {
+                $(elem).trigger('reload', {height: $(window).height() - $(elem).next().offset().top - 35})
+            }).trigger('sort', function (object) {
                 (sort = object), $(elem).trigger('reload')
             });
-            // 绑定生成对象，绑定重载事件
-            $(this).data('this', table).bind('reload', function (event, opts) {
-                layui.table.reload(elem.id, bindData(opts || {}));
-            });
-            // 搜索表单处理
+            // 搜索表单关联对象
             var search = options.search || this.dataset.targetSearch;
-            if (search) $body.off('submit', search).on('submit', search, function () {
-                data = $.extend(data, $(this).formToJson());
-                $(elem).trigger('reload', bindData({page: {curr: 1}}));
+            if (search) $body.find(search).map(function () {
+                $(this).attr('data-table-id', elem.id);
             });
-            // 绑定选择项对象
+            // 绑定选择项关联对象
             var checked = options.checked || this.dataset.targetChecked;
             if (checked) $body.find(checked).map(function () {
                 $(this).attr('data-table-id', elem.id);
@@ -691,27 +695,27 @@ $(function () {
             function bindData(opts) {
                 data['output'] = 'layui.table';
                 if (sort.field && sort.type) {
-                    opts.initSort = sort;
-                    data['_order_'] = sort.type;
-                    data['_field_'] = sort.field;
+                    data['_order_'] = sort.type, data['_field_'] = sort.field;
+                    opts.initSort = {type: sort.type.split(',')[0].split(' ')[0], field: sort.field.split(',')[0].split(' ')[0]};
                 }
                 return (opts['where'] = data), opts;
             }
         });
     }
 
-    /*! 注册 data-serach 表单搜索行为 */
+    /*! 注册 data-search 表单搜索行为 */
     onEvent('submit', 'form.form-search', function () {
+        var tableId = this.dataset.tableId;
+        if (tableId) return $('table#' + tableId).trigger('reload', {
+            page: {curr: 1}, where: $(this).formToJson()
+        });
         var url = $(this).attr('action').replace(/&?page=\d+/g, '');
         if ((this.method || 'get').toLowerCase() === 'get') {
-            var split = url.indexOf('?') === -1 ? '?' : '&';
-            if (location.href.indexOf('spm=') > -1) {
-                return location.href = '#' + $.menu.parseUri(url + split + $(this).serialize());
-            } else {
-                return location.href = $.menu.parseUri(url + split + $(this).serialize());
-            }
+            var split = url.indexOf('?') > -1 ? '&' : '?';
+            var stype = location.href.indexOf('spm=') > -1 ? '#' : '';
+            return location.href = stype + $.menu.parseUri(url + split + $(this).serialize());
         }
-        $.form.load(url, this, 'post');
+        return $.form.load(url, this, 'post');
     });
 
     /*! 注册 data-load 事件行为 */

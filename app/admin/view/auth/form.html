@@ -1,18 +1,18 @@
-<form class="layui-form layui-card" action="{:request()->url()}" data-auto="true" method="post" autocomplete="off">
+<form class="layui-form layui-card" action="{:sysuri()}" data-auto="true" method="post" autocomplete="off">
 
     <div class="layui-card-body padding-left-40">
 
         <label class="layui-form-item relative block">
-            <span class="color-green font-w7">访问权限名称</span>
+            <span class="color-green font-w7">系统权限名称</span>
             <span class="color-desc margin-left-5">Role Name</span>
-            <input type="text" name="title" maxlength="100" class="layui-input" value='{$vo.title|default=""}' required placeholder="请输入访问权限名称">
-            <span class="help-block">访问权限名称需要保持不重复，在给用户授权时需要根据名称选择！</span>
+            <input maxlength="100" class="layui-input" name="title" value='{$vo.title|default=""}' required placeholder="请输入系统权限名称">
+            <!--<span class="help-block">访问权限名称需要保持不重复，在给用户授权时需要根据名称选择！</span>-->
         </label>
 
         <label class="layui-form-item relative block">
-            <span class="color-green font-w7">访问权限描述</span>
+            <span class="color-green font-w7">系统权限描述</span>
             <span class="color-desc margin-left-5">Role Remark</span>
-            <textarea placeholder="请输入访问权限描述" maxlength="200" class="layui-textarea" name="desc">{$vo.desc|default=""}</textarea>
+            <textarea placeholder="请输入系统权限描述" maxlength="200" class="layui-textarea" name="desc">{$vo.desc|default=""}</textarea>
         </label>
 
     </div>

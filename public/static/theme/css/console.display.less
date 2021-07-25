@@ -404,23 +404,48 @@ label.think-radio, label.think-checkbox {
   }
 }
 
-.layui-table-page {
-  .layui-laypage {
-    .layui-laypage-prev,
-    .layui-laypage-next {
-      padding: 0 8px;
-      border-radius: 3px;
-    }
+table.layui-table {
+  input.layui-input, .layui-btn.layui-btn-sm {
+    height: 28px;
+    line-height: 28px;
+    box-sizing: border-box;
+  }
 
-    .layui-laypage-prev {
-      margin-left: 0 !important;
-    }
+  .layui-btn.layui-btn-sm {
+    margin-top: -1px;
+  }
+}
 
-    .layui-laypage-next {
-      margin-right: 6px !important;
+table.layui-table[lay-size="lg"] {
+  input.layui-input, .layui-btn.layui-btn-sm {
+    height: 38px;
+    line-height: 38px;
+    box-sizing: border-box;
+  }
+}
+
+.layui-table-view {
+  margin-bottom: 0;
+
+  .layui-table-page {
+    .layui-laypage {
+      .layui-laypage-prev,
+      .layui-laypage-next {
+        padding: 0 8px;
+        border-radius: 3px;
+      }
+
+      .layui-laypage-prev {
+        margin-left: 0 !important;
+      }
+
+      .layui-laypage-next {
+        margin-right: 6px !important;
+      }
     }
   }
 }
+
 
 .layui-layer-content {
   .layui-form.layui-card {

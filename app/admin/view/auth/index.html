@@ -1,4 +1,4 @@
-{extend name='main'}
+{extend name='table'}
 
 {block name="button"}
 <!--{if auth("add")}-->
@@ -6,67 +6,73 @@
 <!--{/if}-->
 
 <!--{if auth("remove")}-->
-<button data-action='{:url("remove")}' data-rule="id#{key}" data-csrf="{:systoken('remove')}" data-confirm="确定要删除这些权限吗？" class='layui-btn layui-btn-sm layui-btn-primary'>删除权限</button>
+<button data-action='{:url("remove")}' data-rule="id#{key}" data-confirm="确定要批量删除权限吗？" class='layui-btn layui-btn-sm layui-btn-primary'>批量删除</button>
 <!--{/if}-->
 {/block}
 
 {block name="content"}
 <div class="think-box-shadow">
     {include file='auth/index_search'}
-    <table class="layui-table margin-top-10" lay-skin="line">
-        {notempty name='list'}
-        <thead>
-        <tr>
-            <th class='list-table-check-td think-checkbox'>
-                <label><input data-auto-none data-check-target='.list-check-box' type='checkbox'></label>
-            </th>
-            <th class='list-table-sort-td'>
-                <button type="button" data-reload class="layui-btn layui-btn-xs">刷 新</button>
-            </th>
-            <th class='text-left nowrap'>权限名称</th>
-            <th class='text-left nowrap'>权限描述</th>
-            <th class='text-left nowrap'>创建时间</th>
-            <th class="text-left nowrap">使用状态</th>
-            <th></th>
-        </tr>
-        </thead>
-        {/notempty}
-        <tbody>
-        {foreach $list as $key => $vo}
-        <tr data-dbclick>
-            <td class='list-table-check-td think-checkbox'>
-                <label><input class="list-check-box" value='{$vo.id}' type='checkbox'></label>
-            </td>
-            <td class='list-table-sort-td'>
-                <label><input data-action-blur="{:request()->url()}" data-value="id#{$vo.id};action#sort;sort#{value}" data-loading="false" value="{$vo.sort}" class="list-sort-input"></label>
-            </td>
-            <td class='text-left nowrap'>{$vo.title|default='-'}</td>
-            <td class='text-left nowrap'>{$vo.desc|default="没有写描述哦！"}</td>
-            <td class="text-left nowrap">{$vo.create_at|format_datetime}</td>
-            <td class='text-left nowrap'>{eq name='vo.status' value='0'}<span class="color-red">已禁用</span>{else}<span class="color-green">已激活</span>{/eq}</td>
-            <td class='text-left nowrap'>
-                <!--{if auth("edit")}-->
-                <a data-dbclick class="layui-btn layui-btn-sm" data-title="编辑权限" data-modal='{:url("edit")}?id={$vo.id}'>编 辑</a>
-                <!--{/if}-->
-
-                <!--{if auth("apply")}-->
-                <a class="layui-btn layui-btn-normal layui-btn-sm" data-open='{:url("apply")}?id={$vo.id}'>授 权</a>
-                <!--{/if}-->
-
-                <!--{if $vo.status eq 1 and auth("state")}-->
-                <a class="layui-btn layui-btn-warm layui-btn-sm" data-confirm="确定禁用该权限吗？" data-action="{:url('state')}" data-value="id#{$vo.id};status#0" data-csrf="{:systoken('state')}">禁 用</a>
-                <!--{elseif $vo.status eq 0 and auth("state")}-->
-                <a class="layui-btn layui-btn-warm layui-btn-sm" data-confirm="确定启用该权限吗？" data-action="{:url('state')}" data-value="id#{$vo.id};status#1" data-csrf="{:systoken('state')}">激 活</a>
-                <!--{/if}-->
-
-                <!--{if auth("remove")}-->
-                <a class="layui-btn layui-btn-danger layui-btn-sm" data-confirm="确定要删除权限吗?" data-action="{:url('remove')}" data-value="id#{$vo.id}" data-csrf="{:systoken('remove')}">删 除</a>
-                <!--{/if}-->
-            </td>
-        </tr>
-        {/foreach}
-        </tbody>
-    </table>
-    {empty name='list'}<span class="notdata">没有记录哦</span>{else}{$pagehtml|raw|default=''}{/empty}
+    <table id="RoleData" data-url="{:sysuri()}" data-target-search="form.form-search"></table>
 </div>
+{/block}
+
+{block name='script'}
+<script>
+    $(function () {
+        $('#RoleData').layTable({
+            sort: {field: 'sort desc,id', type: 'desc'},
+            even: true,
+            cols: [[
+                {checkbox: true, fixed: true},
+                {field: 'sort', title: '排序权重', width: 100, align: 'center', sort: true, templet: '#SortInputTpl', fixed: true},
+                {field: 'title', title: '权限名称', minWidth: 140, align: 'center', sort: false, fixed: true},
+                {
+                    field: 'desc', title: '权限描述', align: 'center', sort: false, templet: function (d) {
+                        return d.desc || '<span class="color-desc">未填写权限描述</span>'
+                    }
+                },
+                {field: 'create_at', title: '创建时间', align: 'center', sort: true},
+                {field: 'status', title: '权限状态', align: 'center', minWidth: 110, fixed: 'right', templet: '#StatusSwitchTpl'},
+                {toolbar: '#toolbar', align: 'center', minWidth: 200, title: '权限操作', fixed: 'right'},
+            ]]
+        }).trigger('setFullHeight');
+        // 数据状态切换操作
+        layui.form.on('switch(StatusSwitch)', function (obj) {
+            $.form.load("{:url('state')}", {id: obj.value, status: obj.elem.checked > 0 ? 1 : 0}, 'post', function (ret) {
+                if (ret.code > 0) return false;
+            }, false);
+        });
+    });
+
+</script>
+
+<!-- 列表排序权重模板 -->
+<script type="text/html" id="SortInputTpl">
+    <input min="0" type="number" data-blur-number="0" data-action-blur="{:sysuri()}" data-value="id#{{d.id}};action#sort;sort#{value}" data-loading="false" value="{{d.sort}}" class="layui-input text-center">
+</script>
+
+<!-- 数据状态切换模板 -->
+<script type="text/html" id="StatusSwitchTpl">
+    <!--{if auth("state")}-->
+    <input type="checkbox" value="{{d.id}}" lay-skin="switch" lay-text="已激活|已禁用" lay-filter="StatusSwitch" {{d.status>0?'checked':''}}>
+    <!--{else}-->
+    {{d.status ? '<b class="color-green">已启用</b>' : '<b class="color-red">已禁用</b>'}}
+    <!--{/if}-->
+</script>
+
+<!-- 数据操作工具条模板 -->
+<script type="text/html" id="toolbar">
+    <!--{if auth('edit')}-->
+    <a class="layui-btn layui-btn-primary layui-btn-sm" data-title="编辑权限" data-modal='{:url("edit")}?id={{d.id}}'>编 辑</a>
+    <!--{/if}-->
+
+    <!--{if auth("apply")}-->
+    <a class="layui-btn layui-btn-normal layui-btn-sm" data-open='{:url("apply")}?id={{d.id}}'>授 权</a>
+    <!--{/if}-->
+
+    <!--{if auth("remove")}-->
+    <a class="layui-btn layui-btn-danger layui-btn-sm" data-confirm="确定要删除权限吗?" data-action="{:url('remove')}" data-value="id#{{d.id}}">删 除</a>
+    <!--{/if}-->
+</script>
 {/block}

@@ -1,4 +1,4 @@
-<form class="layui-form layui-card" action="{:request()->url()}" data-auto="true" method="post" autocomplete="off">
+<form class="layui-form layui-card" action="{:sysuri()}" data-auto="true" method="post" autocomplete="off">
     <div class="layui-card-body padding-left-40">
         <div class="layui-row layui-col-space15">
             <div class="layui-col-xs2 text-center">
@@ -56,7 +56,7 @@
         <div class="hr-line-dashed margin-top-10 margin-bottom-10"></div>
         <div class="layui-form-item">
             <span class="color-green font-w7">访问权限</span>
-            <span class="color-desc margin-left-5">Authorize</span>
+            <span class="color-desc margin-left-5">User Authorize</span>
             <div class="layui-textarea">
                 {if isset($vo.username) and $vo.username eq $superName}
                 <span class="color-desc">超级用户不需要配置权限</span>

@@ -16,8 +16,10 @@
 
 namespace think;
 
+use think\admin\service\SystemService;
+
 // 加载基础文件
 require __DIR__ . '/vendor/autoload.php';
 
-// 应用初始化
-(new App())->console->run();
+// 命令行应用初始化
+SystemService::instance()->doConsoleInit();

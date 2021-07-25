@@ -50,7 +50,7 @@
                     <label><input class="list-check-box" value='{$vo.ids}' type='checkbox'></label>
                 </td>
                 <td class='list-table-sort-td'>
-                    <input data-action-blur="{:request()->url()}" data-value="id#{$vo.id};action#sort;sort#{value}" data-loading="false" value="{$vo.sort}" class="list-sort-input">
+                    <input data-action-blur="{:sysuri()}" data-value="id#{$vo.id};action#sort;sort#{value}" data-loading="false" value="{$vo.sort}" class="list-sort-input">
                 </td>
                 <td class='text-center'><i class="{$vo.icon} font-s18"></i></td>
                 <td class="nowrap"><span class="color-desc">{$vo.spl|raw}</span>{$vo.title}</td>

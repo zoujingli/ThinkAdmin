@@ -33,13 +33,13 @@
                 {field: 'create_at', title: '操作时间', sort: true},
                 {toolbar: '#toolbar', align: 'center'}
             ]]
-        });
+        }).trigger('setFullHeight');
     });
 </script>
 
 <script type="text/html" id="toolbar">
     <!--{if auth('remove')}-->
-    <a data-action='{:url("remove")}' data-value="id#{{d.id}}" data-table-id="oplog" data-confirm="确认要删除这条记录吗？" class="layui-btn layui-btn-danger layui-btn-sm">删 除</a>
+    <a data-action='{:url("remove")}' data-value="id#{{d.id}}" data-confirm="确认要删除这条记录吗？" class="layui-btn layui-btn-danger layui-btn-sm">删 除</a>
     <!--{/if}-->
 </script>
 {/block}
