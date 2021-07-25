@@ -6,14 +6,14 @@
 <button data-modal='{:url("add")}' data-title="添加用户" class='layui-btn layui-btn-sm layui-btn-primary'>添加用户</button>
 <!--{/if}-->
 <!--{if auth("state")}-->
-<a data-confirm="确定要启用该用户吗？" data-table-id="UserData" data-action="{:url('state')}" data-rule="id#{key};status#0" class='layui-btn layui-btn-sm layui-btn-primary'>批量禁用</a>
+<a data-confirm="确定要启用该用户吗？" data-table-id="UserData" data-action="{:url('state')}" data-rule="id#{id};status#0" class='layui-btn layui-btn-sm layui-btn-primary'>批量禁用</a>
 <!--{/if}-->
 {else}
 <!--{if auth("state")}-->
-<a data-confirm="确定要恢复这些账号吗？" data-table-id="UserData" data-action="{:url('state')}" data-rule="id#{key};status#1" class='layui-btn layui-btn-sm layui-btn-primary'>批量恢复</a>
+<a data-confirm="确定要恢复这些账号吗？" data-table-id="UserData" data-action="{:url('state')}" data-rule="id#{id};status#1" class='layui-btn layui-btn-sm layui-btn-primary'>批量恢复</a>
 <!--{/if}-->
 <!--{if auth("remove")}-->
-<a data-confirm="确定永久删除这些账号吗？" data-table-id="UserData" data-action='{:url("remove")}' data-rule="id#{key}" class='layui-btn layui-btn-sm layui-btn-primary'>批量删除</a>
+<a data-confirm="确定永久删除这些账号吗？" data-table-id="UserData" data-action='{:url("remove")}' data-rule="id#{id}" class='layui-btn layui-btn-sm layui-btn-primary'>批量删除</a>
 <!--{/if}-->
 {/if}
 {/block}
