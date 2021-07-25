@@ -18,6 +18,7 @@ namespace app\admin\controller;
 
 use think\admin\Controller;
 use think\admin\service\AdminService;
+use think\admin\service\SystemService;
 
 /**
  * 系统用户管理
@@ -213,7 +214,11 @@ class User extends Controller
         if ($result) {
             $id = input('id') ?: 0;
             sysoplog('系统用户管理', "修改系统用户[{$id}]成功");
-            $this->success('用户资料修改成功！', 'javascript:location.reload()');
+            if ($id == AdminService::instance()->getUserId()) {
+                $this->success('用户资料修改成功！', 'javascript:location.reload()');
+            } else {
+                $this->success('用户资料修改成功！');
+            }
         }
     }
 
