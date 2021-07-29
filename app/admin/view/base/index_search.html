@@ -3,32 +3,16 @@
     <form class="layui-form layui-form-pane form-search" action="{:sysuri()}" onsubmit="return false" method="get" autocomplete="off">
 
         <div class="layui-form-item layui-inline">
-            <label class="layui-form-label">权限名称</label>
+            <label class="layui-form-label">数据编码</label>
             <div class="layui-input-inline">
-                <input name="title" value="{:input('get.title')}" placeholder="请输入权限名称" class="layui-input">
+                <input name="code" value="{:input('get.code')}" placeholder="请输入数据编码" class="layui-input">
             </div>
         </div>
 
-        {notempty name='types'}
         <div class="layui-form-item layui-inline">
-            <label class="layui-form-label">身份权限</label>
+            <label class="layui-form-label">数据名称</label>
             <div class="layui-input-inline">
-                <select name='utype' lay-search class="layui-select">
-                    <option value=''>-- 身份权限 --</option>
-                    {foreach $types as $type}{if $type.code eq input('get.utype')}
-                    <option selected value="{$type.code}">( {$type.name} ) {$type.code}</option>
-                    {else}
-                    <option value="{$type.code}">( {$type.name} ) {$type.code}</option>
-                    {/if}{/foreach}
-                </select>
-            </div>
-        </div>
-        {/notempty}
-
-        <div class="layui-form-item layui-inline">
-            <label class="layui-form-label">权限描述</label>
-            <div class="layui-input-inline">
-                <input name="desc" value="{:input('get.desc')}" placeholder="请输入权限描述" class="layui-input">
+                <input name="name" value="{:input('get.name')}" placeholder="请输入数据名称" class="layui-input">
             </div>
         </div>
 
@@ -36,7 +20,7 @@
             <label class="layui-form-label">使用状态</label>
             <div class="layui-input-inline">
                 <select class="layui-select" name="status">
-                    <option value=''>-- 全部状态 --</option>
+                    <option value=''>-- 状态 --</option>
                     {foreach ['已禁用的权限','已激活的权限'] as $k=>$v}
                     {if input('get.status') eq $k.""}
                     <option selected value="{$k}">{$v}</option>

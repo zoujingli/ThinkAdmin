@@ -3,21 +3,28 @@
     <form class="layui-form layui-form-pane form-search" action="{:sysuri()}" onsubmit="return false" method="get" autocomplete="off">
         <div class="layui-form-item layui-inline">
             <label class="layui-form-label">操作账号</label>
-            <label class="layui-input-inline">
-                <input name="username" value="{:input('get.username')}" placeholder="请输入操作账号" class="layui-input">
-            </label>
+            <div class="layui-input-inline">
+                <select name='username' lay-search class="layui-select">
+                    <option value=''>-- 全部账号 --</option>
+                    {foreach $users as $user}{if $user eq input('get.username')}
+                    <option selected value="{$user}">{$user}</option>
+                    {else}
+                    <option value="{$user}">{$user}</option>
+                    {/if}{/foreach}
+                </select>
+            </div>
         </div>
         <div class="layui-form-item layui-inline">
             <label class="layui-form-label">操作节点</label>
             <label class="layui-input-inline">
-                <input name="node" value="{:input('get.node')}" placeholder="请输入操作节点" class="layui-input">
+                <input name="node" value="{:input('get.node')}" placeholder="请输入操作内容" class="layui-input">
             </label>
         </div>
         <div class="layui-form-item layui-inline">
             <label class="layui-form-label">操作行为</label>
             <div class="layui-input-inline">
                 <select name="action" lay-search class="layui-select">
-                    <option value=''>-- 全部日志 --</option>
+                    <option value=''>-- 全部行为 --</option>
                     {foreach $actions as $action}{if $action eq input('get.action')}
                     <option selected value="{$action}">{$action}</option>
                     {else}
@@ -58,7 +65,7 @@
     require(['excel'], function (excel) {
         excel.bind(function (data) {
             data.forEach(function (item, index) {
-                data[index] = [item.username, item.node, item.geoip, item.isp, item.action, item.create_at];
+                data[index] = [item.username, item.node, item.geoip, item.geoisp, item.action, item.create_at];
             });
             data.unshift(['操作账号', '访问节点', '访问IP地址', '访问地理区域', '访问操作', '操作时间']);
             return data;

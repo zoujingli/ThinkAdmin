@@ -247,7 +247,7 @@ $(function () {
             if (url !== '#') {
                 location.href = '#' + $.menu.parseUri(url, ele);
             } else if (ele && ele.dataset.menuNode) {
-                $('[data-menu-node^="' + ele.dataset.menuNode + '-"][data-open!="#"]:first').trigger('click');
+                $('[data-menu-node^="' + ele.dataset.menuNode + '-"]:first').trigger('click');
             }
         };
         /*! 异步加载的数据 */
@@ -294,7 +294,7 @@ $(function () {
         };
         /*! 打开一个iframe窗口 */
         this.iframe = function (url, name, area) {
-            return layer.open({title: name || '窗口', type: 2, area: area || ['800px', '580px'], anim: 2, fixed: true, maxmin: false, content: url});
+            return layer.open({title: name || '窗口', type: 2, area: area || ['800px', '580px'], fixed: true, maxmin: false, content: url});
         };
         /*! 加载 HTML 到弹出层 */
         this.modal = function (url, data, name, call, load, tips, area) {
@@ -383,7 +383,7 @@ $(function () {
             };
             window.onhashchange = function (hash, node) {
                 hash = location.hash || '';
-                if (hash.length < 1) return $('[data-menu-node][data-open!="#"]:first').trigger('click');
+                if (hash.length < 1) return $('[data-menu-node]:first').trigger('click');
                 $.form.load(hash), that.syncOpenStatus(2);
                 /*! 菜单选择切换 */
                 node = that.queryNode(that.getUri());
@@ -413,7 +413,7 @@ $(function () {
     $.vali = function (form, callable, options) {
         return (new function (that) {
             /*! 表单元素 */
-            that = this, this.tags = 'input,textarea,select';
+            that = this, this.tags = 'input,select,textarea';
             /*! 检测元素事件 */
             this.checkEvent = {change: true, blur: true, keyup: false};
             /*! 去除字符串的空格 */
@@ -560,7 +560,7 @@ $(function () {
     /*! 全局文件上传入口 */
     $.fn.uploadFile = function (callable) {
         if (this.data('inited')) return false;
-        var that = this, mult = 'one|btn'.indexOf(this.data('file') || 'one') < 0 ? 1 : 0;
+        var that = this, mult = 'one|btn'.indexOf(this.data('file') || 'one') > -1 ? 1 : 0;
         this.data('inited', true).data('multiple', mult), require(['upload'], function (apply) {
             apply.call(this, that, callable);
         });
@@ -654,39 +654,44 @@ $(function () {
     }
 
     /*! 组件 LayUI table 功能封装 */
-    $.fn.layTable = function (options) {
+    $.fn.layTable = function (params) {
         return this.each(function (idx, elem) {
             // 动态初始化数据表
             this.id = this.id || 't' + Math.random().toString().replace('.', '');
-            this.dataset.dataId = this.getAttribute('lay-filter') || this.id;
-            this.setAttribute('lay-filter', this.dataset.dataId);
+            this.setAttribute('lay-filter', this.dataset.id = this.getAttribute('lay-filter') || this.id);
             // 插件初始化参数
-            var opt = options || {}, data = opt.where || {}, sort = opt.initSort || opt.sort || {};
-            opt.id = elem.id, opt.elem = elem, opt.url = options.url || elem.dataset.url || location.href;
-            opt.page = options.page !== false ? (options.page || true) : false, opt.autoSort = options.autoSort === true;
-            opt.limit = options.limit || 20, opt.cols = options.cols || [[]], opt.done = function () {
+            var opt = params || {}, data = opt.where || {}, sort = opt.initSort || opt.sort || {};
+            opt.id = elem.id, opt.elem = elem, opt.url = params.url || elem.dataset.url || location.href;
+            opt.page = params.page !== false ? (params.page || true) : false, opt.autoSort = params.autoSort === true;
+            opt.loading = params.loading === true, opt.limit = params.limit || 20, opt.cols = params.cols || [[]];
+            opt.done = function () {
                 $(elem).next().find(".layui-btn:not([data-table-id])").attr('data-table-id', elem.id);
             };
+            // 动态设置最大高度
+            if (opt.height === 'full') {
+                opt.height = $(window).height() - $(elem).removeClass('layui-hide').offset().top - 45;
+            }
             // 实例并绑定对象
             $(this).data('this', layui.table.render(bindData(opt)));
             // 绑定实例重载事件
-            $(this).bind('reload', function (event, object) {
-                data = $.extend({}, data, (object || {}).where || {});
-                layui.table.reload(elem.id, bindData(object || {}));
+            $(this).bind('reload', function (evt, opts) {
+                opts = opts || {}, opts.loading = true;
+                data = $.extend({}, data, opts.where || {});
+                layui.table.reload(elem.id, bindData(opts || {}));
             }).bind('row sort tool edit radio toolbar checkbox rowDouble', function (evt, call) {
-                layui.table.on(evt.type + '(' + elem.dataset.dataId + ')', call)
+                layui.table.on(evt.type + '(' + elem.dataset.id + ')', call)
             }).bind('setFullHeight', function () {
                 $(elem).trigger('reload', {height: $(window).height() - $(elem).next().offset().top - 35})
             }).trigger('sort', function (object) {
                 (sort = object), $(elem).trigger('reload')
             });
             // 搜索表单关联对象
-            var search = options.search || this.dataset.targetSearch;
+            var search = params.search || this.dataset.targetSearch;
             if (search) $body.find(search).map(function () {
                 $(this).attr('data-table-id', elem.id);
             });
             // 绑定选择项关联对象
-            var checked = options.checked || this.dataset.targetChecked;
+            var checked = params.checked || this.dataset.targetChecked;
             if (checked) $body.find(checked).map(function () {
                 $(this).attr('data-table-id', elem.id);
             });
@@ -823,7 +828,7 @@ $(function () {
     /*! 注册 data-icon 事件行为 */
     onEvent('click', '[data-icon]', function () {
         var location = tapiRoot + '/api.plugs/icon', field = this.dataset.icon || this.dataset.field || 'icon';
-        $.form.iframe(location + (location.indexOf('?') > -1 ? '&' : '?') + 'field=' + field, '图标选择', ['800px', '600px']);
+        $.form.iframe(location + (location.indexOf('?') > -1 ? '&' : '?') + 'field=' + field, '图标选择', ['900px', '700px']);
     });
 
     /*! 注册 data-copy 事件行为 */

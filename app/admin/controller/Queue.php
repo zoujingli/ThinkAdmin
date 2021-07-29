@@ -69,8 +69,8 @@ class Queue extends Controller
         $this->title = '系统任务管理';
         $this->iswin = ProcessService::instance()->iswin();
         // 任务列表查询及分页
-        $query = $this->_query($this->table)->dateBetween('create_at')->timeBetween('enter_time,exec_time');
-        $query->like('code,title,command')->equal('status')->order('loops_time desc,id desc')->page();
+        $query = $this->_query($this->table)->timeBetween('enter_time,exec_time')->dateBetween('create_at');
+        $query->equal('status')->like('code,title,command')->order('loops_time desc,id desc')->page();
     }
 
     /**
@@ -120,5 +120,4 @@ class Queue extends Controller
     {
         $this->_delete($this->table);
     }
-
 }

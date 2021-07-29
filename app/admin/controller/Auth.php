@@ -16,6 +16,8 @@
 
 namespace app\admin\controller;
 
+use app\admin\model\SystemAuth;
+use app\admin\model\SystemBase;
 use think\admin\Controller;
 use think\admin\service\AdminService;
 
@@ -44,8 +46,18 @@ class Auth extends Controller
     public function index()
     {
         $this->title = '系统权限管理';
-        $query = $this->_query($this->table)->dateBetween('create_at');
-        $query->like('title,desc')->equal('status')->layTable();
+        $this->types = (new SystemBase)->items('身份权限');
+        $query = $this->_query(SystemAuth::class)->dateBetween('create_at');
+        $query->like('title,desc')->equal('status,utype')->layTable();
+    }
+
+    /**
+     * 数据列表处理
+     * @param array $data
+     */
+    protected function _page_filter(array &$data)
+    {
+        (new SystemBase())->items('身份权限', $data, 'utype', 'utype_info');
     }
 
     /**
@@ -72,6 +84,17 @@ class Auth extends Controller
     {
         $this->_applyFormToken();
         $this->_form($this->table, 'form');
+    }
+
+    /**
+     * 表单处理数据
+     * @param array $data
+     */
+    protected function _form_filter(array &$data)
+    {
+        if ($this->request->isGet()) {
+            $this->bases = (new SystemBase())->items('身份权限');
+        }
     }
 
     /**

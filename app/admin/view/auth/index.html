@@ -6,7 +6,7 @@
 <!--{/if}-->
 
 <!--{if auth("remove")}-->
-<button data-action='{:url("remove")}' data-rule="id#{key}" data-confirm="确定要批量删除权限吗？" class='layui-btn layui-btn-sm layui-btn-primary'>批量删除</button>
+<button data-action='{:url("remove")}' data-table-id="RoleData" data-rule="id#{id}" data-confirm="确定要批量删除权限吗？" class='layui-btn layui-btn-sm layui-btn-primary'>批量删除</button>
 <!--{/if}-->
 {/block}
 
@@ -22,15 +22,23 @@
     $(function () {
         // 初始化表格组件
         var $table = $('#RoleData').layTable({
-            even: true,
+            even: true, height: 'full',
             sort: {field: 'sort desc,id', type: 'desc'},
             cols: [[
                 {checkbox: true, fixed: true},
                 {field: 'sort', title: '排序权重', width: 100, align: 'center', sort: true, templet: '#SortInputTpl'},
                 {field: 'title', title: '权限名称', minWidth: 140, align: 'center', sort: false},
                 {
+                    field: 'utype', title: '身份权限', minWidth: 140, sort: false, templet: function (d) {
+                        if ((d.utype_info || {}).name) {
+                            return d.utype_info.name + '<span class="color-desc"> ( ' + d.utype_info.code + ' ) </span>'
+                        }
+                        return '<span class="color-desc">-</span>';
+                    }
+                },
+                {
                     field: 'desc', title: '权限描述', align: 'center', sort: false, templet: function (d) {
-                        return d.desc || '<span class="color-desc">未填写权限描述</span>'
+                        return d.desc || '<span class="color-desc">-</span>'
                     }
                 },
                 {field: 'create_at', title: '创建时间', align: 'center', sort: true},
@@ -39,15 +47,11 @@
             ]]
         });
 
-        // 设置表格最大高度
-        $table.trigger('setFullHeight');
-
         // 数据状态切换操作
         layui.form.on('switch(StatusSwitch)', function (obj) {
             $.form.load("{:url('state')}", {id: obj.value, status: obj.elem.checked > 0 ? 1 : 0}, 'post', function (ret) {
                 if (ret.code < 1) $.msg.error(ret.info, 3, function () {
-                    // 操作异常时重载数据
-                    $table.trigger('reload');
+                    $table.trigger('reload'); // 操作异常时重载数据
                 });
                 return false;
             }, false);

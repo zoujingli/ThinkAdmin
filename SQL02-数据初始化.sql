@@ -7561,7 +7561,7 @@ VALUES (4, 'base', 'miitbeian', '');
 INSERT INTO `system_config`
 VALUES (5, 'base', 'site_copy', '©版权所有 2014-2020 楚才科技');
 INSERT INTO `system_config`
-VALUES (6, 'base', 'site_icon', 'http://127.0.0.1/upload/f4/7b8fe06e38ae9908e8398da45583b9.png');
+VALUES (6, 'base', 'site_icon', 'https://v6.thinkadmin.top/upload/f4/7b8fe06e38ae9908e8398da45583b9.png');
 INSERT INTO `system_config`
 VALUES (7, 'base', 'site_name', 'ThinkAdmin');
 INSERT INTO `system_config`
@@ -7608,7 +7608,7 @@ CREATE TABLE `system_menu`
     `create_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
     PRIMARY KEY (`id`) USING BTREE,
     INDEX       `idx_system_menu_status`(`status`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 99 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci COMMENT = '系统-菜单' ROW_FORMAT = COMPACT;
+) ENGINE = InnoDB AUTO_INCREMENT = 100 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci COMMENT = '系统-菜单' ROW_FORMAT = COMPACT;
 
 -- ----------------------------
 -- Records of system_menu
@@ -7624,13 +7624,15 @@ VALUES (5, 12, '系统用户管理', 'layui-icon layui-icon-username', '', 'admi
 INSERT INTO `system_menu`
 VALUES (7, 12, '访问权限管理', 'layui-icon layui-icon-vercode', '', 'admin/auth/index', '', '_self', 2, 1, '2018-09-06 15:17:14');
 INSERT INTO `system_menu`
-VALUES (11, 4, '系统参数配置', 'layui-icon layui-icon-set', '', 'admin/config/index', '', '_self', 4, 1, '2018-09-06 16:43:47');
+VALUES (8, 4, '数据字典管理', 'layui-icon layui-icon-code-circle', 'admin/base/index', 'admin/base/index', '', '_self', 2, 1, '2021-07-29 14:17:42');
+INSERT INTO `system_menu`
+VALUES (11, 4, '系统参数配置', 'layui-icon layui-icon-set', '', 'admin/config/index', '', '_self', 5, 1, '2018-09-06 16:43:47');
 INSERT INTO `system_menu`
 VALUES (12, 2, '权限管理', '', '', '#', '', '_self', 10, 1, '2018-09-06 18:01:31');
 INSERT INTO `system_menu`
-VALUES (27, 4, '系统任务管理', 'layui-icon layui-icon-log', '', 'admin/queue/index', '', '_self', 3, 1, '2018-11-29 11:13:34');
+VALUES (27, 4, '系统任务管理', 'layui-icon layui-icon-log', '', 'admin/queue/index', '', '_self', 4, 1, '2018-11-29 11:13:34');
 INSERT INTO `system_menu`
-VALUES (49, 4, '系统日志管理', 'layui-icon layui-icon-form', '', 'admin/oplog/index', '', '_self', 2, 1, '2019-02-18 12:56:56');
+VALUES (49, 4, '系统日志管理', 'layui-icon layui-icon-form', '', 'admin/oplog/index', '', '_self', 3, 1, '2019-02-18 12:56:56');
 INSERT INTO `system_menu`
 VALUES (56, 0, '微信管理', '', '', '#', '', '_self', 200, 1, '2019-12-09 11:00:37');
 INSERT INTO `system_menu`
@@ -7703,7 +7705,6 @@ INSERT INTO `system_menu`
 VALUES (98, 0, '首 页', '', 'data/total.portal/index', 'data/total.portal/index', '', '_self', 400, 1, '2021-04-10 13:43:19');
 INSERT INTO `system_menu`
 VALUES (99, 60, '关注自动回复', 'layui-icon layui-icon-release', 'wechat/auto/index', 'wechat/auto/index', '', '_self', 0, 1, '2021-04-10 15:56:54');
-
 -- ----------------------------
 -- Table structure for system_user
 -- ----------------------------

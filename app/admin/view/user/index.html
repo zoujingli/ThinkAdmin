@@ -29,13 +29,13 @@
     </ul>
     <div class="layui-tab-content">
         {include file='user/index_search'}
-        <table id="UserData" data-url="{:sysuri('index')}" data-target-search="form.form-search" class="layui-hide"></table>
+        <table id="UserData" data-url="{:sysuri('index')}" data-target-search="form.form-search"></table>
     </div>
 </div>
 <script>
     $(function () {
         var $table = $('#UserData').layTable({
-            even: true,
+            even: true, height: 'full',
             sort: {field: 'sort desc,id', type: 'desc'},
             where: {type: '{$type|default="all"}'},
             cols: [[
@@ -45,34 +45,33 @@
                 {field: 'nickname', title: '用户名称', align: 'center', sort: false},
                 {
                     field: 'contact_phone', title: '联系电话', sort: false, templet: function (d) {
-                        return d.contact_phone || '<span class="color-desc">无联系电话</span>';
+                        return d.contact_phone || '<span class="color-desc">-</span>';
                     }
                 },
                 {
                     field: 'contact_mail', title: '联系邮箱', sort: false, templet: function (d) {
-                        return d.contact_mail || '<span class="color-desc">无联系邮箱</span>';
+                        return d.contact_mail || '<span class="color-desc">-</span>';
                     }
                 },
                 {
-                    field: 'login_at', title: '最后登录', sort: true, templet: function (d) {
+                    field: 'login_num', title: '登录次数', align: 'center', sort: false
+                },
+                {
+                    field: 'login_at', title: '最后登录', sort: true, align: 'center', minWidth: 170, templet: function (d) {
                         return d.login_at || '<span class="color-desc">还未登录</span>';
                     }
                 },
-                {field: 'create_at', title: '创建时间', align: 'center', minWidth: 160, sort: true},
+                {field: 'create_at', title: '创建时间', align: 'center', minWidth: 170, sort: true},
                 {field: 'status', title: '权限状态', align: 'center', minWidth: 110, fixed: 'right', templet: '#StatusSwitchTpl'},
-                {toolbar: '#toolbar', title: '操作', align: 'center', minWidth: 200, fixed: 'right'}
+                {toolbar: '#toolbar', title: '操作', align: 'center', minWidth: 150, fixed: 'right'}
             ]]
         });
-
-        // 设置表格最大高度
-        $table.trigger('setFullHeight');
 
         // 数据状态切换操作
         layui.form.on('switch(StatusSwitch)', function (obj) {
             $.form.load("{:url('state')}", {id: obj.value, status: obj.elem.checked > 0 ? 1 : 0}, 'post', function (ret) {
                 if (ret.code < 1) $.msg.error(ret.info, 3, function () {
-                    // 操作异常时重载数据
-                    $table.trigger('reload');
+                    $table.trigger('reload'); // 操作异常时重载数据
                 });
                 return false;
             }, false);
@@ -96,11 +95,11 @@
 
 <script type="text/html" id="toolbar">
     {if isset($type) and $type eq 'all'}
-    <!--{if auth("pass")}-->
-    <a class="layui-btn layui-btn-sm layui-btn-normal" data-title="设置密码" data-modal='{:url("pass")}?id={{d.id}}'>密 码</a>
-    <!--{/if}-->
     <!--{if auth("edit")}-->
     <a class="layui-btn layui-btn-sm" data-title="编辑用户" data-modal='{:url("edit")}?id={{d.id}}'>编 辑</a>
+    <!--{/if}-->
+    <!--{if auth("pass")}-->
+    <a class="layui-btn layui-btn-sm layui-btn-normal" data-title="设置密码" data-modal='{:url("pass")}?id={{d.id}}'>密 码</a>
     <!--{/if}-->
     {else}
     <!--{if auth("edit")}-->

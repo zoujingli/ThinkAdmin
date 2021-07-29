@@ -1,11 +1,11 @@
 {extend name='table'}
 
 {block name="button"}
-<!--{if auth("clear")}-->
-<button data-load='{:url("clear")}' data-confirm="确定要清理所有记录吗？" class='layui-btn layui-btn-sm layui-btn-primary'>清理所有日志</button>
-<!--{/if}-->
 <!--{if auth("remove")}-->
-<button data-action='{:url("remove")}' data-rule="id#{id}" data-table-id="oplog" data-confirm="确定要删除这些记录吗？" class='layui-btn layui-btn-sm layui-btn-primary'>批量删除日志</button>
+<button data-action='{:url("remove")}' data-rule="id#{id}" data-table-id="oplog" data-confirm="确定要删除选中的日志吗？" class='layui-btn layui-btn-sm layui-btn-primary'>批量删除</button>
+<!--{/if}-->
+<!--{if auth("clear")}-->
+<button data-load='{:url("clear")}' data-confirm="确定要清空所有日志吗？" class='layui-btn layui-btn-sm layui-btn-primary'>清空日志</button>
 <!--{/if}-->
 {/block}
 
@@ -20,6 +20,7 @@
 <script>
     $(function () {
         $('#oplog').layTable({
+            even: true, height: 'full',
             sort: {field: 'id', type: 'desc'},
             cols: [[
                 {checkbox: true},
@@ -30,16 +31,16 @@
                 {field: 'content', title: '操作描述', sort: false},
                 {field: 'geoip', title: '访问地址', sort: true},
                 {field: 'geoisp', title: '网络服务商', sort: false},
-                {field: 'create_at', title: '操作时间', sort: true},
-                {toolbar: '#toolbar', align: 'center'}
+                {field: 'create_at', title: '操作时间', minWidth: 170, align: 'center', sort: true},
+                {toolbar: '#toolbar', align: 'center', fixed: 'right'}
             ]]
-        }).trigger('setFullHeight');
+        });
     });
 </script>
 
 <script type="text/html" id="toolbar">
     <!--{if auth('remove')}-->
-    <a data-action='{:url("remove")}' data-value="id#{{d.id}}" data-confirm="确认要删除这条记录吗？" class="layui-btn layui-btn-danger layui-btn-sm">删 除</a>
+    <a data-action='{:url("remove")}' data-value="id#{{d.id}}" data-confirm="确认要删除这条记录吗？" class="layui-btn layui-btn-sm layui-btn-danger">删 除</a>
     <!--{/if}-->
 </script>
 {/block}

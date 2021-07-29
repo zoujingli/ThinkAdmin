@@ -16,9 +16,10 @@
 
 namespace app\admin\controller;
 
+use app\admin\model\SystemBase;
+use app\admin\model\SystemUser;
 use think\admin\Controller;
 use think\admin\service\AdminService;
-use think\admin\service\SystemService;
 
 /**
  * 系统用户管理
@@ -60,7 +61,7 @@ class User extends Controller
     public function index()
     {
         $this->title = '系统用户管理';
-        $query = $this->_query($this->table);
+        $query = $this->_query(SystemUser::class);
         // 加载对应数据列表
         if (($this->type = input('type', 'all')) === 'all') {
             $query->where(['is_deleted' => 0, 'status' => 1]);
@@ -153,8 +154,11 @@ class User extends Controller
             $data['authorize'] = arr2str($data['authorize'] ?? []);
         } else {
             $data['authorize'] = str2arr($data['authorize'] ?? '');
+            // 用户权限管理
             $query = $this->app->db->name('SystemAuth')->where(['status' => 1]);
             $this->authorizes = $query->order('sort desc,id desc')->select()->toArray();
+            // 身份权限关联
+            (new SystemBase)->items('身份权限', $this->authorizes, 'utype', 'utypeinfo');
         }
     }
 
