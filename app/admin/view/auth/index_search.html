@@ -9,22 +9,6 @@
             </div>
         </div>
 
-        {notempty name='types'}
-        <div class="layui-form-item layui-inline">
-            <label class="layui-form-label">身份权限</label>
-            <div class="layui-input-inline">
-                <select name='utype' lay-search class="layui-select">
-                    <option value=''>-- 身份权限 --</option>
-                    {foreach $types as $type}{if $type.code eq input('get.utype')}
-                    <option selected value="{$type.code}">( {$type.name} ) {$type.code}</option>
-                    {else}
-                    <option value="{$type.code}">( {$type.name} ) {$type.code}</option>
-                    {/if}{/foreach}
-                </select>
-            </div>
-        </div>
-        {/notempty}
-
         <div class="layui-form-item layui-inline">
             <label class="layui-form-label">权限描述</label>
             <div class="layui-input-inline">
@@ -58,5 +42,6 @@
             <button class="layui-btn layui-btn-primary"><i class="layui-icon">&#xe615;</i> 搜 索</button>
         </div>
     </form>
-    <script>form.render()</script>
+
+    <script>layui.form.render()</script>
 </fieldset>

@@ -7712,6 +7712,7 @@ DROP TABLE IF EXISTS `system_user`;
 CREATE TABLE `system_user`
 (
     `id`            bigint(20) NOT NULL AUTO_INCREMENT,
+    `usertype`      varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT '' COMMENT '用户类型',
     `username`      varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT '' COMMENT '用户账号',
     `password`      varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT '' COMMENT '用户密码',
     `nickname`      varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT '' COMMENT '用户昵称',
@@ -7732,13 +7733,13 @@ CREATE TABLE `system_user`
     INDEX           `idx_system_user_status`(`status`) USING BTREE,
     INDEX           `idx_system_user_username`(`username`) USING BTREE,
     INDEX           `idx_system_user_deleted`(`is_deleted`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 10001 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci COMMENT = '系统-用户' ROW_FORMAT = COMPACT;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci COMMENT = '系统-用户' ROW_FORMAT = COMPACT;
 
 -- ----------------------------
 -- Records of system_user
 -- ----------------------------
 INSERT INTO `system_user`
-VALUES (10000, 'admin', '21232f297a57a5a743894a0e4a801fc3', '系统管理员', 'https://xhtwxapp.cdn.xiaoding.shop/cf/23526f451784ff137f161b8fe18d5a.png', ',,', '', '', '', '127.0.0.1', '2021-04-10 13:42:51', 142, '', 1, 0, 0, '2015-11-13 15:14:22');
+VALUES (10000, '', 'admin', '21232f297a57a5a743894a0e4a801fc3', '系统管理员', 'https://xhtwxapp.cdn.xiaoding.shop/cf/23526f451784ff137f161b8fe18d5a.png', ',,', '', '', '', '127.0.0.1', '2021-04-10 13:42:51', 142, '', 1, 0, 0, '2015-11-13 15:14:22');
 
 SET
 FOREIGN_KEY_CHECKS = 1;

@@ -2,7 +2,6 @@
 
 namespace app\admin\model;
 
-use think\db\Query;
 use think\Model;
 
 /**
@@ -31,37 +30,6 @@ class SystemUser extends Model
         } else {
             return $query->column($fields, 'id');
         }
-    }
-
-    /**
-     * 通过身份类型获取
-     * @param string $type 身份类型
-     * @param string $fields 数据字段
-     * @return array
-     */
-    public function itemsByType(string $type, string $fields = 'username,nickname,headimg,status,is_deleted'): array
-    {
-        $rids = (new SystemAuth)->where(['status' => 1, 'utype' => $type])->column('id');
-        return empty($rids) ? [] : $this->where(function (Query $query) use ($rids) {
-            foreach ($rids as $rid) $query->whereOr('authorize', 'like', "%,{$rid},%");
-        })->where(['status' => 1, 'is_deleted' => 0])->column($fields, 'id');
-    }
-
-    /**
-     * 获取用户身份数据
-     * @param mixed $uuid
-     * @return array
-     */
-    public function rolesByUuid($uuid): array
-    {
-        $types = (new SystemBase)->items('身份权限');
-        if (empty($types)) return [];
-        $rrids = str2arr($this->where(['id' => $uuid])->value('authorize') ?: '');
-        if (empty($rrids)) return [];
-        $utypes = (new SystemAuth)->where(['status' => 1])->whereIn('id', $rrids)->column('utype');
-        if (empty($utypes)) return [];
-        foreach ($types as $key => $type) if (!in_array($type, $utypes)) unset($types[$key]);
-        return array_values($types);
     }
 
     /**

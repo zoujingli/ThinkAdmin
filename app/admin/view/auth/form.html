@@ -6,23 +6,8 @@
             <span class="color-green font-w7">权限名称</span>
             <span class="color-desc margin-left-5">Permission Name</span>
             <input maxlength="100" class="layui-input" name="title" value='{$vo.title|default=""}' required placeholder="请输入权限名称">
-            <!--<span class="help-block">访问权限名称需要保持不重复，在给用户授权时需要根据名称选择！</span>-->
+            <span class="help-block">访问权限名称需要保持不重复，在给用户授权时需要根据名称选择！</span>
         </label>
-
-        {notempty name='bases'}
-        <div class="layui-form-item">
-            <span class="color-green font-w7 label-required-prev">身份权限</span>
-            <span class="color-desc margin-left-5">Identity Permissions</span>
-            <select class="layui-select" name="utype">
-                {foreach $bases as $k=>$v}
-                {if isset($vo.utype) && $k eq $vo.utype}
-                <option selected value="{$k}">{$v.name} ( {$v.code} )</option>
-                {else}
-                <option value="{$k}">{$v.name} ( {$v.code} )</option>
-                {/if}{/foreach}
-            </select>
-        </div>
-        {/notempty}
 
         <label class="layui-form-item relative block">
             <span class="color-green font-w7">权限描述</span>
@@ -40,7 +25,3 @@
         <button class="layui-btn layui-btn-danger" type='button' data-confirm="确定要取消编辑吗？" data-close>取消编辑</button>
     </div>
 </form>
-<script>
-    layui.form.render();
-    $('#AuthForm').parent().css('overflow', 'revert');
-</script>

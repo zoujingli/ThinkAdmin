@@ -1,19 +1,3 @@
-/*
- Navicat MySQL Data Transfer
-
- Source Server         : anyon.localhost
- Source Server Type    : MySQL
- Source Server Version : 80018
- Source Host           : localhost:3306
- Source Schema         : admin_v6
-
- Target Server Type    : MySQL
- Target Server Version : 80018
- File Encoding         : 65001
-
- Date: 29/07/2021 14:09:36
-*/
-
 SET NAMES utf8mb4;
 SET
 FOREIGN_KEY_CHECKS = 0;
@@ -40,7 +24,7 @@ CREATE TABLE `base_postage_company`
     INDEX       `idx_base_postage_company_code3`(`code_3`) USING BTREE,
     INDEX       `idx_base_postage_company_status`(`status`) USING BTREE,
     INDEX       `idx_base_postage_company_deleted`(`deleted`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci COMMENT = '数据-快递-公司' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci COMMENT = '数据-快递-公司' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Table structure for base_postage_region
@@ -83,7 +67,7 @@ CREATE TABLE `base_postage_template`
     INDEX       `idx_base_postage_template_code`(`code`) USING BTREE,
     INDEX       `idx_base_postage_template_status`(`status`) USING BTREE,
     INDEX       `idx_base_postage_template_deleted`(`deleted`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci COMMENT = '数据-快递-模板' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci COMMENT = '数据-快递-模板' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Table structure for base_user_discount
@@ -102,7 +86,7 @@ CREATE TABLE `base_user_discount`
     PRIMARY KEY (`id`) USING BTREE,
     INDEX       `idx_base_user_discount_status`(`status`) USING BTREE,
     INDEX       `idx_base_user_discount_deleted`(`deleted`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci COMMENT = '数据-基础-折扣' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci COMMENT = '数据-基础-折扣' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Table structure for base_user_message
@@ -123,7 +107,7 @@ CREATE TABLE `base_user_message`
     INDEX       `idx_base_user_message_type`(`type`) USING BTREE,
     INDEX       `idx_base_user_message_status`(`status`) USING BTREE,
     INDEX       `idx_base_user_message_deleted`(`deleted`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci COMMENT = '数据-基础-通知' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci COMMENT = '数据-基础-通知' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Table structure for base_user_payment
@@ -147,7 +131,7 @@ CREATE TABLE `base_user_payment`
     INDEX       `idx_base_user_payment_code`(`code`) USING BTREE,
     INDEX       `idx_base_user_payment_status`(`status`) USING BTREE,
     INDEX       `idx_base_user_payment_deleted`(`deleted`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci COMMENT = '数据-基础-支付' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci COMMENT = '数据-基础-支付' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Table structure for base_user_upgrade
@@ -177,7 +161,7 @@ CREATE TABLE `base_user_upgrade`
     PRIMARY KEY (`id`) USING BTREE,
     INDEX                   `idx_base_user_upgrade_status`(`status`) USING BTREE,
     INDEX                   `idx_base_user_upgrade_number`(`number`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci COMMENT = '数据-用户-等级' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci COMMENT = '数据-用户-等级' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Table structure for data_news_item
@@ -201,10 +185,10 @@ CREATE TABLE `data_news_item`
     `deleted`     tinyint(1) NULL DEFAULT 0 COMMENT '删除状态(0未删,1已删)',
     `create_at`   timestamp NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
     PRIMARY KEY (`id`) USING BTREE,
-    INDEX         `idx_data_news_item_code`(`code`) USING BTREE,
     INDEX         `idx_data_news_item_status`(`status`) USING BTREE,
-    INDEX         `idx_data_news_item_deleted`(`deleted`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci COMMENT = '数据-文章-内容' ROW_FORMAT = Dynamic;
+    INDEX         `idx_data_news_item_deleted`(`deleted`) USING BTREE,
+    INDEX         `idx_data_news_item_code`(`code`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci COMMENT = '数据-文章-内容' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Table structure for data_news_mark
@@ -222,7 +206,7 @@ CREATE TABLE `data_news_mark`
     PRIMARY KEY (`id`) USING BTREE,
     INDEX       `idx_data_news_mark_status`(`status`) USING BTREE,
     INDEX       `idx_data_news_mark_deleted`(`deleted`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci COMMENT = '数据-文章-标签' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci COMMENT = '数据-文章-标签' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Table structure for data_news_x_collect
@@ -238,11 +222,11 @@ CREATE TABLE `data_news_x_collect`
     `status`    tinyint(1) NULL DEFAULT 1 COMMENT '记录状态(0无效,1待审核,2已审核)',
     `create_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
     PRIMARY KEY (`id`) USING BTREE,
-    INDEX       `idx_data_news_x_collect_uuid`(`uuid`) USING BTREE,
     INDEX       `idx_data_news_x_collect_type`(`type`) USING BTREE,
     INDEX       `idx_data_news_x_collect_code`(`code`) USING BTREE,
-    INDEX       `idx_data_news_x_collect_status`(`status`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci COMMENT = '数据-文章-标记' ROW_FORMAT = Dynamic;
+    INDEX       `idx_data_news_x_collect_status`(`status`) USING BTREE,
+    INDEX       `idx_data_news_x_collect_uuid`(`uuid`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci COMMENT = '数据-文章-标记' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Table structure for data_user
@@ -296,16 +280,16 @@ CREATE TABLE `data_user`
     `deleted`               tinyint(1) UNSIGNED NULL DEFAULT 0 COMMENT '删除状态(0未删,1已删)',
     `create_at`             timestamp NULL DEFAULT CURRENT_TIMESTAMP COMMENT '注册时间',
     PRIMARY KEY (`id`) USING BTREE,
-    INDEX                   `idx_data_user_pid0`(`pid0`) USING BTREE,
-    INDEX                   `idx_data_user_pid1`(`pid1`) USING BTREE,
-    INDEX                   `idx_data_user_pid2`(`pid2`) USING BTREE,
-    INDEX                   `idx_data_user_pids`(`pids`) USING BTREE,
     INDEX                   `idx_data_user_status`(`status`) USING BTREE,
     INDEX                   `idx_data_user_deleted`(`deleted`) USING BTREE,
     INDEX                   `idx_data_user_openid1`(`openid1`) USING BTREE,
     INDEX                   `idx_data_user_openid2`(`openid2`) USING BTREE,
-    INDEX                   `idx_data_user_unionid`(`unionid`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci COMMENT = '数据-用户-会员' ROW_FORMAT = Dynamic;
+    INDEX                   `idx_data_user_unionid`(`unionid`) USING BTREE,
+    INDEX                   `idx_data_user_pid1`(`pid1`) USING BTREE,
+    INDEX                   `idx_data_user_pid2`(`pid2`) USING BTREE,
+    INDEX                   `idx_data_user_pid0`(`pid0`) USING BTREE,
+    INDEX                   `idx_data_user_pids`(`pids`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci COMMENT = '数据-用户-会员' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Table structure for data_user_address
@@ -329,11 +313,11 @@ CREATE TABLE `data_user_address`
     `deleted`   tinyint(1) UNSIGNED NULL DEFAULT 0 COMMENT '删除状态',
     `create_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
     PRIMARY KEY (`id`) USING BTREE,
-    INDEX       `idx_data_user_address_uuid`(`uuid`) USING BTREE,
     INDEX       `idx_data_user_address_type`(`type`) USING BTREE,
     INDEX       `idx_data_user_address_code`(`code`) USING BTREE,
-    INDEX       `idx_data_user_address_deleted`(`deleted`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci COMMENT = '数据-用户-地址' ROW_FORMAT = Dynamic;
+    INDEX       `idx_data_user_address_deleted`(`deleted`) USING BTREE,
+    INDEX       `idx_data_user_address_uuid`(`uuid`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci COMMENT = '数据-用户-地址' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Table structure for data_user_balance
@@ -352,10 +336,10 @@ CREATE TABLE `data_user_balance`
     `create_by` bigint(20) NULL DEFAULT 0 COMMENT '系统用户',
     `create_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
     PRIMARY KEY (`id`) USING BTREE,
-    INDEX       `idx_data_user_balance_uuid`(`uuid`) USING BTREE,
     INDEX       `idx_data_user_balance_code`(`code`) USING BTREE,
-    INDEX       `idx_data_user_balance_deleted`(`deleted`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci COMMENT = '数据-用户-余额' ROW_FORMAT = Dynamic;
+    INDEX       `idx_data_user_balance_deleted`(`deleted`) USING BTREE,
+    INDEX       `idx_data_user_balance_uuid`(`uuid`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci COMMENT = '数据-用户-余额' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Table structure for data_user_message
@@ -374,10 +358,10 @@ CREATE TABLE `data_user_message`
     `create_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
     PRIMARY KEY (`id`) USING BTREE,
     INDEX       `idx_data_user_message_type`(`type`) USING BTREE,
+    INDEX       `idx_data_user_message_status`(`status`) USING BTREE,
     INDEX       `idx_data_user_message_phone`(`phone`) USING BTREE,
-    INDEX       `idx_data_user_message_msgid`(`msgid`) USING BTREE,
-    INDEX       `idx_data_user_message_status`(`status`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci COMMENT = '数据-用户-短信' ROW_FORMAT = Dynamic;
+    INDEX       `idx_data_user_message_msgid`(`msgid`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci COMMENT = '数据-用户-短信' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Table structure for data_user_payment
@@ -402,7 +386,7 @@ CREATE TABLE `data_user_payment`
     INDEX              `idx_data_user_payment_payment_type`(`payment_type`) USING BTREE,
     INDEX              `idx_data_user_payment_payment_trade`(`payment_trade`) USING BTREE,
     INDEX              `idx_data_user_payment_payment_status`(`payment_status`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci COMMENT = '数据-用户-支付' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci COMMENT = '数据-用户-支付' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Table structure for data_user_rebate
@@ -424,13 +408,13 @@ CREATE TABLE `data_user_rebate`
     `deleted`      tinyint(1) NULL DEFAULT 0 COMMENT '删除状态(0未删除,1已删除)',
     `create_at`    timestamp NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
     PRIMARY KEY (`id`) USING BTREE,
-    INDEX          `idx_data_user_rebate_uuid`(`uuid`) USING BTREE,
     INDEX          `idx_data_user_rebate_type`(`type`) USING BTREE,
     INDEX          `idx_data_user_rebate_date`(`date`) USING BTREE,
     INDEX          `idx_data_user_rebate_code`(`code`) USING BTREE,
     INDEX          `idx_data_user_rebate_name`(`name`) USING BTREE,
-    INDEX          `idx_data_user_rebate_status`(`status`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci COMMENT = '数据-用户-返利' ROW_FORMAT = Dynamic;
+    INDEX          `idx_data_user_rebate_status`(`status`) USING BTREE,
+    INDEX          `idx_data_user_rebate_uuid`(`uuid`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci COMMENT = '数据-用户-返利' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Table structure for data_user_token
@@ -446,10 +430,11 @@ CREATE TABLE `data_user_token`
     `tokenv`    varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT '' COMMENT '授权验证',
     `create_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
     PRIMARY KEY (`id`) USING BTREE,
+    INDEX       `idx_data_user_token_uuid`(`uuid`) USING BTREE,
     INDEX       `idx_data_user_token_type`(`type`) USING BTREE,
     INDEX       `idx_data_user_token_time`(`time`) USING BTREE,
     INDEX       `idx_data_user_token_token`(`token`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci COMMENT = '数据-用户-认证' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci COMMENT = '数据-用户-认证' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Table structure for data_user_transfer
@@ -486,15 +471,15 @@ CREATE TABLE `data_user_transfer`
     `status`         tinyint(1) NULL DEFAULT 1 COMMENT '提现状态(0失败,1待审核,2已审核,3打款中,4已打款,5已收款)',
     `create_at`      timestamp NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
     PRIMARY KEY (`id`) USING BTREE,
-    INDEX            `idx_data_user_transfer_uuid`(`uuid`) USING BTREE,
-    INDEX            `idx_data_user_transfer_date`(`date`) USING BTREE,
-    INDEX            `idx_data_user_transfer_type`(`type`) USING BTREE,
     INDEX            `idx_data_user_transfer_code`(`code`) USING BTREE,
     INDEX            `idx_data_user_transfer_status`(`status`) USING BTREE,
+    INDEX            `idx_data_user_transfer_date`(`date`) USING BTREE,
+    INDEX            `idx_data_user_transfer_type`(`type`) USING BTREE,
+    INDEX            `idx_data_user_transfer_audit_status`(`audit_status`) USING BTREE,
     INDEX            `idx_data_user_transfer_appid`(`appid`) USING BTREE,
     INDEX            `idx_data_user_transfer_openid`(`openid`) USING BTREE,
-    INDEX            `idx_data_user_transfer_audit_status`(`audit_status`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci COMMENT = '数据-用户-提现' ROW_FORMAT = Dynamic;
+    INDEX            `idx_data_user_transfer_uuid`(`uuid`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci COMMENT = '数据-用户-提现' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Table structure for shop_goods
@@ -538,7 +523,7 @@ CREATE TABLE `shop_goods`
     INDEX           `idx_shop_goods_code`(`code`) USING BTREE,
     INDEX           `idx_shop_goods_status`(`status`) USING BTREE,
     INDEX           `idx_shop_goods_deleted`(`deleted`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci COMMENT = '商城-商品-内容' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci COMMENT = '商城-商品-内容' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Table structure for shop_goods_cate
@@ -559,7 +544,7 @@ CREATE TABLE `shop_goods_cate`
     INDEX       `idx_shop_goods_cate_sort`(`sort`) USING BTREE,
     INDEX       `idx_shop_goods_cate_status`(`status`) USING BTREE,
     INDEX       `idx_shop_goods_cate_deleted`(`deleted`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci COMMENT = '商城-商品-分类' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci COMMENT = '商城-商品-分类' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Table structure for shop_goods_item
@@ -585,7 +570,7 @@ CREATE TABLE `shop_goods_item`
     INDEX             `index_store_goods_item_code`(`goods_code`) USING BTREE,
     INDEX             `index_store_goods_item_spec`(`goods_spec`) USING BTREE,
     INDEX             `index_store_goods_item_status`(`status`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci COMMENT = '商城-商品-规格' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci COMMENT = '商城-商品-规格' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Table structure for shop_goods_mark
@@ -602,7 +587,7 @@ CREATE TABLE `shop_goods_mark`
     PRIMARY KEY (`id`) USING BTREE,
     INDEX       `idx_shop_goods_mark_sort`(`sort`) USING BTREE,
     INDEX       `idx_shop_goods_mark_status`(`status`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci COMMENT = '商城-商品-标签' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci COMMENT = '商城-商品-标签' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Table structure for shop_goods_stock
@@ -621,7 +606,7 @@ CREATE TABLE `shop_goods_stock`
     PRIMARY KEY (`id`) USING BTREE,
     INDEX         `idx_shop_goods_stock_status`(`status`) USING BTREE,
     INDEX         `idx_shop_goods_stock_deleted`(`deleted`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci COMMENT = '商城-商品-库存' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci COMMENT = '商城-商品-库存' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Table structure for shop_order
@@ -665,14 +650,14 @@ CREATE TABLE `shop_order`
     `status`           tinyint(1) NULL DEFAULT 1 COMMENT '订单流程状态(0已取消,1预订单,2待支付,3支付中,4已支付,5已发货,6已完成)',
     `create_at`        timestamp NULL DEFAULT CURRENT_TIMESTAMP COMMENT '订单创建时间',
     PRIMARY KEY (`id`) USING BTREE,
-    INDEX              `idx_shop_order_mid`(`uuid`) USING BTREE,
-    INDEX              `idx_shop_order_from`(`puid1`) USING BTREE,
     INDEX              `idx_shop_order_status`(`status`) USING BTREE,
-    INDEX              `idx_shop_order_deleted`(`deleted_status`) USING BTREE,
     INDEX              `idx_shop_order_orderno`(`order_no`) USING BTREE,
     INDEX              `idx_shop_order_cancel_status`(`cancel_status`) USING BTREE,
-    INDEX              `idx_shop_order_payment_status`(`payment_status`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci COMMENT = '商城-订单-内容' ROW_FORMAT = Dynamic;
+    INDEX              `idx_shop_order_payment_status`(`payment_status`) USING BTREE,
+    INDEX              `idx_shop_order_from`(`puid1`) USING BTREE,
+    INDEX              `idx_shop_order_deleted`(`deleted_status`) USING BTREE,
+    INDEX              `idx_shop_order_mid`(`uuid`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci COMMENT = '商城-订单-内容' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Table structure for shop_order_item
@@ -719,7 +704,7 @@ CREATE TABLE `shop_order_item`
     INDEX             `idx_shop_order_item_goods_code`(`goods_code`) USING BTREE,
     INDEX             `idx_shop_order_item_goods_spec`(`goods_spec`) USING BTREE,
     INDEX             `idx_shop_order_item_rebate_type`(`rebate_type`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci COMMENT = '商城-订单-商品' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci COMMENT = '商城-订单-商品' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Table structure for shop_order_send
@@ -754,11 +739,11 @@ CREATE TABLE `shop_order_send`
     `deleted`          tinyint(1) NULL DEFAULT 0 COMMENT '发货删除状态(0未删,1已删)',
     `create_at`        timestamp NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
     PRIMARY KEY (`id`) USING BTREE,
-    INDEX              `idx_shop_order_send_mid`(`uuid`) USING BTREE,
     INDEX              `idx_shop_order_send_status`(`status`) USING BTREE,
     INDEX              `idx_shop_order_send_deleted`(`deleted`) USING BTREE,
-    INDEX              `idx_shop_order_send_order_no`(`order_no`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci COMMENT = '商城-订单-配送' ROW_FORMAT = Dynamic;
+    INDEX              `idx_shop_order_send_order_no`(`order_no`) USING BTREE,
+    INDEX              `idx_shop_order_send_mid`(`uuid`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci COMMENT = '商城-订单-配送' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Table structure for system_auth
@@ -774,9 +759,9 @@ CREATE TABLE `system_auth`
     `status`    tinyint(1) UNSIGNED NULL DEFAULT 1 COMMENT '权限状态(1使用,0禁用)',
     `create_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
     PRIMARY KEY (`id`) USING BTREE,
-    INDEX       `idx_system_auth_title`(`title`) USING BTREE,
-    INDEX       `idx_system_auth_status`(`status`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci COMMENT = '系统-权限' ROW_FORMAT = Dynamic;
+    INDEX       `idx_system_auth_status`(`status`) USING BTREE,
+    INDEX       `idx_system_auth_title`(`title`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci COMMENT = '系统-权限' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Table structure for system_auth_node
@@ -790,7 +775,7 @@ CREATE TABLE `system_auth_node`
     PRIMARY KEY (`id`) USING BTREE,
     INDEX  `idx_system_auth_auth`(`auth`) USING BTREE,
     INDEX  `idx_system_auth_node`(`node`(191)) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci COMMENT = '系统-授权' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci COMMENT = '系统-授权' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Table structure for system_base
@@ -841,7 +826,7 @@ CREATE TABLE `system_data`
     `value` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL COMMENT '配置值',
     PRIMARY KEY (`id`) USING BTREE,
     INDEX   `idx_system_data_name`(`name`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci COMMENT = '系统-数据' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci COMMENT = '系统-数据' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Table structure for system_menu
@@ -878,7 +863,7 @@ CREATE TABLE `system_oplog`
     `username`  varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci   NOT NULL DEFAULT '' COMMENT '操作人用户名',
     `create_at` timestamp                                                      NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
     PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci COMMENT = '系统-日志' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci COMMENT = '系统-日志' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Table structure for system_queue
@@ -908,7 +893,7 @@ CREATE TABLE `system_queue`
     INDEX        `idx_system_queue_rscript`(`rscript`) USING BTREE,
     INDEX        `idx_system_queue_create_at`(`create_at`) USING BTREE,
     INDEX        `idx_system_queue_exec_time`(`exec_time`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci COMMENT = '系统-任务' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci COMMENT = '系统-任务' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Table structure for system_user
@@ -917,6 +902,7 @@ DROP TABLE IF EXISTS `system_user`;
 CREATE TABLE `system_user`
 (
     `id`            bigint(20) NOT NULL AUTO_INCREMENT,
+    `usertype`      varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT '' COMMENT '用户类型',
     `username`      varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT '' COMMENT '用户账号',
     `password`      varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT '' COMMENT '用户密码',
     `nickname`      varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT '' COMMENT '用户昵称',
@@ -937,7 +923,7 @@ CREATE TABLE `system_user`
     INDEX           `idx_system_user_status`(`status`) USING BTREE,
     INDEX           `idx_system_user_username`(`username`) USING BTREE,
     INDEX           `idx_system_user_deleted`(`is_deleted`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 10000 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci COMMENT = '系统-用户' ROW_FORMAT = COMPACT;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci COMMENT = '系统-用户' ROW_FORMAT = COMPACT;
 
 -- ----------------------------
 -- Table structure for wechat_auto
@@ -969,7 +955,7 @@ CREATE TABLE `wechat_auto`
     INDEX         `idx_wechat_auto_keys`(`time`) USING BTREE,
     INDEX         `idx_wechat_auto_code`(`code`) USING BTREE,
     INDEX         `idx_wechat_auto_appid`(`appid`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci COMMENT = '微信-回复' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci COMMENT = '微信-回复' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Table structure for wechat_fans
@@ -1003,7 +989,7 @@ CREATE TABLE `wechat_fans`
     INDEX             `index_wechat_fans_unionid`(`unionid`) USING BTREE,
     INDEX             `index_wechat_fans_isblack`(`is_black`) USING BTREE,
     INDEX             `index_wechat_fans_subscribe`(`subscribe`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci COMMENT = '微信-粉丝' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci COMMENT = '微信-粉丝' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Table structure for wechat_fans_tags
@@ -1018,7 +1004,7 @@ CREATE TABLE `wechat_fans_tags`
     `create_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建日期',
     INDEX       `index_wechat_fans_tags_id`(`id`) USING BTREE,
     INDEX       `index_wechat_fans_tags_appid`(`appid`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci COMMENT = '微信-标签' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci COMMENT = '微信-标签' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Table structure for wechat_keys
@@ -1046,10 +1032,10 @@ CREATE TABLE `wechat_keys`
     `create_by`   bigint(20) UNSIGNED NULL DEFAULT 0 COMMENT '创建人',
     `create_at`   timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '创建时间',
     PRIMARY KEY (`id`) USING BTREE,
+    INDEX         `index_wechat_keys_appid`(`appid`) USING BTREE,
     INDEX         `index_wechat_keys_type`(`type`) USING BTREE,
-    INDEX         `index_wechat_keys_keys`(`keys`) USING BTREE,
-    INDEX         `index_wechat_keys_appid`(`appid`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci COMMENT = '微信-规则' ROW_FORMAT = Dynamic;
+    INDEX         `index_wechat_keys_keys`(`keys`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci COMMENT = '微信-规则' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Table structure for wechat_media
@@ -1066,11 +1052,11 @@ CREATE TABLE `wechat_media`
     `media_url` varchar(300) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT '' COMMENT '远程图片链接',
     `create_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
     PRIMARY KEY (`id`) USING BTREE,
+    INDEX       `index_wechat_media_appid`(`appid`) USING BTREE,
     INDEX       `index_wechat_media_md5`(`md5`) USING BTREE,
     INDEX       `index_wechat_media_type`(`type`) USING BTREE,
-    INDEX       `index_wechat_media_appid`(`appid`) USING BTREE,
     INDEX       `index_wechat_media_media_id`(`media_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci COMMENT = '微信-素材' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci COMMENT = '微信-素材' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Table structure for wechat_news
@@ -1086,9 +1072,9 @@ CREATE TABLE `wechat_news`
     `create_at`  timestamp NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
     `create_by`  bigint(20) NULL DEFAULT NULL COMMENT '创建人',
     PRIMARY KEY (`id`) USING BTREE,
-    INDEX        `index_wechat_news_media_id`(`media_id`) USING BTREE,
-    INDEX        `index_wechat_news_artcle_id`(`article_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci COMMENT = '微信-图文' ROW_FORMAT = Dynamic;
+    INDEX        `index_wechat_news_artcle_id`(`article_id`) USING BTREE,
+    INDEX        `index_wechat_news_media_id`(`media_id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci COMMENT = '微信-图文' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Table structure for wechat_news_article
@@ -1107,7 +1093,7 @@ CREATE TABLE `wechat_news_article`
     `read_num`           bigint(20) UNSIGNED NULL DEFAULT 0 COMMENT '阅读数量',
     `create_at`          timestamp NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
     PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci COMMENT = '微信-文章' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci COMMENT = '微信-文章' ROW_FORMAT = DYNAMIC;
 
 SET
 FOREIGN_KEY_CHECKS = 1;

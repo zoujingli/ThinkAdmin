@@ -21,26 +21,14 @@
 <script>
     $(function () {
         // 初始化表格组件
-        var $table = $('#RoleData').layTable({
+        $('#RoleData').layTable({
             even: true, height: 'full',
             sort: {field: 'sort desc,id', type: 'desc'},
             cols: [[
                 {checkbox: true, fixed: true},
                 {field: 'sort', title: '排序权重', width: 100, align: 'center', sort: true, templet: '#SortInputTpl'},
                 {field: 'title', title: '权限名称', minWidth: 140, align: 'center', sort: false},
-                {
-                    field: 'utype', title: '身份权限', minWidth: 140, sort: false, templet: function (d) {
-                        if ((d.utype_info || {}).name) {
-                            return d.utype_info.name + '<span class="color-desc"> ( ' + d.utype_info.code + ' ) </span>'
-                        }
-                        return '<span class="color-desc">-</span>';
-                    }
-                },
-                {
-                    field: 'desc', title: '权限描述', align: 'center', sort: false, templet: function (d) {
-                        return d.desc || '<span class="color-desc">-</span>'
-                    }
-                },
+                {field: 'desc', title: '权限描述', sort: false, align: 'center', templet: '<div>{{d.desc||"-"}}</div>'},
                 {field: 'create_at', title: '创建时间', align: 'center', sort: true},
                 {field: 'status', title: '权限状态', align: 'center', minWidth: 110, fixed: 'right', templet: '#StatusSwitchTpl'},
                 {toolbar: '#toolbar', align: 'center', minWidth: 200, title: '权限操作', fixed: 'right'},
@@ -51,7 +39,7 @@
         layui.form.on('switch(StatusSwitch)', function (obj) {
             $.form.load("{:url('state')}", {id: obj.value, status: obj.elem.checked > 0 ? 1 : 0}, 'post', function (ret) {
                 if (ret.code < 1) $.msg.error(ret.info, 3, function () {
-                    $table.trigger('reload'); // 操作异常时重载数据
+                    $('#RoleData').trigger('reload'); // 操作异常时重载数据
                 });
                 return false;
             }, false);

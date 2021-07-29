@@ -1,6 +1,23 @@
 <fieldset>
     <legend>条件搜索</legend>
     <form class="layui-form layui-form-pane form-search" action="{:sysuri()}" onsubmit="return false" method="get" autocomplete="off">
+
+        {notempty name='bases'}
+        <div class="layui-form-item layui-inline">
+            <label class="layui-form-label">用户身份</label>
+            <div class="layui-input-inline">
+                <select name="usertype" lay-search class="layui-select">
+                    <option value=''>-- 全部 --</option>
+                    {foreach $bases as $base}{if $base.code eq input('get.usertype')}
+                    <option selected value="{$base.code|default=''}">{$base.name|default=''} ( {$base.code|default=''} )</option>
+                    {else}
+                    <option value="{$base.code|default=''}">{$base.name|default=''} ( {$base.code|default=''} )</option>
+                    {/if}{/foreach}
+                </select>
+            </div>
+        </div>
+        {/notempty}
+
         <div class="layui-form-item layui-inline">
             <label class="layui-form-label">用户账号</label>
             <label class="layui-input-inline">
@@ -37,7 +54,7 @@
         </div>
 
         <div class="layui-form-item layui-inline">
-            <input type="hidden" name="type" value="{$type|default='all'}">
+            <input type="hidden" name="type" value="{$type|default='index'}">
             <button class="layui-btn layui-btn-primary"><i class="layui-icon">&#xe615;</i> 搜 索</button>
         </div>
     </form>

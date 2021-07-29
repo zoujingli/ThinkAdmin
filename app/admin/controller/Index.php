@@ -118,5 +118,4 @@ class Index extends Controller
             }
         }
     }
-
 }

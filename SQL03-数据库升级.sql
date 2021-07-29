@@ -63,7 +63,7 @@ CREATE TABLE IF NOT EXISTS `system_base`
   ROW_FORMAT = COMPACT;
 
 -- 权限表增加身份权限字段
-ALTER TABLE `system_auth`
-    ADD COLUMN `utype` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT '' COMMENT '身份权限' AFTER `title`;
+ALTER TABLE `system_user`
+    ADD COLUMN `usertype` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT '' COMMENT '用户类型' AFTER `id`;
 
 SET FOREIGN_KEY_CHECKS = 1;

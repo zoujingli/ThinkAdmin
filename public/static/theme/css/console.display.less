@@ -188,6 +188,12 @@ fieldset {
   }
 }
 
+.layui-form-select dl {
+  top: 37px;
+  padding: 0;
+  border-color: @InputBorderActiveColor;
+}
+
 /*! 搜索表单样式 */
 .form-search {
   .layui-btn {
@@ -230,6 +236,7 @@ fieldset {
   }
 }
 
+
 /* 表单验证异常提示 */
 .label-required {
   &-prev:before {
@@ -260,7 +267,8 @@ fieldset {
   }
 }
 
-.layui-input, .layui-select {
+.layui-input,
+.layui-select {
   line-height: 38px;
   border-color: @InputBorderNormalColor;
 
@@ -269,7 +277,8 @@ fieldset {
   }
 }
 
-.layui-disabled, .layui-disabled:hover {
+.layui-disabled,
+.layui-disabled:hover {
   color: #333 !important;
   background: #EEE !important;
 }
@@ -280,18 +289,21 @@ fieldset {
   }
 }
 
-label.think-radio, label.think-checkbox {
+label.think-radio,
+label.think-checkbox {
   cursor: pointer;
   margin-right: 10px;
   display: inline-block;
 }
 
-.think-radio, .think-checkbox {
+.think-radio,
+.think-checkbox {
   margin-top: 10px;
   font-weight: 400;
   line-height: 18px;
 
-  input[type=radio], input[type=checkbox] {
+  input[type=radio],
+  input[type=checkbox] {
     width: 18px;
     height: 18px;
     cursor: pointer;
@@ -354,7 +366,6 @@ label.think-radio, label.think-checkbox {
   }
 }
 
-
 .layui-table {
   td, th {
     font-size: 12px;
@@ -410,13 +421,13 @@ table.layui-table {
   .layui-btn.layui-btn-sm {
     margin-top: -1px;
   }
-}
 
-table.layui-table[lay-size="lg"] {
-  input.layui-input, .layui-btn.layui-btn-sm {
-    height: 38px;
-    line-height: 38px;
-    box-sizing: border-box;
+  &[lay-size="lg"] {
+    input.layui-input, .layui-btn.layui-btn-sm {
+      height: 38px;
+      line-height: 38px;
+      box-sizing: border-box;
+    }
   }
 }
 
@@ -509,7 +520,6 @@ table.layui-table[lay-size="lg"] {
     }
   }
 }
-
 
 /** 手机盒子及微信菜单 */
 .mobile-preview {

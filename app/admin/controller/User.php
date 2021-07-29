@@ -60,17 +60,23 @@ class User extends Controller
      */
     public function index()
     {
-        $this->title = '系统用户管理';
-        $query = $this->_query(SystemUser::class);
-        // 加载对应数据列表
-        if (($this->type = input('type', 'all')) === 'all') {
-            $query->where(['is_deleted' => 0, 'status' => 1]);
-        } elseif ($this->type = 'recycle') {
-            $query->where(['is_deleted' => 0, 'status' => 0]);
+        $this->type = input('type', 'index');
+        if ($this->request->isGet() && input('get.output') !== 'layui.table') {
+            $this->bases = (new SystemBase)->items('身份权限');
+            $this->title = '系统用户管理';
+            $this->fetch();
+        } else {
+            $query = $this->_query(SystemUser::class);
+            // 加载对应数据列表
+            if ($this->type === 'index') {
+                $query->where(['is_deleted' => 0, 'status' => 1]);
+            } elseif ($this->type = 'recycle') {
+                $query->where(['is_deleted' => 0, 'status' => 0]);
+            }
+            // 列表排序并显示
+            $query->equal('status,usertype')->dateBetween('login_at,create_at');
+            $query->like('username,contact_phone#phone,contact_mail#mail')->layTable();
         }
-        // 列表排序并显示
-        $query->equal('status')->like('username,contact_phone#phone,contact_mail#mail');
-        $query->dateBetween('login_at,create_at')->layTable();
     }
 
     /**
@@ -138,6 +144,8 @@ class User extends Controller
     protected function _form_filter(array &$data)
     {
         if ($this->request->isPost()) {
+            // 账号权限绑定处理
+            $data['authorize'] = arr2str($data['authorize'] ?? []);
             if (isset($data['id']) && $data['id'] > 0) {
                 unset($data['username']);
             } else {
@@ -150,15 +158,14 @@ class User extends Controller
                 // 新添加的用户密码与账号相同
                 $data['password'] = md5($data['username']);
             }
-            // 账号权限绑定处理
-            $data['authorize'] = arr2str($data['authorize'] ?? []);
         } else {
+            // 用户身份数据
+            $this->bases = (new SystemBase)->items('身份权限');
+            // 权限绑定处理
             $data['authorize'] = str2arr($data['authorize'] ?? '');
             // 用户权限管理
             $query = $this->app->db->name('SystemAuth')->where(['status' => 1]);
             $this->authorizes = $query->order('sort desc,id desc')->select()->toArray();
-            // 身份权限关联
-            (new SystemBase)->items('身份权限', $this->authorizes, 'utype', 'utypeinfo');
         }
     }
 
