@@ -325,13 +325,14 @@ class RebateService extends Service
             $itemJson = $this->app->db->name('BaseUserDiscount')->where(['status' => 1, 'deleted' => 0])->value('items');
             if (!empty($itemJson) && is_array($rules = json_decode($itemJson, true))) {
                 [$tVip, $tRate] = [$item['vip_code'], $item['discount_rate']];
-                foreach ($rules as $rule) if ($rule['level'] > $tVip) foreach ($users as $user) if ($user['vip_code'] > $tVip) {
+                foreach ($users as $user) if (isset($rules[$user['vip_code']]) && $user['vip_code'] > $tVip) {
+                    $rule = $rules[$user['vip_code']];
                     if ($tRate > $rule['discount'] && $tRate < 100) {
                         $map = ['uuid' => $user['id'], 'type' => self::PRIZE_05];
                         $map['code'] = "{$this->order['order_no']}#{$item['id']}#{$tVip}.{$user['vip_code']}";
                         if ($this->app->db->name($this->table)->where($map)->count() < 1) {
-                            $dRate = ($tRate - $rule['discount']) / 100;
-                            $name = "等级差额奖励{$tVip}#{$user['vip_code']}商品的{$dRate}%";
+                            $dRate = ($rate = $tRate - $rule['discount']) / 100;
+                            $name = "等级差额奖励{$tVip}#{$user['vip_code']}商品原价{$item['total_selling']}元的{$rate}%";
                             $amount = $dRate * $item['total_selling'];
                             // 写入用户返利记录
                             $this->writeRabate($user['id'], $map, $name, $amount);
