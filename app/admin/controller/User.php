@@ -75,7 +75,7 @@ class User extends Controller
             }
             // 列表排序并显示
             $query->equal('status,usertype')->dateBetween('login_at,create_at');
-            $query->like('username,contact_phone#phone,contact_mail#mail')->layTable();
+            $query->like('username,nickname,contact_phone#phone,contact_mail#mail')->layTable();
         }
     }
 

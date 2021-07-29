@@ -2,7 +2,21 @@
     <legend>条件搜索</legend>
     <form class="layui-form layui-form-pane form-search" action="{:sysuri()}" onsubmit="return false" method="get" autocomplete="off">
 
-        {notempty name='bases'}
+        <div class="layui-form-item layui-inline">
+            <label class="layui-form-label">用户名称</label>
+            <label class="layui-input-inline">
+                <input name="nickname" value="{:input('get.nickname')}" placeholder="请输入用户名称" class="layui-input">
+            </label>
+        </div>
+
+        <div class="layui-form-item layui-inline">
+            <label class="layui-form-label">登录账号</label>
+            <label class="layui-input-inline">
+                <input name="username" value="{:input('get.username')}" placeholder="请输入登录账号" class="layui-input">
+            </label>
+        </div>
+
+        <!--{notempty name='bases'}-->
         <div class="layui-form-item layui-inline">
             <label class="layui-form-label">用户身份</label>
             <div class="layui-input-inline">
@@ -16,14 +30,7 @@
                 </select>
             </div>
         </div>
-        {/notempty}
-
-        <div class="layui-form-item layui-inline">
-            <label class="layui-form-label">用户账号</label>
-            <label class="layui-input-inline">
-                <input name="username" value="{:input('get.username')}" placeholder="请输入用户名" class="layui-input">
-            </label>
-        </div>
+        <!--{/notempty}-->
 
         <div class="layui-form-item layui-inline">
             <label class="layui-form-label">联系手机</label>

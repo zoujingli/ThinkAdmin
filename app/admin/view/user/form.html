@@ -33,7 +33,7 @@
             </div>
         </fieldset>
 
-        {if !empty($authorizes) && !empty($bases)}
+        {if !empty($authorizes) || !empty($bases)}
         <fieldset>
             <legend><b class="layui-badge think-bg-violet">用户权限</b></legend>
             {if !empty($bases)}
