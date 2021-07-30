@@ -16,7 +16,9 @@
 
 namespace app\admin\controller;
 
+use app\admin\model\SystemQueue;
 use think\admin\Controller;
+use think\admin\helper\QueryHelper;
 use think\admin\service\AdminService;
 use think\admin\service\ProcessService;
 use think\admin\service\QueueService;
@@ -46,31 +48,31 @@ class Queue extends Controller
      */
     public function index()
     {
-        if ($this->isSuper = AdminService::instance()->isSuper()) {
-            $process = ProcessService::instance();
-            if ($process->iswin() || empty($_SERVER['USER'])) {
-                $this->command = $process->think('xadmin:queue start');
-            } else {
-                $this->command = "sudo -u {$_SERVER['USER']} {$process->think('xadmin:queue start')}";
+        $this->_query(SystemQueue::class)->layTable(function () {
+            $this->title = '系统任务管理';
+            $this->iswin = ProcessService::instance()->iswin();
+            // 超级管理面板
+            if ($this->isSuper = AdminService::instance()->isSuper()) {
+                $process = ProcessService::instance();
+                if ($process->iswin() || empty($_SERVER['USER'])) {
+                    $this->command = $process->think('xadmin:queue start');
+                } else {
+                    $this->command = "sudo -u {$_SERVER['USER']} {$process->think('xadmin:queue start')}";
+                }
             }
-        }
-
-        // 任务状态统计
-        $this->total = ['dos' => 0, 'pre' => 0, 'oks' => 0, 'ers' => 0];
-        $query = $this->app->db->name($this->table)->field('status,count(1) count');
-        $query->group('status')->select()->map(function ($item) {
-            if ($item['status'] === 1) $this->total['pre'] = $item['count'];
-            if ($item['status'] === 2) $this->total['dos'] = $item['count'];
-            if ($item['status'] === 3) $this->total['oks'] = $item['count'];
-            if ($item['status'] === 4) $this->total['ers'] = $item['count'];
+            // 任务状态统计
+            $this->total = ['dos' => 0, 'pre' => 0, 'oks' => 0, 'ers' => 0];
+            $query = $this->app->db->name($this->table)->field('status,count(1) count');
+            $query->group('status')->select()->map(function ($item) {
+                if ($item['status'] === 1) $this->total['pre'] = $item['count'];
+                if ($item['status'] === 2) $this->total['dos'] = $item['count'];
+                if ($item['status'] === 3) $this->total['oks'] = $item['count'];
+                if ($item['status'] === 4) $this->total['ers'] = $item['count'];
+            });
+        }, function (QueryHelper $query) {
+            $query->timeBetween('enter_time,exec_time')->dateBetween('create_at');
+            $query->equal('status')->like('code,title,command');
         });
-
-        // 页面变量赋值
-        $this->title = '系统任务管理';
-        $this->iswin = ProcessService::instance()->iswin();
-        // 任务列表查询及分页
-        $query = $this->_query($this->table)->timeBetween('enter_time,exec_time')->dateBetween('create_at');
-        $query->equal('status')->like('code,title,command')->order('loops_time desc,id desc')->page();
     }
 
     /**

@@ -665,7 +665,9 @@ $(function () {
             opt.page = params.page !== false ? (params.page || true) : false, opt.autoSort = params.autoSort === true;
             opt.loading = params.loading === true, opt.limit = params.limit || 20, opt.cols = params.cols || [[]];
             opt.done = function () {
-                $(elem).next().find(".layui-btn:not([data-table-id])").attr('data-table-id', elem.id);
+                var tableView = $(elem).next();
+                tableView.find('[data-load]:not([data-table-id])').attr('data-table-id', elem.id);
+                tableView.find('[data-action]:not([data-table-id])').attr('data-table-id', elem.id);
             };
             // 动态设置最大高度
             if (opt.height === 'full') {
@@ -730,7 +732,12 @@ $(function () {
         (function (confirm, callable) {
             confirm ? $.msg.confirm(confirm, callable) : callable();
         })(emap.confirm, function () {
-            $.form.load(emap.load, data, 'get', null, true, emap.tips, emap.time);
+            var call = !emap.tableId ? false : function (ret) {
+                if (ret.code > 0) return $.msg.success(ret.info, 3, function () {
+                    $('#' + emap.tableId).trigger('reload');
+                }), false;
+            }
+            $.form.load(emap.load, data, 'get', call, true, emap.tips, emap.time);
         });
     });
 
@@ -799,12 +806,12 @@ $(function () {
         (function (confirm, callable) {
             confirm ? $.msg.confirm(confirm, callable) : callable();
         })(emap.confirm, function () {
-            var callable = !emap.tableId ? false : function (ret) {
+            var call = !emap.tableId ? false : function (ret) {
                 if (ret.code > 0) return $.msg.success(ret.info, 3, function () {
                     $('#' + emap.tableId).trigger('reload');
                 }), false;
             }
-            $.form.load(emap.action, data, emap.method || 'post', callable, load, tips, emap.time)
+            $.form.load(emap.action, data, emap.method || 'post', call, load, tips, emap.time)
         });
     });
 

@@ -1,4 +1,4 @@
-{extend name='main'}
+{extend name='table'}
 
 {block name="button"}
 <!--{if isset($isSuper) and $isSuper}-->
@@ -14,7 +14,7 @@
 <!--{/if}-->
 
 <!--{if auth("remove")}-->
-<button data-action='{:url("remove")}' data-rule="id#{key}" data-confirm="确定批量删除记录吗？" class='layui-btn layui-btn-sm layui-btn-primary'>批量删除任务</button>
+<button data-action='{:url("remove")}' data-rule="id#{id}" data-table-id="QueueData" data-confirm="确定批量删除记录吗？" class='layui-btn layui-btn-sm layui-btn-primary'>批量删除任务</button>
 <!--{/if}-->
 {/block}
 
@@ -23,7 +23,7 @@
     <div class="layui-row layui-col-space20 portal-block-container notselect">
         <div class="layui-col-sm6 layui-col-md6 layui-col-lg3">
             <div class="portal-block-item nowrap" style="background:linear-gradient(-125deg,#57bdbf,#2f9de2)">
-                <div>等待处理</div>
+                <div class="font-w7 font-s16">等待处理</div>
                 <div>{$total.pre|default=0}</div>
                 <div>待处理的任务数量</div>
             </div>
@@ -31,7 +31,7 @@
         </div>
         <div class="layui-col-sm6 layui-col-md6 layui-col-lg3">
             <div class="portal-block-item nowrap" style="background:linear-gradient(-125deg,#ff7d7d,#fb2c95)">
-                <div>正在处理</div>
+                <div class="font-w7 font-s16">正在处理</div>
                 <div>{$total.dos|default=0}</div>
                 <div>处理中的任务数量</div>
             </div>
@@ -39,7 +39,7 @@
         </div>
         <div class="layui-col-sm6 layui-col-md6 layui-col-lg3">
             <div class="portal-block-item nowrap" style="background:linear-gradient(-113deg,#c543d8,#925cc3)">
-                <div>处理完成</div>
+                <div class="font-w7 font-s16">处理完成</div>
                 <div>{$total.oks|default=0}</div>
                 <div>处理完成的任务数量</div>
             </div>
@@ -47,7 +47,7 @@
         </div>
         <div class="layui-col-sm6 layui-col-md6 layui-col-lg3">
             <div class="portal-block-item nowrap" style="background:linear-gradient(-141deg,#ecca1b,#f39526)">
-                <div>处理失败</div>
+                <div class="font-w7 font-s16">处理失败</div>
                 <div>{$total.ers|default=0}</div>
                 <div>处理失败的任务数量</div>
             </div>
@@ -56,76 +56,74 @@
     </div>
 
     {include file='queue/index_search'}
-    <table class="layui-table" lay-skin="line" lay-even>
-        {notempty name='list'}
-        <thead>
-        <tr>
-            <th class='list-table-check-td think-checkbox'>
-                <label><input data-auto-none data-check-target='.list-check-box' type='checkbox'></label>
-            </th>
-            <th class='text-left nowrap'>任务信息</th>
-            <th class='text-left nowrap'>任务时间</th>
-            <th class='text-left nowrap'>任务状态</th>
-        </tr>
-        </thead>
-        {/notempty}
-        <tbody>
-        {foreach $list as $key=>$vo}
-        <tr>
-            <td class='list-table-check-td think-checkbox'>
-                <label><input class="list-check-box" value='{$vo.id}' type='checkbox'></label>
-            </td>
-            <td class='text-left nowrap'>
-                任务编号：{$vo.code|default=''}<br>
-                任务名称：{$vo.title|default=''}<br>
-                任务指令：{$vo.command|default=''}
-            </td>
-            <td class='text-left nowrap'>
-                计划时间：{$vo.exec_time|format_datetime} {if isset($vo.exec_pid) and $vo.exec_pid>0}（ 进程 <b class="color-blue">{$vo.exec_pid|default='-'}</b> ）{/if}<br>
-                {if $vo.enter_time>0 and $vo.outer_time>0} 执行时间：{$vo.enter_time|format_datetime}（ 耗时 <b class="color-blue">{:sprintf("%.4f",$vo.outer_time-$vo.enter_time)}</b> 秒 ）{elseif $vo.status eq 2} 执行时间：{$vo.enter_time|format_datetime}（ 任务执行中 ）{else}执行时间：<span class="color-desc">任务还没有执行，等待执行...</span>{/if}<br>
-                创建时间：{$vo.create_at|format_datetime} {if isset($vo.loops_time) and $vo.loops_time > 0}（ 每 <b class="color-blue">{$vo.loops_time|default='0'}</b> 秒执行，共 <b class="color-blue">{$vo.attempts}</b> 次）{else}（ 共执行 <b class="color-blue">{$vo.attempts}</b> 次 ） {/if}
-            </td>
-            <td class='text-left nowrap'>
-                <div class="margin-bottom-5">
-                    <!--{if isset($vo.loops_time) and $vo.loops_time > 0}-->
-                    <span class="layui-badge layui-bg-orange">循</span>
-                    <!--{/if}-->
-
-                    <!--{if $vo.rscript eq 1}-->
-                    <span class="layui-badge layui-bg-green">复</span>
-                    <!--{else}-->
-                    <span class="layui-badge layui-bg-blue">单</span>
-                    <!--{/if}-->
-
-                    <!--{if $vo.status eq 1}-->
-                    <span class="layui-badge layui-bg-black">等待处理</span>
-                    <!--{elseif $vo.status eq 2}-->
-                    <span class="layui-badge layui-bg-green">正在处理</span>
-                    <!--{elseif $vo.status eq 3}-->
-                    <span class="layui-badge layui-bg-blue">处理完成</span>
-                    <!--{elseif $vo.status eq 4 and auth('redo')}-->
-                    <span class="layui-badge layui-bg-red">处理失败</span>
-                    <a class="layui-badge layui-bg-green" data-confirm="确定要重置该任务吗？" data-queue="{:url('redo')}?code={$vo.code}">
-                        <i class="layui-icon font-s12">&#xe669;</i>
-                    </a>
-                    <!--{/if}-->
-
-                    <!--{if auth("remove")}-->
-                    <a class='layui-badge layui-bg-red' data-confirm="确定要删除该任务吗？" data-action='{:url("remove")}' data-value="id#{$vo.id}">
-                        <i class="layui-icon font-s12">&#xe640;</i>
-                    </a>
-                    <!--{/if}-->
-
-                    <a class='layui-badge layui-bg-orange' onclick="$.loadQueue('{$vo.code}',false)">
-                        <i class="layui-icon font-s12">&#xe705;</i>
-                    </a>
-                </div>
-                <div class="color-desc">{$vo.exec_desc|raw|default="没有获取到状态描述"}</div>
-            </td>
-        </tr>
-        {/foreach}
-        </tbody>
-    </table>
-    {empty name='list'}<span class="notdata">没有记录哦</span>{else}{$pagehtml|raw|default=''}{/empty}
+    <table id="QueueData" data-url="{:sysuri()}" data-target-search="form.form-search"></table>
 </div>
+{/block}
+
+{block name='script'}
+<script>
+    $(function () {
+        $('#QueueData').layTable({
+            even: true,
+            sort: {field: 'loops_time desc,id', type: 'desc'},
+            cols: [[
+                {checkbox: true, fixed: 'left'},
+                {field: 'code', title: '任务编号', width: 140, sort: true},
+                {field: 'title', title: '任务名称', minWidth: 160},
+                {field: 'command', title: '任务指令', minWidth: 160},
+                {field: 'exec_time', title: '计划时间', minWidth: 170},
+                {
+                    field: 'enter_time', title: '开始时间', minWidth: 180, templet: function (d) {
+                        d.enter_time = d.enter_time || '', d.outer_time = d.outer_time || '0.0000';
+                        if (d.enter_time.length > 12) {
+                            return d.enter_time.substr(12) + ('<span class="color-desc">（ 耗时 ' + d.outer_time + ' )</span>');
+                        } else {
+                            return '<span class="color-desc">未执行</span>'
+                        }
+                    }
+                },
+                {field: 'attempts', title: '执行次数', minWidth: 80, align: 'center', sort: true, templet: "<div>{{d.attempts||0}}</div>"},
+                {field: 'create_at', title: '创建时间', minWidth: 170, align: 'center'},
+                {toolbar: '#toolbar', title: '操作面板', align: 'left', fixed: 'right', minWidth: 270}
+            ]]
+        });
+    });
+</script>
+
+<script type="text/html" id="toolbar">
+    {{# if(d.loops_time>0){ }}
+    <span class="layui-badge think-bg-blue">循</span>
+    {{# } }}
+
+    {{# if(d.rscript===1){ }}
+    <span class="layui-badge layui-bg-green">复</span>
+    {{# }else{ }}
+    <span class="layui-badge think-bg-violet">单</span>
+    {{# } }}
+
+    {{# if(d.status===1){ }}
+    <span class="layui-badge layui-bg-black">等待处理</span>
+    {{# }else if(d.status===2){ }}
+    <span class="layui-badge layui-bg-green">正在处理</span>
+    {{# }else if(d.status===3){ }}
+    <span class="layui-badge layui-bg-blue">处理完成</span>
+    {{# }else if(d.status===4){ }}
+    <span class="layui-badge layui-bg-red">处理失败</span>
+    <!--{if auth('redo')}-->
+    <a class="layui-badge layui-bg-green" data-confirm="确定要重置该任务吗？" data-queue="{:url('redo')}?code={{d.code}}">
+        <i class="layui-icon font-s12">&#xe669;</i>
+    </a>
+    <!--{/if}-->
+    {{# } }}
+
+    <!--{if auth('remove')}-->
+    <a class='layui-badge layui-bg-red' data-confirm="确定要删除该任务吗？" data-action='{:url("remove")}' data-value="id#{{d.id}}">
+        <i class="layui-icon font-s12">&#xe640;</i>
+    </a>
+    <!--{/if}-->
+
+    <a class='layui-badge layui-bg-orange' onclick="$.loadQueue('{{d.code}}',false)">
+        <i class="layui-icon font-s12">&#xe705;</i>
+    </a>
+</script>
 {/block}
