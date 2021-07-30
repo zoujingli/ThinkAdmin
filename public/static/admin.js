@@ -560,7 +560,7 @@ $(function () {
     /*! 全局文件上传入口 */
     $.fn.uploadFile = function (callable) {
         if (this.data('inited')) return false;
-        var that = this, mult = 'one|btn'.indexOf(this.data('file') || 'one') > -1 ? 1 : 0;
+        var that = this, mult = 'one|btn'.indexOf(this.data('file') || 'one') > -1 ? 0 : 1;
         this.data('inited', true).data('multiple', mult), require(['upload'], function (apply) {
             apply.call(this, that, callable);
         });
