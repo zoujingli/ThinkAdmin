@@ -18,6 +18,7 @@ namespace app\admin\controller;
 
 use app\admin\model\SystemBase;
 use think\admin\Controller;
+use think\admin\helper\QueryHelper;
 
 /**
  * 数据字典管理
@@ -42,10 +43,12 @@ class Base extends Controller
      */
     public function index()
     {
-        $this->applyTypes();
-        $this->title = '数据字典管理';
-        $query = $this->_query(SystemBase::class)->where(['deleted' => 0]);
-        $query->equal('type')->like('code,name,status')->dateBetween('create_at')->layTable();
+        $this->_query(SystemBase::class)->layTable(function () {
+            $this->applyTypes();
+            $this->title = '数据字典管理';
+        }, function (QueryHelper $query) {
+            $query->where(['deleted' => 0])->equal('type')->like('code,name,status')->dateBetween('create_at');
+        });
     }
 
     /**

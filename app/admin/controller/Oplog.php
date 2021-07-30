@@ -18,6 +18,7 @@ namespace app\admin\controller;
 
 use Exception;
 use think\admin\Controller;
+use think\admin\helper\QueryHelper;
 use think\admin\service\AdminService;
 use think\exception\HttpResponseException;
 
@@ -45,14 +46,16 @@ class Oplog extends Controller
      */
     public function index()
     {
-        $this->title = '系统日志管理';
-        $this->isSupper = AdminService::instance()->isSuper();
-        // 读取数据类型
-        $this->users = $this->app->db->name($this->table)->distinct(true)->column('username');
-        $this->actions = $this->app->db->name($this->table)->distinct(true)->column('action');
-        // 数据列表处理
-        $query = $this->_query($this->table)->dateBetween('create_at');
-        $query->equal('username,action')->like('content,geoip,node')->layTable();
+        $this->_query($this->table)->layTable(function () {
+            $this->title = '系统日志管理';
+            $this->isSupper = AdminService::instance()->isSuper();
+            // 读取数据类型
+            $this->users = $this->app->db->name($this->table)->distinct(true)->column('username');
+            $this->actions = $this->app->db->name($this->table)->distinct(true)->column('action');
+        }, function (QueryHelper $query) {
+            // 数据列表处理
+            $query->dateBetween('create_at')->equal('username,action')->like('content,geoip,node');
+        });
     }
 
     /**

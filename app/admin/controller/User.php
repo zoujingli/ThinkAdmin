@@ -19,6 +19,7 @@ namespace app\admin\controller;
 use app\admin\model\SystemBase;
 use app\admin\model\SystemUser;
 use think\admin\Controller;
+use think\admin\helper\QueryHelper;
 use think\admin\service\AdminService;
 
 /**
@@ -61,22 +62,29 @@ class User extends Controller
     public function index()
     {
         $this->type = input('type', 'index');
-        if ($this->request->isGet() && input('get.output') !== 'layui.table') {
-            $this->bases = (new SystemBase)->items('身份权限');
+        $this->_query(SystemUser::class)->layTable(function () {
             $this->title = '系统用户管理';
-            $this->fetch();
-        } else {
-            $query = $this->_query(SystemUser::class);
+            $this->bases = (new SystemBase)->items('身份权限');
+        }, function (QueryHelper $query) {
             // 加载对应数据列表
             if ($this->type === 'index') {
                 $query->where(['is_deleted' => 0, 'status' => 1]);
             } elseif ($this->type = 'recycle') {
                 $query->where(['is_deleted' => 0, 'status' => 0]);
             }
-            // 列表排序并显示
+            // 数据列表搜索过滤
             $query->equal('status,usertype')->dateBetween('login_at,create_at');
-            $query->like('username,nickname,contact_phone#phone,contact_mail#mail')->layTable();
-        }
+            $query->like('username,nickname,contact_phone#phone,contact_mail#mail');
+        });
+    }
+
+    /**
+     * 数据列表处理
+     * @param array $data
+     */
+    protected function _page_filter(array &$data)
+    {
+        (new SystemBase)->items('身份权限', $data, 'usertype', 'userinfo');
     }
 
     /**

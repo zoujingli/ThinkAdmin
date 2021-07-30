@@ -18,6 +18,7 @@ namespace app\admin\controller;
 
 use app\admin\model\SystemAuth;
 use think\admin\Controller;
+use think\admin\helper\QueryHelper;
 use think\admin\service\AdminService;
 
 /**
@@ -44,13 +45,11 @@ class Auth extends Controller
      */
     public function index()
     {
-        if ($this->request->isGet() && input('get.output') !== 'layui.table') {
+        $this->_query(SystemAuth::class)->layTable(function () {
             $this->title = '系统权限管理';
-            $this->fetch();
-        } else {
-            $query = $this->_query(SystemAuth::class)->dateBetween('create_at');
-            $query->like('title,desc')->equal('status,utype')->layTable();
-        }
+        }, function (QueryHelper $query) {
+            $query->dateBetween('create_at')->like('title,desc')->equal('status,utype');
+        });
     }
 
     /**
