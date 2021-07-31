@@ -82,7 +82,7 @@
                     }
                 },
                 {
-                    field: 'enter_time', title: '开始时间', minWidth: 180, templet: function (d) {
+                    field: 'enter_time', title: '执行时间', minWidth: 180, templet: function (d) {
                         d.enter_time = d.enter_time || '', d.outer_time = d.outer_time || '0.0000';
                         if (d.enter_time.length > 12) {
                             return d.enter_time.substr(12) + '<span class="color-desc"> ( 耗时 ' + d.outer_time + ' )</span>';
