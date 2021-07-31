@@ -41,9 +41,9 @@ class SystemQueue extends Model
     public function getOuterTimeAttr($value, array $data): string
     {
         if ($value > 0 && $value > $data['enter_time']) {
-            return sprintf("%.4f", $data['outer_time'] - $data['enter_time']) . ' 秒';
+            return '<b class="color-blue">' . sprintf("%.4f", $data['outer_time'] - $data['enter_time']) . '</b> 秒';
         } else {
-            return '<span class="color-desc">-</span>';
+            return '<b class="color-desc">-</b>';
         }
     }
 

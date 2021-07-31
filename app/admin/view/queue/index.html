@@ -71,12 +71,21 @@
                 {field: 'code', title: '任务编号', width: 140, sort: true},
                 {field: 'title', title: '任务名称', minWidth: 160},
                 {field: 'command', title: '任务指令', minWidth: 160},
-                {field: 'exec_time', title: '计划时间', minWidth: 170},
+                {
+                    field: 'exec_time', title: '计划时间', minWidth: 250, templet: function (d) {
+                        d.exec_time = d.exec_time || 0, d.loops_time = d.loops_time || 0;
+                        if (d.loops_time > 0) {
+                            return d.exec_time + ' ( 每 <b class="color-blue">' + d.loops_time + '</b> 秒 ) ';
+                        } else {
+                            return d.exec_time + ' <span class="color-desc">( 单次任务 )</span> ';
+                        }
+                    }
+                },
                 {
                     field: 'enter_time', title: '开始时间', minWidth: 180, templet: function (d) {
                         d.enter_time = d.enter_time || '', d.outer_time = d.outer_time || '0.0000';
                         if (d.enter_time.length > 12) {
-                            return d.enter_time.substr(12) + ('<span class="color-desc">（ 耗时 ' + d.outer_time + ' )</span>');
+                            return d.enter_time.substr(12) + '<span class="color-desc"> ( 耗时 ' + d.outer_time + ' )</span>';
                         } else {
                             return '<span class="color-desc">未执行</span>'
                         }
