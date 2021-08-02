@@ -44,8 +44,9 @@ class Base extends Controller
     public function index()
     {
         $this->_query(SystemBase::class)->layTable(function () {
-            $this->applyTypes();
             $this->title = '数据字典管理';
+            $this->types = (new SystemBase)->types();
+            $this->type = input('get.type') ?: ($this->types[0] ?? '-');
         }, function (QueryHelper $query) {
             $query->where(['deleted' => 0])->equal('type')->like('code,name,status')->dateBetween('create_at');
         });
@@ -82,9 +83,14 @@ class Base extends Controller
     protected function _form_filter(array &$data)
     {
         if ($this->request->isGet()) {
-            $this->applyTypes(true);
+            $this->types = (new SystemBase)->types();
+            $this->types[] = '--- 新增类型 ---';
+            $this->type = input('get.type') ?: ($this->types[0] ?? '-');
         } else {
-            $map = [['type', '=', $data['type']], ['code', '=', $data['code']], ['deleted', '=', 0]];
+            $map = [];
+            $map[] = ['deleted', '=', 0];
+            $map[] = ['code', '=', $data['code']];
+            $map[] = ['type', '=', $data['type']];
             if (isset($data['id'])) $map[] = ['id', '<>', $data['id']];
             if ($this->app->db->name($this->table)->where($map)->count() > 0) {
                 $this->error("同类型的数据编码已经存在！");
@@ -110,18 +116,5 @@ class Base extends Controller
     public function remove()
     {
         $this->_delete($this->table);
-    }
-
-    /**
-     * 初始化数据类型
-     * @param false $add
-     */
-    private function applyTypes(bool $add = false)
-    {
-        $query = $this->app->db->name($this->table)->where(['deleted' => 0]);
-        $this->types = $query->distinct(true)->order('id asc')->column('type');
-        if (empty($this->types)) $this->types = ['身份权限'];
-        $this->type = input('get.type') ?: ($this->types[0] ?? '-');
-        if ($add) $this->types[] = '--- 新增类型 ---';
     }
 }

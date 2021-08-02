@@ -69,10 +69,10 @@
             cols: [[
                 {checkbox: true, fixed: 'left'},
                 {field: 'code', title: '任务编号', width: 140, sort: true},
-                {field: 'title', title: '任务名称', minWidth: 160},
-                {field: 'command', title: '任务指令', minWidth: 160},
+                {field: 'title', title: '任务名称', minWidth: 150},
+                {field: 'command', title: '任务指令', minWidth: 150},
                 {
-                    field: 'exec_time', title: '计划时间', minWidth: 250, templet: function (d) {
+                    field: 'exec_time', title: '计划时间', minWidth: 245, templet: function (d) {
                         d.exec_time = d.exec_time || 0, d.loops_time = d.loops_time || 0;
                         if (d.loops_time > 0) {
                             return d.exec_time + ' ( 每 <b class="color-blue">' + d.loops_time + '</b> 秒 ) ';
@@ -87,13 +87,14 @@
                         if (d.enter_time.length > 12) {
                             return d.enter_time.substr(12) + '<span class="color-desc"> ( 耗时 ' + d.outer_time + ' )</span>';
                         } else {
-                            return '<span class="color-desc">未执行</span>'
+                            return '<span class="color-desc">任务未执行</span>'
                         }
                     }
                 },
-                {field: 'attempts', title: '执行次数', minWidth: 80, align: 'center', sort: true, templet: "<div>{{d.attempts||0}}</div>"},
-                {field: 'create_at', title: '创建时间', minWidth: 170, align: 'center'},
-                {toolbar: '#toolbar', title: '操作面板', align: 'left', fixed: 'right', minWidth: 270}
+                {field: 'attempts', title: '执行次数', width: 95, align: 'center', sort: true, templet: "<div>{{d.attempts||0}}</div>"},
+                {field: 'exec_desc', title: '执行结果', minWidth: 180},
+                {field: 'create_at', title: '创建时间', minWidth: 170},
+                {toolbar: '#toolbar', title: '操作面板', align: 'left', fixed: 'right', minWidth: 225}
             ]]
         });
     });

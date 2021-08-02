@@ -74,5 +74,4 @@ class Update extends Controller
     {
         $this->success('获取模块信息成功！', ModuleService::instance()->getModules());
     }
-
 }

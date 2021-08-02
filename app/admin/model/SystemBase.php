@@ -22,6 +22,7 @@ use think\Model;
  * 数据字典数据模型
  * Class SystemBase
  * @package app\admin\model
+ * @method \think\db\Query distinct(bool $true)
  */
 class SystemBase extends Model
 {
@@ -39,6 +40,18 @@ class SystemBase extends Model
         $bases = $this->where($map)->order('sort desc,id desc')->column('code,name,content', 'code');
         if (count($data) > 0) foreach ($data as &$vo) $vo[$bind] = $bases[$vo[$field]] ?? [];
         return $bases;
+    }
+
+    /**
+     * 获取所有数据类型
+     * @param boolean $simple
+     * @return array
+     */
+    public function types(bool $simple = false): array
+    {
+        $types = $this->where(['deleted' => 0])->distinct(true)->column('type');
+        if (empty($types) && empty($simple)) $types = ['身份权限'];
+        return $types;
     }
 
     /**

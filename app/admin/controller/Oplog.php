@@ -100,5 +100,4 @@ class Oplog extends Controller
     {
         $this->_delete($this->table);
     }
-
 }

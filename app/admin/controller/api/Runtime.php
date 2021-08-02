@@ -116,5 +116,4 @@ class Runtime extends Controller
             $this->error('只有超级管理员才能操作！');
         }
     }
-
 }

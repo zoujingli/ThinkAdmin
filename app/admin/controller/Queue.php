@@ -70,8 +70,8 @@ class Queue extends Controller
                 if ($item['status'] === 4) $this->total['ers'] = $item['count'];
             });
         }, function (QueryHelper $query) {
-            $query->timeBetween('enter_time,exec_time')->dateBetween('create_at');
             $query->equal('status')->like('code,title,command');
+            $query->timeBetween('enter_time,exec_time')->dateBetween('create_at');
         });
     }
 

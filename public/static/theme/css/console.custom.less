@@ -106,174 +106,6 @@
   }
 }
 
-.pull- {
-  &left {
-    float: left !important
-  }
-
-  &right {
-    float: right !important
-  }
-}
-
-.full- {
-  &width {
-    width: 100% !important
-  }
-
-  &height {
-    height: 100% !important
-  }
-}
-
-.color- {
-  &red {
-    color: #e44 !important
-  }
-
-  &blue {
-    color: #29f !important
-  }
-
-  &desc {
-    color: #999 !important
-  }
-
-  &text {
-    color: #333 !important
-  }
-
-  &green {
-    color: #090 !important
-  }
-}
-
-.sub-span- {
-  &red span {
-    color: #e44 !important
-  }
-
-  &blue span {
-    color: #29f !important
-  }
-
-  &desc span {
-    color: #999 !important
-  }
-
-  &text span {
-    color: #333 !important
-  }
-
-  &green span {
-    color: #090 !important
-  }
-}
-
-.sub-strong- {
-  &s10 b {
-    font-size: 10px;
-  }
-
-  &s12 b {
-    font-size: 12px;
-  }
-
-  &s14 b {
-    font-size: 14px;
-  }
-
-  &red b {
-    color: #ec494e !important
-  }
-
-  &blue b {
-    color: #2494f2 !important
-  }
-
-  &desc b {
-    color: #999 !important
-  }
-
-  &text b {
-    color: #333 !important
-  }
-
-  &green b {
-    color: #090 !important
-  }
-}
-
-.text- {
-  &top {
-    vertical-align: top !important
-  }
-
-  &left {
-    text-align: left !important
-  }
-
-  &right {
-    text-align: right !important
-  }
-
-  &center {
-    text-align: center !important
-  }
-
-  &middle {
-    vertical-align: middle !important
-  }
-
-  &bottom {
-    vertical-align: bottom !important
-  }
-}
-
-.think-bg- {
-  &white {
-    background: white !important
-  }
-
-  &blue {
-    background: linear-gradient(-125deg, #57bdbf, #2f9de2) !important
-  }
-
-  &orig {
-    background: linear-gradient(-141deg, #ecca1b, #f39526) !important
-  }
-
-  &red {
-    background: linear-gradient(-125deg, #ff7d7d, #fb2c95) !important
-  }
-
-  &gray {
-    background: linear-gradient(-113deg, #EEEEEE, #EFEFEF) !important
-  }
-
-  &violet {
-    background: linear-gradient(-113deg, #c543d8, #925cc3) !important
-  }
-}
-
-/* 分隔线条 */
-.hr-line- {
-  &dashed {
-    color: #fff;
-    height: 1px;
-    margin: 15px 0;
-    background-color: #fff;
-    border-top: 1px dashed #e7eaec
-  }
-
-  &solid {
-    margin-top: 15px;
-    margin-bottom: 15px;
-    border-bottom: 1px solid #e7eaec;
-    background-color: rgba(0, 0, 0, 0)
-  }
-}
-
 .input-right-icon {
   top: 1px;
   right: 1px;
@@ -290,6 +122,17 @@
     color: #009080;
     background: #E0E0E0;
   }
+}
+
+[data-tips-image] {
+  cursor: zoom-in !important
+}
+
+[data-lazy-src] {
+  overflow: hidden;
+  position: relative;
+  background-size: cover;
+  background-position: center center;
 }
 
 /** 加载进度 */
@@ -338,14 +181,15 @@
   margin-right: 8px;
 
   a {
-    color: #fff;
+    float: right;
+    color: #EEE;
     width: 20px;
     height: 20px;
-    float: right;
+    margin: 4px 4px 0 0;
     display: none;
     text-align: center;
-    line-height: 22px;
-    background: rgba(0, 0, 0, .5)
+    line-height: 20px;
+    background: rgba(0, 0, 0, 0.6);
   }
 
   &:hover a {
@@ -353,21 +197,36 @@
     display: inline-block;
 
     &:hover {
-      color: #fff;
+      color: #FFF;
       text-decoration: none
     }
   }
 }
 
-[data-tips-image] {
-  cursor: zoom-in !important
+.upload-image-smbox,
+.upload-image-mdbox,
+.upload-image-lgbox {
+  a {
+    width: 30px;
+    height: 30px;
+    margin: 1px 1px 0 0;
+    line-height: 30px;
+  }
 }
 
-[data-lazy-src] {
-  overflow: hidden;
-  position: relative;
-  background-size: cover;
-  background-position: center center;
+.upload-image-smbox .uploadimage {
+  width: 120px;
+  height: 120px;
+}
+
+.upload-image-mdbox .uploadimage {
+  width: 180px;
+  height: 180px;
+}
+
+.upload-image-lgbox .uploadimage {
+  width: 260px;
+  height: 260px;
 }
 
 .portal-block-container {
@@ -477,59 +336,171 @@
   }
 }
 
-.border {
-  &-0 {
-    border: 0 !important
+/* 分隔线条 */
+.hr-line- {
+  &dashed {
+    color: #fff;
+    height: 1px;
+    margin: 15px 0;
+    background-color: #fff;
+    border-top: 1px dashed #e7eaec
   }
 
-  &-line {
-    border: 1px solid @BoxBorderColor;
+  &solid {
+    margin-top: 15px;
+    margin-bottom: 15px;
+    border-bottom: 1px solid #e7eaec;
+    background-color: rgba(0, 0, 0, 0)
+  }
+}
+
+.pull- {
+  &left {
+    float: left !important
   }
 
-  &-bottom-line {
-    border-bottom: 1px solid @BoxBorderColor;
+  &right {
+    float: right !important
+  }
+}
+
+.full- {
+  &width {
+    width: 100% !important
   }
 
-  &-top-0 {
-    border-top: 0 !important;
+  &height {
+    height: 100% !important
+  }
+}
+
+.color- {
+  &red {
+    color: #e44 !important
   }
 
-  &-left-0 {
-    border-left: 0 !important;
+  &blue {
+    color: #29f !important
   }
 
-  &-right-0 {
-    border-right: 0 !important;
+  &desc {
+    color: #999 !important
   }
 
-  &-bottom-0 {
-    border-bottom: 0 !important;
+  &text {
+    color: #333 !important
   }
 
-  &-radius {
-    border-radius: 50% !important;
+  &green {
+    color: #090 !important
+  }
+}
 
-    &-0 {
-      border-radius: 0 !important
-    }
+.sub-span- {
+  &red span {
+    color: #e44 !important
+  }
 
-    &-5 {
-      border-radius: 5px !important;
-    }
+  &blue span {
+    color: #29f !important
+  }
 
-    &-6 {
-      border-radius: 6px !important;
-    }
+  &desc span {
+    color: #999 !important
+  }
 
-    &-left-0 {
-      border-top-left-radius: 0 !important;
-      border-bottom-left-radius: 0 !important
-    }
+  &text span {
+    color: #333 !important
+  }
 
-    &-right-0 {
-      border-top-right-radius: 0 !important;
-      border-bottom-right-radius: 0 !important
-    }
+  &green span {
+    color: #090 !important
+  }
+}
+
+.sub-strong- {
+  &s10 b {
+    font-size: 10px;
+  }
+
+  &s12 b {
+    font-size: 12px;
+  }
+
+  &s14 b {
+    font-size: 14px;
+  }
+
+  &red b {
+    color: #ec494e !important
+  }
+
+  &blue b {
+    color: #2494f2 !important
+  }
+
+  &desc b {
+    color: #999 !important
+  }
+
+  &text b {
+    color: #333 !important
+  }
+
+  &green b {
+    color: #090 !important
+  }
+}
+
+.think-bg- {
+  &white {
+    background: white !important
+  }
+
+  &blue {
+    background: linear-gradient(-125deg, #57bdbf, #2f9de2) !important
+  }
+
+  &orig {
+    background: linear-gradient(-141deg, #ecca1b, #f39526) !important
+  }
+
+  &red {
+    background: linear-gradient(-125deg, #ff7d7d, #fb2c95) !important
+  }
+
+  &gray {
+    background: linear-gradient(-113deg, #EEEEEE, #EFEFEF) !important
+  }
+
+  &violet {
+    background: linear-gradient(-113deg, #c543d8, #925cc3) !important
+  }
+}
+
+.text- {
+  &top {
+    vertical-align: top !important
+  }
+
+  &left {
+    text-align: left !important
+  }
+
+  &right {
+    text-align: right !important
+  }
+
+  &center {
+    text-align: center !important
+  }
+
+  &middle {
+    vertical-align: middle !important
+  }
+
+  &bottom {
+    vertical-align: bottom !important
   }
 }
 
@@ -615,244 +586,61 @@
   }
 }
 
-.padding {
+.border {
   &-0 {
-    padding: 0 !important
+    border: 0 !important
   }
 
-  &-5 {
-    padding: 5px !important
+  &-line {
+    border: 1px solid @BoxBorderColor;
   }
 
-  &-10 {
-    padding: 10px !important
+  &-bottom-line {
+    border-bottom: 1px solid @BoxBorderColor;
   }
 
-  &-15 {
-    padding: 15px !important
+  &-top-0 {
+    border-top: 0 !important;
   }
 
-  &-20 {
-    padding: 20px !important
+  &-left-0 {
+    border-left: 0 !important;
   }
 
-  &-25 {
-    padding: 25px !important
+  &-right-0 {
+    border-right: 0 !important;
   }
 
-  &-30 {
-    padding: 30px !important
+  &-bottom-0 {
+    border-bottom: 0 !important;
   }
 
-  &-40 {
-    padding: 40px !important
-  }
+  &-radius {
+    border-radius: 50% !important;
 
-  &-col {
     &-0 {
-      padding-left: 0 !important;
-      padding-right: 0 !important;
+      border-radius: 0 !important
     }
 
     &-5 {
-      padding-left: 5px !important;
-      padding-right: 5px !important;
+      border-radius: 5px !important;
     }
 
-    &-10 {
-      padding-left: 10px !important;
-      padding-right: 10px !important;
+    &-6 {
+      border-radius: 6px !important;
     }
 
-    &-15 {
-      padding-left: 15px !important;
-      padding-right: 15px !important;
+    &-left-0 {
+      border-top-left-radius: 0 !important;
+      border-bottom-left-radius: 0 !important
     }
 
-    &-20 {
-      padding-left: 20px !important;
-      padding-right: 20px !important;
-    }
-
-    &-25 {
-      padding-left: 25px !important;
-      padding-right: 25px !important;
-    }
-
-    &-30 {
-      padding-left: 30px !important;
-      padding-right: 30px !important;
-    }
-
-    &-40 {
-      padding-left: 40px !important;
-      padding-right: 40px !important;
-    }
-  }
-
-  &-row {
-    &-0 {
-      padding-top: 0 !important;
-      padding-bottom: 0 !important;
-    }
-
-    &-5 {
-      padding-top: 5px !important;
-      padding-bottom: 5px !important;
-    }
-
-    &-10 {
-      padding-top: 10px !important;
-      padding-bottom: 10px !important;
-    }
-
-    &-15 {
-      padding-top: 15px !important;
-      padding-bottom: 15px !important;
-    }
-
-    &-20 {
-      padding-top: 20px !important;
-      padding-bottom: 20px !important;
-    }
-
-    &-25 {
-      padding-top: 25px !important;
-      padding-bottom: 25px !important;
-    }
-
-    &-30 {
-      padding-top: 30px !important;
-      padding-bottom: 30px !important;
-    }
-
-    &-40 {
-      padding-top: 40px !important;
-      padding-bottom: 40px !important;
-    }
-  }
-
-  &-top {
-    &-0 {
-      padding-top: 0 !important
-    }
-
-    &-5 {
-      padding-top: 5px !important
-    }
-
-    &-10 {
-      padding-top: 10px !important
-    }
-
-    &-15 {
-      padding-top: 15px !important
-    }
-
-    &-20 {
-      padding-top: 20px !important
-    }
-
-    &-30 {
-      padding-top: 30px !important
-    }
-
-    &-40 {
-      padding-top: 40px !important
-    }
-  }
-
-  &-left {
-    &-0 {
-      padding-left: 0 !important
-    }
-
-    &-5 {
-      padding-left: 5px !important
-    }
-
-    &-10 {
-      padding-left: 10px !important
-    }
-
-    &-15 {
-      padding-left: 15px !important
-    }
-
-    &-20 {
-      padding-left: 20px !important
-    }
-
-    &-30 {
-      padding-left: 30px !important
-    }
-
-    &-40 {
-      padding-left: 40px !important
-    }
-  }
-
-  &-right {
-    &-0 {
-      padding-right: 0 !important
-    }
-
-    &-5 {
-      padding-right: 5px !important
-    }
-
-    &-10 {
-      padding-right: 10px !important
-    }
-
-    &-15 {
-      padding-right: 15px !important
-    }
-
-    &-20 {
-      padding-right: 20px !important
-    }
-
-    &-30 {
-      padding-right: 30px !important
-    }
-
-    &-40 {
-      padding-right: 40px !important
-    }
-  }
-
-  &-bottom {
-    &-0 {
-      padding-bottom: 0 !important
-    }
-
-    &-5 {
-      padding-bottom: 5px !important
-    }
-
-    &-10 {
-      padding-bottom: 10px !important
-    }
-
-    &-15 {
-      padding-bottom: 15px !important
-    }
-
-    &-20 {
-      padding-bottom: 20px !important
-    }
-
-    &-30 {
-      padding-bottom: 30px !important
-    }
-
-    &-40 {
-      padding-bottom: 40px !important
+    &-right-0 {
+      border-top-right-radius: 0 !important;
+      border-bottom-right-radius: 0 !important
     }
   }
 }
-
 
 .margin {
   &-0 {
@@ -1104,6 +892,244 @@
 
     &-40 {
       margin-bottom: 40px !important
+    }
+  }
+}
+
+.padding {
+  &-0 {
+    padding: 0 !important
+  }
+
+  &-5 {
+    padding: 5px !important
+  }
+
+  &-10 {
+    padding: 10px !important
+  }
+
+  &-15 {
+    padding: 15px !important
+  }
+
+  &-20 {
+    padding: 20px !important
+  }
+
+  &-25 {
+    padding: 25px !important
+  }
+
+  &-30 {
+    padding: 30px !important
+  }
+
+  &-40 {
+    padding: 40px !important
+  }
+
+  &-col {
+    &-0 {
+      padding-left: 0 !important;
+      padding-right: 0 !important;
+    }
+
+    &-5 {
+      padding-left: 5px !important;
+      padding-right: 5px !important;
+    }
+
+    &-10 {
+      padding-left: 10px !important;
+      padding-right: 10px !important;
+    }
+
+    &-15 {
+      padding-left: 15px !important;
+      padding-right: 15px !important;
+    }
+
+    &-20 {
+      padding-left: 20px !important;
+      padding-right: 20px !important;
+    }
+
+    &-25 {
+      padding-left: 25px !important;
+      padding-right: 25px !important;
+    }
+
+    &-30 {
+      padding-left: 30px !important;
+      padding-right: 30px !important;
+    }
+
+    &-40 {
+      padding-left: 40px !important;
+      padding-right: 40px !important;
+    }
+  }
+
+  &-row {
+    &-0 {
+      padding-top: 0 !important;
+      padding-bottom: 0 !important;
+    }
+
+    &-5 {
+      padding-top: 5px !important;
+      padding-bottom: 5px !important;
+    }
+
+    &-10 {
+      padding-top: 10px !important;
+      padding-bottom: 10px !important;
+    }
+
+    &-15 {
+      padding-top: 15px !important;
+      padding-bottom: 15px !important;
+    }
+
+    &-20 {
+      padding-top: 20px !important;
+      padding-bottom: 20px !important;
+    }
+
+    &-25 {
+      padding-top: 25px !important;
+      padding-bottom: 25px !important;
+    }
+
+    &-30 {
+      padding-top: 30px !important;
+      padding-bottom: 30px !important;
+    }
+
+    &-40 {
+      padding-top: 40px !important;
+      padding-bottom: 40px !important;
+    }
+  }
+
+  &-top {
+    &-0 {
+      padding-top: 0 !important
+    }
+
+    &-5 {
+      padding-top: 5px !important
+    }
+
+    &-10 {
+      padding-top: 10px !important
+    }
+
+    &-15 {
+      padding-top: 15px !important
+    }
+
+    &-20 {
+      padding-top: 20px !important
+    }
+
+    &-30 {
+      padding-top: 30px !important
+    }
+
+    &-40 {
+      padding-top: 40px !important
+    }
+  }
+
+  &-left {
+    &-0 {
+      padding-left: 0 !important
+    }
+
+    &-5 {
+      padding-left: 5px !important
+    }
+
+    &-10 {
+      padding-left: 10px !important
+    }
+
+    &-15 {
+      padding-left: 15px !important
+    }
+
+    &-20 {
+      padding-left: 20px !important
+    }
+
+    &-30 {
+      padding-left: 30px !important
+    }
+
+    &-40 {
+      padding-left: 40px !important
+    }
+  }
+
+  &-right {
+    &-0 {
+      padding-right: 0 !important
+    }
+
+    &-5 {
+      padding-right: 5px !important
+    }
+
+    &-10 {
+      padding-right: 10px !important
+    }
+
+    &-15 {
+      padding-right: 15px !important
+    }
+
+    &-20 {
+      padding-right: 20px !important
+    }
+
+    &-30 {
+      padding-right: 30px !important
+    }
+
+    &-40 {
+      padding-right: 40px !important
+    }
+  }
+
+  &-bottom {
+    &-0 {
+      padding-bottom: 0 !important
+    }
+
+    &-5 {
+      padding-bottom: 5px !important
+    }
+
+    &-10 {
+      padding-bottom: 10px !important
+    }
+
+    &-15 {
+      padding-bottom: 15px !important
+    }
+
+    &-20 {
+      padding-bottom: 20px !important
+    }
+
+    &-30 {
+      padding-bottom: 30px !important
+    }
+
+    &-40 {
+      padding-bottom: 40px !important
     }
   }
 }

@@ -33,7 +33,7 @@
             </div>
         </fieldset>
 
-        {if !empty($authorizes) || !empty($bases)}
+        {if !empty($bases) || !empty($authorizes)}
         <fieldset>
             <legend><b class="layui-badge think-bg-violet">用户权限</b></legend>
             {if !empty($bases)}
@@ -53,11 +53,11 @@
             <div class="layui-form-item">
                 <span class="color-green font-w7">访问权限</span>
                 <span class="color-desc margin-left-5">User Permission</span>
-                <div class="layui-textarea" style="min-height:50px">
+                <div class="layui-textarea" style="min-height:42px;line-height:28px">
                     {if isset($vo.username) and $vo.username eq $superName}
                     <span class="color-desc">超级用户不需要配置权限</span>
                     {else}{foreach $authorizes as $authorize}
-                    <label class="think-checkbox layui-unselect">
+                    <label class="think-checkbox layui-unselect margin-top-5">
                         {if in_array($authorize.id, $vo.authorize)}
                         <input type="checkbox" checked name="authorize[]" value="{$authorize.id}" lay-ignore>{$authorize.title}
                         {else}

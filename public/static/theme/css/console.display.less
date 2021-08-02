@@ -1,5 +1,4 @@
 @charset "UTF-8";
-@charset "UTF-8";
 @import "console.config.less";
 
 // +----------------------------------------------------------------------
@@ -69,6 +68,22 @@ fieldset {
     padding: 0 10px;
     font-size: 12px;
     letter-spacing: 1px;
+  }
+}
+
+.layui-layer-tips {
+  &.layui-layer-image .layui-layer-content {
+    width: auto !important;
+    padding: 4px !important;
+
+    img {
+      z-index: 2;
+      position: relative;
+    }
+
+    i.layui-layer-TipsR {
+      z-index: 1;
+    }
   }
 }
 
@@ -236,7 +251,6 @@ fieldset {
     border-color: @InputBorderActiveColor;
   }
 }
-
 
 /* 表单验证异常提示 */
 .label-required {

@@ -361,7 +361,9 @@ $(function () {
                 }).trigger('resize');
                 /*! Mini 菜单模式时TIPS文字显示 */
                 $('[data-target-tips]').mouseenter(function () {
-                    if ($menu.hasClass(miniClass)) $(this).attr('index', layer.tips(this.dataset.targetTips || '', this));
+                    if ($menu.hasClass(miniClass)) {
+                        $(this).attr('index', layer.tips(this.dataset.targetTips || '', this, {time: 0}));
+                    }
                 }).mouseleave(function () {
                     layer.close($(this).attr('index'));
                 });
@@ -559,10 +561,12 @@ $(function () {
 
     /*! 全局文件上传入口 */
     $.fn.uploadFile = function (callable) {
-        if (this.data('inited')) return false;
-        var that = this, mult = '|one|btn|'.indexOf(this.data('file') || 'one') ? 0 : 1;
-        this.data('inited', true).data('multiple', mult), require(['upload'], function (apply) {
-            apply.call(this, that, callable);
+        return this.each(function () {
+            if ($(this).data('inited')) return false;
+            var that = $(this), mult = '|one|btn|'.indexOf(that.data('file') || 'one') ? 0 : 1;
+            that.data('inited', true).data('multiple', mult), require(['upload'], function (apply) {
+                apply.call(this, that, callable);
+            });
         });
     };
 
@@ -592,7 +596,7 @@ $(function () {
 
             function showImageContainer(srcs) {
                 $(srcs).each(function (idx, src, $image) {
-                    $image = $('<div class="uploadimage uploadimagemtl transition"><a class="layui-icon margin-right-5">&#xe602;</a><a class="layui-icon margin-right-5">&#x1006;</a><a class="layui-icon margin-right-5">&#xe603;</a></div>');
+                    $image = $('<div class="uploadimage uploadimagemtl transition"><a class="layui-icon">&#xe602;</a><a class="layui-icon">&#x1006;</a><a class="layui-icon">&#xe603;</a></div>');
                     $image.attr('data-tips-image', encodeURI(src)).css('backgroundImage', 'url(' + encodeURI(src) + ')').on('click', 'a', function (event, index, prevs, $item) {
                         event.stopPropagation(), $item = $(this).parent(), index = $(this).index(), prevs = $bt.prevAll('div.uploadimage').length;
                         if (index === 0 && $item.index() !== prevs) $item.next().after($item);
@@ -864,6 +868,18 @@ $(function () {
     onEvent('click', '[data-tips-image]', function () {
         $.previewImage(this.dataset.tipsImage || this.dataset.lazySrc || this.src, this.dataset.with);
     });
+    /*! 注册 data-tips-image Hover 事件 */
+    onEvent('mouseenter', '[data-tips-image][data-tips-hover]', function () {
+        var img = new Image(), that = this;
+        img.referrerPolicy = 'no-referrer', img.style.maxWidth = '260px', img.style.maxHeight = '260px';
+        img.src = this.dataset.tipsImage || this.dataset.lazySrc || this.src, img.onload = function () {
+            $(that).attr('index', layer.tips(img.outerHTML, that, {time: 0, skin: 'layui-layer-image', scrollbar: false, anim: 5, isOutAnim: false}));
+        }
+        $(this).off('mouseleave').on('mouseleave', function () {
+            layer.close($(this).attr('index'));
+        });
+    })
+
     $.previewImage = function (src, area) {
         var img = new Image(), defer = $.Deferred(), load = $.msg.loading();
         img.style.background = '#FFFFFF', img.referrerPolicy = 'no-referrer';
