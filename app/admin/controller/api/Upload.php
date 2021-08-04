@@ -66,6 +66,7 @@ class Upload extends Controller
         $data = ['uptype' => $this->getType(), 'safe' => intval($safe), 'key' => input('key')];
         if ($info = Storage::instance($data['uptype'])->info($data['key'], $safe, $name)) {
             $data['url'] = $info['url'];
+            $data['key'] = $info['key'];
             $this->success('文件已经上传', $data, 200);
         } elseif ('local' === $data['uptype']) {
             $data['url'] = LocalStorage::instance()->url($data['key'], $safe, $name);

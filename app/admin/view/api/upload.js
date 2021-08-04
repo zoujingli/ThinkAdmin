@@ -29,11 +29,11 @@ define(['md5'], function (SparkMD5, allowMime) {
                     opt.load = opt.hide || $.msg.loading('上传进度 <span data-upload-progress>0%</span>');
                     opt.count.total++, file.index = index, opt.cache[index] = file, delete opt.files[index];
                     md5file(file).then(function (file) {
-                        opt.elem.triggerHandler('upload.hash', file);
-                        jQuery.ajax("{:url('admin/api.upload/state')}", {
+                        opt.elem.triggerHandler('upload.hash', file), jQuery.ajax("{:sysuri('admin/api.upload/state')}", {
                             data: {key: file.xkey, uptype: opt.type, safe: opt.safe, name: file.name}, method: 'post', success: function (ret) {
+                                file.xurl = ret.data.url, file.xsafe = ret.data.safe;
+                                file.xpath = ret.data.key, file.xtype = ret.data.uptype;
                                 if (parseInt(ret.code) === 404) {
-                                    file.xurl = ret.data.url;
                                     opt.uploader.config.url = ret.data.server;
                                     opt.uploader.config.data.key = ret.data.key;
                                     opt.uploader.config.data.safe = ret.data.safe;
@@ -48,7 +48,7 @@ define(['md5'], function (SparkMD5, allowMime) {
                                         opt.uploader.config.data['Content-Disposition'] = 'inline;filename=' + encodeURIComponent(file.name);
                                     } else if (ret.data.uptype === 'txcos') {
                                         opt.uploader.config.data['q-ak'] = ret.data['q-ak'];
-                                        opt.uploader.config.data['policy'] = ret.data.policy;
+                                        opt.uploader.config.data['policy'] = ret.data['policy'];
                                         opt.uploader.config.data['q-key-time'] = ret.data['q-key-time'];
                                         opt.uploader.config.data['q-signature'] = ret.data['q-signature'];
                                         opt.uploader.config.data['q-sign-algorithm'] = ret.data['q-sign-algorithm'];
@@ -67,8 +67,11 @@ define(['md5'], function (SparkMD5, allowMime) {
                     });
                 });
             }, progress: function (number) {
+
+                /*! 文件上传进度处理 */
                 $('[data-upload-progress]').html(number + '%');
                 opt.elem.triggerHandler('upload.progress', {number: number, event: arguments[2], file: arguments[3]});
+
             }, done: function (ret, idx) {
 
                 /*! 检查单个文件上传返回的结果 */
@@ -79,7 +82,7 @@ define(['md5'], function (SparkMD5, allowMime) {
                 if (typeof callable === 'function') {
                     callable.call(opt.elem, opt.cache[idx].xurl, opt.cache['id']);
                 } else if (opt.mult < 1 && opt.elem.data('input')) {
-                    $(opt.elem.data('input')).val(opt.cache[idx].xurl).trigger('change');
+                    $(opt.elem.data('input')).val(opt.cache[idx].xurl).trigger('change', opt.cache[idx]);
                 }
 
                 (opt.hide || $.msg.close(opt.load)), opt.elem.html(opt.elem.data('html'));
@@ -91,7 +94,7 @@ define(['md5'], function (SparkMD5, allowMime) {
                         var urls = opt.elem.data('input').value || [];
                         if (typeof urls === 'string') urls = urls.split('|');
                         for (var i in opt.cache) urls.push(opt.cache[i].xurl);
-                        $(opt.elem.data('input')).val(urls.join('|')).trigger('change');
+                        $(opt.elem.data('input')).val(urls.join('|')).trigger('change', opt.cache);
                     }
                     opt.elem.triggerHandler('upload.complete', {file: opt.cache});
                     (opt.cache = [], opt.files = []), opt.uploader.reload();

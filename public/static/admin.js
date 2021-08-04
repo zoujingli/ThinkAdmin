@@ -414,10 +414,11 @@ $(function () {
     /*! 注册对象到Jq */
     $.vali = function (form, callable, options) {
         return (new function (that) {
-            /*! 表单元素 */
-            that = this, this.tags = 'input,select,textarea';
-            /*! 检测元素事件 */
-            this.checkEvent = {change: true, blur: true, keyup: false};
+            that = this;
+            /*! 绑定元素事件 */
+            this.evts = 'blur change';
+            /*! 筛选表单元素 */
+            this.tags = 'input,select,textarea';
             /*! 去除字符串的空格 */
             this.trim = function (str) {
                 return str.replace(/(^\s*)|(\s*$)/g, '');
@@ -426,17 +427,11 @@ $(function () {
             this.hasProp = function (ele, prop) {
                 if (typeof prop !== "string") return false;
                 var attrProp = ele.getAttribute(prop);
-                return (typeof attrProp !== 'undefined' && attrProp !== null && attrProp !== false);
-            };
-            /*! 判断表单元素是否为空 */
-            this.isEmpty = function (ele, value) {
-                var trim = this.trim(ele.value);
-                value = value || ele.getAttribute('placeholder');
-                return (trim === "" || trim === value);
+                return typeof attrProp !== 'undefined' && attrProp !== null && attrProp !== false;
             };
             /*! 正则验证表单元素 */
             this.isRegex = function (ele, regex, params) {
-                var input = $(ele).val(), real = this.trim(input);
+                var real = this.trim($(ele).val());
                 regex = regex || ele.getAttribute('pattern');
                 if (real === "" || !regex) return true;
                 return new RegExp(regex, params || 'i').test(real);
@@ -451,13 +446,11 @@ $(function () {
             };
             /*! 检测表单单元 */
             this.checkInput = function (input) {
-                var tag = input.tagName.toLowerCase(), need = this.hasProp(input, "required");
-                var type = (input.getAttribute("type") || '').replace(/\W+/, "").toLowerCase();
                 if (this.hasProp(input, 'data-auto-none')) return true;
-                var ingoreTags = ['select'], ingoreType = ['radio', 'checkbox', 'submit', 'reset', 'image', 'file', 'hidden'];
-                for (var i in ingoreTags) if (tag === ingoreTags[i]) return true;
-                for (var i in ingoreType) if (type === ingoreType[i]) return true;
-                if (need && this.isEmpty(input)) return this.remind(input);
+                var type = (input.getAttribute("type") || '').replace(/\W+/, "").toLowerCase();
+                var ingoreTypes = ['file', 'reset', 'image', 'radio', 'checkbox', 'submit', 'hidden'];
+                if (ingoreTypes.length > 0) for (var i in ingoreTypes) if (type === ingoreTypes[i]) return true;
+                if (this.hasProp(input, "required") && this.trim($(input).val()) === '') return this.remind(input);
                 return this.isRegex(input) ? (this.hideError(input), true) : this.remind(input);
             };
             /*! 显示验证标志 */
@@ -485,14 +478,9 @@ $(function () {
             };
             /*! 表单验证入口 */
             this.check = function (form, callable) {
-                $(form).attr('novalidate', 'novalidate').find(that.tags).map(function (idx, input) {
-                    (function (evt) {
-                        for (var e in that.checkEvent) if (that.checkEvent[e]) $(input).off(e, evt).on(e, evt);
-                    })(function () {
-                        that.checkInput(input);
-                    });
-                });
-                $(form).bind("submit", function (event) {
+                $(form).off(that.evts, that.tags).on(that.evts, that.tags, function () {
+                    that.checkInput(this);
+                }).attr('novalidate', 'novalidate').bind("submit", function (event) {
                     if (that.checkAllInput() && typeof callable === 'function') {
                         if (typeof CKEDITOR === 'object' && typeof CKEDITOR.instances === 'object') {
                             for (var i in CKEDITOR.instances) CKEDITOR.instances[i].updateElement();
@@ -534,7 +522,7 @@ $(function () {
     /*! 表单转JSON */
     $.fn.formToJson = function () {
         var self = this, data = {}, push = {};
-        var patterns = {"key": /[a-zA-Z0-9_]+|(?=\[])/g, "push": /^$/, "fixed": /^\d+$/, "named": /^[a-zA-Z0-9_]+$/};
+        var patterns = {key: /[a-zA-Z0-9_]+|(?=\[])/g, push: /^$/, fixed: /^\d+$/, named: /^[a-zA-Z0-9_]+$/};
         this.build = function (base, key, value) {
             return (base[key] = value), base;
         };
@@ -575,7 +563,7 @@ $(function () {
         return this.each(function ($in, $bt) {
             $in = $(this), $bt = $('<a data-file="one" class="uploadimage transition"><span class="layui-icon">&#x1006;</span></a>');
             $bt.attr('data-size', $in.data('size') || 0).attr('data-file', 'one').attr('data-type', $in.data('type') || 'png,jpg,gif');
-            $bt.attr('input', $in.get(0)).data('input', this).find('span').on('click', function (event) {
+            $bt.data('input', this).find('span').on('click', function (event) {
                 event.stopPropagation(), $bt.attr('style', ''), $in.val('');
             });
             $in.attr('name', $bt.attr('data-field')).after($bt).on('change', function () {
@@ -615,10 +603,10 @@ $(function () {
     /*! 标签输入插件 */
     $.fn.initTagInput = function () {
         return this.each(function () {
-            var $box = $('<div class="layui-tags"></div>');
             var $this = $(this), tags = this.value ? this.value.split(',') : [];
             var $text = $('<textarea class="layui-input layui-input-inline layui-tag-input"></textarea>');
-            $this.parent().append($box.append($text)), $text.off('keydown blur'), (tags.length > 0 && showTags(tags));
+            var $tags = $('<div class="layui-tags"></div>').append($text);
+            $this.parent().append($tags), $text.off('keydown blur'), (tags.length > 0 && showTags(tags));
             $text.on('keydown blur', function (event, value) {
                 if (event.keyCode === 13 || event.type === 'blur') {
                     event.preventDefault(), (value = $text.val().replace(/^\s*|\s*$/g, ''));
@@ -633,7 +621,7 @@ $(function () {
                     element.on('click', 'i', function (tagText, tagIndex) {
                         tagText = $(this).parent().text(), tagIndex = tags.indexOf(tagText);
                         tags.splice(tagIndex, 1), $(this).parent().remove(), $this.val(tags.join(','));
-                    }), $box.append(element, $text);
+                    }), $tags.append(element, $text);
                 });
             }
         });
@@ -747,7 +735,11 @@ $(function () {
 
     /*! 注册 data-reload 事件行为 */
     onEvent('click', '[data-reload]', function () {
-        $.form.reload();
+        if (this.dataset.tableId) {
+            $('#' + this.dataset.tableId).trigger('reload');
+        } else {
+            $.form.reload();
+        }
     });
 
     /*! 注册 data-dbclick 事件行为 */
@@ -876,9 +868,11 @@ $(function () {
             $(that).attr('index', layer.tips(img.outerHTML, that, {time: 0, skin: 'layui-layer-image', scrollbar: false, anim: 5, isOutAnim: false}));
         }
         $(this).off('mouseleave').on('mouseleave', function () {
-            layer.close($(this).attr('index'));
+            setTimeout(function () {
+                layer.close($(that).attr('index'));
+            }, 100)
         });
-    })
+    });
 
     $.previewImage = function (src, area) {
         var img = new Image(), defer = $.Deferred(), load = $.msg.loading();

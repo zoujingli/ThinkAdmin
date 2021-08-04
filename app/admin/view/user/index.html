@@ -41,16 +41,16 @@
             cols: [[
                 {checkbox: true, fixed: true},
                 {field: 'sort', title: '排序权重', width: 100, align: 'center', sort: true, templet: '#SortInputTpl'},
-                {field: 'nickname', title: '用户名称', minWidth: 100, align: 'center', sort: false, templet: '<div>{{d.nickname||"-"}}</div>'},
-                {field: 'username', title: '登录账号', minWidth: 100, align: 'center', sort: true, templet: '<div>{{d.username||"-"}}</div>'},
+                {field: 'username', title: '登录账号', minWidth: 100, templet: '<div>{{d.username||"-"}}</div>'},
+                {field: 'nickname', title: '用户名称', minWidth: 100, templet: '<div>{{d.nickname||"-"}}</div>'},
                 {
-                    field: 'usertype', title: '角色身份', minWidth: 120, align: 'center', sort: true, templet: function (d) {
+                    field: 'usertype', title: '角色身份', minWidth: 140, sort: true, templet: function (d) {
                         d.userinfo = d.userinfo || {};
                         return d.userinfo.code ? (d.userinfo.name + ' ( ' + d.userinfo.code + ' ) ') : '';
                     }
                 },
-                {field: 'contact_mail', title: '联系邮箱', align: 'center', sort: false, templet: '<div>{{d.contact_mail||"-"}}</div>'},
-                {field: 'contact_phone', title: '联系电话', align: 'center', sort: false, templet: '<div>{{d.contact_phone||"-"}}</div>'},
+                {field: 'contact_mail', title: '联系邮箱', templet: '<div>{{d.contact_mail||"-"}}</div>'},
+                {field: 'contact_phone', title: '联系电话', templet: '<div>{{d.contact_phone||"-"}}</div>'},
                 {field: 'login_num', title: '登录次数', align: 'center', minWidth: 80, sort: false},
                 {field: 'login_at', title: '最后登录', sort: true, align: 'center', minWidth: 170},
                 {field: 'create_at', title: '创建时间', align: 'center', minWidth: 170, sort: true},
