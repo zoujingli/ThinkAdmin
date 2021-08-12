@@ -71,16 +71,21 @@
   box-shadow: @ShadowMaxOuter;
 }
 
-.shadow-inset {
-  box-shadow: @ShadowMaxInset;
-}
-
 .shadow-mini {
   box-shadow: @ShadowMinOuter;
 }
 
 .shadow-none {
   box-shadow: none !important;
+}
+
+.shadow-inset {
+  box-shadow: @ShadowMaxInset;
+
+  legend {
+    background: #EEE;
+    border-radius: 4px;
+  }
 }
 
 .help-block {

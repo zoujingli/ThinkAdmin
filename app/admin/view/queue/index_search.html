@@ -1,8 +1,8 @@
 <!--{if isset($isSuper) and $isSuper}-->
 <fieldset class="margin-bottom-15 shadow-inset">
-    <legend class="notselect think-bg-gray">服务状态</legend>
+    <legend class="notselect">服务状态</legend>
     <div class="layui-code border-0 margin-top-0">
-        <h4 class="color-desc margin-top-10 notselect">后台服务主进程运行状态</h4>
+        <h4 class="color-desc notselect">后台服务主进程运行状态</h4>
         <div data-queue-message>Checking task process running status ...</div>
         <h4 class="color-desc margin-top-10 notselect">配置定时任务来检查并启动进程（建议每分钟执行）</h4>
         <div>{$command|default='--'}</div>

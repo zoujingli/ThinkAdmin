@@ -95,8 +95,8 @@
                 },
                 {field: 'attempts', title: '执行次数', width: 95, align: 'center', sort: true, templet: "<div>{{d.attempts||0}}</div>"},
                 {field: 'exec_desc', title: '执行结果', minWidth: 180},
-                {field: 'create_at', title: '创建时间', minWidth: 170},
-                {toolbar: '#toolbar', title: '操作面板', fixed: 'right', minWidth: 235}
+                {field: 'create_at', title: '创建时间', align: 'center', minWidth: 170},
+                {toolbar: '#toolbar', title: '操作面板', align: 'center', fixed: 'right', minWidth: 251}
             ]]
         });
     });
@@ -104,23 +104,32 @@
 
 <script type="text/html" id="toolbar">
     {{# if(d.loops_time>0){ }}
-    <span class="layui-badge think-bg-blue" data-tips-text="完成操作后，延时指定时间会再次执行！">循</span>
+    <span class="layui-badge think-bg-blue">循</span>
     {{# }else{ }}
-    <span class="layui-badge think-bg-red" data-tips-text="完成操作后，不会再次主动执行！">次</span>
+    <span class="layui-badge think-bg-red">次</span>
     {{# } }}
 
     {{# if(d.rscript===1){ }}
-    <span class="layui-badge layui-bg-green" data-tips-text="可以存在多条记录，可同时执行多个任务！">复</span>
+    <span class="layui-badge layui-bg-green">复</span>
     {{# }else{ }}
-    <span class="layui-badge think-bg-violet" data-tips-text="只能存在一条记录，同一时间只能执行一个任务！">单</span>
+    <span class="layui-badge think-bg-violet">单</span>
     {{# } }}
 
     {{# if(d.status===1){ }}
     <span class="layui-badge layui-bg-black">等待处理</span>
+    <span class="layui-badge think-bg-gray"><i class="layui-icon font-s12">&#xe669;</i></span>
     {{# }else if(d.status===2){ }}
     <span class="layui-badge layui-bg-green">正在处理</span>
+    <!--{if auth('redo')}-->
+    <span class="layui-badge think-bg-gray"><i class="layui-icon font-s12">&#xe669;</i></span>
+    <!--{/if}-->
     {{# }else if(d.status===3){ }}
     <span class="layui-badge layui-bg-blue">处理完成</span>
+    <!--{if auth('redo')}-->
+    <a class="layui-badge layui-bg-green" data-confirm="确定要重置该任务吗？" data-queue="{:url('redo')}?code={{d.code}}">
+        <i class="layui-icon font-s12">&#xe669;</i>
+    </a>
+    <!--{/if}-->
     {{# }else if(d.status===4){ }}
     <span class="layui-badge layui-bg-red">处理失败</span>
     <!--{if auth('redo')}-->
