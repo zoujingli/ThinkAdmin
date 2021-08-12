@@ -69,11 +69,12 @@
             cols: [[
                 {checkbox: true, fixed: 'left'},
                 {field: 'code', title: '任务编号', width: 140, sort: true},
-                {field: 'title', title: '任务名称', minWidth: 150},
-                {field: 'command', title: '任务指令', minWidth: 150},
+                {field: 'title', title: '任务名称', minWidth: 130},
+                {field: 'command', title: '任务指令', minWidth: 130},
                 {
                     field: 'exec_time', title: '计划时间', minWidth: 245, templet: function (d) {
-                        d.exec_time = d.exec_time || 0, d.loops_time = d.loops_time || 0;
+                        d.exec_time = d.exec_time || 0;
+                        d.loops_time = d.loops_time || 0;
                         if (d.loops_time > 0) {
                             return d.exec_time + ' ( 每 <b class="color-blue">' + d.loops_time + '</b> 秒 ) ';
                         } else {
@@ -82,8 +83,9 @@
                     }
                 },
                 {
-                    field: 'enter_time', title: '执行时间', minWidth: 180, templet: function (d) {
-                        d.enter_time = d.enter_time || '', d.outer_time = d.outer_time || '0.0000';
+                    field: 'enter_time', title: '执行时间', minWidth: 175, templet: function (d) {
+                        d.enter_time = d.enter_time || '';
+                        d.outer_time = d.outer_time || '0.0000';
                         if (d.enter_time.length > 12) {
                             return d.enter_time.substr(12) + '<span class="color-desc"> ( 耗时 ' + d.outer_time + ' )</span>';
                         } else {
@@ -94,7 +96,7 @@
                 {field: 'attempts', title: '执行次数', width: 95, align: 'center', sort: true, templet: "<div>{{d.attempts||0}}</div>"},
                 {field: 'exec_desc', title: '执行结果', minWidth: 180},
                 {field: 'create_at', title: '创建时间', minWidth: 170},
-                {toolbar: '#toolbar', title: '操作面板', align: 'left', fixed: 'right', minWidth: 225}
+                {toolbar: '#toolbar', title: '操作面板', fixed: 'right', minWidth: 235}
             ]]
         });
     });
@@ -102,13 +104,15 @@
 
 <script type="text/html" id="toolbar">
     {{# if(d.loops_time>0){ }}
-    <span class="layui-badge think-bg-blue">循</span>
+    <span class="layui-badge think-bg-blue" data-tips-text="完成操作后，延时指定时间会再次执行！">循</span>
+    {{# }else{ }}
+    <span class="layui-badge think-bg-red" data-tips-text="完成操作后，不会再次主动执行！">次</span>
     {{# } }}
 
     {{# if(d.rscript===1){ }}
-    <span class="layui-badge layui-bg-green">复</span>
+    <span class="layui-badge layui-bg-green" data-tips-text="可以存在多条记录，可同时执行多个任务！">复</span>
     {{# }else{ }}
-    <span class="layui-badge think-bg-violet">单</span>
+    <span class="layui-badge think-bg-violet" data-tips-text="只能存在一条记录，同一时间只能执行一个任务！">单</span>
     {{# } }}
 
     {{# if(d.status===1){ }}

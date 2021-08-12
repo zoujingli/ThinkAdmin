@@ -37,7 +37,7 @@ class SystemBase extends Model
     public function items(string $type, array &$data = [], string $field = 'base_code', string $bind = 'base_info'): array
     {
         $map = ['status' => 1, 'deleted' => 0, 'type' => $type];
-        $bases = $this->where($map)->order('sort desc,id desc')->column('code,name,content', 'code');
+        $bases = $this->where($map)->order('sort desc,id asc')->column('code,name,content', 'code');
         if (count($data) > 0) foreach ($data as &$vo) $vo[$bind] = $bases[$vo[$field]] ?? [];
         return $bases;
     }

@@ -19,7 +19,6 @@ if (typeof Array.prototype.forEach !== 'function') {
         for (var i in this) callable.call(context, this[i], i, this)
     };
 }
-
 if (typeof Array.prototype.every !== 'function') {
     Array.prototype.every = function (callable) {
         for (var i in this) if (callable(this[i], i, this) === false) {
@@ -28,7 +27,6 @@ if (typeof Array.prototype.every !== 'function') {
         return true;
     };
 }
-
 if (typeof Array.prototype.some !== 'function') {
     Array.prototype.some = function (callable) {
         for (var i in this) if (callable(this[i], i, this) === true) {
@@ -37,10 +35,6 @@ if (typeof Array.prototype.some !== 'function') {
         return false;
     };
 }
-
-/*! LayUI & jQuery */
-if (typeof jQuery === 'undefined') window.$ = window.jQuery = layui.$;
-window.form = layui.form, window.layer = layui.layer, window.laydate = layui.laydate;
 
 /*! 脚本应用根路径 */
 window.appRoot = (function (src) {
@@ -55,7 +49,14 @@ window.baseRoot = (function (src) {
 /*! 动态插件库路径 */
 window.tapiRoot = window.tapiRoot || window.appRoot + "admin";
 
-/*! require 配置 */
+/*! 配置 layui 插件 */
+layui.config({base: baseRoot + 'plugs/layui_exts/'});
+
+/*! 挂载 layui & jquery 对象 */
+if (typeof jQuery === 'undefined') window.$ = window.jQuery = layui.$;
+window.form = layui.form, window.layer = layui.layer, window.laydate = layui.laydate;
+
+/*! 配置 require 参数  */
 require.config({
     waitSeconds: 60,
     baseUrl: baseRoot,
@@ -74,8 +75,8 @@ require.config({
         'websocket': ['plugs/socket/websocket'],
         'pcasunzips': ['plugs/jquery/pcasunzips'],
         'jquery.ztree': ['plugs/ztree/ztree.all.min'],
-        'jquery.cropper': ['plugs/jquery/cropper.min'],
         'jquery.masonry': ['plugs/jquery/masonry.min'],
+        'jquery.cropper': ['plugs/cropper/cropper.min'],
         'jquery.autocompleter': ['plugs/jquery/autocompleter.min'],
     },
     shim: {
@@ -412,13 +413,25 @@ $(function () {
     };
 
     /*! 注册对象到Jq */
-    $.vali = function (form, callable, options) {
-        return (new function (that) {
-            that = this;
-            /*! 绑定元素事件 */
+    $.vali = function (form, callable) {
+
+        if ($(form).attr('submit-listen')) {
+            return $(form).data('validate');
+        }
+
+        return (new function () {
+            var that = this;
+            /* 绑定表单元素 */
+            this.form = $(form);
+            /* 绑定元素事件 */
             this.evts = 'blur change';
-            /*! 筛选表单元素 */
+            /* 筛选表单元素 */
             this.tags = 'input,select,textarea';
+            /* 预设检测规则 */
+            this.patterns = {
+                phone: '^1[3-9][0-9]{9}$',
+                email: '^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$'
+            };
             /*! 去除字符串的空格 */
             this.trim = function (str) {
                 return str.replace(/(^\s*)|(\s*$)/g, '');
@@ -430,17 +443,20 @@ $(function () {
                 return typeof attrProp !== 'undefined' && attrProp !== null && attrProp !== false;
             };
             /*! 正则验证表单元素 */
-            this.isRegex = function (ele, regex, params) {
+            this.isRegex = function (ele) {
                 var real = this.trim($(ele).val());
-                regex = regex || ele.getAttribute('pattern');
-                if (real === "" || !regex) return true;
-                return new RegExp(regex, params || 'i').test(real);
+                var regexp = ele.getAttribute('pattern');
+                regexp = that.patterns[regexp] || regexp;
+                if (real === "" || !regexp) return true;
+                return new RegExp(regexp, 'i').test(real);
             };
             /*! 检侧所有表单元素 */
             this.checkAllInput = function () {
                 var isPass = true;
-                $(form).find(this.tags).each(function () {
-                    if (that.checkInput(this) === false) return $(this).focus(), isPass = false;
+                that.form.find(this.tags).each(function () {
+                    if (that.checkInput(this) === false) {
+                        return $(this).focus(), isPass = false;
+                    }
                 });
                 return isPass;
             };
@@ -477,31 +493,34 @@ $(function () {
                 return $(ele).data('input-info', $html.css(style).insertAfter(ele)), $html;
             };
             /*! 表单验证入口 */
-            this.check = function (form, callable) {
-                $(form).off(that.evts, that.tags).on(that.evts, that.tags, function () {
-                    that.checkInput(this);
-                }).attr('novalidate', 'novalidate').bind("submit", function (event) {
-                    if (that.checkAllInput() && typeof callable === 'function') {
-                        if (typeof CKEDITOR === 'object' && typeof CKEDITOR.instances === 'object') {
-                            for (var i in CKEDITOR.instances) CKEDITOR.instances[i].updateElement();
-                        }
-                        callable.call(this, $(form).formToJson());
+            that.form.off(that.evts, that.tags).on(that.evts, that.tags, function () {
+                that.checkInput(this);
+            }).attr('novalidate', 'novalidate').attr('submit-listen', 'callable');
+            /*! 绑定提交事件 */
+            that.form.data('validate', this).bind("submit", function (event) {
+                /* 检查所有表单元素是否通过H5的规则验证 */
+                if (that.checkAllInput() && typeof callable === 'function') {
+                    if (typeof CKEDITOR === 'object' && typeof CKEDITOR.instances === 'object') {
+                        for (var i in CKEDITOR.instances) CKEDITOR.instances[i].updateElement();
                     }
-                    return event.preventDefault(), false;
-                }).find('[data-form-loaded]').map(function () {
-                    $(this).html(this.dataset.formLoaded || this.innerHTML);
-                    $(this).removeAttr('data-form-loaded').removeClass('layui-disabled');
-                });
-                return $(form).data('validate', this);
-            };
-        }).check(form, callable, options);
+                    /* 触发表单提交后，锁定三秒不能再次提交表单 */
+                    if (that.form.attr('submit-locked')) return false; else that.form.attr('submit-locked', 1);
+                    callable.call(this, that.form.formToJson()), setTimeout(function () {
+                        that.form.removeAttr('submit-locked');
+                    }, 3000)
+                }
+                return event.preventDefault(), false;
+            }).find('[data-form-loaded]').map(function () {
+                $(this).html(this.dataset.formLoaded || this.innerHTML);
+                $(this).removeAttr('data-form-loaded').removeClass('layui-disabled');
+            });
+        });
     };
 
     /*! 自动监听规则内表单 */
     $.vali.listen = function () {
         $('form[data-auto]').map(function (index, form) {
-            if (this.dataset.listen === 'true') return true;
-            $(this).attr('data-listen', 'true').vali(function (data) {
+            $(this).vali(function (data) {
                 var type = form.method || 'POST', href = form.action || location.href;
                 var call = window[form.dataset.callable || '_default_callable'] || undefined;
                 var tips = form.dataset.tips || undefined, time = form.dataset.time || undefined;
@@ -516,13 +535,15 @@ $(function () {
 
     /*! 注册对象到JqFn */
     $.fn.vali = function (callable, options) {
-        return $.vali(this, callable, options);
+        return this.each(function () {
+            $.vali(this, callable, options);
+        });
     };
 
     /*! 表单转JSON */
     $.fn.formToJson = function () {
         var self = this, data = {}, push = {};
-        var patterns = {key: /[a-zA-Z0-9_]+|(?=\[])/g, push: /^$/, fixed: /^\d+$/, named: /^[a-zA-Z0-9_]+$/};
+        var rules = {key: /[a-zA-Z0-9_]+|(?=\[])/g, push: /^$/, fixed: /^\d+$/, named: /^[a-zA-Z0-9_]+$/};
         this.build = function (base, key, value) {
             return (base[key] = value), base;
         };
@@ -531,16 +552,12 @@ $(function () {
             return push[name]++;
         };
         $.each($(this).serializeArray(), function () {
-            var key, keys = this.name.match(patterns.key), merge = this.value, name = this.name;
+            var key, keys = this.name.match(rules.key), merge = this.value, name = this.name;
             while ((key = keys.pop()) !== undefined) {
                 name = name.replace(new RegExp("\\[" + key + "\\]$"), '');
-                if (key.match(patterns.push)) { // push
-                    merge = self.build([], self.pushCounter(name), merge);
-                } else if (key.match(patterns.fixed)) { // fixed
-                    merge = self.build([], key, merge);
-                } else if (key.match(patterns.named)) { // named
-                    merge = self.build({}, key, merge);
-                }
+                if (key.match(rules.push)) merge = self.build([], self.pushCounter(name), merge);
+                else if (key.match(rules.fixed)) merge = self.build([], key, merge);
+                else if (key.match(rules.named)) merge = self.build({}, key, merge);
             }
             data = $.extend(true, data, merge);
         });
@@ -663,7 +680,7 @@ $(function () {
             };
             // 动态设置最大高度
             if (opt.height === 'full') {
-                opt.height = $(window).height() - $(elem).removeClass('layui-hide').offset().top - 45;
+                opt.height = $(window).height() - $(elem).removeClass('layui-hide').offset().top - 55;
             }
             // 实例并绑定对象
             $(this).data('this', layui.table.render(bindData(opt)));
@@ -675,7 +692,7 @@ $(function () {
             }).bind('row sort tool edit radio toolbar checkbox rowDouble', function (evt, call) {
                 layui.table.on(evt.type + '(' + elem.dataset.id + ')', call)
             }).bind('setFullHeight', function () {
-                $(elem).trigger('reload', {height: $(window).height() - $(elem).next().offset().top - 35})
+                $(elem).trigger('reload', {height: $(window).height() - $(elem).next().offset().top - 45})
             }).trigger('sort', function (object) {
                 (sort = object), $(elem).trigger('reload')
             });
@@ -836,24 +853,22 @@ $(function () {
 
     /*! 注册 data-copy 事件行为 */
     onEvent('click', '[data-copy]', function () {
-        $.copyToClipboard(this.dataset.copy);
+        (function (content, $textarea) {
+            $body.append($textarea.val(content)), $textarea.select();
+            document.execCommand('Copy') ? $.msg.tips('已复制到剪贴板！') : $.msg.tips('请使用鼠标操作复制！');
+            $textarea.remove();
+        })(this.dataset.copy, $('<textarea style="position:fixed;top:-500px"></textarea>'));
     });
-    $.copyToClipboard = function (content, input) {
-        input = document.createElement('textarea');
-        input.style.position = 'absolute', input.style.left = '-100000px';
-        input.style.width = '1px', input.style.height = '1px', input.innerText = content;
-        document.body.appendChild(input), input.select(), setTimeout(function () {
-            document.execCommand('Copy') ? $.msg.tips('复制成功') : $.msg.tips('复制失败，请使用鼠标操作复制！');
-            document.body.removeChild(input);
-        }, 100);
-    };
 
     /*! 注册 data-tips-text 事件行为 */
     onEvent('mouseenter', '[data-tips-text]', function () {
-        var opt = {tips: [$(this).attr('data-tips-type') || 3, '#78BA32'], time: 0};
-        $(this).attr('index', layer.tips($(this).attr('data-tips-text') || this.innerText, this, opt));
-    }).on('mouseleave', '[data-tips-text]', function () {
-        layer.close($(this).attr('index'));
+        var opts = {tips: [$(this).attr('data-tips-type') || 3, '#78BA32'], time: 0}, that = this;
+        $(this).attr('index', layer.tips($(this).attr('data-tips-text') || this.innerText, this, opts));
+        $(this).off('mouseleave').on('mouseleave', function () {
+            setTimeout(function () {
+                layer.close($(that).attr('index'));
+            }, 100);
+        });
     });
 
     /*! 注册 data-tips-image 事件行为 */
@@ -870,20 +885,20 @@ $(function () {
         $(this).off('mouseleave').on('mouseleave', function () {
             setTimeout(function () {
                 layer.close($(that).attr('index'));
-            }, 100)
+            }, 100);
         });
     });
 
     $.previewImage = function (src, area) {
-        var img = new Image(), defer = $.Deferred(), load = $.msg.loading();
-        img.style.background = '#FFFFFF', img.referrerPolicy = 'no-referrer';
+        var img = new Image(), defer = $.Deferred(), loaded = $.msg.loading();
+        img.style.background = '#FFF', img.referrerPolicy = 'no-referrer';
         img.style.height = 'auto', img.style.width = area || '480px', img.style.display = 'none';
         document.body.appendChild(img), img.onerror = function () {
-            $.msg.close(load), defer.reject();
+            $.msg.close(loaded), defer.reject();
         }, img.onload = function () {
             layer.open({
-                type: 1, title: false, shadeClose: true, content: $(img), success: function ($ele, idx) {
-                    $.msg.close(load), defer.notify($ele, idx);
+                type: 1, title: false, shadeClose: true, content: $(img), success: function ($elem, idx) {
+                    $.msg.close(loaded), defer.notify($elem, idx);
                 }, area: area || '480px', skin: 'layui-layer-nobg', closeBtn: 1, end: function () {
                     document.body.removeChild(img), defer.resolve()
                 }

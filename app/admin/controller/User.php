@@ -96,7 +96,6 @@ class User extends Controller
      */
     public function add()
     {
-        $this->_applyFormToken();
         $this->_form($this->table, 'form');
     }
 
@@ -109,7 +108,6 @@ class User extends Controller
      */
     public function edit()
     {
-        $this->_applyFormToken();
         $this->_form($this->table, 'form');
     }
 

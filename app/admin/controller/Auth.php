@@ -61,7 +61,6 @@ class Auth extends Controller
      */
     public function add()
     {
-        $this->_applyFormToken();
         $this->_form($this->table, 'form');
     }
 
@@ -74,7 +73,6 @@ class Auth extends Controller
      */
     public function edit()
     {
-        $this->_applyFormToken();
         $this->_form($this->table, 'form');
     }
 
@@ -116,8 +114,18 @@ class Auth extends Controller
             sysoplog('系统权限管理', "配置系统权限[{$map['auth']}]授权成功");
             $this->success('访问权限修改成功！', 'javascript:history.back()');
         } else {
-            $this->title = '权限配置节点';
             $this->_form($this->table, 'apply');
+        }
+    }
+
+    /**
+     * 表单后置数据处理
+     * @param array $data
+     */
+    protected function _apply_form_filter(array &$data)
+    {
+        if ($this->request->isGet()) {
+            $this->title = "编辑【{$data['title']}】授权";
         }
     }
 

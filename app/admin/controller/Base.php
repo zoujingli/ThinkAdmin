@@ -48,7 +48,8 @@ class Base extends Controller
             $this->types = (new SystemBase)->types();
             $this->type = input('get.type') ?: ($this->types[0] ?? '-');
         }, function (QueryHelper $query) {
-            $query->where(['deleted' => 0])->equal('type')->like('code,name,status')->dateBetween('create_at');
+            $query->where(['deleted' => 0])->equal('type');
+            $query->like('code,name,status')->dateBetween('create_at');
         });
     }
 

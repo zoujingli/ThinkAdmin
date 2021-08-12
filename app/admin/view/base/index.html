@@ -32,7 +32,7 @@
         // 初始化表格组件
         var $table = $('#BaseData').layTable({
             even: true, height: 'full',
-            sort: {field: 'sort desc,id', type: 'desc'},
+            sort: {field: 'sort desc,id', type: 'asc'},
             where: {type: '{$type|default=""}'},
             cols: [[
                 {checkbox: true, fixed: true},

@@ -19,7 +19,7 @@
     left: @LayoutDefaLeftSzie;
     right: 0;
     color: @TopHeaderTextColor !important;
-    height: @TopHeaderHeight;
+    height: @TopHeaderHeight !important;
     position: absolute;
     box-sizing: content-box;
     background: @TopHeaderBackColor !important;
@@ -43,8 +43,8 @@
 
       &.layui-layout-right {
         .headimg {
-          width: 20px;
-          height: 20px;
+          width: 22px;
+          height: 22px;
         }
       }
 
@@ -235,11 +235,12 @@
     top: @BodyMainTop;
     left: @LayoutDefaLeftSzie;
     padding: 0;
+    background: @BodyMainBackColor;
+    box-shadow: @ShadowDownInset;
 
     > .layui-card {
       box-shadow: none !important;
       background: none !important;
-
 
       > .layui-card-body {
         top: 0;
@@ -250,7 +251,7 @@
         overflow: auto;
         position: absolute;
         box-sizing: border-box;
-        background: @BodyMainBackColor;
+
 
         > .layui-card-table {
           padding: 15px;
