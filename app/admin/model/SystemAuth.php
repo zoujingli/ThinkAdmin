@@ -16,7 +16,7 @@
 
 namespace app\admin\model;
 
-use think\Model;
+use think\admin\Model;
 
 /**
  * 用户权限模型
@@ -25,6 +25,30 @@ use think\Model;
  */
 class SystemAuth extends Model
 {
+    /**
+     * 日志名称
+     * @var string
+     */
+    protected $oplogName = '系统权限';
+
+    /**
+     * 日志类型
+     * @var string
+     */
+    protected $oplogType = '系统权限管理';
+
+    /**
+     * 删除权限事件
+     * @param string $ids
+     */
+    public function onAdminDelete(string $ids)
+    {
+        if (count($aids = str2arr($aids ?? '')) > 0) {
+            M('SystemAuthNode')->whereIn('auth', $aids)->delete();
+        }
+        sysoplog($this->oplogType, "删除{$this->oplogName}[{$ids}]及授权配置");
+    }
+
     /**
      * 格式化创建时间
      * @param string $value

@@ -21,6 +21,7 @@
   overflow: hidden;
   text-align: center;
   margin-right: 5px;
+  margin-bottom: 5px;
   border-radius: 50%;
   vertical-align: middle;
   background-size: cover;
@@ -72,17 +73,21 @@ fieldset {
 }
 
 .layui-layer-tips {
-  &.layui-layer-image .layui-layer-content {
+  &.layui-layer-image {
     width: auto !important;
-    padding: 4px !important;
 
-    img {
-      z-index: 2;
-      position: relative;
-    }
+    .layui-layer-content {
+      width: auto !important;
+      padding: 4px !important;
 
-    i.layui-layer-TipsR {
-      z-index: 1;
+      img {
+        z-index: 2;
+        position: relative;
+      }
+
+      i.layui-layer-TipsR {
+        z-index: 1;
+      }
     }
   }
 }
@@ -331,6 +336,25 @@ fieldset {
     padding-left: 5px;
   }
 
+  input.layui-input,
+  .layui-btn.layui-btn-sm {
+    height: 28px;
+    line-height: 28px;
+    box-sizing: border-box;
+  }
+
+  .layui-btn.layui-btn-sm {
+    margin-top: -1px;
+  }
+
+  &[lay-size="lg"] {
+    input.layui-input, .layui-btn.layui-btn-sm {
+      height: 38px;
+      box-sizing: border-box;
+      line-height: 38px;
+    }
+  }
+
   .list-table-sort-td {
     width: 10px !important;
     text-align: center !important;
@@ -366,27 +390,15 @@ fieldset {
   }
 }
 
-table.layui-table {
-  input.layui-input, .layui-btn.layui-btn-sm {
-    height: 28px;
-    line-height: 28px;
-    box-sizing: border-box;
-  }
-
-  .layui-btn.layui-btn-sm {
-    margin-top: -1px;
-  }
-
-  &[lay-size="lg"] {
-    input.layui-input, .layui-btn.layui-btn-sm {
-      height: 38px;
-      box-sizing: border-box;
-      line-height: 38px;
-    }
+.tableSelect {
+  .layui-table-view {
+    margin: 10px 0;
   }
 }
 
 .layui-table-view {
+  margin: 0;
+
   .layui-table-page {
     .layui-laypage {
       .layui-laypage-prev,
@@ -480,7 +492,7 @@ table.layui-table {
   height: 580px;
   position: relative;
   background: url(../img/wechat/mobile_head.png) no-repeat 0 0;
-  box-shadow: @ShadowMinOuter;
+  box-shadow: @ShadowMaxOuter;
   border-radius: @BoxBorderRadius;
 
   .mobile-header {

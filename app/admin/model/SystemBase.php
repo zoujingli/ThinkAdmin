@@ -22,7 +22,6 @@ use think\Model;
  * 数据字典数据模型
  * Class SystemBase
  * @package app\admin\model
- * @method \think\db\Query distinct(bool $true)
  */
 class SystemBase extends Model
 {
@@ -36,7 +35,7 @@ class SystemBase extends Model
      */
     public function items(string $type, array &$data = [], string $field = 'base_code', string $bind = 'base_info'): array
     {
-        $map = ['status' => 1, 'deleted' => 0, 'type' => $type];
+        $map = ['type' => $type, 'status' => 1, 'deleted' => 0];
         $bases = $this->where($map)->order('sort desc,id asc')->column('code,name,content', 'code');
         if (count($data) > 0) foreach ($data as &$vo) $vo[$bind] = $bases[$vo[$field]] ?? [];
         return $bases;

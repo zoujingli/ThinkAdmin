@@ -29,13 +29,6 @@ use think\admin\service\AdminService;
  */
 class User extends Controller
 {
-
-    /**
-     * 绑定数据表
-     * @var string
-     */
-    private $table = 'SystemUser';
-
     /**
      * 超级用户名称
      * @var string
@@ -96,7 +89,7 @@ class User extends Controller
      */
     public function add()
     {
-        $this->_form($this->table, 'form');
+        $this->_form(SystemUser::class, 'form');
     }
 
     /**
@@ -108,7 +101,7 @@ class User extends Controller
      */
     public function edit()
     {
-        $this->_form($this->table, 'form');
+        $this->_form(SystemUser::class, 'form');
     }
 
     /**
@@ -123,7 +116,7 @@ class User extends Controller
         $this->_applyFormToken();
         if ($this->request->isGet()) {
             $this->verify = false;
-            $this->_form($this->table, 'pass');
+            $this->_form(SystemUser::class, 'pass');
         } else {
             $data = $this->_vali([
                 'id.require'                  => '用户ID不能为空！',
@@ -131,7 +124,8 @@ class User extends Controller
                 'repassword.require'          => '重复密码不能为空！',
                 'repassword.confirm:password' => '两次输入的密码不一致！',
             ]);
-            if (data_save($this->table, ['id' => $data['id'], 'password' => md5($data['password'])])) {
+            $user = (new SystemUser)->find($data['id']);
+            if (!empty($user) && $user->save(['password' => md5($data['password'])])) {
                 sysoplog('系统用户管理', "修改用户[{$data['id']}]密码成功");
                 $this->success('密码修改成功，请使用新密码登录！', '');
             } else {
@@ -155,10 +149,12 @@ class User extends Controller
             if (isset($data['id']) && $data['id'] > 0) {
                 unset($data['username']);
             } else {
-                // 检查登录账号是否出现重复
-                if (empty($data['username'])) $this->error('登录账号不能为空！');
-                $where = ['username' => $data['username'], 'is_deleted' => 0];
-                if ($this->app->db->name($this->table)->where($where)->count() > 0) {
+                // 检查账号是否重复
+                if (empty($data['username'])) {
+                    $this->error('登录账号不能为空！');
+                }
+                $map = ['username' => $data['username'], 'is_deleted' => 0];
+                if ((new SystemUser)->where($map)->count() > 0) {
                     $this->error("账号已经存在，请使用其它账号！");
                 }
                 // 新添加的用户密码与账号相同
@@ -183,7 +179,7 @@ class User extends Controller
     public function state()
     {
         $this->_checkInput();
-        $this->_save($this->table, $this->_vali([
+        $this->_save(SystemUser::class, $this->_vali([
             'status.in:0,1'  => '状态值范围异常！',
             'status.require' => '状态值不能为空！',
         ]));
@@ -197,7 +193,7 @@ class User extends Controller
     public function remove()
     {
         $this->_checkInput();
-        $this->_delete($this->table);
+        $this->_delete(SystemUser::class);
     }
 
     /**
@@ -207,59 +203,6 @@ class User extends Controller
     {
         if (in_array('10000', str2arr(input('id', '')))) {
             $this->error('系统超级账号禁止删除！');
-        }
-    }
-
-    /**
-     * 表单结果处理
-     * @param bool $result
-     */
-    protected function _add_form_result(bool $result)
-    {
-        if ($result) {
-            $id = $this->app->db->name($this->table)->getLastInsID();
-            sysoplog('系统用户管理', "添加系统用户[{$id}]成功");
-        }
-    }
-
-    /**
-     * 表单结果处理
-     * @param boolean $result
-     */
-    protected function _edit_form_result(bool $result)
-    {
-        if ($result) {
-            $id = input('id') ?: 0;
-            sysoplog('系统用户管理', "修改系统用户[{$id}]成功");
-            if ($id == AdminService::instance()->getUserId()) {
-                $this->success('用户资料修改成功！', 'javascript:location.reload()');
-            } else {
-                $this->success('用户资料修改成功！');
-            }
-        }
-    }
-
-    /**
-     * 状态结果处理
-     * @param boolean $result
-     */
-    protected function _state_save_result(bool $result)
-    {
-        if ($result) {
-            [$id, $state] = [input('id'), input('status')];
-            sysoplog('系统用户管理', ($state ? '激活' : '禁用') . "系统用户[{$id}]成功");
-        }
-    }
-
-    /**
-     * 删除结果处理
-     * @param boolean $result
-     */
-    protected function _remove_delete_result(bool $result)
-    {
-        if ($result) {
-            $id = input('id') ?: 0;
-            sysoplog('系统用户管理', "删除系统用户[{$id}]成功");
         }
     }
 }

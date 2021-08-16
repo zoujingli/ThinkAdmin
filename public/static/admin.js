@@ -294,15 +294,15 @@ $(function () {
             }, load, tips);
         };
         /*! 打开一个iframe窗口 */
-        this.iframe = function (url, name, area) {
-            return layer.open({title: name || '窗口', type: 2, area: area || ['800px', '580px'], fixed: true, maxmin: false, content: url});
+        this.iframe = function (url, name, area, offset) {
+            return layer.open({title: name || '窗口', type: 2, area: area || ['800px', '580px'], offset: offset, fixed: true, maxmin: false, content: url});
         };
         /*! 加载 HTML 到弹出层 */
-        this.modal = function (url, data, name, call, load, tips, area) {
+        this.modal = function (url, data, name, call, load, tips, area, offset) {
             this.load(url, data, 'GET', function (res) {
                 if (typeof (res) === 'object') return $.msg.auto(res), false;
                 $.msg.idx.push(layer.open({
-                    type: 1, btn: false, area: area || "800px", content: res, title: name || '', success: function ($dom, idx) {
+                    type: 1, btn: false, area: area || "800px", content: res, title: name || '', offset: offset || 'auto', success: function ($dom, idx) {
                         $dom.off('click', '[data-close]').on('click', '[data-close]', function () {
                             (function (confirm, callable) {
                                 confirm ? $.msg.confirm(confirm, callable) : callable();
@@ -352,23 +352,27 @@ $(function () {
         /*! 后台菜单动作初始化 */
         this.listen = function () {
             /*! 菜单模式切换 */
-            (function ($menu, miniClass) {
-                /*! Mini 菜单模式切换及显示 */
-                if (layui.data('admin-menu-type')['type-mini']) $menu.addClass(miniClass);
-                onEvent('click', '[data-target-menu-type]', function () {
-                    $menu.toggleClass(miniClass), layui.data('admin-menu-type', {key: 'type-mini', value: $menu.hasClass(miniClass)});
-                }).on('resize', function () {
-                    $body.width() > 1000 ? (layui.data('admin-menu-type')['type-mini'] ? $menu.addClass(miniClass) : $menu.removeClass(miniClass)) : $menu.addClass(miniClass);
-                }).trigger('resize');
-                /*! Mini 菜单模式时TIPS文字显示 */
-                $('[data-target-tips]').mouseenter(function () {
-                    if ($menu.hasClass(miniClass)) {
-                        $(this).attr('index', layer.tips(this.dataset.targetTips || '', this, {time: 0}));
-                    }
-                }).mouseleave(function () {
+            var $menu = $('.layui-layout-admin'), miniClass = 'layui-layout-left-mini';
+            /*! Mini 菜单模式切换及显示 */
+            if (layui.data('admin-menu-type')['type-mini']) $menu.addClass(miniClass);
+            /*! 菜单切换事件处理 */
+            onEvent('click', '[data-target-menu-type]', function () {
+                layui.data('admin-menu-type', {key: 'type-mini', value: $menu.toggleClass(miniClass).hasClass(miniClass)});
+            });
+            /*! 监听窗口尺寸处理 */
+            (function (callable) {
+                $(window).on('resize', callable).trigger('resize');
+            })(function () {
+                var typeMini = layui.data('admin-menu-type')['type-mini'] || false;
+                (typeMini || $body.width() < 1000) ? $menu.addClass(miniClass) : $menu.removeClass(miniClass);
+            });
+            /*! Mini 菜单模式时TIPS文字显示 */
+            $('[data-target-tips]').mouseenter(function () {
+                if ($menu.hasClass(miniClass)) $(this).attr('index', layer.tips(this.dataset.targetTips || '', this, {time: 0}));
+                $(this).mouseleave(function () {
                     layer.close($(this).attr('index'));
                 });
-            })($('.layui-layout-admin'), 'layui-layout-left-mini');
+            });
             /*!  左则二级菜单展示 */
             $('[data-submenu-layout]>a').on('click', function () {
                 that.syncOpenStatus(1);
@@ -414,11 +418,9 @@ $(function () {
 
     /*! 注册对象到Jq */
     $.vali = function (form, callable) {
-
         if ($(form).attr('submit-listen')) {
             return $(form).data('validate');
         }
-
         return (new function () {
             var that = this;
             /* 绑定表单元素 */
@@ -495,7 +497,7 @@ $(function () {
             /*! 表单验证入口 */
             that.form.off(that.evts, that.tags).on(that.evts, that.tags, function () {
                 that.checkInput(this);
-            }).attr('novalidate', 'novalidate').attr('submit-listen', 'callable');
+            }).attr('novalidate', 'novalidate').attr('submit-listen', 'validate.submit');
             /*! 绑定提交事件 */
             that.form.data('validate', this).bind("submit", function (event) {
                 /* 检查所有表单元素是否通过H5的规则验证 */
@@ -680,7 +682,7 @@ $(function () {
             };
             // 动态设置最大高度
             if (opt.height === 'full') {
-                opt.height = $(window).height() - $(elem).removeClass('layui-hide').offset().top - 55;
+                opt.height = $(window).height() - $(elem).removeClass('layui-hide').offset().top - 35;
             }
             // 实例并绑定对象
             $(this).data('this', layui.table.render(bindData(opt)));
@@ -692,7 +694,7 @@ $(function () {
             }).bind('row sort tool edit radio toolbar checkbox rowDouble', function (evt, call) {
                 layui.table.on(evt.type + '(' + elem.dataset.id + ')', call)
             }).bind('setFullHeight', function () {
-                $(elem).trigger('reload', {height: $(window).height() - $(elem).next().offset().top - 45})
+                $(elem).trigger('reload', {height: $(window).height() - $(elem).next().offset().top - 35})
             }).trigger('sort', function (object) {
                 (sort = object), $(elem).trigger('reload')
             });
@@ -772,20 +774,6 @@ $(function () {
         });
     });
 
-    /*! 表单元素失焦时提交 */
-    onEvent('blur', '[data-action-blur]', function () {
-        var that = $(this), emap = this.dataset, data = {'_token_': emap.token || emap.csrf || '--'};
-        var attrs = (emap.value || '').replace('{value}', that.val()).split(';');
-        for (var i in attrs) data[attrs[i].split('#')[0]] = attrs[i].split('#')[1];
-        (function (confirm, callable) {
-            confirm ? $.msg.confirm(confirm, callable) : callable();
-        })(emap.confirm, function () {
-            $.form.load(emap.actionBlur, data, emap.method || 'post', function (ret) {
-                return that.css('border', (ret && ret.code) ? '1px solid #e6e6e6' : '1px solid red'), false;
-            }, emap.loading !== 'false', emap.loading, emap.time)
-        });
-    });
-
     /*! 表单元素失去焦点时数字 */
     onEvent('blur', '[data-blur-number]', function () {
         var emap = this.dataset, min = emap.valueMin, max = emap.valueMax;
@@ -793,6 +781,20 @@ $(function () {
         if (typeof min !== 'undefined' && value < min) value = min;
         if (typeof max !== 'undefined' && value > max) value = max;
         this.value = parseFloat(value).toFixed(fiexd);
+    });
+
+    /*! 表单元素失焦时提交 */
+    onEvent('blur', '[data-action-blur],[data-blur-action]', function () {
+        var that = $(this), emap = this.dataset, data = {'_token_': emap.token || emap.csrf || '--'};
+        var attrs = (emap.value || '').replace('{value}', that.val()).split(';');
+        for (var i in attrs) data[attrs[i].split('#')[0]] = attrs[i].split('#')[1];
+        (function (confirm, callable) {
+            confirm ? $.msg.confirm(confirm, callable) : callable();
+        })(emap.confirm, function () {
+            $.form.load(emap.actionBlur || emap.blurAction, data, emap.method || 'post', function (ret) {
+                return that.css('border', (ret && ret.code) ? '1px solid #e6e6e6' : '1px solid red'), false;
+            }, emap.loading !== 'false', emap.loading, emap.time)
+        });
     });
 
     /*! 注册 data-href 事件行为 */
@@ -832,7 +834,7 @@ $(function () {
     onEvent('click', '[data-modal]', function () {
         var emap = this.dataset, data = {open_type: 'modal'}, un = undefined;
         if (emap.rule && (applyRuleValue(this, data)) === false) return false;
-        return $.form.modal(emap.modal, data, emap.title || this.innerText || '编辑', un, un, un, emap.area || emap.width || '800px');
+        return $.form.modal(emap.modal, data, emap.title || this.innerText || '编辑', un, un, un, emap.area || emap.width || '800px', emap.offset || 'auto');
     });
 
     /*! 注册 data-iframe 事件行为 */
@@ -842,7 +844,7 @@ $(function () {
         var frame = emap.iframe + (emap.iframe.indexOf('?') > -1 ? '&' : '?') + $.param(data);
         $(this).attr('data-index', $.form.iframe(frame, emap.title || this.innerText || '窗口', emap.area || [
             emap.width || '800px', emap.height || '580px'
-        ]));
+        ], emap.offset || 'auto'));
     });
 
     /*! 注册 data-icon 事件行为 */
@@ -880,8 +882,8 @@ $(function () {
         var img = new Image(), that = this;
         img.referrerPolicy = 'no-referrer', img.style.maxWidth = '260px', img.style.maxHeight = '260px';
         img.src = this.dataset.tipsImage || this.dataset.lazySrc || this.src, img.onload = function () {
-            $(that).attr('index', layer.tips(img.outerHTML, that, {time: 0, skin: 'layui-layer-image', scrollbar: false, anim: 5, isOutAnim: false}));
-        }
+            $(that).attr('index', layer.tips(img.outerHTML, that, {time: 0, skin: 'layui-layer-image', anim: 5, isOutAnim: false, scrollbar: false}));
+        };
         $(this).off('mouseleave').on('mouseleave', function () {
             setTimeout(function () {
                 layer.close($(that).attr('index'));

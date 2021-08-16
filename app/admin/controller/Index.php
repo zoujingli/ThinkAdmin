@@ -16,6 +16,7 @@
 
 namespace app\admin\controller;
 
+use app\admin\model\SystemUser;
 use think\admin\Controller;
 use think\admin\service\AdminService;
 use think\admin\service\MenuService;
@@ -106,11 +107,12 @@ class Index extends Controller
                 'oldpassword.require'         => '旧的密码不能为空！',
                 'password.confirm:repassword' => '两次输入的密码不一致！',
             ]);
-            $user = $this->app->db->name('SystemUser')->where(['id' => $id])->find();
+            $user = (new SystemUser)->find($id);
+            if (empty($user)) $this->error('用户不存在！');
             if (md5($data['oldpassword']) !== $user['password']) {
                 $this->error('旧密码验证失败，请重新输入！');
             }
-            if (data_save('SystemUser', ['id' => $user['id'], 'password' => md5($data['password'])])) {
+            if ($user->save(['password' => md5($data['password'])])) {
                 sysoplog('系统用户管理', "修改用户[{$user['id']}]密码成功");
                 $this->success('密码修改成功，下次请使用新密码登录！', '');
             } else {

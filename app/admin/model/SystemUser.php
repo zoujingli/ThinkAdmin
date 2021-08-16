@@ -16,7 +16,7 @@
 
 namespace app\admin\model;
 
-use think\Model;
+use think\admin\Model;
 
 /**
  * 系统用户数据模型
@@ -25,6 +25,18 @@ use think\Model;
  */
 class SystemUser extends Model
 {
+    /**
+     * 日志名称
+     * @var string
+     */
+    protected $oplogName = '系统用户';
+
+    /**
+     * 日志类型
+     * @var string
+     */
+    protected $oplogType = '系统用户管理';
+
     /**
      * 获取用户数据
      * @param array $map 数据查询规则

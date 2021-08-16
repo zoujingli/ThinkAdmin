@@ -65,16 +65,15 @@
     $(function () {
         $('#QueueData').layTable({
             even: true,
-            sort: {field: 'loops_time desc,id', type: 'desc'},
+            sort: {field: 'loops_time desc,code', type: 'desc'},
             cols: [[
                 {checkbox: true, fixed: 'left'},
                 {field: 'code', title: '任务编号', width: 140, sort: true},
-                {field: 'title', title: '任务名称', minWidth: 130},
-                {field: 'command', title: '任务指令', minWidth: 130},
+                {field: 'title', title: '任务名称', minWidth: 100},
+                {field: 'command', title: '任务指令', minWidth: 100},
                 {
                     field: 'exec_time', title: '计划时间', minWidth: 245, templet: function (d) {
-                        d.exec_time = d.exec_time || 0;
-                        d.loops_time = d.loops_time || 0;
+                        d.exec_time = d.exec_time || 0, d.loops_time = d.loops_time || 0;
                         if (d.loops_time > 0) {
                             return d.exec_time + ' ( 每 <b class="color-blue">' + d.loops_time + '</b> 秒 ) ';
                         } else {
@@ -84,8 +83,7 @@
                 },
                 {
                     field: 'enter_time', title: '执行时间', minWidth: 175, templet: function (d) {
-                        d.enter_time = d.enter_time || '';
-                        d.outer_time = d.outer_time || '0.0000';
+                        d.enter_time = d.enter_time || '', d.outer_time = d.outer_time || '0.0000';
                         if (d.enter_time.length > 12) {
                             return d.enter_time.substr(12) + '<span class="color-desc"> ( 耗时 ' + d.outer_time + ' )</span>';
                         } else {
@@ -93,10 +91,10 @@
                         }
                     }
                 },
-                {field: 'attempts', title: '执行次数', width: 95, align: 'center', sort: true, templet: "<div>{{d.attempts||0}}</div>"},
+                {field: 'attempts', title: '执行次数', minWidth: 95, align: 'center', sort: true, templet: "<div>{{d.attempts||0}}</div>"},
                 {field: 'exec_desc', title: '执行结果', minWidth: 180},
                 {field: 'create_at', title: '创建时间', align: 'center', minWidth: 170},
-                {toolbar: '#toolbar', title: '操作面板', align: 'center', fixed: 'right', minWidth: 251}
+                {toolbar: '#toolbar', title: '操作面板', align: 'center', width: 251, fixed: 'right',}
             ]]
         });
     });

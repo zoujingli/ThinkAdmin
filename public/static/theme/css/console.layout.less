@@ -90,6 +90,10 @@
         line-height: 48px;
         border-radius: 0;
 
+        &.layui-show + a.layui-elip {
+          background: @TopHeaderNavHoverBackColor !important;
+        }
+
         + a.layui-elip {
           padding-right: 35px;
 
@@ -106,10 +110,15 @@
         }
 
         dd {
+          margin: 0;
+
           a {
             padding: 0;
-            margin-top: 1px;
             text-align: center;
+
+            &:hover {
+              background: @TopHeaderNavHoverBackColor !important;
+            }
 
             .layui-icon {
               margin-right: 5px;

@@ -16,6 +16,7 @@
 
 namespace app\admin\controller;
 
+use app\admin\model\SystemMenu;
 use think\admin\Controller;
 use think\admin\extend\DataExtend;
 use think\admin\service\AdminService;
@@ -29,13 +30,6 @@ use think\admin\service\NodeService;
  */
 class Menu extends Controller
 {
-
-    /**
-     * 当前操作数据库
-     * @var string
-     */
-    private $table = 'SystemMenu';
-
     /**
      * 系统菜单管理
      * @auth true
@@ -48,7 +42,7 @@ class Menu extends Controller
     {
         $this->title = '系统菜单管理';
         $this->type = input('type', 'index');
-        $this->_query($this->table)->order('sort desc,id asc')->page(false, true);
+        $this->_query(SystemMenu::class)->order('sort desc,id asc')->page(false, true);
     }
 
     /**
@@ -88,7 +82,7 @@ class Menu extends Controller
     public function add()
     {
         $this->_applyFormToken();
-        $this->_form($this->table, 'form');
+        $this->_form(SystemMenu::class, 'form');
     }
 
     /**
@@ -101,7 +95,7 @@ class Menu extends Controller
     public function edit()
     {
         $this->_applyFormToken();
-        $this->_form($this->table, 'form');
+        $this->_form(SystemMenu::class, 'form');
     }
 
     /**
@@ -127,7 +121,7 @@ class Menu extends Controller
                 }
             }
             /* 列出可选上级菜单 */
-            $menus = $this->app->db->name($this->table)->order('sort desc,id asc')->column('id,pid,icon,url,node,title,params', 'id');
+            $menus = (new SystemMenu)->order('sort desc,id asc')->column('id,pid,icon,url,node,title,params', 'id');
             $this->menus = DataExtend::arr2table(array_merge($menus, [['id' => '0', 'pid' => '-1', 'url' => '#', 'title' => '顶部菜单']]));
             if (isset($vo['id'])) foreach ($this->menus as $menu) if ($menu['id'] === $vo['id']) $vo = $menu;
             foreach ($this->menus as $key => $menu) if ($menu['spt'] >= 3 || $menu['url'] !== '#') unset($this->menus[$key]);
@@ -145,7 +139,7 @@ class Menu extends Controller
     public function state()
     {
         $this->_applyFormToken();
-        $this->_save($this->table, $this->_vali([
+        $this->_save(SystemMenu::class, $this->_vali([
             'status.in:0,1'  => '状态值范围异常！',
             'status.require' => '状态值不能为空！',
         ]));
@@ -159,58 +153,6 @@ class Menu extends Controller
     public function remove()
     {
         $this->_applyFormToken();
-        $this->_delete($this->table);
-    }
-
-    /**
-     * 表单结果处理
-     * @param bool $result
-     */
-    protected function _add_form_result(bool $result)
-    {
-        if ($result) {
-            $id = $this->app->db->name($this->table)->getLastInsID();
-            sysoplog('系统菜单管理', "添加系统菜单[{$id}]成功");
-            $this->success('系统菜单添加成功！');
-        }
-    }
-
-    /**
-     * 表单结果处理
-     * @param boolean $result
-     */
-    protected function _edit_form_result(bool $result)
-    {
-        if ($result) {
-            $id = input('id') ?: 0;
-            sysoplog('系统菜单管理', "修改系统菜单[{$id}]成功");
-            $this->success('系统菜单修改成功！');
-        }
-    }
-
-    /**
-     * 状态结果处理
-     * @param boolean $result
-     */
-    protected function _state_save_result(bool $result)
-    {
-        if ($result) {
-            [$id, $state] = [input('id'), input('status')];
-            sysoplog('系统菜单管理', ($state ? '激活' : '禁用') . "系统菜单[{$id}]成功");
-            $this->success('系统菜单修改成功！', 'javascript:location.reload()');
-        }
-    }
-
-    /**
-     * 删除结果处理
-     * @param boolean $result
-     */
-    protected function _remove_delete_result(bool $result)
-    {
-        if ($result) {
-            $id = input('id') ?: 0;
-            sysoplog('系统菜单管理', "删除系统菜单[{$id}]成功");
-            $this->success('系统菜单删除成功！', 'javascript:location.reload()');
-        }
+        $this->_delete(SystemMenu::class);
     }
 }

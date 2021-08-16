@@ -72,7 +72,7 @@
 }
 
 .shadow-mini {
-  box-shadow: @ShadowMinOuter;
+  box-shadow: @ShadowMaxOuter;
 }
 
 .shadow-none {
@@ -81,11 +81,6 @@
 
 .shadow-inset {
   box-shadow: @ShadowMaxInset;
-
-  legend {
-    background: #EEE;
-    border-radius: 4px;
-  }
 }
 
 .help-block {
@@ -203,6 +198,7 @@
   position: relative;
   display: inline-block;
   border: 1px dashed #e2e2e2;
+  margin-right: 10px;
   background: url('../img/upimg.png') no-repeat center center;
   background-size: cover;
 
@@ -309,8 +305,8 @@
 label.think-radio,
 label.think-checkbox {
   cursor: pointer;
-  margin-right: 10px;
   display: inline-block;
+  margin: 8px 10px 8px 6px !important;
 }
 
 .think-radio,
@@ -318,7 +314,7 @@ label.think-checkbox {
   .notselect();
   margin-top: 10px;
   font-weight: 400;
-  line-height: 18px;
+  line-height: 16px;
 
   input[type=radio],
   input[type=checkbox] {
@@ -342,11 +338,11 @@ label.think-checkbox {
         display: block;
         position: relative;
         animation-duration: .3s;
-        -webkit-animation-duration: .3s;
         animation-fill-mode: both;
+        animation-name: layui-fadein;
+        -webkit-animation-duration: .3s;
         -webkit-animation-fill-mode: both;
-        animation-name: layui-scale-spring;
-        -webkit-animation-name: layui-scale-spring;
+        -webkit-animation-name: layui-fadein;
       }
     }
   }
