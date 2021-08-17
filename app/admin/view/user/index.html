@@ -34,7 +34,7 @@
 </div>
 <script>
     $(function () {
-        var $table = $('#UserData').layTable({
+        $('#UserData').layTable({
             even: true, height: 'full',
             sort: {field: 'sort desc,id', type: 'desc'},
             where: {type: '{$type|default="index"}'},
@@ -63,7 +63,7 @@
         layui.form.on('switch(StatusSwitch)', function (obj) {
             $.form.load("{:url('state')}", {id: obj.value, status: obj.elem.checked > 0 ? 1 : 0}, 'post', function (ret) {
                 if (ret.code < 1) $.msg.error(ret.info, 3, function () {
-                    $table.trigger('reload'); // 操作异常时重载数据
+                    $('#UserData').trigger('reload'); // 操作异常时重载数据
                 });
                 return false;
             }, false);

@@ -13,10 +13,12 @@
 // +----------------------------------------------------------------------
 
 /*! 数组兼容处理 */
-if (typeof Array.prototype.forEach !== 'function') {
-    Array.prototype.forEach = function (callable, context) {
-        typeof context === "undefined" ? context = window : null;
-        for (var i in this) callable.call(context, this[i], i, this)
+if (typeof Array.prototype.some !== 'function') {
+    Array.prototype.some = function (callable) {
+        for (var i in this) if (callable(this[i], i, this) === true) {
+            return true;
+        }
+        return false;
     };
 }
 if (typeof Array.prototype.every !== 'function') {
@@ -27,12 +29,10 @@ if (typeof Array.prototype.every !== 'function') {
         return true;
     };
 }
-if (typeof Array.prototype.some !== 'function') {
-    Array.prototype.some = function (callable) {
-        for (var i in this) if (callable(this[i], i, this) === true) {
-            return true;
-        }
-        return false;
+if (typeof Array.prototype.forEach !== 'function') {
+    Array.prototype.forEach = function (callable, context) {
+        typeof context === "undefined" ? context = window : null;
+        for (var i in this) callable.call(context, this[i], i, this)
     };
 }
 
@@ -243,14 +243,6 @@ $(function () {
                 that.reInit($(that.selecter));
             }, 500);
         };
-        /*! 以 HASH 打开新网页 */
-        this.href = function (url, ele) {
-            if (url !== '#') {
-                location.href = '#' + $.menu.parseUri(url, ele);
-            } else if (ele && ele.dataset.menuNode) {
-                $('[data-menu-node^="' + ele.dataset.menuNode + '-"]:first').trigger('click');
-            }
-        };
         /*! 异步加载的数据 */
         this.load = function (url, data, method, callable, loading, tips, time, headers) {
             // 如果主页面 loader 显示中，绝对不显示 loading 图标
@@ -286,6 +278,13 @@ $(function () {
                     $.msg.close(loadidx);
                 }
             });
+        };
+        /*! 以 HASH 打开新网页 */
+        this.href = function (url, ele) {
+            // 重置表格页数缓存
+            if (ele && ele.dataset.menuNode) layui.sessionData('pages', null);
+            if (url !== '#') location.hash = $.menu.parseUri(url, ele);
+            else if (ele && ele.dataset.menuNode) $('[data-menu-node^="' + ele.dataset.menuNode + '-"]:first').trigger('click');
         };
         /*! 加载 HTML 到目标位置 */
         this.open = function (url, data, call, load, tips) {
@@ -393,7 +392,7 @@ $(function () {
                 if (hash.length < 1) return $('[data-menu-node]:first').trigger('click');
                 $.form.load(hash), that.syncOpenStatus(2);
                 /*! 菜单选择切换 */
-                node = that.queryNode(that.getUri());
+                node = node || that.queryNode(that.getUri());
                 if (/^m-/.test(node)) {
                     var $all = $('a[data-menu-node]').parent(), tmp = node.split('-'), tmpNode = tmp.shift();
                     while (tmp.length > 0) {
@@ -499,19 +498,21 @@ $(function () {
                 that.checkInput(this);
             }).attr('novalidate', 'novalidate').attr('submit-listen', 'validate.submit');
             /*! 绑定提交事件 */
-            that.form.data('validate', this).bind("submit", function (event) {
+            that.form.data('validate', this).bind("submit", function (evt) {
+                evt.button = that.form.find('button[type=submit],button:not([type=button])');
                 /* 检查所有表单元素是否通过H5的规则验证 */
                 if (that.checkAllInput() && typeof callable === 'function') {
                     if (typeof CKEDITOR === 'object' && typeof CKEDITOR.instances === 'object') {
                         for (var i in CKEDITOR.instances) CKEDITOR.instances[i].updateElement();
                     }
                     /* 触发表单提交后，锁定三秒不能再次提交表单 */
-                    if (that.form.attr('submit-locked')) return false; else that.form.attr('submit-locked', 1);
+                    if (that.form.attr('submit-locked')) return false;
+                    that.form.attr('submit-locked', 1), evt.button.addClass('submit-button-loading');
                     callable.call(this, that.form.formToJson()), setTimeout(function () {
-                        that.form.removeAttr('submit-locked');
-                    }, 3000)
+                        that.form.removeAttr('submit-locked'), evt.button.removeClass('submit-button-loading');
+                    }, 3000);
                 }
-                return event.preventDefault(), false;
+                return evt.preventDefault(), false;
             }).find('[data-form-loaded]').map(function () {
                 $(this).html(this.dataset.formLoaded || this.innerHTML);
                 $(this).removeAttr('data-form-loaded').removeClass('layui-disabled');
@@ -566,7 +567,7 @@ $(function () {
         return data;
     };
 
-    /*! 全局文件上传入口 */
+    /*! 全局文件上传 */
     $.fn.uploadFile = function (callable) {
         return this.each(function () {
             if ($(this).data('inited')) return false;
@@ -603,11 +604,11 @@ $(function () {
 
             function showImageContainer(srcs) {
                 $(srcs).each(function (idx, src, $image) {
-                    $image = $('<div class="uploadimage uploadimagemtl transition"><a class="layui-icon">&#xe602;</a><a class="layui-icon">&#x1006;</a><a class="layui-icon">&#xe603;</a></div>');
+                    $image = $('<div class="uploadimage uploadimagemtl transition"><div><a class="layui-icon">&#xe603;</a><a class="layui-icon">&#x1006;</a><a class="layui-icon">&#xe602;</a></div></div>');
                     $image.attr('data-tips-image', encodeURI(src)).css('backgroundImage', 'url(' + encodeURI(src) + ')').on('click', 'a', function (event, index, prevs, $item) {
-                        event.stopPropagation(), $item = $(this).parent(), index = $(this).index(), prevs = $bt.prevAll('div.uploadimage').length;
-                        if (index === 0 && $item.index() !== prevs) $item.next().after($item);
-                        else if (index === 2 && $item.index() > 1) $item.prev().before($item);
+                        event.stopPropagation(), $item = $(this).parent().parent(), index = $(this).index(), prevs = $bt.prevAll('div.uploadimage').length;
+                        if (index === 2 && $item.index() !== prevs) $item.next().after($item);
+                        else if (index === 0 && $item.index() > 1) $item.prev().before($item);
                         else if (index === 1) $item.remove();
                         imgs = [], $bt.prevAll('.uploadimage').map(function () {
                             imgs.push($(this).attr('data-tips-image'));
@@ -673,18 +674,20 @@ $(function () {
             // 插件初始化参数
             var opt = params || {}, data = opt.where || {}, sort = opt.initSort || opt.sort || {};
             opt.id = elem.id, opt.elem = elem, opt.url = params.url || elem.dataset.url || location.href;
-            opt.page = params.page !== false ? (params.page || true) : false, opt.autoSort = params.autoSort === true;
-            opt.loading = params.loading === true, opt.limit = params.limit || 20, opt.cols = params.cols || [[]];
+            opt.page = params.page !== false ? (params.page || true) : false, opt.limit = params.limit || 20;
+            opt.loading = params.loading === true, opt.autoSort = params.autoSort === true, opt.cols = params.cols || [[]];
+            // 默认动态设置页数, 动态设置最大高度
+            if (opt.page === true) opt.page = {curr: layui.sessionData('pages')[opt.id] || 1}
+            if (opt.height === 'full') opt.height = $(window).height() - $(elem).removeClass('layui-hide').offset().top - 35;
+            // 动态计算最大页数
             opt.done = function () {
-                var tableView = $(elem).next();
-                tableView.find('[data-load]:not([data-table-id])').attr('data-table-id', elem.id);
-                tableView.find('[data-action]:not([data-table-id])').attr('data-table-id', elem.id);
+                layui.sessionData('pages', {key: elem.id, value: this.page.curr || 1}), (this.loading = true);
+                this.elem.next().find('[data-load],[data-action]').not('[data-table-id]').attr('data-table-id', elem.id);
+            }, opt.parseData = function (res) {
+                var maxPage = Math.ceil(res.count / this.limit), curPage = layui.sessionData('pages')[opt.id] || 1;
+                if (curPage > maxPage) this.elem.trigger('reload', {page: {curr: maxPage}});
             };
-            // 动态设置最大高度
-            if (opt.height === 'full') {
-                opt.height = $(window).height() - $(elem).removeClass('layui-hide').offset().top - 35;
-            }
-            // 实例并绑定对象
+            // 实例并绑定的对象
             $(this).data('this', layui.table.render(bindData(opt)));
             // 绑定实例重载事件
             $(this).bind('reload', function (evt, opts) {
@@ -861,70 +864,6 @@ $(function () {
             $textarea.remove();
         })(this.dataset.copy, $('<textarea style="position:fixed;top:-500px"></textarea>'));
     });
-
-    /*! 注册 data-tips-text 事件行为 */
-    onEvent('mouseenter', '[data-tips-text]', function () {
-        var opts = {tips: [$(this).attr('data-tips-type') || 3, '#78BA32'], time: 0}, that = this;
-        $(this).attr('index', layer.tips($(this).attr('data-tips-text') || this.innerText, this, opts));
-        $(this).off('mouseleave').on('mouseleave', function () {
-            setTimeout(function () {
-                layer.close($(that).attr('index'));
-            }, 100);
-        });
-    });
-
-    /*! 注册 data-tips-image 事件行为 */
-    onEvent('click', '[data-tips-image]', function () {
-        $.previewImage(this.dataset.tipsImage || this.dataset.lazySrc || this.src, this.dataset.with);
-    });
-    /*! 注册 data-tips-image Hover 事件 */
-    onEvent('mouseenter', '[data-tips-image][data-tips-hover]', function () {
-        var img = new Image(), that = this;
-        img.referrerPolicy = 'no-referrer', img.style.maxWidth = '260px', img.style.maxHeight = '260px';
-        img.src = this.dataset.tipsImage || this.dataset.lazySrc || this.src, img.onload = function () {
-            $(that).attr('index', layer.tips(img.outerHTML, that, {time: 0, skin: 'layui-layer-image', anim: 5, isOutAnim: false, scrollbar: false}));
-        };
-        $(this).off('mouseleave').on('mouseleave', function () {
-            setTimeout(function () {
-                layer.close($(that).attr('index'));
-            }, 100);
-        });
-    });
-
-    $.previewImage = function (src, area) {
-        var img = new Image(), defer = $.Deferred(), loaded = $.msg.loading();
-        img.style.background = '#FFF', img.referrerPolicy = 'no-referrer';
-        img.style.height = 'auto', img.style.width = area || '480px', img.style.display = 'none';
-        document.body.appendChild(img), img.onerror = function () {
-            $.msg.close(loaded), defer.reject();
-        }, img.onload = function () {
-            layer.open({
-                type: 1, title: false, shadeClose: true, content: $(img), success: function ($elem, idx) {
-                    $.msg.close(loaded), defer.notify($elem, idx);
-                }, area: area || '480px', skin: 'layui-layer-nobg', closeBtn: 1, end: function () {
-                    document.body.removeChild(img), defer.resolve()
-                }
-            });
-        };
-        return (img.src = src), defer.resolve();
-    };
-
-    /*! 注册 data-phone-view 事件行为 */
-    onEvent('click', '[data-phone-view]', function () {
-        $.previewPhonePage(this.dataset.phoneView || this.href);
-    });
-    $.previewPhonePage = function (href, title, template) {
-        template = '<div><div class="mobile-preview pull-left"><div class="mobile-header">_TITLE_</div><div class="mobile-body"><iframe id="phone-preview" src="_URL_" frameborder="0" marginheight="0" marginwidth="0"></iframe></div></div></div>';
-        layer.style(layer.open({type: true, scrollbar: false, area: ['320px', '600px'], title: false, closeBtn: true, shadeClose: false, skin: 'layui-layer-nobg', content: $(template.replace('_TITLE_', title || '公众号').replace('_URL_', href)).html()}), {boxShadow: 'none'});
-    };
-
-    /*! 表单编辑返回操作 */
-    onEvent('click', '[data-history-back]', function () {
-        $.msg.confirm(this.dataset.historyBack || '确定要返回吗？', function () {
-            history.back();
-        })
-    });
-
     /*! 异步任务状态监听与展示 */
     onEvent('click', '[data-queue]', function (e) {
         (function (confirm, callable) {
@@ -1000,6 +939,68 @@ $(function () {
             }, false);
         })(code)
     };
+
+    /*! 注册 data-tips-text 事件行为 */
+    onEvent('mouseenter', '[data-tips-text]', function () {
+        var opts = {tips: [$(this).attr('data-tips-type') || 3, '#78BA32'], time: 0}, that = this;
+        $(this).attr('index', layer.tips($(this).attr('data-tips-text') || this.innerText, this, opts));
+        $(this).off('mouseleave').on('mouseleave', function () {
+            setTimeout(function () {
+                layer.close($(that).attr('index'));
+            }, 100);
+        });
+    });
+
+    /*! 注册 data-tips-image 事件行为 */
+    onEvent('click', '[data-tips-image]', function () {
+        $.previewImage(this.dataset.tipsImage || this.dataset.lazySrc || this.src, this.dataset.with);
+    });
+    /*! 注册 data-tips-image Hover 事件 */
+    onEvent('mouseenter', '[data-tips-image][data-tips-hover]', function () {
+        var img = new Image(), that = this;
+        img.referrerPolicy = 'no-referrer', img.style.maxWidth = '260px', img.style.maxHeight = '260px';
+        img.src = this.dataset.tipsImage || this.dataset.lazySrc || this.src, img.onload = function () {
+            $(that).attr('index', layer.tips(img.outerHTML, that, {time: 0, skin: 'layui-layer-image', anim: 5, isOutAnim: false, scrollbar: false}));
+        };
+        $(this).off('mouseleave').on('mouseleave', function () {
+            setTimeout(function () {
+                layer.close($(that).attr('index'));
+            }, 100);
+        });
+    });
+    $.previewImage = function (src, area) {
+        var img = new Image(), defer = $.Deferred(), loaded = $.msg.loading();
+        img.style.background = '#FFF', img.referrerPolicy = 'no-referrer';
+        img.style.height = 'auto', img.style.width = area || '480px', img.style.display = 'none';
+        document.body.appendChild(img), img.onerror = function () {
+            $.msg.close(loaded), defer.reject();
+        }, img.onload = function () {
+            layer.open({
+                type: 1, title: false, shadeClose: true, content: $(img), success: function ($elem, idx) {
+                    $.msg.close(loaded), defer.notify($elem, idx);
+                }, area: area || '480px', skin: 'layui-layer-nobg', closeBtn: 1, end: function () {
+                    document.body.removeChild(img), defer.resolve()
+                }
+            });
+        };
+        return (img.src = src), defer.resolve();
+    };
+
+    /*! 注册 data-phone-view 事件行为 */
+    onEvent('click', '[data-phone-view]', function () {
+        $.previewPhonePage(this.dataset.phoneView || this.href);
+    });
+    $.previewPhonePage = function (href, title, template) {
+        template = '<div><div class="mobile-preview pull-left"><div class="mobile-header">_TITLE_</div><div class="mobile-body"><iframe id="phone-preview" src="_URL_" frameborder="0" marginheight="0" marginwidth="0"></iframe></div></div></div>';
+        layer.style(layer.open({type: true, scrollbar: false, area: ['320px', '600px'], title: false, closeBtn: true, shadeClose: false, skin: 'layui-layer-nobg', content: $(template.replace('_TITLE_', title || '公众号').replace('_URL_', href)).html()}), {boxShadow: 'none'});
+    };
+
+    /*! 表单编辑返回操作 */
+    onEvent('click', '[data-history-back]', function () {
+        $.msg.confirm(this.dataset.historyBack || '确定要返回吗？', function () {
+            history.back();
+        })
+    });
 
     /*! 延时关闭加载动画 */
     window.addEventListener('load', function () {

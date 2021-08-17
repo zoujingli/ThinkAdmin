@@ -3,8 +3,8 @@
     <div class="layui-card-body padding-left-40">
 
         <div class="layui-form-item">
-            <span class="color-green font-w7 label-required-prev">数据类型</span>
-            <span class="color-desc margin-left-5">Database Type</span>
+            <b class="color-green label-required-prev">数据类型</b>
+            <span class="color-desc margin-left-5">DataType</span>
             {if isset($vo.type)}
             <label><input readonly value="{$vo.type|default=''}" class="layui-input think-bg-gray"></label>
             {else}
@@ -37,8 +37,8 @@
         </div>
 
         <label class="layui-form-item relative block">
-            <span class="color-green font-w7">数据编码</span>
-            <span class="color-desc margin-left-5">Database Code</span>
+            <b class="color-green">数据编码</b>
+            <span class="color-desc margin-left-5">DataCode</span>
             {if isset($vo.code)}
             <input readonly maxlength="50" class="layui-input think-bg-gray" name="code" value='{$vo.code|default=""}' required placeholder="请输入数据编码">
             {else}
@@ -48,15 +48,15 @@
         </label>
 
         <label class="layui-form-item relative block">
-            <span class="color-green font-w7">数据名称</span>
-            <span class="color-desc margin-left-5">Database Name</span>
+            <b class="color-green">数据名称</b>
+            <span class="color-desc margin-left-5">DataName</span>
             <input maxlength="100" class="layui-input" name="name" value='{$vo.name|default=""}' required placeholder="请输入数据名称">
             <span class="help-block">请输入当前数据名称，请尽量保持名称的唯一性，数据名称尽量不要出现重复 ~</span>
         </label>
 
         <label class="layui-form-item relative block">
-            <span class="color-green font-w7">数据内容</span>
-            <span class="color-desc margin-left-5">Database Content</span>
+            <b class="color-green">数据内容</b>
+            <span class="color-desc margin-left-5">DataContent</span>
             <textarea name="content" class="layui-textarea" placeholder="请输入数据内容">{$vo.content|default=''}</textarea>
             <!--<span class="help-block">访问权限名称需要保持不重复，在给用户授权时需要根据名称选择！</span>-->
         </label>

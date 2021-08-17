@@ -30,7 +30,7 @@
 <script>
     $(function () {
         // 初始化表格组件
-        var $table = $('#BaseData').layTable({
+        $('#BaseData').layTable({
             even: true, height: 'full',
             sort: {field: 'sort desc,id', type: 'asc'},
             where: {type: '{$type|default=""}'},
@@ -50,13 +50,12 @@
         layui.form.on('switch(StatusSwitch)', function (obj) {
             $.form.load("{:url('state')}", {id: obj.value, status: obj.elem.checked > 0 ? 1 : 0}, 'post', function (ret) {
                 if (ret.code < 1) $.msg.error(ret.info, 3, function () {
-                    $table.trigger('reload'); // 操作异常时重载数据
+                    $('#BaseData').trigger('reload'); // 操作异常时重载数据
                 });
                 return false;
             }, false);
         });
     });
-
 </script>
 
 <!-- 列表排序权重模板 -->

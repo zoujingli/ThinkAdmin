@@ -195,10 +195,12 @@
   width: 76px;
   height: 76px;
   cursor: pointer;
-  position: relative;
   display: inline-block;
-  border: 1px dashed #e2e2e2;
+  position: relative;
+  overflow: hidden;
   margin-right: 10px;
+  border-radius: 3px;
+  box-shadow: @ShadowMinOuter;
   background: url('../img/upimg.png') no-repeat center center;
   background-size: cover;
 
@@ -220,25 +222,43 @@
 }
 
 .uploadimagemtl {
-  margin-right: 8px;
-
-  a {
-    float: right;
-    color: #EEE;
-    width: 20px;
-    height: 20px;
-    margin: 4px 4px 0 0;
+  > div {
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    position: absolute;
     display: none;
-    text-align: center;
-    line-height: 20px;
-    background: rgba(0, 0, 0, 0.6);
+    text-align: right;
+
+    a {
+      color: #EEE;
+      width: 20px;
+      height: 20px;
+      display: inline-block;
+      margin-left: 1px;
+      box-shadow: @ShadowMinOuter;
+      text-align: center;
+      line-height: 20px;
+      background: rgba(0, 0, 0, 0.8);
+
+      &:first-child {
+        border-top-left-radius: 3px;
+        border-bottom-left-radius: 3px;
+      }
+
+      &:last-child {
+        border-top-right-radius: 3px;
+        border-bottom-right-radius: 3px;
+      }
+    }
   }
 
-  &:hover a {
+  &:hover > div {
     cursor: pointer;
     display: inline-block;
 
-    &:hover {
+    a:hover {
       color: #FFF;
       text-decoration: none
     }
@@ -248,10 +268,9 @@
 .upload-image-smbox,
 .upload-image-mdbox,
 .upload-image-lgbox {
-  a {
+  .uploadimage a {
     width: 30px;
     height: 30px;
-    margin: 1px 1px 0 0;
     line-height: 30px;
   }
 }
@@ -267,8 +286,39 @@
 }
 
 .upload-image-lgbox .uploadimage {
-  width: 260px;
-  height: 260px;
+  width: 240px;
+  height: 240px;
+}
+
+.submit-button-loading {
+  cursor: default;
+  position: relative;
+  transform: scale(1);
+  text-align: center;
+
+  &::after {
+    left: 0;
+    right: 0;
+    position: absolute;
+
+    content: "\e63d";
+    font-family: layui-icon !important;
+    font-size: 16px;
+    font-style: normal;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+
+    animation-name: layui-rotate;
+    -webkit-animation-name: layui-rotate;
+    -webkit-animation-duration: 1s;
+
+    animation-duration: 1s;
+    animation-timing-function: linear;
+    -webkit-animation-timing-function: linear;
+
+    animation-iteration-count: infinite;
+    -webkit-animation-iteration-count: infinite;
+  }
 }
 
 .portal-block-container {

@@ -2,7 +2,7 @@
 
 {block name="button"}
 <!--{if auth("remove")}-->
-<button data-action='{:url("remove")}' data-rule="id#{id}" data-table-id="oplog" data-confirm="确定要删除选中的日志吗？" class='layui-btn layui-btn-sm layui-btn-primary'>批量删除</button>
+<button data-action='{:url("remove")}' data-rule="id#{id}" data-table-id="oplogData" data-confirm="确定要删除选中的日志吗？" class='layui-btn layui-btn-sm layui-btn-primary'>批量删除</button>
 <!--{/if}-->
 <!--{if auth("clear")}-->
 <button data-load='{:url("clear")}' data-confirm="确定要清空所有日志吗？" class='layui-btn layui-btn-sm layui-btn-primary'>清空日志</button>
@@ -12,14 +12,14 @@
 {block name="content"}
 <div class="think-box-shadow">
     {include file='oplog/index_search'}
-    <table id="oplog" data-url="{:sysuri()}" data-target-search="form.form-search"></table>
+    <table id="oplogData" data-url="{:sysuri()}" data-target-search="form.form-search"></table>
 </div>
 {/block}
 
 {block name='script'}
 <script>
     $(function () {
-        $('#oplog').layTable({
+        $('#oplogData').layTable({
             even: true, height: 'full',
             sort: {field: 'id', type: 'desc'},
             cols: [[
