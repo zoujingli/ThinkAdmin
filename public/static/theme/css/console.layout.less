@@ -247,7 +247,11 @@
     background: @BodyMainBackColor;
     box-shadow: @ShadowDownInset;
 
-    > .layui-card {
+    > .think-page-body + .think-page-loader {
+      left: @LayoutDefaLeftSzie
+    }
+
+    > .think-page-body > .layui-card {
       box-shadow: none !important;
       background: none !important;
 
@@ -304,15 +308,17 @@
   }
 }
 
+
 .layui-layout-left-mini {
-  .layui-header {
+
+  .layui-header, .think-page-body + .think-page-loader {
     left: @LayoutMiniLeftSize;
   }
 
   > .layui-body {
     left: @LayoutMiniLeftSize;
 
-    > .layui-card {
+    > .think-page-body > .layui-card {
       > .layui-card-header {
         left: @LayoutMiniLeftSize;
       }
@@ -372,14 +378,14 @@
   > .layui-body {
     left: 0 !important;
 
-    > .layui-card {
+    > .think-page-body > .layui-card {
       > .layui-card-header {
         left: 0 !important;
       }
     }
   }
 
-  > .layui-header {
+  > .layui-header, .think-page-body + .think-page-loader {
     left: 0 !important;
 
     .layui-logo-hide {

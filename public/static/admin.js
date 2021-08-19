@@ -169,6 +169,17 @@ $(function () {
             var idx = msg ? layer.msg(msg, {icon: 16, scrollbar: false, shade: this.shade, time: 0, end: call}) : layer.load(2, {time: 0, scrollbar: false, shade: this.shade, end: call});
             return that.idx.push(idx), idx;
         };
+        /*! 页面加载层 */
+        this.page = {
+            show: function () {
+                if ($('body>.think-page-loader').is(':hidden')) {
+                    $('.think-page-body+.think-page-loader').removeClass('layui-hide').show();
+                }
+            },
+            hide: function () {
+                setTimeout("$('.think-page-body+.think-page-loader').fadeOut()", 500);
+            },
+        };
         /*! 确认对话框 */
         this.confirm = function (msg, ok, no) {
             return layer.confirm(msg, {title: '操作确认', btn: ['确认', '取消']}, function (idx) {
@@ -196,7 +207,7 @@ $(function () {
     $.form = new function (that) {
         that = this;
         /*! 内容区选择器 */
-        this.selecter = '.layui-layout-admin>.layui-body';
+        this.selecter = '.layui-layout-admin>.layui-body>.think-page-body';
         /*! 刷新当前页面 */
         this.reload = function (force) {
             if (force) top.location.reload();
@@ -390,7 +401,7 @@ $(function () {
             window.onhashchange = function (hash, node) {
                 hash = location.hash || '';
                 if (hash.length < 1) return $('[data-menu-node]:first').trigger('click');
-                $.form.load(hash), that.syncOpenStatus(2);
+                $.msg.page.show(), $.form.load(hash, {}, 'get', $.msg.page.hide, false), that.syncOpenStatus(2);
                 /*! 菜单选择切换 */
                 node = node || that.queryNode(that.getUri());
                 if (/^m-/.test(node)) {
@@ -1004,7 +1015,7 @@ $(function () {
     /*! 延时关闭加载动画 */
     window.addEventListener('load', function () {
         setTimeout(function () {
-            $('body>.layui-page-loader').fadeOut();
+            $('body>.think-page-loader').fadeOut();
         }, 200);
     }, true);
 

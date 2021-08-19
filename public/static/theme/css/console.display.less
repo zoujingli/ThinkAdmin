@@ -751,21 +751,24 @@ fieldset {
 }
 
 /*! 首页加载动画 */
-.layui-page-loader {
+.think-page-loader {
   top: 0;
-  width: 100%;
-  height: 100%;
+  left: 0;
+  right: 0;
+  bottom: 0;
   z-index: 9999999;
   position: fixed;
+  text-align: center;
   background-color: @LoadBackColor;
 
   .loader {
     top: 50%;
     width: 50px;
     height: 50px;
-    margin: -30px auto 40px;
     z-index: 999999;
+    margin-top: -30px;
     position: relative;
+    display: inline-block;
     background-color: @LoadBackColor;
   }
 
@@ -776,9 +779,9 @@ fieldset {
     height: 7px;
     opacity: 0.1;
     content: "";
-    background: #000;
-    border-radius: 50%;
     position: absolute;
+    border-radius: 50%;
+    background-color: #000;
     animation: shadow .5s linear infinite;
   }
 
