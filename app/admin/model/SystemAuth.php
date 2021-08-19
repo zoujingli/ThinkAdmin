@@ -43,7 +43,7 @@ class SystemAuth extends Model
      */
     public function onAdminDelete(string $ids)
     {
-        if (count($aids = str2arr($aids ?? '')) > 0) {
+        if (count($aids = str2arr($ids ?? '')) > 0) {
             M('SystemAuthNode')->whereIn('auth', $aids)->delete();
         }
         sysoplog($this->oplogType, "删除{$this->oplogName}[{$ids}]及授权配置");
