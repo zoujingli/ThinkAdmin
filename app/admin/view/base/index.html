@@ -37,12 +37,12 @@
             cols: [[
                 {checkbox: true, fixed: true},
                 {field: 'sort', title: '排序权重', width: 100, align: 'center', sort: true, templet: '#SortInputTpl'},
-                // {field: 'type', title: '数据类型', minWidth: 140, align: 'center', sort: false},
-                {field: 'code', title: '数据编码', minWidth: 140, align: 'center', sort: false},
-                {field: 'name', title: '数据名称', minWidth: 140, align: 'center', sort: false},
-                {field: 'create_at', title: '创建时间', align: 'center', sort: true},
-                {field: 'status', title: '数据状态', align: 'center', minWidth: 110, fixed: 'right', templet: '#StatusSwitchTpl'},
-                {toolbar: '#toolbar', align: 'center', minWidth: 140, title: '数据操作', fixed: 'right'},
+                // {field: 'type', title: '数据类型', minWidth: 140, align: 'center'},
+                {field: 'code', title: '数据编码', minWidth: 140, align: 'center'},
+                {field: 'name', title: '数据名称', minWidth: 140, align: 'center'},
+                {field: 'status', title: '数据状态', minWidth: 110, align: 'center', templet: '#StatusSwitchTpl'},
+                {field: 'create_at', title: '创建时间', minWidth: 170, align: 'center', sort: true},
+                {toolbar: '#toolbar', align: 'center', width: 150, title: '数据操作', fixed: 'right'},
             ]]
         });
 

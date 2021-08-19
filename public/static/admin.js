@@ -682,7 +682,7 @@ $(function () {
             // 动态计算最大页数
             opt.done = function () {
                 layui.sessionData('pages', {key: elem.id, value: this.page.curr || 1}), (this.loading = true);
-                this.elem.next().find('[data-load],[data-action]').not('[data-table-id]').attr('data-table-id', elem.id);
+                this.elem.next().find('[data-load],[data-queue],[data-action]').not('[data-table-id]').attr('data-table-id', elem.id);
             }, opt.parseData = function (res) {
                 var maxPage = Math.ceil(res.count / this.limit), curPage = layui.sessionData('pages')[opt.id] || 1;
                 if (curPage > maxPage) this.elem.trigger('reload', {page: {curr: maxPage}});
@@ -757,11 +757,7 @@ $(function () {
 
     /*! 注册 data-reload 事件行为 */
     onEvent('click', '[data-reload]', function () {
-        if (this.dataset.tableId) {
-            $('#' + this.dataset.tableId).trigger('reload');
-        } else {
-            $.form.reload();
-        }
+        this.dataset.tableId ? $('#' + this.dataset.tableId).trigger('reload') : $.form.reload();
     });
 
     /*! 注册 data-dbclick 事件行为 */
@@ -871,73 +867,76 @@ $(function () {
         })(e.currentTarget.dataset.confirm, function () {
             $.form.load(e.currentTarget.dataset.queue, {}, 'post', function (ret) {
                 if (typeof ret.data === 'string' && ret.data.indexOf('Q') === 0) {
-                    return $.loadQueue(ret.data, true), false;
+                    return $.loadQueue(ret.data, true, e.currentTarget), false;
                 }
             });
         });
     });
-    $.loadQueue = function (code, doScript, doAjax) {
-        layer.open({
+    $.loadQueue = function (code, doScript, element) {
+        var doAjax = true;
+        layui.layer.open({
             type: 1, title: false, area: ['560px', '315px'], anim: 2, shadeClose: false, end: function () {
                 doAjax = false;
+                if (element && element.dataset && element.dataset.tableId) {
+                    $('#' + element.dataset.tableId).trigger('reload');
+                } else {
+                    $.form.reload();
+                }
             }, content: '' +
-                '<div class="padding-30 padding-bottom-0" style="width:500px" data-queue-load="' + code + '">' +
-                '   <div class="layui-elip nowrap" data-message-title></div>' +
+                '<div class="padding-30 padding-bottom-0"  data-queue-load="' + code + '">' +
+                '   <div class="layui-elip notselect nowrap" data-message-title></div>' +
                 '   <div class="margin-top-15 layui-progress layui-progress-big" lay-showPercent="yes"><div class="layui-progress-bar transition" lay-percent="0.00%"></div></div>' +
                 '   <div class="margin-top-15"><code class="layui-textarea layui-bg-black border-0" disabled style="resize:none;overflow:hidden;height:190px"></code></div>' +
-                '</div>'
-        });
-        (function loadprocess(code, that) {
-            that = this, that.$box = $('[data-queue-load=' + code + ']');
-            if (doAjax === false || that.$box.length < 1) return false;
-            this.$code = that.$box.find('code'), this.$name = that.$box.find('[data-message-title]');
-            this.$percent = that.$box.find('.layui-progress div'), this.runCache = function (code, index, value) {
-                this.ckey = code + '_' + index, this.ctype = 'admin-queue-script';
-                return value !== undefined ? layui.data(this.ctype, {key: this.ckey, value: value}) : layui.data(this.ctype)[this.ckey] || 0;
-            };
-            this.setState = function (status, message) {
-                if (message.indexOf('javascript:') === -1) if (status === 1) {
-                    that.$name.html('<b class="color-text">' + message + '</b>').addClass('text-center');
-                    that.$percent.addClass('layui-bg-blue').removeClass('layui-bg-green layui-bg-red');
-                } else if (status === 2) {
-                    if (message.indexOf('>>>') > -1) {
-                        that.$name.html('<b class="color-blue">' + message + '</b>').addClass('text-center');
-                    } else {
-                        that.$name.html('<b class="color-blue">正在处理：</b>' + message).removeClass('text-center');
-                    }
-                    that.$percent.addClass('layui-bg-blue').removeClass('layui-bg-green layui-bg-red');
-                } else if (status === 3) {
-                    that.$name.html('<b class="color-green">' + message + '</b>').addClass('text-center');
-                    that.$percent.addClass('layui-bg-green').removeClass('layui-bg-blue layui-bg-red');
-                } else if (status === 4) {
-                    that.$name.html('<b class="color-red">' + message + '</b>').addClass('text-center');
-                    that.$percent.addClass('layui-bg-red').removeClass('layui-bg-blue layui-bg-green');
-                }
-            };
-            $.form.load(tapiRoot + '/api.queue/progress', {code: code}, 'post', function (ret) {
-                if (ret.code) {
-                    that.lines = [];
-                    for (this.lineIndex in ret.data.history) {
-                        this.line = ret.data.history[this.lineIndex], this.percent = '[ ' + this.line.progress + '% ] ';
-                        if (this.line.message.indexOf('javascript:') === -1) {
-                            that.lines.push(this.line.message.indexOf('>>>') > -1 ? this.line.message : this.percent + this.line.message);
-                        } else if (!that.runCache(code, this.lineIndex) && doScript !== false) {
-                            that.runCache(code, this.lineIndex, 1), location.href = this.line.message;
+                '</div>',
+            success: function ($elem) {
+                new function () {
+                    var that = this;
+                    this.$box = $elem.find('[data-queue-load=' + code + ']');
+                    if (doAjax === false || this.$box.length < 1) return false;
+                    this.$coder = this.$box.find('code'), this.$name = this.$box.find('[data-message-title]');
+                    this.$percent = this.$box.find('.layui-progress div'), this.SetCache = function (code, index, value) {
+                        var ckey = code + '_' + index, ctype = 'admin-queue-script';
+                        return value !== undefined ? layui.data(ctype, {key: ckey, value: value}) : layui.data(ctype)[ckey] || 0;
+                    }, this.SetState = function (status, message) {
+                        if (message.indexOf('javascript:') === -1) if (status === 1) {
+                            that.$name.html('<b class="color-text">' + message + '</b>').addClass('text-center');
+                            that.$percent.addClass('layui-bg-blue').removeClass('layui-bg-green layui-bg-red');
+                        } else if (status === 2) {
+                            if (message.indexOf('>>>') > -1) {
+                                that.$name.html('<b class="color-blue">' + message + '</b>').addClass('text-center');
+                            } else {
+                                that.$name.html('<b class="color-blue">正在处理：</b>' + message).removeClass('text-center');
+                            }
+                            that.$percent.addClass('layui-bg-blue').removeClass('layui-bg-green layui-bg-red');
+                        } else if (status === 3) {
+                            that.$name.html('<b class="color-green">' + message + '</b>').addClass('text-center');
+                            that.$percent.addClass('layui-bg-green').removeClass('layui-bg-blue layui-bg-red');
+                        } else if (status === 4) {
+                            that.$name.html('<b class="color-red">' + message + '</b>').addClass('text-center');
+                            that.$percent.addClass('layui-bg-red').removeClass('layui-bg-blue layui-bg-green');
                         }
-                    }
-                    if (ret.data.status > 0) {
-                        that.$code.html('<p class="layui-elip">' + that.lines.join('</p><p class="layui-elip">') + '</p>'), that.$code.animate({scrollTop: that.$code[0].scrollHeight + 'px'}, 200);
-                        that.$percent.attr('lay-percent', (parseFloat(ret.data.progress || '0.00').toFixed(2)) + '%'), layui.element.render();
-                        that.setState(parseInt(ret.data.status), ret.data.message);
-                    } else return setTimeout(function () {
-                        loadprocess(code);
-                    }, Math.floor(Math.random() * 500) + 200), false;
-                    if (parseInt(ret.data.status) === 3 || parseInt(ret.data.status) === 4) return false; else return setTimeout(function () {
-                        loadprocess(code);
-                    }, Math.floor(Math.random() * 200)), false;
-                }
-            }, false);
-        })(code)
+                    }, (this.LoadProgress = function () {
+                        if (doAjax === false || that.$box.length < 1) return false;
+                        $.form.load(tapiRoot + '/api.queue/progress', {code: code}, 'post', function (ret) {
+                            if (ret.code) {
+                                var lines = [];
+                                for (var idx in ret.data.history) {
+                                    var line = ret.data.history[idx], percent = '[ ' + line.progress + '% ] ';
+                                    if (line.message.indexOf('javascript:') === -1) lines.push(line.message.indexOf('>>>') > -1 ? line.message : percent + line.message);
+                                    else if (!that.SetCache(code, idx) && doScript !== false) that.SetCache(code, idx, 1), location.href = line.message;
+                                }
+                                if (ret.data.status > 0) {
+                                    that.SetState(parseInt(ret.data.status), ret.data.message);
+                                    that.$percent.attr('lay-percent', (parseFloat(ret.data.progress || '0.00').toFixed(2)) + '%'), layui.element.render();
+                                    that.$coder.html('<p class="layui-elip">' + lines.join('</p><p class="layui-elip">') + '</p>').animate({scrollTop: that.$coder[0].scrollHeight + 'px'}, 200);
+                                    return parseInt(ret.data.status) === 3 || parseInt(ret.data.status) === 4 || setTimeout(that.LoadProgress, Math.floor(Math.random() * 200)), false;
+                                } else return setTimeout(that.LoadProgress, Math.floor(Math.random() * 500) + 200), false;
+                            }
+                        }, false);
+                    })();
+                };
+            }
+        });
     };
 
     /*! 注册 data-tips-text 事件行为 */

@@ -41,21 +41,21 @@
             cols: [[
                 {checkbox: true, fixed: true},
                 {field: 'sort', title: '排序权重', width: 100, align: 'center', sort: true, templet: '#SortInputTpl'},
-                {field: 'username', title: '登录账号', minWidth: 100, templet: '<div>{{d.username||"-"}}</div>'},
-                {field: 'nickname', title: '用户名称', minWidth: 100, templet: '<div>{{d.nickname||"-"}}</div>'},
+                {field: 'username', title: '登录账号', minWidth: 110, templet: '<div>{{d.username||"-"}}</div>'},
+                {field: 'nickname', title: '用户名称', minWidth: 110, templet: '<div>{{d.nickname||"-"}}</div>'},
                 {
                     field: 'usertype', title: '角色身份', minWidth: 140, sort: true, templet: function (d) {
                         d.userinfo = d.userinfo || {};
                         return d.userinfo.code ? (d.userinfo.name + ' ( ' + d.userinfo.code + ' ) ') : '';
                     }
                 },
-                {field: 'contact_mail', title: '联系邮箱', templet: '<div>{{d.contact_mail||"-"}}</div>'},
-                {field: 'contact_phone', title: '联系电话', templet: '<div>{{d.contact_phone||"-"}}</div>'},
-                {field: 'login_num', title: '登录次数', align: 'center', minWidth: 80, sort: false},
-                {field: 'login_at', title: '最后登录', sort: true, align: 'center', minWidth: 170},
+                // {field: 'contact_mail', title: '联系邮箱', minWidth: 80, templet: '<div>{{d.contact_mail||"-"}}</div>'},
+                // {field: 'contact_phone', title: '联系电话', minWidth: 80, templet: '<div>{{d.contact_phone||"-"}}</div>'},
+                {field: 'status', title: '账号状态', align: 'center', minWidth: 110, templet: '#StatusSwitchTpl'},
+                {field: 'login_num', title: '登录次数', align: 'center', minWidth: 80, sort: true},
+                {field: 'login_at', title: '最后登录', align: 'center', minWidth: 170, sort: true},
                 {field: 'create_at', title: '创建时间', align: 'center', minWidth: 170, sort: true},
-                {field: 'status', title: '权限状态', align: 'center', minWidth: 110, fixed: 'right', templet: '#StatusSwitchTpl'},
-                {toolbar: '#toolbar', title: '操作面板', align: 'center', minWidth: 160, fixed: 'right'}
+                {toolbar: '#toolbar', title: '操作面板', align: 'center', width: 160, fixed: 'right'}
             ]]
         });
 

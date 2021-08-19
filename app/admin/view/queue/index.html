@@ -94,7 +94,7 @@
                 {field: 'attempts', title: '执行次数', minWidth: 95, align: 'center', sort: true, templet: "<div>{{d.attempts||0}}</div>"},
                 {field: 'exec_desc', title: '执行结果', minWidth: 180},
                 {field: 'create_at', title: '创建时间', align: 'center', minWidth: 170},
-                {toolbar: '#toolbar', title: '操作面板', align: 'center', width: 251, fixed: 'right',}
+                {toolbar: '#toolbar', title: '操作面板', align: 'center', width: 260, fixed: 'right',}
             ]]
         });
     });
@@ -143,7 +143,7 @@
     </a>
     <!--{/if}-->
 
-    <a class='layui-badge layui-bg-orange margin-0' onclick="$.loadQueue('{{d.code}}',false)">
+    <a class='layui-badge layui-bg-orange margin-0' onclick="$.loadQueue('{{d.code}}',false,this)">
         <i class="layui-icon font-s12">&#xe705;</i>
     </a>
 </script>
