@@ -696,7 +696,7 @@ $(function () {
                 this.elem.next().find('[data-load],[data-queue],[data-action]').not('[data-table-id]').attr('data-table-id', elem.id);
             }, opt.parseData = function (res) {
                 var maxPage = Math.ceil(res.count / this.limit), curPage = layui.sessionData('pages')[opt.id] || 1;
-                if (curPage > maxPage) this.elem.trigger('reload', {page: {curr: maxPage}});
+                if (curPage > maxPage && curPage > 1) this.elem.trigger('reload', {page: {curr: maxPage}});
             };
             // 实例并绑定的对象
             $(this).data('this', layui.table.render(bindData(opt)));
