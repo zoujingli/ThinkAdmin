@@ -247,7 +247,7 @@
     background: @BodyMainBackColor;
     box-shadow: @ShadowDownInset;
 
-    > .think-page-body + .think-page-loader {
+    > .think-page-loader {
       left: @LayoutDefaLeftSzie
     }
 
@@ -310,18 +310,19 @@
 
 
 .layui-layout-left-mini {
-
-  .layui-header, .think-page-body + .think-page-loader {
+  .layui-header {
     left: @LayoutMiniLeftSize !important;
   }
 
   > .layui-body {
-    left: @LayoutMiniLeftSize;
+    left: @LayoutMiniLeftSize !important;
 
-    > .think-page-body > .layui-card {
-      > .layui-card-header {
-        left: @LayoutMiniLeftSize;
-      }
+    > .think-page-loader {
+      left: @LayoutMiniLeftSize !important;
+    }
+
+    > .think-page-body > .layui-card > .layui-card-header {
+      left: @LayoutMiniLeftSize !important;
     }
   }
 
@@ -375,17 +376,7 @@
 }
 
 .layui-layout-left-hide {
-  > .layui-body {
-    left: 0 !important;
-
-    > .think-page-body > .layui-card {
-      > .layui-card-header {
-        left: 0 !important;
-      }
-    }
-  }
-
-  > .layui-header, .think-page-body + .think-page-loader {
+  > .layui-header {
     left: 0 !important;
 
     .layui-logo-hide {
@@ -395,6 +386,18 @@
 
   > .layui-side {
     display: none !important;
+  }
+
+  > .layui-body {
+    left: 0 !important;
+
+    > .think-page-loader {
+      left: 0 !important;
+    }
+
+    > .think-page-body > .layui-card > .layui-card-header {
+      left: 0 !important;
+    }
   }
 
   [data-target-menu-type] {
