@@ -171,13 +171,16 @@ $(function () {
         };
         /*! 页面加载层 */
         this.page = {
+            $body: $('body>.think-page-loader'),
+            $main: $('.think-page-body+.think-page-loader'),
             show: function () {
-                if ($('body>.think-page-loader').is(':hidden')) {
-                    $('.think-page-body+.think-page-loader').removeClass('layui-hide').show();
-                }
+                if (that.page.$body.is(':hidden')) that.page.$main.removeClass('layui-hide').show();
             },
             hide: function () {
-                setTimeout("$('.think-page-body+.think-page-loader').fadeOut()", 500);
+                if (that.page.time) clearTimeout(that.page.time);
+                that.page.time = setTimeout(function () {
+                    (delete that.page.time), that.page.$main.fadeOut();
+                }, 500);
             },
         };
         /*! 确认对话框 */
