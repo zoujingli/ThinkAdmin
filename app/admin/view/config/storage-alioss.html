@@ -50,7 +50,7 @@
             </label>
             <div class="layui-input-block">
                 <input id="storage.alioss_bucket" type="text" name="storage.alioss_bucket" required value="{:sysconf('storage.alioss_bucket')}" placeholder="请输入阿里云OSS存储 Bucket (空间名称)" class="layui-input">
-                <p class="help-block">填写阿里云OSS存储空间名称，如：think-admin-oss（需要是全区唯一的值，不存在时会自动创建）</p>
+                <p class="help-block">填写阿里云OSS存储空间名称，如：think-admin-oss</p>
             </div>
         </div>
 
@@ -92,7 +92,7 @@
             <button class="layui-btn layui-btn-danger" type='button' data-confirm="确定要取消修改吗？" data-close>取消修改</button>
         </div>
 
-        <script>form.render()</script>
+        <script>layui.form.render()</script>
 
     </div>
 </form>

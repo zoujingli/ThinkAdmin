@@ -43,24 +43,24 @@
         <div class="layui-form-item">
             <label class="layui-form-label"><b>PushApi</b><br><span class="nowrap color-desc">消息推送接收</span></label>
             <div class="layui-input-block">
-                <div class="relative">
+                <label class="relative block">
                     <input value="服务器授权IP：{$geoip}" disabled class="layui-input layui-bg-gray">
-                    <a data-copy="{$geoip}" class="input-right-icon"><i class="iconfont icon-copy"></i></a>
-                </div>
-                <div class="relative margin-top-5">
+                    <a data-copy="{$geoip}" class="layui-icon layui-icon-release input-right-icon"></a>
+                </label>
+                <label class="relative block margin-top-5">
                     <input value="消息推送地址：{$thrNotify}" disabled class="layui-input layui-bg-gray">
-                    <a data-copy="{$thrNotify}" class="input-right-icon"><i class="iconfont icon-copy"></i></a>
-                </div>
+                    <a data-copy="{$thrNotify}" class="layui-icon layui-icon-release input-right-icon"></a>
+                </label>
                 <p class="help-block">公众号服务平台消息推送接口及服务器授权IP地址，需在公众号接口开发处配置。</p>
             </div>
         </div>
 
-        <div class="hr-line-dashed margin-top-30"></div>
-        <input type="hidden" name="wechat.type" value="api">
+    </div>
 
-        <div class="layui-form-item text-center">
-            <button class="layui-btn" type="submit">保存配置</button>
-        </div>
+    <div class="hr-line-dashed"></div>
+    <input type="hidden" name="wechat.type" value="api">
 
+    <div class="layui-form-item text-center">
+        <button class="layui-btn" type="submit">保存配置</button>
     </div>
 </form>

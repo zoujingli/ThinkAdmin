@@ -1,12 +1,9 @@
-{extend name="../../admin/view/main"}
+{extend name="../../admin/view/table"}
 
 {block name="button"}
-<!--{if auth("blackAdd")}-->
-<button data-action='{:url("blackAdd")}' data-rule="openid#{key}" data-csrf="{:systoken('blackAdd')}" class='layui-btn layui-btn-sm layui-btn-primary'>拉入黑名单</button>
-<!--{/if}-->
-
-<!--{if auth("blackDel")}-->
-<button data-action='{:url("blackDel")}' data-rule="openid#{key}" data-csrf="{:systoken('blackDel')}" class='layui-btn layui-btn-sm layui-btn-primary'>移出黑名单</button>
+<!--{if auth("black")}-->
+<button data-action='{:url("black")}' data-table-id="UserData" data-rule="openid#{openid};black#1" class='layui-btn layui-btn-sm layui-btn-primary'>拉入黑名单</button>
+<button data-action='{:url("black")}' data-table-id="UserData" data-rule="openid#{openid};black#0" class='layui-btn layui-btn-sm layui-btn-primary'>移出黑名单</button>
 <!--{/if}-->
 
 <!--{if auth("truncate")}-->
@@ -14,77 +11,66 @@
 <!--{/if}-->
 
 <!--{if auth("sync")}-->
-<button data-queue='{:url("sync")}' data-confirm="确定要创建同步用户数据的后台任务？" class='layui-btn layui-btn-sm layui-btn-primary'>同步用户数据</button>
+<button data-queue='{:url("sync")}' data-table-id="UserData" data-confirm="确定要创建同步用户数据的后台任务？" class='layui-btn layui-btn-sm layui-btn-primary'>同步用户数据</button>
 <!--{/if}-->
 {/block}
 
 {block name="content"}
 <div class="think-box-shadow">
     {include file='fans/index_search'}
-    <table class="layui-table margin-top-10" lay-skin="line">
-        {notempty name='list'}
-        <thead>
-        <tr>
-            <th class='list-table-check-td think-checkbox'>
-                <label><input data-auto-none data-check-target='.list-check-box' type='checkbox'></label>
-            </th>
-            <th width="180px" class='text-left nowrap'>微信昵称</th>
-            <th width="180px"></th>
-            <th width="150px" class='text-left nowrap'>性别语言</th>
-            <th width="180px" class='text-left nowrap'>订阅时间</th>
-            <th width="80px"></th>
-            <th></th>
-        </tr>
-        </thead>
-        {/notempty}
-        <tbody>
-        {foreach $list as $key=>$vo}
-        <tr>
-            <td class='list-table-check-td think-checkbox'>
-                <label><input class="list-check-box" value='{$vo.openid}' type='checkbox'></label>
-            </td>
-            <td class='text-left nowrap'>
-                <div class="headimg" data-tips-image data-lazy-src="{$vo.headimgurl|default=''}"></div>
-                <div class="inline-block">
-                    <p>昵称：{$vo.nickname|default='--'}</p>
-                    <p>区域：{$vo.country|default='--'} {$vo.province|default=''} {$vo.city|default=''}</p>
-                </div>
-            </td>
-            <td class="text-left padding-0">
-                <div style="max-height:60px;overflow:auto">{foreach $vo.tags as $t}<p><span class="layui-badge layui-bg-cyan margin-right-5">{$t|default='--'}</span></p>{/foreach}</div>
-            </td>
-            <td class='text-left nowrap'>
-                性别：{switch name='vo.sex'}{case value='1'}男{/case}{case value='2'}女{/case}{default}未知{/switch}<br>
-                语言：{$vo.language|raw}
-            </td>
-            <td class='text-left nowrap'>
-                日期：{$vo.subscribe_at|format_datetime|str_replace=' ','<br>时间：',###|raw}
-            </td>
-            <td class='text-center nowrap'>
-                <div class="notselect">
-                    {eq name='vo.subscribe' value='0'}<span class="layui-badge">未订阅</span>{else}<span class="layui-badge layui-bg-green">已订阅</span>{/eq}
-                    {eq name='vo.is_black' value='0'}<span class="layui-badge layui-bg-green">未拉黑</span>{else}<span class="layui-badge">已拉黑</span>{/eq}
-                </div>
-            </td>
-            <td class="nowrap">
-
-                <!--{if auth('blackAdd') and $vo.is_black eq 0}-->
-                <a class="layui-btn layui-btn-sm" data-action="{:url('blackAdd')}" data-value="openid#{$vo.openid}" data-csrf="{:systoken('blackAdd')}">加入黑名单</a>
-                <!--{elseif auth('blackDel') and $vo.is_black eq 1}-->
-                <a class="layui-btn layui-btn-sm" data-action="{:url('blackDel')}" data-value="openid#{$vo.openid}" data-csrf="{:systoken('blackDel')}">移出黑名单</a>
-                <!--{/if}-->
-
-                <!--{if auth("remove")}-->
-                <a class="layui-btn layui-btn-sm layui-btn-danger" data-action="{:url('remove')}" data-value="id#{$vo.id}" data-csrf="{:systoken('remove')}" data-confirm="确定要删除该用户吗？">删 除</a>
-                <!--{/if}-->
-
-            </td>
-        </tr>
-        {/foreach}
-        </tbody>
-    </table>
-
-    {empty name='list'}<span class="notdata">没有记录哦</span>{else}{$pagehtml|raw|default=''}{/empty}
-
+    <table id="UserData" data-url="{:sysuri()}" data-target-search="form.form-search"></table>
 </div>
+{/block}
+
+{block name='script'}
+<script>
+    $(function () {
+        $('#UserData').layTable({
+            even: true, height: 'full',
+            sort: {field: 'subscribe_time', type: 'desc'},
+            cols: [[
+                {checkbox: true},
+                {field: 'nickname', title: '微信昵称', minWidth: 100, align: 'center'},
+                {field: 'province', title: '所在区域', minWidth: 120, templet: '<div>{{d.country}} {{d.province}} {{d.city}}</div>'},
+                {field: 'sex', title: '性别', align: 'center', minWidth: 80, templet: '<div>{{d.sex==1 ? "男" : (d.sex==2 ? "女" : "未知")}}</div>'},
+                {field: 'language', title: '所属国家', align: 'center', minWidth: 100, templet: '<div>{{d.language}}</div>'},
+                {field: 'subscribe_time', title: '关注时间', minWidth: 170, align: 'center', sort: true, templet: '<div>{{d.subscribe_at}}</div>'},
+                {
+                    field: 'subscribe', title: '订阅状态', align: "center", templet: function (d) {
+                        if (d.subscribe > 0) return '<span class="layui-badge layui-bg-green">已订阅</span>';
+                        return '<span class="layui-badge">未订阅</span>';
+                    }
+                },
+                {field: 'is_black', title: '是否黑名单', align: 'center', minWidth: 110, templet: '#StatusSwitchTpl'},
+                {toolbar: '#toolbar', title: '操作面板', align: 'center', fixed: 'right'}
+            ]]
+        });
+
+        // 数据状态切换操作
+        layui.form.on('switch(StatusSwitch)', function (obj) {
+            var data = {openid: obj.value, black: obj.elem.checked > 0 ? 1 : 0};
+            $.form.load("{:url('black')}", data, 'post', function (ret) {
+                if (ret.code < 1) $.msg.error(ret.info, 3, function () {
+                    $('#UserData').trigger('reload'); // 操作异常时重载数据
+                });
+                return false;
+            }, false);
+        });
+    });
+</script>
+
+<!-- 数据状态切换模板 -->
+<script type="text/html" id="StatusSwitchTpl">
+    <!--{if auth("black")}-->
+    <input type="checkbox" value="{{d.openid}}" lay-skin="switch" lay-text="已拉黑|未拉黑" lay-filter="StatusSwitch" {{d.is_black>0?'checked':''}}>
+    <!--{else}-->
+    {{d.status ? '<b class="color-red">已拉黑</b>' : '<b class="color-green">未拉黑</b>'}}
+    <!--{/if}-->
+</script>
+
+<script type="text/html" id="toolbar">
+    <!--{if auth("remove")}-->
+    <a class="layui-btn layui-btn-sm layui-btn-danger" data-action="{:url('remove')}" data-value="id#{{d.id}}" data-confirm="确定要删除该用户吗？">删 除</a>
+    <!--{/if}-->
+</script>
 {/block}
