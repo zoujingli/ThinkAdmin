@@ -67,7 +67,7 @@ class JoinpayPaymentService extends PaymentService
                 'p0_Version'         => '1.0',
                 'p1_MerchantNo'      => $this->mchid,
                 'p2_OrderNo'         => $orderNo,
-                'p3_Amount'          => $paymentAmount * 100,
+                'p3_Amount'          => $paymentAmount,
                 'p4_Cur'             => '1',
                 'p5_ProductName'     => $paymentTitle,
                 'p6_ProductDesc'     => $paymentRemark,

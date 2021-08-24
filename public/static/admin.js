@@ -174,13 +174,13 @@ $(function () {
             $body: $('body>.think-page-loader'),
             $main: $('.think-page-body+.think-page-loader'),
             show: function () {
-                if (that.page.$body.is(':hidden')) that.page.$main.removeClass('layui-hide').show();
+                that.page.$body.is(':visible') || that.page.$main.removeClass('layui-hide').show();
             },
             hide: function () {
                 if (that.page.time) clearTimeout(that.page.time);
                 that.page.time = setTimeout(function () {
-                    (delete that.page.time), that.page.$main.fadeOut();
-                }, 500);
+                    (that.page.time = 0) || that.page.$main.fadeOut();
+                }, 200);
             },
         };
         /*! 确认对话框 */
@@ -238,8 +238,6 @@ $(function () {
                         $(this.elem).val(value).trigger('change');
                     }
                 });
-            }), $dom.find('[data-file]:not([data-inited])').map(function () {
-                $(this).uploadFile();
             }), $dom.find('[data-lazy-src]:not([data-lazy-loaded])').each(function () {
                 if (this.dataset.lazyLoaded !== 'true') {
                     this.dataset.lazyLoaded = "true";
@@ -551,9 +549,9 @@ $(function () {
     };
 
     /*! 注册对象到JqFn */
-    $.fn.vali = function (callable, options) {
+    $.fn.vali = function (callable) {
         return this.each(function () {
-            $.vali(this, callable, options);
+            $.vali(this, callable);
         });
     };
 
@@ -581,57 +579,54 @@ $(function () {
         return data;
     };
 
-    /*! 全局文件上传 */
-    $.fn.uploadFile = function (callable) {
+    /*! 全局文件上传插件 */
+    $.fn.uploadFile = function (callable, initialize) {
         return this.each(function () {
             if ($(this).data('inited')) return false;
-            var that = $(this), mult = '|one|btn|'.indexOf(that.data('file') || 'one') ? 0 : 1;
+            var that = $(this), mult = '|one|btn|'.indexOf(that.data('file') || 'one') > -1 ? 0 : 1;
             that.data('inited', true).data('multiple', mult), require(['upload'], function (apply) {
-                apply.call(this, that, callable);
+                apply(that, callable), (typeof initialize === 'function' && setTimeout(initialize, 100));
             });
         });
     };
 
     /*! 上传单张图片 */
     $.fn.uploadOneImage = function () {
-        return this.each(function ($in, $bt) {
-            $in = $(this), $bt = $('<a data-file="one" class="uploadimage transition"><span class="layui-icon">&#x1006;</span></a>');
-            $bt.attr('data-size', $in.data('size') || 0).attr('data-file', 'one').attr('data-type', $in.data('type') || 'png,jpg,gif');
-            $bt.data('input', this).find('span').on('click', function (event) {
+        return this.each(function () {
+            if ($(this).data('inited')) return true; else $(this).data('inited', true);
+            var $in = $(this), $bt = $('<a data-file class="uploadimage transition"><span class="layui-icon">&#x1006;</span></a>').data('input', this);
+            $bt.attr('data-size', $in.data('size') || 0).attr('data-type', $in.data('type') || 'png,jpg,gif').find('span').on('click', function (event) {
                 event.stopPropagation(), $bt.attr('style', ''), $in.val('');
-            });
-            $in.attr('name', $bt.attr('data-field')).after($bt).on('change', function () {
+            }), $in.on('change', function () {
                 if (this.value) $bt.css('backgroundImage', 'url(' + encodeURI(this.value) + ')');
-            }).trigger('change');
-        }), this;
+            }).after($bt).trigger('change');
+        });
     };
 
     /*! 上传多张图片 */
     $.fn.uploadMultipleImage = function () {
         return this.each(function () {
-            var $in = $(this), $bt = $('<a class="uploadimage"></a>'), imgs = this.value ? this.value.split('|') : [];
-            $bt.attr('data-size', $in.data('size') || 0).attr('data-file', 'mut').attr('data-type', $in.data('type') || 'png,jpg,gif');
-            $in.after($bt), $bt.uploadFile(function (src) {
+            if ($(this).data('inited')) return true; else $(this).data('inited', true);
+            var $in = $(this), $bt = $('<a data-file="mul" class="uploadimage"></a>'), imgs = this.value ? this.value.split('|') : []
+            $in.after($bt.attr('data-size', $in.data('size') || 0).attr('data-type', $in.data('type') || 'png,jpg,gif').uploadFile(function (src) {
                 imgs.push(src), $in.val(imgs.join('|')), showImageContainer([src]);
-            });
-            if (imgs.length > 0) showImageContainer(imgs);
+            })), (imgs.length > 0 && showImageContainer(imgs));
 
             function showImageContainer(srcs) {
                 $(srcs).each(function (idx, src, $image) {
                     $image = $('<div class="uploadimage uploadimagemtl transition"><div><a class="layui-icon">&#xe603;</a><a class="layui-icon">&#x1006;</a><a class="layui-icon">&#xe602;</a></div></div>');
                     $image.attr('data-tips-image', encodeURI(src)).css('backgroundImage', 'url(' + encodeURI(src) + ')').on('click', 'a', function (event, index, prevs, $item) {
-                        event.stopPropagation(), $item = $(this).parent().parent(), index = $(this).index(), prevs = $bt.prevAll('div.uploadimage').length;
-                        if (index === 2 && $item.index() !== prevs) $item.next().after($item);
-                        else if (index === 0 && $item.index() > 1) $item.prev().before($item);
-                        else if (index === 1) $item.remove();
+                        event.stopPropagation(), $item = $(this).parent().parent(), index = $(this).index();
+                        if (index === 2 && $item.index() !== $bt.prevAll('div.uploadimage').length) $item.next().after($item);
+                        else if (index === 0 && $item.index() > 1) $item.prev().before($item); else if (index === 1) $item.remove();
                         imgs = [], $bt.prevAll('.uploadimage').map(function () {
                             imgs.push($(this).attr('data-tips-image'));
                         });
                         imgs.reverse(), $in.val(imgs.join('|'));
                     }), $bt.before($image);
                 });
-            };
-        }), this;
+            }
+        });
     };
 
     /*! 标签输入插件 */
@@ -679,7 +674,7 @@ $(function () {
         });
     }
 
-    /*! 组件 LayUI table 功能封装 */
+    /*! 组件 layui.table 封装 */
     $.fn.layTable = function (params) {
         return this.each(function (idx, elem) {
             // 动态初始化数据表
@@ -738,6 +733,102 @@ $(function () {
         });
     }
 
+    /*! 弹出图片层 */
+    $.previewImage = function (src, area) {
+        var img = new Image(), defer = $.Deferred(), loaded = $.msg.loading();
+        img.style.background = '#FFF', img.referrerPolicy = 'no-referrer';
+        img.style.height = 'auto', img.style.width = area || '100%', img.style.display = 'none';
+        document.body.appendChild(img), img.onerror = function () {
+            $.msg.close(loaded), defer.reject();
+        }, img.onload = function () {
+            layer.open({
+                type: 1, title: false, shadeClose: true, content: $(img), success: function ($elem, idx) {
+                    $.msg.close(loaded), defer.notify($elem, idx);
+                }, area: area || '480px', skin: 'layui-layer-nobg', closeBtn: 1, end: function () {
+                    document.body.removeChild(img), defer.resolve()
+                }
+            });
+        };
+        return (img.src = src), defer.resolve();
+    };
+
+    /*! 以手机模式显示内容 */
+    $.previewPhonePage = function (href, title, template) {
+        template = '<div><div class="mobile-preview pull-left"><div class="mobile-header">_TITLE_</div><div class="mobile-body"><iframe id="phone-preview" src="_URL_" frameborder="0" marginheight="0" marginwidth="0"></iframe></div></div></div>';
+        layer.style(layer.open({type: true, scrollbar: false, area: ['320px', '600px'], title: false, closeBtn: true, shadeClose: false, skin: 'layui-layer-nobg', content: $(template.replace('_TITLE_', title || '公众号').replace('_URL_', href)).html()}), {boxShadow: 'none'});
+    };
+
+    /*! 显示任务进度消息 */
+    $.loadQueue = function (code, doScript, element) {
+        var doAjax = true, doReload = false;
+        layui.layer.open({
+            type: 1, title: false, area: ['560px', '315px'], anim: 2, shadeClose: false, end: function () {
+                doAjax = false;
+                if (doReload && doScript) {
+                    if (element && element.dataset && element.dataset.tableId) {
+                        $('#' + element.dataset.tableId).trigger('reload');
+                    } else {
+                        $.form.reload();
+                    }
+                }
+            }, content: '' +
+                '<div class="padding-30 padding-bottom-0"  data-queue-load="' + code + '">' +
+                '   <div class="layui-elip notselect nowrap" data-message-title></div>' +
+                '   <div class="margin-top-15 layui-progress layui-progress-big" lay-showPercent="yes"><div class="layui-progress-bar transition" lay-percent="0.00%"></div></div>' +
+                '   <div class="margin-top-15"><code class="layui-textarea layui-bg-black border-0" disabled style="resize:none;overflow:hidden;height:190px"></code></div>' +
+                '</div>',
+            success: function ($elem) {
+                new function () {
+                    var that = this;
+                    this.$box = $elem.find('[data-queue-load=' + code + ']');
+                    if (doAjax === false || this.$box.length < 1) return false;
+                    this.$coder = this.$box.find('code'), this.$name = this.$box.find('[data-message-title]');
+                    this.$percent = this.$box.find('.layui-progress div'), this.SetCache = function (code, index, value) {
+                        var ckey = code + '_' + index, ctype = 'admin-queue-script';
+                        return value !== undefined ? layui.data(ctype, {key: ckey, value: value}) : layui.data(ctype)[ckey] || 0;
+                    }, this.SetState = function (status, message) {
+                        if (message.indexOf('javascript:') === -1) if (status === 1) {
+                            that.$name.html('<b class="color-text">' + message + '</b>').addClass('text-center');
+                            that.$percent.addClass('layui-bg-blue').removeClass('layui-bg-green layui-bg-red');
+                        } else if (status === 2) {
+                            if (message.indexOf('>>>') > -1) {
+                                that.$name.html('<b class="color-blue">' + message + '</b>').addClass('text-center');
+                            } else {
+                                that.$name.html('<b class="color-blue">正在处理：</b>' + message).removeClass('text-center');
+                            }
+                            that.$percent.addClass('layui-bg-blue').removeClass('layui-bg-green layui-bg-red');
+                        } else if (status === 3) {
+                            doReload = true;
+                            that.$name.html('<b class="color-green">' + message + '</b>').addClass('text-center');
+                            that.$percent.addClass('layui-bg-green').removeClass('layui-bg-blue layui-bg-red');
+                        } else if (status === 4) {
+                            that.$name.html('<b class="color-red">' + message + '</b>').addClass('text-center');
+                            that.$percent.addClass('layui-bg-red').removeClass('layui-bg-blue layui-bg-green');
+                        }
+                    }, (this.LoadProgress = function () {
+                        if (doAjax === false || that.$box.length < 1) return false;
+                        $.form.load(tapiRoot + '/api.queue/progress', {code: code}, 'post', function (ret) {
+                            if (ret.code) {
+                                var lines = [];
+                                for (var idx in ret.data.history) {
+                                    var line = ret.data.history[idx], percent = '[ ' + line.progress + '% ] ';
+                                    if (line.message.indexOf('javascript:') === -1) lines.push(line.message.indexOf('>>>') > -1 ? line.message : percent + line.message);
+                                    else if (!that.SetCache(code, idx) && doScript !== false) that.SetCache(code, idx, 1), location.href = line.message;
+                                }
+                                if (ret.data.status > 0) {
+                                    that.SetState(parseInt(ret.data.status), ret.data.message);
+                                    that.$percent.attr('lay-percent', (parseFloat(ret.data.progress || '0.00').toFixed(2)) + '%'), layui.element.render();
+                                    that.$coder.html('<p class="layui-elip">' + lines.join('</p><p class="layui-elip">') + '</p>').animate({scrollTop: that.$coder[0].scrollHeight + 'px'}, 200);
+                                    return parseInt(ret.data.status) === 3 || parseInt(ret.data.status) === 4 || setTimeout(that.LoadProgress, Math.floor(Math.random() * 200)), false;
+                                } else return setTimeout(that.LoadProgress, Math.floor(Math.random() * 500) + 200), false;
+                            }
+                        }, false);
+                    })();
+                };
+            }
+        });
+    };
+
     /*! 注册 data-search 表单搜索行为 */
     onEvent('submit', 'form.form-search', function () {
         var tableId = this.dataset.tableId;
@@ -751,6 +842,15 @@ $(function () {
             return location.href = stype + $.menu.parseUri(url + split + $(this).serialize());
         }
         return $.form.load(url, this, 'post');
+    });
+
+    /*! 注册 data-file 事件行为 */
+    onEvent('click', '[data-file]', function () {
+        if ($(this).data('inited') !== true) (function (that) {
+            that.uploadFile(undefined, function () {
+                that.trigger('upload.start');
+            });
+        })($(this));
     });
 
     /*! 注册 data-load 事件行为 */
@@ -874,6 +974,7 @@ $(function () {
             $textarea.remove();
         })(this.dataset.copy, $('<textarea style="position:fixed;top:-500px"></textarea>'));
     });
+
     /*! 异步任务状态监听与展示 */
     onEvent('click', '[data-queue]', function (e) {
         (function (confirm, callable) {
@@ -886,72 +987,6 @@ $(function () {
             });
         });
     });
-    $.loadQueue = function (code, doScript, element) {
-        var doAjax = true;
-        layui.layer.open({
-            type: 1, title: false, area: ['560px', '315px'], anim: 2, shadeClose: false, end: function () {
-                doAjax = false;
-                if (element && element.dataset && element.dataset.tableId) {
-                    $('#' + element.dataset.tableId).trigger('reload');
-                } else {
-                    $.form.reload();
-                }
-            }, content: '' +
-                '<div class="padding-30 padding-bottom-0"  data-queue-load="' + code + '">' +
-                '   <div class="layui-elip notselect nowrap" data-message-title></div>' +
-                '   <div class="margin-top-15 layui-progress layui-progress-big" lay-showPercent="yes"><div class="layui-progress-bar transition" lay-percent="0.00%"></div></div>' +
-                '   <div class="margin-top-15"><code class="layui-textarea layui-bg-black border-0" disabled style="resize:none;overflow:hidden;height:190px"></code></div>' +
-                '</div>',
-            success: function ($elem) {
-                new function () {
-                    var that = this;
-                    this.$box = $elem.find('[data-queue-load=' + code + ']');
-                    if (doAjax === false || this.$box.length < 1) return false;
-                    this.$coder = this.$box.find('code'), this.$name = this.$box.find('[data-message-title]');
-                    this.$percent = this.$box.find('.layui-progress div'), this.SetCache = function (code, index, value) {
-                        var ckey = code + '_' + index, ctype = 'admin-queue-script';
-                        return value !== undefined ? layui.data(ctype, {key: ckey, value: value}) : layui.data(ctype)[ckey] || 0;
-                    }, this.SetState = function (status, message) {
-                        if (message.indexOf('javascript:') === -1) if (status === 1) {
-                            that.$name.html('<b class="color-text">' + message + '</b>').addClass('text-center');
-                            that.$percent.addClass('layui-bg-blue').removeClass('layui-bg-green layui-bg-red');
-                        } else if (status === 2) {
-                            if (message.indexOf('>>>') > -1) {
-                                that.$name.html('<b class="color-blue">' + message + '</b>').addClass('text-center');
-                            } else {
-                                that.$name.html('<b class="color-blue">正在处理：</b>' + message).removeClass('text-center');
-                            }
-                            that.$percent.addClass('layui-bg-blue').removeClass('layui-bg-green layui-bg-red');
-                        } else if (status === 3) {
-                            that.$name.html('<b class="color-green">' + message + '</b>').addClass('text-center');
-                            that.$percent.addClass('layui-bg-green').removeClass('layui-bg-blue layui-bg-red');
-                        } else if (status === 4) {
-                            that.$name.html('<b class="color-red">' + message + '</b>').addClass('text-center');
-                            that.$percent.addClass('layui-bg-red').removeClass('layui-bg-blue layui-bg-green');
-                        }
-                    }, (this.LoadProgress = function () {
-                        if (doAjax === false || that.$box.length < 1) return false;
-                        $.form.load(tapiRoot + '/api.queue/progress', {code: code}, 'post', function (ret) {
-                            if (ret.code) {
-                                var lines = [];
-                                for (var idx in ret.data.history) {
-                                    var line = ret.data.history[idx], percent = '[ ' + line.progress + '% ] ';
-                                    if (line.message.indexOf('javascript:') === -1) lines.push(line.message.indexOf('>>>') > -1 ? line.message : percent + line.message);
-                                    else if (!that.SetCache(code, idx) && doScript !== false) that.SetCache(code, idx, 1), location.href = line.message;
-                                }
-                                if (ret.data.status > 0) {
-                                    that.SetState(parseInt(ret.data.status), ret.data.message);
-                                    that.$percent.attr('lay-percent', (parseFloat(ret.data.progress || '0.00').toFixed(2)) + '%'), layui.element.render();
-                                    that.$coder.html('<p class="layui-elip">' + lines.join('</p><p class="layui-elip">') + '</p>').animate({scrollTop: that.$coder[0].scrollHeight + 'px'}, 200);
-                                    return parseInt(ret.data.status) === 3 || parseInt(ret.data.status) === 4 || setTimeout(that.LoadProgress, Math.floor(Math.random() * 200)), false;
-                                } else return setTimeout(that.LoadProgress, Math.floor(Math.random() * 500) + 200), false;
-                            }
-                        }, false);
-                    })();
-                };
-            }
-        });
-    };
 
     /*! 注册 data-tips-text 事件行为 */
     onEvent('mouseenter', '[data-tips-text]', function () {
@@ -964,10 +999,6 @@ $(function () {
         });
     });
 
-    /*! 注册 data-tips-image 事件行为 */
-    onEvent('click', '[data-tips-image]', function () {
-        $.previewImage(this.dataset.tipsImage || this.dataset.lazySrc || this.src, this.dataset.with);
-    });
     /*! 注册 data-tips-image Hover 事件 */
     onEvent('mouseenter', '[data-tips-image][data-tips-hover]', function () {
         var img = new Image(), that = this;
@@ -981,32 +1012,16 @@ $(function () {
             }, 100);
         });
     });
-    $.previewImage = function (src, area) {
-        var img = new Image(), defer = $.Deferred(), loaded = $.msg.loading();
-        img.style.background = '#FFF', img.referrerPolicy = 'no-referrer';
-        img.style.height = 'auto', img.style.width = area || '480px', img.style.display = 'none';
-        document.body.appendChild(img), img.onerror = function () {
-            $.msg.close(loaded), defer.reject();
-        }, img.onload = function () {
-            layer.open({
-                type: 1, title: false, shadeClose: true, content: $(img), success: function ($elem, idx) {
-                    $.msg.close(loaded), defer.notify($elem, idx);
-                }, area: area || '480px', skin: 'layui-layer-nobg', closeBtn: 1, end: function () {
-                    document.body.removeChild(img), defer.resolve()
-                }
-            });
-        };
-        return (img.src = src), defer.resolve();
-    };
+
+    /*! 注册 data-tips-image 事件行为 */
+    onEvent('click', '[data-tips-image]', function () {
+        $.previewImage(this.dataset.tipsImage || this.dataset.lazySrc || this.src, this.dataset.with);
+    });
 
     /*! 注册 data-phone-view 事件行为 */
     onEvent('click', '[data-phone-view]', function () {
         $.previewPhonePage(this.dataset.phoneView || this.href);
     });
-    $.previewPhonePage = function (href, title, template) {
-        template = '<div><div class="mobile-preview pull-left"><div class="mobile-header">_TITLE_</div><div class="mobile-body"><iframe id="phone-preview" src="_URL_" frameborder="0" marginheight="0" marginwidth="0"></iframe></div></div></div>';
-        layer.style(layer.open({type: true, scrollbar: false, area: ['320px', '600px'], title: false, closeBtn: true, shadeClose: false, skin: 'layui-layer-nobg', content: $(template.replace('_TITLE_', title || '公众号').replace('_URL_', href)).html()}), {boxShadow: 'none'});
-    };
 
     /*! 表单编辑返回操作 */
     onEvent('click', '[data-history-back]', function () {

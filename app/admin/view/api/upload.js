@@ -14,9 +14,9 @@ define(['md5'], function (SparkMD5, allowMime) {
             opt.elem.data('input', $input.size() > 0 ? $input.get(0) : null);
         }
 
-        /*! 文件选择筛选 */
-        $((opt.elem.data('type') || '').split(',')).map(function (i, ext) {
-            if (allowMime[ext]) opt.exts.push(ext), opt.mimes.push(allowMime[ext]);
+        /*! 文件选择筛选，使用 MIME 规则过滤文件列表 */
+        $((opt.elem.data('type') || '').split(',')).map(function (i, e) {
+            if (allowMime[e]) opt.exts.push(e), opt.mimes.push(allowMime[e]);
         });
 
         /*! 初始化上传组件 */
@@ -67,29 +67,27 @@ define(['md5'], function (SparkMD5, allowMime) {
                     });
                 });
             }, progress: function (number) {
-
                 /*! 文件上传进度处理 */
-                $('[data-upload-progress]').html(number + '%');
                 opt.elem.triggerHandler('upload.progress', {number: number, event: arguments[2], file: arguments[3]});
-
+                if (opt.count.total > 1) {
+                    $('[data-upload-progress]').html(number + '%' + ' ' + (opt.count.uploaded + 1) + '/' + opt.count.total);
+                } else {
+                    $('[data-upload-progress]').html(number + '%');
+                }
             }, done: function (ret, idx) {
-
                 /*! 检查单个文件上传返回的结果 */
                 if (ret.code < 1) return $.msg.tips(ret.info || '文件上传失败！');
                 if (typeof opt.cache[idx].xurl !== 'string') return $.msg.tips('无效的文件上传对象！');
-
                 /*! 单个文件上传成功结果处理 */
                 if (typeof callable === 'function') {
                     callable.call(opt.elem, opt.cache[idx].xurl, opt.cache['id']);
                 } else if (opt.mult < 1 && opt.elem.data('input')) {
                     $(opt.elem.data('input')).val(opt.cache[idx].xurl).trigger('change', opt.cache[idx]);
                 }
-
-                (opt.hide || $.msg.close(opt.load)), opt.elem.html(opt.elem.data('html'));
-                opt.elem.triggerHandler('upload.done', {file: opt.cache[idx], data: ret});
-
+                opt.elem.html(opt.elem.data('html')).triggerHandler('upload.done', {file: opt.cache[idx], data: ret});
                 /*! 所有文件上传完成后结果处理 */
                 if (++opt.count.uploaded >= opt.count.total) {
+                    opt.hide || $.msg.close(opt.load);
                     if (opt.mult > 0 && opt.elem.data('input')) {
                         var urls = opt.elem.data('input').value || [];
                         if (typeof urls === 'string') urls = urls.split('|');
@@ -97,7 +95,7 @@ define(['md5'], function (SparkMD5, allowMime) {
                         $(opt.elem.data('input')).val(urls.join('|')).trigger('change', opt.cache);
                     }
                     opt.elem.triggerHandler('upload.complete', {file: opt.cache});
-                    (opt.cache = [], opt.files = []), opt.uploader.reload();
+                    (opt.cache = [], opt.files = [], opt.count = {uploaded: 0, total: 0}), opt.uploader.reload();
                 }
             }
         });
