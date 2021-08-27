@@ -49,6 +49,7 @@ class Upload extends Controller
         }
         $template = realpath(__DIR__ . '/../../view/api/upload.js');
         $data['exts'] = json_encode($data['exts'], JSON_UNESCAPED_UNICODE);
+        $data['nameType'] = sysconf('storage.name_type') ?: 'xmd5';
         return view($template, $data)->contentType('application/x-javascript');
     }
 

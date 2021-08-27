@@ -1,5 +1,23 @@
 <div class="layui-form-item">
     <label class="layui-form-label label-required">
+        <span class="color-green font-w7">命名方式</span><br><span class="nowrap color-desc">NameType</span>
+    </label>
+    <div class="layui-input-block">
+        {if !sysconf('storage.name_type')}{php}sysconf('storage.name_type','xmd5');{/php}{/if}
+        {foreach ['xmd5'=>'文件哈希值','date'=>'日期+随机'] as $k=>$v}
+        <label class="think-radio notselect">
+            {if sysconf('storage.name_type') eq $k}
+            <input checked type="radio" name="storage.name_type" value="{$k}" lay-ignore> {$v}
+            {else}
+            <input type="radio" name="storage.name_type" value="{$k}" lay-ignore> {$v}
+            {/if}
+        </label>
+        {/foreach}
+        <p class="help-block">类型为“文件哈希”时可以实时文件秒传功能，同一个文件只需上传一次节省存储空间，推荐使用。</p>
+    </div>
+</div>
+<div class="layui-form-item">
+    <label class="layui-form-label label-required">
         <span class="color-green font-w7">链接类型</span><br><span class="nowrap color-desc">LinkType</span>
     </label>
     <div class="layui-input-block">
@@ -23,6 +41,6 @@
     </label>
     <div class="layui-input-block">
         <input id="storage.allow_exts" type="text" name="storage.allow_exts" required value="{:sysconf('storage.allow_exts')}" placeholder="请输入系统文件上传后缀" class="layui-input">
-        <p class="help-block">设置系统允许上传文件的后缀，多个以英文逗号隔开如：png,jpg,rar,doc</p>
+        <p class="help-block">设置系统允许上传文件的后缀，多个以英文逗号隔开如：png,jpg,rar,doc，未设置允许上传的后缀</p>
     </div>
 </div>

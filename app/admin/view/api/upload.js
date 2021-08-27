@@ -106,12 +106,11 @@ define(['md5'], function (SparkMD5, allowMime) {
         file.xext = file.name.indexOf('.') > -1 ? file.name.split('.').pop() : 'tmp';
 
         /*! 兼容不能计算文件 HASH 的情况 */
-        if (!window.FileReader) return jQuery.when((function (date, chars) {
-            date = new Date(), chars = 'abcdefhijkmnprstwxyz0123456789';
-            this.xmd5 = '' + date.getFullYear() + (date.getMonth() + 1) + date.getDay() + date.getHours() + date.getMinutes() + date.getSeconds();
-            while (this.xmd5.length < 32) this.xmd5 += chars.charAt(Math.floor(Math.random() * chars.length));
-            return setFileXdata(file, this.xmd5), deferred.resolve(file, file.xmd5, file.xkey), deferred;
-        }).call(this));
+        var IsDate = '{$nameType|default=""}'.indexOf('date') > -1;
+        if (!window.FileReader || IsDate) return jQuery.when((function (xmd5, chars) {
+            while (xmd5.length < 32) xmd5 += chars.charAt(Math.floor(Math.random() * chars.length));
+            return setFileXdata(file, xmd5, 6), deferred.resolve(file, file.xmd5, file.xkey), deferred;
+        })(layui.util.toDateString(Date.now(), 'yyyyMMddHHmmss-'), '0123456789'));
 
         /*! 读取文件并计算 HASH 值 */
         var spark = new SparkMD5.ArrayBuffer();
@@ -119,8 +118,8 @@ define(['md5'], function (SparkMD5, allowMime) {
         file.chunkIdx = 0, file.chunkSize = 2097152, file.chunkTotal = Math.ceil(this.size / this.chunkSize);
         return jQuery.when(loadNextChunk(file));
 
-        function setFileXdata(file, xmd5) {
-            file.xmd5 = xmd5, file.xkey = file.xmd5.substr(0, 2) + '/' + file.xmd5.substr(2, 30) + '.' + file.xext;
+        function setFileXdata(file, xmd5, slice) {
+            file.xmd5 = xmd5, file.xkey = file.xmd5.substr(0, slice || 2) + '/' + file.xmd5.substr(slice || 2, 30) + '.' + file.xext;
             return delete file.chunkIdx, delete file.chunkSize, delete file.chunkTotal, file;
         }
 
