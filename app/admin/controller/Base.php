@@ -45,7 +45,7 @@ class Base extends Controller
     {
         $this->_query(SystemBase::class)->layTable(function () {
             $this->title = '数据字典管理';
-            $this->types = (new SystemBase)->types();
+            $this->types = SystemBase::mk()->types();
             $this->type = input('get.type') ?: ($this->types[0] ?? '-');
         }, function (QueryHelper $query) {
             $query->where(['deleted' => 0])->equal('type');
@@ -84,7 +84,7 @@ class Base extends Controller
     protected function _form_filter(array &$data)
     {
         if ($this->request->isGet()) {
-            $this->types = (new SystemBase)->types();
+            $this->types = SystemBase::mk()->types();
             $this->types[] = '--- 新增类型 ---';
             $this->type = input('get.type') ?: ($this->types[0] ?? '-');
         } else {

@@ -107,7 +107,7 @@ class Index extends Controller
                 'oldpassword.require'         => '旧的密码不能为空！',
                 'password.confirm:repassword' => '两次输入的密码不一致！',
             ]);
-            $user = (new SystemUser)->find($id);
+            $user = SystemUser::mk()->find($id);
             if (empty($user)) $this->error('用户不存在！');
             if (md5($data['oldpassword']) !== $user['password']) {
                 $this->error('旧密码验证失败，请重新输入！');

@@ -57,7 +57,7 @@ class User extends Controller
         $this->type = input('type', 'index');
         $this->_query(SystemUser::class)->layTable(function () {
             $this->title = '系统用户管理';
-            $this->bases = (new SystemBase)->items('身份权限');
+            $this->bases = SystemBase::mk()->items('身份权限');
         }, function (QueryHelper $query) {
             // 加载对应数据列表
             if ($this->type === 'index') {
@@ -77,7 +77,7 @@ class User extends Controller
      */
     protected function _page_filter(array &$data)
     {
-        (new SystemBase)->items('身份权限', $data, 'usertype', 'userinfo');
+        SystemBase::mk()->items('身份权限', $data, 'usertype', 'userinfo');
     }
 
     /**
@@ -124,7 +124,7 @@ class User extends Controller
                 'repassword.require'          => '重复密码不能为空！',
                 'repassword.confirm:password' => '两次输入的密码不一致！',
             ]);
-            $user = (new SystemUser)->find($data['id']);
+            $user = SystemUser::mk()->find($data['id']);
             if (!empty($user) && $user->save(['password' => md5($data['password'])])) {
                 sysoplog('系统用户管理', "修改用户[{$data['id']}]密码成功");
                 $this->success('密码修改成功，请使用新密码登录！', '');
@@ -154,7 +154,7 @@ class User extends Controller
                     $this->error('登录账号不能为空！');
                 }
                 $map = ['username' => $data['username'], 'is_deleted' => 0];
-                if ((new SystemUser)->where($map)->count() > 0) {
+                if (SystemUser::mk()->where($map)->count() > 0) {
                     $this->error("账号已经存在，请使用其它账号！");
                 }
                 // 新添加的用户密码与账号相同
@@ -162,7 +162,7 @@ class User extends Controller
             }
         } else {
             // 用户身份数据
-            $this->bases = (new SystemBase)->items('身份权限');
+            $this->bases = SystemBase::mk()->items('身份权限');
             // 权限绑定处理
             $data['authorize'] = str2arr($data['authorize'] ?? '');
             // 用户权限管理

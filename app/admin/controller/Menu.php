@@ -121,7 +121,7 @@ class Menu extends Controller
                 }
             }
             /* 列出可选上级菜单 */
-            $menus = (new SystemMenu)->order('sort desc,id asc')->column('id,pid,icon,url,node,title,params', 'id');
+            $menus = SystemMenu::mk()->order('sort desc,id asc')->column('id,pid,icon,url,node,title,params', 'id');
             $this->menus = DataExtend::arr2table(array_merge($menus, [['id' => '0', 'pid' => '-1', 'url' => '#', 'title' => '顶部菜单']]));
             if (isset($vo['id'])) foreach ($this->menus as $menu) if ($menu['id'] === $vo['id']) $vo = $menu;
             foreach ($this->menus as $key => $menu) if ($menu['spt'] >= 3 || $menu['url'] !== '#') unset($this->menus[$key]);

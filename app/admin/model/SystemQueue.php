@@ -16,7 +16,7 @@
 
 namespace app\admin\model;
 
-use think\Model;
+use think\admin\Model;
 
 /**
  * 系统任务数据模型

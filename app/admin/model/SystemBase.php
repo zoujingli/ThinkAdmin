@@ -16,7 +16,7 @@
 
 namespace app\admin\model;
 
-use think\Model;
+use think\admin\Model;
 
 /**
  * 数据字典数据模型
