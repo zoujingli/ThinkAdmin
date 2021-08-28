@@ -13,58 +13,58 @@
 
 {block name="script"}
 <script>
-    window.RoleAction = new function () {
-        this.data = {}, this.ztree = null, this.setting = {
-            view: {showLine: false, showIcon: false, dblClickExpand: false},
-            check: {enable: true, nocheck: false, chkboxType: {"Y": "ps", "N": "ps"}},
-            callback: {
-                beforeClick: function (id, node) {
-                    node.children.length < 1 ? RoleAction.ztree.checkNode(node, !node.checked, null, true) : RoleAction.ztree.expandNode(node);
-                    return false;
+    require(['jquery.ztree'], function () {
+        new function () {
+            var that = this;
+            this.data = {}, this.ztree = null, this.setting = {
+                view: {showLine: false, showIcon: false, dblClickExpand: false},
+                check: {enable: true, nocheck: false, chkboxType: {"Y": "ps", "N": "ps"}}, callback: {
+                    beforeClick: function (id, node) {
+                        node.children.length < 1 ? that.ztree.checkNode(node, !node.checked, null, true) : that.ztree.expandNode(node);
+                        return false;
+                    }
                 }
-            }
-        };
-        this.renderChildren = function (list, level) {
-            var childrens = [];
-            for (var i in list) childrens.push({
-                open: true, node: list[i].node, name: list[i].title || list[i].node,
-                checked: list[i].checked || false, children: this.renderChildren(list[i]._sub_, level + 1)
-            });
-            return childrens;
-        };
-        this.getData = function (that) {
-            $.form.load('{:url("apply")}', {id: '{$vo.id}', action: 'get'}, 'post', function (ret) {
-                return (that.data = that.renderChildren(ret.data, 1)), that.showTree(), false;
-            });
-        };
-        this.showTree = function () {
-            this.ztree = $.fn.zTree.init($("#zTree"), this.setting, this.data);
-            while (true) {
-                var nodes = this.ztree.getNodesByFilter(function (node) {
-                    return (!node.node && node.children.length < 1);
+            };
+            this.renderChildren = function (list, level) {
+                var childrens = [];
+                for (var i in list) childrens.push({
+                    open: true, node: list[i].node, name: list[i].title || list[i].node,
+                    checked: list[i].checked || false, children: this.renderChildren(list[i]._sub_, level + 1)
                 });
-                if (nodes.length < 1) break;
-                for (var i in nodes) this.ztree.removeNode(nodes[i]);
-            }
+                return childrens;
+            };
+            this.getData = function () {
+                $.form.load('{:url("apply")}', {id: '{$vo.id}', action: 'get'}, 'post', function (ret) {
+                    return (that.data = that.renderChildren(ret.data, 1)), that.showTree(), false;
+                });
+            };
+            this.showTree = function () {
+                this.ztree = $.fn.zTree.init($("#zTree"), this.setting, this.data);
+                while (true) {
+                    var nodes = this.ztree.getNodesByFilter(function (node) {
+                        return (!node.node && node.children.length < 1);
+                    });
+                    if (nodes.length < 1) break;
+                    for (var i in nodes) this.ztree.removeNode(nodes[i]);
+                }
+            };
+            this.submit = function () {
+                var nodes = [], data = this.ztree.getCheckedNodes(true);
+                for (var i in data) if (data[i].node) nodes.push(data[i].node);
+                $.form.load('{:url("apply")}', {id: '{$vo.id}', action: 'save', nodes: nodes}, 'post');
+            };
+            // 刷新数据
+            this.getData();
+            // 提交表单
+            $('[data-submit-role]').on('click', function () {
+                that.submit();
+            });
         };
-        this.submit = function () {
-            var nodes = [], data = this.ztree.getCheckedNodes(true);
-            for (var i in data) if (data[i].node) nodes.push(data[i].node);
-            $.form.load('{:url("apply")}', {id: '{$vo.id}', action: 'save', nodes: nodes}, 'post');
-        };
-        // 刷新数据
-        this.getData(this);
-        // 提交表单
-        $('[data-submit-role]').on('click', function () {
-            RoleAction.submit();
-        });
-    };
+    });
 </script>
 {/block}
 
 {block name="style"}
-<link href="__ROOT__/static/plugs/ztree/zTreeStyle/zTreeStyle.css" rel="stylesheet">
-<script src="__ROOT__/static/plugs/ztree/ztree.all.min.js"></script>
 <style>
     ul.ztree li {
         white-space: normal !important;
