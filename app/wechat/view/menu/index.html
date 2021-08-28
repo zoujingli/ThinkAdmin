@@ -29,13 +29,13 @@
         </ul>
     </div>
 
-    <div class="absolute inline-block layui-card margin-left-10" style="border:1px solid #ccc;height:578px;width:570px">
+    <div class="absolute inline-block layui-card margin-left-10" style="height:578px;width:570px">
         <div class="layui-card-header layui-bg-gray text-center">菜单编辑</div>
         <div class="layui-card-body" ng-if="list.length<1">
             <blockquote class="layui-elem-quote border-0 text-center">请在左侧创建菜单...</blockquote>
         </div>
         <div class="layui-card-body" ng-if="list.length>0">
-            <form class="layui-form menu-form" autocomplete="off" style="padding-right:80px;">
+            <form class="layui-form menu-form padding-right-40" autocomplete="off">
                 <div class="layui-form-item margin-top-20">
                     <label class="layui-form-label">菜单名称</label>
                     <div class="layui-input-block">
@@ -117,9 +117,7 @@
         angular.bootstrap(document.getElementById(app.name), [app.name]);
 
         function callback($rootScope) {
-            $rootScope.item = {};
-            $rootScope.list = [];
-            $rootScope.keys = [];
+            $rootScope.item = {}, $rootScope.list = [], $rootScope.keys = [];
             $.form.load('{:url("index")}', {output: 'json'}, 'get', function (ret) {
                 return $rootScope.$apply(function () {
                     $rootScope.keys = ret.data.keysdata || [];
