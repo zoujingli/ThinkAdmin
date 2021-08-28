@@ -97,7 +97,7 @@
 
     <div class="text-center margin-top-20">
         {if auth("push")}
-        <button class="layui-btn menu-submit" ng-click="submit()">保存发布</button>
+        <button ng-click="submit()" class="layui-btn menu-submit">保存发布</button>
         {/if}
         {if auth("cancel")}
         <button data-load='{:url("cancel")}' class="layui-btn layui-btn-danger">取消发布</button>
