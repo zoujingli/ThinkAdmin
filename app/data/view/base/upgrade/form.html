@@ -71,7 +71,7 @@
         <fieldset class="layui-form-item">
             <legend><span class="layui-badge layui-bg-cyan">升级条件</span></legend>
             <div class="font-s13 relative">
-                <div class="layui-form-item">
+                <div>
                     <label class="think-checkbox notselect">
                         {if isset($vo.goods_vip_status) and $vo.goods_vip_status eq 1}
                         ① <input checked lay-ignore name="goods_vip_status" type="checkbox" value="1">开启
@@ -81,8 +81,7 @@
                         需要 <span class="color-blue">购买入会礼包</span> 达成升级；
                     </label>
                 </div>
-
-                <div class="layui-form-item">
+                <div>
                     <label class="think-checkbox notselect">
                         {if isset($vo.teams_direct_status) and $vo.teams_direct_status eq 1}
                         ② <input checked lay-ignore name="teams_direct_status" type="checkbox" value="1">开启
@@ -94,8 +93,7 @@
                         人；
                     </label>
                 </div>
-
-                <div class="layui-form-item">
+                <div>
                     <label class="think-checkbox notselect">
                         {if isset($vo.teams_indirect_status) and $vo.teams_indirect_status eq 1}
                         ③ <input checked lay-ignore name="teams_indirect_status" type="checkbox" value="1">开启
@@ -107,8 +105,7 @@
                         人；
                     </label>
                 </div>
-
-                <div class="layui-form-item">
+                <div>
                     <label class="think-checkbox notselect">
                         {if isset($vo.teams_users_status) and $vo.teams_users_status eq 1}
                         ④ <input checked lay-ignore name="teams_users_status" type="checkbox" value="1">开启
@@ -120,7 +117,7 @@
                         人；
                     </label>
                 </div>
-                <div class="layui-form-item">
+                <div>
                     <label class="think-checkbox notselect">
                         {if isset($vo.order_amount_status) and $vo.order_amount_status eq 1}
                         ⑤ <input checked lay-ignore name="order_amount_status" type="checkbox" value="1">开启
