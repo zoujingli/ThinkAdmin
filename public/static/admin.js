@@ -645,12 +645,12 @@ $(function () {
             });
 
             function showTags(tagsArr) {
-                $(tagsArr).each(function (idx, text, element) {
-                    element = $('<div class="layui-tag"></div>').html(text + '<i class="layui-icon">&#x1006;</i>');
-                    element.on('click', 'i', function (tagText, tagIndex) {
-                        tagText = $(this).parent().text(), tagIndex = tags.indexOf(tagText);
-                        tags.splice(tagIndex, 1), $(this).parent().remove(), $this.val(tags.join(','));
-                    }), $tags.append(element, $text);
+                $(tagsArr).each(function (idx, text, elem) {
+                    elem = $('<div class="layui-tag"></div>').html(text + '<i class="layui-icon">&#x1006;</i>');
+                    elem.on('click', 'i', function (tagText, tagIdx) {
+                        tagText = $(this).parent().text(), tagIdx = tags.indexOf(tagText);
+                        tags.splice(tagIdx, 1), $(this).parent().remove(), $this.val(tags.join(','));
+                    }), $tags.append(elem, $text);
                 });
             }
         });
@@ -664,11 +664,11 @@ $(function () {
                 var selection = document.selection.createRange();
                 (selection.text = value), selection.select();
             } else if (this.selectionStart || this.selectionStart === 0) {
-                var startPos = this.selectionStart, afterPos = this.selectionEnd, scrollTop = this.scrollTop;
+                var startPos = this.selectionStart, afterPos = this.selectionAfter, scrollTop = this.scrollTop;
                 this.value = this.value.substring(0, startPos) + value + this.value.substring(afterPos, this.value.length);
                 if (scrollTop > 0) this.scrollTop = scrollTop;
                 this.focus();
-                this.selectionEnd = startPos + value.length;
+                this.selectionAfter = startPos + value.length;
                 this.selectionStart = startPos + value.length;
             } else (this.value += value), this.focus();
         });
@@ -977,12 +977,13 @@ $(function () {
 
     /*! 异步任务状态监听与展示 */
     onEvent('click', '[data-queue]', function (e) {
+        var that = this;
         (function (confirm, callable) {
             confirm ? $.msg.confirm(confirm, callable) : callable();
-        })(e.currentTarget.dataset.confirm, function () {
-            $.form.load(e.currentTarget.dataset.queue, {}, 'post', function (ret) {
+        })(this.dataset.confirm, function () {
+            $.form.load(that.dataset.queue, {}, 'post', function (ret) {
                 if (typeof ret.data === 'string' && ret.data.indexOf('Q') === 0) {
-                    return $.loadQueue(ret.data, true, e.currentTarget), false;
+                    return $.loadQueue(ret.data, true, that), false;
                 }
             });
         });
@@ -990,26 +991,21 @@ $(function () {
 
     /*! 注册 data-tips-text 事件行为 */
     onEvent('mouseenter', '[data-tips-text]', function () {
-        var opts = {tips: [$(this).attr('data-tips-type') || 3, '#78BA32'], time: 0}, that = this;
-        $(this).attr('index', layer.tips($(this).attr('data-tips-text') || this.innerText, this, opts));
+        var opts = {tips: [$(this).attr('data-tips-type') || 3, '#78BA32'], time: 0};
+        var layidx = layer.tips($(this).attr('data-tips-text') || this.innerText, this, opts);
         $(this).off('mouseleave').on('mouseleave', function () {
-            setTimeout(function () {
-                layer.close($(that).attr('index'));
-            }, 100);
+            setTimeout("layui.layer.close('" + layidx + "')", 100);
         });
     });
 
     /*! 注册 data-tips-image Hover 事件 */
     onEvent('mouseenter', '[data-tips-image][data-tips-hover]', function () {
-        var img = new Image(), that = this;
+        var img = new Image(), that = this, layidx;
         img.referrerPolicy = 'no-referrer', img.style.maxWidth = '260px', img.style.maxHeight = '260px';
         img.src = this.dataset.tipsImage || this.dataset.lazySrc || this.src, img.onload = function () {
-            $(that).attr('index', layer.tips(img.outerHTML, that, {time: 0, skin: 'layui-layer-image', anim: 5, isOutAnim: false, scrollbar: false}));
-        };
-        $(this).off('mouseleave').on('mouseleave', function () {
-            setTimeout(function () {
-                layer.close($(that).attr('index'));
-            }, 100);
+            layidx = layer.tips(img.outerHTML, that, {time: 0, skin: 'layui-layer-image', anim: 5, isOutAnim: false, scrollbar: false});
+        }, $(this).off('mouseleave').on('mouseleave', function () {
+            setTimeout("layui.layer.close('" + layidx + "')", 100);
         });
     });
 
@@ -1032,9 +1028,7 @@ $(function () {
 
     /*! 延时关闭加载动画 */
     window.addEventListener('load', function () {
-        setTimeout(function () {
-            $('body>.think-page-loader').fadeOut();
-        }, 200);
+        setTimeout("$('body>.think-page-loader').fadeOut()", 200);
     }, true);
 
     /*! 图片加载异常处理 */

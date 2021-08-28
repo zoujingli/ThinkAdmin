@@ -2,7 +2,7 @@
 
 {block name="button"}
 <!--{if auth("remove")}-->
-<button data-action='{:url("remove")}' data-rule="id#{id}" data-table-id="oplogData" data-confirm="确定要删除选中的日志吗？" class='layui-btn layui-btn-sm layui-btn-primary'>批量删除</button>
+<button data-action='{:url("remove")}' data-rule="id#{id}" data-table-id="OplogData" data-confirm="确定要删除选中的日志吗？" class='layui-btn layui-btn-sm layui-btn-primary'>批量删除</button>
 <!--{/if}-->
 <!--{if auth("clear")}-->
 <button data-load='{:url("clear")}' data-confirm="确定要清空所有日志吗？" class='layui-btn layui-btn-sm layui-btn-primary'>清空日志</button>
@@ -12,25 +12,25 @@
 {block name="content"}
 <div class="think-box-shadow">
     {include file='oplog/index_search'}
-    <table id="oplogData" data-url="{:sysuri()}" data-target-search="form.form-search"></table>
+    <table id="OplogData" data-url="{:sysuri()}" data-target-search="form.form-search"></table>
 </div>
 {/block}
 
 {block name='script'}
 <script>
     $(function () {
-        $('#oplogData').layTable({
+        $('#OplogData').layTable({
             even: true, height: 'full',
             sort: {field: 'id', type: 'desc'},
             cols: [[
                 {checkbox: true},
                 {field: 'id', title: 'ID', width: 80, sort: true, align: 'center'},
                 {field: 'username', title: '操作账号', minWidth: 100, sort: true, align: 'center'},
-                {field: 'node', title: '操作节点', minWidth: 120, sort: true},
-                {field: 'action', title: '操作行为', minWidth: 120, sort: true},
-                {field: 'content', title: '操作描述', minWidth: 120, sort: false},
-                {field: 'geoip', title: '访问地址', minWidth: 100, sort: true},
-                {field: 'geoisp', title: '网络服务商', minWidth: 100, sort: false},
+                {field: 'node', title: '操作节点', minWidth: 120},
+                {field: 'action', title: '操作行为', minWidth: 120},
+                {field: 'content', title: '操作描述', minWidth: 120},
+                {field: 'geoip', title: '访问地址', minWidth: 100},
+                {field: 'geoisp', title: '网络服务商', minWidth: 100},
                 {field: 'create_at', title: '操作时间', minWidth: 170, align: 'center', sort: true},
                 {toolbar: '#toolbar', title: '操作面板', align: 'center', fixed: 'right'}
             ]]
