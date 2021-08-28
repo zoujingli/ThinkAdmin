@@ -71,58 +71,67 @@
         <fieldset class="layui-form-item">
             <legend><span class="layui-badge layui-bg-cyan">升级条件</span></legend>
             <div class="font-s13 relative">
-                <label class="layui-form-item think-checkbox block relative notselect">
-                    {if isset($vo.goods_vip_status) and $vo.goods_vip_status eq 1}
-                    ① <input checked lay-ignore name="goods_vip_status" type="checkbox" value="1">开启
-                    {else}
-                    ① <input lay-ignore name="goods_vip_status" type="checkbox" value="1">开启
-                    {/if}
-                    需要 <span class="color-blue">购买入会礼包</span> 达成升级；
-                </label>
+                <div class="layui-form-item">
+                    <label class="think-checkbox notselect">
+                        {if isset($vo.goods_vip_status) and $vo.goods_vip_status eq 1}
+                        ① <input checked lay-ignore name="goods_vip_status" type="checkbox" value="1">开启
+                        {else}
+                        ① <input lay-ignore name="goods_vip_status" type="checkbox" value="1">开启
+                        {/if}
+                        需要 <span class="color-blue">购买入会礼包</span> 达成升级；
+                    </label>
+                </div>
 
-                <label class="layui-form-item block relative think-checkbox notselect">
-                    {if isset($vo.teams_direct_status) and $vo.teams_direct_status eq 1}
-                    ② <input checked lay-ignore name="teams_direct_status" type="checkbox" value="1">开启
-                    {else}
-                    ② <input lay-ignore name="teams_direct_status" type="checkbox" value="1">开启
-                    {/if}
-                    <span class="color-blue">直推团队</span> 升级，<span class="color-blue">直推团队</span> 达到
-                    <input class="inline-block text-center" data-blur-number="0" name="teams_direct_number" style="width:80px" value="{$vo.teams_direct_number|default='0'}">
-                    人；
-                </label>
+                <div class="layui-form-item">
+                    <label class="think-checkbox notselect">
+                        {if isset($vo.teams_direct_status) and $vo.teams_direct_status eq 1}
+                        ② <input checked lay-ignore name="teams_direct_status" type="checkbox" value="1">开启
+                        {else}
+                        ② <input lay-ignore name="teams_direct_status" type="checkbox" value="1">开启
+                        {/if}
+                        <span class="color-blue">直推团队</span> 升级，<span class="color-blue">直推团队</span> 达到
+                        <input class="inline-block text-center" data-blur-number="0" name="teams_direct_number" style="width:80px" value="{$vo.teams_direct_number|default='0'}">
+                        人；
+                    </label>
+                </div>
 
-                <label class="layui-form-item block relative think-checkbox notselect">
-                    {if isset($vo.teams_indirect_status) and $vo.teams_indirect_status eq 1}
-                    ③ <input checked lay-ignore name="teams_indirect_status" type="checkbox" value="1">开启
-                    {else}
-                    ③ <input lay-ignore name="teams_indirect_status" type="checkbox" value="1">开启
-                    {/if}
-                    <span class="color-blue">间接团队</span> 升级，<span class="color-blue">间接团队</span> 达到
-                    <input class="inline-block text-center" data-blur-number="0" name="teams_indirect_number" style="width:80px" value="{$vo.teams_indirect_number|default='0'}">
-                    人；
-                </label>
+                <div class="layui-form-item">
+                    <label class="think-checkbox notselect">
+                        {if isset($vo.teams_indirect_status) and $vo.teams_indirect_status eq 1}
+                        ③ <input checked lay-ignore name="teams_indirect_status" type="checkbox" value="1">开启
+                        {else}
+                        ③ <input lay-ignore name="teams_indirect_status" type="checkbox" value="1">开启
+                        {/if}
+                        <span class="color-blue">间接团队</span> 升级，<span class="color-blue">间接团队</span> 达到
+                        <input class="inline-block text-center" data-blur-number="0" name="teams_indirect_number" style="width:80px" value="{$vo.teams_indirect_number|default='0'}">
+                        人；
+                    </label>
+                </div>
 
-                <label class="layui-form-item block relative think-checkbox notselect">
-                    {if isset($vo.teams_users_status) and $vo.teams_users_status eq 1}
-                    ④ <input checked lay-ignore name="teams_users_status" type="checkbox" value="1">开启
-                    {else}
-                    ④ <input lay-ignore name="teams_users_status" type="checkbox" value="1">开启
-                    {/if}
-                    <span class="color-blue">团队总数</span> 升级，<span class="color-blue">团队总数</span> 达到
-                    <input class="inline-block text-center" data-blur-number="0" name="teams_users_number" style="width:80px" value="{$vo.teams_users_number|default='0'}">
-                    人；
-                </label>
-
-                <label class="layui-form-item block relative think-checkbox notselect">
-                    {if isset($vo.order_amount_status) and $vo.order_amount_status eq 1}
-                    ⑤ <input checked lay-ignore name="order_amount_status" type="checkbox" value="1">开启
-                    {else}
-                    ⑤ <input lay-ignore name="order_amount_status" type="checkbox" value="1">开启
-                    {/if}
-                    <span class="color-blue">订单总额</span> 升级，<span class="color-blue">订单总额</span> 达到
-                    <input class="inline-block text-center" data-blur-number="2" name="order_amount_number" style="width:80px" value="{$vo.order_amount_number|default='0'}">
-                    元；
-                </label>
+                <div class="layui-form-item">
+                    <label class="think-checkbox notselect">
+                        {if isset($vo.teams_users_status) and $vo.teams_users_status eq 1}
+                        ④ <input checked lay-ignore name="teams_users_status" type="checkbox" value="1">开启
+                        {else}
+                        ④ <input lay-ignore name="teams_users_status" type="checkbox" value="1">开启
+                        {/if}
+                        <span class="color-blue">团队总数</span> 升级，<span class="color-blue">团队总数</span> 达到
+                        <input class="inline-block text-center" data-blur-number="0" name="teams_users_number" style="width:80px" value="{$vo.teams_users_number|default='0'}">
+                        人；
+                    </label>
+                </div>
+                <div class="layui-form-item">
+                    <label class="think-checkbox notselect">
+                        {if isset($vo.order_amount_status) and $vo.order_amount_status eq 1}
+                        ⑤ <input checked lay-ignore name="order_amount_status" type="checkbox" value="1">开启
+                        {else}
+                        ⑤ <input lay-ignore name="order_amount_status" type="checkbox" value="1">开启
+                        {/if}
+                        <span class="color-blue">订单总额</span> 升级，<span class="color-blue">订单总额</span> 达到
+                        <input class="inline-block text-center" data-blur-number="2" name="order_amount_number" style="width:80px" value="{$vo.order_amount_number|default='0'}">
+                        元；
+                    </label>
+                </div>
                 <div data-level-zero class="layui-hide notselect">默认等级，无需配置升级规则</div>
             </div>
         </fieldset>
