@@ -43,12 +43,14 @@
                 {field: 'sort', title: '排序权重', width: 100, align: 'center', sort: true, templet: '#SortInputTpl'},
                 {field: 'username', title: '登录账号', minWidth: 110, templet: '<div>{{d.username||"-"}}</div>'},
                 {field: 'nickname', title: '用户名称', minWidth: 110, templet: '<div>{{d.nickname||"-"}}</div>'},
+                /* {notempty name='bases'} */
                 {
                     field: 'usertype', title: '角色身份', minWidth: 140, sort: true, templet: function (d) {
                         d.userinfo = d.userinfo || {};
                         return d.userinfo.code ? (d.userinfo.name + ' ( ' + d.userinfo.code + ' ) ') : '';
                     }
                 },
+                /* {/notempty} */
                 // {field: 'contact_mail', title: '联系邮箱', minWidth: 80, templet: '<div>{{d.contact_mail||"-"}}</div>'},
                 // {field: 'contact_phone', title: '联系电话', minWidth: 80, templet: '<div>{{d.contact_phone||"-"}}</div>'},
                 {field: 'status', title: '账号状态', align: 'center', minWidth: 110, templet: '#StatusSwitchTpl'},
