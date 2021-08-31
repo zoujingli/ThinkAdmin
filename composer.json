@@ -14,6 +14,7 @@
       "email": "zoujingli@qq.com"
     }
   ],
+  "minimum-stability": "stable",
   "require": {
     "php": ">=7.1.0",
     "ext-gd": "*",
@@ -44,12 +45,5 @@
       "@php think service:discover",
       "@php think vendor:publish"
     ]
-  },
-  "minimum-stability": "stable",
-  "repositories": {
-    "packagist": {
-      "type": "composer",
-      "url": "https://mirrors.aliyun.com/composer"
-    }
   }
 }
