@@ -15,10 +15,11 @@
 // +----------------------------------------------------------------------
 
 use think\admin\service\SystemService;
+use think\App;
 
-invoke(function (\think\App $app) {
+invoke(function (App $app) {
     /*! 非开发环境，清理限制文件 */
-    if (!SystemService::instance()->checkRunMode('dev')) {
+    if ($app->request->isGet() && !SystemService::instance()->checkRunMode()) {
         @unlink("{$app->getBasePath()}admin/controller/api/Update.php");
         @unlink("{$app->getBasePath()}admin/route/demo.php");
         @rmdir("{$app->getBasePath()}admin/route");
