@@ -19,8 +19,6 @@ namespace app\wechat\command;
 use app\wechat\service\FansService;
 use app\wechat\service\WechatService;
 use think\admin\Command;
-use think\console\Input;
-use think\console\Output;
 
 /**
  * 微信粉丝管理指令
@@ -29,12 +27,6 @@ use think\console\Output;
  */
 class Fans extends Command
 {
-    /**
-     * 需要处理的模块
-     * @var array
-     */
-    protected $module = ['list', 'black', 'tags'];
-
     /**
      * 配置指令
      */
@@ -45,19 +37,19 @@ class Fans extends Command
     }
 
     /**
-     * 执行指令
-     * @param Input $input
-     * @param Output $output
+     * 任务执行处理
+     * @throws \WeChat\Exceptions\InvalidResponseException
+     * @throws \WeChat\Exceptions\LocalCacheException
      * @throws \think\admin\Exception
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\DbException
+     * @throws \think\db\exception\ModelNotFoundException
      */
-    protected function execute(Input $input, Output $output)
+    public function handle()
     {
-        $message = '';
-        foreach ($this->module as $m) {
-            if (method_exists($this, $method = "_{$m}")) {
-                $message .= $this->$method();
-            }
-        }
+        $message = $this->_list();
+        $message .= $this->_tags();
+        $message .= $this->_black();
         $this->setQueueSuccess($message);
     }
 
@@ -110,18 +102,15 @@ class Fans extends Command
      */
     public function _black(string $next = '', int $done = 0): string
     {
-        $wechat = WechatService::WeChatUser();
-        $this->output->comment('开始更新黑名单的微信用户');
-        [$map, $data] = [['is_black' => 0], ['is_black' => 1]];
+        $this->setQueueProgress("开始更新黑名单的微信用户");
+        [$map, $data, $wechat] = [['is_black' => 0], ['is_black' => 1], WechatService::WeChatUser()];
         while (!is_null($next) && is_array($result = $wechat->getBlackList($next)) && !empty($result['data']['openid'])) {
-            $done += $result['count'];
             foreach (array_chunk($result['data']['openid'], 100) as $chunk) {
                 $this->app->db->name('WechatFans')->where($map)->whereIn('openid', $chunk)->update($data);
             }
-            $this->setQueueProgress("--> 共计同步微信黑名单{$result['total']}人");
             $next = $result['total'] > $done ? $result['next_openid'] : null;
         }
-        $this->output->comment($done > 0 ? '黑名单的微信用户更新成功' : '未获取到黑名单微信用户哦');
+        $this->setQueueProgress('完成更新黑名单的微信用户', null, -1);
         $this->output->newLine();
         if (empty($result['total'])) {
             return ', 其中黑名单 0 人';
