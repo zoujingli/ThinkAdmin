@@ -173,8 +173,11 @@ $(function () {
         this.page = {
             $body: $('body>.think-page-loader'),
             $main: $('.think-page-body+.think-page-loader'),
+            stat: function () {
+                return that.page.$body.is(':visible');
+            },
             show: function () {
-                that.page.$body.is(':visible') || that.page.$main.removeClass('layui-hide').show();
+                this.stat() || that.page.$main.removeClass('layui-hide').show();
             },
             hide: function () {
                 if (that.page.time) clearTimeout(that.page.time);
@@ -339,8 +342,7 @@ $(function () {
         };
         /*! 通过 URI 查询最有可能的菜单 NODE */
         this.queryNode = function (url, node) {
-            node = node || location.href.replace(/.*spm=([\d\-m]+).*/ig, '$1');
-            if (!/^m-/.test(node)) {
+            if (!/^m-/.test(node = node || location.href.replace(/.*spm=([\d\-m]+).*/ig, '$1'))) {
                 var $menu = $('[data-menu-node][data-open*="' + url.replace(/\.html$/ig, '') + '"]');
                 return $menu.size() ? $menu.get(0).dataset.menuNode : '';
             }
@@ -379,10 +381,11 @@ $(function () {
             });
             /*! Mini 菜单模式时TIPS文字显示 */
             $('[data-target-tips]').mouseenter(function () {
-                if ($menu.hasClass(miniClass)) $(this).attr('index', layer.tips(this.dataset.targetTips || '', this, {time: 0}));
-                $(this).mouseleave(function () {
-                    layer.close($(this).attr('index'));
-                });
+                if ($menu.hasClass(miniClass)) (function (idx) {
+                    $(this).mouseleave(function () {
+                        layer.close(idx);
+                    });
+                }).call(this, layer.tips(this.dataset.targetTips || '', this, {time: 0}));
             });
             /*!  左则二级菜单展示 */
             $('[data-submenu-layout]>a').on('click', function () {
@@ -390,8 +393,8 @@ $(function () {
             });
             /*! 同步二级菜单展示状态 */
             this.syncOpenStatus = function (mode) {
-                $('[data-submenu-layout]').map(function (node) {
-                    node = this.dataset.submenuLayout;
+                $('[data-submenu-layout]').map(function () {
+                    var node = this.dataset.submenuLayout;
                     if (mode === 1) {
                         layui.data('admin-menu-stat', {key: node, value: $(this).hasClass('layui-nav-itemed') ? 2 : 1});
                     } else if ((layui.data('admin-menu-stat')[node] || 2) === 2) {
@@ -399,13 +402,13 @@ $(function () {
                     }
                 });
             };
-            window.onhashchange = function (hash, node) {
-                hash = location.hash || '';
+            window.onhashchange = function () {
+                var hash = location.hash || '', node;
                 if (hash.length < 1) return $('[data-menu-node]:first').trigger('click');
-                $.msg.page.show(), $.form.load(hash, {}, 'get', $.msg.page.hide, false), that.syncOpenStatus(2);
+                // $.msg.page.show(),$.form.load(hash, {}, 'get', $.msg.page.hide, true),that.syncOpenStatus(2);
+                $.form.load(hash, {}, 'get', false, !$.msg.page.stat()), that.syncOpenStatus(2);
                 /*! 菜单选择切换 */
-                node = node || that.queryNode(that.getUri());
-                if (/^m-/.test(node)) {
+                if (/^m-/.test(node = that.queryNode(that.getUri()))) {
                     var $all = $('a[data-menu-node]').parent(), tmp = node.split('-'), tmpNode = tmp.shift();
                     while (tmp.length > 0) {
                         tmpNode = tmpNode + '-' + tmp.shift();
@@ -418,7 +421,9 @@ $(function () {
                         $('[data-menu-layout]').not($('[data-menu-layout="' + _node + '"]').removeClass('layui-hide')).addClass('layui-hide');
                         $('[data-menu-node="' + node + '"]').parent().parent().parent().addClass('layui-nav-itemed');
                         $('.layui-layout-admin').removeClass('layui-layout-left-hide');
-                    } else $('.layui-layout-admin').addClass('layui-layout-left-hide');
+                    } else {
+                        $('.layui-layout-admin').addClass('layui-layout-left-hide');
+                    }
                     that.syncOpenStatus(1);
                 }
             };
@@ -976,7 +981,7 @@ $(function () {
     });
 
     /*! 异步任务状态监听与展示 */
-    onEvent('click', '[data-queue]', function (e) {
+    onEvent('click', '[data-queue]', function () {
         var that = this;
         (function (confirm, callable) {
             confirm ? $.msg.confirm(confirm, callable) : callable();
