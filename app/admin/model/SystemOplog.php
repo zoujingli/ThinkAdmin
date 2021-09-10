@@ -19,24 +19,12 @@ namespace app\admin\model;
 use think\admin\Model;
 
 /**
- * 系统菜单模型
- * Class SystemMenu
+ * 系统日志模型
+ * Class SystemOplog
  * @package app\admin\model
  */
-class SystemMenu extends Model
+class SystemOplog extends Model
 {
-    /**
-     * 日志名称
-     * @var string
-     */
-    protected $oplogName = '系统菜单';
-
-    /**
-     * 日志类型
-     * @var string
-     */
-    protected $oplogType = '系统菜单管理';
-
     /**
      * 格式化创建时间
      * @param string $value

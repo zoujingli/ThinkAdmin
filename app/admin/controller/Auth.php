@@ -17,9 +17,14 @@
 namespace app\admin\controller;
 
 use app\admin\model\SystemAuth;
+use app\admin\model\SystemNode;
+use ReflectionException;
 use think\admin\Controller;
 use think\admin\helper\QueryHelper;
 use think\admin\service\AdminService;
+use think\db\exception\DataNotFoundException;
+use think\db\exception\DbException;
+use think\db\exception\ModelNotFoundException;
 
 /**
  * 系统权限管理
@@ -32,9 +37,9 @@ class Auth extends Controller
      * 系统权限管理
      * @auth true
      * @menu true
-     * @throws \think\db\exception\DataNotFoundException
-     * @throws \think\db\exception\DbException
-     * @throws \think\db\exception\ModelNotFoundException
+     * @throws DataNotFoundException
+     * @throws DbException
+     * @throws ModelNotFoundException
      */
     public function index()
     {
@@ -48,9 +53,9 @@ class Auth extends Controller
     /**
      * 添加系统权限
      * @auth true
-     * @throws \think\db\exception\DataNotFoundException
-     * @throws \think\db\exception\DbException
-     * @throws \think\db\exception\ModelNotFoundException
+     * @throws DataNotFoundException
+     * @throws DbException
+     * @throws ModelNotFoundException
      */
     public function add()
     {
@@ -60,9 +65,9 @@ class Auth extends Controller
     /**
      * 编辑系统权限
      * @auth true
-     * @throws \think\db\exception\DataNotFoundException
-     * @throws \think\db\exception\DbException
-     * @throws \think\db\exception\ModelNotFoundException
+     * @throws DataNotFoundException
+     * @throws DbException
+     * @throws ModelNotFoundException
      */
     public function edit()
     {
@@ -72,7 +77,7 @@ class Auth extends Controller
     /**
      * 修改权限状态
      * @auth true
-     * @throws \think\db\exception\DbException
+     * @throws DbException
      */
     public function state()
     {
@@ -85,7 +90,7 @@ class Auth extends Controller
     /**
      * 删除系统权限
      * @auth true
-     * @throws \think\db\exception\DbException
+     * @throws DbException
      */
     public function remove()
     {
@@ -95,25 +100,26 @@ class Auth extends Controller
     /**
      * 权限配置节点
      * @auth true
-     * @throws \ReflectionException
-     * @throws \think\db\exception\DataNotFoundException
-     * @throws \think\db\exception\DbException
-     * @throws \think\db\exception\ModelNotFoundException
+     * @throws ReflectionException
+     * @throws DataNotFoundException
+     * @throws DbException
+     * @throws ModelNotFoundException
      */
     public function apply()
     {
         $map = $this->_vali(['auth.require#id' => '权限ID不能为空！']);
         if (input('action') === 'get') {
-            if ($this->app->isDebug()) AdminService::instance()->clearCache();
-            $checkeds = $this->app->db->name('SystemAuthNode')->where($map)->column('node');
-            $this->success('获取权限节点成功！', AdminService::instance()->getTree($checkeds));
+            $admin = AdminService::instance();
+            if ($this->app->isDebug()) $admin->clearCache();
+            $nodes = SystemNode::mk()->where($map)->column('node');
+            $this->success('获取权限节点成功！', $admin->getTree($nodes));
         } elseif (input('action') === 'save') {
             [$post, $data] = [$this->request->post(), []];
             foreach ($post['nodes'] ?? [] as $node) {
                 $data[] = ['auth' => $map['auth'], 'node' => $node];
             }
-            $this->app->db->name('SystemAuthNode')->where($map)->delete();
-            $this->app->db->name('SystemAuthNode')->insertAll($data);
+            SystemNode::mk()->where($map)->delete();
+            SystemNode::mk()->insertAll($data);
             sysoplog('系统权限管理', "配置系统权限[{$map['auth']}]授权成功");
             $this->success('访问权限修改成功！', 'javascript:history.back()');
         } else {

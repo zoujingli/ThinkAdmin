@@ -16,9 +16,13 @@
 
 namespace app\admin\controller\api;
 
+use Exception;
 use think\admin\Controller;
 use think\admin\service\AdminService;
 use think\admin\service\QueueService;
+use think\db\exception\DataNotFoundException;
+use think\db\exception\DbException;
+use think\db\exception\ModelNotFoundException;
 use think\exception\HttpResponseException;
 
 /**
@@ -32,9 +36,9 @@ class Queue extends Controller
      * 任务进度查询
      * @login true
      * @throws \think\admin\Exception
-     * @throws \think\db\exception\DataNotFoundException
-     * @throws \think\db\exception\DbException
-     * @throws \think\db\exception\ModelNotFoundException
+     * @throws DataNotFoundException
+     * @throws DbException
+     * @throws ModelNotFoundException
      */
     public function progress()
     {
@@ -61,7 +65,7 @@ class Queue extends Controller
             }
         } catch (HttpResponseException $exception) {
             throw $exception;
-        } catch (\Exception $exception) {
+        } catch (Exception $exception) {
             $this->error($exception->getMessage());
         }
     }
@@ -84,7 +88,7 @@ class Queue extends Controller
             }
         } catch (HttpResponseException $exception) {
             throw $exception;
-        } catch (\Exception $exception) {
+        } catch (Exception $exception) {
             $this->error($exception->getMessage());
         }
     }
@@ -102,7 +106,7 @@ class Queue extends Controller
             } else {
                 echo '<span class="color-red">' . $message . '</span>';
             }
-        } catch (\Exception $exception) {
+        } catch (Exception $exception) {
             echo '<span class="color-red">' . $exception->getMessage() . '</span>';
         } else {
             echo '<span class="color-red">只有超级管理员才能操作！</span>';

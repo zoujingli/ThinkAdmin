@@ -17,6 +17,9 @@
 namespace app\admin\model;
 
 use think\admin\Model;
+use think\db\exception\DataNotFoundException;
+use think\db\exception\DbException;
+use think\db\exception\ModelNotFoundException;
 
 /**
  * 用户权限模型
@@ -38,13 +41,25 @@ class SystemAuth extends Model
     protected $oplogType = '系统权限管理';
 
     /**
+     * 获取权限数据
+     * @return array
+     * @throws DataNotFoundException
+     * @throws DbException
+     * @throws ModelNotFoundException
+     */
+    public function items(): array
+    {
+        return $this->where(['status' => 1])->order('sort desc,id desc')->select()->toArray();
+    }
+
+    /**
      * 删除权限事件
      * @param string $ids
      */
     public function onAdminDelete(string $ids)
     {
         if (count($aids = str2arr($ids ?? '')) > 0) {
-            M('SystemAuthNode')->whereIn('auth', $aids)->delete();
+            SystemNode::mk()->whereIn('auth', $aids)->delete();
         }
         sysoplog($this->oplogType, "删除{$this->oplogName}[{$ids}]及授权配置");
     }

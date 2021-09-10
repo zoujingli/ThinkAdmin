@@ -19,23 +19,17 @@ namespace app\admin\model;
 use think\admin\Model;
 
 /**
- * 系统菜单模型
- * Class SystemMenu
+ * 授权节点模型
+ * Class SystemNode
  * @package app\admin\model
  */
-class SystemMenu extends Model
+class SystemNode extends Model
 {
     /**
-     * 日志名称
+     * 绑定模型名称
      * @var string
      */
-    protected $oplogName = '系统菜单';
-
-    /**
-     * 日志类型
-     * @var string
-     */
-    protected $oplogType = '系统菜单管理';
+    protected $name = 'SystemAuthNode';
 
     /**
      * 格式化创建时间

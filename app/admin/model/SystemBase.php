@@ -19,12 +19,24 @@ namespace app\admin\model;
 use think\admin\Model;
 
 /**
- * 数据字典数据模型
+ * 数据字典模型
  * Class SystemBase
  * @package app\admin\model
  */
 class SystemBase extends Model
 {
+    /**
+     * 日志名称
+     * @var string
+     */
+    protected $oplogName = '数据字典';
+
+    /**
+     * 日志类型
+     * @var string
+     */
+    protected $oplogType = '数据字典管理';
+
     /**
      * 获取指定数据列表
      * @param string $type 数据类型

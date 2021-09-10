@@ -19,7 +19,7 @@ namespace app\admin\model;
 use think\admin\Model;
 
 /**
- * 系统用户数据模型
+ * 系统用户模型
  * Class SystemUser
  * @package app\admin\model
  */

@@ -16,11 +16,15 @@
 
 namespace app\admin\controller;
 
+use app\admin\model\SystemAuth;
 use app\admin\model\SystemBase;
 use app\admin\model\SystemUser;
 use think\admin\Controller;
 use think\admin\helper\QueryHelper;
 use think\admin\service\AdminService;
+use think\db\exception\DataNotFoundException;
+use think\db\exception\DbException;
+use think\db\exception\ModelNotFoundException;
 
 /**
  * 系统用户管理
@@ -30,31 +34,16 @@ use think\admin\service\AdminService;
 class User extends Controller
 {
     /**
-     * 超级用户名称
-     * @var string
-     */
-    protected $superName;
-
-    /**
-     * 控制器初始化
-     */
-    protected function initialize()
-    {
-        // 超级用户名称
-        $this->superName = AdminService::instance()->getSuperName();
-    }
-
-    /**
      * 系统用户管理
      * @auth true
      * @menu true
-     * @throws \think\db\exception\DataNotFoundException
-     * @throws \think\db\exception\DbException
-     * @throws \think\db\exception\ModelNotFoundException
+     * @throws DataNotFoundException
+     * @throws DbException
+     * @throws ModelNotFoundException
      */
     public function index()
     {
-        $this->type = input('type', 'index');
+        $this->type = input('get.type', 'index');
         $this->_query(SystemUser::class)->layTable(function () {
             $this->title = '系统用户管理';
             $this->bases = SystemBase::mk()->items('身份权限');
@@ -83,9 +72,9 @@ class User extends Controller
     /**
      * 添加系统用户
      * @auth true
-     * @throws \think\db\exception\DataNotFoundException
-     * @throws \think\db\exception\DbException
-     * @throws \think\db\exception\ModelNotFoundException
+     * @throws DataNotFoundException
+     * @throws DbException
+     * @throws ModelNotFoundException
      */
     public function add()
     {
@@ -95,9 +84,9 @@ class User extends Controller
     /**
      * 编辑系统用户
      * @auth true
-     * @throws \think\db\exception\DataNotFoundException
-     * @throws \think\db\exception\DbException
-     * @throws \think\db\exception\ModelNotFoundException
+     * @throws DataNotFoundException
+     * @throws DbException
+     * @throws ModelNotFoundException
      */
     public function edit()
     {
@@ -107,9 +96,9 @@ class User extends Controller
     /**
      * 修改用户密码
      * @auth true
-     * @throws \think\db\exception\DataNotFoundException
-     * @throws \think\db\exception\DbException
-     * @throws \think\db\exception\ModelNotFoundException
+     * @throws DataNotFoundException
+     * @throws DbException
+     * @throws ModelNotFoundException
      */
     public function pass()
     {
@@ -137,9 +126,9 @@ class User extends Controller
     /**
      * 表单数据处理
      * @param array $data
-     * @throws \think\db\exception\DataNotFoundException
-     * @throws \think\db\exception\DbException
-     * @throws \think\db\exception\ModelNotFoundException
+     * @throws DataNotFoundException
+     * @throws DbException
+     * @throws ModelNotFoundException
      */
     protected function _form_filter(array &$data)
     {
@@ -161,20 +150,20 @@ class User extends Controller
                 $data['password'] = md5($data['username']);
             }
         } else {
-            // 用户身份数据
-            $this->bases = SystemBase::mk()->items('身份权限');
             // 权限绑定处理
             $data['authorize'] = str2arr($data['authorize'] ?? '');
+            // 用户身份数据
+            $this->bases = SystemBase::mk()->items('身份权限');
             // 用户权限管理
-            $query = $this->app->db->name('SystemAuth')->where(['status' => 1]);
-            $this->authorizes = $query->order('sort desc,id desc')->select()->toArray();
+            $this->superName = AdminService::instance()->getSuperName();
+            $this->authorizes = SystemAuth::mk()->items();
         }
     }
 
     /**
      * 修改用户状态
      * @auth true
-     * @throws \think\db\exception\DbException
+     * @throws DbException
      */
     public function state()
     {
@@ -188,7 +177,7 @@ class User extends Controller
     /**
      * 删除系统用户
      * @auth true
-     * @throws \think\db\exception\DbException
+     * @throws DbException
      */
     public function remove()
     {

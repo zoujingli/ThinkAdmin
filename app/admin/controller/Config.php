@@ -23,6 +23,9 @@ use think\admin\service\SystemService;
 use think\admin\storage\AliossStorage;
 use think\admin\storage\QiniuStorage;
 use think\admin\storage\TxcosStorage;
+use think\db\exception\DataNotFoundException;
+use think\db\exception\DbException;
+use think\db\exception\ModelNotFoundException;
 
 /**
  * 系统参数配置
@@ -47,9 +50,9 @@ class Config extends Controller
     /**
      * 修改系统参数
      * @auth true
-     * @throws \think\db\exception\DataNotFoundException
-     * @throws \think\db\exception\DbException
-     * @throws \think\db\exception\ModelNotFoundException
+     * @throws DataNotFoundException
+     * @throws DbException
+     * @throws ModelNotFoundException
      */
     public function system()
     {
@@ -76,18 +79,22 @@ class Config extends Controller
     /**
      * 修改文件存储
      * @auth true
-     * @throws \think\db\exception\DataNotFoundException
-     * @throws \think\db\exception\DbException
-     * @throws \think\db\exception\ModelNotFoundException
+     * @throws DataNotFoundException
+     * @throws DbException
+     * @throws ModelNotFoundException
      */
     public function storage()
     {
         $this->_applyFormToken();
         if ($this->request->isGet()) {
             $this->type = input('type', 'local');
-            if ($this->type === 'alioss') $this->points = AliossStorage::region();
-            elseif ($this->type === 'qiniu') $this->points = QiniuStorage::region();
-            elseif ($this->type === 'txcos') $this->points = TxcosStorage::region();
+            if ($this->type === 'alioss') {
+                $this->points = AliossStorage::region();
+            } elseif ($this->type === 'qiniu') {
+                $this->points = QiniuStorage::region();
+            } elseif ($this->type === 'txcos') {
+                $this->points = TxcosStorage::region();
+            }
             $this->fetch("storage-{$this->type}");
         } else {
             $post = $this->request->post();

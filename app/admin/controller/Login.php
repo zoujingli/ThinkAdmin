@@ -16,11 +16,15 @@
 
 namespace app\admin\controller;
 
+use app\admin\model\SystemUser;
 use think\admin\Controller;
 use think\admin\extend\CodeExtend;
 use think\admin\service\AdminService;
 use think\admin\service\CaptchaService;
 use think\admin\service\SystemService;
+use think\db\exception\DataNotFoundException;
+use think\db\exception\DbException;
+use think\db\exception\ModelNotFoundException;
 
 /**
  * 用户登录管理
@@ -32,9 +36,9 @@ class Login extends Controller
 
     /**
      * 后台登录入口
-     * @throws \think\db\exception\DataNotFoundException
-     * @throws \think\db\exception\DbException
-     * @throws \think\db\exception\ModelNotFoundException
+     * @throws DataNotFoundException
+     * @throws DbException
+     * @throws ModelNotFoundException
      */
     public function index()
     {
@@ -45,12 +49,12 @@ class Login extends Controller
                 $this->title = '系统登录';
                 $this->captchaType = 'LoginCaptcha';
                 $this->captchaToken = CodeExtend::uniqidDate(18);
-                $this->devmode = SystemService::instance()->checkRunMode('dev');
+                $this->devmode = SystemService::instance()->checkRunMode();
                 // 刷新当前后台域名
                 $host = "{$this->request->scheme()}://{$this->request->host()}";
                 if ($host !== sysconf('base.site_host')) sysconf('base.site_host', $host);
                 // 标记登录验证令牌
-                if (!$this->app->session->get('login_input_session_error')) {
+                if (!$this->app->session->get('LoginInputSessionError')) {
                     $this->app->session->set($this->captchaType, $this->captchaToken);
                 }
                 $this->fetch();
@@ -68,22 +72,23 @@ class Login extends Controller
                 $this->error('图形验证码验证失败，请重新输入!');
             }
             /*! 用户信息验证 */
-            $map = ['username' => $data['username'], 'is_deleted' => '0'];
-            $user = $this->app->db->name('SystemUser')->where($map)->order('id desc')->find();
+            $map = ['username' => $data['username'], 'is_deleted' => 0];
+            $user = SystemUser::mk()->where($map)->find();
             if (empty($user)) {
-                $this->app->session->set("login_input_session_error", true);
-                $this->error('登录账号或密码错误，请重新输入!');
-            }
-            if (md5("{$user['password']}{$data['uniqid']}") !== $data['password']) {
-                $this->app->session->set("login_input_session_error", true);
+                $this->app->session->set("LoginInputSessionError", true);
                 $this->error('登录账号或密码错误，请重新输入!');
             }
             if (empty($user['status'])) {
+                $this->app->session->set("LoginInputSessionError", true);
                 $this->error('账号已经被禁用，请联系管理员!');
             }
-            $this->app->session->set('user', $user);
-            $this->app->session->delete("login_input_session_error");
-            $this->app->db->name('SystemUser')->where(['id' => $user['id']])->update([
+            if (md5("{$user['password']}{$data['uniqid']}") !== $data['password']) {
+                $this->app->session->set("LoginInputSessionError", true);
+                $this->error('登录账号或密码错误，请重新输入!');
+            }
+            $this->app->session->set('user', $user->toArray());
+            $this->app->session->delete("LoginInputSessionError");
+            $user->save([
                 'login_ip'  => $this->app->request->ip(),
                 'login_at'  => $this->app->db->raw('now()'),
                 'login_num' => $this->app->db->raw('login_num+1'),

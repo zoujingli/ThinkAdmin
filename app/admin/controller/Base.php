@@ -19,6 +19,9 @@ namespace app\admin\controller;
 use app\admin\model\SystemBase;
 use think\admin\Controller;
 use think\admin\helper\QueryHelper;
+use think\db\exception\DataNotFoundException;
+use think\db\exception\DbException;
+use think\db\exception\ModelNotFoundException;
 
 /**
  * 数据字典管理
@@ -28,18 +31,12 @@ use think\admin\helper\QueryHelper;
 class Base extends Controller
 {
     /**
-     * 绑定数据表
-     * @var string
-     */
-    protected $table = 'SystemBase';
-
-    /**
      * 数据字典管理
      * @auth true
      * @menu true
-     * @throws \think\db\exception\DataNotFoundException
-     * @throws \think\db\exception\DbException
-     * @throws \think\db\exception\ModelNotFoundException
+     * @throws DataNotFoundException
+     * @throws DbException
+     * @throws ModelNotFoundException
      */
     public function index()
     {
@@ -56,25 +53,25 @@ class Base extends Controller
     /**
      * 添加数据字典
      * @auth true
-     * @throws \think\db\exception\DataNotFoundException
-     * @throws \think\db\exception\DbException
-     * @throws \think\db\exception\ModelNotFoundException
+     * @throws DataNotFoundException
+     * @throws DbException
+     * @throws ModelNotFoundException
      */
     public function add()
     {
-        $this->_form($this->table, 'form');
+        $this->_form(SystemBase::class, 'form');
     }
 
     /**
      * 编辑数据字典
      * @auth true
-     * @throws \think\db\exception\DataNotFoundException
-     * @throws \think\db\exception\DbException
-     * @throws \think\db\exception\ModelNotFoundException
+     * @throws DataNotFoundException
+     * @throws DbException
+     * @throws ModelNotFoundException
      */
     public function edit()
     {
-        $this->_form($this->table, 'form');
+        $this->_form(SystemBase::class, 'form');
     }
 
     /**
@@ -93,7 +90,7 @@ class Base extends Controller
             $map[] = ['code', '=', $data['code']];
             $map[] = ['type', '=', $data['type']];
             if (isset($data['id'])) $map[] = ['id', '<>', $data['id']];
-            if ($this->app->db->name($this->table)->where($map)->count() > 0) {
+            if (SystemBase::mk()->where($map)->count() > 0) {
                 $this->error("同类型的数据编码已经存在！");
             }
         }
@@ -102,20 +99,20 @@ class Base extends Controller
     /**
      * 修改数据状态
      * @auth true
-     * @throws \think\db\exception\DbException
+     * @throws DbException
      */
     public function state()
     {
-        $this->_save($this->table);
+        $this->_save(SystemBase::class);
     }
 
     /**
      * 删除数据记录
      * @auth true
-     * @throws \think\db\exception\DbException
+     * @throws DbException
      */
     public function remove()
     {
-        $this->_delete($this->table);
+        $this->_delete(SystemBase::class);
     }
 }

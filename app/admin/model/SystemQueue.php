@@ -19,13 +19,12 @@ namespace app\admin\model;
 use think\admin\Model;
 
 /**
- * 系统任务数据模型
+ * 系统任务模型
  * Class SystemQueue
  * @package app\admin\model
  */
 class SystemQueue extends Model
 {
-
     /**
      * 格式化计划时间
      * @param float $value

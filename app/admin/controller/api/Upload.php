@@ -16,12 +16,16 @@
 
 namespace app\admin\controller\api;
 
+use Exception;
 use think\admin\Controller;
 use think\admin\Storage;
 use think\admin\storage\AliossStorage;
 use think\admin\storage\LocalStorage;
 use think\admin\storage\QiniuStorage;
 use think\admin\storage\TxcosStorage;
+use think\db\exception\DataNotFoundException;
+use think\db\exception\DbException;
+use think\db\exception\ModelNotFoundException;
 use think\exception\HttpResponseException;
 use think\file\UploadedFile;
 use think\Response;
@@ -37,9 +41,9 @@ class Upload extends Controller
     /**
      * 文件上传脚本
      * @return Response
-     * @throws \think\db\exception\DataNotFoundException
-     * @throws \think\db\exception\DbException
-     * @throws \think\db\exception\ModelNotFoundException
+     * @throws DataNotFoundException
+     * @throws DbException
+     * @throws ModelNotFoundException
      */
     public function index(): Response
     {
@@ -57,9 +61,9 @@ class Upload extends Controller
      * 文件上传检查
      * @login true
      * @throws \think\admin\Exception
-     * @throws \think\db\exception\DataNotFoundException
-     * @throws \think\db\exception\DbException
-     * @throws \think\db\exception\ModelNotFoundException
+     * @throws DataNotFoundException
+     * @throws DbException
+     * @throws ModelNotFoundException
      */
     public function state()
     {
@@ -99,9 +103,9 @@ class Upload extends Controller
     /**
      * 文件上传入口
      * @login true
-     * @throws \think\db\exception\DataNotFoundException
-     * @throws \think\db\exception\DbException
-     * @throws \think\db\exception\ModelNotFoundException
+     * @throws DataNotFoundException
+     * @throws DbException
+     * @throws ModelNotFoundException
      */
     public function file()
     {
@@ -148,7 +152,7 @@ class Upload extends Controller
             }
         } catch (HttpResponseException $exception) {
             throw $exception;
-        } catch (\Exception $exception) {
+        } catch (Exception $exception) {
             $this->error($exception->getMessage());
         }
     }
@@ -165,9 +169,9 @@ class Upload extends Controller
     /**
      * 获取文件上传方式
      * @return string
-     * @throws \think\db\exception\DataNotFoundException
-     * @throws \think\db\exception\DbException
-     * @throws \think\db\exception\ModelNotFoundException
+     * @throws DataNotFoundException
+     * @throws DbException
+     * @throws ModelNotFoundException
      */
     private function getType(): string
     {
@@ -194,7 +198,7 @@ class Upload extends Controller
             }
         } catch (HttpResponseException $exception) {
             throw $exception;
-        } catch (\Exception $exception) {
+        } catch (Exception $exception) {
             $this->error(lang($exception->getMessage()));
         }
     }

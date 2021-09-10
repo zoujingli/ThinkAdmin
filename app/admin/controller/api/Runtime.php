@@ -16,6 +16,7 @@
 
 namespace app\admin\controller\api;
 
+use Exception;
 use think\admin\Controller;
 use think\admin\service\AdminService;
 use think\admin\service\SystemService;
@@ -42,7 +43,7 @@ class Runtime extends Controller
             $this->success('网站缓存加速成功！', 'javascript:location.reload()');
         } catch (HttpResponseException $exception) {
             throw $exception;
-        } catch (\Exception $exception) {
+        } catch (Exception $exception) {
             $this->error($exception->getMessage());
         } else {
             $this->error('只有超级管理员才能操作！');
@@ -62,7 +63,7 @@ class Runtime extends Controller
             $this->success('清空缓存日志成功！', 'javascript:location.reload()');
         } catch (HttpResponseException $exception) {
             throw $exception;
-        } catch (\Exception $exception) {
+        } catch (Exception $exception) {
             $this->error($exception->getMessage());
         } else {
             $this->error('只有超级管理员才能操作！');
@@ -110,7 +111,7 @@ class Runtime extends Controller
             $this->success('清理系统配置成功！', 'javascript:location.reload()');
         } catch (HttpResponseException $exception) {
             throw $exception;
-        } catch (\Exception $exception) {
+        } catch (Exception $exception) {
             $this->error($exception->getMessage());
         } else {
             $this->error('只有超级管理员才能操作！');

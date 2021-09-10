@@ -17,11 +17,15 @@
 namespace app\admin\controller;
 
 use app\admin\model\SystemQueue;
+use Exception;
 use think\admin\Controller;
 use think\admin\helper\QueryHelper;
 use think\admin\service\AdminService;
 use think\admin\service\ProcessService;
 use think\admin\service\QueueService;
+use think\db\exception\DataNotFoundException;
+use think\db\exception\DbException;
+use think\db\exception\ModelNotFoundException;
 use think\exception\HttpResponseException;
 
 /**
@@ -31,20 +35,13 @@ use think\exception\HttpResponseException;
  */
 class Queue extends Controller
 {
-
-    /**
-     * 绑定数据表
-     * @var string
-     */
-    private $table = 'SystemQueue';
-
     /**
      * 系统任务管理
      * @auth true
      * @menu true
-     * @throws \think\db\exception\DataNotFoundException
-     * @throws \think\db\exception\DbException
-     * @throws \think\db\exception\ModelNotFoundException
+     * @throws DataNotFoundException
+     * @throws DbException
+     * @throws ModelNotFoundException
      */
     public function index()
     {
@@ -62,8 +59,7 @@ class Queue extends Controller
             }
             // 任务状态统计
             $this->total = ['dos' => 0, 'pre' => 0, 'oks' => 0, 'ers' => 0];
-            $query = $this->app->db->name($this->table)->field('status,count(1) count');
-            $query->group('status')->select()->map(function ($item) {
+            SystemQueue::mk()->field('status,count(1) count')->group('status')->select()->map(function ($item) {
                 if ($item['status'] === 1) $this->total['pre'] = $item['count'];
                 if ($item['status'] === 2) $this->total['dos'] = $item['count'];
                 if ($item['status'] === 3) $this->total['oks'] = $item['count'];
@@ -88,19 +84,8 @@ class Queue extends Controller
             $this->success('任务重置成功！', $queue->code);
         } catch (HttpResponseException $exception) {
             throw $exception;
-        } catch (\Exception $exception) {
+        } catch (Exception $exception) {
             $this->error($exception->getMessage());
-        }
-    }
-
-    /**
-     * 重启任务结果处理
-     * @param boolean $state
-     */
-    protected function _redo_save_result(bool $state)
-    {
-        if ($state) {
-            $this->success('重启任务成功！');
         }
     }
 
@@ -116,10 +101,10 @@ class Queue extends Controller
     /**
      * 删除系统任务
      * @auth true
-     * @throws \think\db\exception\DbException
+     * @throws DbException
      */
     public function remove()
     {
-        $this->_delete($this->table);
+        $this->_delete(SystemQueue::class);
     }
 }

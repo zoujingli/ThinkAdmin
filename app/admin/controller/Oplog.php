@@ -16,10 +16,14 @@
 
 namespace app\admin\controller;
 
+use app\admin\model\SystemOplog;
 use Exception;
+use Ip2Region;
 use think\admin\Controller;
 use think\admin\helper\QueryHelper;
-use think\admin\service\AdminService;
+use think\db\exception\DataNotFoundException;
+use think\db\exception\DbException;
+use think\db\exception\ModelNotFoundException;
 use think\exception\HttpResponseException;
 
 /**
@@ -40,18 +44,16 @@ class Oplog extends Controller
      * 系统日志管理
      * @auth true
      * @menu true
-     * @throws \think\db\exception\DataNotFoundException
-     * @throws \think\db\exception\DbException
-     * @throws \think\db\exception\ModelNotFoundException
+     * @throws DataNotFoundException
+     * @throws DbException
+     * @throws ModelNotFoundException
      */
     public function index()
     {
-        $this->_query($this->table)->layTable(function () {
+        $this->_query(SystemOplog::class)->layTable(function () {
             $this->title = '系统日志管理';
-            $this->isSupper = AdminService::instance()->isSuper();
-            // 读取数据类型
-            $this->users = $this->app->db->name($this->table)->distinct(true)->column('username');
-            $this->actions = $this->app->db->name($this->table)->distinct(true)->column('action');
+            $this->users = SystemOplog::mk()->distinct(true)->column('username');
+            $this->actions = SystemOplog::mk()->distinct(true)->column('action');
         }, function (QueryHelper $query) {
             // 数据列表处理
             $query->dateBetween('create_at')->equal('username,action')->like('content,geoip,node');
@@ -66,11 +68,10 @@ class Oplog extends Controller
      */
     protected function _index_page_filter(array &$data)
     {
-        $region = new \Ip2Region();
+        $region = new Ip2Region();
         foreach ($data as &$vo) {
             $isp = $region->btreeSearch($vo['geoip']);
             $vo['geoisp'] = str_replace(['内网IP', '0', '|'], '', $isp['region'] ?? '') ?: '-';
-            $vo['create_at'] = format_datetime($vo['create_at']);
         }
     }
 
@@ -81,7 +82,7 @@ class Oplog extends Controller
     public function clear()
     {
         try {
-            $this->_query($this->table)->empty();
+            $this->_query(SystemOplog::class)->empty();
             sysoplog('系统运维管理', '成功清理所有日志数据');
             $this->success('日志清理成功！');
         } catch (HttpResponseException $exception) {
@@ -94,10 +95,10 @@ class Oplog extends Controller
     /**
      * 删除系统日志
      * @auth true
-     * @throws \think\db\exception\DbException
+     * @throws DbException
      */
     public function remove()
     {
-        $this->_delete($this->table);
+        $this->_delete(SystemOplog::class);
     }
 }
