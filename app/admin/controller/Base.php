@@ -19,9 +19,6 @@ namespace app\admin\controller;
 use app\admin\model\SystemBase;
 use think\admin\Controller;
 use think\admin\helper\QueryHelper;
-use think\db\exception\DataNotFoundException;
-use think\db\exception\DbException;
-use think\db\exception\ModelNotFoundException;
 
 /**
  * 数据字典管理
@@ -34,9 +31,9 @@ class Base extends Controller
      * 数据字典管理
      * @auth true
      * @menu true
-     * @throws DataNotFoundException
-     * @throws DbException
-     * @throws ModelNotFoundException
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\DbException
+     * @throws \think\db\exception\ModelNotFoundException
      */
     public function index()
     {
@@ -53,9 +50,9 @@ class Base extends Controller
     /**
      * 添加数据字典
      * @auth true
-     * @throws DataNotFoundException
-     * @throws DbException
-     * @throws ModelNotFoundException
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\DbException
+     * @throws \think\db\exception\ModelNotFoundException
      */
     public function add()
     {
@@ -65,9 +62,9 @@ class Base extends Controller
     /**
      * 编辑数据字典
      * @auth true
-     * @throws DataNotFoundException
-     * @throws DbException
-     * @throws ModelNotFoundException
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\DbException
+     * @throws \think\db\exception\ModelNotFoundException
      */
     public function edit()
     {
@@ -99,7 +96,7 @@ class Base extends Controller
     /**
      * 修改数据状态
      * @auth true
-     * @throws DbException
+     * @throws \think\db\exception\DbException
      */
     public function state()
     {
@@ -109,7 +106,7 @@ class Base extends Controller
     /**
      * 删除数据记录
      * @auth true
-     * @throws DbException
+     * @throws \think\db\exception\DbException
      */
     public function remove()
     {

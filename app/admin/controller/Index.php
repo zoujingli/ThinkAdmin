@@ -17,13 +17,9 @@
 namespace app\admin\controller;
 
 use app\admin\model\SystemUser;
-use ReflectionException;
 use think\admin\Controller;
 use think\admin\service\AdminService;
 use think\admin\service\MenuService;
-use think\db\exception\DataNotFoundException;
-use think\db\exception\DbException;
-use think\db\exception\ModelNotFoundException;
 
 /**
  * 后台界面入口
@@ -35,10 +31,10 @@ class Index extends Controller
 
     /**
      * 显示后台首页
-     * @throws ReflectionException
-     * @throws DataNotFoundException
-     * @throws DbException
-     * @throws ModelNotFoundException
+     * @throws \ReflectionException
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\DbException
+     * @throws \think\db\exception\ModelNotFoundException
      */
     public function index()
     {
@@ -62,9 +58,9 @@ class Index extends Controller
      * 修改用户资料
      * @login true
      * @param mixed $id 用户ID
-     * @throws DataNotFoundException
-     * @throws DbException
-     * @throws ModelNotFoundException
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\DbException
+     * @throws \think\db\exception\ModelNotFoundException
      */
     public function info($id = 0)
     {
@@ -91,9 +87,9 @@ class Index extends Controller
      * 修改当前用户密码
      * @login true
      * @param mixed $id
-     * @throws DataNotFoundException
-     * @throws DbException
-     * @throws ModelNotFoundException
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\DbException
+     * @throws \think\db\exception\ModelNotFoundException
      */
     public function pass($id = 0)
     {

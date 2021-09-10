@@ -18,13 +18,9 @@ namespace app\admin\controller;
 
 use app\admin\model\SystemAuth;
 use app\admin\model\SystemNode;
-use ReflectionException;
 use think\admin\Controller;
 use think\admin\helper\QueryHelper;
 use think\admin\service\AdminService;
-use think\db\exception\DataNotFoundException;
-use think\db\exception\DbException;
-use think\db\exception\ModelNotFoundException;
 
 /**
  * 系统权限管理
@@ -37,9 +33,9 @@ class Auth extends Controller
      * 系统权限管理
      * @auth true
      * @menu true
-     * @throws DataNotFoundException
-     * @throws DbException
-     * @throws ModelNotFoundException
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\DbException
+     * @throws \think\db\exception\ModelNotFoundException
      */
     public function index()
     {
@@ -53,9 +49,9 @@ class Auth extends Controller
     /**
      * 添加系统权限
      * @auth true
-     * @throws DataNotFoundException
-     * @throws DbException
-     * @throws ModelNotFoundException
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\DbException
+     * @throws \think\db\exception\ModelNotFoundException
      */
     public function add()
     {
@@ -65,9 +61,9 @@ class Auth extends Controller
     /**
      * 编辑系统权限
      * @auth true
-     * @throws DataNotFoundException
-     * @throws DbException
-     * @throws ModelNotFoundException
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\DbException
+     * @throws \think\db\exception\ModelNotFoundException
      */
     public function edit()
     {
@@ -77,7 +73,7 @@ class Auth extends Controller
     /**
      * 修改权限状态
      * @auth true
-     * @throws DbException
+     * @throws \think\db\exception\DbException
      */
     public function state()
     {
@@ -90,7 +86,7 @@ class Auth extends Controller
     /**
      * 删除系统权限
      * @auth true
-     * @throws DbException
+     * @throws \think\db\exception\DbException
      */
     public function remove()
     {
@@ -100,10 +96,10 @@ class Auth extends Controller
     /**
      * 权限配置节点
      * @auth true
-     * @throws ReflectionException
-     * @throws DataNotFoundException
-     * @throws DbException
-     * @throws ModelNotFoundException
+     * @throws \ReflectionException
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\DbException
+     * @throws \think\db\exception\ModelNotFoundException
      */
     public function apply()
     {

@@ -22,9 +22,6 @@ use app\admin\model\SystemUser;
 use think\admin\Controller;
 use think\admin\helper\QueryHelper;
 use think\admin\service\AdminService;
-use think\db\exception\DataNotFoundException;
-use think\db\exception\DbException;
-use think\db\exception\ModelNotFoundException;
 use think\model\Relation;
 
 /**
@@ -38,9 +35,9 @@ class User extends Controller
      * 系统用户管理
      * @auth true
      * @menu true
-     * @throws DataNotFoundException
-     * @throws DbException
-     * @throws ModelNotFoundException
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\DbException
+     * @throws \think\db\exception\ModelNotFoundException
      */
     public function index()
     {
@@ -68,9 +65,9 @@ class User extends Controller
     /**
      * 添加系统用户
      * @auth true
-     * @throws DataNotFoundException
-     * @throws DbException
-     * @throws ModelNotFoundException
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\DbException
+     * @throws \think\db\exception\ModelNotFoundException
      */
     public function add()
     {
@@ -80,9 +77,9 @@ class User extends Controller
     /**
      * 编辑系统用户
      * @auth true
-     * @throws DataNotFoundException
-     * @throws DbException
-     * @throws ModelNotFoundException
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\DbException
+     * @throws \think\db\exception\ModelNotFoundException
      */
     public function edit()
     {
@@ -92,9 +89,9 @@ class User extends Controller
     /**
      * 修改用户密码
      * @auth true
-     * @throws DataNotFoundException
-     * @throws DbException
-     * @throws ModelNotFoundException
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\DbException
+     * @throws \think\db\exception\ModelNotFoundException
      */
     public function pass()
     {
@@ -122,9 +119,9 @@ class User extends Controller
     /**
      * 表单数据处理
      * @param array $data
-     * @throws DataNotFoundException
-     * @throws DbException
-     * @throws ModelNotFoundException
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\DbException
+     * @throws \think\db\exception\ModelNotFoundException
      */
     protected function _form_filter(array &$data)
     {
@@ -159,7 +156,7 @@ class User extends Controller
     /**
      * 修改用户状态
      * @auth true
-     * @throws DbException
+     * @throws \think\db\exception\DbException
      */
     public function state()
     {
@@ -173,7 +170,7 @@ class User extends Controller
     /**
      * 删除系统用户
      * @auth true
-     * @throws DbException
+     * @throws \think\db\exception\DbException
      */
     public function remove()
     {

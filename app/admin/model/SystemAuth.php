@@ -17,9 +17,6 @@
 namespace app\admin\model;
 
 use think\admin\Model;
-use think\db\exception\DataNotFoundException;
-use think\db\exception\DbException;
-use think\db\exception\ModelNotFoundException;
 
 /**
  * 用户权限模型
@@ -43,9 +40,9 @@ class SystemAuth extends Model
     /**
      * 获取权限数据
      * @return array
-     * @throws DataNotFoundException
-     * @throws DbException
-     * @throws ModelNotFoundException
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\DbException
+     * @throws \think\db\exception\ModelNotFoundException
      */
     public function items(): array
     {

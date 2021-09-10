@@ -20,9 +20,6 @@ use Exception;
 use think\admin\Controller;
 use think\admin\service\AdminService;
 use think\admin\service\QueueService;
-use think\db\exception\DataNotFoundException;
-use think\db\exception\DbException;
-use think\db\exception\ModelNotFoundException;
 use think\exception\HttpResponseException;
 
 /**
@@ -36,9 +33,9 @@ class Queue extends Controller
      * 任务进度查询
      * @login true
      * @throws \think\admin\Exception
-     * @throws DataNotFoundException
-     * @throws DbException
-     * @throws ModelNotFoundException
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\DbException
+     * @throws \think\db\exception\ModelNotFoundException
      */
     public function progress()
     {

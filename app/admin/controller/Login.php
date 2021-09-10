@@ -22,9 +22,6 @@ use think\admin\extend\CodeExtend;
 use think\admin\service\AdminService;
 use think\admin\service\CaptchaService;
 use think\admin\service\SystemService;
-use think\db\exception\DataNotFoundException;
-use think\db\exception\DbException;
-use think\db\exception\ModelNotFoundException;
 
 /**
  * 用户登录管理
@@ -36,9 +33,9 @@ class Login extends Controller
 
     /**
      * 后台登录入口
-     * @throws DataNotFoundException
-     * @throws DbException
-     * @throws ModelNotFoundException
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\DbException
+     * @throws \think\db\exception\ModelNotFoundException
      */
     public function index()
     {

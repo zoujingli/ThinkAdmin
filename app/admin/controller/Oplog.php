@@ -17,13 +17,9 @@
 namespace app\admin\controller;
 
 use app\admin\model\SystemOplog;
-use Exception;
 use Ip2Region;
 use think\admin\Controller;
 use think\admin\helper\QueryHelper;
-use think\db\exception\DataNotFoundException;
-use think\db\exception\DbException;
-use think\db\exception\ModelNotFoundException;
 use think\exception\HttpResponseException;
 
 /**
@@ -37,9 +33,9 @@ class Oplog extends Controller
      * 系统日志管理
      * @auth true
      * @menu true
-     * @throws DataNotFoundException
-     * @throws DbException
-     * @throws ModelNotFoundException
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\DbException
+     * @throws \think\db\exception\ModelNotFoundException
      */
     public function index()
     {
@@ -57,7 +53,7 @@ class Oplog extends Controller
      * 列表数据处理
      * @auth true
      * @param array $data
-     * @throws Exception
+     * @throws \Exception
      */
     protected function _index_page_filter(array &$data)
     {
@@ -88,7 +84,7 @@ class Oplog extends Controller
     /**
      * 删除系统日志
      * @auth true
-     * @throws DbException
+     * @throws \think\db\exception\DbException
      */
     public function remove()
     {

@@ -23,9 +23,6 @@ use think\admin\helper\QueryHelper;
 use think\admin\service\AdminService;
 use think\admin\service\ProcessService;
 use think\admin\service\QueueService;
-use think\db\exception\DataNotFoundException;
-use think\db\exception\DbException;
-use think\db\exception\ModelNotFoundException;
 use think\exception\HttpResponseException;
 
 /**
@@ -39,9 +36,9 @@ class Queue extends Controller
      * 系统任务管理
      * @auth true
      * @menu true
-     * @throws DataNotFoundException
-     * @throws DbException
-     * @throws ModelNotFoundException
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\DbException
+     * @throws \think\db\exception\ModelNotFoundException
      */
     public function index()
     {
@@ -101,7 +98,7 @@ class Queue extends Controller
     /**
      * 删除系统任务
      * @auth true
-     * @throws DbException
+     * @throws \think\db\exception\DbException
      */
     public function remove()
     {
