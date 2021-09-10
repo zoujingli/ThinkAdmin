@@ -78,11 +78,11 @@ class Fans extends Controller
     public function black()
     {
         $data = $this->_vali([
-            'openid.require' => '操作用户不能为空！',
             'black.require'  => '操作类型不能为空！',
+            'openid.require' => '操作用户不能为空！',
         ]);
         try {
-            foreach (array_chunk(explode(',', $data['openid']), 20) as $openids) {
+            foreach (array_chunk(str2arr($data['openid']), 20) as $openids) {
                 if ($data['black']) {
                     WechatService::WeChatUser()->batchBlackList($openids);
                     $this->app->db->name('WechatFans')->whereIn('openid', $openids)->update(['is_black' => 1]);

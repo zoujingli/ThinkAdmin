@@ -38,7 +38,6 @@ class Login extends Controller
      */
     protected $prefix = 'wxlogin';
 
-
     /**
      * 扫描显示二维码
      * @throws \Endroid\QrCode\Exceptions\ImageFunctionFailedException

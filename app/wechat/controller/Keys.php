@@ -194,5 +194,4 @@ class Keys extends Controller
             $this->error('关键字保存失败, 请稍候再试！');
         }
     }
-
 }

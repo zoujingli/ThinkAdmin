@@ -47,7 +47,6 @@ class Push extends Controller
      */
     protected $encrypt;
 
-
     /**
      * 请求微信 OPENID
      * @var string
@@ -91,7 +90,7 @@ class Push extends Controller
      * 消息推送处理接口
      * @return string
      */
-    public function index()
+    public function index(): string
     {
         try {
             if (WechatService::instance()->getType() === 'thr') {

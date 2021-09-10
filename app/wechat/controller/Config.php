@@ -154,5 +154,4 @@ class Config extends Controller
             $this->error('抱歉，访问方式错误！');
         }
     }
-
 }
