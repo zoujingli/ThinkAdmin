@@ -25,6 +25,7 @@ use think\admin\service\AdminService;
 use think\db\exception\DataNotFoundException;
 use think\db\exception\DbException;
 use think\db\exception\ModelNotFoundException;
+use think\model\Relation;
 
 /**
  * 系统用户管理
@@ -44,7 +45,11 @@ class User extends Controller
     public function index()
     {
         $this->type = input('get.type', 'index');
-        $this->_query(SystemUser::class)->layTable(function () {
+        $this->_query(SystemUser::mk()->with([
+            'userinfo' => function (Relation $relation) {
+                $relation->field('code,name,content');
+            },
+        ]))->layTable(function () {
             $this->title = '系统用户管理';
             $this->bases = SystemBase::mk()->items('身份权限');
         }, function (QueryHelper $query) {
@@ -58,15 +63,6 @@ class User extends Controller
             $query->equal('status,usertype')->dateBetween('login_at,create_at');
             $query->like('username,nickname,contact_phone#phone,contact_mail#mail');
         });
-    }
-
-    /**
-     * 数据列表处理
-     * @param array $data
-     */
-    protected function _page_filter(array &$data)
-    {
-        SystemBase::mk()->items('身份权限', $data, 'usertype', 'userinfo');
     }
 
     /**

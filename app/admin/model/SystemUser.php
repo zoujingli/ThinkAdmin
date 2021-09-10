@@ -17,6 +17,7 @@
 namespace app\admin\model;
 
 use think\admin\Model;
+use think\model\relation\HasOne;
 
 /**
  * 系统用户模型
@@ -56,6 +57,17 @@ class SystemUser extends Model
         } else {
             return $query->column($fields, 'id');
         }
+    }
+
+    /**
+     * 关联身份权限
+     * @return HasOne
+     */
+    public function userinfo(): HasOne
+    {
+        return $this->hasOne(SystemBase::class, 'code', 'usertype')->where([
+            'type' => '身份权限', 'status' => 1, 'deleted' => 0,
+        ]);
     }
 
     /**

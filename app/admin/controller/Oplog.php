@@ -33,13 +33,6 @@ use think\exception\HttpResponseException;
  */
 class Oplog extends Controller
 {
-
-    /**
-     * 绑定数据表
-     * @var string
-     */
-    private $table = 'SystemOplog';
-
     /**
      * 系统日志管理
      * @auth true
