@@ -23,6 +23,7 @@
   border-radius: @BoxBorderRadius;
   letter-spacing: 1px;
   background-color: #f2f2f2;
+  border: 1px solid @InputBorderNormalColor;
 }
 
 .notselect {
@@ -71,12 +72,12 @@
   box-shadow: @ShadowMaxOuter;
 }
 
-.shadow-mini {
-  box-shadow: @ShadowMaxOuter;
-}
-
 .shadow-none {
   box-shadow: none !important;
+}
+
+.shadow-mini {
+  box-shadow: @ShadowMaxOuter;
 }
 
 .shadow-inset {
@@ -366,7 +367,7 @@ label.think-radio,
 label.think-checkbox {
   cursor: pointer;
   display: inline-block;
-  margin: 8px 10px 8px 6px !important;
+  margin: 8px 10px 8px 6px;
 }
 
 .think-radio,

@@ -528,14 +528,14 @@ fieldset {
     left: 0;
     right: 0;
     bottom: 0;
-    border: 1px solid #ccc;
     position: absolute;
-    background: #f5f5f5;
+    background: #F5F5F5;
     border-radius: 0 0 @BoxBorderRadius @BoxBorderRadius;
 
     iframe {
       width: 100%;
-      height: 100%
+      height: 100%;
+      border: none;
     }
   }
 
@@ -544,10 +544,8 @@ fieldset {
     right: 0;
     bottom: 0;
     position: absolute;
-    border: 1px solid #ccc;
-    padding-left: 43px;
+    padding-left: 44px;
     background: url(../img/wechat/mobile_foot.png) no-repeat 0 0;
-    list-style-type: none;
     border-radius: 0 0 @BoxBorderRadius @BoxBorderRadius;
 
     li {
@@ -560,31 +558,34 @@ fieldset {
       a {
         width: auto;
         color: #616161;
-        border: 1px solid hsla(0, 0%, 100%, 0);
         display: block;
         overflow: hidden;
         word-wrap: normal;
-        margin-top: -1px;
-        border-left: 1px solid #e7e7eb;
         white-space: nowrap;
         text-overflow: ellipsis;
-        margin-bottom: -1px;
         text-decoration: none;
+
+        &:after {
+          top: 0;
+          left: 0;
+          right: 0;
+          bottom: 0;
+          border: 1px solid rgb(208, 208, 208);
+          margin: 0 0 0 -1px;
+          z-index: 10;
+          content: '';
+          display: block;
+          position: absolute;
+        }
+
+        &.active:after {
+          border: 1px solid #44b549;
+          box-shadow: 0 0 1px #44b549;
+          z-index: 11;
+        }
 
         &:hover {
           background: rgba(0, 0, 0, .02)
-        }
-
-        &.active {
-          border: 1px solid #44b549 !important;
-          box-shadow: 0 0 1px #44b549
-        }
-
-        span:before {
-          width: 1px;
-          height: 1px;
-          content: '';
-          display: inline-block
         }
       }
 
@@ -596,16 +597,17 @@ fieldset {
         display: none;
         cursor: pointer;
         position: absolute;
+        z-index: 13;
         text-align: center;
-        line-height: 18px
+        line-height: 18px;
       }
 
       &:hover > .close {
         display: inline-block;
+        background: none !important;
 
         &:hover {
-          color: #fff !important;
-          background: #999 !important
+          color: #C33 !important;
         }
       }
     }
@@ -623,7 +625,6 @@ fieldset {
       &-add {
         width: 14px;
         height: 14px;
-        border-bottom: none !important;
         background: url(../img/wechat/index.png) 0 0 no-repeat
       }
 
@@ -638,31 +639,20 @@ fieldset {
     .sub-menu {
       width: 100%;
       bottom: 60px;
-      margin: -1px;
       display: block;
       position: absolute;
-      border: 1px solid #d0d0d0;
       background-color: #fafafa;
 
       ul li {
-        float: none;
         width: 100%;
         padding: 0;
-        z-index: 11;
-        display: block;
 
-        a {
-          padding: 0 5px;
-          border: 1px solid hsla(0, 0%, 100%, 0);
-
-          &.bottom-border {
-            margin: -1px -1px 0;
-            border-bottom: 1px solid #e7e7eb
-          }
+        > .close {
+          top: 0;
         }
 
-        &:last-child a.bottom-border {
-          border-bottom-color: #fff
+        a:after {
+          margin: -1px 0 0 0;
         }
       }
     }
@@ -673,7 +663,8 @@ fieldset {
       margin-left: -6px;
     }
 
-    .arrow_in, .arrow_out {
+    .arrow_in,
+    .arrow_out {
       width: 0;
       height: 0;
       z-index: 10;
@@ -685,13 +676,13 @@ fieldset {
 
     .arrow_in {
       bottom: -5px;
-      z-index: 3;
+      z-index: 11;
       border-top-color: #fafafa
     }
 
     .arrow_out {
       bottom: -6px;
-      z-index: 2;
+      z-index: 10;
       border-top-color: #d0d0d0
     }
   }

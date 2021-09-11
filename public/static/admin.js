@@ -62,6 +62,7 @@ require.config({
     baseUrl: baseRoot,
     map: {'*': {css: baseRoot + 'plugs/require/css.js'}},
     paths: {
+        'vue': ['plugs/iview/vue.min'],
         'md5': ['plugs/jquery/md5.min'],
         'json': ['plugs/jquery/json.min'],
         'xlsx': ['plugs/jquery/xlsx.min'],
@@ -136,8 +137,9 @@ $(function () {
     }
 
     /*! 消息组件实例 */
-    $.msg = new function (that) {
-        that = this, this.idx = [], this.shade = [0.02, '#000'];
+    $.msg = new function () {
+        var that = this;
+        this.idx = [], this.shade = [0.02, '#000'];
         /*! 关闭消息框 */
         this.close = function (index) {
             if (index !== null) return layer.close(index);
@@ -170,21 +172,19 @@ $(function () {
             return that.idx.push(idx), idx;
         };
         /*! 页面加载层 */
-        this.page = {
-            $body: $('body>.think-page-loader'),
-            $main: $('.think-page-body+.think-page-loader'),
-            stat: function () {
-                return that.page.$body.is(':visible');
-            },
-            show: function () {
-                this.stat() || that.page.$main.removeClass('layui-hide').show();
-            },
-            hide: function () {
-                if (that.page.time) clearTimeout(that.page.time);
-                that.page.time = setTimeout(function () {
+        this.page = new function () {
+            this.$body = $('body>.think-page-loader');
+            this.$main = $('.think-page-body+.think-page-loader');
+            this.stat = function () {
+                return this.$body.is(':visible');
+            }, this.show = function () {
+                this.stat() || this.$main.removeClass('layui-hide').show();
+            }, this.hide = function () {
+                if (this.time) clearTimeout(this.time);
+                this.time = setTimeout(function () {
                     (that.page.time = 0) || that.page.$main.fadeOut();
                 }, 200);
-            },
+            };
         };
         /*! 确认对话框 */
         this.confirm = function (msg, ok, no) {
@@ -210,8 +210,8 @@ $(function () {
     };
 
     /*! 表单自动化组件 */
-    $.form = new function (that) {
-        that = this;
+    $.form = new function () {
+        var that = this;
         /*! 内容区选择器 */
         this.selecter = '.layui-layout-admin>.layui-body>.think-page-body';
         /*! 刷新当前页面 */
@@ -270,15 +270,15 @@ $(function () {
                 data: data || {}, type: method || 'GET', url: $.menu.parseUri(url), beforeSend: function (xhr, i) {
                     if (typeof Pace === 'object' && loading !== false) Pace.restart();
                     if (typeof headers === 'object') for (i in headers) xhr.setRequestHeader(i, headers[i]);
-                }, error: function (XMLHttpRequest, $dialog, dialogIdx, iframe) {
+                }, error: function (XMLHttpRequest, $dialog, layIdx, iframe) {
                     if (parseInt(XMLHttpRequest.status) !== 200 && XMLHttpRequest.responseText.indexOf('Call Stack') > -1) try {
-                        dialogIdx = layer.open({title: XMLHttpRequest.status + ' - ' + XMLHttpRequest.statusText, type: 2, move: false, content: 'javascript:;'});
-                        layer.full(dialogIdx), $dialog = $('#layui-layer' + dialogIdx), iframe = $dialog.find('iframe').get(0);
+                        layIdx = layer.open({title: XMLHttpRequest.status + ' - ' + XMLHttpRequest.statusText, type: 2, move: false, content: 'javascript:;'});
+                        layer.full(layIdx), $dialog = $('#layui-layer' + layIdx), iframe = $dialog.find('iframe').get(0);
                         (iframe.contentDocument || iframe.contentWindow.document).write(XMLHttpRequest.responseText);
                         $dialog.find('.layui-layer-setwin').css({right: '35px', top: '28px'}).find('a').css({marginLeft: 0});
                         $dialog.find('.layui-layer-title').css({color: 'red', height: '70px', lineHeight: '70px', fontSize: '22px', textAlign: 'center', fontWeight: 700});
                     } catch (e) {
-                        layer.close(dialogIdx);
+                        layer.close(layIdx);
                     }
                     layer.closeAll('loading');
                     if (parseInt(XMLHttpRequest.status) !== 200) {
@@ -301,13 +301,13 @@ $(function () {
             if (url !== '#') location.hash = $.menu.parseUri(url, ele);
             else if (ele && ele.dataset.menuNode) $('[data-menu-node^="' + ele.dataset.menuNode + '-"]:first').trigger('click');
         };
-        /*! 加载 HTML 到目标位置 */
+        /*! 加载 HTML 到 BODY 位置 */
         this.open = function (url, data, call, load, tips) {
             this.load(url, data, 'get', function (ret) {
                 return (typeof ret === 'object' ? $.msg.auto(ret) : that.show(ret)), false;
             }, load, tips);
         };
-        /*! 打开一个iframe窗口 */
+        /*! 打开 IFRAME 窗口 */
         this.iframe = function (url, name, area, offset) {
             return layer.open({title: name || '窗口', type: 2, area: area || ['800px', '580px'], offset: offset, fixed: true, maxmin: false, content: url});
         };
@@ -316,14 +316,14 @@ $(function () {
             this.load(url, data, 'GET', function (res) {
                 if (typeof (res) === 'object') return $.msg.auto(res), false;
                 $.msg.idx.push(layer.open({
-                    type: 1, btn: false, area: area || "800px", content: res, title: name || '', offset: offset || 'auto', success: function ($dom, idx) {
-                        $dom.off('click', '[data-close]').on('click', '[data-close]', function () {
+                    type: 1, btn: false, area: area || "800px", resize: false, content: res, title: name || '', offset: offset || 'auto', success: function ($dom, idx) {
+                        $.form.reInit($dom.off('click', '[data-close]').on('click', '[data-close]', function () {
                             (function (confirm, callable) {
                                 confirm ? $.msg.confirm(confirm, callable) : callable();
                             })(this.dataset.confirm, function () {
                                 layer.close(idx);
                             });
-                        }), $.form.reInit($dom);
+                        }));
                     }
                 }));
                 return (typeof call === 'function') && call.call(that);
@@ -332,8 +332,8 @@ $(function () {
     };
 
     /*! 后台菜单辅助插件 */
-    $.menu = new function (that) {
-        that = this;
+    $.menu = new function () {
+        var that = this;
         /*! 计算 URL 地址中有效的 URI */
         this.getUri = function (uri) {
             uri = uri || location.href;
@@ -376,8 +376,7 @@ $(function () {
             (function (callable) {
                 $(window).on('resize', callable).trigger('resize');
             })(function () {
-                var typeMini = layui.data('admin-menu-type')['type-mini'] || false;
-                (typeMini || $body.width() < 1000) ? $menu.addClass(miniClass) : $menu.removeClass(miniClass);
+                (layui.data('admin-menu-type')['type-mini'] || $body.width() < 1000) ? $menu.addClass(miniClass) : $menu.removeClass(miniClass);
             });
             /*! Mini 菜单模式时TIPS文字显示 */
             $('[data-target-tips]').mouseenter(function () {
@@ -395,11 +394,8 @@ $(function () {
             this.syncOpenStatus = function (mode) {
                 $('[data-submenu-layout]').map(function () {
                     var node = this.dataset.submenuLayout;
-                    if (mode === 1) {
-                        layui.data('admin-menu-stat', {key: node, value: $(this).hasClass('layui-nav-itemed') ? 2 : 1});
-                    } else if ((layui.data('admin-menu-stat')[node] || 2) === 2) {
-                        $(this).addClass('layui-nav-itemed');
-                    }
+                    if (mode === 1) layui.data('admin-menu-stat', {key: node, value: $(this).hasClass('layui-nav-itemed') ? 2 : 1});
+                    else if ((layui.data('admin-menu-stat')[node] || 2) === 2) $(this).addClass('layui-nav-itemed');
                 });
             };
             window.onhashchange = function () {
@@ -505,7 +501,7 @@ $(function () {
             /*! 错误标签插入 */
             this.insertError = function (ele) {
                 if ($(ele).data('input-info')) return $(ele).data('input-info');
-                var $html = $('<span class="absolute block layui-anim text-center font-s12 notselect" style="color:#a44;z-index:2"></span>');
+                var $html = $('<span class="absolute block layui-anim text-center font-s12 notselect" style="color:#A44;z-index:2"></span>');
                 var $next = $(ele).nextAll('.input-right-icon'), right = ($next ? $next.width() + parseFloat($next.css('right') || '0') : 0) + 10;
                 var style = {top: $(ele).position().top + 'px', right: right + 'px', lineHeight: ele.nodeName === 'TEXTAREA' ? '32px' : $(ele).css('height')};
                 return $(ele).data('input-info', $html.css(style).insertAfter(ele)), $html;
@@ -758,9 +754,9 @@ $(function () {
     };
 
     /*! 以手机模式显示内容 */
-    $.previewPhonePage = function (href, title, template) {
-        template = '<div><div class="mobile-preview pull-left"><div class="mobile-header">_TITLE_</div><div class="mobile-body"><iframe id="phone-preview" src="_URL_" frameborder="0" marginheight="0" marginwidth="0"></iframe></div></div></div>';
-        layer.style(layer.open({type: true, scrollbar: false, area: ['320px', '600px'], title: false, closeBtn: true, shadeClose: false, skin: 'layui-layer-nobg', content: $(template.replace('_TITLE_', title || '公众号').replace('_URL_', href)).html()}), {boxShadow: 'none'});
+    $.previewPhonePage = function (href, title) {
+        var template = '<div class="mobile-preview"><div class="mobile-header">{{d.title}}</div><div class="mobile-body"><iframe src="{{d.url}}"></iframe></div></div>';
+        layer.style(layer.open({type: true, resize: false, scrollbar: false, area: ['320px', '600px'], title: false, closeBtn: true, shadeClose: false, skin: 'layui-layer-nobg', content: layui.laytpl(template).render({title: title || '公众号', url: href})}), {boxShadow: 'none'});
     };
 
     /*! 显示任务进度消息 */
@@ -1010,7 +1006,7 @@ $(function () {
         img.src = this.dataset.tipsImage || this.dataset.lazySrc || this.src, img.onload = function () {
             layidx = layer.tips(img.outerHTML, that, {time: 0, skin: 'layui-layer-image', anim: 5, isOutAnim: false, scrollbar: false});
         }, $(this).off('mouseleave').on('mouseleave', function () {
-            setTimeout("layui.layer.close('" + layidx + "')", 100);
+            layui.layer.close(layidx);
         });
     });
 
