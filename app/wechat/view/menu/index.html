@@ -96,12 +96,13 @@
     </div>
 
     <div class="text-center margin-top-20">
-        {if auth("push")}
+        <div class="hr-line-dashed margin-top-15 margin-bottom-15"></div>
+        <!--{if auth("push")}-->
         <button ng-click="submit()" class="layui-btn menu-submit">保存发布</button>
-        {/if}
-        {if auth("cancel")}
+        <!--{/if}-->
+        <!--{if auth("cancel")}-->
         <button data-load='{:url("cancel")}' class="layui-btn layui-btn-danger">取消发布</button>
-        {/if}
+        <!--{/if}-->
     </div>
 
 </div>
