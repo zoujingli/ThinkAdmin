@@ -999,15 +999,16 @@ $(function () {
         });
     });
 
-    /*! 注册 data-tips-image Hover 事件 */
+    /*! 注册 data-tips-hover 事件行为 */
     onEvent('mouseenter', '[data-tips-image][data-tips-hover]', function () {
         var img = new Image(), that = this, layidx;
         img.referrerPolicy = 'no-referrer', img.style.maxWidth = '260px', img.style.maxHeight = '260px';
         img.src = this.dataset.tipsImage || this.dataset.lazySrc || this.src, img.onload = function () {
-            layidx = layer.tips(img.outerHTML, that, {time: 0, skin: 'layui-layer-image', anim: 5, isOutAnim: false, scrollbar: false});
-        }, $(this).off('mouseleave').on('mouseleave', function () {
-            layui.layer.close(layidx);
-        });
+            layidx = layer.tips(img.outerHTML, that, {time: 0, skin: 'layui-layer-image', anim: 5, scrollbar: false});
+            $(that).off('mouseleave').on('mouseleave', function () {
+                layui.layer.close(layidx);
+            });
+        }
     });
 
     /*! 注册 data-tips-image 事件行为 */
