@@ -9,12 +9,6 @@ use think\admin\Exception;
 use think\admin\storage\LocalStorage;
 use think\console\Input;
 use think\console\Output;
-use think\db\exception\DataNotFoundException;
-use think\db\exception\DbException;
-use think\db\exception\ModelNotFoundException;
-use WeChat\Exceptions\InvalidDecryptException;
-use WeChat\Exceptions\InvalidResponseException;
-use WeChat\Exceptions\LocalCacheException;
 use WePay\Transfers;
 use WePay\TransfersBank;
 
@@ -36,8 +30,7 @@ class UserTransfer extends Command
      * @param Input $input
      * @param Output $output
      * @return void
-     * @throws Exception
-     * @throws DbException
+     * @throws \think\admin\Exception
      */
     protected function execute(Input $input, Output $output)
     {
@@ -89,13 +82,13 @@ class UserTransfer extends Command
      * 尝试提现转账到银行卡
      * @param array $item
      * @return array [config, result]
-     * @throws Exception
-     * @throws InvalidDecryptException
-     * @throws InvalidResponseException
-     * @throws LocalCacheException
-     * @throws DataNotFoundException
-     * @throws DbException
-     * @throws ModelNotFoundException
+     * @throws \WeChat\Exceptions\InvalidDecryptException
+     * @throws \WeChat\Exceptions\InvalidResponseException
+     * @throws \WeChat\Exceptions\LocalCacheException
+     * @throws \think\admin\Exception
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\DbException
+     * @throws \think\db\exception\ModelNotFoundException
      */
     private function createTransferBank(array $item): array
     {
@@ -114,10 +107,10 @@ class UserTransfer extends Command
      * 获取微信提现参数
      * @param int $uuid
      * @return array
-     * @throws Exception
-     * @throws DataNotFoundException
-     * @throws DbException
-     * @throws ModelNotFoundException
+     * @throws \think\admin\Exception
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\DbException
+     * @throws \think\db\exception\ModelNotFoundException
      */
     private function getConfig(int $uuid): array
     {
@@ -150,9 +143,9 @@ class UserTransfer extends Command
      * @param int $uuid
      * @param string $type
      * @return mixed|null
-     * @throws DataNotFoundException
-     * @throws DbException
-     * @throws ModelNotFoundException
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\DbException
+     * @throws \think\db\exception\ModelNotFoundException
      */
     private function getWechatInfo(int $uuid, string $type): ?array
     {
@@ -181,12 +174,12 @@ class UserTransfer extends Command
      * 尝试提现转账到微信钱包
      * @param array $item
      * @return array [config, result]
-     * @throws Exception
-     * @throws InvalidResponseException
-     * @throws LocalCacheException
-     * @throws DataNotFoundException
-     * @throws DbException
-     * @throws ModelNotFoundException
+     * @throws \WeChat\Exceptions\InvalidResponseException
+     * @throws \WeChat\Exceptions\LocalCacheException
+     * @throws \think\admin\Exception
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\DbException
+     * @throws \think\db\exception\ModelNotFoundException
      */
     private function createTransferWallet(array $item): array
     {
@@ -204,12 +197,12 @@ class UserTransfer extends Command
     /**
      * 查询更新提现打款状态
      * @param array $item
-     * @throws Exception
-     * @throws InvalidResponseException
-     * @throws LocalCacheException
-     * @throws DataNotFoundException
-     * @throws DbException
-     * @throws ModelNotFoundException
+     * @throws \WeChat\Exceptions\InvalidResponseException
+     * @throws \WeChat\Exceptions\LocalCacheException
+     * @throws \think\admin\Exception
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\DbException
+     * @throws \think\db\exception\ModelNotFoundException
      */
     private function queryTransferBank(array $item)
     {
@@ -242,12 +235,12 @@ class UserTransfer extends Command
     /**
      * 查询更新提现打款状态
      * @param array $item
-     * @throws Exception
-     * @throws InvalidResponseException
-     * @throws LocalCacheException
-     * @throws DataNotFoundException
-     * @throws DbException
-     * @throws ModelNotFoundException
+     * @throws \WeChat\Exceptions\InvalidResponseException
+     * @throws \WeChat\Exceptions\LocalCacheException
+     * @throws \think\admin\Exception
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\DbException
+     * @throws \think\db\exception\ModelNotFoundException
      */
     private function queryTransferWallet(array $item)
     {

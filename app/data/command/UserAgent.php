@@ -5,13 +5,9 @@ namespace app\data\command;
 use app\data\model\DataUser;
 use app\data\service\UserUpgradeService;
 use think\admin\Command;
-use think\admin\Exception;
 use think\console\Input;
 use think\console\input\Argument;
 use think\console\Output;
-use think\db\exception\DataNotFoundException;
-use think\db\exception\DbException;
-use think\db\exception\ModelNotFoundException;
 
 /**
  * 更新用户代理关系
@@ -32,10 +28,10 @@ class UserAgent extends Command
      * @param Input $input
      * @param Output $output
      * @return void
-     * @throws Exception
-     * @throws DataNotFoundException
-     * @throws DbException
-     * @throws ModelNotFoundException
+     * @throws \think\admin\Exception
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\DbException
+     * @throws \think\db\exception\ModelNotFoundException
      */
     protected function execute(Input $input, Output $output)
     {
