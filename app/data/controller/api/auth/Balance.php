@@ -20,9 +20,8 @@ class Balance extends Auth
      */
     public function get()
     {
-        $query = DataUserBalance::mQuery();
-        $query->withoutField('deleted,create_by')->where(['uuid' => $this->uuid, 'deleted' => 0]);
-        $result = $query->like('create_at#date')->order('id desc')->page(true, false, false, 10);
-        $this->success('获取数据成功', $result);
+        $query = DataUserBalance::mQuery()->withoutField('deleted,create_by');
+        $query->where(['uuid' => $this->uuid, 'deleted' => 0])->like('create_at#date');
+        $this->success('获取数据成功', $query->order('id desc')->page(true, false, false, 10));
     }
 }
