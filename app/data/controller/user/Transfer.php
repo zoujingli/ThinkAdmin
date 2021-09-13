@@ -2,6 +2,8 @@
 
 namespace app\data\controller\user;
 
+use app\data\model\DataUser;
+use app\data\model\DataUserTransfer;
 use app\data\service\UserAdminService;
 use app\data\service\UserTransferService;
 use think\admin\Controller;
@@ -89,9 +91,9 @@ class Transfer extends Controller
         $this->title = '用户提现管理';
         $this->transfer = UserTransferService::instance()->amount(0);
         // 创建查询对象
-        $query = $this->_query($this->table)->order('id desc');
+        $query = $this->_query(DataUserTransfer::mk())->order('id desc');
         // 用户条件搜索
-        $db = $this->_query('DataUser')->like('phone,username|nickname#nickname')->db();
+        $db = $this->_query(DataUser::class)->like('phone,username|nickname#nickname')->db();
         if ($db->getOptions('where')) $query->whereRaw("uuid in {$db->field('id')->buildSql()}");
         // 数据列表处理
         $query->equal('type,status')->dateBetween('create_at')->page();
@@ -143,7 +145,7 @@ class Transfer extends Controller
     private function _audit()
     {
         if ($this->request->isGet()) {
-            $this->_form($this->table, 'audit', 'code');
+            $this->_form(DataUserTransfer::mk(), 'audit', 'code');
         } else {
             $data = $this->_vali([
                 'code.require'        => '打款单号不能为空！',
@@ -152,7 +154,7 @@ class Transfer extends Controller
                 'remark.default'      => '',
             ]);
             $map = ['code' => $data['code']];
-            $find = $this->app->db->name($this->table)->where($map)->find();
+            $find = DataUserTransfer::mk()->where($map)->find();
             if (empty($find)) $this->error('不允许操作审核！');
             // 提现状态(0已拒绝, 1待审核, 2已审核, 3打款中, 4已打款, 5已收款)
             if (in_array($data['status'], [0, 1, 2, 3])) {
@@ -163,7 +165,7 @@ class Transfer extends Controller
                 $data['change_time'] = date('Y-m-d H:i:s');
                 $data['change_desc'] = ($data['remark'] ?: '线下打款成功') . ' By ' . AdminService::instance()->getUserName();
             }
-            if ($this->app->db->name($this->table)->strict(false)->where($map)->update($data) !== false) {
+            if (DataUserTransfer::mk()->strict(false)->where($map)->update($data) !== false) {
                 $this->success('操作成功');
             } else {
                 $this->error('操作失败！');

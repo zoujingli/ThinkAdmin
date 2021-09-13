@@ -2,6 +2,7 @@
 
 namespace app\data\controller\news;
 
+use app\data\model\DataNewsMark;
 use think\admin\Controller;
 
 /**
@@ -12,12 +13,6 @@ use think\admin\Controller;
 class Mark extends Controller
 {
     /**
-     * 绑定数据表
-     * @var string
-     */
-    private $table = 'DataNewsMark';
-
-    /**
      * 文章标签管理
      * @auth true
      * @throws \think\db\exception\DataNotFoundException
@@ -27,7 +22,7 @@ class Mark extends Controller
     public function index()
     {
         $this->title = '文章标签管理';
-        $query = $this->_query($this->table);
+        $query = $this->_query(DataNewsMark::class);
         $query->like('name')->equal('status')->dateBetween('create_at');
         $query->where(['deleted' => 0])->order('sort desc,id desc')->page();
     }
@@ -41,7 +36,7 @@ class Mark extends Controller
      */
     public function add()
     {
-        $this->_form($this->table, 'form');
+        $this->_form(DataNewsMark::class, 'form');
     }
 
     /**
@@ -53,7 +48,7 @@ class Mark extends Controller
      */
     public function edit()
     {
-        $this->_form($this->table, 'form');
+        $this->_form(DataNewsMark::class, 'form');
     }
 
     /**
@@ -63,7 +58,7 @@ class Mark extends Controller
      */
     public function state()
     {
-        $this->_save($this->table, $this->_vali([
+        $this->_save(DataNewsMark::class, $this->_vali([
             'status.in:0,1'  => '状态值范围异常！',
             'status.require' => '状态值不能为空！',
         ]));
@@ -76,7 +71,7 @@ class Mark extends Controller
      */
     public function remove()
     {
-        $this->_delete($this->table);
+        $this->_delete(DataNewsMark::class);
     }
 
 }

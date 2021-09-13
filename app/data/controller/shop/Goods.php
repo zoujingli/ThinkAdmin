@@ -2,6 +2,8 @@
 
 namespace app\data\controller\shop;
 
+use app\data\model\ShopGoods;
+use app\data\model\ShopGoodsStock;
 use app\data\service\ExpressService;
 use app\data\service\GoodsService;
 use app\data\service\UserUpgradeService;
@@ -15,12 +17,6 @@ use think\admin\extend\CodeExtend;
  */
 class Goods extends Controller
 {
-    /**
-     * 绑定数据表
-     * @var string
-     */
-    private $table = 'ShopGoods';
-
     /**
      * 最大分类等级
      * @var integer
@@ -38,7 +34,7 @@ class Goods extends Controller
     public function index()
     {
         $this->title = '商品数据管理';
-        $query = $this->_query($this->table);
+        $query = $this->_query(ShopGoods::class);
         // 加载对应数据
         $this->type = $this->request->get('type', 'index');
         if ($this->type === 'index') $query->where(['deleted' => 0]);
@@ -58,7 +54,7 @@ class Goods extends Controller
      */
     public function select()
     {
-        $query = $this->_query($this->table);
+        $query = $this->_query(ShopGoods::mk());
         $query->equal('status')->like('code,name,marks')->in('cateids');
         $query->where(['deleted' => 0])->order('sort desc,id desc')->page();
     }
@@ -88,7 +84,7 @@ class Goods extends Controller
     {
         $this->mode = 'add';
         $this->title = '添加商品数据';
-        $this->_form($this->table, 'form', 'code');
+        $this->_form(ShopGoods::mk(), 'form', 'code');
     }
 
     /**
@@ -102,7 +98,7 @@ class Goods extends Controller
     {
         $this->mode = 'edit';
         $this->title = '编辑商品数据';
-        $this->_form($this->table, 'form', 'code');
+        $this->_form(ShopGoods::mk(), 'form', 'code');
     }
 
     /**
@@ -116,7 +112,7 @@ class Goods extends Controller
     {
         $this->mode = 'copy';
         $this->title = '复制编辑商品';
-        $this->_form($this->table, 'form', 'code');
+        $this->_form(ShopGoods::mk(), 'form', 'code');
     }
 
     /**
@@ -215,7 +211,7 @@ class Goods extends Controller
     {
         $map = $this->_vali(['code.require' => '商品编号不能为空哦！']);
         if ($this->request->isGet()) {
-            $list = $this->app->db->name('ShopGoods')->where($map)->select()->toArray();
+            $list = ShopGoods::mk()->where($map)->select()->toArray();
             if (empty($list)) $this->error('无效的商品数据，请稍候再试！');
             [$this->vo] = GoodsService::instance()->bindData($list);
             $this->fetch();
@@ -231,7 +227,7 @@ class Goods extends Controller
                     ];
                 }
                 if (!empty($data)) {
-                    $this->app->db->name('ShopGoodsStock')->insertAll($data);
+                    ShopGoodsStock::mk()->insertAll($data);
                     GoodsService::instance()->stock($map['code']);
                     $this->success('商品数据入库成功！');
                 }
@@ -247,7 +243,7 @@ class Goods extends Controller
      */
     public function state()
     {
-        $this->_save($this->table, $this->_vali([
+        $this->_save(ShopGoods::mk(), $this->_vali([
             'status.in:0,1'  => '状态值范围异常！',
             'status.require' => '状态值不能为空！',
         ]), 'code');
@@ -260,7 +256,7 @@ class Goods extends Controller
      */
     public function remove()
     {
-        $this->_save($this->table, $this->_vali([
+        $this->_save(ShopGoods::mk(), $this->_vali([
             'deleted.in:0,1'  => '状态值范围异常！',
             'deleted.require' => '状态值不能为空！',
         ]), 'code');

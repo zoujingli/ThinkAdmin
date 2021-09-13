@@ -3,7 +3,11 @@
 namespace app\data\controller\api\auth;
 
 use app\data\controller\api\Auth;
+use app\data\model\BaseUserPayment;
+use app\data\model\DataUser;
 use app\data\model\DataUserAddress;
+use app\data\model\ShopGoods;
+use app\data\model\ShopGoodsItem;
 use app\data\model\ShopOrder;
 use app\data\model\ShopOrderItem;
 use app\data\service\ExpressService;
@@ -69,15 +73,15 @@ class Order extends Auth
         if ($order['puid1'] == $this->uuid) $order['puid1'] = 0;
         if ($order['puid1'] > 0) {
             $map = ['id' => $order['puid1'], 'status' => 1];
-            $order['puid2'] = $this->app->db->name('DataUser')->where($map)->value('pid2');
+            $order['puid2'] = DataUser::mk()->where($map)->value('pid2');
             if (is_null($order['puid2'])) $this->error('代理异常');
         }
         // 订单商品处理
         foreach (explode('||', $rules) as $rule) {
             [$code, $spec, $count] = explode('@', $rule);
             // 商品信息检查
-            $goodsInfo = $this->app->db->name('ShopGoods')->where(['code' => $code, 'status' => 1, 'deleted' => 0])->find();
-            $goodsItem = $this->app->db->name('ShopGoodsItem')->where(['status' => 1, 'goods_code' => $code, 'goods_spec' => $spec])->find();
+            $goodsInfo = ShopGoods::mk()->where(['code' => $code, 'status' => 1, 'deleted' => 0])->find();
+            $goodsItem = ShopGoodsItem::mk()->where(['status' => 1, 'goods_code' => $code, 'goods_spec' => $spec])->find();
             if (empty($goodsInfo) || empty($goodsItem)) $this->error('商品查询异常');
             // 商品类型检查
             if ($truckType < 0) $truckType = $goodsInfo['truck_type'];
@@ -305,7 +309,7 @@ class Order extends Auth
         $payments = ShopOrder::mk()->where($data)->value('payment_allow');
         if (empty($payments)) $this->error('获取订单支付参数失败');
         // 读取支付通道配置
-        $query = $this->app->db->name('BaseUserPayment')->where(['status' => 1, 'deleted' => 0]);
+        $query = BaseUserPayment::mk()->where(['status' => 1, 'deleted' => 0]);
         $query->whereIn('code', str2arr($payments))->whereIn('type', PaymentService::getTypeApi($this->type));
         $result = $query->order('sort desc,id desc')->column('type,code,name,cover,content,remark', 'code');
         foreach ($result as &$vo) $vo['content'] = ['voucher_qrcode' => json_decode($vo['content'])->voucher_qrcode ?? ''];

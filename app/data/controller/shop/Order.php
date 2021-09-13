@@ -2,6 +2,9 @@
 
 namespace app\data\controller\shop;
 
+use app\data\model\DataUser;
+use app\data\model\ShopOrder;
+use app\data\model\ShopOrderSend;
 use app\data\service\OrderService;
 use app\data\service\PaymentService;
 use app\data\service\UserAdminService;
@@ -50,21 +53,21 @@ class Order extends Controller
         $this->title = '订单数据管理';
         // 状态数据统计
         $this->total = ['t0' => 0, 't1' => 0, 't2' => 0, 't3' => 0, 't4' => 0, 't5' => 0, 't6' => 0, 'ta' => 0];
-        foreach ($this->app->db->name($this->table)->field('status,count(1) total')->group('status')->cursor() as $vo) {
+        foreach (ShopOrder::mk()->field('status,count(1) total')->group('status')->cursor() as $vo) {
             [$this->total["t{$vo['status']}"] = $vo['total'], $this->total["ta"] += $vo['total']];
         }
         // 订单列表查询
-        $query = $this->_query($this->table);
+        $query = $this->_query(ShopOrder::mk());
         $query->like('order_no,truck_name,truck_phone,truck_province|truck_area|truck_address#address,truck_send_no,truck_send_name');
         $query->equal('status,payment_type,payment_status')->dateBetween('create_at,payment_datetime,cancel_datetime,truck_datetime,truck_send_datetime');
         // 发货信息搜索
-        $db = $this->_query('ShopOrderSend')->like('address_name#truck_address_name,address_phone#truck_address_phone,address_province|address_city|address_area|address_content#truck_address_content')->db();
+        $db = $this->_query(ShopOrderSend::class)->like('address_name#truck_address_name,address_phone#truck_address_phone,address_province|address_city|address_area|address_content#truck_address_content')->db();
         if ($db->getOptions('where')) $query->whereRaw("order_no in {$db->field('order_no')->buildSql()}");
         // 用户搜索查询
-        $db = $this->_query('DataUser')->like('phone#user_phone,nickname#user_nickname')->db();
+        $db = $this->_query(DataUser::class)->like('phone#user_phone,nickname#user_nickname')->db();
         if ($db->getOptions('where')) $query->whereRaw("uuid in {$db->field('id')->buildSql()}");
         // 代理搜索查询
-        $db = $this->_query('DataUser')->like('phone#from_phone,nickname#from_nickname')->db();
+        $db = $this->_query(DataUser::class)->like('phone#from_phone,nickname#from_nickname')->db();
         if ($db->getOptions('where')) $query->whereRaw("puid1 in {$db->field('id')->buildSql()}");
         // 列表选项卡
         if (is_numeric($this->type = trim(input('type', 'ta'), 't'))) {
@@ -99,7 +102,7 @@ class Order extends Controller
     public function audit()
     {
         if ($this->request->isGet()) {
-            $this->_form($this->table, '', 'order_no');
+            $this->_form(ShopOrder::mk(), '', 'order_no');
         } else {
             $data = $this->_vali([
                 'order_no.require' => '订单单号不能为空！',
@@ -119,13 +122,13 @@ class Order extends Controller
                 $data['payment_remark'] = $data['remark'] ?: '后台审核支付凭证通过';
                 $data['payment_datetime'] = date('Y-m-d H:i:s');
             }
-            $order = $this->app->db->name($this->table)->where(['order_no' => $data['order_no']])->find();
+            $order = ShopOrder::mk()->where(['order_no' => $data['order_no']])->find();
             if (empty($order) || $order['status'] !== 3) $this->error('不允许操作审核！');
             // 无需发货时的处理
             if ($data['status'] === 4 && empty($order['truck_type'])) $data['status'] = 6;
             // 更新订单支付状态
             $map = ['status' => 3, 'order_no' => $data['order_no']];
-            if ($this->app->db->name($this->table)->strict(false)->where($map)->update($data) !== false) {
+            if (ShopOrder::mk()->strict(false)->where($map)->update($data) !== false) {
                 if (in_array($data['status'], [4, 5, 6])) {
                     $this->app->event->trigger('ShopOrderPayment', $data['order_no']);
                     $this->success('订单审核通过成功！');
@@ -159,11 +162,11 @@ class Order extends Controller
     public function cancel()
     {
         $map = $this->_vali(['order_no.require' => '订单号不能为空！',]);
-        $order = $this->app->db->name($this->table)->where($map)->find();
+        $order = ShopOrder::mk()->where($map)->find();
         if (empty($order)) $this->error('订单查询异常！');
         if (!in_array($order['status'], [1, 2, 3])) $this->error('订单不能取消！');
         try {
-            $result = $this->app->db->name($this->table)->where($map)->update([
+            $result = $order->save([
                 'status'          => 0,
                 'cancel_status'   => 1,
                 'cancel_remark'   => '后台取消未支付的订单',
@@ -182,5 +185,4 @@ class Order extends Controller
             $this->error($exception->getMessage());
         }
     }
-
 }

@@ -2,6 +2,7 @@
 
 namespace app\data\controller\user;
 
+use app\data\model\DataUserMessage;
 use app\data\service\MessageService;
 use think\admin\Controller;
 
@@ -13,12 +14,6 @@ use think\admin\Controller;
 class Message extends Controller
 {
     /**
-     * 绑定数据表
-     * @var string
-     */
-    protected $table = 'DataUserMessage';
-
-    /**
      * 短信发送管理
      * @auth true
      * @menu true
@@ -29,7 +24,7 @@ class Message extends Controller
     public function index()
     {
         $this->title = '短信发送管理';
-        $query = $this->_query($this->table);
+        $query = $this->_query(DataUserMessage::mk());
         $query->equal('status')->like('phone,content');
         $query->dateBetween('create_at')->order('id desc')->page();
     }
@@ -62,7 +57,7 @@ class Message extends Controller
      */
     public function remove()
     {
-        $this->_delete($this->table);
+        $this->_delete(DataUserMessage::mk());
     }
 
 }

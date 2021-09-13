@@ -2,6 +2,7 @@
 
 namespace app\data\controller\base;
 
+use app\data\model\BaseUserUpgrade;
 use app\data\service\RebateService;
 use think\admin\Controller;
 
@@ -29,7 +30,7 @@ class Upgrade extends Controller
     public function index()
     {
         $this->title = '用户等级管理';
-        $this->_query($this->table)->order('number asc')->page();
+        $this->_query(BaseUserUpgrade::class)->order('number asc')->page();
     }
 
     /**
@@ -55,7 +56,7 @@ class Upgrade extends Controller
      */
     public function add()
     {
-        $this->_form($this->table, 'form');
+        $this->_form(BaseUserUpgrade::class, 'form');
     }
 
     /**
@@ -67,7 +68,7 @@ class Upgrade extends Controller
      */
     public function edit()
     {
-        $this->_form($this->table, 'form');
+        $this->_form(BaseUserUpgrade::class, 'form');
     }
 
     /**
@@ -79,7 +80,7 @@ class Upgrade extends Controller
         if ($this->request->isGet()) {
             $this->prizes = RebateService::PRIZES;
             if (!isset($vo['number'])) {
-                $vo['number'] = $this->app->db->name($this->table)->order('number desc')->value('number', -1) + 1;
+                $vo['number'] = BaseUserUpgrade::mk()->order('number desc')->value('number', -1) + 1;
             }
             $vo['rebate_rule'] = str2arr($vo['rebate_rule'] ?? '');
         } else {
@@ -113,8 +114,8 @@ class Upgrade extends Controller
         if ($state) {
             $order = 'number asc,utime desc';
             if (input('old_number', 100) <= input('number', 0)) $order = 'number asc,utime asc';
-            foreach ($this->app->db->name($this->table)->order($order)->cursor() as $k => $vo) {
-                $this->app->db->name($this->table)->where(['id' => $vo['id']])->update(['number' => $k]);
+            foreach (BaseUserUpgrade::mk()->order($order)->cursor() as $k => $vo) {
+                BaseUserUpgrade::mk()->where(['id' => $vo['id']])->update(['number' => $k]);
             }
         }
     }
@@ -135,7 +136,7 @@ class Upgrade extends Controller
      */
     public function state()
     {
-        $this->_save($this->table);
+        $this->_save(BaseUserUpgrade::class);
     }
 
     /**
@@ -145,7 +146,7 @@ class Upgrade extends Controller
      */
     public function remove()
     {
-        $this->_delete($this->table);
+        $this->_delete(BaseUserUpgrade::class);
     }
 
     /**

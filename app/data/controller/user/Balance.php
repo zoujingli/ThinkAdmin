@@ -2,6 +2,8 @@
 
 namespace app\data\controller\user;
 
+use app\admin\model\SystemUser;
+use app\data\model\DataUser;
 use app\data\service\UserAdminService;
 use app\data\service\UserBalanceService;
 use app\data\service\UserUpgradeService;
@@ -54,7 +56,7 @@ class Balance extends Controller
     {
         UserAdminService::instance()->buildByUid($data);
         $uids = array_unique(array_column($data, 'create_by'));
-        $users = $this->app->db->name('SystemUser')->whereIn('id', $uids)->column('username', 'id');
+        $users = SystemUser::mk()->whereIn('id', $uids)->column('username', 'id');
         $this->upgrades = UserUpgradeService::instance()->levels();
         foreach ($data as &$vo) {
             $vo['upgradeinfo'] = $this->upgrades[$vo['upgrade']] ?? [];
@@ -72,7 +74,7 @@ class Balance extends Controller
     public function add()
     {
         $data = $this->_vali(['uuid.require' => '用户UID不能为空！']);
-        $this->user = $this->app->db->name('DataUser')->where(['id' => $data['uuid']])->find();
+        $this->user = DataUser::mk()->where(['id' => $data['uuid']])->find();
         if (empty($this->user)) $this->error('待充值的用户不存在！');
         $this->_form($this->table, 'form');
     }

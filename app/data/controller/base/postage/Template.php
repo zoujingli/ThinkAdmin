@@ -2,6 +2,7 @@
 
 namespace app\data\controller\base\postage;
 
+use app\data\model\BasePostageRegion;
 use app\data\service\ExpressService;
 use think\admin\Controller;
 use think\admin\extend\CodeExtend;
@@ -48,8 +49,8 @@ class Template extends Controller
             $this->fetch('form_region');
         } else {
             $data = $this->_vali(['nos.default' => '', 'oks.default' => '']);
-            if ($data['nos']) $this->app->db->name('BasePostageRegion')->whereIn('id', str2arr($data['nos']))->update(['status' => 0]);
-            if ($data['oks']) $this->app->db->name('BasePostageRegion')->whereIn('id', str2arr($data['oks']))->update(['status' => 1]);
+            if ($data['nos']) BasePostageRegion::mk()->whereIn('id', str2arr($data['nos']))->update(['status' => 0]);
+            if ($data['oks']) BasePostageRegion::mk()->whereIn('id', str2arr($data['oks']))->update(['status' => 1]);
             $this->success('修改配送区域成功！', 'javascript:history.back()');
         }
     }

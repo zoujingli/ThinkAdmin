@@ -2,6 +2,7 @@
 
 namespace app\data\controller\api;
 
+use app\data\model\ShopGoods;
 use app\data\service\ExpressService;
 use app\data\service\GoodsService;
 use think\admin\Controller;
@@ -42,9 +43,9 @@ class Goods extends Controller
     {
         // 更新访问统计
         $map = $this->_vali(['code.default' => '']);
-        if ($map['code']) $this->app->db->name('ShopGoods')->where($map)->inc('num_read')->update();
+        if ($map['code']) ShopGoods::mk()->where($map)->inc('num_read')->update([]);
         // 商品数据处理
-        $query = $this->_query('ShopGoods')->like('name,marks,cateids,payment')->equal('code,vip_entry');
+        $query = $this->_query(ShopGoods::class)->like('name,marks,cateids,payment')->equal('code,vip_entry');
         $result = $query->where(['deleted' => 0, 'status' => 1])->order('sort desc,id desc')->page(true, false, false, 10);
         if (count($result['list']) > 0) GoodsService::instance()->bindData($result['list']);
         $this->success('获取商品数据', $result);

@@ -2,6 +2,7 @@
 
 namespace app\data\controller\shop;
 
+use app\data\model\ShopGoodsCate;
 use think\admin\Controller;
 use think\admin\extend\DataExtend;
 
@@ -13,12 +14,6 @@ use think\admin\extend\DataExtend;
 class Cate extends Controller
 {
     /**
-     * 绑定数据表
-     * @var string
-     */
-    private $table = 'ShopGoodsCate';
-
-    /**
      * 商品分类管理
      * @auth true
      * @menu true
@@ -29,7 +24,7 @@ class Cate extends Controller
     public function index()
     {
         $this->title = "商品分类管理";
-        $query = $this->_query($this->table)->like('name')->dateBetween('create_at');
+        $query = $this->_query(ShopGoodsCate::class)->like('name')->dateBetween('create_at');
         $query->equal('status')->where(['deleted' => 0])->order('sort desc,id desc')->page(false);
     }
 
@@ -54,7 +49,7 @@ class Cate extends Controller
      */
     public function add()
     {
-        $this->_form($this->table, 'form');
+        $this->_form(ShopGoodsCate::mk(), 'form');
     }
 
     /**
@@ -66,7 +61,7 @@ class Cate extends Controller
      */
     public function edit()
     {
-        $this->_form($this->table, 'form');
+        $this->_form(ShopGoodsCate::class, 'form');
     }
 
     /**
@@ -80,7 +75,7 @@ class Cate extends Controller
     {
         if ($this->request->isGet()) {
             $data['pid'] = intval($data['pid'] ?? input('pid', '0'));
-            $cates = $this->app->db->name($this->table)->where(['deleted' => 0])->order('sort desc,id desc')->select()->toArray();
+            $cates = ShopGoodsCate::mk()->where(['deleted' => 0])->order('sort desc,id desc')->select()->toArray();
             $this->cates = DataExtend::arr2table(array_merge($cates, [['id' => '0', 'pid' => '-1', 'name' => '顶部分类']]));
             if (isset($data['id'])) foreach ($this->cates as $cate) if ($cate['id'] === $data['id']) $data = $cate;
             foreach ($this->cates as $key => $cate) if ((isset($data['spt']) && $data['spt'] <= $cate['spt'])) {
@@ -96,7 +91,7 @@ class Cate extends Controller
      */
     public function state()
     {
-        $this->_save($this->table, $this->_vali([
+        $this->_save(ShopGoodsCate::mk(), $this->_vali([
             'status.in:0,1'  => '状态值范围异常！',
             'status.require' => '状态值不能为空！',
         ]));
@@ -109,6 +104,6 @@ class Cate extends Controller
      */
     public function remove()
     {
-        $this->_delete($this->table);
+        $this->_delete(ShopGoodsCate::mk());
     }
 }

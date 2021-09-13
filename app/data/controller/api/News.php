@@ -2,6 +2,8 @@
 
 namespace app\data\controller\api;
 
+use app\data\model\DataNewsItem;
+use app\data\model\DataNewsXCollect;
 use app\data\service\NewsService;
 use think\admin\Controller;
 
@@ -34,14 +36,14 @@ class News extends Controller
     public function getItem()
     {
         if ($code = input('code', '')) {
-            $this->app->db->name('DataNewsItem')->where(['code' => $code])->inc('num_read')->update();
+            DataNewsItem::mk()->where(['code' => $code])->inc('num_read')->update();
             if (($uuid = input('uuid', 0)) > 0) {
                 $data = ['uuid' => $uuid, 'code' => $code, 'type' => 3, 'status' => 2];
-                $this->app->db->name('DataNewsXCollect')->where($data)->delete();
-                $this->app->db->name('DataNewsXCollect')->insert($data);
+                DataNewsXCollect::mk()->where($data)->delete();
+                DataNewsXCollect::mk()->insert($data);
             }
         }
-        $query = $this->_query('DataNewsItem')->like('name,mark')->equal('id,code');
+        $query = $this->_query(DataNewsItem::class)->like('name,mark')->equal('id,code');
         $query->where(['deleted' => 0, 'status' => 1])->withoutField('sort,status,deleted');
         $result = $query->order('sort desc,id desc')->page(true, false, false, 15);
         NewsService::instance()->buildData($result['list'], input('uuid', 0));
@@ -57,7 +59,7 @@ class News extends Controller
     public function getComment()
     {
         $map = $this->_vali(['code.require' => '文章不能为空！']);
-        $query = $this->_query('DataNewsXCollect')->where(['type' => 4, 'status' => 2]);
+        $query = $this->_query(DataNewsXCollect::class)->where(['type' => 4, 'status' => 2]);
         $result = $query->where($map)->order('id desc')->page(true, false, false, 15);
         NewsService::instance()->buildListByUidAndCode($result['list']);
         $this->success('获取评论成功', $result);

@@ -2,6 +2,9 @@
 
 namespace app\data\controller\user;
 
+use app\data\model\DataUser;
+use app\data\model\DataUserRebate;
+use app\data\model\ShopOrderItem;
 use app\data\service\RebateService;
 use app\data\service\UserRebateService;
 use app\data\service\UserUpgradeService;
@@ -14,13 +17,6 @@ use think\admin\Controller;
  */
 class Rebate extends Controller
 {
-
-    /**
-     * 绑定数据表
-     * @var string
-     */
-    private $table = 'DataUserRebate';
-
     /**
      * 用户返利管理
      * @auth true
@@ -36,7 +32,7 @@ class Rebate extends Controller
         $this->types = RebateService::PRIZES;
         $this->rebate = UserRebateService::instance()->amount(0);
         // 创建查询对象
-        $query = $this->_query($this->table)->equal('type')->like('name,order_no');
+        $query = $this->_query(DataUserRebate::class)->equal('type')->like('name,order_no');
         // 会员条件查询
         $db = $this->_query('DataUser')->like('nickname#order_nickname,phone#order_phone')->db();
         if ($db->getOptions('where')) $query->whereRaw("order_uuid in {$db->field('id')->buildSql()}");
@@ -57,8 +53,8 @@ class Rebate extends Controller
     protected function _index_page_filter(array &$data)
     {
         $uids = array_merge(array_column($data, 'uuid'), array_column($data, 'order_uuid'));
-        $userItem = $this->app->db->name('DataUser')->whereIn('id', array_unique($uids))->select();
-        $goodsItem = $this->app->db->name('ShopOrderItem')->whereIn('order_no', array_unique(array_column($data, 'order_no')))->select();
+        $userItem = DataUser::mk()->whereIn('id', array_unique($uids))->select();
+        $goodsItem = ShopOrderItem::mk()->whereIn('order_no', array_unique(array_column($data, 'order_no')))->select();
         foreach ($data as &$vo) {
             $vo['type'] = RebateService::instance()->name($vo['type']);
             [$vo['user'], $vo['agent'], $vo['list']] = [[], [], []];

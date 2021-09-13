@@ -3,6 +3,8 @@
 namespace app\data\controller\api\auth;
 
 use app\data\controller\api\Auth;
+use app\data\model\BaseUserUpgrade;
+use app\data\model\DataUserRebate;
 use app\data\service\RebateService;
 
 /**
@@ -37,8 +39,8 @@ class Rebate extends Auth
     public function prize()
     {
         [$map, $data] = [['number' => $this->user['vip_code']], []];
-        $prizes = $this->app->db->name('DataUserRebate')->group('name')->column('name');
-        $rebate = $this->app->db->name('BaseUserUpgrade')->where($map)->value('rebate_rule', '');
+        $prizes = DataUserRebate::mk()->group('name')->column('name');
+        $rebate = BaseUserUpgrade::mk()->where($map)->value('rebate_rule', '');
         $codemap = array_merge($prizes, str2arr($rebate));
         foreach (RebateService::PRIZES as $prize) {
             if (in_array($prize['code'], $codemap)) $data[] = $prize;

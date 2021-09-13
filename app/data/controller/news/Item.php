@@ -2,6 +2,8 @@
 
 namespace app\data\controller\news;
 
+use app\data\model\DataNewsItem;
+use app\data\model\DataNewsMark;
 use app\data\service\NewsService;
 use think\admin\Controller;
 use think\admin\extend\CodeExtend;
@@ -14,12 +16,6 @@ use think\admin\extend\CodeExtend;
 class Item extends Controller
 {
     /**
-     * 绑定数据表
-     * @var string
-     */
-    private $table = 'DataNewsItem';
-
-    /**
      * 文章内容管理
      * @auth true
      * @menu true
@@ -30,7 +26,7 @@ class Item extends Controller
     public function index()
     {
         $this->title = '文章内容管理';
-        $query = $this->_query($this->table);
+        $query = $this->_query(DataNewsItem::class);
         $query->like('mark,name')->dateBetween('create_at');
         $query->where(['deleted' => 0])->order('sort desc,id desc')->page();
     }
@@ -44,7 +40,7 @@ class Item extends Controller
      */
     public function select()
     {
-        $query = $this->_query($this->table);
+        $query = $this->_query(DataNewsItem::class);
         $query->equal('status')->like('name')->dateBetween('create_at');
         $query->where(['deleted' => 0])->order('sort desc,id desc')->page();
     }
@@ -68,7 +64,7 @@ class Item extends Controller
     public function add()
     {
         $this->title = '添加文章内容';
-        $this->_form($this->table, 'form');
+        $this->_form(DataNewsItem::class, 'form');
     }
 
     /**
@@ -81,7 +77,7 @@ class Item extends Controller
     public function edit()
     {
         $this->title = '编辑文章内容';
-        $this->_form($this->table, 'form');
+        $this->_form(DataNewsItem::class, 'form');
     }
 
     /**
@@ -97,9 +93,8 @@ class Item extends Controller
             $data['code'] = CodeExtend::uniqidNumber(20, 'A');
         }
         if ($this->request->isGet()) {
-            $map = ['status' => 1, 'deleted' => 0];
-            $query = $this->app->db->name('DataNewsMark')->where($map);
-            $this->marks = $query->order('sort desc,id desc')->select()->toArray();
+            $model = DataNewsMark::mk()->where(['status' => 1, 'deleted' => 0]);
+            $this->marks = $model->order('sort desc,id desc')->select()->toArray();
             $data['mark'] = str2arr($data['mark'] ?? '');
         } else {
             $data['mark'] = arr2str($data['mark'] ?? []);
@@ -124,7 +119,7 @@ class Item extends Controller
      */
     public function state()
     {
-        $this->_save($this->table, $this->_vali([
+        $this->_save(DataNewsItem::class, $this->_vali([
             'status.in:0,1'  => '状态值范围异常！',
             'status.require' => '状态值不能为空！',
         ]));
@@ -137,7 +132,7 @@ class Item extends Controller
      */
     public function remove()
     {
-        $this->_delete($this->table);
+        $this->_delete(DataNewsItem::class);
     }
 
 }

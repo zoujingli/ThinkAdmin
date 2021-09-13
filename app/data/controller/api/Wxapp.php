@@ -72,8 +72,6 @@ class Wxapp extends Controller
 
     /**
      * 小程序数据解密
-     * @throws \think\admin\Exception
-     * @throws \think\db\exception\DbException
      */
     public function decode()
     {
@@ -107,7 +105,6 @@ class Wxapp extends Controller
      * 授权CODE换取会话信息
      * @param string $code 换取授权CODE
      * @return array [openid, sessionkey]
-     * @throws \WeChat\Exceptions\LocalCacheException
      */
     private function _getSessionKey(string $code): array
     {

@@ -2,6 +2,7 @@
 
 namespace app\data\controller\shop;
 
+use app\data\model\ShopGoodsMark;
 use think\admin\Controller;
 
 /**
@@ -12,12 +13,6 @@ use think\admin\Controller;
 class Mark extends Controller
 {
     /**
-     * 绑定数据表
-     * @var string
-     */
-    private $table = 'ShopGoodsMark';
-
-    /**
      * 商品标签管理
      * @auth true
      * @throws \think\db\exception\DataNotFoundException
@@ -27,7 +22,7 @@ class Mark extends Controller
     public function index()
     {
         $this->title = '商品标签管理';
-        $query = $this->_query($this->table);
+        $query = $this->_query(ShopGoodsMark::mk());
         $query->like('name')->dateBetween('create_at');
         $query->equal('status')->order('sort desc,id desc')->page();
     }
@@ -41,7 +36,7 @@ class Mark extends Controller
      */
     public function select()
     {
-        $this->_query($this->table)->order('sort desc,id desc')->page();
+        $this->_query(ShopGoodsMark::mk())->order('sort desc,id desc')->page();
     }
 
     /**
@@ -53,7 +48,7 @@ class Mark extends Controller
      */
     public function add()
     {
-        $this->_form($this->table, 'form');
+        $this->_form(ShopGoodsMark::mk(), 'form');
     }
 
     /**
@@ -65,7 +60,7 @@ class Mark extends Controller
      */
     public function edit()
     {
-        $this->_form($this->table, 'form');
+        $this->_form(ShopGoodsMark::mk(), 'form');
     }
 
     /**
@@ -75,7 +70,7 @@ class Mark extends Controller
      */
     public function state()
     {
-        $this->_save($this->table);
+        $this->_save(ShopGoodsMark::mk());
     }
 
     /**
@@ -85,7 +80,7 @@ class Mark extends Controller
      */
     public function remove()
     {
-        $this->_delete($this->table);
+        $this->_delete(ShopGoodsMark::mk());
     }
 
 }

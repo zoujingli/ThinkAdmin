@@ -2,6 +2,7 @@
 
 namespace app\data\command;
 
+use app\data\model\DataUser;
 use app\data\model\DataUserTransfer;
 use app\data\service\UserRebateService;
 use think\admin\Command;
@@ -149,7 +150,7 @@ class UserTransfer extends Command
      */
     private function getWechatInfo(int $uuid, string $type): ?array
     {
-        $user = $this->app->db->name('DataUser')->where(['id' => $uuid])->find();
+        $user = DataUser::mk()->where(['id' => $uuid])->find();
         if (empty($user)) return null;
         $appid1 = sysconf('data.wxapp_appid');
         if (strtolower(sysconf('wechat.type')) === 'api') {
