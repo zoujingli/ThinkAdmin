@@ -45,11 +45,9 @@ class Data extends Controller
      */
     public function getNotify()
     {
-        $query = $this->_query(BaseUserMessage::class)->where(['status' => 1, 'deleted' => 0]);
-        $result = $query->equal('id')->order('sort desc,id desc')->page(true, false, false, 20);
-        if (($id = input('id')) > 0) {
-            BaseUserMessage::mk()->where(['id' => $id])->inc('num_read')->update([]);
-        }
+        $model = BaseUserMessage::mQuery()->where(['status' => 1, 'deleted' => 0]);
+        $result = $model->equal('id')->order('sort desc,id desc')->page(true, false, false, 20);
+        if (($id = input('id')) > 0) BaseUserMessage::mk()->where(['id' => $id])->inc('num_read')->update([]);
         $this->success('获取系统通知', $result);
     }
 }
