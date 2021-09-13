@@ -17,7 +17,6 @@
 namespace app\admin\controller;
 
 use app\admin\model\SystemOplog;
-use Ip2Region;
 use think\admin\Controller;
 use think\admin\helper\QueryHelper;
 use think\exception\HttpResponseException;
@@ -57,7 +56,7 @@ class Oplog extends Controller
      */
     protected function _index_page_filter(array &$data)
     {
-        $region = new Ip2Region();
+        $region = new \Ip2Region();
         foreach ($data as &$vo) {
             $isp = $region->btreeSearch($vo['geoip']);
             $vo['geoisp'] = str_replace(['内网IP', '0', '|'], '', $isp['region'] ?? '') ?: '-';
@@ -76,7 +75,7 @@ class Oplog extends Controller
             $this->success('日志清理成功！');
         } catch (HttpResponseException $exception) {
             throw $exception;
-        } catch (Exception $exception) {
+        } catch (\Exception $exception) {
             $this->error("日志清理失败，{$exception->getMessage()}");
         }
     }

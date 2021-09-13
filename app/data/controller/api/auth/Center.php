@@ -6,6 +6,7 @@ use app\data\controller\api\Auth;
 use app\data\service\RebateService;
 use app\data\service\UserAdminService;
 use app\data\service\UserUpgradeService;
+use Exception;
 use think\admin\Storage;
 use think\exception\HttpResponseException;
 
@@ -70,7 +71,7 @@ class Center extends Auth
             }
         } catch (HttpResponseException $exception) {
             throw $exception;
-        } catch (\Exception $exception) {
+        } catch (Exception $exception) {
             $this->error($exception->getMessage());
         }
     }

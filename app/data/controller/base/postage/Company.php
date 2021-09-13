@@ -3,6 +3,7 @@
 namespace app\data\controller\base\postage;
 
 use app\data\service\ExpressService;
+use Exception;
 use think\admin\Controller;
 use think\exception\HttpResponseException;
 
@@ -105,7 +106,7 @@ class Company extends Controller
             $this->success('同步快递公司成功！');
         } catch (HttpResponseException $exception) {
             throw $exception;
-        } catch (\Exception $exception) {
+        } catch (Exception $exception) {
             $this->error('同步快递公司数据失败！');
         }
     }

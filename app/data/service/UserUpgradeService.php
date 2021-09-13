@@ -6,6 +6,7 @@ use app\data\model\DataUser;
 use app\data\model\DataUserBalance;
 use app\data\model\ShopOrder;
 use app\data\model\ShopOrderItem;
+use Exception;
 use think\admin\Service;
 
 /**
@@ -72,7 +73,7 @@ class UserUpgradeService extends Service
             });
             $this->upgrade($user['id']);
             return [1, '绑定代理成功'];
-        } catch (\Exception $exception) {
+        } catch (Exception $exception) {
             return [0, "绑定代理失败, {$exception->getMessage()}"];
         }
     }

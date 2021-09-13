@@ -5,7 +5,6 @@ namespace app\data\controller\api;
 use app\data\service\UserAdminService;
 use app\wechat\service\WechatService;
 use think\admin\Controller;
-use think\admin\Exception;
 use think\Response;
 
 /**

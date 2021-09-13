@@ -16,7 +16,6 @@
 
 namespace app\admin\controller\api;
 
-use Exception;
 use think\admin\Controller;
 use think\admin\Storage;
 use think\admin\storage\AliossStorage;
@@ -149,7 +148,7 @@ class Upload extends Controller
             }
         } catch (HttpResponseException $exception) {
             throw $exception;
-        } catch (Exception $exception) {
+        } catch (\Exception $exception) {
             $this->error($exception->getMessage());
         }
     }
@@ -195,7 +194,7 @@ class Upload extends Controller
             }
         } catch (HttpResponseException $exception) {
             throw $exception;
-        } catch (Exception $exception) {
+        } catch (\Exception $exception) {
             $this->error(lang($exception->getMessage()));
         }
     }

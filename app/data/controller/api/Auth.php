@@ -4,6 +4,7 @@ namespace app\data\controller\api;
 
 use app\data\service\UserAdminService;
 use app\data\service\UserTokenService;
+use Exception;
 use think\admin\Controller;
 use think\exception\HttpResponseException;
 
@@ -78,7 +79,7 @@ abstract class Auth extends Controller
             return UserAdminService::instance()->get($this->uuid, $this->type);
         } catch (HttpResponseException $exception) {
             throw $exception;
-        } catch (\Exception $exception) {
+        } catch (Exception $exception) {
             $this->error($exception->getMessage());
         }
     }

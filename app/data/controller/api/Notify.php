@@ -6,8 +6,6 @@ use app\data\service\payment\AlipayPaymentService;
 use app\data\service\payment\JoinpayPaymentService;
 use app\data\service\payment\WechatPaymentService;
 use think\admin\Controller;
-use think\admin\Exception;
-use WeChat\Exceptions\InvalidResponseException;
 
 /**
  * 异步通知处理

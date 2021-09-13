@@ -5,6 +5,7 @@ namespace app\data\controller\shop;
 use app\data\service\OrderService;
 use app\data\service\PaymentService;
 use app\data\service\UserAdminService;
+use Exception;
 use think\admin\Controller;
 use think\admin\extend\CodeExtend;
 use think\exception\HttpResponseException;
@@ -178,7 +179,7 @@ class Order extends Controller
             }
         } catch (HttpResponseException $exception) {
             throw $exception;
-        } catch (\Exception $exception) {
+        } catch (Exception $exception) {
             $this->error($exception->getMessage());
         }
     }
