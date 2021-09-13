@@ -16,6 +16,7 @@
 
 namespace app\admin\controller\api;
 
+use app\admin\model\SystemConfig;
 use think\admin\Controller;
 use think\admin\service\AdminService;
 use think\admin\service\SystemService;
@@ -97,13 +98,13 @@ class Runtime extends Controller
         if (AdminService::instance()->isSuper()) try {
             $this->app->db->transaction(function () {
                 [$tmpdata, $newdata] = [[], []];
-                foreach ($this->app->db->name('SystemConfig')->order('type,name asc')->cursor() as $item) {
+                foreach (SystemConfig::mk()->order('type,name asc')->cursor() as $item) {
                     $tmpdata[$item['type']][$item['name']] = $item['value'];
                 }
                 foreach ($tmpdata as $type => $items) foreach ($items as $name => $value) {
                     $newdata[] = ['type' => $type, 'name' => $name, 'value' => $value];
                 }
-                $this->_query('SystemConfig')->empty()->insertAll($newdata);
+                SystemConfig::mQuery()->empty()->insertAll($newdata);
             });
             $this->app->cache->delete('SystemConfig');
             sysoplog('系统运维管理', '清理系统参数配置成功');
