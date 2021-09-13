@@ -2,6 +2,8 @@
 
 namespace app\data\service;
 
+use app\data\model\DataUserBalance;
+use think\admin\Exception;
 use think\admin\Service;
 
 /**
@@ -25,7 +27,7 @@ class UserBalanceService extends Service
     {
         $map = [['status', '>=', 4], ['order_no', '=', $orderNo]];
         $order = $this->app->db->name('ShopOrder')->where($map)->find();
-        if (empty($order)) throw new \think\admin\Exception('需处理的订单状态异常');
+        if (empty($order)) throw new Exception('需处理的订单状态异常');
 
         if ($order['reward_balance'] > 0) data_save('DataUserBalance', [
             'uuid'   => $order['uuid'],
@@ -48,16 +50,16 @@ class UserBalanceService extends Service
     public function amount(int $uuid, array $nots = []): array
     {
         if ($uuid > 0) {
-            $total = abs($this->app->db->name('DataUserBalance')->whereRaw("uuid='{$uuid}' and amount>0 and deleted=0")->sum('amount'));
-            $count = abs($this->app->db->name('DataUserBalance')->whereRaw("uuid='{$uuid}' and amount<0 and deleted=0")->sum('amount'));
+            $total = abs(DataUserBalance::mk()->whereRaw("uuid='{$uuid}' and amount>0 and deleted=0")->sum('amount'));
+            $count = abs(DataUserBalance::mk()->whereRaw("uuid='{$uuid}' and amount<0 and deleted=0")->sum('amount'));
             if (empty($nots)) {
                 $this->app->db->name('DataUser')->where(['id' => $uuid])->update(['balance_total' => $total, 'balance_used' => $count]);
             } else {
-                $count -= $this->app->db->name('DataUserBalance')->whereRaw("uuid={$uuid}")->whereIn('code', $nots)->sum('amount');
+                $count -= DataUserBalance::mk()->whereRaw("uuid={$uuid}")->whereIn('code', $nots)->sum('amount');
             }
         } else {
-            $total = abs($this->app->db->name('DataUserBalance')->whereRaw("amount>0 and deleted=0")->sum('amount'));
-            $count = abs($this->app->db->name('DataUserBalance')->whereRaw("amount<0 and deleted=0")->sum('amount'));
+            $total = abs(DataUserBalance::mk()->whereRaw("amount>0 and deleted=0")->sum('amount'));
+            $count = abs(DataUserBalance::mk()->whereRaw("amount<0 and deleted=0")->sum('amount'));
         }
         return [$total, $count];
     }

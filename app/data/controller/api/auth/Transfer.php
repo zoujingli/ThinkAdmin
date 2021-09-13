@@ -3,6 +3,7 @@
 namespace app\data\controller\api\auth;
 
 use app\data\controller\api\Auth;
+use app\data\model\DataUserTransfer;
 use app\data\service\UserRebateService;
 use app\data\service\UserTransferService;
 use think\admin\extend\CodeExtend;
@@ -14,12 +15,6 @@ use think\admin\extend\CodeExtend;
  */
 class Transfer extends Auth
 {
-    /**
-     * 绑定数据表
-     * @var string
-     */
-    private $table = 'DataUserTransfer';
-
     /**
      * 提交提现处理
      * @throws \think\db\exception\DataNotFoundException
@@ -84,7 +79,7 @@ class Transfer extends Auth
         }
         // 当日提现次数限制
         $map = ['uuid' => $this->uuid, 'type' => $data['type'], 'date' => $data['date']];
-        $count = $this->app->db->name($this->table)->where($map)->count();
+        $count = DataUserTransfer::mk()->where($map)->count();
         if ($count >= $transfers[$data['type']]['dayNumber']) $this->error("当日提现次数受限");
         // 提现金额范围控制
         if ($transfers[$data['type']]['minAmount'] > $data['amount']) {
@@ -94,7 +89,7 @@ class Transfer extends Auth
             $this->error("不能大于{$transfers[$data['type']]['minAmount']}元");
         }
         // 写入用户提现数据
-        if ($this->app->db->name($this->table)->insert($data) !== false) {
+        if (DataUserTransfer::mk()->insert($data) !== false) {
             UserRebateService::instance()->amount($this->uuid);
             $this->success('提现申请成功');
         } else {
@@ -110,7 +105,7 @@ class Transfer extends Auth
      */
     public function get()
     {
-        $query = $this->_query($this->table)->where(['uuid' => $this->uuid]);
+        $query = $this->_query(DataUserTransfer::mk())->where(['uuid' => $this->uuid]);
         $result = $query->like('date,code')->in('status')->order('id desc')->page(true, false, false, 10);
         // 统计历史数据
         $map = [['uuid', '=', $this->uuid], ['status', '>', 0]];
@@ -119,21 +114,20 @@ class Transfer extends Auth
             'total' => [
                 '锁定' => $locks,
                 '可提' => $total - $count,
-                '上月' => $this->app->db->name($this->table)->where($map)->whereLike('date', date("Y-m-%", strtotime('-1 month')))->sum('amount'),
-                '本月' => $this->app->db->name($this->table)->where($map)->whereLike('date', date("Y-m-%"))->sum('amount'),
-                '全年' => $this->app->db->name($this->table)->where($map)->whereLike('date', date("Y-%"))->sum('amount'),
+                '上月' => DataUserTransfer::mk()->where($map)->whereLike('date', date("Y-m-%", strtotime('-1 month')))->sum('amount'),
+                '本月' => DataUserTransfer::mk()->where($map)->whereLike('date', date("Y-m-%"))->sum('amount'),
+                '全年' => DataUserTransfer::mk()->where($map)->whereLike('date', date("Y-%"))->sum('amount'),
             ],
         ]));
     }
 
     /**
      * 用户取消提现
-     * @throws \think\db\exception\DbException
      */
     public function cancel()
     {
         $data = $this->_vali(['uuid.value' => $this->uuid, 'code.require' => '单号不能为空！']);
-        $this->app->db->name($this->table)->where($data)->whereIn('status', [1, 2, 3])->update([
+        DataUserTransfer::mk()->where($data)->whereIn('status', [1, 2, 3])->update([
             'status' => 0, 'change_time' => date("Y-m-d H:i:s"), 'change_desc' => '用户主动取消提现',
         ]);
         UserRebateService::instance()->amount($this->uuid);
@@ -142,12 +136,11 @@ class Transfer extends Auth
 
     /**
      * 用户确认提现
-     * @throws \think\db\exception\DbException
      */
     public function confirm()
     {
         $data = $this->_vali(['uuid.value' => $this->uuid, 'code.require' => '单号不能为空！']);
-        $this->app->db->name($this->table)->where($data)->whereIn('status', [4])->update([
+        DataUserTransfer::mk()->where($data)->whereIn('status', [4])->update([
             'status' => 5, 'change_time' => date("Y-m-d H:i:s"), 'change_desc' => '用户主动确认收款',
         ]);
         UserRebateService::instance()->amount($this->uuid);

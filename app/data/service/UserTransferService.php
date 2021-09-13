@@ -2,6 +2,7 @@
 
 namespace app\data\service;
 
+use app\data\model\DataUserTransfer;
 use think\admin\Service;
 
 /**
@@ -100,15 +101,15 @@ class UserTransferService extends Service
     public function amount(int $uuid): array
     {
         if ($uuid > 0) {
-            $locks = abs($this->app->db->name('DataUserTransfer')->whereRaw("uuid='{$uuid}' and status=3")->sum('amount'));
-            $total = abs($this->app->db->name('DataUserTransfer')->whereRaw("uuid='{$uuid}' and status>=1")->sum('amount'));
-            $count = abs($this->app->db->name('DataUserTransfer')->whereRaw("uuid='{$uuid}' and status>=4")->sum('amount'));
-            $audit = abs($this->app->db->name('DataUserTransfer')->whereRaw("uuid='{$uuid}' and status>=1 and status<3")->sum('amount'));
+            $locks = abs(DataUserTransfer::mk()->whereRaw("uuid='{$uuid}' and status=3")->sum('amount'));
+            $total = abs(DataUserTransfer::mk()->whereRaw("uuid='{$uuid}' and status>=1")->sum('amount'));
+            $count = abs(DataUserTransfer::mk()->whereRaw("uuid='{$uuid}' and status>=4")->sum('amount'));
+            $audit = abs(DataUserTransfer::mk()->whereRaw("uuid='{$uuid}' and status>=1 and status<3")->sum('amount'));
         } else {
-            $locks = abs($this->app->db->name('DataUserTransfer')->whereRaw("status=3")->sum('amount'));
-            $total = abs($this->app->db->name('DataUserTransfer')->whereRaw("status>=1")->sum('amount'));
-            $count = abs($this->app->db->name('DataUserTransfer')->whereRaw("status>=4")->sum('amount'));
-            $audit = abs($this->app->db->name('DataUserTransfer')->whereRaw("status>=1 and status<3")->sum('amount'));
+            $locks = abs(DataUserTransfer::mk()->whereRaw("status=3")->sum('amount'));
+            $total = abs(DataUserTransfer::mk()->whereRaw("status>=1")->sum('amount'));
+            $count = abs(DataUserTransfer::mk()->whereRaw("status>=4")->sum('amount'));
+            $audit = abs(DataUserTransfer::mk()->whereRaw("status>=1 and status<3")->sum('amount'));
         }
         return [$total, $count, $audit, $locks];
     }

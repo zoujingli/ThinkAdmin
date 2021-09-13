@@ -2,8 +2,13 @@
 
 namespace app\data\service\payment;
 
+use AliPay\App;
+use AliPay\Wap;
+use AliPay\Web;
 use app\data\service\PaymentService;
 use think\admin\Exception;
+use WeChat\Exceptions\InvalidResponseException;
+use WeChat\Exceptions\LocalCacheException;
 
 /**
  * 支付宝支付基础服务
@@ -48,11 +53,11 @@ class AlipayPaymentService extends PaymentService
                 }
             }
             if ($tradeType === static::PAYMENT_WECHAT_APP) {
-                $payment = \AliPay\App::instance($this->config);
+                $payment = App::instance($this->config);
             } elseif ($tradeType === static::PAYMENT_ALIPAY_WAP) {
-                $payment = \AliPay\Wap::instance($this->config);
+                $payment = Wap::instance($this->config);
             } elseif ($tradeType === static::PAYMENT_ALIPAY_WEB) {
-                $payment = \AliPay\Web::instance($this->config);
+                $payment = Web::instance($this->config);
             } else {
                 throw new Exception("支付类型[{$tradeType}]暂时不支持！");
             }
@@ -80,7 +85,7 @@ class AlipayPaymentService extends PaymentService
      */
     public function notify(): string
     {
-        $notify = \AliPay\App::instance($this->config)->notify();
+        $notify = App::instance($this->config)->notify();
         if (in_array($notify['trade_status'], ['TRADE_SUCCESS', 'TRADE_FINISHED'])) {
             if ($this->updatePaymentAction($notify['out_trade_no'], $notify['trade_no'], $notify['total_amount'])) {
                 return 'success';
@@ -96,12 +101,12 @@ class AlipayPaymentService extends PaymentService
      * 查询订单数据
      * @param string $orderNo
      * @return array
-     * @throws \WeChat\Exceptions\InvalidResponseException
-     * @throws \WeChat\Exceptions\LocalCacheException
+     * @throws InvalidResponseException
+     * @throws LocalCacheException
      */
     public function query(string $orderNo): array
     {
-        return \AliPay\App::instance($this->config)->query($orderNo);
+        return App::instance($this->config)->query($orderNo);
     }
 
     /**

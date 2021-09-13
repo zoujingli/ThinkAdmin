@@ -2,6 +2,10 @@
 
 namespace app\data\service;
 
+use app\data\model\DataUser;
+use app\data\model\DataUserBalance;
+use app\data\model\ShopOrder;
+use app\data\model\ShopOrderItem;
 use think\admin\Service;
 
 /**
@@ -34,7 +38,7 @@ class UserUpgradeService extends Service
      */
     public function bindAgent(int $uuid, int $pid0 = 0, int $mode = 1): array
     {
-        $user = $this->app->db->name('DataUser')->where(['id' => $uuid])->find();
+        $user = DataUser::mk()->where(['id' => $uuid])->find();
         if (empty($user)) return [0, '用户查询失败'];
         if ($user['pids'] && in_array($mode, [0, 1])) return [1, '已经绑定代理'];
         // 检查代理用户
@@ -42,7 +46,7 @@ class UserUpgradeService extends Service
         if (empty($pid0)) return [0, '绑定的代理不存在'];
         if ($uuid == $pid0) return [0, '不能绑定自己为代理'];
         // 检查代理资格
-        $agent = $this->app->db->name('DataUser')->where(['id' => $pid0])->find();
+        $agent = DataUser::mk()->where(['id' => $pid0])->find();
         if (empty($agent['vip_code'])) return [0, '代理无推荐资格'];
         if (stripos($agent['path'], "-{$uuid}-") !== false) return [0, '不能绑定下属'];
         // 组装代理数据
@@ -51,16 +55,16 @@ class UserUpgradeService extends Service
             $this->app->db->transaction(function () use ($user, $agent, $mode) {
                 // 更新用户代理
                 $path1 = rtrim($agent['path'] ?: '-', '-') . "-{$agent['id']}-";
-                $this->app->db->name('DataUser')->where(['id' => $user['id']])->update([
+                DataUser::mk()->where(['id' => $user['id']])->update([
                     'pid0' => $agent['id'], 'pid1' => $agent['id'], 'pid2' => $agent['pid1'],
                     'pids' => $mode > 0 ? 1 : 0, 'path' => $path1, 'layer' => substr_count($path1, '-'),
                 ]);
                 // 更新下级代理
                 $path2 = "{$user['path']}{$user['id']}-";
-                if ($this->app->db->name('DataUser')->whereLike('path', "{$path2}%")->count() > 0) {
-                    foreach ($this->app->db->name('DataUser')->whereLike('path', "{$path2}%")->order('layer desc')->select() as $vo) {
+                if (DataUser::mk()->whereLike('path', "{$path2}%")->count() > 0) {
+                    foreach (DataUser::mk()->whereLike('path', "{$path2}%")->order('layer desc')->select() as $vo) {
                         $attr = array_reverse(str2arr($path3 = preg_replace("#^{$path2}#", "{$path1}{$user['id']}-", $vo['path']), '-'));
-                        $this->app->db->name('DataUser')->where(['id' => $vo['id']])->update([
+                        DataUser::mk()->where(['id' => $vo['id']])->update([
                             'pid0' => $attr[0] ?? 0, 'pid1' => $attr[0] ?? 0, 'pid2' => $attr[1] ?? 0, 'path' => $path3, 'layer' => substr_count($path3, '-'),
                         ]);
                     }
@@ -85,16 +89,16 @@ class UserUpgradeService extends Service
      */
     public function upgrade(int $uuid, bool $parent = true, ?string $orderNo = null): bool
     {
-        $user = $this->app->db->name('DataUser')->where(['id' => $uuid])->find();
+        $user = DataUser::mk()->where(['id' => $uuid])->find();
         if (empty($user)) return true;
         // 初始化等级参数
         $levels = $this->levels();
         [$vipName, $vipCode, $vipTeam] = [$levels[0]['name'] ?? '普通用户', 0, []];
         // 统计用户数据
         foreach ($levels as $key => $level) if ($level['upgrade_team'] === 1) $vipTeam[] = $key;
-        $orderAmount = $this->app->db->name('ShopOrder')->where("uuid={$uuid} and status>=4")->sum('amount_total');
-        $teamsDirect = $this->app->db->name('DataUser')->where(['pid1' => $uuid])->whereIn('vip_code', $vipTeam)->count();
-        $teamsIndirect = $this->app->db->name('DataUser')->where(['pid2' => $uuid])->whereIn('vip_code', $vipTeam)->count();
+        $orderAmount = ShopOrder::mk()->where("uuid={$uuid} and status>=4")->sum('amount_total');
+        $teamsDirect = DataUser::mk()->where(['pid1' => $uuid])->whereIn('vip_code', $vipTeam)->count();
+        $teamsIndirect = DataUser::mk()->where(['pid2' => $uuid])->whereIn('vip_code', $vipTeam)->count();
         $teamsUsers = $teamsDirect + $teamsIndirect;
         // 动态计算用户等级
         foreach ($levels as $item) {
@@ -113,7 +117,7 @@ class UserUpgradeService extends Service
             }
         }
         // 购买入会商品升级
-        $query = $this->app->db->name('ShopOrderItem')->alias('b')->join('shop_order a', 'b.order_no=a.order_no');
+        $query = ShopOrderItem::mk()->alias('b')->join('shop_order a', 'b.order_no=a.order_no');
         $tmpCode = $query->whereRaw("a.uuid={$uuid} and a.payment_status=1 and a.status>=4 and b.vip_entry=1")->max('b.vip_upgrade');
         if ($tmpCode > $vipCode && isset($levels[$tmpCode])) {
             [$vipName, $vipCode] = [$levels[$tmpCode]['name'], $levels[$tmpCode]['number']];
@@ -121,14 +125,14 @@ class UserUpgradeService extends Service
             $orderNo = null;
         }
         // 后台余额充值升级
-        $tmpCode = $this->app->db->name('DataUserBalance')->where(['uuid' => $uuid, 'deleted' => 0])->max('upgrade');
+        $tmpCode = DataUserBalance::mk()->where(['uuid' => $uuid, 'deleted' => 0])->max('upgrade');
         if ($tmpCode > $vipCode && isset($levels[$tmpCode])) {
             [$vipName, $vipCode] = [$levels[$tmpCode]['name'], $levels[$tmpCode]['number']];
         }
         // 统计用户订单金额
-        $orderAmountTotal = $this->app->db->name('ShopOrder')->whereRaw("uuid={$uuid} and status>=4")->sum('amount_goods');
-        $teamsAmountDirect = $this->app->db->name('ShopOrder')->whereRaw("puid1={$uuid} and status>=4")->sum('amount_goods');
-        $teamsAmountIndirect = $this->app->db->name('ShopOrder')->whereRaw("puid2={$uuid} and status>=4")->sum('amount_goods');
+        $orderAmountTotal = ShopOrder::mk()->whereRaw("uuid={$uuid} and status>=4")->sum('amount_goods');
+        $teamsAmountDirect = ShopOrder::mk()->whereRaw("puid1={$uuid} and status>=4")->sum('amount_goods');
+        $teamsAmountIndirect = ShopOrder::mk()->whereRaw("puid2={$uuid} and status>=4")->sum('amount_goods');
         // 更新用户团队数据
         $data = [
             'vip_name'              => $vipName,
@@ -143,7 +147,7 @@ class UserUpgradeService extends Service
         ];
         if (!empty($orderNo)) $data['vip_order'] = $orderNo;
         if ($data['vip_code'] !== $user['vip_code']) $data['vip_datetime'] = date('Y-m-d H:i:s');
-        $this->app->db->name('DataUser')->where(['id' => $uuid])->update($data);
+        DataUser::mk()->where(['id' => $uuid])->update($data);
         // 用户升级事件
         if ($user['vip_code'] < $vipCode) $this->app->event->trigger('UserUpgradeLevel', [
             'uuid' => $user['id'], 'order_no' => $orderNo, 'vip_code_old' => $user['vip_code'], 'vip_code_new' => $vipCode,

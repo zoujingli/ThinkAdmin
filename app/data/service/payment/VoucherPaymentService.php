@@ -2,6 +2,7 @@
 
 namespace app\data\service\payment;
 
+use app\data\model\ShopOrder;
 use app\data\service\PaymentService;
 use think\admin\Exception;
 use think\admin\extend\CodeExtend;
@@ -42,14 +43,14 @@ class VoucherPaymentService extends PaymentService
      * @param string $paymentReturn 完成回跳地址
      * @param string $paymentImage 支付凭证图片
      * @return array
-     * @throws Exception
+     * @throws \think\admin\Exception
      * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\DbException
      * @throws \think\db\exception\ModelNotFoundException
      */
     public function create(string $openid, string $orderNo, string $paymentAmount, string $paymentTitle, string $paymentRemark, string $paymentReturn = '', string $paymentImage = ''): array
     {
-        $order = $this->app->db->name('ShopOrder')->where(['order_no' => $orderNo])->find();
+        $order = ShopOrder::mk()->where(['order_no' => $orderNo])->find();
         if (empty($order)) throw new Exception("订单不存在");
         if ($order['status'] !== 2) throw new Exception("不可发起支付");
         if (empty($paymentImage)) throw new Exception('支付凭证不能为空');

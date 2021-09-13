@@ -2,6 +2,7 @@
 
 namespace app\data\command;
 
+use app\data\model\DataUser;
 use app\data\service\UserBalanceService;
 use app\data\service\UserRebateService;
 use think\admin\Command;
@@ -30,8 +31,8 @@ class UserAmount extends Command
      */
     protected function execute(Input $input, Output $output)
     {
-        [$total, $count, $error] = [$this->app->db->name('DataUser')->count(), 0, 0];
-        foreach ($this->app->db->name('DataUser')->field('id')->cursor() as $user) try {
+        [$total, $count, $error] = [DataUser::mk()->count(), 0, 0];
+        foreach (DataUser::mk()->field('id')->cursor() as $user) try {
             $this->queue->message($total, ++$count, "刷新用户 [{$user['id']}] 余额及返利开始");
             UserRebateService::instance()->amount($user['id']);
             UserBalanceService::instance()->amount($user['id']);

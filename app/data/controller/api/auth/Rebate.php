@@ -4,6 +4,9 @@ namespace app\data\controller\api\auth;
 
 use app\data\controller\api\Auth;
 use app\data\service\RebateService;
+use think\db\exception\DataNotFoundException;
+use think\db\exception\DbException;
+use think\db\exception\ModelNotFoundException;
 
 /**
  * 用户返利管理
@@ -13,26 +16,20 @@ use app\data\service\RebateService;
 class Rebate extends Auth
 {
     /**
-     * 绑定数据表
-     * @var string
-     */
-    private $table = 'DataUserRebate';
-
-    /**
      * 获取用户返利记录
-     * @throws \think\db\exception\DataNotFoundException
-     * @throws \think\db\exception\DbException
-     * @throws \think\db\exception\ModelNotFoundException
+     * @throws DataNotFoundException
+     * @throws DbException
+     * @throws ModelNotFoundException
      */
     public function get()
     {
         $date = trim(input('date', date('Y-m')), '-');
         [$map, $year] = [['uuid' => $this->uuid], substr($date, 0, 4)];
-        $query = $this->_query($this->table)->where($map)->equal('type,status')->whereLike('date', "{$date}%");
+        $query = $this->_query('DataUserRebate')->where($map)->equal('type,status')->whereLike('date', "{$date}%");
         $this->success('获取返利统计', array_merge($query->order('id desc')->page(true, false, false, 10), [
             'total' => [
-                '年度' => $this->_query($this->table)->where($map)->equal('type,status')->whereLike('date', "{$year}%")->db()->sum('amount'),
-                '月度' => $this->_query($this->table)->where($map)->equal('type,status')->whereLike('date', "{$date}%")->db()->sum('amount'),
+                '年度' => $this->_query('DataUserRebate')->where($map)->equal('type,status')->whereLike('date', "{$year}%")->db()->sum('amount'),
+                '月度' => $this->_query('DataUserRebate')->where($map)->equal('type,status')->whereLike('date', "{$date}%")->db()->sum('amount'),
             ],
         ]));
     }
@@ -43,7 +40,7 @@ class Rebate extends Auth
     public function prize()
     {
         [$map, $data] = [['number' => $this->user['vip_code']], []];
-        $prizes = $this->app->db->name($this->table)->group('name')->column('name');
+        $prizes = $this->app->db->name('DataUserRebate')->group('name')->column('name');
         $rebate = $this->app->db->name('BaseUserUpgrade')->where($map)->value('rebate_rule', '');
         $codemap = array_merge($prizes, str2arr($rebate));
         foreach (RebateService::PRIZES as $prize) {

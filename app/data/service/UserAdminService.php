@@ -2,9 +2,10 @@
 
 namespace app\data\service;
 
+use app\data\model\DataUser;
+use app\data\model\DataUserToken;
 use think\admin\Exception;
 use think\admin\Service;
-use think\db\exception\DbException;
 
 /**
  * 用户数据管理服务
@@ -55,19 +56,19 @@ class UserAdminService extends Service
      * @param string $type 接口类型
      * @param boolean $force 强刷令牌
      * @return array
-     * @throws Exception
-     * @throws DbException
+     * @throws \think\admin\Exception
+     * @throws \think\db\exception\DbException
      */
     public function set(array $map, array $data, string $type, bool $force = false): array
     {
         unset($data['id'], $data['deleted'], $data['create_at']);
-        if ($uuid = $this->app->db->name('DataUser')->where($map)->where(['deleted' => 0])->value('id')) {
+        if ($uuid = DataUser::mk()->where($map)->where(['deleted' => 0])->value('id')) {
             if (!empty($data)) {
                 $map = ['id' => $uuid, 'deleted' => 0];
-                $this->app->db->name('DataUser')->strict(false)->where($map)->update($data);
+                DataUser::mk()->strict(false)->where($map)->update($data);
             }
         } else {
-            $uuid = $this->app->db->name('DataUser')->strict(false)->insertGetId($data);
+            $uuid = DataUser::mk()->strict(false)->insertGetId($data);
         }
         if ($force) {
             UserTokenService::instance()->token(intval($uuid), $type);
@@ -80,17 +81,18 @@ class UserAdminService extends Service
      * @param integer $uuid 用户UID
      * @param ?string $type 接口类型
      * @return array
-     * @throws DbException
-     * @throws Exception
+     * @throws \think\admin\Exception
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\DbException
+     * @throws \think\db\exception\ModelNotFoundException
      */
     public function get(int $uuid, ?string $type = null): array
     {
-        $map = ['id' => $uuid, 'deleted' => 0];
-        $user = $this->app->db->name('DataUser')->where($map)->find();
+        $user = DataUser::mk()->where(['id' => $uuid, 'deleted' => 0])->find();
         if (empty($user)) throw new Exception('指定UID用户不存在');
         if (!is_null($type)) {
             $map = ['uuid' => $uuid, 'type' => $type];
-            $data = $this->app->db->name('DataUserToken')->where($map)->find();
+            $data = DataUserToken::mk()->where($map)->find();
             if (empty($data)) {
                 [$state, $info, $data] = UserTokenService::instance()->token($uuid, $type);
                 if (empty($state) || empty($data)) throw new Exception($info);
@@ -108,8 +110,7 @@ class UserAdminService extends Service
      */
     public function total(int $uuid): array
     {
-        $query = $this->app->db->name('DataUser');
-        return ['my_invite' => $query->where(['pid1' => $uuid])->count()];
+        return ['my_invite' => DataUser::mk()->where(['pid1' => $uuid])->count()];
     }
 
     /**
@@ -123,7 +124,7 @@ class UserAdminService extends Service
     {
         if (!empty($unionid)) {
             [$map1, $map2] = [[['unionid', '=', $unionid]], [[$field, '=', $openid]]];
-            if ($uuid = $this->app->db->name('DataUser')->whereOr([$map1, $map2])->value('id')) {
+            if ($uuid = DataUser::mk()->whereOr([$map1, $map2])->value('id')) {
                 return ['id' => $uuid];
             }
         }
@@ -142,7 +143,7 @@ class UserAdminService extends Service
     {
         if (count($list) < 1) return $list;
         $uids = array_unique(array_column($list, $keys));
-        $users = $this->app->db->name('DataUser')->whereIn('id', $uids)->column($cols, 'id');
+        $users = DataUser::mk()->whereIn('id', $uids)->column($cols, 'id');
         foreach ($list as &$vo) $vo[$bind] = $users[$vo[$keys]] ?? [];
         return $list;
     }

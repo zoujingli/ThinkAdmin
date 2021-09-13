@@ -3,6 +3,7 @@
 namespace app\data\controller\api\auth;
 
 use app\data\controller\api\Auth;
+use app\data\model\DataUserAddress;
 use think\admin\extend\CodeExtend;
 
 /**
@@ -13,14 +14,10 @@ use think\admin\extend\CodeExtend;
 class Address extends Auth
 {
     /**
-     * 绑定数据表
-     * @var string
-     */
-    private $table = 'DataUserAddress';
-
-    /**
      * 添加收货地址
+     * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\DbException
+     * @throws \think\db\exception\ModelNotFoundException
      */
     public function set()
     {
@@ -43,22 +40,22 @@ class Address extends Auth
         ]);
         if (empty($data['code'])) {
             unset($data['code']);
-            $count = $this->app->db->name($this->table)->where($data)->count();
+            $count = DataUserAddress::mk()->where($data)->count();
             if ($count > 0) $this->error('抱歉，该地址已经存在！');
             $data['code'] = CodeExtend::uniqidDate(20, 'A');
-            if ($this->app->db->name($this->table)->insert($data) === false) {
+            if (DataUserAddress::mk()->insert($data) === false) {
                 $this->error('添加地址失败！');
             }
         } else {
             $map = ['uuid' => $this->uuid, 'code' => $data['code']];
-            $address = $this->app->db->name($this->table)->where($map)->find();
+            $address = DataUserAddress::mk()->where($map)->find();
             if (empty($address)) $this->error('修改地址不存在！');
-            $this->app->db->name($this->table)->where($map)->update($data);
+            DataUserAddress::mk()->where($map)->update($data);
         }
         // 去除其它默认选项
         if (isset($data['type']) && $data['type'] > 0) {
             $map = [['uuid', '=', $this->uuid], ['code', '<>', $data['code']]];
-            $this->app->db->name($this->table)->where($map)->update(['type' => 0]);
+            DataUserAddress::mk()->where($map)->update(['type' => 0]);
         }
         $this->success('地址保存成功！', $this->_getAddress($data['code']));
     }
@@ -71,7 +68,7 @@ class Address extends Auth
      */
     public function get()
     {
-        $query = $this->_query($this->table)->withoutField('deleted');
+        $query = $this->_query('DataUserAddress')->withoutField('deleted');
         $query->equal('code')->where(['uuid' => $this->uuid, 'deleted' => 0]);
         $result = $query->order('type desc,id desc')->page(false, false, false, 15);
         $this->success('获取地址数据！', $result);
@@ -79,7 +76,9 @@ class Address extends Auth
 
     /**
      * 修改地址状态
+     * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\DbException
+     * @throws \think\db\exception\ModelNotFoundException
      */
     public function state()
     {
@@ -91,32 +90,34 @@ class Address extends Auth
         ]);
         // 检查地址是否存在
         $map = ['uuid' => $data['uuid'], 'code' => $data['code']];
-        if ($this->app->db->name($this->table)->where($map)->count() < 1) {
+        if (DataUserAddress::mk()->where($map)->count() < 1) {
             $this->error('修改的地址不存在！');
         }
         // 更新默认地址状态
         $data['type'] = intval($data['type']);
-        $this->app->db->name($this->table)->where($map)->update(['type' => $data['type']]);
+        DataUserAddress::mk()->where($map)->update(['type' => $data['type']]);
         // 去除其它默认选项
         if ($data['type'] > 0) {
             $map = [['uuid', '=', $this->uuid], ['code', '<>', $data['code']]];
-            $this->app->db->name($this->table)->where($map)->update(['type' => 0]);
+            DataUserAddress::mk()->where($map)->update(['type' => 0]);
         }
         $this->success('默认设置成功！', $this->_getAddress($data['code']));
     }
 
     /**
      * 删除收货地址
+     * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\DbException
+     * @throws \think\db\exception\ModelNotFoundException
      */
     public function remove()
     {
         $map = $this->_vali([
             'uuid.value' => $this->uuid, 'code.require' => '地址编号不能为空！',
         ]);
-        $address = $this->app->db->name($this->table)->where($map)->find();
+        $address = DataUserAddress::mk()->where($map)->find();
         if (empty($address)) $this->error('需要删除的地址不存在！');
-        if ($this->app->db->name($this->table)->where($map)->update(['deleted' => 1]) !== false) {
+        if (DataUserAddress::mk()->where($map)->update(['deleted' => 1]) !== false) {
             $this->success('删除地址成功！');
         } else {
             $this->error('删除地址失败！');
@@ -134,7 +135,7 @@ class Address extends Auth
     private function _getAddress(string $code): ?array
     {
         $map = ['code' => $code, 'uuid' => $this->uuid, 'deleted' => 0];
-        return $this->app->db->name($this->table)->withoutField('deleted')->where($map)->find();
+        return DataUserAddress::mk()->withoutField('deleted')->where($map)->find();
     }
 
 }

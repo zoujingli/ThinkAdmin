@@ -2,6 +2,10 @@
 
 namespace app\data\service;
 
+use app\data\model\DataUser;
+use app\data\model\DataUserRebate;
+use app\data\model\DataUserTransfer;
+use app\data\model\ShopOrder;
 use think\admin\Service;
 
 /**
@@ -15,19 +19,18 @@ class UserRebateService extends Service
      * 同步刷新用户返利
      * @param integer $uuid
      * @return array [total, count, lock]
-     * @throws \think\db\exception\DbException
      */
     public function amount(int $uuid): array
     {
         if ($uuid > 0) {
-            $count = $this->app->db->name('DataUserTransfer')->whereRaw("uuid='{$uuid}' and status>0")->sum('amount');
-            $total = $this->app->db->name('DataUserRebate')->whereRaw("uuid='{$uuid}' and status=1 and deleted=0")->sum('amount');
-            $locks = $this->app->db->name('DataUserRebate')->whereRaw("uuid='{$uuid}' and status=0 and deleted=0")->sum('amount');
-            $this->app->db->name('DataUser')->where(['id' => $uuid])->update(['rebate_total' => $total, 'rebate_used' => $count, 'rebate_lock' => $locks]);
+            $count = DataUserTransfer::mk()->whereRaw("uuid='{$uuid}' and status>0")->sum('amount');
+            $total = DataUserRebate::mk()->whereRaw("uuid='{$uuid}' and status=1 and deleted=0")->sum('amount');
+            $locks = DataUserRebate::mk()->whereRaw("uuid='{$uuid}' and status=0 and deleted=0")->sum('amount');
+            DataUser::mk()->where(['id' => $uuid])->update(['rebate_total' => $total, 'rebate_used' => $count, 'rebate_lock' => $locks]);
         } else {
-            $count = $this->app->db->name('DataUserTransfer')->whereRaw("status>0")->sum('amount');
-            $total = $this->app->db->name('DataUserRebate')->whereRaw("status=1 and deleted=0")->sum('amount');
-            $locks = $this->app->db->name('DataUserRebate')->whereRaw("status=0 and deleted=0")->sum('amount');
+            $count = DataUserTransfer::mk()->whereRaw("status>0")->sum('amount');
+            $total = DataUserRebate::mk()->whereRaw("status=1 and deleted=0")->sum('amount');
+            $locks = DataUserRebate::mk()->whereRaw("status=0 and deleted=0")->sum('amount');
         }
         return [$total, $count, $locks];
     }
@@ -43,11 +46,11 @@ class UserRebateService extends Service
     public function confirm(string $orderNo): array
     {
         $map = [['status', '>=', 4], ['order_no', '=', $orderNo]];
-        $order = $this->app->db->name('ShopOrder')->where($map)->find();
+        $order = ShopOrder::mk()->where($map)->find();
         if (empty($order)) return [0, '需处理的订单状态异常！'];
 
         $map = [['status', '=', 0], ['order_no', 'like', "{$orderNo}%"]];
-        $this->app->db->name('DataUserRebate')->where($map)->update(['status' => 1]);
+        DataUserRebate::mk()->where($map)->update(['status' => 1]);
         if (UserUpgradeService::instance()->upgrade($order['uuid'])) {
             return [1, '重新计算用户金额成功！'];
         } else {

@@ -2,11 +2,14 @@
 
 namespace app\data\command;
 
+use app\data\model\ShopOrder;
+use app\data\model\ShopOrderItem;
 use app\data\service\OrderService;
 use think\admin\Command;
 use think\admin\Exception;
 use think\console\Input;
 use think\console\Output;
+use think\Model;
 
 /**
  * 商城订单自动清理
@@ -43,10 +46,10 @@ class OrderClean extends Command
         try {
             $map = [['status', '<', 3], ['payment_status', '=', 0]];
             $map[] = ['create_at', '<', date('Y-m-d H:i:s', strtotime('-30 minutes'))];
-            [$total, $count] = [$this->app->db->name('ShopOrder')->where($map)->count(), 0];
-            $this->app->db->name('ShopOrder')->where($map)->select()->map(function ($item) use ($total, &$count) {
+            [$total, $count] = [ShopOrder::mk()->where($map)->count(), 0];
+            ShopOrder::mk()->where($map)->select()->map(function (Model $item) use ($total, &$count) {
                 $this->queue->message($total, ++$count, "开始取消未支付的订单 {$item['order_no']}");
-                $this->app->db->name('ShopOrder')->where(['order_no' => $item['order_no']])->update([
+                $item->save([
                     'status'          => 0,
                     'cancel_status'   => 1,
                     'cancel_datetime' => date('Y-m-d H:i:s'),
@@ -69,13 +72,13 @@ class OrderClean extends Command
         try {
             $map = [['status', '=', 0], ['payment_status', '=', 0]];
             $map[] = ['create_at', '<', date('Y-m-d H:i:s', strtotime('-3 days'))];
-            [$total, $count] = [$this->app->db->name('ShopOrder')->where($map)->count(), 0];
-            foreach ($this->app->db->name('ShopOrder')->where($map)->cursor() as $item) {
+            [$total, $count] = [ShopOrder::mk()->where($map)->count(), 0];
+            ShopOrder::mk()->where($map)->select()->map(function (Model $item) use ($total, &$count) {
                 $this->queue->message($total, ++$count, "开始清理已取消的订单 {$item['order_no']}");
-                $this->app->db->name('ShopOrder')->where(['order_no' => $item['order_no']])->delete();
-                $this->app->db->name('ShopOrderItem')->where(['order_no' => $item['order_no']])->delete();
+                ShopOrder::mk()->where(['order_no' => $item['order_no']])->delete();
+                ShopOrderItem::mk()->where(['order_no' => $item['order_no']])->delete();
                 $this->queue->message($total, $count, "完成清理已取消的订单 {$item['order_no']}", 1);
-            }
+            });
         } catch (\Exception $exception) {
             $this->queue->error($exception->getMessage());
         }

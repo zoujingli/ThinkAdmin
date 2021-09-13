@@ -2,6 +2,7 @@
 
 namespace app\data\service;
 
+use app\data\model\DataUserMessage;
 use think\admin\Service;
 
 /**
@@ -107,7 +108,7 @@ class MessageService extends Service
      */
     public function checkVerifyCode(string $code, string $phone, string $tplcode = 'zt.tplcode_register'): bool
     {
-        $cache = $this->app->cache->get($ckey = md5("code-{$tplcode}-{$phone}"), []);
+        $cache = $this->app->cache->get(md5("code-{$tplcode}-{$phone}"), []);
         return is_array($cache) && isset($cache['code']) && $cache['code'] == $code;
     }
 
@@ -154,7 +155,7 @@ class MessageService extends Service
     public function send(string $phone, string $content): array
     {
         [$state, $message, $record] = $this->_request('v2/sendSms', ['mobile' => $phone, 'content' => $content]);
-        $this->app->db->name('DataUserMessage')->insert([
+        DataUserMessage::mk()->insert([
             'phone' => $phone, 'content' => $content, 'result' => $message, 'status' => $state ? 1 : 0,
         ]);
         return [$state, $message, $record];

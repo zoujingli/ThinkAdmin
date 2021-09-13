@@ -141,7 +141,6 @@ class Center extends Auth
 
     /**
      * 绑定用户邀请人
-     * @throws \think\Exception
      * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\DbException
      * @throws \think\db\exception\ModelNotFoundException

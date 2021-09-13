@@ -2,6 +2,7 @@
 
 namespace app\data\command;
 
+use app\data\model\DataUser;
 use app\data\service\UserUpgradeService;
 use think\admin\Command;
 use think\admin\Exception;
@@ -30,8 +31,8 @@ class UserUpgrade extends Command
     protected function execute(Input $input, Output $output)
     {
         try {
-            [$total, $count] = [$this->app->db->name('DataUser')->count(), 0];
-            foreach ($this->app->db->name('DataUser')->field('id')->cursor() as $user) {
+            [$total, $count] = [DataUser::mk()->count(), 0];
+            foreach (DataUser::mk()->field('id')->cursor() as $user) {
                 $this->queue->message($total, ++$count, "正在计算用户 [{$user['id']}] 的等级");
                 UserUpgradeService::instance()->upgrade($user['id']);
                 $this->queue->message($total, $count, "完成计算用户 [{$user['id']}] 的等级", 1);

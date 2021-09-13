@@ -57,5 +57,4 @@ class Goods extends Controller
     {
         $this->success('获取区域成功', ExpressService::instance()->region(3, 1));
     }
-
 }

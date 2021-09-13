@@ -2,6 +2,8 @@
 
 namespace app\data\service;
 
+use app\data\model\DataUserPayment;
+use app\data\model\ShopOrder;
 use app\data\service\payment\AlipayPaymentService;
 use app\data\service\payment\BalancePyamentService;
 use app\data\service\payment\EmptyPaymentService;
@@ -162,7 +164,7 @@ abstract class PaymentService
      * 根据配置实例支付服务
      * @param string $code 支付配置编号
      * @return JoinpayPaymentService|WechatPaymentService|AlipayPaymentService|BalancePyamentService|VoucherPaymentService|EmptyPaymentService
-     * @throws Exception
+     * @throws \think\admin\Exception
      */
     public static function instance(string $code): PaymentService
     {
@@ -291,7 +293,7 @@ abstract class PaymentService
      */
     protected function createPaymentAction(string $orderNo, string $paymentTitle, string $paymentAmount)
     {
-        $this->app->db->name('DataUserPayment')->insert([
+        DataUserPayment::mk()->insert([
             'payment_code' => $this->code,
             'payment_type' => $this->type,
             'order_no'     => $orderNo,
@@ -314,7 +316,7 @@ abstract class PaymentService
     protected function updatePaymentAction(string $orderNo, string $paymentTrade, string $paymentAmount, string $paymentRemark = '在线支付'): bool
     {
         // 更新支付记录
-        data_save('DataUserPayment', [
+        data_save(DataUserPayment::mk(), [
             'order_no'         => $orderNo,
             'payment_code'     => $this->code,
             'payment_type'     => $this->type,
@@ -345,7 +347,7 @@ abstract class PaymentService
     public function updateOrder(string $orderNo, string $paymentTrade, string $paymentAmount, string $paymentRemark = '在线支付', string $paymentImage = ''): bool
     {
         $map = ['status' => 2, 'order_no' => $orderNo, 'payment_status' => 0];
-        $order = $this->app->db->name('ShopOrder')->where($map)->find();
+        $order = ShopOrder::mk()->where($map)->find();
         if (empty($order)) return false;
         // 检查订单支付状态
         if ($this->type === self::PAYMENT_VOUCHER) {
@@ -368,7 +370,7 @@ abstract class PaymentService
             'payment_datetime' => date('Y-m-d H:i:s'),
         ];
         if (empty($data['payment_type'])) unset($data['payment_type']);
-        $this->app->db->name('ShopOrder')->where($map)->update($data);
+        ShopOrder::mk()->where($map)->update($data);
         // 触发订单更新事件
         if ($status >= 4) {
             $this->app->event->trigger('ShopOrderPayment', $orderNo);

@@ -2,6 +2,7 @@
 
 namespace app\data\command;
 
+use app\data\model\DataUserTransfer;
 use app\data\service\UserRebateService;
 use think\admin\Command;
 use think\admin\Exception;
@@ -41,8 +42,8 @@ class UserTransfer extends Command
     protected function execute(Input $input, Output $output)
     {
         $map = [['type', 'in', ['wechat_banks', 'wechat_wallet']], ['status', 'in', [3, 4]]];
-        [$total, $count, $error] = [$this->app->db->name('DataUserTransfer')->where($map)->count(), 0, 0];
-        foreach ($this->app->db->name('DataUserTransfer')->where($map)->cursor() as $vo) try {
+        [$total, $count, $error] = [DataUserTransfer::mk()->where($map)->count(), 0, 0];
+        foreach (DataUserTransfer::mk()->where($map)->cursor() as $vo) try {
             $this->queue->message($total, ++$count, "开始处理订单 {$vo['code']} 提现");
             if ($vo['status'] === 3) {
                 $this->queue->message($total, $count, "尝试处理订单 {$vo['code']} 打款", 1);
@@ -52,7 +53,7 @@ class UserTransfer extends Command
                     [$config, $result] = $this->createTransferWallet($vo);
                 }
                 if ($result['return_code'] === 'SUCCESS' && $result['result_code'] === 'SUCCESS') {
-                    $this->app->db->name('DataUserTransfer')->where(['code' => $vo['code']])->update([
+                    DataUserTransfer::mk()->where(['code' => $vo['code']])->update([
                         'status'      => 4,
                         'appid'       => $config['appid'],
                         'openid'      => $config['openid'],
@@ -62,7 +63,7 @@ class UserTransfer extends Command
                         'change_desc' => '创建微信提现成功',
                     ]);
                 } else {
-                    $this->app->db->name('DataUserTransfer')->where(['code' => $vo['code']])->update([
+                    DataUserTransfer::mk()->where(['code' => $vo['code']])->update([
                         'change_time' => date('Y-m-d H:i:s'), 'change_desc' => $result['err_code_des'] ?? '线上提现失败',
                     ]);
                 }
@@ -77,7 +78,7 @@ class UserTransfer extends Command
         } catch (\Exception $exception) {
             $error++;
             $this->queue->message($total, $count, "处理提现订单 {$vo['code']} 失败, {$exception->getMessage()}", 1);
-            $this->app->db->name('DataUserTransfer')->where(['code' => $vo['code']])->update([
+            DataUserTransfer::mk()->where(['code' => $vo['code']])->update([
                 'change_time' => date('Y-m-d H:i:s'), 'change_desc' => $exception->getMessage(),
             ]);
         }
@@ -217,7 +218,7 @@ class UserTransfer extends Command
         $result = TransfersBank::instance($config)->query($item['trade_no']);
         if ($result['return_code'] === 'SUCCESS' && $result['result_code'] === 'SUCCESS') {
             if ($result['status'] === 'SUCCESS') {
-                $this->app->db->name('DataUserTransfer')->where(['code' => $item['code']])->update([
+                DataUserTransfer::mk()->where(['code' => $item['code']])->update([
                     'status'      => 5,
                     'appid'       => $config['appid'],
                     'openid'      => $config['openid'],
@@ -227,7 +228,7 @@ class UserTransfer extends Command
                 ]);
             }
             if (in_array($result['status'], ['FAILED', 'BANK_FAIL'])) {
-                $this->app->db->name('DataUserTransfer')->where(['code' => $item['code']])->update([
+                DataUserTransfer::mk()->where(['code' => $item['code']])->update([
                     'status'      => 0,
                     'change_time' => date('Y-m-d H:i:s'),
                     'change_desc' => '微信提现打款失败',
@@ -254,7 +255,7 @@ class UserTransfer extends Command
         [$config['appid'], $config['openid']] = [$item['appid'], $item['openid']];
         $result = Transfers::instance($config)->query($item['trade_no']);
         if ($result['return_code'] === 'SUCCESS' && $result['result_code'] === 'SUCCESS') {
-            $this->app->db->name('DataUserTransfer')->where(['code' => $item['code']])->update([
+            DataUserTransfer::mk()->where(['code' => $item['code']])->update([
                 'status'      => 5,
                 'appid'       => $config['appid'],
                 'openid'      => $config['openid'],

@@ -2,11 +2,16 @@
 
 namespace app\data\command;
 
+use app\data\model\DataUser;
 use app\data\service\UserUpgradeService;
 use think\admin\Command;
+use think\admin\Exception;
 use think\console\Input;
 use think\console\input\Argument;
 use think\console\Output;
+use think\db\exception\DataNotFoundException;
+use think\db\exception\DbException;
+use think\db\exception\ModelNotFoundException;
 
 /**
  * 更新用户代理关系
@@ -27,10 +32,10 @@ class UserAgent extends Command
      * @param Input $input
      * @param Output $output
      * @return void
-     * @throws \think\admin\Exception
-     * @throws \think\db\exception\DataNotFoundException
-     * @throws \think\db\exception\DbException
-     * @throws \think\db\exception\ModelNotFoundException
+     * @throws Exception
+     * @throws DataNotFoundException
+     * @throws DbException
+     * @throws ModelNotFoundException
      */
     protected function execute(Input $input, Output $output)
     {
@@ -39,11 +44,11 @@ class UserAgent extends Command
         if (empty($puid)) $this->setQueueError("参数PID无效，请传入正确的参数!");
 
         // 检查当前用户资料
-        $user = $this->app->db->name('DataUser')->where(['id' => $uuid])->find();
+        $user = DataUser::mk()->where(['id' => $uuid])->find();
         if (empty($user)) $this->setQueueError("读取用户数据失败!");
 
         // 检查上级代理用户
-        $parant = $this->app->db->name('DataUser')->where(['id' => $puid])->find();
+        $parant = DataUser::mk()->where(['id' => $puid])->find();
         if (empty($parant)) $this->setQueueError('读取代理数据失败!');
 
         // 检查异常关系处理
@@ -53,7 +58,7 @@ class UserAgent extends Command
 
         // 更新自己的代理关系
         $path1 = rtrim($parant['path'] ?: '-', '-') . "-{$parant['id']}-";
-        $this->app->db->name('DataUser')->where(['id' => $user['id']])->update([
+        DataUser::mk()->where(['id' => $user['id']])->update([
             'path' => $path1, 'layer' => substr_count($path1, '-'),
             'pid0' => $parant['id'], 'pid1' => $parant['id'], 'pid2' => $parant['pid1'],
         ]);
@@ -62,13 +67,13 @@ class UserAgent extends Command
 
         // 更新下级的代理关系
         $path2 = "{$user['path']}{$user['id']}-";
-        [$total, $count] = [$this->app->db->name('DataUser')->whereLike('path', "{$path2}%")->count(), 0];
-        foreach ($this->app->db->name('DataUser')->whereLike('path', "{$path2}%")->order('layer desc')->select() as $vo) {
+        [$total, $count] = [DataUser::mk()->whereLike('path', "{$path2}%")->count(), 0];
+        foreach (DataUser::mk()->whereLike('path', "{$path2}%")->order('layer desc')->select() as $vo) {
             $this->setQueueMessage($total, ++$count, "开始更新下级用户[{$vo['id']}]代理绑定!");
             // 更新下级用户代理数据
             $path3 = preg_replace("#^{$path2}#", "{$path1}{$user['id']}-", $vo['path']);
             $attrs = array_reverse(str2arr($path3, '-'));
-            $this->app->db->name('DataUser')->where(['id' => $vo['id']])->update([
+            DataUser::mk()->where(['id' => $vo['id']])->update([
                 'path' => $path3, 'layer' => substr_count($path3, '-'),
                 'pid0' => $attrs[0] ?? 0, 'pid1' => $attrs[0] ?? 0, 'pid2' => $attrs[1] ?? 0,
             ]);

@@ -5,6 +5,7 @@ namespace app\data\controller\api;
 use app\data\service\UserAdminService;
 use app\wechat\service\WechatService;
 use think\admin\Controller;
+use think\admin\Exception;
 use think\Response;
 
 /**
@@ -64,7 +65,7 @@ class Wechat extends Controller
 
     /**
      * 加载网页授权数据
-     * @return \think\Response
+     * @return Response
      * @throws \WeChat\Exceptions\InvalidResponseException
      * @throws \WeChat\Exceptions\LocalCacheException
      * @throws \think\admin\Exception

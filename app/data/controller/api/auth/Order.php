@@ -3,6 +3,9 @@
 namespace app\data\controller\api\auth;
 
 use app\data\controller\api\Auth;
+use app\data\model\DataUserAddress;
+use app\data\model\ShopOrder;
+use app\data\model\ShopOrderItem;
 use app\data\service\ExpressService;
 use app\data\service\GoodsService;
 use app\data\service\OrderService;
@@ -38,7 +41,7 @@ class Order extends Auth
     public function get()
     {
         $map = ['uuid' => $this->uuid, 'deleted_status' => 0];
-        $query = $this->_query('ShopOrder')->in('status')->equal('order_no');
+        $query = $this->_query(ShopOrder::class)->in('status')->equal('order_no');
         $result = $query->where($map)->order('id desc')->page(true, false, false, 20);
         if (count($result['list']) > 0) OrderService::instance()->buildData($result['list']);
         $this->success('获取订单数据成功！', $result);
@@ -82,7 +85,7 @@ class Order extends Auth
             // 限制购买数量
             if (isset($goods['limit_max_num']) && $goods['limit_max_num'] > 0) {
                 $map = [['a.uuid', '=', $this->uuid], ['a.status', 'in', [2, 3, 4, 5]], ['b.goods_code', '=', $goods['code']]];
-                $buys = $this->app->db->name('ShopOrderr')->alias('a')->join('store_order_item b', 'a.order_no=b.order_no')->where($map)->sum('b.stock_sales');
+                $buys = ShopOrder::mk()->alias('a')->join('store_order_item b', 'a.order_no=b.order_no')->where($map)->sum('b.stock_sales');
                 if ($buys + $count > $goods['limit_max_num']) $this->error('超过限购数量');
             }
             // 限制购买身份
@@ -166,8 +169,8 @@ class Order extends Auth
             $order['amount_total'] = $order['amount_goods'];
             // 写入商品数据
             $this->app->db->transaction(function () use ($order, $items) {
-                $this->app->db->name('ShopOrder')->insert($order);
-                $this->app->db->name('ShopOrderItem')->insertAll($items);
+                ShopOrder::mk()->insert($order);
+                ShopOrderItem::mk()->insertAll($items);
             });
             // 同步商品库存销量
             foreach (array_unique(array_column($items, 'goods_code')) as $code) {
@@ -211,14 +214,14 @@ class Order extends Auth
         ]);
         // 用户收货地址
         $map = ['uuid' => $this->uuid, 'code' => $data['code']];
-        $addr = $this->app->db->name('DataUserAddress')->where($map)->find();
+        $addr = DataUserAddress::mk()->where($map)->find();
         if (empty($addr)) $this->error('收货地址异常');
         // 订单状态检查
         $map = ['uuid' => $this->uuid, 'order_no' => $data['order_no']];
-        $tCount = $this->app->db->name('ShopOrderItem')->where($map)->sum('truck_number');
+        $tCount = ShopOrderItem::mk()->where($map)->sum('truck_number');
         // 根据地址计算运费
         $map = ['status' => 1, 'deleted' => 0, 'order_no' => $data['order_no']];
-        $tCode = $this->app->db->name('ShopOrderItem')->where($map)->column('truck_code');
+        $tCode = ShopOrderItem::mk()->where($map)->column('truck_code');
         [$amount, , , $remark] = ExpressService::instance()->amount($tCode, $addr['province'], $addr['city'], $tCount);
         $this->success('计算运费成功', ['amount' => $amount, 'remark' => $remark]);
     }
@@ -238,17 +241,17 @@ class Order extends Auth
         ]);
         // 用户收货地址
         $map = ['uuid' => $this->uuid, 'code' => $data['code'], 'deleted' => 0];
-        $addr = $this->app->db->name('DataUserAddress')->where($map)->find();
+        $addr = DataUserAddress::mk()->where($map)->find();
         if (empty($addr)) $this->error('收货地址异常');
         // 订单状态检查
         $map1 = ['uuid' => $this->uuid, 'order_no' => $data['order_no']];
-        $order = $this->app->db->name('ShopOrder')->where($map1)->whereIn('status', [1, 2])->find();
+        $order = ShopOrder::mk()->where($map1)->whereIn('status', [1, 2])->find();
         if (empty($order)) $this->error('不能修改地址');
         if (empty($order['truck_type'])) $this->success('无需快递配送', ['order_no' => $order['order_no']]);
         // 根据地址计算运费
         $map2 = ['status' => 1, 'deleted' => 0, 'order_no' => $data['order_no']];
-        $tCount = $this->app->db->name('ShopOrderItem')->where($map1)->sum('truck_number');
-        $tCodes = $this->app->db->name('ShopOrderItem')->where($map2)->column('truck_code');
+        $tCount = ShopOrderItem::mk()->where($map1)->sum('truck_number');
+        $tCodes = ShopOrderItem::mk()->where($map2)->column('truck_code');
         [$amount, $tCount, $tCode, $remark] = ExpressService::instance()->amount($tCodes, $addr['province'], $addr['city'], $tCount);
         // 创建订单发货信息
         $express = [
@@ -283,7 +286,7 @@ class Order extends Auth
         if ($update['amount_total'] <= 0) $update['amount_total'] = 0.00;
         // 更新用户订单数据
         $map = ['uuid' => $this->uuid, 'order_no' => $data['order_no']];
-        if ($this->app->db->name('ShopOrder')->where($map)->update($update) !== false) {
+        if (ShopOrder::mk()->where($map)->update($update) !== false) {
             // 触发订单确认事件
             $this->app->event->trigger('ShopOrderPerfect', $order['order_no']);
             // 返回处理成功数据
@@ -299,7 +302,7 @@ class Order extends Auth
     public function channel()
     {
         $data = $this->_vali(['uuid.value' => $this->uuid, 'order_no.require' => '单号不能为空']);
-        $payments = $this->app->db->name('ShopOrder')->where($data)->value('payment_allow');
+        $payments = ShopOrder::mk()->where($data)->value('payment_allow');
         if (empty($payments)) $this->error('获取订单支付参数失败');
         // 读取支付通道配置
         $query = $this->app->db->name('BaseUserPayment')->where(['status' => 1, 'deleted' => 0]);
@@ -311,9 +314,7 @@ class Order extends Auth
 
     /**
      * 获取订单支付状态
-     * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\DbException
-     * @throws \think\db\exception\ModelNotFoundException
      */
     public function payment()
     {
@@ -330,7 +331,7 @@ class Order extends Auth
         if ($order['payment_status'] > 0) $this->error('已经完成支付');
         // 更新订单备注
         if (!empty($data['order_remark'])) {
-            $this->app->db->name('ShopOrder')->where($map)->update([
+            ShopOrder::mk()->where($map)->update([
                 'order_remark' => $data['order_remark'],
             ]);
         }
@@ -344,7 +345,7 @@ class Order extends Auth
             // 返回订单数据及支付发起参数
             $type = $order['amount_real'] <= 0 ? 'empty' : $data['payment_code'];
             $param = PaymentService::instance($type)->create($openid, $order['order_no'], $order['amount_real'], '商城订单支付', '', $data['payment_back'], $data['payment_image']);
-            $this->success('获取支付参数', ['order' => $this->app->db->name('ShopOrder')->where($map)->find() ?: new \stdClass(), 'param' => $param]);
+            $this->success('获取支付参数', ['order' => ShopOrder::mk()->where($map)->find() ?: new \stdClass(), 'param' => $param]);
         } catch (HttpResponseException $exception) {
             throw $exception;
         } catch (\Exception $exception) {
@@ -362,7 +363,7 @@ class Order extends Auth
     {
         [$map, $order] = $this->getOrderData();
         if (in_array($order['status'], [1, 2, 3])) {
-            $result = $this->app->db->name('ShopOrder')->where($map)->update([
+            $result = ShopOrder::mk()->where($map)->update([
                 'status'          => 0,
                 'cancel_status'   => 1,
                 'cancel_remark'   => '用户主动取消订单',
@@ -383,16 +384,14 @@ class Order extends Auth
 
     /**
      * 用户主动删除已取消的订单
-     * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\DbException
-     * @throws \think\db\exception\ModelNotFoundException
      */
     public function remove()
     {
         [$map, $order] = $this->getOrderData();
         if (empty($order)) $this->error('读取订单失败');
         if (in_array($order['status'], [0])) {
-            $result = $this->app->db->name('ShopOrder')->where($map)->update([
+            $result = ShopOrder::mk()->where($map)->update([
                 'status'           => 0,
                 'deleted_status'   => 1,
                 'deleted_remark'   => '用户主动删除订单',
@@ -413,15 +412,13 @@ class Order extends Auth
 
     /**
      * 订单确认收货
-     * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\DbException
-     * @throws \think\db\exception\ModelNotFoundException
      */
     public function confirm()
     {
         [$map, $order] = $this->getOrderData();
         if (in_array($order['status'], [5])) {
-            if ($this->app->db->name('ShopOrder')->where($map)->update(['status' => 6]) !== false) {
+            if (ShopOrder::mk()->where($map)->update(['status' => 6]) !== false) {
                 // 触发订单确认事件
                 $this->app->event->trigger('ShopOrderConfirm', $order['order_no']);
                 // 返回处理成功数据
@@ -443,8 +440,11 @@ class Order extends Auth
      */
     private function getOrderData(): array
     {
-        $map = $this->_vali(['uuid.value' => $this->uuid, 'order_no.require' => '单号不能为空']);
-        $order = $this->app->db->name('ShopOrder')->where($map)->find();
+        $map = $this->_vali([
+            'uuid.value'       => $this->uuid,
+            'order_no.require' => '单号不能为空',
+        ]);
+        $order = ShopOrder::mk()->where($map)->find();
         if (empty($order)) $this->error('读取订单失败');
         return [$map, $order];
     }
@@ -455,7 +455,7 @@ class Order extends Auth
     public function total()
     {
         $data = ['t0' => 0, 't1' => 0, 't2' => 0, 't3' => 0, 't4' => 0, 't5' => 0, 't6' => 0];
-        $query = $this->app->db->name('ShopOrder')->where(['uuid' => $this->uuid, 'deleted_status' => 0]);
+        $query = ShopOrder::mk()->where(['uuid' => $this->uuid, 'deleted_status' => 0]);
         foreach ($query->field('status,count(1) count')->group('status')->cursor() as $item) {
             $data["t{$item['status']}"] = $item['count'];
         }

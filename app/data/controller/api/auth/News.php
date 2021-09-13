@@ -116,7 +116,9 @@ class News extends Auth
 
     /**
      * 获取用户收藏的资讯
+     * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\DbException
+     * @throws \think\db\exception\ModelNotFoundException
      */
     public function getCollect()
     {
@@ -171,7 +173,9 @@ class News extends Auth
 
     /**
      * 获取用户收藏的资讯
+     * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\DbException
+     * @throws \think\db\exception\ModelNotFoundException
      */
     public function getLike()
     {
