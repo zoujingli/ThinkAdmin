@@ -2,6 +2,7 @@
 
 namespace app\data\controller\base\postage;
 
+use app\data\model\BasePostageCompany;
 use app\data\service\ExpressService;
 use think\admin\Controller;
 use think\exception\HttpResponseException;
@@ -14,12 +15,6 @@ use think\exception\HttpResponseException;
 class Company extends Controller
 {
     /**
-     * 绑定数据表
-     * @var string
-     */
-    private $table = 'BasePostageCompany';
-
-    /**
      * 快递公司管理
      * @auth true
      * @menu true
@@ -30,13 +25,15 @@ class Company extends Controller
     public function index()
     {
         $this->title = '快递公司管理';
-        $query = $this->_query($this->table);
-        $query->like('name,code')->equal('status')->dateBetween('craete_at');
+        $query = BasePostageCompany::mQuery();
+
         // 加载对应数据
         $this->type = $this->request->get('type', 'index');
         if ($this->type === 'index') $query->where(['status' => 1]);
         elseif ($this->type === 'recycle') $query->where(['status' => 0]);
+
         // 列表显示分页
+        $query->like('name,code')->equal('status')->dateBetween('craete_at');
         $query->where(['deleted' => 0])->order('sort desc,id desc')->page();
     }
 
@@ -50,7 +47,7 @@ class Company extends Controller
     public function add()
     {
         $this->title = '添加快递公司';
-        $this->_form($this->table, 'form');
+        BasePostageCompany::mForm('form');
     }
 
     /**
@@ -63,7 +60,7 @@ class Company extends Controller
     public function edit()
     {
         $this->title = '编辑快递公司';
-        $this->_form($this->table, 'form');
+        BasePostageCompany::mForm('form');
     }
 
     /**
@@ -73,7 +70,7 @@ class Company extends Controller
      */
     public function state()
     {
-        $this->_save($this->table, $this->_vali([
+        BasePostageCompany::mSave($this->_vali([
             'status.in:0,1'  => '状态值范围异常！',
             'status.require' => '状态值不能为空！',
         ]));
@@ -86,7 +83,7 @@ class Company extends Controller
      */
     public function remove()
     {
-        $this->_delete($this->table);
+        BasePostageCompany::mDelete();
     }
 
     /**
@@ -98,7 +95,7 @@ class Company extends Controller
         try {
             $result = ExpressService::instance()->company();
             if (empty($result['code'])) $this->error($result['info']);
-            foreach ($result['data'] as $vo) data_save($this->table, [
+            foreach ($result['data'] as $vo) data_save(BasePostageCompany::class, [
                 'code_1' => $vo['code_1'], 'code_2' => $vo['code_2'],
                 'code_3' => $vo['code_3'], 'name' => $vo['title'], 'deleted' => 0,
             ], 'code_1');
@@ -109,5 +106,4 @@ class Company extends Controller
             $this->error('同步快递公司数据失败！');
         }
     }
-
 }

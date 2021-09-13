@@ -42,20 +42,25 @@ class User extends Controller
     public function index()
     {
         $this->type = input('get.type', 'index');
-        $this->_query(SystemUser::mk()->with([
-            'userinfo' => function (Relation $relation) {
-                $relation->field('code,name,content');
-            },
-        ]))->layTable(function () {
+
+        // 创建快捷查询工具
+        SystemUser::mQuery()->layTable(function () {
             $this->title = '系统用户管理';
             $this->bases = SystemBase::mk()->items('身份权限');
         }, function (QueryHelper $query) {
+
+            // 关联用户身份资料
+            $query->with(['userinfo' => function (Relation $relation) {
+                $relation->field('code,name,content');
+            }]);
+
             // 加载对应数据列表
             if ($this->type === 'index') {
                 $query->where(['is_deleted' => 0, 'status' => 1]);
             } elseif ($this->type = 'recycle') {
                 $query->where(['is_deleted' => 0, 'status' => 0]);
             }
+
             // 数据列表搜索过滤
             $query->equal('status,usertype')->dateBetween('login_at,create_at');
             $query->like('username,nickname,contact_phone#phone,contact_mail#mail');
@@ -71,7 +76,7 @@ class User extends Controller
      */
     public function add()
     {
-        $this->_form(SystemUser::class, 'form');
+        SystemUser::mForm('form');
     }
 
     /**
@@ -83,7 +88,7 @@ class User extends Controller
      */
     public function edit()
     {
-        $this->_form(SystemUser::class, 'form');
+        SystemUser::mForm('form');
     }
 
     /**
@@ -161,7 +166,7 @@ class User extends Controller
     public function state()
     {
         $this->_checkInput();
-        $this->_save(SystemUser::class, $this->_vali([
+        SystemUser::mSave($this->_vali([
             'status.in:0,1'  => '状态值范围异常！',
             'status.require' => '状态值不能为空！',
         ]));
@@ -175,7 +180,7 @@ class User extends Controller
     public function remove()
     {
         $this->_checkInput();
-        $this->_delete(SystemUser::class);
+        SystemUser::mDelete();
     }
 
     /**

@@ -39,7 +39,7 @@ class Auth extends Controller
      */
     public function index()
     {
-        $this->_query(SystemAuth::class)->layTable(function () {
+        SystemAuth::mQuery()->layTable(function () {
             $this->title = '系统权限管理';
         }, function (QueryHelper $query) {
             $query->dateBetween('create_at')->like('title,desc')->equal('status,utype');
@@ -55,7 +55,7 @@ class Auth extends Controller
      */
     public function add()
     {
-        $this->_form(SystemAuth::class, 'form');
+        SystemAuth::mForm('form');
     }
 
     /**
@@ -67,7 +67,7 @@ class Auth extends Controller
      */
     public function edit()
     {
-        $this->_form(SystemAuth::class, 'form');
+        SystemAuth::mForm('form');
     }
 
     /**
@@ -77,7 +77,7 @@ class Auth extends Controller
      */
     public function state()
     {
-        $this->_save(SystemAuth::class, $this->_vali([
+        SystemAuth::mSave($this->_vali([
             'status.in:0,1'  => '状态值范围异常！',
             'status.require' => '状态值不能为空！',
         ]));
@@ -90,7 +90,7 @@ class Auth extends Controller
      */
     public function remove()
     {
-        $this->_delete(SystemAuth::class);
+        SystemAuth::mDelete();
     }
 
     /**
@@ -119,7 +119,7 @@ class Auth extends Controller
             sysoplog('系统权限管理', "配置系统权限[{$map['auth']}]授权成功");
             $this->success('访问权限修改成功！', 'javascript:history.back()');
         } else {
-            $this->_form(SystemAuth::class, 'apply');
+            SystemAuth::mForm('apply');
         }
     }
 

@@ -3,6 +3,7 @@
 namespace app\data\controller\base\postage;
 
 use app\data\model\BasePostageRegion;
+use app\data\model\BasePostageTemplate;
 use app\data\service\ExpressService;
 use think\admin\Controller;
 use think\admin\extend\CodeExtend;
@@ -15,12 +16,6 @@ use think\admin\extend\CodeExtend;
 class Template extends Controller
 {
     /**
-     * 绑定数据表
-     * @var string
-     */
-    private $table = 'BasePostageTemplate';
-
-    /**
      * 快递邮费模板
      * @auth true
      * @menu true
@@ -31,7 +26,7 @@ class Template extends Controller
     public function index()
     {
         $this->title = '快递邮费模板';
-        $query = $this->_query($this->table);
+        $query = BasePostageTemplate::mQuery();
         $query->like('code,name')->equal('status')->dateBetween('create_at');
         $query->where(['deleted' => 0])->order('sort desc,id desc')->page();
     }
@@ -39,7 +34,6 @@ class Template extends Controller
     /**
      * 配送区域管理
      * @auth true
-     * @throws \think\db\exception\DbException
      */
     public function region()
     {
@@ -65,7 +59,7 @@ class Template extends Controller
     public function add()
     {
         $this->title = '添加配送邮费模板';
-        $this->_form($this->table, 'form', 'code');
+        BasePostageTemplate::mForm('form', 'code');
     }
 
     /**
@@ -78,7 +72,7 @@ class Template extends Controller
     public function edit()
     {
         $this->title = '编辑配送邮费模板';
-        $this->_form($this->table, 'form', 'code');
+        BasePostageTemplate::mForm('form', 'code');
     }
 
     /**
@@ -113,7 +107,7 @@ class Template extends Controller
      */
     public function state()
     {
-        $this->_save($this->table, $this->_vali([
+        BasePostageTemplate::mSave($this->_vali([
             'status.in:0,1'  => '状态值范围异常！',
             'status.require' => '状态值不能为空！',
         ]), 'code');
@@ -126,7 +120,6 @@ class Template extends Controller
      */
     public function remove()
     {
-        $this->_delete($this->table, 'code');
+        BasePostageTemplate::mDelete('code');
     }
-
 }

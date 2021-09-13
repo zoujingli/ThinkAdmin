@@ -37,7 +37,7 @@ class Base extends Controller
      */
     public function index()
     {
-        $this->_query(SystemBase::class)->layTable(function () {
+        SystemBase::mQuery()->layTable(function () {
             $this->title = '数据字典管理';
             $this->types = SystemBase::mk()->types();
             $this->type = input('get.type') ?: ($this->types[0] ?? '-');
@@ -56,7 +56,7 @@ class Base extends Controller
      */
     public function add()
     {
-        $this->_form(SystemBase::class, 'form');
+        SystemBase::mForm('form');
     }
 
     /**
@@ -68,7 +68,7 @@ class Base extends Controller
      */
     public function edit()
     {
-        $this->_form(SystemBase::class, 'form');
+        SystemBase::mForm('form');
     }
 
     /**
@@ -100,7 +100,7 @@ class Base extends Controller
      */
     public function state()
     {
-        $this->_save(SystemBase::class);
+        SystemBase::mSave();
     }
 
     /**
@@ -110,6 +110,6 @@ class Base extends Controller
      */
     public function remove()
     {
-        $this->_delete(SystemBase::class);
+        SystemBase::mDelete();
     }
 }

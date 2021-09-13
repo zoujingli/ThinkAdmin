@@ -41,7 +41,7 @@ class Queue extends Controller
      */
     public function index()
     {
-        $this->_query(SystemQueue::class)->layTable(function () {
+        SystemQueue::mQuery()->layTable(function () {
             $this->title = '系统任务管理';
             $this->iswin = ProcessService::instance()->iswin();
             // 超级管理面板
@@ -101,6 +101,6 @@ class Queue extends Controller
      */
     public function remove()
     {
-        $this->_delete(SystemQueue::class);
+        SystemQueue::mDelete();
     }
 }

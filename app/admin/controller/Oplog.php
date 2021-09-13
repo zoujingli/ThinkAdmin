@@ -38,7 +38,7 @@ class Oplog extends Controller
      */
     public function index()
     {
-        $this->_query(SystemOplog::class)->layTable(function () {
+        SystemOplog::mQuery()->layTable(function () {
             $this->title = '系统日志管理';
             $this->users = SystemOplog::mk()->distinct(true)->column('username');
             $this->actions = SystemOplog::mk()->distinct(true)->column('action');
@@ -70,7 +70,7 @@ class Oplog extends Controller
     public function clear()
     {
         try {
-            $this->_query(SystemOplog::class)->empty();
+            SystemOplog::mQuery()->empty();
             sysoplog('系统运维管理', '成功清理所有日志数据');
             $this->success('日志清理成功！');
         } catch (HttpResponseException $exception) {
@@ -87,6 +87,6 @@ class Oplog extends Controller
      */
     public function remove()
     {
-        $this->_delete(SystemOplog::class);
+        SystemOplog::mDelete();
     }
 }
