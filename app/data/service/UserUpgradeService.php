@@ -2,6 +2,7 @@
 
 namespace app\data\service;
 
+use app\data\model\BaseUserUpgrade;
 use app\data\model\DataUser;
 use app\data\model\DataUserBalance;
 use app\data\model\ShopOrder;
@@ -22,8 +23,8 @@ class UserUpgradeService extends Service
      */
     public function levels(): array
     {
-        $query = $this->app->db->name('BaseUserUpgrade');
-        return $query->where(['status' => 1])->order('number asc')->column('*', 'number');
+        $model = BaseUserUpgrade::mk()->where(['status' => 1]);
+        return $model->order('number asc')->column('*', 'number');
     }
 
     /**

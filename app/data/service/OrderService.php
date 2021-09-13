@@ -2,6 +2,11 @@
 
 namespace app\data\service;
 
+use app\data\model\BaseUserDiscount;
+use app\data\model\DataUser;
+use app\data\model\ShopOrder;
+use app\data\model\ShopOrderItem;
+use app\data\model\ShopOrderSend;
 use think\admin\Service;
 
 /**
@@ -31,7 +36,7 @@ class OrderService extends Service
     public function stock(string $orderNo): bool
     {
         $map = ['order_no' => $orderNo];
-        $codes = $this->app->db->name('ShopOrderItem')->where($map)->column('goods_code');
+        $codes = ShopOrderItem::mk()->where($map)->column('goods_code');
         foreach (array_unique($codes) as $code) GoodsService::instance()->stock($code);
         return true;
     }
@@ -48,10 +53,10 @@ class OrderService extends Service
     {
         // 目标订单数据
         $map = [['order_no', '=', $orderNo], ['status', '>=', 4]];
-        $order = $this->app->db->name('ShopOrder')->where($map)->find();
+        $order = ShopOrder::mk()->where($map)->find();
         if (empty($order)) return null;
         // 订单用户数据
-        $user = $this->app->db->name('DataUser')->where(['id' => $order['uuid']])->find();
+        $user = DataUser::mk()->where(['id' => $order['uuid']])->find();
         if (empty($user)) return null;
         // 更新用户购买资格
         $entry = $this->vipEntry($order['uuid']);
@@ -61,9 +66,9 @@ class OrderService extends Service
             UserUpgradeService::instance()->bindAgent($user['id'], $puid1);
         }
         // 重置用户信息并绑定订单
-        $user = $this->app->db->name('DataUser')->where(['id' => $order['uuid']])->find();
+        $user = DataUser::mk()->where(['id' => $order['uuid']])->find();
         if ($user['pid1'] > 0) {
-            $this->app->db->name('ShopOrder')->where(['order_no' => $orderNo])->update([
+            ShopOrder::mk()->where(['order_no' => $orderNo])->update([
                 'puid1' => $user['pid1'], 'puid2' => $user['pid2'],
             ]);
         }
@@ -76,19 +81,17 @@ class OrderService extends Service
      * 刷新用户入会礼包
      * @param integer $uuid 用户UID
      * @return integer
-     * @throws \think\db\exception\DbException
      */
     private function vipEntry(int $uuid): int
     {
         // 检查是否购买入会礼包
-        $query = $this->app->db->table('shop_order a')->join('shop_order_item b', 'a.order_no=b.order_no');
+        $query = ShopOrder::mk()->alias('a')->join('shop_order_item b', 'a.order_no=b.order_no');
         $entry = $query->where("a.uuid={$uuid} and a.status>=4 and a.payment_status=1 and b.vip_entry>0")->count() ? 1 : 0;
         // 用户最后支付时间
-        $query = $this->app->db->name('ShopOrder');
         $lastMap = [['uuid', '=', $uuid], ['status', '>=', 4], ['payment_status', '=', 1]];
-        $lastDate = $query->where($lastMap)->order('payment_datetime desc')->value('payment_datetime');
+        $lastDate = ShopOrder::mk()->where($lastMap)->order('payment_datetime desc')->value('payment_datetime');
         // 更新用户支付信息
-        $this->app->db->name('DataUser')->where(['id' => $uuid])->update(['buy_vip_entry' => $entry, 'buy_last_date' => $lastDate]);
+        DataUser::mk()->where(['id' => $uuid])->update(['buy_vip_entry' => $entry, 'buy_last_date' => $lastDate]);
         return $entry;
     }
 
@@ -103,7 +106,7 @@ class OrderService extends Service
     {
         if ($disId > 0) {
             $map = ['id' => $disId, 'status' => 1, 'deleted' => 0];
-            $discount = $this->app->db->name('BaseUserDiscount')->where($map)->value('items');
+            $discount = BaseUserDiscount::mk()->where($map)->value('items');
             $disitems = json_decode($discount ?: '[]', true) ?: [];
             if (is_array($disitems) && count($disitems) > 0) foreach ($disitems as $vo) {
                 if ($vo['level'] == $vipCode) $disRate = floatval($vo['discount']);
@@ -126,10 +129,10 @@ class OrderService extends Service
         if (empty($data)) return $data;
         // 关联发货信息
         $nobs = array_unique(array_column($data, 'order_no'));
-        $trucks = $this->app->db->name('ShopOrderSend')->whereIn('order_no', $nobs)->column('*', 'order_no');
+        $trucks = ShopOrderSend::mk()->whereIn('order_no', $nobs)->column('*', 'order_no');
         foreach ($trucks as &$item) unset($item['id'], $item['uuid'], $item['status'], $item['deleted'], $item['create_at']);
         // 关联订单商品
-        $query = $this->app->db->name('ShopOrderItem')->where(['status' => 1, 'deleted' => 0]);
+        $query = ShopOrderItem::mk()->where(['status' => 1, 'deleted' => 0]);
         $items = $query->withoutField('id,uuid,status,deleted,create_at')->whereIn('order_no', $nobs)->select()->toArray();
         // 关联用户数据
         $fields = 'phone,username,nickname,headimg,status,vip_code,vip_name';

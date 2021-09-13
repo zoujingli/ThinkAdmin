@@ -2,7 +2,9 @@
 
 namespace app\data\service;
 
+use app\data\model\DataUser;
 use app\data\model\DataUserBalance;
+use app\data\model\ShopOrder;
 use think\admin\Exception;
 use think\admin\Service;
 
@@ -25,11 +27,10 @@ class UserBalanceService extends Service
      */
     public function confirm(string $orderNo): array
     {
-        $map = [['status', '>=', 4], ['order_no', '=', $orderNo]];
-        $order = $this->app->db->name('ShopOrder')->where($map)->find();
+        $order = ShopOrder::mk()->where([['status', '>=', 4], ['order_no', '=', $orderNo]])->find();
         if (empty($order)) throw new Exception('需处理的订单状态异常');
 
-        if ($order['reward_balance'] > 0) data_save('DataUserBalance', [
+        if ($order['reward_balance'] > 0) data_save(DataUserBalance::class, [
             'uuid'   => $order['uuid'],
             'code'   => "CZ{$order['order_no']}",
             'name'   => "订单余额充值",
@@ -53,7 +54,7 @@ class UserBalanceService extends Service
             $total = abs(DataUserBalance::mk()->whereRaw("uuid='{$uuid}' and amount>0 and deleted=0")->sum('amount'));
             $count = abs(DataUserBalance::mk()->whereRaw("uuid='{$uuid}' and amount<0 and deleted=0")->sum('amount'));
             if (empty($nots)) {
-                $this->app->db->name('DataUser')->where(['id' => $uuid])->update(['balance_total' => $total, 'balance_used' => $count]);
+                DataUser::mk()->where(['id' => $uuid])->update(['balance_total' => $total, 'balance_used' => $count]);
             } else {
                 $count -= DataUserBalance::mk()->whereRaw("uuid={$uuid}")->whereIn('code', $nots)->sum('amount');
             }

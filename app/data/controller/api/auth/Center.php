@@ -3,6 +3,7 @@
 namespace app\data\controller\api\auth;
 
 use app\data\controller\api\Auth;
+use app\data\model\DataUser;
 use app\data\service\RebateService;
 use app\data\service\UserAdminService;
 use app\data\service\UserUpgradeService;
@@ -17,14 +18,7 @@ use think\exception\HttpResponseException;
 class Center extends Auth
 {
     /**
-     * 绑定数据表
-     * @var string
-     */
-    private $table = 'DataUser';
-
-    /**
      * 更新用户资料
-     * @throws \think\db\exception\DbException
      */
     public function set()
     {
@@ -39,7 +33,7 @@ class Center extends Auth
         ]);
         foreach ($data as $key => $vo) if ($vo === '') unset($data[$key]);
         if (empty($data)) $this->error('没有修改的数据！');
-        if ($this->app->db->name($this->table)->where(['id' => $this->uuid])->update($data) !== false) {
+        if (DataUser::mk()->where(['id' => $this->uuid])->update($data) !== false) {
             $this->success('更新资料成功！', $this->getUser());
         } else {
             $this->error('更新资料失败！');
@@ -125,15 +119,15 @@ class Center extends Auth
         $map[] = ['deleted', '=', 0];
         $map[] = ['path', 'like', "%-{$this->uuid}-%"];
         // 查询邀请的朋友
-        $query = $this->_query($this->table);
+        $query = $this->_query(DataUser::class);
         $query->like('nickname|username#nickname')->equal('vip_code,pids,pid1,id#uuid');
         $query->field('id,pid0,pid1,pid2,pids,username,nickname,headimg,order_amount_total,teams_amount_total,teams_amount_direct,teams_amount_indirect,teams_users_total,teams_users_direct,teams_users_indirect,rebate_total,rebate_used,rebate_lock,create_at');
         $result = $query->where($map)->order('id desc')->page(true, false, false, 15);
         // 统计当前用户所有下属数
-        $total = $this->app->db->name($this->table)->where($map)->count();
+        $total = DataUser::mk()->where($map)->count();
         // 统计当前用户本月下属数
         $map[] = ['create_at', 'like', date('Y-m-%')];
-        $month = $this->app->db->name($this->table)->where($map)->count();
+        $month = DataUser::mk()->where($map)->count();
         // 返回结果列表数据及统计
         $result['total'] = ['user_total' => $total, 'user_month' => $month];
         $this->success('获取我邀请的朋友', $result);

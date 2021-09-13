@@ -2,6 +2,12 @@
 
 namespace app\data\service;
 
+use app\data\model\ShopGoods;
+use app\data\model\ShopGoodsCate;
+use app\data\model\ShopGoodsItem;
+use app\data\model\ShopGoodsMark;
+use app\data\model\ShopGoodsStock;
+use app\data\model\ShopOrder;
 use think\admin\extend\DataExtend;
 use think\admin\Service;
 
@@ -20,8 +26,7 @@ class GoodsService extends Service
     public function getMarkData(): array
     {
         $map = ['status' => 1];
-        $query = $this->app->db->name('ShopGoodsMark');
-        return $query->where($map)->order('sort desc,id desc')->column('name');
+        return ShopGoodsMark::mk()->where($map)->order('sort desc,id desc')->column('name');
     }
 
     /**
@@ -34,8 +39,7 @@ class GoodsService extends Service
      */
     public function getCateTree(string $type = 'arr2tree'): array
     {
-        $map = ['deleted' => 0, 'status' => 1];
-        $query = $this->app->db->name('ShopGoodsCate')->where($map)->order('sort desc,id desc');
+        $query = ShopGoodsCate::mk()->where(['deleted' => 0, 'status' => 1])->order('sort desc,id desc');
         return DataExtend::$type($query->withoutField('sort,status,deleted,create_at')->select()->toArray());
     }
 
@@ -46,8 +50,7 @@ class GoodsService extends Service
      */
     public function getCateData(bool $simple = true): array
     {
-        $map = ['status' => 1, 'deleted' => 0];
-        $cates = $this->app->db->name('ShopGoodsCate')->where($map)->column('id,pid,name', 'id');
+        $cates = ShopGoodsCate::mk()->where(['status' => 1, 'deleted' => 0])->column('id,pid,name', 'id');
         foreach ($cates as $cate) if (isset($cates[$cate['pid']])) $cates[$cate['id']]['parent'] =& $cates[$cate['pid']];
         foreach ($cates as $key => $cate) {
             $id = $cate['id'];
@@ -78,11 +81,10 @@ class GoodsService extends Service
     public function stock(string $code): bool
     {
         // 商品入库统计
-        $query = $this->app->db->name('ShopGoodsStock');
-        $query->field('goods_code,goods_spec,ifnull(sum(goods_stock),0) stock_total');
+        $query = ShopGoodsStock::mk()->field('goods_code,goods_spec,ifnull(sum(goods_stock),0) stock_total');
         $stockList = $query->where(['goods_code' => $code])->group('goods_code,goods_spec')->select()->toArray();
         // 商品销量统计
-        $query = $this->app->db->table('shop_order a')->field('b.goods_code,b.goods_spec,ifnull(sum(b.stock_sales),0) stock_sales');
+        $query = ShopOrder::mk()->alias('a')->field('b.goods_code,b.goods_spec,ifnull(sum(b.stock_sales),0) stock_sales');
         $query->leftJoin('shop_order_item b', 'a.order_no=b.order_no')->where("b.goods_code='{$code}' and a.status>0 and a.deleted_status<1");
         $salesList = $query->group('b.goods_code,b.goods_spec')->select()->toArray();
         // 组装更新数据
@@ -98,13 +100,13 @@ class GoodsService extends Service
         foreach ($dataList as $vo) {
             $map = ['goods_code' => $code, 'goods_spec' => $vo['goods_spec']];
             $set = ['stock_total' => $vo['stock_total'], 'stock_sales' => $vo['stock_sales']];
-            $this->app->db->name('ShopGoodsItem')->where($map)->update($set);
+            ShopGoodsItem::mk()->where($map)->update($set);
         }
         // 更新商品主体销量及库存
-        $this->app->db->name('ShopGoods')->where(['code' => $code])->update([
+        ShopGoods::mk()->where(['code' => $code])->update([
             'stock_total'   => intval(array_sum(array_column($dataList, 'stock_total'))),
             'stock_sales'   => intval(array_sum(array_column($dataList, 'stock_sales'))),
-            'stock_virtual' => $this->app->db->name('ShopGoodsItem')->where(['goods_code' => $code])->sum('number_virtual'),
+            'stock_virtual' => ShopGoodsItem::mk()->where(['goods_code' => $code])->sum('number_virtual'),
         ]);
         return true;
     }
@@ -121,8 +123,8 @@ class GoodsService extends Service
     public function bindData(array &$data = [], bool $simple = true): array
     {
         [$cates, $codes] = [$this->getCateData(), array_unique(array_column($data, 'code'))];
-        $marks = $this->app->db->name('ShopGoodsMark')->where(['status' => 1])->column('name');
-        $items = $this->app->db->name('ShopGoodsItem')->whereIn('goods_code', $codes)->where(['status' => 1])->select()->toArray();
+        $marks = ShopGoodsMark::mk()->where(['status' => 1])->column('name');
+        $items = ShopGoodsItem::mk()->whereIn('goods_code', $codes)->where(['status' => 1])->select()->toArray();
         foreach ($data as &$vo) {
             [$vo['marks'], $vo['cateids'], $vo['cateinfo']] = [str2arr($vo['marks'], ',', $marks), str2arr($vo['cateids']), []];
             [$vo['slider'], $vo['specs'], $vo['items']] = [str2arr($vo['slider'], '|'), json_decode($vo['data_specs'], true), []];

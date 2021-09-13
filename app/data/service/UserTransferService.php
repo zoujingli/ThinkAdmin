@@ -153,5 +153,4 @@ class UserTransferService extends Service
         if (empty($data)) $data = sysdata('TransferWxpay');
         return is_null($name) ? $data : ($data[$name] ?? '');
     }
-
 }

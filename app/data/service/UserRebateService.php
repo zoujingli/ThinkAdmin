@@ -48,7 +48,6 @@ class UserRebateService extends Service
         $map = [['status', '>=', 4], ['order_no', '=', $orderNo]];
         $order = ShopOrder::mk()->where($map)->find();
         if (empty($order)) return [0, '需处理的订单状态异常！'];
-
         $map = [['status', '=', 0], ['order_no', 'like', "{$orderNo}%"]];
         DataUserRebate::mk()->where($map)->update(['status' => 1]);
         if (UserUpgradeService::instance()->upgrade($order['uuid'])) {

@@ -48,8 +48,8 @@ class Address extends Auth
             }
         } else {
             $map = ['uuid' => $this->uuid, 'code' => $data['code']];
-            $address = DataUserAddress::mk()->where($map)->find();
-            if (empty($address)) $this->error('修改地址不存在！');
+            $addr = DataUserAddress::mk()->where($map)->find();
+            if (empty($addr)) $this->error('修改地址不存在！');
             DataUserAddress::mk()->where($map)->update($data);
         }
         // 去除其它默认选项
@@ -68,7 +68,8 @@ class Address extends Auth
      */
     public function get()
     {
-        $query = $this->_query('DataUserAddress')->withoutField('deleted');
+        $model = DataUserAddress::mk();
+        $query = $this->_query($model)->withoutField('deleted');
         $query->equal('code')->where(['uuid' => $this->uuid, 'deleted' => 0]);
         $result = $query->order('type desc,id desc')->page(false, false, false, 15);
         $this->success('获取地址数据！', $result);
@@ -113,11 +114,12 @@ class Address extends Auth
     public function remove()
     {
         $map = $this->_vali([
-            'uuid.value' => $this->uuid, 'code.require' => '地址编号不能为空！',
+            'uuid.value'   => $this->uuid,
+            'code.require' => '地址不能为空！',
         ]);
-        $address = DataUserAddress::mk()->where($map)->find();
-        if (empty($address)) $this->error('需要删除的地址不存在！');
-        if (DataUserAddress::mk()->where($map)->update(['deleted' => 1]) !== false) {
+        $data = DataUserAddress::mk()->where($map)->find();
+        if (empty($data)) $this->error('需要删除的地址不存在！');
+        if ($data->save(['deleted' => 1]) !== false) {
             $this->success('删除地址成功！');
         } else {
             $this->error('删除地址失败！');
@@ -132,10 +134,10 @@ class Address extends Auth
      * @throws \think\db\exception\DbException
      * @throws \think\db\exception\ModelNotFoundException
      */
-    private function _getAddress(string $code): ?array
+    private function _getAddress(string $code): array
     {
         $map = ['code' => $code, 'uuid' => $this->uuid, 'deleted' => 0];
-        return DataUserAddress::mk()->withoutField('deleted')->where($map)->find();
+        $data = DataUserAddress::mk()->withoutField('deleted')->where($map)->find();
+        return empty($data) ? [] : $data->toArray();
     }
-
 }

@@ -2,9 +2,12 @@
 
 namespace app\data\service;
 
+use app\data\model\BaseUserDiscount;
+use app\data\model\BaseUserUpgrade;
 use app\data\model\DataUser;
 use app\data\model\DataUserRebate;
 use app\data\model\ShopOrder;
+use app\data\model\ShopOrderItem;
 use think\admin\Exception;
 use think\admin\extend\CodeExtend;
 use think\admin\Service;
@@ -173,8 +176,8 @@ class RebateService extends Service
      */
     private function checkPrizeStatus(string $prize, int $level): bool
     {
-        $map = [['number', '=', $level], ['rebate_rule', 'like', "%,{$prize},%"]];
-        return $this->app->db->name('BaseUserUpgrade')->where($map)->count() > 0;
+        $model = BaseUserUpgrade::mk()->where(['number' => $level]);
+        return $model->whereLike('rebate_rule', "%,{$prize},%")->count() > 0;
     }
 
     /**
@@ -314,11 +317,11 @@ class RebateService extends Service
         $puids = array_reverse(str2arr($this->user['path'], '-'));
         if (empty($puids) || $this->order['amount_total'] <= 0) return false;
         // 获取可以参与奖励的代理
-        $vips = $this->app->db->name('BaseUserUpgrade')->whereLike('rebate_rule', '%,' . self::PRIZE_05 . ',%')->column('number');
+        $vips = BaseUserUpgrade::mk()->whereLike('rebate_rule', '%,' . self::PRIZE_05 . ',%')->column('number');
         $users = DataUser::mk()->whereIn('vip_code', $vips)->whereIn('id', $puids)->orderField('id', $puids)->select()->toArray();
         // 查询需要计算奖励的商品
-        foreach ($this->app->db->name('ShopOrderItem')->where(['order_no' => $this->order['order_no']])->cursor() as $item) {
-            $itemJson = $this->app->db->name('BaseUserDiscount')->where(['status' => 1, 'deleted' => 0])->value('items');
+        foreach (ShopOrderItem::mk()->where(['order_no' => $this->order['order_no']])->cursor() as $item) {
+            $itemJson = BaseUserDiscount::mk()->where(['status' => 1, 'deleted' => 0])->value('items');
             if (!empty($itemJson) && is_array($rules = json_decode($itemJson, true))) {
                 [$tVip, $tRate] = [$item['vip_code'], $item['discount_rate']];
                 foreach ($users as $user) if (isset($rules[$user['vip_code']]) && $user['vip_code'] > $tVip) {
@@ -355,7 +358,7 @@ class RebateService extends Service
         // 记录原始等级
         $prevLevel = $this->user['vip_code'];
         // 获取可以参与奖励的代理
-        $vips = $this->app->db->name('BaseUserUpgrade')->whereLike('rebate_rule', '%,' . self::PRIZE_06 . ',%')->column('number');
+        $vips = BaseUserUpgrade::mk()->whereLike('rebate_rule', '%,' . self::PRIZE_06 . ',%')->column('number');
         foreach (DataUser::mk()->whereIn('vip_code', $vips)->whereIn('id', $puids)->orderField('id', $puids)->cursor() as $user) {
             if ($user['vip_code'] > $prevLevel) {
                 if (($amount = $this->_prize06amount($prevLevel + 1, $user['vip_code'])) > 0.00) {

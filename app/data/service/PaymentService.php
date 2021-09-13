@@ -2,6 +2,7 @@
 
 namespace app\data\service;
 
+use app\data\model\BaseUserPayment;
 use app\data\model\DataUserPayment;
 use app\data\model\ShopOrder;
 use app\data\service\payment\AlipayPaymentService;
@@ -203,7 +204,7 @@ abstract class PaymentService
         try {
             if (empty($payment)) {
                 $map = ['code' => $code, 'status' => 1, 'deleted' => 0];
-                $payment = app()->db->name('BaseUserPayment')->where($map)->find();
+                $payment = BaseUserPayment::mk()->where($map)->find();
             }
             if (empty($payment)) {
                 throw new Exception("支付参数[#{$code}]禁用关闭");
