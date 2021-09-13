@@ -4,7 +4,6 @@ namespace app\data\controller\shop;
 
 use app\data\service\ExpressService;
 use app\data\service\OrderService;
-use Exception;
 use think\admin\Controller;
 use think\exception\HttpResponseException;
 
@@ -155,7 +154,7 @@ class Send extends Controller
             $this->fetch('truck_query');
         } catch (HttpResponseException $exception) {
             throw $exception;
-        } catch (Exception $exception) {
+        } catch (\Exception $exception) {
             $this->error($exception->getMessage());
         }
     }

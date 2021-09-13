@@ -4,9 +4,6 @@ namespace app\data\controller\api\auth;
 
 use app\data\controller\api\Auth;
 use app\data\service\RebateService;
-use think\db\exception\DataNotFoundException;
-use think\db\exception\DbException;
-use think\db\exception\ModelNotFoundException;
 
 /**
  * 用户返利管理
@@ -17,9 +14,9 @@ class Rebate extends Auth
 {
     /**
      * 获取用户返利记录
-     * @throws DataNotFoundException
-     * @throws DbException
-     * @throws ModelNotFoundException
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\DbException
+     * @throws \think\db\exception\ModelNotFoundException
      */
     public function get()
     {

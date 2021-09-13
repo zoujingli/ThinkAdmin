@@ -6,7 +6,6 @@ use app\data\model\DataUser;
 use app\data\model\DataUserBalance;
 use app\data\model\ShopOrder;
 use app\data\model\ShopOrderItem;
-use Exception;
 use think\admin\Service;
 
 /**
@@ -50,8 +49,6 @@ class UserUpgradeService extends Service
         $agent = DataUser::mk()->where(['id' => $pid0])->find();
         if (empty($agent['vip_code'])) return [0, '代理无推荐资格'];
         if (stripos($agent['path'], "-{$uuid}-") !== false) return [0, '不能绑定下属'];
-        // 组装代理数据
-
         try {
             $this->app->db->transaction(function () use ($user, $agent, $mode) {
                 // 更新用户代理
@@ -73,7 +70,7 @@ class UserUpgradeService extends Service
             });
             $this->upgrade($user['id']);
             return [1, '绑定代理成功'];
-        } catch (Exception $exception) {
+        } catch (\Exception $exception) {
             return [0, "绑定代理失败, {$exception->getMessage()}"];
         }
     }

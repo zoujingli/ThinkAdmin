@@ -3,7 +3,6 @@
 namespace app\data\controller\api;
 
 use app\data\service\UserAdminService;
-use Exception;
 use think\admin\Controller;
 use think\exception\HttpResponseException;
 use think\Response;
@@ -99,7 +98,7 @@ class Wxapp extends Controller
             }
         } catch (HttpResponseException $exception) {
             throw $exception;
-        } catch (Exception $exception) {
+        } catch (\Exception $exception) {
             $this->error("数据处理失败，{$exception->getMessage()}");
         }
     }
@@ -128,7 +127,7 @@ class Wxapp extends Controller
             }
         } catch (HttpResponseException $exception) {
             throw $exception;
-        } catch (Exception $exception) {
+        } catch (\Exception $exception) {
             $this->error("授权换取失败，{$exception->getMessage()}");
         }
     }
@@ -154,7 +153,7 @@ class Wxapp extends Controller
             }
         } catch (HttpResponseException $exception) {
             throw $exception;
-        } catch (Exception $exception) {
+        } catch (\Exception $exception) {
             $this->error($exception->getMessage());
         }
     }
@@ -170,7 +169,7 @@ class Wxapp extends Controller
             $this->success('获取直播列表成功！', $list);
         } catch (HttpResponseException $exception) {
             throw $exception;
-        } catch (Exception $exception) {
+        } catch (\Exception $exception) {
             $this->error($exception->getMessage());
         }
     }
@@ -191,7 +190,7 @@ class Wxapp extends Controller
             $this->success('获取回放视频成功！', $result);
         } catch (HttpResponseException $exception) {
             throw $exception;
-        } catch (Exception $exception) {
+        } catch (\Exception $exception) {
             $this->error($exception->getMessage());
         }
     }
