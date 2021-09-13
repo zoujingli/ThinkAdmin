@@ -102,11 +102,13 @@ class Fans extends Command
      */
     public function _black(string $next = '', int $done = 0): string
     {
+        $wechat = WechatService::WeChatUser();
         $this->setQueueProgress("开始更新黑名单的微信用户");
-        [$map, $data, $wechat] = [['is_black' => 0], ['is_black' => 1], WechatService::WeChatUser()];
         while (!is_null($next) && is_array($result = $wechat->getBlackList($next)) && !empty($result['data']['openid'])) {
             foreach (array_chunk($result['data']['openid'], 100) as $chunk) {
-                $this->app->db->name('WechatFans')->where($map)->whereIn('openid', $chunk)->update($data);
+                $done += count($chunk);
+                $map = [['is_black', '=', 0], ['openid', 'in', $chunk]];
+                $this->app->db->name('WechatFans')->where($map)->update(['is_black' => 1]);
             }
             $next = $result['total'] > $done ? $result['next_openid'] : null;
         }
