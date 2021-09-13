@@ -91,9 +91,9 @@ class Transfer extends Controller
         $this->title = '用户提现管理';
         $this->transfer = UserTransferService::instance()->amount(0);
         // 创建查询对象
-        $query = $this->_query(DataUserTransfer::mk())->order('id desc');
+        $query = DataUserTransfer::mq()->order('id desc');
         // 用户条件搜索
-        $db = $this->_query(DataUser::class)->like('phone,username|nickname#nickname')->db();
+        $db = DataUser::mq()->like('phone,username|nickname#nickname')->db();
         if ($db->getOptions('where')) $query->whereRaw("uuid in {$db->field('id')->buildSql()}");
         // 数据列表处理
         $query->equal('type,status')->dateBetween('create_at')->page();

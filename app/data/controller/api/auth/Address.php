@@ -68,8 +68,7 @@ class Address extends Auth
      */
     public function get()
     {
-        $model = DataUserAddress::mk();
-        $query = $this->_query($model)->withoutField('deleted');
+        $query = DataUserAddress::mQuery()->withoutField('deleted');
         $query->equal('code')->where(['uuid' => $this->uuid, 'deleted' => 0]);
         $result = $query->order('type desc,id desc')->page(false, false, false, 15);
         $this->success('获取地址数据！', $result);
