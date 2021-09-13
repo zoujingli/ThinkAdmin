@@ -18,12 +18,6 @@ use think\admin\service\AdminService;
 class Transfer extends Controller
 {
     /**
-     * 绑定数据表
-     * @var string
-     */
-    private $table = 'DataUserTransfer';
-
-    /**
      * 提现转账方案
      * @var array
      */
@@ -91,9 +85,9 @@ class Transfer extends Controller
         $this->title = '用户提现管理';
         $this->transfer = UserTransferService::instance()->amount(0);
         // 创建查询对象
-        $query = DataUserTransfer::mq()->order('id desc');
+        $query = DataUserTransfer::mQuery()->order('id desc');
         // 用户条件搜索
-        $db = DataUser::mq()->like('phone,username|nickname#nickname')->db();
+        $db = DataUser::mQuery()->like('phone,username|nickname#nickname')->db();
         if ($db->getOptions('where')) $query->whereRaw("uuid in {$db->field('id')->buildSql()}");
         // 数据列表处理
         $query->equal('type,status')->dateBetween('create_at')->page();
