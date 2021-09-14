@@ -35,11 +35,12 @@ return [
     'deny_app_list'    => [],
     // 非调试模式时显示错误的消息
     'error_message'    => '页面错误！请稍后再试～',
-    // 调试模式异常页面的模板文件
-    // 'exception_tmpl'   => app()->getBasePath() . 'admin/view/error.tpl',
-
-    // 自动配置跨域
+    // CORS 自动配置跨域
     'cors_auto'        => true,
-    // 配置跨域域名
+    // CORS 配置跨域域名
     'cors_host'        => [],
+    // CORS 授权请求方法
+    'cors_methods'     => 'GET,PUT,POST,PATCH,DELETE',
+    // CORS 跨域头部字段
+    'cors_headers'     => 'Api-Name,Api-Type,Api-Token,User-Form-Token,User-Token,Token',
 ];
