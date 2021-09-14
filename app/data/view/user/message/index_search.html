@@ -4,14 +4,14 @@
         <div class="layui-form-item layui-inline">
             <label class="layui-form-label">目标手机</label>
             <label class="layui-input-inline">
-                <input class="layui-input" name="phone" placeholder="请输入目标手机" value="{:input('phone')}">
+                <input class="layui-input" name="phone" placeholder="请输入目标手机" value="{$get.phone|default=''}">
             </label>
         </div>
 
         <div class="layui-form-item layui-inline">
             <label class="layui-form-label">短信内容</label>
             <label class="layui-input-inline">
-                <input class="layui-input" name="content" placeholder="请输入短信内容" value="{:input('content')}">
+                <input class="layui-input" name="content" placeholder="请输入短信内容" value="{$get.content|default=''}">
             </label>
         </div>
 
@@ -33,7 +33,7 @@
         <div class="layui-form-item layui-inline">
             <label class="layui-form-label">发送时间</label>
             <div class="layui-input-inline">
-                <input class="layui-input" data-date-range name="create_at" placeholder="请选择发送时间" value="{:input('create_at','')}">
+                <input class="layui-input" data-date-range name="create_at" placeholder="请选择发送时间" value="{$get.create_at|default=''}">
             </div>
         </div>
 

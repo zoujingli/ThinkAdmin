@@ -4,14 +4,14 @@
         <div class="layui-form-item layui-inline">
             <label class="layui-form-label">用户手机</label>
             <label class="layui-input-inline">
-                <input class="layui-input" name="user_phone" placeholder="请输入用户手机" value="{:input('user_phone')}">
+                <input class="layui-input" name="user_phone" placeholder="请输入用户手机" value="{$get.user_phone|default=''}">
             </label>
         </div>
 
         <div class="layui-form-item layui-inline">
             <label class="layui-form-label">用户昵称</label>
             <label class="layui-input-inline">
-                <input class="layui-input" name="user_nickname" placeholder="请输入用户昵称" value="{:input('user_nickname')}">
+                <input class="layui-input" name="user_nickname" placeholder="请输入用户昵称" value="{$get.user_nickname|default=''}">
             </label>
         </div>
 
@@ -50,14 +50,14 @@
         <div class="layui-form-item layui-inline">
             <label class="layui-form-label">充值备注</label>
             <label class="layui-input-inline">
-                <input class="layui-input" name="remark" placeholder="请输入充值备注" value="{:input('remark')}">
+                <input class="layui-input" name="remark" placeholder="请输入充值备注" value="{$get.remark|default=''}">
             </label>
         </div>
 
         <div class="layui-form-item layui-inline">
             <label class="layui-form-label">操作时间</label>
             <label class="layui-input-inline">
-                <input class="layui-input" data-date-range name="create_at" placeholder="请选择操作时间" value="{:input('create_at','')}">
+                <input class="layui-input" data-date-range name="create_at" placeholder="请选择操作时间" value="{$get.create_at|default=''}">
             </label>
         </div>
 

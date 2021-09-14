@@ -4,7 +4,7 @@
         <div class="layui-form-item layui-inline">
             <label class="layui-form-label">文章标题</label>
             <label class="layui-input-inline">
-                <input class="layui-input" name="name" placeholder="请输入文章标题" value="{:input('name','')}">
+                <input class="layui-input" name="name" placeholder="请输入文章标题" value="{$get.name|default=''}">
             </label>
         </div>
 
@@ -25,7 +25,7 @@
         <div class="layui-form-item layui-inline">
             <label class="layui-form-label">创建时间</label>
             <label class="layui-input-inline">
-                <input class="layui-input" data-date-range name="create_at" placeholder="请选择创建时间" value="{:input('create_at','')}">
+                <input class="layui-input" data-date-range name="create_at" placeholder="请选择创建时间" value="{$get.create_at|default=''}">
             </label>
         </div>
 

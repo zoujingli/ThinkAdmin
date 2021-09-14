@@ -62,7 +62,7 @@
             </td>
             <td class="nowrap text-right">
                 <!--{if auth("parent")}-->
-                <a class="layui-btn layui-btn-sm layui-btn-primary" data-parent-uuid="{:input('uuid')}" data-parent-pid="{$vo.id}">选择绑定</a>
+                <a class="layui-btn layui-btn-sm layui-btn-primary" data-parent-uuid="{$get.uuid|default=''}" data-parent-pid="{$vo.id}">选择绑定</a>
                 <!--{/if}-->
             </td>
         </tr>

@@ -4,19 +4,19 @@
         <div class="layui-form-item layui-inline">
             <label class="layui-form-label">任务编号</label>
             <div class="layui-input-inline">
-                <input name="code" value="{:input('get.code')}" placeholder="请输入任务编号" class="layui-input">
+                <input name="code" value="{$get.code|default=''}" placeholder="请输入任务编号" class="layui-input">
             </div>
         </div>
         <div class="layui-form-item layui-inline">
             <label class="layui-form-label">任务名称</label>
             <div class="layui-input-inline">
-                <input name="title" value="{:input('get.title')}" placeholder="请输入任务名称" class="layui-input">
+                <input name="title" value="{$get.title|default=''}" placeholder="请输入任务名称" class="layui-input">
             </div>
         </div>
         <div class="layui-form-item layui-inline">
             <label class="layui-form-label">任务指令</label>
             <div class="layui-input-inline">
-                <input name="command" value="{:input('get.command')}" placeholder="请输入任务指令" class="layui-input">
+                <input name="command" value="{$get.command|default=''}" placeholder="请输入任务指令" class="layui-input">
             </div>
         </div>
         <div class="layui-form-item layui-inline">
@@ -36,19 +36,19 @@
         <div class="layui-form-item layui-inline">
             <label class="layui-form-label">计划时间</label>
             <div class="layui-input-inline">
-                <input data-date-range name="exec_time" value="{:input('get.exec_time')}" placeholder="请选择计划时间" class="layui-input">
+                <input data-date-range name="exec_time" value="{$get.exec_time|default=''}" placeholder="请选择计划时间" class="layui-input">
             </div>
         </div>
         <div class="layui-form-item layui-inline">
             <label class="layui-form-label">执行时间</label>
             <div class="layui-input-inline">
-                <input data-date-range name="enter_time" value="{:input('get.enter_time')}" placeholder="请选择执行时间" class="layui-input">
+                <input data-date-range name="enter_time" value="{$get.enter_time|default=''}" placeholder="请选择执行时间" class="layui-input">
             </div>
         </div>
         <div class="layui-form-item layui-inline">
             <label class="layui-form-label">创建时间</label>
             <div class="layui-input-inline">
-                <input data-date-range name="create_at" value="{:input('get.create_at')}" placeholder="请选择创建时间" class="layui-input">
+                <input data-date-range name="create_at" value="{$get.create_at|default=''}" placeholder="请选择创建时间" class="layui-input">
             </div>
         </div>
         <div class="layui-form-item layui-inline">

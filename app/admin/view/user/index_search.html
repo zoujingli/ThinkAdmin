@@ -5,14 +5,14 @@
         <div class="layui-form-item layui-inline">
             <label class="layui-form-label">用户名称</label>
             <label class="layui-input-inline">
-                <input name="nickname" value="{:input('get.nickname')}" placeholder="请输入用户名称" class="layui-input">
+                <input name="nickname" value="{$get.nickname|default=''}" placeholder="请输入用户名称" class="layui-input">
             </label>
         </div>
 
         <div class="layui-form-item layui-inline">
             <label class="layui-form-label">登录账号</label>
             <label class="layui-input-inline">
-                <input name="username" value="{:input('get.username')}" placeholder="请输入登录账号" class="layui-input">
+                <input name="username" value="{$get.username|default=''}" placeholder="请输入登录账号" class="layui-input">
             </label>
         </div>
 
@@ -35,28 +35,28 @@
         <div class="layui-form-item layui-inline layui-hide">
             <label class="layui-form-label">联系手机</label>
             <label class="layui-input-inline">
-                <input name="phone" value="{:input('get.phone')}" placeholder="请输入联系手机" class="layui-input">
+                <input name="phone" value="{$get.phone|default=''}" placeholder="请输入联系手机" class="layui-input">
             </label>
         </div>
 
         <div class="layui-form-item layui-inline layui-hide">
             <label class="layui-form-label">联系邮箱</label>
             <label class="layui-input-inline">
-                <input name="mail" value="{:input('get.mail')}" placeholder="请输入联系邮箱" class="layui-input">
+                <input name="mail" value="{$get.mail|default=''}" placeholder="请输入联系邮箱" class="layui-input">
             </label>
         </div>
 
         <div class="layui-form-item layui-inline">
             <label class="layui-form-label">最后登录</label>
             <div class="layui-input-inline">
-                <input data-date-range name="login_at" value="{:input('get.login_at')}" placeholder="请选择登录时间" class="layui-input">
+                <input data-date-range name="login_at" value="{$get.login_at|default=''}" placeholder="请选择登录时间" class="layui-input">
             </div>
         </div>
 
         <div class="layui-form-item layui-inline">
             <label class="layui-form-label">创建时间</label>
             <div class="layui-input-inline">
-                <input data-date-range name="create_at" value="{:input('get.create_at')}" placeholder="请选择创建时间" class="layui-input">
+                <input data-date-range name="create_at" value="{$get.create_at|default=''}" placeholder="请选择创建时间" class="layui-input">
             </div>
         </div>
 

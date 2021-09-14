@@ -4,14 +4,14 @@
         <div class="layui-form-item layui-inline">
             <label class="layui-form-label">用户手机</label>
             <label class="layui-input-inline">
-                <input class="layui-input" name="phone" placeholder="请输入用户手机" value="{:input('phone')}">
+                <input class="layui-input" name="phone" placeholder="请输入用户手机" value="{$get.phone|default=''}">
             </label>
         </div>
 
         <div class="layui-form-item layui-inline">
             <label class="layui-form-label">用户昵称</label>
             <label class="layui-input-inline">
-                <input class="layui-input" name="username" placeholder="请输入用户昵称" value="{:input('username')}">
+                <input class="layui-input" name="username" placeholder="请输入用户昵称" value="{$get.username|default=''}">
             </label>
         </div>
 
@@ -34,14 +34,14 @@
         <div class="layui-form-item layui-inline">
             <label class="layui-form-label">代理手机</label>
             <label class="layui-input-inline">
-                <input class="layui-input" name="from_phone" placeholder="请输入代理手机" value="{:input('from_phone')}">
+                <input class="layui-input" name="from_phone" placeholder="请输入代理手机" value="{$get.from_phone|default=''}">
             </label>
         </div>
 
         <div class="layui-form-item layui-inline">
             <label class="layui-form-label">代理昵称</label>
             <label class="layui-input-inline">
-                <input class="layui-input" name="from_username" placeholder="请输入代理昵称" value="{:input('from_username')}">
+                <input class="layui-input" name="from_username" placeholder="请输入代理昵称" value="{$get.from_username|default=''}">
             </label>
         </div>
 
@@ -79,7 +79,7 @@
         <div class="layui-form-item layui-inline">
             <label class="layui-form-label">注册时间</label>
             <div class="layui-input-inline">
-                <input class="layui-input" data-date-range name="create_at" placeholder="请选择注册时间" value="{:input('create_at','')}">
+                <input class="layui-input" data-date-range name="create_at" placeholder="请选择注册时间" value="{$get.create_at|default=''}">
             </div>
         </div>
 

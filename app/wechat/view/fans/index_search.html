@@ -5,7 +5,7 @@
         <div class="layui-form-item layui-inline">
             <label class="layui-form-label">微信昵称</label>
             <label class="layui-input-inline">
-                <input name="nickname" value="{:input('nickname')}" placeholder="请输入微信昵称" class="layui-input">
+                <input name="nickname" value="{$get.nickname|default=''}" placeholder="请输入微信昵称" class="layui-input">
             </label>
         </div>
 
@@ -42,7 +42,7 @@
         <div class="layui-form-item layui-inline">
             <label class="layui-form-label">订阅时间</label>
             <label class="layui-input-inline">
-                <input data-date-range name="subscribe_at" value="{:input('subscribe_at')}" placeholder="请选择订阅时间" class="layui-input">
+                <input data-date-range name="subscribe_at" value="{$get.subscribe_at|default=''}" placeholder="请选择订阅时间" class="layui-input">
             </label>
         </div>
 

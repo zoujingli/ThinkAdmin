@@ -4,28 +4,28 @@
         <div class="layui-form-item layui-inline">
             <label class="layui-form-label">用户手机</label>
             <label class="layui-input-inline">
-                <input class="layui-input" name="user_phone" placeholder="请输入用户手机" value="{:input('user_phone')}">
+                <input class="layui-input" name="user_phone" placeholder="请输入用户手机" value="{$get.user_phone|default=''}">
             </label>
         </div>
 
         <div class="layui-form-item layui-inline">
             <label class="layui-form-label">用户昵称</label>
             <label class="layui-input-inline">
-                <input class="layui-input" name="user_nickname" placeholder="请输入用户昵称" value="{:input('user_nickname')}">
+                <input class="layui-input" name="user_nickname" placeholder="请输入用户昵称" value="{$get.user_nickname|default=''}">
             </label>
         </div>
 
         <div class="layui-form-item layui-inline">
             <label class="layui-form-label">订单单号</label>
             <label class="layui-input-inline">
-                <input class="layui-input" name="order_no" placeholder="请输入订单单号" value="{:input('order_no')}">
+                <input class="layui-input" name="order_no" placeholder="请输入订单单号" value="{$get.order_no|default=''}">
             </label>
         </div>
 
         <div class="layui-form-item layui-inline">
             <label class="layui-form-label">发货单号</label>
             <label class="layui-input-inline">
-                <input class="layui-input" name="truck_number" placeholder="请输入发货单号" value="{:input('truck_number')}">
+                <input class="layui-input" name="truck_number" placeholder="请输入发货单号" value="{$get.truck_number|default=''}">
             </label>
         </div>
 
@@ -47,35 +47,35 @@
         <div class="layui-form-item layui-inline">
             <label class="layui-form-label">提交时间</label>
             <label class="layui-input-inline">
-                <input class="layui-input" data-date-range name="address_datetime" placeholder="请选择提交时间" value="{:input('address_datetime')}">
+                <input class="layui-input" data-date-range name="address_datetime" placeholder="请选择提交时间" value="{$get.address_datetime|default=''}">
             </label>
         </div>
 
         <div class="layui-form-item layui-inline">
             <label class="layui-form-label">发货时间</label>
             <label class="layui-input-inline">
-                <input class="layui-input" data-date-range name="send_datetime" placeholder="请选择发货时间" value="{:input('send_datetime')}">
+                <input class="layui-input" data-date-range name="send_datetime" placeholder="请选择发货时间" value="{$get.send_datetime|default=''}">
             </label>
         </div>
 
         <div class="layui-form-item layui-inline">
             <label class="layui-form-label">收货姓名</label>
             <label class="layui-input-inline">
-                <input class="layui-input" name="address_name" placeholder="请输入收货姓名" value="{:input('address_name')}">
+                <input class="layui-input" name="address_name" placeholder="请输入收货姓名" value="{$get.address_name|default=''}">
             </label>
         </div>
 
         <div class="layui-form-item layui-inline">
             <label class="layui-form-label">收货手机</label>
             <label class="layui-input-inline">
-                <input class="layui-input" name="address_phone" placeholder="请输入收货手机" value="{:input('address_phone')}">
+                <input class="layui-input" name="address_phone" placeholder="请输入收货手机" value="{$get.address_phone|default=''}">
             </label>
         </div>
 
         <div class="layui-form-item layui-inline">
             <label class="layui-form-label">配送地址</label>
             <label class="layui-input-inline">
-                <input class="layui-input" name="address_content" placeholder="请输入配送地址" value="{:input('address_content')}">
+                <input class="layui-input" name="address_content" placeholder="请输入配送地址" value="{$get.address_content|default=''}">
             </label>
         </div>
 
