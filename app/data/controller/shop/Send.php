@@ -3,6 +3,7 @@
 namespace app\data\controller\shop;
 
 use app\data\model\BasePostageCompany;
+use app\data\model\DataUser;
 use app\data\model\ShopOrder;
 use app\data\model\ShopOrderSend;
 use app\data\service\ExpressService;
@@ -38,20 +39,25 @@ class Send extends Controller
             $this->total["t{$vo['status']}"] = $vo['total'];
             $this->total["ta"] += $vo['total'];
         }
+
         // 订单列表查询
-        $query = $this->_query(ShopOrderSend::class);
+        $query = ShopOrderSend::mQuery();
         $query->dateBetween('address_datetime,send_datetime')->equal('status')->like('send_number#truck_number,order_no');
         $query->like('address_phone,address_name,address_province|address_city|address_area|address_content#address_content');
+
         // 用户搜索查询
-        $db = $this->_query('DataUser')->like('phone#user_phone,nickname#user_nickname')->db();
+        $db = DataUser::mQuery()->like('phone#user_phone,nickname#user_nickname')->db();
         if ($db->getOptions('where')) $query->whereRaw("uuid in {$db->field('id')->buildSql()}");
+
         // 订单搜索查询
         $db = ShopOrder::mk()->whereIn('status', [4, 5, 6])->where(['truck_type' => 1]);
         $query->whereRaw("order_no in {$db->field('order_no')->buildSql()}");
+
         // 列表选项卡状态
         if (is_numeric($this->type = trim(input('type', 'ta'), 't'))) {
             $query->where(['status' => $this->type]);
         }
+
         // 列表排序显示
         $query->order('id desc')->page();
     }
@@ -102,7 +108,7 @@ class Send extends Controller
             $query = BasePostageCompany::mk()->where(['deleted' => 0, 'status' => 1]);
             $this->items = $query->order('sort desc,id desc')->select()->toArray();
         }
-        $this->_form('ShopOrderSend', 'truck_form', 'order_no');
+        ShopOrderSend::mForm('truck_form', 'order_no');
     }
 
     /**
@@ -118,22 +124,23 @@ class Send extends Controller
             $map = ['order_no' => $vo['order_no']];
             $order = ShopOrder::mk()->where($map)->find();
             if (empty($order)) $this->error('订单查询异常，请稍候再试！');
+
             // 配送快递公司填写
             $map = ['code_1|code_2|code_3' => $vo['company_code']];
             $company = BasePostageCompany::mk()->where($map)->find();
             if (empty($company)) $this->error('配送快递公司异常，请重新选择快递公司！');
+
             $vo['status'] = 2;
             $vo['company_name'] = $company['name'];
             $vo['send_datetime'] = $vo['send_datetime'] ?? date('Y-m-d H:i:s');
-            // 更新订单发货状态
             if ($order['status'] === 3) {
                 $map = ['order_no' => $vo['order_no']];
+                // 更新订单发货状态
                 ShopOrder::mk()->where($map)->update(['status' => 4]);
             }
         }
     }
-
-
+    
     /**
      * 快递追踪查询
      * @auth true

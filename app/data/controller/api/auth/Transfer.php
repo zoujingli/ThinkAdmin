@@ -105,7 +105,7 @@ class Transfer extends Auth
      */
     public function get()
     {
-        $query = $this->_query(DataUserTransfer::mk())->where(['uuid' => $this->uuid]);
+        $query = DataUserTransfer::mQuery()->where(['uuid' => $this->uuid]);
         $result = $query->like('date,code')->in('status')->order('id desc')->page(true, false, false, 10);
         // 统计历史数据
         $map = [['uuid', '=', $this->uuid], ['status', '>', 0]];

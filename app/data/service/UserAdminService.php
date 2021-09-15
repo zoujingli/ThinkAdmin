@@ -61,19 +61,15 @@ class UserAdminService extends Service
      */
     public function set(array $map, array $data, string $type, bool $force = false): array
     {
+        $user = DataUser::mk()->where($map)->where(['deleted' => 0])->find();
+        // 更新或写入用户数据
         unset($data['id'], $data['deleted'], $data['create_at']);
-        if ($uuid = DataUser::mk()->where($map)->where(['deleted' => 0])->value('id')) {
-            if (!empty($data)) {
-                $map = ['id' => $uuid, 'deleted' => 0];
-                DataUser::mk()->strict(false)->where($map)->update($data);
-            }
-        } else {
-            $uuid = DataUser::mk()->strict(false)->insertGetId($data);
-        }
-        if ($force) {
-            UserTokenService::instance()->token(intval($uuid), $type);
-        }
-        return $this->get($uuid, $type);
+        if (empty($user)) ($user = DataUser::mk())->save($data);
+        elseif (!empty($data)) $user->save($data);
+        // 强行刷新用户认证令牌
+        if ($force) UserTokenService::instance()->token($user['id'], $type);
+        // 返回当前用户资料数据
+        return $this->get($user['id'], $type);
     }
 
     /**
@@ -89,10 +85,9 @@ class UserAdminService extends Service
     public function get(int $uuid, ?string $type = null): array
     {
         $user = DataUser::mk()->where(['id' => $uuid, 'deleted' => 0])->find();
-        if (empty($user)) throw new Exception('指定UID用户不存在');
+        if (empty($user)) throw new Exception('用户还没有注册！');
         if (!is_null($type)) {
-            $map = ['uuid' => $uuid, 'type' => $type];
-            $data = DataUserToken::mk()->where($map)->find();
+            $data = DataUserToken::mk()->where(['uuid' => $uuid, 'type' => $type])->find();
             if (empty($data)) {
                 [$state, $info, $data] = UserTokenService::instance()->token($uuid, $type);
                 if (empty($state) || empty($data)) throw new Exception($info);
@@ -100,7 +95,7 @@ class UserAdminService extends Service
             $user['token'] = ['token' => $data['token'], 'expire' => $data['time']];
         }
         unset($user['deleted'], $user['password']);
-        return $user;
+        return $user->toArray();
     }
 
     /**

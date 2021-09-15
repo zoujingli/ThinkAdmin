@@ -32,7 +32,7 @@ class Rebate extends Controller
         $this->types = RebateService::PRIZES;
         $this->rebate = UserRebateService::instance()->amount(0);
         // 创建查询对象
-        $query = $this->_query(DataUserRebate::class)->equal('type')->like('name,order_no');
+        $query = DataUserRebate::mQuery()->equal('type')->like('name,order_no');
         // 会员条件查询
         $db = $this->_query('DataUser')->like('nickname#order_nickname,phone#order_phone')->db();
         if ($db->getOptions('where')) $query->whereRaw("order_uuid in {$db->field('id')->buildSql()}");
@@ -90,5 +90,4 @@ class Rebate extends Controller
             $this->success('奖励修改成功');
         }
     }
-
 }

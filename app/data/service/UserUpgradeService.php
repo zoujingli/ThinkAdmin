@@ -40,7 +40,7 @@ class UserUpgradeService extends Service
     public function bindAgent(int $uuid, int $pid0 = 0, int $mode = 1): array
     {
         $user = DataUser::mk()->where(['id' => $uuid])->find();
-        if (empty($user)) return [0, '用户查询失败'];
+        if (empty($user)) return [0, '查询用户资料失败'];
         if ($user['pids'] && in_array($mode, [0, 1])) return [1, '已经绑定代理'];
         // 检查代理用户
         if (empty($pid0)) $pid0 = $user['pid0'];
@@ -49,23 +49,18 @@ class UserUpgradeService extends Service
         // 检查代理资格
         $agent = DataUser::mk()->where(['id' => $pid0])->find();
         if (empty($agent['vip_code'])) return [0, '代理无推荐资格'];
-        if (stripos($agent['path'], "-{$uuid}-") !== false) return [0, '不能绑定下属'];
+        if (strpos($agent['path'], "-{$uuid}-") !== false) return [0, '不能绑定下属'];
         try {
             $this->app->db->transaction(function () use ($user, $agent, $mode) {
                 // 更新用户代理
                 $path1 = rtrim($agent['path'] ?: '-', '-') . "-{$agent['id']}-";
-                DataUser::mk()->where(['id' => $user['id']])->update([
-                    'pid0' => $agent['id'], 'pid1' => $agent['id'], 'pid2' => $agent['pid1'],
-                    'pids' => $mode > 0 ? 1 : 0, 'path' => $path1, 'layer' => substr_count($path1, '-'),
-                ]);
+                $user->save(['pid0' => $agent['id'], 'pid1' => $agent['id'], 'pid2' => $agent['pid1'], 'pids' => $mode > 0 ? 1 : 0, 'path' => $path1, 'layer' => substr_count($path1, '-')]);
                 // 更新下级代理
                 $path2 = "{$user['path']}{$user['id']}-";
                 if (DataUser::mk()->whereLike('path', "{$path2}%")->count() > 0) {
-                    foreach (DataUser::mk()->whereLike('path', "{$path2}%")->order('layer desc')->select() as $vo) {
-                        $attr = array_reverse(str2arr($path3 = preg_replace("#^{$path2}#", "{$path1}{$user['id']}-", $vo['path']), '-'));
-                        DataUser::mk()->where(['id' => $vo['id']])->update([
-                            'pid0' => $attr[0] ?? 0, 'pid1' => $attr[0] ?? 0, 'pid2' => $attr[1] ?? 0, 'path' => $path3, 'layer' => substr_count($path3, '-'),
-                        ]);
+                    foreach (DataUser::mk()->whereLike('path', "{$path2}%")->order('layer desc')->select() as $item) {
+                        $attr = array_reverse(str2arr($path3 = preg_replace("#^{$path2}#", "{$path1}{$user['id']}-", $item['path']), '-'));
+                        $item->save(['pid0' => $attr[0] ?? 0, 'pid1' => $attr[0] ?? 0, 'pid2' => $attr[1] ?? 0, 'path' => $path3, 'layer' => substr_count($path3, '-')]);
                     }
                 }
             });

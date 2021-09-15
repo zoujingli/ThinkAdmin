@@ -2,6 +2,9 @@
 
 namespace app\data\service;
 
+use app\data\model\DataNewsItem;
+use app\data\model\DataNewsMark;
+use app\data\model\DataNewsXCollect;
 use think\admin\Service;
 
 /**
@@ -19,7 +22,7 @@ class NewsService extends Service
      */
     public function syncNewsTotal(string $code, array $total = []): void
     {
-        $query = $this->app->db->name('DataNewsXCollect')->field('type,count(1) count');
+        $query = DataNewsXCollect::mk()->field('type,count(1) count');
         foreach ($query->where(['code' => $code, 'status' => 2])->group('type')->cursor() as $item) {
             $total[$item['type']] = $item['count'];
         }
@@ -39,8 +42,8 @@ class NewsService extends Service
             /*! 绑定文章内容 */
             $codes = array_unique(array_column($list, 'code'));
             $colls = 'id,code,name,cover,mark,status,deleted,create_at,num_like,num_read,num_comment,num_collect';
-            $items = $this->app->db->name('DataNewsItem')->whereIn('code', $codes)->column($colls, 'code');
-            $marks = $this->app->db->name('DataNewsMark')->where(['status' => 1])->column('name');
+            $items = DataNewsItem::mk()->whereIn('code', $codes)->column($colls, 'code');
+            $marks = DataNewsMark::mk()->where(['status' => 1])->column('name');
             foreach ($items as &$vo) $vo['mark'] = str2arr($vo['mark'] ?: '', ',', $marks);
             foreach ($list as &$vo) $vo['record'] = $items[$vo['code']] ?? [];
             /*! 绑定用户数据 */
@@ -60,11 +63,11 @@ class NewsService extends Service
     {
         if (count($list) > 0) {
             [$code2, $code1] = [[], []];
-            $marks = $this->app->db->name('DataNewsMark')->where(['status' => 1])->column('name');
+            $marks = DataNewsMark::mk()->where(['status' => 1])->column('name');
             if ($uuid > 0) {
                 $map = [['uuid', '=', $uuid], ['code', 'in', array_unique(array_column($list, 'code'))]];
-                $code1 = $this->app->db->name('DataNewsXCollect')->where($map)->where(['type' => 1])->column('code');
-                $code2 = $this->app->db->name('DataNewsXCollect')->where($map)->where(['type' => 2])->column('code');
+                $code1 = DataNewsXCollect::mk()->where($map)->where(['type' => 1])->column('code');
+                $code2 = DataNewsXCollect::mk()->where($map)->where(['type' => 2])->column('code');
             }
             foreach ($list as &$vo) {
                 $vo['mark'] = str2arr($vo['mark'] ?: '', ',', $marks);
@@ -74,5 +77,4 @@ class NewsService extends Service
         }
         return $list;
     }
-
 }

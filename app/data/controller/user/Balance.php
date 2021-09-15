@@ -4,6 +4,7 @@ namespace app\data\controller\user;
 
 use app\admin\model\SystemUser;
 use app\data\model\DataUser;
+use app\data\model\DataUserBalance;
 use app\data\service\UserAdminService;
 use app\data\service\UserBalanceService;
 use app\data\service\UserUpgradeService;
@@ -19,12 +20,6 @@ use think\admin\service\AdminService;
 class Balance extends Controller
 {
     /**
-     * 绑定数据表
-     * @var string
-     */
-    private $table = 'DataUserBalance';
-
-    /**
      * 余额充值管理
      * @auth true
      * @menu true
@@ -38,11 +33,11 @@ class Balance extends Controller
         // 统计用户余额
         $this->balance = UserBalanceService::instance()->amount(0);
         // 现有余额类型
-        $this->names = $this->app->db->name($this->table)->group('name')->column('name');
+        $this->names = DataUserBalance::mk()->group('name')->column('name');
         // 创建查询对象
-        $query = $this->_query($this->table)->equal('name,upgrade');
+        $query = DataUserBalance::mQuery()->equal('name,upgrade');
         // 用户搜索查询
-        $db = $this->_query('DataUser')->like('phone#user_phone,nickname#user_nickname')->db();
+        $db = DataUser::mQuery()->like('phone#user_phone,nickname#user_nickname')->db();
         if ($db->getOptions('where')) $query->whereRaw("uuid in {$db->field('id')->buildSql()}");
         // 数据查询分页
         $query->where(['deleted' => 0])->like('code,remark')->dateBetween('create_at')->order('id desc')->page();
@@ -76,7 +71,7 @@ class Balance extends Controller
         $data = $this->_vali(['uuid.require' => '用户UID不能为空！']);
         $this->user = DataUser::mk()->where(['id' => $data['uuid']])->find();
         if (empty($this->user)) $this->error('待充值的用户不存在！');
-        $this->_form($this->table, 'form');
+        DataUserBalance::mForm('form');
     }
 
     /**
@@ -120,8 +115,7 @@ class Balance extends Controller
      */
     public function remove()
     {
-        $db = $this->app->db->name($this->table);
-        $this->_delete($db->whereLike('code', "B%"));
+        DataUserBalance::mDelete('', [['code', 'like', 'B%']]);
     }
 
     /**

@@ -22,7 +22,7 @@ class Mark extends Controller
     public function index()
     {
         $this->title = '文章标签管理';
-        $query = $this->_query(DataNewsMark::class);
+        $query = DataNewsMark::mQuery();
         $query->like('name')->equal('status')->dateBetween('create_at');
         $query->where(['deleted' => 0])->order('sort desc,id desc')->page();
     }
@@ -36,7 +36,7 @@ class Mark extends Controller
      */
     public function add()
     {
-        $this->_form(DataNewsMark::class, 'form');
+        DataNewsMark::mForm('form');
     }
 
     /**
@@ -48,7 +48,7 @@ class Mark extends Controller
      */
     public function edit()
     {
-        $this->_form(DataNewsMark::class, 'form');
+        DataNewsMark::mForm('form');
     }
 
     /**
@@ -58,7 +58,7 @@ class Mark extends Controller
      */
     public function state()
     {
-        $this->_save(DataNewsMark::class, $this->_vali([
+        DataNewsMark::mSave($this->_vali([
             'status.in:0,1'  => '状态值范围异常！',
             'status.require' => '状态值不能为空！',
         ]));
@@ -71,7 +71,6 @@ class Mark extends Controller
      */
     public function remove()
     {
-        $this->_delete(DataNewsMark::class);
+        DataNewsMark::mDelete();
     }
-
 }

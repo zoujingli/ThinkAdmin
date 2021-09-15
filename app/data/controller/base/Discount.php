@@ -2,6 +2,7 @@
 
 namespace app\data\controller\base;
 
+use app\data\model\BaseUserDiscount;
 use app\data\service\UserUpgradeService;
 use think\admin\Controller;
 
@@ -13,12 +14,6 @@ use think\admin\Controller;
 class Discount extends Controller
 {
     /**
-     * 绑定数据表
-     * @var string
-     */
-    private $table = 'BaseUserDiscount';
-
-    /**
      * 折扣方案管理
      * @auth true
      * @menu true
@@ -29,7 +24,7 @@ class Discount extends Controller
     public function index()
     {
         $this->title = '折扣方案管理';
-        $query = $this->_query($this->table);
+        $query = BaseUserDiscount::mQuery();
         $query->where(['deleted' => 0])->order('sort desc,id desc')->page();
     }
 
@@ -53,7 +48,7 @@ class Discount extends Controller
      */
     public function add()
     {
-        $this->_form($this->table, 'form');
+        BaseUserDiscount::mForm('form');
     }
 
     /**
@@ -65,7 +60,7 @@ class Discount extends Controller
      */
     public function edit()
     {
-        $this->_form($this->table, 'form');
+        BaseUserDiscount::mForm('form');
     }
 
     /**
@@ -97,7 +92,7 @@ class Discount extends Controller
      */
     public function state()
     {
-        $this->_save($this->table);
+        BaseUserDiscount::mSave();
     }
 
     /**
@@ -107,7 +102,6 @@ class Discount extends Controller
      */
     public function remove()
     {
-        $this->_delete($this->table);
+        BaseUserDiscount::mDelete();
     }
-
 }

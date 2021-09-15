@@ -28,7 +28,7 @@ class Portal extends Controller
         $this->goodsTotal = ShopGoods::mk()->cache(true, 60)->where(['deleted' => 0])->count();
         $this->orderTotal = ShopOrder::mk()->cache(true, 60)->whereRaw('status >= 4')->count();
         $this->amountTotal = ShopOrder::mk()->cache(true, 60)->whereRaw('status >= 4')->sum('amount_total');
-        // 近十天用户及交易趋势
+        // 近十天的用户及交易趋势
         $this->days = $this->app->cache->get('portals', []);
         if (empty($this->days)) {
             for ($i = 15; $i >= 0; $i--) {

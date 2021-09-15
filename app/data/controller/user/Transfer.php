@@ -139,7 +139,7 @@ class Transfer extends Controller
     private function _audit()
     {
         if ($this->request->isGet()) {
-            $this->_form(DataUserTransfer::mk(), 'audit', 'code');
+            DataUserTransfer::mForm('audit', 'code');
         } else {
             $data = $this->_vali([
                 'code.require'        => '打款单号不能为空！',

@@ -26,7 +26,7 @@ class Item extends Controller
     public function index()
     {
         $this->title = '文章内容管理';
-        $query = $this->_query(DataNewsItem::class);
+        $query = DataNewsItem::mQuery();
         $query->like('mark,name')->dateBetween('create_at');
         $query->where(['deleted' => 0])->order('sort desc,id desc')->page();
     }
@@ -40,7 +40,7 @@ class Item extends Controller
      */
     public function select()
     {
-        $query = $this->_query(DataNewsItem::class);
+        $query = DataNewsItem::mQuery();
         $query->equal('status')->like('name')->dateBetween('create_at');
         $query->where(['deleted' => 0])->order('sort desc,id desc')->page();
     }
@@ -64,7 +64,7 @@ class Item extends Controller
     public function add()
     {
         $this->title = '添加文章内容';
-        $this->_form(DataNewsItem::class, 'form');
+        DataNewsItem::mForm('form');
     }
 
     /**
@@ -77,7 +77,7 @@ class Item extends Controller
     public function edit()
     {
         $this->title = '编辑文章内容';
-        $this->_form(DataNewsItem::class, 'form');
+        DataNewsItem::mForm('form');
     }
 
     /**
@@ -119,7 +119,7 @@ class Item extends Controller
      */
     public function state()
     {
-        $this->_save(DataNewsItem::class, $this->_vali([
+        DataNewsItem::mSave($this->_vali([
             'status.in:0,1'  => '状态值范围异常！',
             'status.require' => '状态值不能为空！',
         ]));
@@ -132,7 +132,6 @@ class Item extends Controller
      */
     public function remove()
     {
-        $this->_delete(DataNewsItem::class);
+        DataNewsItem::mDelete();
     }
-
 }

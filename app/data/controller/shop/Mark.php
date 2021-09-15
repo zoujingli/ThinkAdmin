@@ -22,7 +22,7 @@ class Mark extends Controller
     public function index()
     {
         $this->title = '商品标签管理';
-        $query = $this->_query(ShopGoodsMark::mk());
+        $query = ShopGoodsMark::mQuery();
         $query->like('name')->dateBetween('create_at');
         $query->equal('status')->order('sort desc,id desc')->page();
     }
@@ -36,7 +36,7 @@ class Mark extends Controller
      */
     public function select()
     {
-        $this->_query(ShopGoodsMark::mk())->order('sort desc,id desc')->page();
+        ShopGoodsMark::mQuery()->order('sort desc,id desc')->page();
     }
 
     /**
@@ -48,7 +48,7 @@ class Mark extends Controller
      */
     public function add()
     {
-        $this->_form(ShopGoodsMark::mk(), 'form');
+        ShopGoodsMark::mForm('form');
     }
 
     /**
@@ -60,7 +60,7 @@ class Mark extends Controller
      */
     public function edit()
     {
-        $this->_form(ShopGoodsMark::mk(), 'form');
+        ShopGoodsMark::mForm('form');
     }
 
     /**
@@ -70,7 +70,7 @@ class Mark extends Controller
      */
     public function state()
     {
-        $this->_save(ShopGoodsMark::mk());
+        ShopGoodsMark::mSave();
     }
 
     /**
@@ -80,7 +80,6 @@ class Mark extends Controller
      */
     public function remove()
     {
-        $this->_delete(ShopGoodsMark::mk());
+        ShopGoodsMark::mDelete();
     }
-
 }

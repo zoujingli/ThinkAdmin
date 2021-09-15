@@ -14,12 +14,6 @@ use think\admin\Controller;
 class Upgrade extends Controller
 {
     /**
-     * 绑定数据表
-     * @var string
-     */
-    private $table = 'BaseUserUpgrade';
-
-    /**
      * 用户等级管理
      * @auth true
      * @menu true
@@ -30,7 +24,7 @@ class Upgrade extends Controller
     public function index()
     {
         $this->title = '用户等级管理';
-        $this->_query(BaseUserUpgrade::class)->order('number asc')->page();
+        BaseUserUpgrade::mQuery()->order('number asc')->page();
     }
 
     /**
@@ -56,7 +50,7 @@ class Upgrade extends Controller
      */
     public function add()
     {
-        $this->_form(BaseUserUpgrade::class, 'form');
+        BaseUserUpgrade::mForm('form');
     }
 
     /**
@@ -68,7 +62,7 @@ class Upgrade extends Controller
      */
     public function edit()
     {
-        $this->_form(BaseUserUpgrade::class, 'form');
+        BaseUserUpgrade::mForm('form');
     }
 
     /**
@@ -107,15 +101,20 @@ class Upgrade extends Controller
     /**
      * 表单结果处理
      * @param boolean $state
+     * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\DbException
+     * @throws \think\db\exception\ModelNotFoundException
      */
     public function _form_result(bool $state)
     {
         if ($state) {
-            $order = 'number asc,utime desc';
-            if (input('old_number', 100) <= input('number', 0)) $order = 'number asc,utime asc';
-            foreach (BaseUserUpgrade::mk()->order($order)->cursor() as $k => $vo) {
-                BaseUserUpgrade::mk()->where(['id' => $vo['id']])->update(['number' => $k]);
+            if (input('old_number', 100) <= input('number', 0)) {
+                $order = 'number asc,utime asc';
+            } else {
+                $order = 'number asc,utime desc';
+            }
+            foreach (BaseUserUpgrade::mk()->order($order)->select() as $number => $upgrade) {
+                $upgrade->save(['number' => $number]);
             }
         }
     }
@@ -136,7 +135,7 @@ class Upgrade extends Controller
      */
     public function state()
     {
-        $this->_save(BaseUserUpgrade::class);
+        BaseUserUpgrade::mSave();
     }
 
     /**
@@ -146,13 +145,15 @@ class Upgrade extends Controller
      */
     public function remove()
     {
-        $this->_delete(BaseUserUpgrade::class);
+        BaseUserUpgrade::mDelete();
     }
 
     /**
      * 状态变更处理
      * @auth true
+     * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\DbException
+     * @throws \think\db\exception\ModelNotFoundException
      */
     protected function _save_result()
     {
@@ -161,11 +162,12 @@ class Upgrade extends Controller
 
     /**
      * 删除结果处理
+     * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\DbException
+     * @throws \think\db\exception\ModelNotFoundException
      */
     protected function _delete_result()
     {
         $this->_form_result(true);
     }
-
 }

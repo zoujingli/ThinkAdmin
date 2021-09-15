@@ -2,6 +2,7 @@
 
 namespace app\data\controller\base;
 
+use app\data\model\BaseUserMessage;
 use think\admin\Controller;
 
 /**
@@ -28,7 +29,7 @@ class Message extends Controller
     public function index()
     {
         $this->title = '系统通知管理';
-        $query = $this->_query($this->table);
+        $query = BaseUserMessage::mQuery();
         $query->like('name')->equal('status')->dateBetween('create_at');
         $query->where(['deleted' => 0])->order('sort desc,id desc')->page();
     }
@@ -42,7 +43,7 @@ class Message extends Controller
      */
     public function add()
     {
-        $this->_form($this->table, 'form');
+        BaseUserMessage::mForm('form');
     }
 
     /**
@@ -54,7 +55,7 @@ class Message extends Controller
      */
     public function edit()
     {
-        $this->_form($this->table, 'form');
+        BaseUserMessage::mForm('form');
     }
 
     /**
@@ -75,7 +76,7 @@ class Message extends Controller
      */
     public function state()
     {
-        $this->_save($this->table, $this->_vali([
+        BaseUserMessage::mSave($this->_vali([
             'status.in:0,1'  => '状态值范围异常！',
             'status.require' => '状态值不能为空！',
         ]));
@@ -88,7 +89,6 @@ class Message extends Controller
      */
     public function remove()
     {
-        $this->_delete($this->table);
+        BaseUserMessage::mDelete();
     }
-
 }

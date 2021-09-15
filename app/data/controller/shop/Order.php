@@ -20,12 +20,6 @@ use think\exception\HttpResponseException;
 class Order extends Controller
 {
     /**
-     * 绑定数据表
-     * @var string
-     */
-    private $table = 'ShopOrder';
-
-    /**
      * 支付方式
      * @var array
      */
@@ -56,23 +50,29 @@ class Order extends Controller
         foreach (ShopOrder::mk()->field('status,count(1) total')->group('status')->cursor() as $vo) {
             [$this->total["t{$vo['status']}"] = $vo['total'], $this->total["ta"] += $vo['total']];
         }
+
         // 订单列表查询
-        $query = $this->_query(ShopOrder::mk());
+        $query = ShopOrder::mQuery();
         $query->like('order_no,truck_name,truck_phone,truck_province|truck_area|truck_address#address,truck_send_no,truck_send_name');
         $query->equal('status,payment_type,payment_status')->dateBetween('create_at,payment_datetime,cancel_datetime,truck_datetime,truck_send_datetime');
+
         // 发货信息搜索
-        $db = $this->_query(ShopOrderSend::class)->like('address_name#truck_address_name,address_phone#truck_address_phone,address_province|address_city|address_area|address_content#truck_address_content')->db();
+        $db = ShopOrderSend::mQuery()->like('address_name#truck_address_name,address_phone#truck_address_phone,address_province|address_city|address_area|address_content#truck_address_content')->db();
         if ($db->getOptions('where')) $query->whereRaw("order_no in {$db->field('order_no')->buildSql()}");
+
         // 用户搜索查询
-        $db = $this->_query(DataUser::class)->like('phone#user_phone,nickname#user_nickname')->db();
+        $db = DataUser::mQuery()->like('phone#user_phone,nickname#user_nickname')->db();
         if ($db->getOptions('where')) $query->whereRaw("uuid in {$db->field('id')->buildSql()}");
+
         // 代理搜索查询
-        $db = $this->_query(DataUser::class)->like('phone#from_phone,nickname#from_nickname')->db();
+        $db = DataUser::mQuery()->like('phone#from_phone,nickname#from_nickname')->db();
         if ($db->getOptions('where')) $query->whereRaw("puid1 in {$db->field('id')->buildSql()}");
+
         // 列表选项卡
         if (is_numeric($this->type = trim(input('type', 'ta'), 't'))) {
             $query->where(['status' => $this->type]);
         }
+
         // 分页排序处理
         $query->where(['deleted_status' => 0])->order('id desc')->page();
     }
@@ -102,7 +102,7 @@ class Order extends Controller
     public function audit()
     {
         if ($this->request->isGet()) {
-            $this->_form(ShopOrder::mk(), '', 'order_no');
+            ShopOrder::mForm('', 'order_no');
         } else {
             $data = $this->_vali([
                 'order_no.require' => '订单单号不能为空！',

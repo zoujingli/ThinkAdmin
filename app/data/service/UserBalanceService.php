@@ -46,7 +46,6 @@ class UserBalanceService extends Service
      * @param int $uuid 用户UID
      * @param array $nots 排除的订单
      * @return array [total, count]
-     * @throws \think\db\exception\DbException
      */
     public function amount(int $uuid, array $nots = []): array
     {
@@ -64,5 +63,4 @@ class UserBalanceService extends Service
         }
         return [$total, $count];
     }
-
 }

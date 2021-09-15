@@ -2,7 +2,10 @@
 
 namespace app\data\controller\shop;
 
+use app\data\model\BaseUserDiscount;
+use app\data\model\BaseUserPayment;
 use app\data\model\ShopGoods;
+use app\data\model\ShopGoodsItem;
 use app\data\model\ShopGoodsStock;
 use app\data\service\ExpressService;
 use app\data\service\GoodsService;
@@ -34,12 +37,14 @@ class Goods extends Controller
     public function index()
     {
         $this->title = '商品数据管理';
-        $query = $this->_query(ShopGoods::class);
+
+        $query = ShopGoods::mQuery();
         // 加载对应数据
         $this->type = $this->request->get('type', 'index');
         if ($this->type === 'index') $query->where(['deleted' => 0]);
         elseif ($this->type === 'recycle') $query->where(['deleted' => 1]);
         else $this->error("无法加载 {$this->type} 数据列表！");
+
         // 列表排序并显示
         $query->like('code,name')->like('marks,cateids', ',');
         $query->equal('status,vip_entry,truck_type,rebate_type')->order('sort desc,id desc')->page();
@@ -54,7 +59,7 @@ class Goods extends Controller
      */
     public function select()
     {
-        $query = $this->_query(ShopGoods::mk());
+        $query = ShopGoods::mQuery();
         $query->equal('status')->like('code,name,marks')->in('cateids');
         $query->where(['deleted' => 0])->order('sort desc,id desc')->page();
     }
@@ -84,7 +89,7 @@ class Goods extends Controller
     {
         $this->mode = 'add';
         $this->title = '添加商品数据';
-        $this->_form(ShopGoods::mk(), 'form', 'code');
+        ShopGoods::mForm('form', 'code');
     }
 
     /**
@@ -98,7 +103,7 @@ class Goods extends Controller
     {
         $this->mode = 'edit';
         $this->title = '编辑商品数据';
-        $this->_form(ShopGoods::mk(), 'form', 'code');
+        ShopGoods::mForm('form', 'code');
     }
 
     /**
@@ -112,7 +117,7 @@ class Goods extends Controller
     {
         $this->mode = 'copy';
         $this->title = '复制编辑商品';
-        $this->_form(ShopGoods::mk(), 'form', 'code');
+        ShopGoods::mForm('form', 'code');
     }
 
     /**
@@ -147,11 +152,11 @@ class Goods extends Controller
             $this->cates = GoodsService::instance()->getCateData();
             $this->trucks = ExpressService::instance()->templates();
             $this->upgrades = UserUpgradeService::instance()->levels();
-            $this->payments = $this->app->db->name('BaseUserPayment')->where(['status' => 1, 'deleted' => 0])->order('sort desc,id desc')->column('type,code,name', 'code');
-            $this->discounts = $this->app->db->name('BaseUserDiscount')->where(['status' => 1, 'deleted' => 0])->order('sort desc,id desc')->column('id,name,items', 'id');
+            $this->payments = BaseUserPayment::mk()->where(['status' => 1, 'deleted' => 0])->order('sort desc,id desc')->column('type,code,name', 'code');
+            $this->discounts = BaseUserDiscount::mk()->where(['status' => 1, 'deleted' => 0])->order('sort desc,id desc')->column('id,name,items', 'id');
             // 商品规格处理
             $fields = 'goods_sku `sku`,goods_code,goods_spec `key`,price_selling `selling`,price_market `market`,number_virtual `virtual`,number_express `express`,reward_balance `balance`,reward_integral `integral`,status';
-            $data['data_items'] = json_encode($this->app->db->name('ShopGoodsItem')->where(['goods_code' => $data['code']])->column($fields, 'goods_spec'), JSON_UNESCAPED_UNICODE);
+            $data['data_items'] = json_encode(ShopGoodsItem::mk()->where(['goods_code' => $data['code']])->column($fields, 'goods_spec'), JSON_UNESCAPED_UNICODE);
         } elseif ($this->request->isPost()) {
             if (empty($data['cover'])) $this->error('商品图片不能为空！');
             if (empty($data['slider'])) $this->error('轮播图片不能为空！');
@@ -167,8 +172,8 @@ class Goods extends Controller
             if (empty($count)) $this->error('无效的的商品价格信息！');
             $data['marks'] = arr2str($data['marks'] ?? []);
             $data['payment'] = arr2str($data['payment'] ?? []);
-            $this->app->db->name('ShopGoodsItem')->where(['goods_code' => $data['code']])->update(['status' => 0]);
-            foreach ($items as $item) data_save('ShopGoodsItem', [
+            ShopGoodsItem::mk()->where(['goods_code' => $data['code']])->update(['status' => 0]);
+            foreach ($items as $item) data_save(ShopGoodsItem::class, [
                 'goods_sku'       => $item['sku'],
                 'goods_spec'      => $item['key'],
                 'goods_code'      => $data['code'],
@@ -243,7 +248,7 @@ class Goods extends Controller
      */
     public function state()
     {
-        $this->_save(ShopGoods::mk(), $this->_vali([
+        ShopGoods::mSave($this->_vali([
             'status.in:0,1'  => '状态值范围异常！',
             'status.require' => '状态值不能为空！',
         ]), 'code');
@@ -256,10 +261,9 @@ class Goods extends Controller
      */
     public function remove()
     {
-        $this->_save(ShopGoods::mk(), $this->_vali([
+        ShopGoods::mSave($this->_vali([
             'deleted.in:0,1'  => '状态值范围异常！',
             'deleted.require' => '状态值不能为空！',
         ]), 'code');
     }
-
 }

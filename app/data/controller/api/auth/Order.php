@@ -45,7 +45,7 @@ class Order extends Auth
     public function get()
     {
         $map = ['uuid' => $this->uuid, 'deleted_status' => 0];
-        $query = $this->_query(ShopOrder::class)->in('status')->equal('order_no');
+        $query = ShopOrder::mQuery()->in('status')->equal('order_no');
         $result = $query->where($map)->order('id desc')->page(true, false, false, 20);
         if (count($result['list']) > 0) OrderService::instance()->buildData($result['list']);
         $this->success('获取订单数据成功！', $result);

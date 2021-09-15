@@ -39,15 +39,19 @@ class Admin extends Controller
 
         // 设置页面标题
         $this->title = '普通用户管理';
+
         // 创建查询对象
-        $query = $this->_query(DataUser::class)->order('id desc');
+        $query = DataUser::mQuery()->order('id desc');
+
         // 数据筛选选项
         $this->type = ltrim(input('type', 'ta'), 't');
         if (is_numeric($this->type)) $query->where(['vip_code' => $this->type]);
         elseif ($this->type === 'o') $query->whereNotIn('vip_code', array_keys($ls));
+
         // 用户搜索查询
-        $db = $this->_query(DataUser::class)->equal('vip_code#from_vipcode')->like('phone#from_phone,username|nickname#from_username')->db();
+        $db = DataUser::mQuery()->equal('vip_code#from_vipcode')->like('phone#from_phone,username|nickname#from_username')->db();
         if ($db->getOptions('where')) $query->whereRaw("pid1 in {$db->field('id')->buildSql()}");
+
         // 数据查询分页
         $query->like('phone,username|nickname#username')->equal('status,vip_code')->dateBetween('create_at')->page();
     }
@@ -74,7 +78,7 @@ class Admin extends Controller
     {
         $this->title = '用户团队关系';
         $map = ['pid1' => input('from', 0)];
-        $this->_query(DataUser::class)->where($map)->page(false);
+        DataUser::mQuery()->where($map)->page(false);
     }
 
     /**
@@ -118,9 +122,7 @@ class Admin extends Controller
         $user = DataUser::mk()->where($map)->find();
         if (empty($user)) $this->error('用户不符合操作要求！');
         // 修改指定用户代理数据
-        DataUser::mk()->where(['id' => $user['id']])->update([
-            'pid0' => 0, 'pid1' => 0, 'pid2' => 0, 'pids' => 1, 'path' => '-', 'layer' => 1,
-        ]);
+        $user->save(['pid0' => 0, 'pid1' => 0, 'pid2' => 0, 'pids' => 1, 'path' => '-', 'layer' => 1]);
         // 刷新用户等级及上级等级
         UserUpgradeService::instance()->upgrade($user['id'], true);
         sysoplog('前端用户管理', "设置用户[{$map['id']}]为总部用户");
@@ -139,13 +141,16 @@ class Admin extends Controller
         if ($this->request->isGet()) {
             $this->upgrades = UserUpgradeService::instance()->levels();
             $data = $this->_vali(['uuid.require' => '待操作UID不能为空！']);
+
             // 排除下级用户
             $path = DataUser::mk()->where(['id' => $data['uuid']])->value('path', '-');
             $subids = DataUser::mk()->whereLike('path', "{$path}{$data['uuid']}-%")->column('id');
-            $query = $this->_query(DataUser::class)->order('id desc')->whereNotIn('id', array_merge($subids, array_values($data)));
+            $query = DataUser::mQuery()->order('id desc')->whereNotIn('id', array_merge($subids, array_values($data)));
+
             // 用户搜索查询
-            $db = $this->_query(DataUser::class)->equal('vip_code#from_vipcode')->like('phone#from_phone,username|nickname#from_username')->db();
+            $db = DataUser::mQuery()->equal('vip_code#from_vipcode')->like('phone#from_phone,username|nickname#from_username')->db();
             if ($db->getOptions('where')) $query->whereRaw("pid1 in {$db->field('id')->buildSql()}");
+
             // 数据查询分页
             $query->like('phone,username|nickname#username')->whereRaw('vip_code>0')->equal('status,vip_code')->dateBetween('create_at')->page();
         } else {
@@ -172,7 +177,7 @@ class Admin extends Controller
      */
     public function state()
     {
-        $this->_save(DataUser::class, $this->_vali([
+        DataUser::mSave($this->_vali([
             'status.in:0,1'  => '状态值范围异常！',
             'status.require' => '状态值不能为空！',
         ]));

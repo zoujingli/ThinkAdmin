@@ -2,6 +2,7 @@
 
 namespace app\data\controller\base;
 
+use app\data\model\BaseUserPayment;
 use app\data\service\PaymentService;
 use app\data\service\UserAdminService;
 use think\admin\Controller;
@@ -37,7 +38,7 @@ class Payment extends Controller
     public function index()
     {
         $this->title = '支付通道管理';
-        $query = $this->_query($this->table);
+        $query = BaseUserPayment::mQuery();
         $query->where(['deleted' => 0])->order('sort desc,id desc');
         $query->like('name,code')->equal('type,status')->dateBetween('create_at')->page();
     }
@@ -52,7 +53,7 @@ class Payment extends Controller
     public function add()
     {
         $this->title = '添加支付通道';
-        $this->_form($this->table, 'form');
+        BaseUserPayment::mForm('form');
     }
 
     /**
@@ -65,7 +66,7 @@ class Payment extends Controller
     public function edit()
     {
         $this->title = '编辑支付通道';
-        $this->_form($this->table, 'form');
+        BaseUserPayment::mForm('form');
     }
 
     /**
@@ -113,7 +114,7 @@ class Payment extends Controller
      */
     public function state()
     {
-        $this->_save($this->table, $this->_vali([
+        BaseUserPayment::mSave($this->_vali([
             'status.in:0,1'  => '状态值范围异常！',
             'status.require' => '状态值不能为空！',
         ]));
@@ -126,7 +127,6 @@ class Payment extends Controller
      */
     public function remove()
     {
-        $this->_delete($this->table);
+        BaseUserPayment::mDelete();
     }
-
 }

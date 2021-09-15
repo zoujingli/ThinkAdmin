@@ -24,7 +24,7 @@ class Rebate extends Auth
     {
         $date = trim(input('date', date('Y-m')), '-');
         [$map, $year] = [['uuid' => $this->uuid], substr($date, 0, 4)];
-        $query = $this->_query('DataUserRebate')->where($map)->equal('type,status')->whereLike('date', "{$date}%");
+        $query = DataUserRebate::mQuery()->where($map)->equal('type,status')->whereLike('date', "{$date}%");
         $this->success('获取返利统计', array_merge($query->order('id desc')->page(true, false, false, 10), [
             'total' => [
                 '年度' => $this->_query('DataUserRebate')->where($map)->equal('type,status')->whereLike('date', "{$year}%")->db()->sum('amount'),

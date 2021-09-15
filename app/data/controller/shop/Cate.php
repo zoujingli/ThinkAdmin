@@ -24,7 +24,7 @@ class Cate extends Controller
     public function index()
     {
         $this->title = "商品分类管理";
-        $query = $this->_query(ShopGoodsCate::class)->like('name')->dateBetween('create_at');
+        $query = ShopGoodsCate::mQuery()->like('name')->dateBetween('create_at');
         $query->equal('status')->where(['deleted' => 0])->order('sort desc,id desc')->page(false);
     }
 
@@ -49,7 +49,7 @@ class Cate extends Controller
      */
     public function add()
     {
-        $this->_form(ShopGoodsCate::mk(), 'form');
+        ShopGoodsCate::mForm('form');
     }
 
     /**
@@ -61,7 +61,7 @@ class Cate extends Controller
      */
     public function edit()
     {
-        $this->_form(ShopGoodsCate::class, 'form');
+        ShopGoodsCate::mForm('form');
     }
 
     /**
@@ -91,7 +91,7 @@ class Cate extends Controller
      */
     public function state()
     {
-        $this->_save(ShopGoodsCate::mk(), $this->_vali([
+        ShopGoodsCate::mSave($this->_vali([
             'status.in:0,1'  => '状态值范围异常！',
             'status.require' => '状态值不能为空！',
         ]));
@@ -104,6 +104,6 @@ class Cate extends Controller
      */
     public function remove()
     {
-        $this->_delete(ShopGoodsCate::mk());
+        ShopGoodsCate::mDelete();
     }
 }

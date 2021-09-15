@@ -43,8 +43,8 @@ class News extends Auth
      */
     public function getComment()
     {
-        $query = $this->_query(DataNewsXCollect::class)->where(['uuid' => $this->uuid, 'type' => 4]);
-        $result = $query->whereIn('status', [1, 2])->order('id desc')->page(true, false, false, 15);
+        $query = DataNewsXCollect::mQuery()->where(['uuid' => $this->uuid, 'type' => 4]);
+        $result = $query->whereIn('status', [1, 2])->order('id desc')->page(true, false);
         NewsService::instance()->buildListByUidAndCode($result);
         $this->success('获取评论列表成功', $result);
     }
@@ -118,7 +118,7 @@ class News extends Auth
     public function getCollect()
     {
         $map = ['uuid' => $this->uuid, 'type' => 1];
-        $query = $this->_query('DataNewsXCollect')->where($map);
+        $query = DataNewsXCollect::mQuery()->where($map);
         $result = $query->order('id desc')->page(true, false, false, 15);
         NewsService::instance()->buildListByUidAndCode($result['list']);
         $this->success('获取收藏记录成功！', $result);
@@ -174,7 +174,7 @@ class News extends Auth
      */
     public function getLike()
     {
-        $query = $this->_query(DataNewsXCollect::class);
+        $query = DataNewsXCollect::mQuery();
         $query->where(['uuid' => $this->uuid, 'type' => 2, 'status' => 2]);
         $result = $query->order('id desc')->page(true, false, false, 15);
         NewsService::instance()->buildListByUidAndCode($result['list']);
@@ -206,7 +206,7 @@ class News extends Auth
      */
     public function getHistory()
     {
-        $query = $this->_query(DataNewsXCollect::class);
+        $query = DataNewsXCollect::mQuery();
         $query->where(['uuid' => $this->uuid, 'type' => 3, 'status' => 2]);
         $result = $query->order('id desc')->page(true, false, false, 15);
         NewsService::instance()->buildListByUidAndCode($result['list']);

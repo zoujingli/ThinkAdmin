@@ -92,5 +92,4 @@ abstract class Auth extends Controller
             $this->error('账户已被冻结！');
         }
     }
-
 }

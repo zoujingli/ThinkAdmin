@@ -24,7 +24,7 @@ class Message extends Controller
     public function index()
     {
         $this->title = '短信发送管理';
-        $query = $this->_query(DataUserMessage::mk());
+        $query = DataUserMessage::mQuery();
         $query->equal('status')->like('phone,content');
         $query->dateBetween('create_at')->order('id desc')->page();
     }
@@ -57,7 +57,6 @@ class Message extends Controller
      */
     public function remove()
     {
-        $this->_delete(DataUserMessage::mk());
+        DataUserMessage::mDelete();
     }
-
 }
