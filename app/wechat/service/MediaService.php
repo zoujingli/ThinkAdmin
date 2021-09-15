@@ -52,7 +52,7 @@ class MediaService extends Service
         $query = WechatNewsArticle::mk();
         $query->whereIn('id', $data['articleids'])->orderField('id', $data['articleids']);
         $data['articles'] = $query->withoutField('create_by,create_at')->select()->toArray();
-        return $data;
+        return $data->toArray();
     }
 
     /**

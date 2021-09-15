@@ -100,5 +100,4 @@ if(typeof wx === 'object'){
 }
 EOF;
     }
-
 }
