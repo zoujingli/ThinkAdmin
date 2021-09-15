@@ -112,7 +112,7 @@ class Upload extends Controller
         $extension = strtolower($file->getOriginalExtension());
         $saveName = input('key') ?: Storage::name($file->getPathname(), $extension, '', 'md5_file');
         // 检查文件后缀是否被恶意修改
-        if (ltrim(strtolower(strrchr($saveName, '.')), '.') !== $extension) {
+        if (pathinfo(parse_url($saveName, PHP_URL_PATH), PATHINFO_EXTENSION) !== $extension) {
             $this->error('文件后缀异常，请重新上传文件！');
         }
         // 屏蔽禁止上传指定后缀的文件
