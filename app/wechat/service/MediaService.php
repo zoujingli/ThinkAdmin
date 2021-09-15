@@ -16,6 +16,7 @@
 
 namespace app\wechat\service;
 
+use app\wechat\model\WechatMedia;
 use app\wechat\model\WechatNews;
 use app\wechat\model\WechatNewsArticle;
 use think\admin\Service;
@@ -70,9 +71,9 @@ class MediaService extends Service
     public function upload(string $url, string $type = 'image', array $video = []): string
     {
         $map = ['md5' => md5($url), 'appid' => WechatService::instance()->getAppid()];
-        if (($mediaId = $this->app->db->name('WechatMedia')->where($map)->value('media_id'))) return $mediaId;
+        if (($mediaId = WechatMedia::mk()->where($map)->value('media_id'))) return $mediaId;
         $result = WechatService::WeChatMedia()->addMaterial(self::buildCurlFile($url), $type, $video);
-        data_save('WechatMedia', [
+        data_save(WechatMedia::class, [
             'local_url' => $url, 'md5' => $map['md5'], 'type' => $type, 'appid' => $map['appid'],
             'media_url' => $result['url'] ?? '', 'media_id' => $result['media_id'],
         ], 'type', $map);
