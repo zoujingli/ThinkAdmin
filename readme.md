@@ -102,7 +102,7 @@ ThinkAdmin 为 MIT 协议开源项目，安装使用或二次开发不受约束�
 
 * 增加`CORS`跨域规则配置，配置参数置放于`config/app.php`，需要更新`ThinkLibrary`。
 * 修复`layui.table`导致基于`ThinkPHP`模板输出自动转义`XSS`过滤机制失效，需要更新`ThinkLibrary`。
-* 修复在模板中使用`{:input(NAME)}`取值而产生的`XSS`问题，模板取值更换为`{$get.NAME|default='''}`取值。
+* 修复在模板中使用`{:input(NAME)}`取值而产生的`XSS`问题，模板取值更换为`{$get.NAME|default=''}`取值。
 
 ## 项目版本
 
