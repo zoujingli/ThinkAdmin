@@ -72,7 +72,6 @@ class News extends Controller
     /**
      * 添加微信图文
      * @auth true
-     * @throws \think\db\exception\DbException
      */
     public function add()
     {
