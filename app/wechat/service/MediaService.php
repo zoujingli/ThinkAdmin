@@ -71,7 +71,7 @@ class MediaService extends Service
     {
         $map = ['md5' => md5($url), 'appid' => WechatService::instance()->getAppid()];
         if (($mediaId = $this->app->db->name('WechatMedia')->where($map)->value('media_id'))) return $mediaId;
-        $result = WechatService::WeChatMedia()->addMaterial(self::_buildCurlFile($url), $type, $video);
+        $result = WechatService::WeChatMedia()->addMaterial(self::buildCurlFile($url), $type, $video);
         data_save('WechatMedia', [
             'local_url' => $url, 'md5' => $map['md5'], 'type' => $type, 'appid' => $map['appid'],
             'media_url' => $result['url'] ?? '', 'media_id' => $result['media_id'],
@@ -85,7 +85,7 @@ class MediaService extends Service
      * @return MyCurlFile
      * @throws \WeChat\Exceptions\LocalCacheException
      */
-    private function _buildCurlFile(string $local): MyCurlFile
+    private function buildCurlFile(string $local): MyCurlFile
     {
         if (file_exists($local)) {
             return new MyCurlFile($local);
