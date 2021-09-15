@@ -111,6 +111,8 @@ class Upload extends Controller
         $safeMode = $this->getSafe();
         $extension = strtolower($file->getOriginalExtension());
         $saveName = input('key') ?: Storage::name($file->getPathname(), $extension, '', 'md5_file');
+        // 检查文件名称是否合法
+        if (strpos($saveName, '../') !== false) $this->error('文件路径不能出现跳级操作！');
         // 检查文件后缀是否被恶意修改
         if (pathinfo(parse_url($saveName, PHP_URL_PATH), PATHINFO_EXTENSION) !== $extension) {
             $this->error('文件后缀异常，请重新上传文件！');
