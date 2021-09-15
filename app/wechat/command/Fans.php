@@ -16,6 +16,8 @@
 
 namespace app\wechat\command;
 
+use app\wechat\model\WechatFans;
+use app\wechat\model\WechatFansTags;
 use app\wechat\service\FansService;
 use app\wechat\service\WechatService;
 use think\admin\Command;
@@ -98,7 +100,6 @@ class Fans extends Command
      * @return string
      * @throws \WeChat\Exceptions\InvalidResponseException
      * @throws \WeChat\Exceptions\LocalCacheException
-     * @throws \think\db\exception\DbException
      */
     public function _black(string $next = '', int $done = 0): string
     {
@@ -108,7 +109,7 @@ class Fans extends Command
             foreach (array_chunk($result['data']['openid'], 100) as $chunk) {
                 $done += count($chunk);
                 $map = [['is_black', '=', 0], ['openid', 'in', $chunk]];
-                $this->app->db->name('WechatFans')->where($map)->update(['is_black' => 1]);
+                WechatFans::mk()->where($map)->update(['is_black' => 1]);
             }
             $next = $result['total'] > $done ? $result['next_openid'] : null;
         }
@@ -142,12 +143,11 @@ class Fans extends Command
                 $tag['appid'] = $appid;
                 $this->queue->message($count, ++$done, "-> {$tag['name']}");
             }
-            $this->app->db->name('WechatFansTags')->where(['appid' => $appid])->delete();
-            $this->app->db->name('WechatFansTags')->insertAll($list['tags']);
+            WechatFansTags::mk()->where(['appid' => $appid])->delete();
+            WechatFansTags::mk()->insertAll($list['tags']);
         }
         $this->output->comment($done > 0 ? '微信用户标签数据获取完成' : '未获取到微信用户标签数据');
         $this->output->newLine();
         return ", 获取到 {$done} 个标签";
     }
-
 }

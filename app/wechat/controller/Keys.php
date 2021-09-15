@@ -16,6 +16,7 @@
 
 namespace app\wechat\controller;
 
+use app\wechat\model\WechatKeys;
 use app\wechat\service\WechatService;
 use think\admin\Controller;
 use think\exception\HttpResponseException;
@@ -27,12 +28,6 @@ use think\exception\HttpResponseException;
  */
 class Keys extends Controller
 {
-    /**
-     * 绑定数据表
-     * @var string
-     */
-    private $table = 'WechatKeys';
-
     /**
      * 消息类型
      * @var array
@@ -64,7 +59,7 @@ class Keys extends Controller
         }
         // 数据列表分页处理
         $this->title = '回复规则管理';
-        $query = $this->_query($this->table)->whereNotIn('keys', ['subscribe', 'default']);
+        $query = WechatKeys::mQuery()->whereNotIn('keys', ['subscribe', 'default']);
         $query->equal('status')->like('keys,type')->dateBetween('create_at')->order('sort desc,id desc')->page();
     }
 
@@ -91,7 +86,7 @@ class Keys extends Controller
     {
         $this->_applyFormToken();
         $this->title = '添加回复规则';
-        $this->_form($this->table, 'form');
+        WechatKeys::mForm('form');
     }
 
     /**
@@ -105,7 +100,7 @@ class Keys extends Controller
     {
         $this->_applyFormToken();
         $this->title = '编辑回复规则';
-        $this->_form($this->table, 'form');
+        WechatKeys::mForm('form');
     }
 
     /**
@@ -116,7 +111,7 @@ class Keys extends Controller
     public function state()
     {
         $this->_applyFormToken();
-        $this->_save($this->table, $this->_vali([
+        WechatKeys::mSave($this->_vali([
             'status.in:0,1'  => '状态值范围异常！',
             'status.require' => '状态值不能为空！',
         ]));
@@ -130,7 +125,7 @@ class Keys extends Controller
     public function remove()
     {
         $this->_applyFormToken();
-        $this->_delete($this->table);
+        WechatKeys::mDelete();
     }
 
     /**
@@ -145,7 +140,7 @@ class Keys extends Controller
     {
         $this->_applyFormToken();
         $this->title = '编辑订阅回复规则';
-        $this->_form($this->table, 'form', 'keys', [], ['keys' => 'subscribe']);
+        WechatKeys::mForm('form', 'keys', [], ['keys' => 'subscribe']);
     }
 
     /**
@@ -160,7 +155,7 @@ class Keys extends Controller
     {
         $this->_applyFormToken();
         $this->title = '编辑默认回复规则';
-        $this->_form($this->table, 'form', 'keys', [], ['keys' => 'default']);
+        WechatKeys::mForm('form', 'keys', [], ['keys' => 'default']);
     }
 
     /**
@@ -171,7 +166,7 @@ class Keys extends Controller
     {
         if ($this->request->isPost()) {
             $map = [['keys', '=', $data['keys']], ['id', '<>', $data['id'] ?? 0]];
-            if ($this->app->db->name($this->table)->where($map)->count() > 0) {
+            if (WechatKeys::mk()->where($map)->count() > 0) {
                 $this->error('该关键字已经存在！');
             }
         } elseif ($this->request->isGet()) {

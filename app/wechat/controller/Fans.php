@@ -16,6 +16,7 @@
 
 namespace app\wechat\controller;
 
+use app\wechat\model\WechatFans;
 use app\wechat\service\WechatService;
 use think\admin\Controller;
 use think\admin\helper\QueryHelper;
@@ -29,12 +30,6 @@ use think\exception\HttpResponseException;
 class Fans extends Controller
 {
     /**
-     * 绑定数据表
-     * @var string
-     */
-    private $table = 'WechatFans';
-
-    /**
      * 微信用户管理
      * @auth true
      * @menu true
@@ -44,7 +39,7 @@ class Fans extends Controller
      */
     public function index()
     {
-        $this->_query($this->table)->layTable(function () {
+        WechatFans::mQuery()->layTable(function () {
             $this->title = '微信用户管理';
         }, function (QueryHelper $query) {
             $query->where(['appid' => WechatService::instance()->getAppid()]);
@@ -77,18 +72,18 @@ class Fans extends Controller
      */
     public function black()
     {
-        $data = $this->_vali([
-            'black.require'  => '操作类型不能为空！',
-            'openid.require' => '操作用户不能为空！',
-        ]);
         try {
+            $data = $this->_vali([
+                'black.require'  => '操作类型不能为空！',
+                'openid.require' => '操作用户不能为空！',
+            ]);
             foreach (array_chunk(str2arr($data['openid']), 20) as $openids) {
                 if ($data['black']) {
                     WechatService::WeChatUser()->batchBlackList($openids);
-                    $this->app->db->name('WechatFans')->whereIn('openid', $openids)->update(['is_black' => 1]);
+                    WechatFans::mk()->whereIn('openid', $openids)->update(['is_black' => 1]);
                 } else {
                     WechatService::WeChatUser()->batchUnblackList($openids);
-                    $this->app->db->name('WechatFans')->whereIn('openid', $openids)->update(['is_black' => 0]);
+                    WechatFans::mk()->whereIn('openid', $openids)->update(['is_black' => 0]);
                 }
             }
             if (empty($data['black'])) {
@@ -97,7 +92,7 @@ class Fans extends Controller
                 $this->success('拉入黑名单成功！');
             }
         } catch (HttpResponseException $exception) {
-            throw  $exception;
+            throw $exception;
         } catch (\Exception $exception) {
             $this->error("黑名单操作失败，请稍候再试！<br>{$exception->getMessage()}");
         }
@@ -110,7 +105,7 @@ class Fans extends Controller
      */
     public function remove()
     {
-        $this->_delete($this->table);
+        WechatFans::mDelete();
     }
 
     /**
@@ -120,8 +115,8 @@ class Fans extends Controller
     public function truncate()
     {
         try {
-            $this->_query('WechatFans')->empty();
-            $this->_query('WechatFansTags')->empty();
+            WechatFans::mQuery()->empty();
+            WechatFans::mQuery()->empty();
             $this->success('清空用户数据成功！');
         } catch (HttpResponseException $exception) {
             throw  $exception;

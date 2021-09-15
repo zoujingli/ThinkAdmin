@@ -16,6 +16,8 @@
 
 namespace app\wechat\controller;
 
+use app\wechat\model\WechatNews;
+use app\wechat\model\WechatNewsArticle;
 use app\wechat\service\MediaService;
 use think\admin\Controller;
 use think\admin\service\AdminService;
@@ -27,13 +29,6 @@ use think\admin\service\AdminService;
  */
 class News extends Controller
 {
-
-    /**
-     * 设置默认操作表
-     * @var string
-     */
-    private $table = 'WechatNews';
-
     /**
      * 微信图文管理
      * @auth true
@@ -45,7 +40,7 @@ class News extends Controller
     public function index()
     {
         $this->title = '微信图文列表';
-        $this->_query($this->table)->where(['is_deleted' => 0])->order('id desc')->page();
+        WechatNews::mQuery()->where(['is_deleted' => 0])->order('id desc')->page();
     }
 
     /**
@@ -89,7 +84,7 @@ class News extends Controller
                 'create_by'  => AdminService::instance()->getUserId(),
                 'article_id' => $this->_buildArticle($this->request->post('data', [])),
             ];
-            if ($this->app->db->name($this->table)->insert($update) !== false) {
+            if (WechatNews::mk()->insert($update) !== false) {
                 $this->success('图文添加成功！', 'javascript:history.back()');
             } else {
                 $this->error('图文添加失败，请稍候再试！');
@@ -118,7 +113,7 @@ class News extends Controller
         } else {
             $ids = $this->_buildArticle($this->request->post('data', []));
             [$map, $data] = [['id' => $this->id], ['article_id' => $ids]];
-            if ($this->app->db->name($this->table)->where($map)->update($data) !== false) {
+            if (WechatNews::mk()->where($map)->update($data) !== false) {
                 $this->success('更新成功！', 'javascript:history.back()');
             } else {
                 $this->error('更新失败，请稍候再试！');
@@ -133,32 +128,30 @@ class News extends Controller
      */
     public function remove()
     {
-        $this->_delete($this->table);
+        WechatNews::mDelete();
     }
 
     /**
      * 图文更新操作
      * @param array $data
-     * @param array $ids
      * @return string
-     * @throws \think\db\exception\DbException
      */
-    private function _buildArticle(array $data, array $ids = []): string
+    private function _buildArticle(array $data): string
     {
+        $ids = [];
         foreach ($data as $vo) {
             if (empty($vo['digest'])) {
                 $vo['digest'] = mb_substr(strip_tags(str_replace(["\s", '　'], '', $vo['content'])), 0, 120);
             }
             $vo['create_at'] = date('Y-m-d H:i:s');
             if (empty($vo['id'])) {
-                $result = $id = $this->app->db->name('WechatNewsArticle')->insertGetId($vo);
+                $result = $id = WechatNewsArticle::mk()->insertGetId($vo);
             } else {
                 $id = intval($vo['id']);
-                $result = $this->app->db->name('WechatNewsArticle')->where('id', $id)->update($vo);
+                $result = WechatNewsArticle::mk()->where('id', $id)->update($vo);
             }
             if ($result !== false) array_push($ids, $id);
         }
         return join(',', $ids);
     }
-
 }

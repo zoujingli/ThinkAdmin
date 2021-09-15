@@ -16,6 +16,7 @@
 
 namespace app\wechat\controller\api;
 
+use app\wechat\model\WechatNewsArticle;
 use app\wechat\service\MediaService;
 use think\admin\Controller;
 
@@ -51,10 +52,10 @@ class View extends Controller
     public function item($id = 0)
     {
         $map = ['id' => $id ?: input('id', 0)];
-        $this->app->db->name('WechatNewsArticle')->where($map)->update([
+        WechatNewsArticle::mk()->where($map)->update([
             'read_num' => $this->app->db->raw('read_num+1'),
         ]);
-        $this->info = $this->app->db->name('WechatNewsArticle')->where($map)->find();
+        $this->info = WechatNewsArticle::mk()->where($map)->find();
         $this->fetch();
     }
 

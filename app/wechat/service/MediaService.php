@@ -16,6 +16,8 @@
 
 namespace app\wechat\service;
 
+use app\wechat\model\WechatNews;
+use app\wechat\model\WechatNewsArticle;
 use think\admin\Service;
 use think\admin\Storage;
 use WeChat\Contracts\MyCurlFile;
@@ -40,14 +42,14 @@ class MediaService extends Service
     {
         // 文章主体数据
         $where = ['id' => $id, 'is_deleted' => 0];
-        $data = $this->app->db->name('WechatNews')->where($where)->where($map)->find();
+        $data = WechatNews::mk()->where($where)->where($map)->find();
         if (empty($data)) return [];
         // 文章内容编号
         $data['articles'] = [];
         $data['articleids'] = str2arr($data['article_id']);
         if (empty($data['articleids'])) return $data;
         // 文章内容集合
-        $query = $this->app->db->name('WechatNewsArticle');
+        $query = WechatNewsArticle::mk();
         $query->whereIn('id', $data['articleids'])->orderField('id', $data['articleids']);
         $data['articles'] = $query->withoutField('create_by,create_at')->select()->toArray();
         return $data;

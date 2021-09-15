@@ -165,5 +165,4 @@ class Menu extends Controller
                 return [];
         }
     }
-
 }

@@ -16,6 +16,7 @@
 
 namespace app\wechat\controller;
 
+use app\wechat\model\WechatAuto;
 use think\admin\Controller;
 use think\admin\extend\CodeExtend;
 
@@ -26,12 +27,6 @@ use think\admin\extend\CodeExtend;
  */
 class Auto extends Controller
 {
-    /**
-     * 绑定数据表
-     * @var string
-     */
-    private $table = 'WechatAuto';
-
     /**
      * 消息类型
      * @var array
@@ -53,7 +48,7 @@ class Auto extends Controller
     public function index()
     {
         $this->title = '关注自动回复';
-        $query = $this->_query($this->table)->like('code,type');
+        $query = WechatAuto::mQuery()->like('code,type');
         $query->equal('status')->dateBetween('create_at')->order('time asc')->page();
     }
 
@@ -78,7 +73,7 @@ class Auto extends Controller
     public function add()
     {
         $this->title = '添加自动回复';
-        $this->_form($this->table, 'form');
+        WechatAuto::mForm('form');
     }
 
     /**
@@ -91,7 +86,7 @@ class Auto extends Controller
     public function edit()
     {
         $this->title = '编辑自动回复';
-        $this->_form($this->table, 'form');
+        WechatAuto::mForm('form');
     }
 
     /**
@@ -129,7 +124,7 @@ class Auto extends Controller
      */
     public function state()
     {
-        $this->_save($this->table, $this->_vali([
+        WechatAuto::mSave($this->_vali([
             'status.in:0,1'  => '状态值范围异常！',
             'status.require' => '状态值不能为空！',
         ]));
@@ -142,6 +137,6 @@ class Auto extends Controller
      */
     public function remove()
     {
-        $this->_delete($this->table);
+        WechatAuto::mDelete();
     }
 }

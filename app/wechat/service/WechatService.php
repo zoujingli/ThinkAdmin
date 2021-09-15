@@ -213,7 +213,7 @@ class WechatService extends Service
      * @throws \think\db\exception\DbException
      * @throws \think\db\exception\ModelNotFoundException
      */
-    public function getWebOauthInfo(string $source, $isfull = 0, $redirect = true): array
+    public function getWebOauthInfo(string $source, int $isfull = 0, bool $redirect = true): array
     {
         $appid = $this->getAppid();
         $openid = $this->app->session->get("{$appid}_openid");

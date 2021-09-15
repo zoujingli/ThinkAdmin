@@ -16,6 +16,7 @@
 
 namespace app\wechat\service;
 
+use app\wechat\model\WechatAuto;
 use think\admin\Service;
 use think\admin\service\QueueService;
 
@@ -36,7 +37,7 @@ class AutoService extends Service
      */
     public function register(string $openid)
     {
-        foreach ($this->app->db->name('WechatAuto')->where(['status' => 1])->order('time asc')->cursor() as $vo) {
+        foreach (WechatAuto::mk()->where(['status' => 1])->order('time asc')->cursor() as $vo) {
             [$name, $time] = ["推送客服消息 {$vo['code']}#{$openid}", $this->parseTimeString($vo['time'])];
             QueueService::instance()->register($name, "xadmin:fansmsg {$openid} {$vo['code']}", $time, []);
         }

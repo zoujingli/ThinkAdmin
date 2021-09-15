@@ -16,6 +16,7 @@
 
 namespace app\wechat\service;
 
+use app\wechat\model\WechatFans;
 use think\admin\Service;
 
 /**
@@ -46,7 +47,7 @@ class FansService extends Service
         if ($appid !== '') $user['appid'] = $appid;
         unset($user['privilege'], $user['groupid']);
         $this->app->event->trigger('WechatFansUpdate', $user);
-        return !!data_save('WechatFans', $user, 'openid');
+        return !!data_save(WechatFans::class, $user, 'openid');
     }
 
     /**
@@ -59,7 +60,7 @@ class FansService extends Service
      */
     public function get(string $openid): array
     {
-        return $this->app->db->name('WechatFans')->where(['openid' => $openid])->find() ?: [];
+        $user = WechatFans::mk()->where(['openid' => $openid])->find();
+        return empty($user) ? [] : $user->toArray();
     }
-
 }

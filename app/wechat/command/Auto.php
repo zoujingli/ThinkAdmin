@@ -16,6 +16,7 @@
 
 namespace app\wechat\command;
 
+use app\wechat\model\WechatAuto;
 use app\wechat\service\MediaService;
 use app\wechat\service\WechatService;
 use think\admin\Command;
@@ -63,7 +64,7 @@ class Auto extends Command
 
         // 查询微信消息对象
         $map = ['code' => $code, 'status' => 1];
-        $data = $this->app->db->name('WechatAuto')->where($map)->find();
+        $data = WechatAuto::mk()->where($map)->find();
         if (empty($data)) $this->setQueueError("Message Data Query failed");
 
         // 发送微信客服消息
