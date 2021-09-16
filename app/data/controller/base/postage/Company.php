@@ -25,16 +25,17 @@ class Company extends Controller
     public function index()
     {
         $this->title = '快递公司管理';
-        $query = BasePostageCompany::mQuery();
 
         // 加载对应数据
-        $this->type = $this->request->get('type', 'index');
-        if ($this->type === 'index') $query->where(['status' => 1]);
-        elseif ($this->type === 'recycle') $query->where(['status' => 0]);
+        $map = ['deleted' => 0];
+        $this->type = input('get.type', 'index');
+        if ($this->type === 'index') $map['status'] = 1;
+        if ($this->type === 'recycle') $map['status'] = 0;
 
         // 列表显示分页
+        $query = BasePostageCompany::mQuery();
         $query->like('name,code')->equal('status')->dateBetween('craete_at');
-        $query->where(['deleted' => 0])->order('sort desc,id desc')->page();
+        $query->where($map)->order('sort desc,id desc')->page();
     }
 
     /**

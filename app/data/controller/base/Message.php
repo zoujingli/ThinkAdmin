@@ -13,12 +13,6 @@ use think\admin\Controller;
 class Message extends Controller
 {
     /**
-     * 绑定数据表
-     * @var string
-     */
-    private $table = 'BaseUserMessage';
-
-    /**
      * 系统通知管理
      * @auth true
      * @menu true

@@ -16,12 +16,6 @@ use think\admin\extend\CodeExtend;
 class Payment extends Controller
 {
     /**
-     * 绑定数据表
-     * @var string
-     */
-    private $table = 'BaseUserPayment';
-
-    /**
      * 支付通道类型
      * @var array
      */
