@@ -391,6 +391,7 @@ class RebateService extends Service
         $uuids = array_reverse(str2arr(trim($this->user['path'], '-'), '-'));
         $puids = DataUser::mk()->whereIn('id', $uuids)->orderField('id', $uuids)->where($map)->column('id');
         if (count($puids) < 2) return false;
+        return true;
     }
 
     /**
