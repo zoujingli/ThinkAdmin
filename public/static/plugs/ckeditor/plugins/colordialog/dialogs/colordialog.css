@@ -4,17 +4,17 @@
  */
 
 .cke_colordialog_colorcell {
-	width: 12px; /* All cells have equal width which depends on parent width (in this case table parent). Width works more like max-width. */
-	height: 14px;
-	padding: 1px; /* Padding is replaced by border for focused cells. Prevents 'jumping' when adding borders. */
+    width: 12px; /* All cells have equal width which depends on parent width (in this case table parent). Width works more like max-width. */
+    height: 14px;
+    padding: 1px; /* Padding is replaced by border for focused cells. Prevents 'jumping' when adding borders. */
 }
 
 .cke_colordialog_colorcell.cke_colordialog_focused_light,
 .cke_colordialog_colorcell.cke_colordialog_focused_dark {
-	padding: 0; /* Shrink cell to allow 1px border indicating focus. */
-	border: 1px dotted #000;
+    padding: 0; /* Shrink cell to allow 1px border indicating focus. */
+    border: 1px dotted #000;
 }
 
 .cke_colordialog_colorcell.cke_colordialog_focused_dark {
-	border-color: #FFF;
+    border-color: #FFF;
 }

@@ -1,28 +1,33 @@
 .cke_table-faked-selection-editor *::selection, table[data-cke-table-faked-selection-table] *::selection {
-	background: transparent;
+    background: transparent;
 }
 
 .cke_table-faked-selection {
-	background: darkgray !important;
-	color: black;
+    background: darkgray !important;
+    color: black;
 }
+
 .cke_table-faked-selection a {
-	color: black;
+    color: black;
 }
+
 .cke_editable:focus .cke_table-faked-selection {
-	/* We have to use !important here, as td might specify it's own background, thus table selection
-	would not be visible. */
-	background: #0076cb !important;
-	color: white;
+    /* We have to use !important here, as td might specify it's own background, thus table selection
+    would not be visible. */
+    background: #0076cb !important;
+    color: white;
 }
+
 .cke_editable:focus .cke_table-faked-selection a {
-	color: white;
+    color: white;
 }
+
 .cke_table-faked-selection::-moz-selection, .cke_table-faked-selection ::-moz-selection {
-	background: transparent;
+    background: transparent;
 }
+
 .cke_table-faked-selection::selection, .cke_table-faked-selection ::selection {
-	background: transparent;
+    background: transparent;
 }
 
 /* Change the cursor when selecting cells (#706).
@@ -32,5 +37,5 @@
  * https://bugs.webkit.org/show_bug.cgi?id=53341
  */
 table[data-cke-table-faked-selection-table] {
-	cursor: cell;
+    cursor: cell;
 }

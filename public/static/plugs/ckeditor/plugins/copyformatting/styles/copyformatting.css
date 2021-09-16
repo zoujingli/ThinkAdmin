@@ -4,7 +4,7 @@ For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
 */
 
 html.cke_copyformatting_active {
-	min-height: 100%;
+    min-height: 100%;
 }
 
 /* There is no cursor in CUR format for IE/Edge as that browser
@@ -14,12 +14,12 @@ html.cke_copyformatting_active {
 .cke_copyformatting_disabled,
 .cke_copyformatting_disabled a,
 .cke_copyformatting_disabled .cke_editable {
-	cursor: url(../cursors/cursor-disabled.svg) 12 1, auto;
+    cursor: url(../cursors/cursor-disabled.svg) 12 1, auto;
 }
 
 .cke_copyformatting_disabled .cke_top a,
 .cke_copyformatting_disabled .cke_bottom a {
-	cursor: default;
+    cursor: default;
 }
 
 /* Added `!important` rule as a fix for overriding the cursor by the Table Resize plugin.
@@ -31,15 +31,15 @@ html.cke_copyformatting_active {
 .cke_copyformatting_active table,
 .cke_copyformatting_active div[data-cke-temp],
 .cke_copyformatting_tableresize_cursor div[data-cke-temp] {
-	cursor: url(../cursors/cursor.svg) 12 1, auto !important;
+    cursor: url(../cursors/cursor.svg) 12 1, auto !important;
 }
 
 .cke_screen_reader_only {
-	position: absolute;
-	clip: rect(1px, 1px, 1px, 1px);
-	padding: 0;
-	border: 0;
-	height: 1px;
-	width: 1px;
-	overflow: hidden;
+    position: absolute;
+    clip: rect(1px, 1px, 1px, 1px);
+    padding: 0;
+    border: 0;
+    height: 1px;
+    width: 1px;
+    overflow: hidden;
 }
