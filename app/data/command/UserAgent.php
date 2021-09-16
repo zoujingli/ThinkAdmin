@@ -76,5 +76,4 @@ class UserAgent extends Command
             $this->setQueueMessage($total, $count, "完成更新下级用户[{$vo['id']}]代理绑定!", 1);
         }
     }
-
 }

@@ -212,5 +212,4 @@ class News extends Auth
         NewsService::instance()->buildListByUidAndCode($result['list']);
         $this->success('获取浏览历史成功！', $result);
     }
-
 }

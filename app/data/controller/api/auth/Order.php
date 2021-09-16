@@ -10,6 +10,7 @@ use app\data\model\ShopGoods;
 use app\data\model\ShopGoodsItem;
 use app\data\model\ShopOrder;
 use app\data\model\ShopOrderItem;
+use app\data\model\ShopOrderSend;
 use app\data\service\ExpressService;
 use app\data\service\GoodsService;
 use app\data\service\OrderService;
@@ -279,7 +280,7 @@ class Order extends Auth
         $express['address_area'] = $addr['area'];
         $express['address_content'] = $addr['address'];
 
-        data_save('ShopOrderSend', $express, 'order_no');
+        data_save(ShopOrderSend::class, $express, 'order_no');
         // 组装更新订单数据
         $update = ['status' => 2, 'amount_express' => $express['template_amount']];
         // 重新计算订单金额

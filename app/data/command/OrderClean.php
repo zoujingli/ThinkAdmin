@@ -46,15 +46,10 @@ class OrderClean extends Command
         try {
             $map = [['status', '<', 3], ['payment_status', '=', 0]];
             $map[] = ['create_at', '<', date('Y-m-d H:i:s', strtotime('-30 minutes'))];
-            [$total, $count] = [ShopOrder::mk()->where($map)->count(), 0];
-            ShopOrder::mk()->where($map)->select()->map(function (Model $item) use ($total, &$count) {
+            [$count, $total] = [0, ($result = ShopOrder::mk()->where($map)->select())->count()];
+            $result->map(function (Model $item) use ($total, &$count) {
                 $this->queue->message($total, ++$count, "开始取消未支付的订单 {$item['order_no']}");
-                $item->save([
-                    'status'          => 0,
-                    'cancel_status'   => 1,
-                    'cancel_datetime' => date('Y-m-d H:i:s'),
-                    'cancel_remark'   => '30分钟未完成支付已自动取消',
-                ]);
+                $item->save(['status' => 0, 'cancel_status' => 1, 'cancel_datetime' => date('Y-m-d H:i:s'), 'cancel_remark' => '自动取消30分钟未完成支付']);
                 OrderService::instance()->stock($item['order_no']);
                 $this->queue->message($total, $count, "完成取消未支付的订单 {$item['order_no']}", 1);
             });
@@ -72,8 +67,8 @@ class OrderClean extends Command
         try {
             $map = [['status', '=', 0], ['payment_status', '=', 0]];
             $map[] = ['create_at', '<', date('Y-m-d H:i:s', strtotime('-3 days'))];
-            [$total, $count] = [ShopOrder::mk()->where($map)->count(), 0];
-            ShopOrder::mk()->where($map)->select()->map(function (Model $item) use ($total, &$count) {
+            [$count, $total] = [0, ($result = ShopOrder::mk()->where($map)->select())->count()];
+            $result->map(function (Model $item) use ($total, &$count) {
                 $this->queue->message($total, ++$count, "开始清理已取消的订单 {$item['order_no']}");
                 ShopOrder::mk()->where(['order_no' => $item['order_no']])->delete();
                 ShopOrderItem::mk()->where(['order_no' => $item['order_no']])->delete();
