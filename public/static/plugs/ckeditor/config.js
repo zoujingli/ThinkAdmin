@@ -13,8 +13,8 @@ CKEDITOR.editorConfig = function (config) {
     config.removeButtons = 'Underline,Subscript,Superscript';
     config.removeDialogTabs = 'image:advanced;link:advanced';
     // 内容过滤
-    config.allowedContent = {$1: {elements: CKEDITOR.dtd, attributes: true, styles: true, classes: true}};
     config.disallowedContent = 'script; *[on*]';
+    config.allowedContent = {$1: {elements: CKEDITOR.dtd, attributes: true, styles: true, classes: true}};
     config.font_names = '微软雅黑/Microsoft YaHei;宋体/SimSun;新宋体/NSimSun;仿宋/FangSong;楷体/KaiTi;黑体/SimHei;' + config.font_names;
 };
 
