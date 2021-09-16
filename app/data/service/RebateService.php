@@ -164,51 +164,6 @@ class RebateService extends Service
         return true;
     }
 
-    /**
-     * 检查等级是否有奖励
-     * @param string $prize 奖励规则
-     * @param integer $level 用户等级
-     * @return boolean
-     */
-    private function checkPrizeStatus(string $prize, int $level): bool
-    {
-        $query = BaseUserUpgrade::mk()->where(['number' => $level]);
-        return $query->whereLike('rebate_rule', "%,{$prize},%")->count() > 0;
-    }
-
-    /**
-     * 获取奖励名称
-     * @param string $prize
-     * @return string
-     */
-    public function name(string $prize): string
-    {
-        return self::PRIZES[$prize]['name'] ?? $prize;
-    }
-
-    /**
-     * 写返利记录
-     * @param int $uuid
-     * @param array $map
-     * @param string $name
-     * @param float $amount
-     */
-    private function writeRabate(int $uuid, array $map, string $name, float $amount)
-    {
-        DataUserRebate::mk()->insert(array_merge($map, [
-            'uuid'         => $uuid,
-            'date'         => date('Y-m-d'),
-            'code'         => CodeExtend::uniqidDate(20, 'R'),
-            'name'         => $name,
-            'amount'       => $amount,
-            'status'       => $this->status,
-            'order_no'     => $this->order['order_no'],
-            'order_uuid'   => $this->order['uuid'],
-            'order_amount' => $this->order['amount_total'],
-        ]));
-        // 刷新用户返利统计
-        UserRebateService::instance()->amount($uuid);
-    }
 
     /**
      * 用户复购奖励
@@ -436,5 +391,51 @@ class RebateService extends Service
         $uuids = array_reverse(str2arr(trim($this->user['path'], '-'), '-'));
         $puids = DataUser::mk()->whereIn('id', $uuids)->orderField('id', $uuids)->where($map)->column('id');
         if (count($puids) < 2) return false;
+    }
+
+    /**
+     * 获取奖励名称
+     * @param string $prize
+     * @return string
+     */
+    public function name(string $prize): string
+    {
+        return self::PRIZES[$prize]['name'] ?? $prize;
+    }
+
+    /**
+     * 检查等级是否有奖励
+     * @param string $prize 奖励规则
+     * @param integer $level 用户等级
+     * @return boolean
+     */
+    private function checkPrizeStatus(string $prize, int $level): bool
+    {
+        $query = BaseUserUpgrade::mk()->where(['number' => $level]);
+        return $query->whereLike('rebate_rule', "%,{$prize},%")->count() > 0;
+    }
+
+    /**
+     * 写返利记录
+     * @param int $uuid
+     * @param array $map
+     * @param string $name
+     * @param float $amount
+     */
+    private function writeRabate(int $uuid, array $map, string $name, float $amount)
+    {
+        DataUserRebate::mk()->insert(array_merge($map, [
+            'uuid'         => $uuid,
+            'date'         => date('Y-m-d'),
+            'code'         => CodeExtend::uniqidDate(20, 'R'),
+            'name'         => $name,
+            'amount'       => $amount,
+            'status'       => $this->status,
+            'order_no'     => $this->order['order_no'],
+            'order_uuid'   => $this->order['uuid'],
+            'order_amount' => $this->order['amount_total'],
+        ]));
+        // 刷新用户返利统计
+        UserRebateService::instance()->amount($uuid);
     }
 }
