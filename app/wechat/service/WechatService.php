@@ -16,6 +16,7 @@
 
 namespace app\wechat\service;
 
+use think\admin\Exception;
 use think\admin\extend\JsonRpcClient;
 use think\admin\Service;
 use think\admin\storage\LocalStorage;
@@ -97,15 +98,16 @@ class WechatService extends Service
      */
     public static function __callStatic(string $name, array $arguments)
     {
-        [$type, $class, $classname] = static::parseName($name);
-        if ("{$type}{$class}" !== $name) {
-            throw new \think\admin\Exception("抱歉，实例 {$name} 不在符合规则！");
+        [$type, $base, $class] = static::parseName($name);
+        if ("{$type}{$base}" !== $name) {
+            throw new Exception("抱歉，实例 {$name} 不符合规则！");
         }
         if (sysconf('wechat.type') === 'api' || $type === 'WePay') {
-            if ($type === 'ThinkService') {
-                throw new \think\admin\Exception("抱歉，接口模式不能实例 {$classname} 对象！");
+            if (class_exists($class)) {
+                return new $class(static::instance()->getConfig());
+            } else {
+                throw new Exception("抱歉，接口模式无法实例 {$class} 对象！");
             }
-            return new $classname(static::instance()->getConfig());
         } else {
             [$appid, $appkey] = [sysconf('wechat.thr_appid'), sysconf('wechat.thr_appkey')];
             $data = ['class' => $name, 'appid' => $appid, 'time' => time(), 'nostr' => uniqid()];
@@ -125,8 +127,8 @@ class WechatService extends Service
     {
         foreach (['WeChat', 'WeMini', 'WeOpen', 'WePay', 'ThinkService'] as $type) {
             if (strpos($name, $type) === 0) {
-                [, $class] = explode($type, $name);
-                return [$type, $class, "\\{$type}\\{$class}"];
+                [, $base] = explode($type, $name);
+                return [$type, $base, "\\{$type}\\{$base}"];
             }
         }
         return ['-', '-', $name];
@@ -161,7 +163,7 @@ class WechatService extends Service
     {
         $type = strtolower(sysconf('wechat.type'));
         if (in_array($type, ['api', 'thr'])) return $type;
-        throw new \think\admin\Exception('请在后台配置微信对接授权模式');
+        throw new Exception('请在后台配置微信对接授权模式');
     }
 
     /**
@@ -246,7 +248,7 @@ class WechatService extends Service
             } elseif ((empty($isfull) && !empty($openid)) || (!empty($isfull) && !empty($openid) && !empty($userinfo))) {
                 return ['openid' => $openid, 'fansinfo' => $userinfo];
             } else {
-                throw new \think\admin\Exception('Query params [rcode] not find.');
+                throw new Exception('Query params [rcode] not find.');
             }
         } else {
             $result = static::ThinkServiceConfig()->oauth($this->app->session->getId(), $source, $isfull);
