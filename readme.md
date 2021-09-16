@@ -45,15 +45,15 @@ PHP 开发技术交流（ QQ 群 513350915）
 * 此版本的权限使用注解实现
 * 注释必须标准的块注释，如下案例
 * 其中`@auth true`表示访问需要权限验证
-* 其中`@menu true`显示在菜单编辑的节点可选项
+* 其中`@menu true`菜单编辑显示可选节点
 * 其中`@login true`需要强制登录才可访问
 
 ```php
 /**
 * 操作的名称
-* @auth true  # 表示需要验证权限
-* @menu true  # 在菜单编辑的节点可选项
-* @login true # 需要强制登录可访问 
+* @auth true  # 表示访问需要权限验证
+* @menu true  # 菜单编辑显示可选节点
+* @login true # 需要强制登录才可访问 
 */
 public function index(){
    // @todo
@@ -105,6 +105,7 @@ ThinkAdmin 为 MIT 协议开源项目，安装使用或二次开发不受约束�
 * 修复在模板中使用`{:input(NAME)}`取值而产生的`XSS`问题，模板取值更换为`{$get.NAME|default=''}`。
 * 修复`CKEDITOR`配置文件，禁用所有标签的`on`事件，阻止`xss`脚本注入，需要更新`ckeditor/config.js`。
 * 修复文件上传入口的后缀验证，读取真实文件后缀与配置对比，阻止不合法的文件上传并存储到本地服务器。
+* 修改`JsonRpc`接口异常处理机制，当服务端绑定`Exception`时，客户端将能收到`error`消息及异常数据。
 
 ## 项目版本
 
