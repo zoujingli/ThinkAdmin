@@ -172,8 +172,8 @@ class RebateService extends Service
      */
     private function checkPrizeStatus(string $prize, int $level): bool
     {
-        $model = BaseUserUpgrade::mk()->where(['number' => $level]);
-        return $model->whereLike('rebate_rule', "%,{$prize},%")->count() > 0;
+        $query = BaseUserUpgrade::mk()->where(['number' => $level]);
+        return $query->whereLike('rebate_rule', "%,{$prize},%")->count() > 0;
     }
 
     /**
