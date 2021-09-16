@@ -112,7 +112,7 @@ class WechatService extends Service
             [$appid, $appkey] = [sysconf('wechat.thr_appid'), sysconf('wechat.thr_appkey')];
             $data = ['class' => $name, 'appid' => $appid, 'time' => time(), 'nostr' => uniqid()];
             $data['sign'] = md5("{$data['class']}#{$appid}#{$appkey}#{$data['time']}#{$data['nostr']}");
-            // 创建远程连接，默认使用 JSON RPC 方式
+            // 创建远程连接，默认使用 JSON-RPC 方式调用接口
             $token = enbase64url(json_encode($data, JSON_UNESCAPED_UNICODE));
             return new JsonRpcClient("https://open.cuci.cc/service/api.client/jsonrpc?not_init_session=1&token={$token}");
         }
