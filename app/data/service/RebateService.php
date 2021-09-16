@@ -79,8 +79,6 @@ class RebateService extends Service
         $this->order = ShopOrder::mk()->where($map)->find();
         if (empty($this->order)) throw new Exception('订单不存在');
         if ($this->order['payment_type'] === 'balance') return;
-        // throw new Exception('余额支付不反利');
-        // 检查订单参与返利
         if ($this->order['amount_total'] <= 0) throw new Exception('订单金额为零');
         if ($this->order['rebate_amount'] <= 0) throw new Exception('订单返利为零');
         // 获取用户数据
@@ -89,14 +87,12 @@ class RebateService extends Service
         if (empty($this->user)) throw new Exception('用户不存在');
         // 获取直接代理数据
         if ($this->order['puid1'] > 0) {
-            $map = ['id' => $this->order['puid1']];
-            $this->from1 = DataUser::mk()->where($map)->find();
+            $this->from1 = DataUser::mk()->find($this->order['puid1']);
             if (empty($this->from1)) throw new Exception('直接代理不存在');
         }
         // 获取间接代理数据
         if ($this->order['puid2'] > 0) {
-            $map = ['id' => $this->order['puid2']];
-            $this->from2 = DataUser::mk()->where($map)->find();
+            $this->from2 = DataUser::mk()->find($this->order['puid2']);
             if (empty($this->from2)) throw new Exception('间接代理不存在');
         }
         // 批量发放配置奖励
@@ -355,9 +351,9 @@ class RebateService extends Service
     {
         $puids = array_reverse(str2arr($this->user['path'], '-'));
         if (empty($puids) || $this->order['amount_total'] <= 0) return false;
-        // 记录原始等级
+        // 记录用户原始等级
         $prevLevel = $this->user['vip_code'];
-        // 获取可以参与奖励的代理
+        // 获取参与奖励的代理
         $vips = BaseUserUpgrade::mk()->whereLike('rebate_rule', '%,' . self::PRIZE_06 . ',%')->column('number');
         foreach (DataUser::mk()->whereIn('vip_code', $vips)->whereIn('id', $puids)->orderField('id', $puids)->cursor() as $user) {
             if ($user['vip_code'] > $prevLevel) {
@@ -376,8 +372,8 @@ class RebateService extends Service
 
     /**
      * 计算两等级之间的管理奖差异
-     * @param integer $prevLevel
-     * @param integer $nextLevel
+     * @param integer $prevLevel 上个等级
+     * @param integer $nextLevel 下个等级
      * @return float
      * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\DbException
@@ -392,12 +388,10 @@ class RebateService extends Service
                 if ($state && $value > 0) $amount += $value;
             }
             return floatval($amount);
+        } elseif ($this->config("manage_state_vip_{$nextLevel}")) {
+            return floatval($this->config("manage_value_vip_{$nextLevel}"));
         } else {
-            if ($this->config("manage_state_vip_{$nextLevel}")) {
-                return floatval($this->config("manage_value_vip_{$nextLevel}"));
-            } else {
-                return floatval(0);
-            }
+            return floatval(0);
         }
     }
 
