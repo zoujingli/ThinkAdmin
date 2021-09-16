@@ -418,10 +418,10 @@ class RebateService extends Service
 
     /**
      * 写返利记录
-     * @param int $uuid
-     * @param array $map
-     * @param string $name
-     * @param float $amount
+     * @param int $uuid 奖励用户
+     * @param array $map 查询条件
+     * @param string $name 奖励名称
+     * @param float $amount 奖励金额
      */
     private function writeRabate(int $uuid, array $map, string $name, float $amount)
     {
