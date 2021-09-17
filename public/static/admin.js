@@ -401,7 +401,7 @@ $(function () {
             window.onhashchange = function () {
                 var hash = location.hash || '', node;
                 if (hash.length < 1) return $('[data-menu-node]:first').trigger('click');
-                if (/^#(https?:)?\/\//.test(hash)) return $.msg.tips('禁止访问外部链接！');
+                if (/^#(https?:)?(\/\/|\\\\)/.test(hash)) return $.msg.tips('禁止访问外部链接！');
                 // $.msg.page.show(),$.form.load(hash, {}, 'get', $.msg.page.hide, true),that.syncOpenStatus(2);
                 $.form.load(hash, {}, 'get', false, !$.msg.page.stat()), that.syncOpenStatus(2);
                 /*! 菜单选择切换 */
