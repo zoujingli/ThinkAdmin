@@ -169,7 +169,7 @@ class Keys extends Controller
             if (WechatKeys::mk()->where($map)->count() > 0) {
                 $this->error('该关键字已经存在！');
             }
-            $data['content'] = strip_tags($data['content'], '<a>');
+            $data['content'] = strip_tags($data['content'] ?? '', '<a>');
         } elseif ($this->request->isGet()) {
             $public = dirname($this->request->basefile(true));
             $this->defaultImage = "{$public}/static/theme/img/image.png";

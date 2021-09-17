@@ -101,6 +101,8 @@ class Auto extends Controller
         if ($this->request->isGet()) {
             $public = dirname($this->request->basefile(true));
             $this->defaultImage = "{$public}/static/theme/img/image.png";
+        } else {
+            $data['content'] = strip_tags($data['content'] ?? '', '<a>');
         }
     }
 
