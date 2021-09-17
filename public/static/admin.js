@@ -1005,7 +1005,7 @@ $(function () {
         var img = new Image(), that = this, layidx;
         img.referrerPolicy = 'no-referrer', img.style.maxWidth = '260px', img.style.maxHeight = '260px';
         img.src = this.dataset.tipsImage || this.dataset.lazySrc || this.src, img.onload = function () {
-            layidx = layer.tips(img.outerHTML, that, {time: 0, skin: 'layui-layer-image', anim: 5, scrollbar: false});
+            layidx = layer.tips(img.outerHTML, that, {time: 0, skin: 'layui-layer-image', anim: 5, isOutAnim: false, scrollbar: false});
             $(that).off('mouseleave').on('mouseleave', function () {
                 layui.layer.close(layidx);
             });
