@@ -278,8 +278,7 @@ class RebateService extends Service
                 foreach ($users as $user) if (isset($rules[$user['vip_code']]) && $user['vip_code'] > $tVip) {
                     $rule = $rules[$user['vip_code']];
                     if ($tRate > $rule['discount'] && $tRate < 100) {
-                        $map = ['uuid' => $user['id'], 'type' => self::PRIZE_05];
-                        $map['code'] = "{$this->order['order_no']}#{$item['id']}#{$tVip}.{$user['vip_code']}";
+                        $map = ['uuid' => $user['id'], 'type' => self::PRIZE_05, 'order_no' => $this->order['order_no']];
                         if (DataUserRebate::mk()->where($map)->count() < 1) {
                             $dRate = ($rate = $tRate - $rule['discount']) / 100;
                             $name = "等级差额奖励{$tVip}#{$user['vip_code']}商品原价{$item['total_selling']}元的{$rate}%";
@@ -313,7 +312,7 @@ class RebateService extends Service
         foreach (DataUser::mk()->whereIn('vip_code', $vips)->whereIn('id', $puids)->orderField('id', $puids)->cursor() as $user) {
             if ($user['vip_code'] > $prevLevel) {
                 if (($amount = $this->_prize06amount($prevLevel + 1, $user['vip_code'])) > 0.00) {
-                    $map = ['uuid' => $user['id'], 'type' => self::PRIZE_06, 'order_no' => $this->order['order_no'], 'order_uuid' => $this->order['uuid']];
+                    $map = ['uuid' => $user['id'], 'type' => self::PRIZE_06, 'order_no' => $this->order['order_no']];
                     if (DataUserRebate::mk()->where($map)->count() < 1) {
                         $name = "{$this->name(self::PRIZE_06)}，[ VIP{$prevLevel} > VIP{$user['vip_code']} ] 每单 {$amount} 元";
                         $this->writeRabate($user['id'], $map, $name, $amount);
@@ -363,11 +362,11 @@ class RebateService extends Service
         if ($this->order['order_no'] !== $this->user['vip_order']) return false;
         if (!$this->checkPrizeStatus(self::PRIZE_07, $this->from1['vip_code'])) return false;
         // 创建返利奖励记录
-        $key = "{$this->user['vip_code']}";
+        $vip = "{$this->user['vip_code']}";
         $map = ['type' => self::PRIZE_07, 'order_no' => $this->order['order_no'], 'order_uuid' => $this->order['uuid']];
-        if ($this->config("upgrade_state_vip_{$key}") && DataUserRebate::mk()->where($map)->count() < 1) {
-            $value = $this->config("upgrade_value_vip_{$key}");
-            if ($this->config("upgrade_type_vip_{$key}") == 1) {
+        if ($this->config("upgrade_state_vip_{$vip}") && DataUserRebate::mk()->where($map)->count() < 1) {
+            $value = $this->config("upgrade_value_vip_{$vip}");
+            if ($this->config("upgrade_type_vip_{$vip}") == 1) {
                 $val = floatval($value ?: '0.00');
                 $name = "{$this->name(self::PRIZE_07)}，每人 {$val} 元";
             } else {
@@ -391,6 +390,24 @@ class RebateService extends Service
         $uuids = array_reverse(str2arr(trim($this->user['path'], '-'), '-'));
         $puids = DataUser::mk()->whereIn('id', $uuids)->orderField('id', $uuids)->where($map)->column('id');
         if (count($puids) < 2) return false;
+
+        $this->app->db->transaction(function () use ($puids, $map) {
+            foreach ($puids as $key => $puid) {
+                // 最多两层
+                if (($layer = $key + 1) > 2) break;
+                // 检查重复
+                $map = ['uuid' => $puid, 'type' => self::PRIZE_08, 'order_no' => $this->order['order_no']];
+                if (DataUserRebate::mk()->where($map)->count() < 1) {
+                    // 返利比例
+                    $rate = $this->config("equal_value_vip_{$layer}_{$this->user['vip_code']}");
+                    // 返利金额
+                    $money = floatval($rate * $this->order['rebate_amount'] / 100);
+                    $name = "{$this->name(self::PRIZE_08)}, 返回订单的 {$rate}%";
+                    // 写入返利
+                    $this->writeRabate($puid, $map, $name, $money);
+                }
+            }
+        });
         return true;
     }
 
