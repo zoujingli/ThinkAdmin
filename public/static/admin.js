@@ -308,8 +308,8 @@ $(function () {
             }, load, tips);
         };
         /*! 打开 IFRAME 窗口 */
-        this.iframe = function (url, name, area, offset) {
-            return layer.open({title: name || '窗口', type: 2, area: area || ['800px', '580px'], offset: offset, fixed: true, maxmin: false, content: url});
+        this.iframe = function (url, name, area, offset, destroy) {
+            return layer.open({title: name || '窗口', type: 2, area: area || ['800px', '580px'], end: destroy || null, offset: offset, fixed: true, maxmin: false, content: url});
         };
         /*! 加载 HTML 到弹出层 */
         this.modal = function (url, data, name, call, load, tips, area, offset) {
@@ -689,11 +689,16 @@ $(function () {
             opt.loading = params.loading === true, opt.autoSort = params.autoSort === true, opt.cols = params.cols || [[]];
             // 默认动态设置页数, 动态设置最大高度
             if (opt.page === true) opt.page = {curr: layui.sessionData('pages')[opt.id] || 1}
-            if (opt.height === 'full') opt.height = $(window).height() - $(elem).removeClass('layui-hide').offset().top - 35;
+            if (opt.height === 'full') if ($(elem).parents('.iframe-pagination').size()) {
+                $(elem).parents('.iframe-pagination').addClass('not-footer');
+                opt.height = $(window).height() - $(elem).removeClass('layui-hide').offset().top - 20;
+            } else {
+                opt.height = $(window).height() - $(elem).removeClass('layui-hide').offset().top - 35;
+            }
             // 动态计算最大页数
             opt.done = function () {
                 layui.sessionData('pages', {key: elem.id, value: this.page.curr || 1}), (this.loading = true);
-                this.elem.next().find('[data-load],[data-queue],[data-action]').not('[data-table-id]').attr('data-table-id', elem.id);
+                this.elem.next().find('[data-load],[data-queue],[data-action],[data-iframe]').not('[data-table-id]').attr('data-table-id', elem.id);
             }, opt.parseData = function (res) {
                 var maxPage = Math.ceil(res.count / this.limit), curPage = layui.sessionData('pages')[opt.id] || 1;
                 if (curPage > maxPage && curPage > 1) this.elem.trigger('reload', {page: {curr: maxPage}});
@@ -956,10 +961,14 @@ $(function () {
     onEvent('click', '[data-iframe]', function () {
         var emap = this.dataset, data = {open_type: 'iframe'};
         if (emap.rule && (applyRuleValue(this, data)) === false) return false;
+        var name = emap.title || this.innerText || 'IFRAME 窗口';
+        var area = emap.area || [emap.width || '800px', emap.height || '580px'];
         var frame = emap.iframe + (emap.iframe.indexOf('?') > -1 ? '&' : '?') + $.param(data);
-        $(this).attr('data-index', $.form.iframe(frame, emap.title || this.innerText || '窗口', emap.area || [
-            emap.width || '800px', emap.height || '580px'
-        ], emap.offset || 'auto'));
+        $(this).attr('data-index', $.form.iframe(frame, name, area, emap.offset || 'auto', emap.tableId ? function () {
+            typeof emap.refresh !== 'undefined' && $('#' + emap.tableId).trigger('reload');
+        } : function () {
+            typeof emap.refresh !== 'undefined' && $.form.reload();
+        }));
     });
 
     /*! 注册 data-icon 事件行为 */
