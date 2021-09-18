@@ -16,9 +16,9 @@
 
 namespace app\admin\controller;
 
-use app\admin\model\SystemUser;
 use think\admin\Controller;
 use think\admin\extend\CodeExtend;
+use think\admin\model\SystemUser;
 use think\admin\service\AdminService;
 use think\admin\service\CaptchaService;
 use think\admin\service\SystemService;

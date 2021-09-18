@@ -16,9 +16,9 @@
 
 namespace app\admin\controller;
 
-use app\admin\model\SystemBase;
 use think\admin\Controller;
 use think\admin\helper\QueryHelper;
+use think\admin\model\SystemBase;
 
 /**
  * 数据字典管理
@@ -50,9 +50,6 @@ class Base extends Controller
     /**
      * 添加数据字典
      * @auth true
-     * @throws \think\db\exception\DataNotFoundException
-     * @throws \think\db\exception\DbException
-     * @throws \think\db\exception\ModelNotFoundException
      */
     public function add()
     {
@@ -62,9 +59,6 @@ class Base extends Controller
     /**
      * 编辑数据字典
      * @auth true
-     * @throws \think\db\exception\DataNotFoundException
-     * @throws \think\db\exception\DbException
-     * @throws \think\db\exception\ModelNotFoundException
      */
     public function edit()
     {
@@ -96,7 +90,6 @@ class Base extends Controller
     /**
      * 修改数据状态
      * @auth true
-     * @throws \think\db\exception\DbException
      */
     public function state()
     {
@@ -106,7 +99,6 @@ class Base extends Controller
     /**
      * 删除数据记录
      * @auth true
-     * @throws \think\db\exception\DbException
      */
     public function remove()
     {

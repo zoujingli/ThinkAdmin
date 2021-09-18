@@ -16,8 +16,8 @@
 
 namespace app\admin\controller;
 
-use app\admin\model\SystemUser;
 use think\admin\Controller;
+use think\admin\model\SystemUser;
 use think\admin\service\AdminService;
 use think\admin\service\MenuService;
 

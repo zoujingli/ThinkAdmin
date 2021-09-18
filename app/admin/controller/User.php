@@ -16,11 +16,11 @@
 
 namespace app\admin\controller;
 
-use app\admin\model\SystemAuth;
-use app\admin\model\SystemBase;
-use app\admin\model\SystemUser;
 use think\admin\Controller;
 use think\admin\helper\QueryHelper;
+use think\admin\model\SystemAuth;
+use think\admin\model\SystemBase;
+use think\admin\model\SystemUser;
 use think\admin\service\AdminService;
 use think\model\Relation;
 
@@ -70,9 +70,6 @@ class User extends Controller
     /**
      * 添加系统用户
      * @auth true
-     * @throws \think\db\exception\DataNotFoundException
-     * @throws \think\db\exception\DbException
-     * @throws \think\db\exception\ModelNotFoundException
      */
     public function add()
     {
@@ -82,9 +79,6 @@ class User extends Controller
     /**
      * 编辑系统用户
      * @auth true
-     * @throws \think\db\exception\DataNotFoundException
-     * @throws \think\db\exception\DbException
-     * @throws \think\db\exception\ModelNotFoundException
      */
     public function edit()
     {
@@ -103,7 +97,7 @@ class User extends Controller
         $this->_applyFormToken();
         if ($this->request->isGet()) {
             $this->verify = false;
-            $this->_form(SystemUser::class, 'pass');
+            SystemUser::mForm('pass');
         } else {
             $data = $this->_vali([
                 'id.require'                  => '用户ID不能为空！',
@@ -161,7 +155,6 @@ class User extends Controller
     /**
      * 修改用户状态
      * @auth true
-     * @throws \think\db\exception\DbException
      */
     public function state()
     {
@@ -175,7 +168,6 @@ class User extends Controller
     /**
      * 删除系统用户
      * @auth true
-     * @throws \think\db\exception\DbException
      */
     public function remove()
     {

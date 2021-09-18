@@ -2,7 +2,7 @@
 
 namespace app\data\controller\user;
 
-use app\admin\model\SystemUser;
+use think\admin\model\SystemUser;
 use app\data\model\DataUser;
 use app\data\model\DataUserBalance;
 use app\data\service\UserAdminService;

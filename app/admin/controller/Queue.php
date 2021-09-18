@@ -16,9 +16,10 @@
 
 namespace app\admin\controller;
 
-use app\admin\model\SystemQueue;
+use Exception;
 use think\admin\Controller;
 use think\admin\helper\QueryHelper;
+use think\admin\model\SystemQueue;
 use think\admin\service\AdminService;
 use think\admin\service\ProcessService;
 use think\admin\service\QueueService;
@@ -80,7 +81,7 @@ class Queue extends Controller
             $this->success('任务重置成功！', $queue->code);
         } catch (HttpResponseException $exception) {
             throw $exception;
-        } catch (\Exception $exception) {
+        } catch (Exception $exception) {
             $this->error($exception->getMessage());
         }
     }
@@ -97,7 +98,6 @@ class Queue extends Controller
     /**
      * 删除系统任务
      * @auth true
-     * @throws \think\db\exception\DbException
      */
     public function remove()
     {

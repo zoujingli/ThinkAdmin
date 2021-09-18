@@ -16,9 +16,9 @@
 
 namespace app\admin\controller;
 
-use app\admin\model\SystemMenu;
 use think\admin\Controller;
 use think\admin\extend\DataExtend;
+use think\admin\model\SystemMenu;
 use think\admin\service\AdminService;
 use think\admin\service\MenuService;
 use think\admin\service\NodeService;
@@ -75,9 +75,6 @@ class Menu extends Controller
     /**
      * 添加系统菜单
      * @auth true
-     * @throws \think\db\exception\DataNotFoundException
-     * @throws \think\db\exception\DbException
-     * @throws \think\db\exception\ModelNotFoundException
      */
     public function add()
     {
@@ -88,9 +85,6 @@ class Menu extends Controller
     /**
      * 编辑系统菜单
      * @auth true
-     * @throws \think\db\exception\DataNotFoundException
-     * @throws \think\db\exception\DbException
-     * @throws \think\db\exception\ModelNotFoundException
      */
     public function edit()
     {
@@ -134,7 +128,6 @@ class Menu extends Controller
     /**
      * 修改菜单状态
      * @auth true
-     * @throws \think\db\exception\DbException
      */
     public function state()
     {
@@ -148,7 +141,6 @@ class Menu extends Controller
     /**
      * 删除系统菜单
      * @auth true
-     * @throws \think\db\exception\DbException
      */
     public function remove()
     {
