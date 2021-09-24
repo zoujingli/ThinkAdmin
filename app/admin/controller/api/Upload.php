@@ -186,7 +186,7 @@ class Upload extends Controller
 
     /**
      * 获取本地文件对象
-     * @return UploadedFile
+     * @return UploadedFile|void
      */
     private function getFile(): UploadedFile
     {

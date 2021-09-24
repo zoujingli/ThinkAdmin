@@ -65,7 +65,7 @@ class Menu extends Controller
         // 菜单数据树数据变平化
         $data = DataExtend::arr2table($data);
         foreach ($data as &$vo) {
-            if ($vo['url'] !== '#' && !preg_match('#^https?://#', $vo['url'])) {
+            if ($vo['url'] !== '#' && !preg_match('/^(https?:)?(\/\/|\\\\)/i', $vo['url'])) {
                 $vo['url'] = trim(url($vo['url']) . ($vo['params'] ? "?{$vo['params']}" : ''), '\\/');
             }
             $vo['ids'] = join(',', DataExtend::getArrSubIds($data, $vo['id']));

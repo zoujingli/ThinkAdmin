@@ -69,7 +69,7 @@ class Config extends Controller
             }
             foreach ($this->request->post() as $name => $value) sysconf($name, $value);
             sysoplog('系统配置管理', "修改系统参数成功");
-            $this->success('修改系统参数成功！', sysuri("{$xpath}/index/index") . '#' . url("{$xpath}/config/index"));
+            $this->success('修改系统参数成功！', 'javascript:$.form.reload(true)');
         }
     }
 

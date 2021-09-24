@@ -49,17 +49,17 @@ class User extends Controller
             $this->bases = SystemBase::mk()->items('身份权限');
         }, function (QueryHelper $query) {
 
-            // 关联用户身份资料
-            $query->with(['userinfo' => function (Relation $relation) {
-                $relation->field('code,name,content');
-            }]);
-
             // 加载对应数据列表
             if ($this->type === 'index') {
                 $query->where(['is_deleted' => 0, 'status' => 1]);
             } elseif ($this->type = 'recycle') {
                 $query->where(['is_deleted' => 0, 'status' => 0]);
             }
+
+            // 关联用户身份资料
+            $query->with(['userinfo' => function (Relation $relation) {
+                $relation->field('code,name,content');
+            }]);
 
             // 数据列表搜索过滤
             $query->equal('status,usertype')->dateBetween('login_at,create_at');

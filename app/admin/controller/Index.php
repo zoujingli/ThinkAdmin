@@ -99,7 +99,7 @@ class Index extends Controller
         }
         if ($this->app->request->isGet()) {
             $this->verify = true;
-            $this->_form('SystemUser', 'admin@user/pass', 'id', [], ['id' => $id]);
+            SystemUser::mForm('admin@user/pass', 'id', [], ['id' => $id]);
         } else {
             $data = $this->_vali([
                 'password.require'            => '登录密码不能为空！',

@@ -97,14 +97,14 @@ class Runtime extends Controller
     public function config()
     {
         if (AdminService::instance()->isSuper()) try {
-            $this->app->db->transaction(function () {
-                [$tmpdata, $newdata] = [[], []];
-                foreach (SystemConfig::mk()->order('type,name asc')->cursor() as $item) {
-                    $tmpdata[$item['type']][$item['name']] = $item['value'];
-                }
-                foreach ($tmpdata as $type => $items) foreach ($items as $name => $value) {
-                    $newdata[] = ['type' => $type, 'name' => $name, 'value' => $value];
-                }
+            [$tmpdata, $newdata] = [[], []];
+            foreach (SystemConfig::mk()->order('type,name asc')->cursor() as $item) {
+                $tmpdata[$item['type']][$item['name']] = $item['value'];
+            }
+            foreach ($tmpdata as $type => $items) foreach ($items as $name => $value) {
+                $newdata[] = ['type' => $type, 'name' => $name, 'value' => $value];
+            }
+            $this->app->db->transaction(function () use ($newdata) {
                 SystemConfig::mQuery()->empty()->insertAll($newdata);
             });
             $this->app->cache->delete('SystemConfig');

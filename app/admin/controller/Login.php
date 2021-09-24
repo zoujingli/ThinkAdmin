@@ -46,7 +46,7 @@ class Login extends Controller
                 $this->title = '系统登录';
                 $this->captchaType = 'LoginCaptcha';
                 $this->captchaToken = CodeExtend::uniqidDate(18);
-                $this->devmode = SystemService::instance()->checkRunMode();
+                $this->developmentMode = SystemService::instance()->checkRunMode();
                 // 刷新当前后台域名
                 $host = "{$this->request->scheme()}://{$this->request->host()}";
                 if ($host !== sysconf('base.site_host')) sysconf('base.site_host', $host);
