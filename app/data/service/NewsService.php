@@ -18,7 +18,6 @@ class NewsService extends Service
      * 同步文章数据统计
      * @param string $code 文章编号
      * @param array $total 查询统计
-     * @throws \think\db\exception\DbException
      */
     public function syncNewsTotal(string $code, array $total = []): void
     {
@@ -26,7 +25,7 @@ class NewsService extends Service
         foreach ($query->where(['code' => $code, 'status' => 2])->group('type')->cursor() as $item) {
             $total[$item['type']] = $item['count'];
         }
-        $this->app->db->name('DataNewsItem')->where(['code' => $code])->update([
+        DataNewsItem::mk()->where(['code' => $code])->update([
             'num_like' => $total[1] ?? 0, 'num_collect' => $total[2] ?? 0, 'num_comment' => $total[4] ?? 0,
         ]);
     }
