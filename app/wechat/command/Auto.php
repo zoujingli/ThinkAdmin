@@ -68,7 +68,7 @@ class Auto extends Command
         if (empty($data)) $this->setQueueError("Message Data Query failed");
 
         // 发送微信客服消息
-        $this->buildMessage($data);
+        $this->buildMessage($data->toArray());
     }
 
     /**
