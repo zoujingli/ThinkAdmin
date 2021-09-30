@@ -1,5 +1,5 @@
 @charset "UTF-8";
-@import "console.config.less";
+@import "_config.less";
 
 // +----------------------------------------------------------------------
 // | ThinkAdmin
@@ -13,6 +13,71 @@
 // | gitee 代码仓库：https://gitee.com/zoujingli/ThinkAdmin
 // | github 代码仓库：https://github.com/zoujingli/ThinkAdmin
 // +----------------------------------------------------------------------
+
+.fixed {
+  position: fixed !important;
+}
+
+.absolute {
+  position: absolute !important
+}
+
+.relative {
+  position: relative !important
+}
+
+.headimg {
+  width: 35px;
+  height: 35px;
+  display: inline-block;
+  overflow: hidden;
+  text-align: center;
+  margin-right: 5px;
+  margin-bottom: 5px;
+  border-radius: 50%;
+  vertical-align: middle;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center center;
+
+  &-no {
+    border: none;
+    box-shadow: none;
+    border-radius: 0;
+  }
+
+  &-xs {
+    width: 28px;
+    height: 28px;
+  }
+
+  &-sm {
+    width: 38px;
+    height: 38px;
+  }
+
+  &-md {
+    width: 58px;
+    height: 58px;
+  }
+
+  &-lg {
+    width: 88px;
+    height: 88px;
+  }
+
+  > img {
+    width: 110%;
+    height: 110%;
+    max-width: 110%;
+    max-height: 110%;
+    margin: -5% 0 0 -5%;
+  }
+
+  & + * {
+    vertical-align: middle;
+  }
+}
 
 .notdata {
   padding: 15px;
@@ -48,18 +113,6 @@
   overflow: auto !important;
 }
 
-.fixed {
-  position: fixed !important;
-}
-
-.absolute {
-  position: absolute !important
-}
-
-.relative {
-  position: relative !important
-}
-
 .pointer {
   cursor: pointer !important
 }
@@ -84,17 +137,319 @@
   box-shadow: @ShadowMaxInset;
 }
 
+.block {
+  display: block !important
+}
+
 .help-block {
   color: #999;
   font-size: 12px
 }
 
-.block {
-  display: block !important
-}
-
 .inline-block {
   display: inline-block !important
+}
+
+/*! 搜索表单样式 */
+.form-search {
+  .layui-btn {
+    height: 32px;
+    padding: 0 10px;
+    font-size: 13px;
+    line-height: 32px;
+
+    .layui-icon {
+      font-size: 15px
+    }
+  }
+
+  .layui-form-item {
+    &:last-child {
+      border: none
+    }
+
+    white-space: nowrap;
+    margin-right: 8px;
+    border: 1px solid @InputBorderNormalColor;
+
+    .layui-form-label {
+      width: auto !important;
+      border: none;
+      height: 30px;
+      padding: 0 8px;
+      line-height: 32px;
+      border-right: 1px solid @InputBorderNormalColor;
+    }
+
+    .layui-input-inline {
+      width: 150px;
+      margin: 0 !important;
+      display: inline-block !important;
+
+      input, select {
+        width: 100%;
+        height: 30px;
+        padding: 0 8px;
+        line-height: 32px;
+        border-width: 0;
+      }
+    }
+
+    .layui-form-select {
+      dl {
+        top: 32px;
+        padding: 0;
+        border-width: 0;
+        box-shadow: @ShadowMaxOuter;
+        border-top-left-radius: 0;
+        border-top-right-radius: 0;
+      }
+    }
+  }
+}
+
+/* 表单验证异常提示 */
+.label-required {
+  &-prev:before {
+    color: red;
+    width: 0.5em;
+    content: '*';
+    margin: -2px 0 0 -0.55em;
+    display: inline-block;
+    position: absolute;
+    font-size: 14px;
+    text-align: left;
+    font-weight: bold;
+    line-height: 1.6em;
+  }
+
+  &:after, &-next:after {
+    top: 6px;
+    right: 5px;
+    color: red;
+    content: '*';
+    position: absolute;
+    margin-left: 4px;
+    font-weight: 700;
+    line-height: 1.8em
+  }
+
+  &-null:before {
+    content: none !important
+  }
+}
+
+/** 手机盒子及微信菜单 */
+.mobile-preview {
+  width: 317px;
+  height: 580px;
+  position: relative;
+  background: url(../img/wechat/mobile_head.png) no-repeat 0 0;
+  box-shadow: @ShadowMaxOuter;
+  border-radius: @BoxBorderRadius;
+
+  .mobile-header {
+    color: #fff;
+    width: auto;
+    margin: 0 30px;
+    overflow: hidden;
+    font-size: 15px;
+    padding-top: 30px;
+    text-align: center;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    word-wrap: normal;
+    user-select: none;
+    -moz-user-select: none;
+    -webkit-user-select: none;
+    pointer-events: none;
+    -webkit-pointer-events: none;
+  }
+
+  .mobile-body {
+    top: 60px;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    position: absolute;
+    background: #F5F5F5;
+    border-radius: 0 0 @BoxBorderRadius @BoxBorderRadius;
+
+    iframe {
+      width: 100%;
+      height: 100%;
+      border: none;
+    }
+  }
+
+  .mobile-footer {
+    left: 0;
+    right: 0;
+    bottom: 0;
+    position: absolute;
+    padding-left: 44px;
+    background: url(../img/wechat/mobile_foot.png) no-repeat 0 0;
+    border-radius: 0 0 @BoxBorderRadius @BoxBorderRadius;
+
+    li {
+      float: left;
+      width: 33.33%;
+      position: relative;
+      text-align: center;
+      line-height: 50px;
+
+      a {
+        width: auto;
+        color: #616161;
+        display: block;
+        overflow: hidden;
+        word-wrap: normal;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        text-decoration: none;
+
+        &:after {
+          top: 0;
+          left: 0;
+          right: 0;
+          bottom: 0;
+          border: 1px solid rgb(208, 208, 208);
+          margin: 0 0 0 -1px;
+          z-index: 10;
+          content: '';
+          display: block;
+          position: absolute;
+        }
+
+        &.active:after {
+          border: 1px solid #44b549;
+          box-shadow: 0 0 1px #44b549;
+          z-index: 11;
+        }
+
+        &:hover {
+          background: rgba(0, 0, 0, .02)
+        }
+      }
+
+      > .close {
+        top: 1px;
+        right: 1px;
+        width: 18px;
+        height: 18px;
+        display: none;
+        cursor: pointer;
+        position: absolute;
+        z-index: 13;
+        text-align: center;
+        line-height: 18px;
+      }
+
+      &:hover > .close {
+        display: inline-block;
+        background: none !important;
+
+        &:hover {
+          color: #C33 !important;
+        }
+      }
+    }
+
+    .icon {
+      &-add, &-sub {
+        display: inline-block;
+        vertical-align: middle;
+
+        &::before {
+          content: none;
+        }
+      }
+
+      &-add {
+        width: 14px;
+        height: 14px;
+        background: url(../img/wechat/index.png) 0 0 no-repeat
+      }
+
+      &-sub {
+        width: 7px;
+        height: 7px;
+        margin-right: 2px;
+        background: url(../img/wechat/index.png) 0 -3pc no-repeat
+      }
+    }
+
+    .sub-menu {
+      width: 100%;
+      bottom: 60px;
+      display: block;
+      position: absolute;
+      background-color: #fafafa;
+
+      ul li {
+        width: 100%;
+        padding: 0;
+
+        > .close {
+          top: 0;
+        }
+
+        a:after {
+          margin: -1px 0 0 0;
+        }
+      }
+    }
+
+    .arrow {
+      left: 50%;
+      position: absolute;
+      margin-left: -6px;
+    }
+
+    .arrow_in,
+    .arrow_out {
+      width: 0;
+      height: 0;
+      z-index: 10;
+      border: 6px dashed transparent;
+      display: inline-block;
+      border-top-style: solid;
+      border-bottom-width: 0;
+    }
+
+    .arrow_in {
+      bottom: -5px;
+      z-index: 11;
+      border-top-color: #fafafa
+    }
+
+    .arrow_out {
+      bottom: -6px;
+      z-index: 10;
+      border-top-color: #d0d0d0
+    }
+  }
+}
+
+/*! 重置 Iframe 页面样式 */
+.iframe-pagination {
+  padding: 20px;
+
+  &:not(.not-footer):after {
+    content: '';
+    height: 30px;
+    display: block;
+  }
+
+  .pagination-container {
+    left: 0;
+    right: 0;
+    bottom: 0;
+    padding: 5px 20px;
+    position: fixed;
+    background: #fff;
+    border-top: 1px solid #ddd;
+  }
 }
 
 @think-elips: {
@@ -161,6 +516,53 @@
   }
 }
 
+.think-page-loader {
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 9999999;
+  position: fixed;
+  text-align: center;
+  background-color: @LoadBackColor;
+
+  .loader {
+    top: 50%;
+    width: 50px;
+    height: 50px;
+    margin: -35px 0 0 -35px;
+    z-index: 999999;
+    display: inline-block;
+    position: fixed;
+    background-color: @LoadBackColor;
+  }
+
+  .loader:before {
+    top: 59px;
+    left: 0;
+    width: 50px;
+    height: 7px;
+    opacity: 0.1;
+    content: "";
+    position: absolute;
+    border-radius: 50%;
+    background-color: #000;
+    animation: shadow .5s linear infinite;
+  }
+
+  .loader:after {
+    top: 0;
+    left: 0;
+    width: 50px;
+    height: 50px;
+    content: "";
+    position: absolute;
+    border-radius: 3px;
+    background-color: #5FB878;
+    animation: loading .5s linear infinite;
+  }
+}
+
 .input-right-icon {
   top: 1px;
   right: 1px;
@@ -190,7 +592,6 @@
   background-position: center center;
 }
 
-/** 加载进度 */
 .pace-inactive {
   display: none
 }
@@ -362,7 +763,6 @@
   }
 }
 
-
 label.think-radio,
 label.think-checkbox {
   cursor: pointer;
@@ -441,7 +841,6 @@ label.think-checkbox {
   }
 }
 
-/* 通用分页 */
 .pagination-container {
   margin-top: 20px;
   line-height: 30px;
@@ -522,7 +921,6 @@ label.think-checkbox {
   }
 }
 
-/* 分隔线条 */
 .hr-line- {
   &dashed {
     color: #fff;
@@ -868,7 +1266,7 @@ label.think-checkbox {
     margin: 40px !important
   }
 
-  &-col {
+  &-row {
     &-0 {
       margin-left: 0 !important;
       margin-right: 0 !important;
@@ -907,48 +1305,6 @@ label.think-checkbox {
     &-40 {
       margin-left: 40px !important;
       margin-right: 40px !important;
-    }
-  }
-
-  &-row {
-    &-0 {
-      margin-top: 0 !important;
-      margin-bottom: 0 !important;
-    }
-
-    &-5 {
-      margin-top: 5px !important;
-      margin-bottom: 5px !important;
-    }
-
-    &-10 {
-      margin-top: 10px !important;
-      margin-bottom: 10px !important;
-    }
-
-    &-15 {
-      margin-top: 15px !important;
-      margin-bottom: 15px !important;
-    }
-
-    &-20 {
-      margin-top: 20px !important;
-      margin-bottom: 20px !important;
-    }
-
-    &-25 {
-      margin-top: 25px !important;
-      margin-bottom: 25px !important;
-    }
-
-    &-30 {
-      margin-top: 30px !important;
-      margin-bottom: 30px !important;
-    }
-
-    &-40 {
-      margin-top: 40px !important;
-      margin-bottom: 40px !important;
     }
   }
 
@@ -1122,7 +1478,7 @@ label.think-checkbox {
     padding: 40px !important
   }
 
-  &-col {
+  &-row {
     &-0 {
       padding-left: 0 !important;
       padding-right: 0 !important;
@@ -1161,48 +1517,6 @@ label.think-checkbox {
     &-40 {
       padding-left: 40px !important;
       padding-right: 40px !important;
-    }
-  }
-
-  &-row {
-    &-0 {
-      padding-top: 0 !important;
-      padding-bottom: 0 !important;
-    }
-
-    &-5 {
-      padding-top: 5px !important;
-      padding-bottom: 5px !important;
-    }
-
-    &-10 {
-      padding-top: 10px !important;
-      padding-bottom: 10px !important;
-    }
-
-    &-15 {
-      padding-top: 15px !important;
-      padding-bottom: 15px !important;
-    }
-
-    &-20 {
-      padding-top: 20px !important;
-      padding-bottom: 20px !important;
-    }
-
-    &-25 {
-      padding-top: 25px !important;
-      padding-bottom: 25px !important;
-    }
-
-    &-30 {
-      padding-top: 30px !important;
-      padding-bottom: 30px !important;
-    }
-
-    &-40 {
-      padding-top: 40px !important;
-      padding-bottom: 40px !important;
     }
   }
 
@@ -1324,5 +1638,63 @@ label.think-checkbox {
     &-40 {
       padding-bottom: 40px !important
     }
+  }
+}
+
+@keyframes loading {
+  17% {
+    border-bottom-right-radius: 3px;
+  }
+  25% {
+    transform: translateY(9px) rotate(22.5deg);
+  }
+  50% {
+    border-bottom-right-radius: 40px;
+    transform: translateY(18px) scale(1, 0.9) rotate(45deg);
+  }
+  75% {
+    transform: translateY(9px) rotate(67.5deg);
+  }
+  100% {
+    transform: translateY(0) rotate(90deg);
+  }
+}
+
+@-webkit-keyframes loading {
+  17% {
+    border-bottom-right-radius: 3px;
+  }
+  25% {
+    transform: translateY(9px) rotate(22.5deg);
+  }
+  50% {
+    transform: translateY(18px) scale(1, 0.9) rotate(45deg);
+    border-bottom-right-radius: 40px;
+  }
+  75% {
+    transform: translateY(9px) rotate(67.5deg);
+  }
+  100% {
+    transform: translateY(0) rotate(90deg);
+  }
+}
+
+@keyframes shadow {
+  0%,
+  100% {
+    transform: scale(1, 1);
+  }
+  50% {
+    transform: scale(1.2, 1);
+  }
+}
+
+@-webkit-keyframes shadow {
+  0%,
+  100% {
+    transform: scale(1, 1);
+  }
+  50% {
+    transform: scale(1.2, 1);
   }
 }

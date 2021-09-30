@@ -42,10 +42,10 @@ class Oplog extends Controller
     {
         SystemOplog::mQuery()->layTable(function () {
             $this->title = '系统日志管理';
-            $this->users = SystemOplog::mk()->distinct(true)->column('username');
-            $this->actions = SystemOplog::mk()->distinct(true)->column('action');
+            $columns = SystemOplog::mk()->column('username,action', 'id');
+            $this->users = array_unique(array_column($columns, 'username'));
+            $this->actions = array_unique(array_column($columns, 'action'));
         }, function (QueryHelper $query) {
-            // 数据列表处理
             $query->dateBetween('create_at')->equal('username,action')->like('content,geoip,node');
         });
     }
