@@ -39,7 +39,8 @@ class Index extends Controller
     public function index()
     {
         /*! 根据运行模式刷新权限 */
-        AdminService::instance()->apply($this->app->isDebug());
+        $debug = $this->app->isDebug();
+        AdminService::instance()->apply($debug);
         /*! 读取当前用户权限菜单树 */
         $this->menus = MenuService::instance()->getTree();
         /*! 判断当前用户的登录状态 */
@@ -58,15 +59,12 @@ class Index extends Controller
      * 修改用户资料
      * @login true
      * @param mixed $id 用户ID
-     * @throws \think\db\exception\DataNotFoundException
-     * @throws \think\db\exception\DbException
-     * @throws \think\db\exception\ModelNotFoundException
      */
     public function info($id = 0)
     {
         $this->_applyFormToken();
         if (AdminService::instance()->getUserId() === intval($id)) {
-            $this->_form('SystemUser', 'admin@user/form', 'id', [], ['id' => $id]);
+            SystemUser::mForm('admin@user/form', 'id', [], ['id' => $id]);
         } else {
             $this->error('只能修改自己的资料！');
         }
