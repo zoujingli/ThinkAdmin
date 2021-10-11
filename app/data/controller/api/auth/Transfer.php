@@ -86,7 +86,7 @@ class Transfer extends Auth
             $this->error("不能少于{$transfers[$data['type']]['minAmount']}元");
         }
         if ($transfers[$data['type']]['maxAmount'] < $data['amount']) {
-            $this->error("不能大于{$transfers[$data['type']]['minAmount']}元");
+            $this->error("不能大于{$transfers[$data['type']]['maxAmount']}元");
         }
         // 写入用户提现数据
         if (DataUserTransfer::mk()->insert($data) !== false) {
