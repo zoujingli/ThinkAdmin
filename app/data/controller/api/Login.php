@@ -108,5 +108,4 @@ class Login extends Controller
         [$state, $message, $data] = MessageService::instance()->sendVerifyCode($data['phone']);
         $state ? $this->success($message, $data) : $this->error($message, $data);
     }
-
 }

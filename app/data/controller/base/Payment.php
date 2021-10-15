@@ -40,9 +40,6 @@ class Payment extends Controller
     /**
      * 添加支付通道
      * @auth true
-     * @throws \think\db\exception\DataNotFoundException
-     * @throws \think\db\exception\DbException
-     * @throws \think\db\exception\ModelNotFoundException
      */
     public function add()
     {
@@ -53,9 +50,6 @@ class Payment extends Controller
     /**
      * 编辑支付通道
      * @auth true
-     * @throws \think\db\exception\DataNotFoundException
-     * @throws \think\db\exception\DbException
-     * @throws \think\db\exception\ModelNotFoundException
      */
     public function edit()
     {
@@ -104,7 +98,6 @@ class Payment extends Controller
     /**
      * 修改通道状态
      * @auth true
-     * @throws \think\db\exception\DbException
      */
     public function state()
     {
@@ -117,7 +110,6 @@ class Payment extends Controller
     /**
      * 删除支付通道
      * @auth true
-     * @throws \think\db\exception\DbException
      */
     public function remove()
     {

@@ -57,9 +57,6 @@ class Item extends Controller
     /**
      * 添加文章内容
      * @auth true
-     * @throws \think\db\exception\DataNotFoundException
-     * @throws \think\db\exception\DbException
-     * @throws \think\db\exception\ModelNotFoundException
      */
     public function add()
     {
@@ -70,9 +67,6 @@ class Item extends Controller
     /**
      * 编辑文章内容
      * @auth true
-     * @throws \think\db\exception\DataNotFoundException
-     * @throws \think\db\exception\DbException
-     * @throws \think\db\exception\ModelNotFoundException
      */
     public function edit()
     {
@@ -115,7 +109,6 @@ class Item extends Controller
     /**
      * 修改文章状态
      * @auth true
-     * @throws \think\db\exception\DbException
      */
     public function state()
     {
@@ -128,7 +121,6 @@ class Item extends Controller
     /**
      * 删除文章内容
      * @auth true
-     * @throws \think\db\exception\DbException
      */
     public function remove()
     {

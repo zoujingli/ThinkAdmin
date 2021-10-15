@@ -31,9 +31,6 @@ class Message extends Controller
     /**
      * 添加系统通知
      * @auth true
-     * @throws \think\db\exception\DataNotFoundException
-     * @throws \think\db\exception\DbException
-     * @throws \think\db\exception\ModelNotFoundException
      */
     public function add()
     {
@@ -43,9 +40,6 @@ class Message extends Controller
     /**
      * 编辑系统通知
      * @auth true
-     * @throws \think\db\exception\DataNotFoundException
-     * @throws \think\db\exception\DbException
-     * @throws \think\db\exception\ModelNotFoundException
      */
     public function edit()
     {
@@ -66,7 +60,6 @@ class Message extends Controller
     /**
      * 修改通知状态
      * @auth true
-     * @throws \think\db\exception\DbException
      */
     public function state()
     {
@@ -79,7 +72,6 @@ class Message extends Controller
     /**
      * 删除系统通知
      * @auth true
-     * @throws \think\db\exception\DbException
      */
     public function remove()
     {

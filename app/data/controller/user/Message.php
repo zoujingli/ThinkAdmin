@@ -53,7 +53,6 @@ class Message extends Controller
     /**
      * 删除短信记录
      * @auth true
-     * @throws \think\db\exception\DbException
      */
     public function remove()
     {

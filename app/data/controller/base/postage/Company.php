@@ -41,9 +41,6 @@ class Company extends Controller
     /**
      * 添加快递公司
      * @auth true
-     * @throws \think\db\exception\DataNotFoundException
-     * @throws \think\db\exception\DbException
-     * @throws \think\db\exception\ModelNotFoundException
      */
     public function add()
     {
@@ -54,9 +51,6 @@ class Company extends Controller
     /**
      * 编辑快递公司
      * @auth true
-     * @throws \think\db\exception\DataNotFoundException
-     * @throws \think\db\exception\DbException
-     * @throws \think\db\exception\ModelNotFoundException
      */
     public function edit()
     {
@@ -67,7 +61,6 @@ class Company extends Controller
     /**
      * 修改快递公司状态
      * @auth true
-     * @throws \think\db\exception\DbException
      */
     public function state()
     {
@@ -80,7 +73,6 @@ class Company extends Controller
     /**
      * 删除快递公司
      * @auth true
-     * @throws \think\db\exception\DbException
      */
     public function remove()
     {

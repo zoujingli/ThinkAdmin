@@ -42,9 +42,6 @@ class Mark extends Controller
     /**
      * 添加商品标签
      * @auth true
-     * @throws \think\db\exception\DataNotFoundException
-     * @throws \think\db\exception\DbException
-     * @throws \think\db\exception\ModelNotFoundException
      */
     public function add()
     {
@@ -54,9 +51,6 @@ class Mark extends Controller
     /**
      * 编辑商品标签
      * @auth true
-     * @throws \think\db\exception\DataNotFoundException
-     * @throws \think\db\exception\DbException
-     * @throws \think\db\exception\ModelNotFoundException
      */
     public function edit()
     {
@@ -66,7 +60,6 @@ class Mark extends Controller
     /**
      * 修改商品标签状态
      * @auth true
-     * @throws \think\db\exception\DbException
      */
     public function state()
     {
@@ -76,7 +69,6 @@ class Mark extends Controller
     /**
      * 删除商品标签
      * @auth true
-     * @throws \think\db\exception\DbException
      */
     public function remove()
     {

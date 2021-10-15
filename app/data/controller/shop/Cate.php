@@ -43,9 +43,6 @@ class Cate extends Controller
     /**
      * 添加商品分类
      * @auth true
-     * @throws \think\db\exception\DataNotFoundException
-     * @throws \think\db\exception\DbException
-     * @throws \think\db\exception\ModelNotFoundException
      */
     public function add()
     {
@@ -55,9 +52,6 @@ class Cate extends Controller
     /**
      * 编辑商品分类
      * @auth true
-     * @throws \think\db\exception\DataNotFoundException
-     * @throws \think\db\exception\DbException
-     * @throws \think\db\exception\ModelNotFoundException
      */
     public function edit()
     {
@@ -87,7 +81,6 @@ class Cate extends Controller
     /**
      * 修改商品分类状态
      * @auth true
-     * @throws \think\db\exception\DbException
      */
     public function state()
     {
@@ -100,7 +93,6 @@ class Cate extends Controller
     /**
      * 删除商品分类
      * @auth true
-     * @throws \think\db\exception\DbException
      */
     public function remove()
     {

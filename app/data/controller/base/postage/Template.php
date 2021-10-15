@@ -52,9 +52,6 @@ class Template extends Controller
     /**
      * 添加配送邮费模板
      * @auth true
-     * @throws \think\db\exception\DataNotFoundException
-     * @throws \think\db\exception\DbException
-     * @throws \think\db\exception\ModelNotFoundException
      */
     public function add()
     {
@@ -65,9 +62,6 @@ class Template extends Controller
     /**
      * 编辑配送邮费模板
      * @auth true
-     * @throws \think\db\exception\DataNotFoundException
-     * @throws \think\db\exception\DbException
-     * @throws \think\db\exception\ModelNotFoundException
      */
     public function edit()
     {
@@ -103,7 +97,6 @@ class Template extends Controller
     /**
      * 启用或禁用邮费模板
      * @auth true
-     * @throws \think\db\exception\DbException
      */
     public function state()
     {
@@ -116,7 +109,6 @@ class Template extends Controller
     /**
      * 删除邮费模板
      * @auth true
-     * @throws \think\db\exception\DbException
      */
     public function remove()
     {

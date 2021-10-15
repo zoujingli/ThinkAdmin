@@ -81,9 +81,6 @@ class Goods extends Controller
     /**
      * 添加商品数据
      * @auth true
-     * @throws \think\db\exception\DataNotFoundException
-     * @throws \think\db\exception\DbException
-     * @throws \think\db\exception\ModelNotFoundException
      */
     public function add()
     {
@@ -95,9 +92,6 @@ class Goods extends Controller
     /**
      * 编辑商品数据
      * @auth true
-     * @throws \think\db\exception\DataNotFoundException
-     * @throws \think\db\exception\DbException
-     * @throws \think\db\exception\ModelNotFoundException
      */
     public function edit()
     {
@@ -109,9 +103,6 @@ class Goods extends Controller
     /**
      * 复制编辑商品
      * @auth true
-     * @throws \think\db\exception\DataNotFoundException
-     * @throws \think\db\exception\DbException
-     * @throws \think\db\exception\ModelNotFoundException
      */
     public function copy()
     {
@@ -244,7 +235,6 @@ class Goods extends Controller
     /**
      * 商品上下架
      * @auth true
-     * @throws \think\db\exception\DbException
      */
     public function state()
     {
@@ -257,7 +247,6 @@ class Goods extends Controller
     /**
      * 删除商品数据
      * @auth true
-     * @throws \think\db\exception\DbException
      */
     public function remove()
     {

@@ -140,7 +140,7 @@ class Send extends Controller
             }
         }
     }
-    
+
     /**
      * 快递追踪查询
      * @auth true

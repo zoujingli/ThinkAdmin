@@ -54,5 +54,4 @@ class Portal extends Controller
         $this->levels = array_values($levels);
         $this->fetch();
     }
-
 }

@@ -30,9 +30,6 @@ class Mark extends Controller
     /**
      * 添加文章标签
      * @auth true
-     * @throws \think\db\exception\DataNotFoundException
-     * @throws \think\db\exception\DbException
-     * @throws \think\db\exception\ModelNotFoundException
      */
     public function add()
     {
@@ -42,9 +39,6 @@ class Mark extends Controller
     /**
      * 编辑文章标签
      * @auth true
-     * @throws \think\db\exception\DataNotFoundException
-     * @throws \think\db\exception\DbException
-     * @throws \think\db\exception\ModelNotFoundException
      */
     public function edit()
     {
@@ -54,7 +48,6 @@ class Mark extends Controller
     /**
      * 修改文章标签状态
      * @auth true
-     * @throws \think\db\exception\DbException
      */
     public function state()
     {
@@ -67,7 +60,6 @@ class Mark extends Controller
     /**
      * 删除文章标签
      * @auth true
-     * @throws \think\db\exception\DbException
      */
     public function remove()
     {

@@ -173,7 +173,6 @@ class Admin extends Controller
     /**
      * 修改用户状态
      * @auth true
-     * @throws \think\db\exception\DbException
      */
     public function state()
     {

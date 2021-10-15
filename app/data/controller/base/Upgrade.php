@@ -44,9 +44,6 @@ class Upgrade extends Controller
     /**
      * 添加用户等级
      * @auth true
-     * @throws \think\db\exception\DataNotFoundException
-     * @throws \think\db\exception\DbException
-     * @throws \think\db\exception\ModelNotFoundException
      */
     public function add()
     {
@@ -56,9 +53,6 @@ class Upgrade extends Controller
     /**
      * 编辑用户等级
      * @auth true
-     * @throws \think\db\exception\DataNotFoundException
-     * @throws \think\db\exception\DbException
-     * @throws \think\db\exception\ModelNotFoundException
      */
     public function edit()
     {
@@ -131,7 +125,6 @@ class Upgrade extends Controller
     /**
      * 修改等级状态
      * @auth true
-     * @throws \think\db\exception\DbException
      */
     public function state()
     {
@@ -141,7 +134,6 @@ class Upgrade extends Controller
     /**
      * 删除用户等级
      * @auth true
-     * @throws \think\db\exception\DbException
      */
     public function remove()
     {

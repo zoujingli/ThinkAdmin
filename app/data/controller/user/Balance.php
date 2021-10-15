@@ -2,7 +2,6 @@
 
 namespace app\data\controller\user;
 
-use think\admin\model\SystemUser;
 use app\data\model\DataUser;
 use app\data\model\DataUserBalance;
 use app\data\service\UserAdminService;
@@ -10,6 +9,7 @@ use app\data\service\UserBalanceService;
 use app\data\service\UserUpgradeService;
 use think\admin\Controller;
 use think\admin\extend\CodeExtend;
+use think\admin\model\SystemUser;
 use think\admin\service\AdminService;
 
 /**
@@ -111,7 +111,6 @@ class Balance extends Controller
     /**
      * 删除充值记录
      * @auth true
-     * @throws \think\db\exception\DbException
      */
     public function remove()
     {
