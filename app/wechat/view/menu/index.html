@@ -121,13 +121,10 @@
             $rootScope.item = {}, $rootScope.list = [], $rootScope.keys = [];
             $.form.load('{:url("index")}', {output: 'json'}, 'get', function (ret) {
                 return $rootScope.$apply(function () {
-                    $rootScope.keys = ret.data.keysdata || [];
-                    $rootScope.list = ret.data.menudata || [];
+                    $rootScope.keys = ret.data.keysdata || [], $rootScope.list = ret.data.menudata || [];
                     if ($rootScope.list.length < 1) $rootScope.list = [{name: '请输入名称', type: 'click', sub_button: []}];
                     for (var i in $rootScope.list) $rootScope.list[i].sub_button = $rootScope.list[i].sub_button || [];
-                    $rootScope.list[0].show = true;
-                    $rootScope.list[0].active = true;
-                    $rootScope.item = $rootScope.list[0];
+                    $rootScope.list[0].show = true, $rootScope.list[0].active = true, $rootScope.item = $rootScope.list[0];
                 }), false;
             });
 
@@ -173,7 +170,7 @@
                 $rootScope.item = two || one || {};
                 $rootScope.item.type = $rootScope.item.type || 'click';
                 if ($rootScope.item.type === 'click') setTimeout(function () {
-                    form.render('select');
+                    layui.form.render('select');
                     $rootScope.item.key = $('[lay-filter="key"]').val();
                 }, 50);
             };
@@ -181,12 +178,12 @@
             // 下拉列表处理
             $rootScope.$watch('item', function () {
                 if ($rootScope.item.type === 'click') setTimeout(function () {
-                    form.render('select');
+                    layui.form.render('select');
                     $rootScope.item.key = $('[lay-filter="key"]').val();
                 }, 50)
             }, true);
 
-            form.on('select(key)', function (data) {
+            layui.form.on('select(key)', function (data) {
                 $rootScope.item.key = data.value;
             });
 
@@ -197,7 +194,7 @@
                 $.form.load('{:url("push")}', {data: angular.toJson($rootScope.list)}, 'post');
             }
         }
-    })
+    });
 </script>
 
 {/block}
