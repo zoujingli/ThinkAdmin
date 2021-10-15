@@ -101,7 +101,6 @@ class Fans extends Controller
     /**
      * 删除用户信息
      * @auth true
-     * @throws \think\db\exception\DbException
      */
     public function remove()
     {

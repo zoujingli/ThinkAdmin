@@ -123,7 +123,6 @@ class News extends Controller
     /**
      * 删除微信图文
      * auth true
-     * @throws \think\db\exception\DbException
      */
     public function remove()
     {

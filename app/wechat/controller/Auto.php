@@ -66,9 +66,6 @@ class Auto extends Controller
     /**
      * 添加自动回复
      * @auth true
-     * @throws \think\db\exception\DataNotFoundException
-     * @throws \think\db\exception\DbException
-     * @throws \think\db\exception\ModelNotFoundException
      */
     public function add()
     {
@@ -79,9 +76,6 @@ class Auto extends Controller
     /**
      * 编辑自动回复
      * @auth true
-     * @throws \think\db\exception\DataNotFoundException
-     * @throws \think\db\exception\DbException
-     * @throws \think\db\exception\ModelNotFoundException
      */
     public function edit()
     {
@@ -122,7 +116,6 @@ class Auto extends Controller
     /**
      * 修改规则状态
      * @auth true
-     * @throws \think\db\exception\DbException
      */
     public function state()
     {
@@ -135,7 +128,6 @@ class Auto extends Controller
     /**
      * 删除自动回复
      * @auth true
-     * @throws \think\db\exception\DbException
      */
     public function remove()
     {
