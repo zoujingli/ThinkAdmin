@@ -42,7 +42,7 @@ class Oplog extends Controller
     {
         SystemOplog::mQuery()->layTable(function () {
             $this->title = '系统日志管理';
-            $columns = SystemOplog::mk()->column('username,action', 'id');
+            $columns = SystemOplog::mk()->column('action,username', 'id');
             $this->users = array_unique(array_column($columns, 'username'));
             $this->actions = array_unique(array_column($columns, 'action'));
         }, function (QueryHelper $query) {
