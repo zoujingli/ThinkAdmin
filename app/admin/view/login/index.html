@@ -1,7 +1,7 @@
 {extend name="index/index"}
 
 {block name="body"}
-<div class="login-container" data-supersized="{$backgroundLogin|default='__ROOT__/static/theme/img/login/bg1.jpg,__ROOT__/static/theme/img/login/bg2.jpg'}">
+<div class="login-container" data-supersized="{$backgrounds|default='__ROOT__/static/theme/img/login/bg1.jpg,__ROOT__/static/theme/img/login/bg2.jpg'}">
     <div class="header notselect layui-hide-xs">
         <a href="{:url('@')}" class="title">{:sysconf('app_name')}<span>{:sysconf('app_version')}</span></a>
         {notempty name='developMode'}
