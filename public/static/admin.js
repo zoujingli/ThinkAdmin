@@ -62,7 +62,7 @@ require.config({
     baseUrl: baseRoot,
     map: {'*': {css: baseRoot + 'plugs/require/css.js'}},
     paths: {
-        'vue': ['plugs/iview/vue.min'],
+        'vue': ['plugs/vue/vue.min'],
         'md5': ['plugs/jquery/md5.min'],
         'json': ['plugs/jquery/json.min'],
         'xlsx': ['plugs/jquery/xlsx.min'],
