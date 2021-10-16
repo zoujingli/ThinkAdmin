@@ -217,13 +217,16 @@ class Order extends Auth
             'code.require'     => '地址不能为空',
             'order_no.require' => '单号不能为空',
         ]);
+
         // 用户收货地址
         $map = ['uuid' => $this->uuid, 'code' => $data['code']];
         $addr = DataUserAddress::mk()->where($map)->find();
         if (empty($addr)) $this->error('收货地址异常');
+
         // 订单状态检查
         $map = ['uuid' => $this->uuid, 'order_no' => $data['order_no']];
         $tCount = ShopOrderItem::mk()->where($map)->sum('truck_number');
+
         // 根据地址计算运费
         $map = ['status' => 1, 'deleted' => 0, 'order_no' => $data['order_no']];
         $tCode = ShopOrderItem::mk()->where($map)->column('truck_code');
@@ -244,20 +247,24 @@ class Order extends Auth
             'code.require'     => '地址不能为空',
             'order_no.require' => '单号不能为空',
         ]);
+
         // 用户收货地址
         $map = ['uuid' => $this->uuid, 'code' => $data['code'], 'deleted' => 0];
         $addr = DataUserAddress::mk()->where($map)->find();
         if (empty($addr)) $this->error('收货地址异常');
+
         // 订单状态检查
         $map1 = ['uuid' => $this->uuid, 'order_no' => $data['order_no']];
         $order = ShopOrder::mk()->where($map1)->whereIn('status', [1, 2])->find();
         if (empty($order)) $this->error('不能修改地址');
         if (empty($order['truck_type'])) $this->success('无需快递配送', ['order_no' => $order['order_no']]);
+
         // 根据地址计算运费
         $map2 = ['status' => 1, 'deleted' => 0, 'order_no' => $data['order_no']];
         $tCount = ShopOrderItem::mk()->where($map1)->sum('truck_number');
         $tCodes = ShopOrderItem::mk()->where($map2)->column('truck_code');
         [$amount, $tCount, $tCode, $remark] = ExpressService::instance()->amount($tCodes, $addr['province'], $addr['city'], $tCount);
+
         // 创建订单发货信息
         $express = [
             'template_code'   => $tCode, 'template_count' => $tCount, 'uuid' => $this->uuid,
@@ -280,6 +287,7 @@ class Order extends Auth
         $express['address_area'] = $addr['area'];
         $express['address_content'] = $addr['address'];
 
+        ShopOrderSend::mUpdate($express, 'order_no');
         data_save(ShopOrderSend::class, $express, 'order_no');
         // 组装更新订单数据
         $update = ['status' => 2, 'amount_express' => $express['template_amount']];
