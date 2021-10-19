@@ -75,6 +75,8 @@ require.config({
         'ckeditor': ['plugs/ckeditor/ckeditor'],
         'websocket': ['plugs/socket/websocket'],
         'pcasunzips': ['plugs/jquery/pcasunzips'],
+        'sortablejs': ['plugs/sortable/sortable.min'],
+        'vue.sortable': ['plugs/sortable/vue.draggable.min'],
         'jquery.ztree': ['plugs/ztree/ztree.all.min'],
         'jquery.masonry': ['plugs/jquery/masonry.min'],
         'jquery.cropper': ['plugs/cropper/cropper.min'],
@@ -84,6 +86,7 @@ require.config({
         'excel': {deps: [baseRoot + 'plugs/layui_exts/excel.js']},
         'websocket': {deps: [baseRoot + 'plugs/socket/swfobject.min.js']},
         'cropper': {deps: ['css!' + baseRoot + 'plugs/cropper/cropper.min.css']},
+        'vue.sortable': {deps: ['vue']}, 'angular.sortable': {deps: ['angular']},
         'jquery.ztree': {deps: ['jquery', 'css!' + baseRoot + 'plugs/ztree/zTreeStyle/zTreeStyle.css']},
         'jquery.autocompleter': {deps: ['jquery', 'css!' + baseRoot + 'plugs/jquery/autocompleter.css']},
     }
