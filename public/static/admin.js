@@ -86,7 +86,7 @@ require.config({
         'excel': {deps: [baseRoot + 'plugs/layui_exts/excel.js']},
         'websocket': {deps: [baseRoot + 'plugs/socket/swfobject.min.js']},
         'cropper': {deps: ['css!' + baseRoot + 'plugs/cropper/cropper.min.css']},
-        'vue.sortable': {deps: ['vue']},
+        'vue.sortable': {deps: ['vue', 'sortablejs']},
         'jquery.ztree': {deps: ['jquery', 'css!' + baseRoot + 'plugs/ztree/zTreeStyle/zTreeStyle.css']},
         'jquery.autocompleter': {deps: ['jquery', 'css!' + baseRoot + 'plugs/jquery/autocompleter.css']},
     }
@@ -226,7 +226,7 @@ $(function () {
         /*! 内容区域动态加载后初始化 */
         this.reInit = function ($dom) {
             $(window).trigger('scroll'), $.vali.listen(this), $dom = $dom || $(this.selecter);
-            $dom.find('[required]').map(function ($parent) {
+            return $dom.find('[required]').map(function ($parent) {
                 if (($parent = $(this).parent()) && $parent.is('label')) {
                     $parent.addClass('label-required-prev');
                 } else {
@@ -253,7 +253,7 @@ $(function () {
                         this.style.backgroundImage = 'url(' + this.dataset.lazySrc + ')';
                     }
                 }
-            });
+            }), $dom;
         };
         /*! 在内容区显示视图 */
         this.show = function (html) {
@@ -432,90 +432,64 @@ $(function () {
         };
     };
 
+
     /*! 注册对象到Jq */
     $.vali = function (form, callable) {
-        if ($(form).attr('submit-listen')) {
-            return $(form).data('validate');
-        }
-        return (new function () {
+        return $('form').data('validate') || new Validate();
+
+        function Validate() {
             var that = this;
             /* 绑定表单元素 */
             this.form = $(form);
-            /* 绑定元素事件 */
-            this.evts = 'blur change';
-            /* 筛选表单元素 */
-            this.tags = 'input,select,textarea';
+            /* 绑定元素事件, 筛选表单元素 */
+            this.evts = 'blur change', this.tags = 'input,select,textarea';
             /* 预设检测规则 */
             this.patterns = {
                 phone: '^1[3-9][0-9]{9}$',
                 email: '^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$'
             };
-            /*! 去除字符串的空格 */
-            this.trim = function (str) {
-                return str.replace(/(^\s*)|(\s*$)/g, '');
-            };
             /*! 检测属性是否有定义 */
             this.hasProp = function (ele, prop) {
-                if (typeof prop !== "string") return false;
                 var attrProp = ele.getAttribute(prop);
                 return typeof attrProp !== 'undefined' && attrProp !== null && attrProp !== false;
-            };
-            /*! 正则验证表单元素 */
-            this.isRegex = function (ele) {
-                var real = this.trim($(ele).val());
+            }, this.isRegex = function (ele) {
+                var real = $.trim($(ele).val());
                 var regexp = ele.getAttribute('pattern');
-                regexp = that.patterns[regexp] || regexp;
+                regexp = this.patterns[regexp] || regexp;
                 if (real === "" || !regexp) return true;
                 return new RegExp(regexp, 'i').test(real);
-            };
-            /*! 检侧所有表单元素 */
-            this.checkAllInput = function () {
-                var isPass = true;
-                that.form.find(this.tags).each(function () {
-                    if (that.checkInput(this) === false) {
-                        return $(this).focus(), isPass = false;
-                    }
-                });
-                return isPass;
-            };
-            /*! 检测表单单元 */
-            this.checkInput = function (input) {
+            }, this.checkAllInput = function () {
+                var status = true;
+                return that.form.find(this.tags).each(function () {
+                    if (that.checkInput(this) === false) return $(this).focus(), status = false;
+                }), status;
+            }, this.checkInput = function (input) {
                 if (this.hasProp(input, 'data-auto-none')) return true;
-                var type = (input.getAttribute("type") || '').replace(/\W+/, "").toLowerCase();
-                var ingoreTypes = ['file', 'reset', 'image', 'radio', 'checkbox', 'submit', 'hidden'];
-                if (ingoreTypes.length > 0) for (var i in ingoreTypes) if (type === ingoreTypes[i]) return true;
-                if (this.hasProp(input, "required") && this.trim($(input).val()) === '') return this.remind(input);
+                var type = (input.getAttribute('type') || '').replace(/\W+/, "").toLowerCase();
+                var ingores = ['file', 'reset', 'image', 'radio', 'checkbox', 'submit', 'hidden'];
+                if (ingores.length > 0) for (var i in ingores) if (type === ingores[i]) return true;
+                if (this.hasProp(input, 'required') && $.trim($(input).val()) === '') return this.remind(input);
                 return this.isRegex(input) ? (this.hideError(input), true) : this.remind(input);
-            };
-            /*! 显示验证标志 */
-            this.remind = function (input) {
+            }, this.remind = function (input) {
                 if (!$(input).is(':visible')) return true;
                 return this.showError(input, input.getAttribute('title') || input.getAttribute('placeholder') || '输入错误'), false;
-            };
-            /*! 错误消息显示 */
-            this.showError = function (ele, tip) {
+            }, this.showError = function (ele, tip) {
                 $(ele).addClass('validate-error');
                 this.insertError(ele).addClass('layui-anim-fadein').css({width: 'auto'}).html(tip);
-            };
-            /*! 错误消息消除 */
-            this.hideError = function (ele) {
+            }, this.hideError = function (ele) {
                 $(ele).removeClass('validate-error');
                 this.insertError(ele).removeClass('layui-anim-fadein').css({width: '30px'}).html('');
-            };
-            /*! 错误标签插入 */
-            this.insertError = function (ele) {
+            }, this.insertError = function (ele) {
                 if ($(ele).data('input-info')) return $(ele).data('input-info');
                 var $html = $('<span class="absolute block layui-anim text-center font-s12 notselect" style="color:#A44;z-index:2"></span>');
                 var $next = $(ele).nextAll('.input-right-icon'), right = ($next ? $next.width() + parseFloat($next.css('right') || '0') : 0) + 10;
                 var style = {top: $(ele).position().top + 'px', right: right + 'px', lineHeight: ele.nodeName === 'TEXTAREA' ? '32px' : $(ele).css('height')};
                 return $(ele).data('input-info', $html.css(style).insertAfter(ele)), $html;
             };
-            /*! 表单验证入口 */
-            that.form.off(that.evts, that.tags).on(that.evts, that.tags, function () {
+            /*! 表单元素验证 */
+            this.form.off(this.evts, this.tags).on(this.evts, this.tags, function () {
                 that.checkInput(this);
-            }).attr('novalidate', 'novalidate').attr('submit-listen', 'validate.submit');
-            /*! 绑定提交事件 */
-            that.form.data('validate', this).bind("submit", function (evt) {
+            }).attr('novalidate', 'novalidate').data('validate', this).bind("submit", function (evt) {
                 evt.button = that.form.find('button[type=submit],button:not([type=button])');
                 /* 检查所有表单元素是否通过H5的规则验证 */
                 if (that.checkAllInput() && typeof callable === 'function') {
@@ -534,7 +508,7 @@ $(function () {
                 $(this).html(this.dataset.formLoaded || this.innerHTML);
                 $(this).removeAttr('data-form-loaded').removeClass('layui-disabled');
             });
-        });
+        }
     };
 
     /*! 自动监听规则内表单 */
