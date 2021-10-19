@@ -86,7 +86,7 @@ require.config({
         'excel': {deps: [baseRoot + 'plugs/layui_exts/excel.js']},
         'websocket': {deps: [baseRoot + 'plugs/socket/swfobject.min.js']},
         'cropper': {deps: ['css!' + baseRoot + 'plugs/cropper/cropper.min.css']},
-        'vue.sortable': {deps: ['vue']}, 'angular.sortable': {deps: ['angular']},
+        'vue.sortable': {deps: ['vue']},
         'jquery.ztree': {deps: ['jquery', 'css!' + baseRoot + 'plugs/ztree/zTreeStyle/zTreeStyle.css']},
         'jquery.autocompleter': {deps: ['jquery', 'css!' + baseRoot + 'plugs/jquery/autocompleter.css']},
     }
