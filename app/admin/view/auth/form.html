@@ -3,15 +3,13 @@
     <div class="layui-card-body padding-left-40">
 
         <label class="layui-form-item relative block">
-            <span class="color-green font-w7">权限名称</span>
-            <span class="color-desc margin-left-5">Permission Name</span>
+            <span class="help-label"><b>权限名称</b>Permission Name</span>
             <input maxlength="100" class="layui-input" name="title" value='{$vo.title|default=""}' required placeholder="请输入权限名称">
             <span class="help-block">访问权限名称需要保持不重复，在给用户授权时需要根据名称选择！</span>
         </label>
 
         <label class="layui-form-item relative block">
-            <span class="color-green font-w7">权限描述</span>
-            <span class="color-desc margin-left-5">Permission Description</span>
+            <span class="help-label"><b>权限描述</b>Permission Description</span>
             <textarea placeholder="请输入权限描述" maxlength="200" class="layui-textarea" name="desc">{$vo.desc|default=""}</textarea>
         </label>
 

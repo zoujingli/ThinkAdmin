@@ -435,7 +435,7 @@ $(function () {
 
     /*! 注册对象到Jq */
     $.vali = function (form, callable) {
-        return $('form').data('validate') || new Validate();
+        return $(form).data('validate') || new Validate();
 
         function Validate() {
             var that = this;
@@ -638,18 +638,18 @@ $(function () {
     /*! 文本框插入内容 */
     $.fn.insertAtCursor = function (value) {
         return this.each(function () {
+            this.focus();
             if (document.selection) {
-                this.focus();
                 var selection = document.selection.createRange();
-                (selection.text = value), selection.select();
+                (selection.text = value), selection.select(), selection.unselect();
             } else if (this.selectionStart || this.selectionStart === 0) {
-                var startPos = this.selectionStart, afterPos = this.selectionAfter, scrollTop = this.scrollTop;
-                this.value = this.value.substring(0, startPos) + value + this.value.substring(afterPos, this.value.length);
-                if (scrollTop > 0) this.scrollTop = scrollTop;
-                this.focus();
-                this.selectionAfter = startPos + value.length;
-                this.selectionStart = startPos + value.length;
-            } else (this.value += value), this.focus();
+                var spos = this.selectionStart, apos = this.selectionEnd || spos;
+                this.value = this.value.substring(0, spos) + value + this.value.substring(apos, this.value.length);
+                this.selectionEnd = this.selectionStart = spos + value.length;
+            } else {
+                this.value += value;
+            }
+            this.focus();
         });
     }
 
@@ -959,7 +959,7 @@ $(function () {
         (function (content, $textarea) {
             $body.append($textarea.val(content)), $textarea.select();
             document.execCommand('Copy') ? $.msg.tips('已复制到剪贴板！') : $.msg.tips('请使用鼠标操作复制！');
-            $textarea.remove();
+            $textarea.remove(), $textarea.unselect();
         })(this.dataset.copy, $('<textarea style="position:fixed;top:-500px"></textarea>'));
     });
 
