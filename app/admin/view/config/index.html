@@ -33,11 +33,12 @@
     </div>
 </div>
 <!--{/notempty}-->
+
 <div class="layui-card padding-20 shadow">
     <div class="layui-card-header notselect">
         <b>存储引擎</b><span class="color-desc font-s12 padding-left-5">Storage Engine</span>
     </div>
-    <div class="layui-card-body">
+    <div class="layui-card-body layui-clear">
         <div class="layui-btn-group shadow-mini nowrap">
             {foreach ['local' => '本地服务器存储','qiniu' => '七牛云对象存储','alioss' => '阿里云OSS存储','txcos' => '腾讯云COS存储'] as $k => $v} {if sysconf('storage.type') eq $k}
             {if auth('storage')}<a data-title="配置{$v}" data-modal="{:url('storage')}?type={$k}" class="layui-btn layui-btn-sm layui-btn-active">{$v}</a>{else}<a class="layui-btn layui-btn-sm layui-btn-active">{$v}</a>{/if}
@@ -45,13 +46,12 @@
             {if auth('storage')}<a data-title="配置{$v}" data-modal="{:url('storage')}?type={$k}" class="layui-btn layui-btn-sm layui-btn-primary">{$v}</a>{else}<a class="layui-btn layui-btn-sm layui-btn-primary">{$v}</a>{/if}
             {/if}{/foreach}
         </div>
-        <div class="margin-top-20 nowrap" style="float:left;width:100%">
+        <div class="margin-top-20 nowrap full-width pull-left">
             <p><b>本地服务器存储</b>：文件直接上传到本地服务器的 `static/upload` 目录，不支持大文件上传，占用服务器磁盘空间，访问时消耗服务器带宽流量。</p>
             <p><b>七牛云对象存储</b>：文件直接上传到七牛云存储空间，支持大文件上传，不占用服务器空间及服务器带宽流量，支持 CDN 加速访问，访问量大时推荐使用。</p>
             <p><b>阿里云OSS存储</b>：文件直接上传到阿里云 OSS 存储空间，支持大文件上传，不占用服务器空间及服务器带宽流量，支持 CDN 加速访问，访问量大时推荐使用。</p>
             <p><b>腾讯云COS存储</b>：文件直接上传到腾讯云 COS 存储空间，支持大文件上传，不占用服务器空间及服务器带宽流量，支持 CDN 加速访问，访问量大时推荐使用。</p>
         </div>
-        <div style="clear: both"></div>
     </div>
 </div>
 
@@ -90,7 +90,7 @@
                 <input readonly value="{:sysconf('beian')?:'-'}" class="layui-input layui-bg-gray">
                 <a data-copy="{:sysconf('beian')}" class="layui-icon layui-icon-release input-right-icon"></a>
             </label>
-            <p class="help-block">公网备案号，可以在<a target="_blank" href="http://beian.miit.gov.cn">备案管理中心</a>查询获取，将在登录页面下面显示。</p>
+            <p class="help-block">公网备案号，可以在 <a target="_blank" href="https://beian.miit.gov.cn">备案管理中心</a> 查询获取，将在登录页面下面显示。</p>
         </div>
         <div class="layui-form-item">
             <div class="help-label"><b>网站备案号</b>Miitbeian</div>
@@ -98,7 +98,7 @@
                 <input readonly value="{:sysconf('miitbeian')?:'-'}" class="layui-input layui-bg-gray">
                 <a data-copy="{:sysconf('miitbeian')}" class="layui-icon layui-icon-release input-right-icon"></a>
             </label>
-            <div class="help-block">网站备案号，可以在<a target="_blank" href="http://beian.miit.gov.cn">备案管理中心</a>查询获取，将显示在登录页面下面。</div>
+            <div class="help-block">网站备案号，可以在 <a target="_blank" href="https://beian.miit.gov.cn">备案管理中心</a> 查询获取，将显示在登录页面下面。</div>
         </div>
         <div class="layui-form-item">
             <div class="help-label"><b>网站版权信息</b>Copyright</div>

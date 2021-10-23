@@ -93,7 +93,10 @@ class Base extends Controller
      */
     public function state()
     {
-        SystemBase::mSave();
+        SystemBase::mSave($this->_vali([
+            'status.in:0,1'  => '状态值范围异常！',
+            'status.require' => '状态值不能为空！',
+        ]));
     }
 
     /**
