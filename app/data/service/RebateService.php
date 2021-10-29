@@ -277,7 +277,7 @@ class RebateService extends Service
                 [$tVip, $tRate] = [$item['vip_code'], $item['discount_rate']];
                 foreach ($users as $user) if (isset($rules[$user['vip_code']]) && $user['vip_code'] > $tVip) {
                     $rule = $rules[$user['vip_code']];
-                    if ($tRate > $rule['discount'] && $tRate < 100) {
+                    if ($tRate > $rule['discount']) {
                         $map = ['uuid' => $user['id'], 'type' => self::PRIZE_05, 'order_no' => $this->order['order_no']];
                         if (DataUserRebate::mk()->where($map)->count() < 1) {
                             $dRate = ($rate = $tRate - $rule['discount']) / 100;
