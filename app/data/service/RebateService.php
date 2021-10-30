@@ -273,7 +273,7 @@ class RebateService extends Service
         if (empty($vips) || empty($users)) return true;
         // 查询需要计算奖励的商品
         foreach (ShopOrderItem::mk()->where(['order_no' => $this->order['order_no']])->cursor() as $item) {
-            if ($item['discount_id'] > 0) {
+            if ($item['discount_id'] > 0 && $item['rebate_type'] === 1) {
                 [$tVip, $tRate] = [$item['vip_code'], $item['discount_rate']];
                 $map = ['id' => $item['discount_id'], 'status' => 1, 'deleted' => 0];
                 $rules = json_decode(BaseUserDiscount::mk()->where($map)->value('items', '[]'), true);
