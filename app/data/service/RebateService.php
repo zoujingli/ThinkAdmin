@@ -270,14 +270,15 @@ class RebateService extends Service
         // 获取可以参与奖励的代理
         $vips = BaseUserUpgrade::mk()->whereLike('rebate_rule', '%,' . self::PRIZE_05 . ',%')->column('number');
         $users = DataUser::mk()->whereIn('vip_code', $vips)->whereIn('id', $puids)->orderField('id', $puids)->select()->toArray();
+        if (empty($vips) || empty($users)) return true;
         // 查询需要计算奖励的商品
         foreach (ShopOrderItem::mk()->where(['order_no' => $this->order['order_no']])->cursor() as $item) {
-            $itemJson = BaseUserDiscount::mk()->where(['status' => 1, 'deleted' => 0])->value('items');
-            if (!empty($itemJson) && is_array($rules = json_decode($itemJson, true))) {
+            if ($item['discount_id'] > 0) {
                 [$tVip, $tRate] = [$item['vip_code'], $item['discount_rate']];
+                $map = ['id' => $item['discount_id'], 'status' => 1, 'deleted' => 0];
+                $rules = json_decode(BaseUserDiscount::mk()->where($map)->value('items', '[]'), true);
                 foreach ($users as $user) if (isset($rules[$user['vip_code']]) && $user['vip_code'] > $tVip) {
-                    $rule = $rules[$user['vip_code']];
-                    if ($tRate > $rule['discount']) {
+                    if (($rule = $rules[$user['vip_code']]) && $tRate > $rule['discount']) {
                         $map = ['uuid' => $user['id'], 'type' => self::PRIZE_05, 'order_no' => $this->order['order_no']];
                         if (DataUserRebate::mk()->where($map)->count() < 1) {
                             $dRate = ($rate = $tRate - $rule['discount']) / 100;
