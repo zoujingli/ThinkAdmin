@@ -126,7 +126,7 @@ class Balance extends Controller
     {
         if ($state) {
             $map = [['id', 'in', str2arr(input('id', ''))]];
-            foreach ($this->app->db->name($this->table)->where($map)->cursor() as $vo) {
+            foreach (DataUserBalance::mk()->where($map)->cursor() as $vo) {
                 UserBalanceService::instance()->amount($vo['uuid']);
                 UserUpgradeService::instance()->upgrade($vo['uuid']);
             }
