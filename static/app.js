@@ -30,6 +30,7 @@
 
     router.beforeEach(function (to, fr, next) {
         console.log(fr.fullPath, '-- to -->', to.fullPath)
+
         if (router.hasRoute(to.fullPath)) {
             next();
         } else {
@@ -37,6 +38,7 @@
             router.addRoute({name: to.fullPath, path: to.fullPath, component: loadVueFile(page)});
             next({name: to.fullPath});
         }
+
     });
 
     router.afterEach(function (to) {
