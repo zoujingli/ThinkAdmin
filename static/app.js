@@ -31,14 +31,17 @@
     router.beforeEach(function (to, fr, next) {
         console.log(fr.fullPath, '-- to -->', to.fullPath)
 
+        let page = to.fullPath;
+        if (to.fullPath === '/') {
+            page = './static/template/index.vue';
+        }
+
         if (router.hasRoute(to.fullPath)) {
             next();
         } else {
-            let page = to.fullPath === '/' ? './static/template/index.vue' : to.fullPath;
             router.addRoute({name: to.fullPath, path: to.fullPath, component: loadVueFile(page)});
             next({name: to.fullPath});
         }
-
     });
 
     router.afterEach(function (to) {
