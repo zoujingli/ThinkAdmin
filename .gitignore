@@ -1,0 +1,6 @@
+.env
+*.log
+/.git
+/.svn
+/.idea
+/.vscode
