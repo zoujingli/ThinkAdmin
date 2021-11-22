@@ -3,7 +3,7 @@
 
 目前拟定以`Vue3`为技术核心库，`UI`组件库使用`Element-Plus`.
 
-目录已经集成组件
+**目录已经集成组件：**
 * vue v3.2.22
 * vue.router v4.0.12
 * vue.sfc.loader v0.8.4
