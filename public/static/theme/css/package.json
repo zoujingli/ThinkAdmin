@@ -1,9 +1,0 @@
-{
-  "name": "theme",
-  "version": "1.0.0",
-  "description": "ThinkAdmin v6 theme less-style build",
-  "scripts": {
-    "install": "npm install less less-plugin-clean-css -g",
-    "build": "lessc --clean-css --source-map login.less login.css && lessc --clean-css --source-map mobile.less mobile.css && lessc --clean-css --source-map console.less console.css && lessc --clean-css --source-map iconfont.less iconfont.css"
-  }
-}

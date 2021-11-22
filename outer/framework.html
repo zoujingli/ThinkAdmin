@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Layout Demo</title>
+
+    <!-- 引入 layui.css -->
+    <link rel="stylesheet" href="https://unpkg.com/layui@2.6.8/dist/css/layui.css">
+
+    <style type="text/less">
+
+      @TopHeadHeight: 60px;
+      @TopHeadNormalBackColor: #925cc3;
+      @TopHeadNormalTextColor: #eee;
+      @TopHeadActiveTextColor: #fff;
+      @TopHeadActiveBackColor: rgba(0, 0, 0, .1);
+
+      @LeftMainWidth: 60px;
+      @LeftTreeWidth: 200px;
+
+      @LeftMainNormalBackColor: #563d7c;
+      @LeftMainActiveBackColor: #FFF;
+      @LeftMainActiveTextColor: #000;
+
+      @LeftTreeNormalBackColor: #FFF;
+
+      @BodyMainBackColor: #EEE;
+
+      .layout-menu,
+      .layout-body {
+        top: @TopHeadHeight;
+        bottom: 0;
+        position: absolute;
+      }
+
+      .layout-menu {
+        top: 0;
+        width: @LeftMainWidth+@LeftTreeWidth;
+        bottom: 0;
+        position: absolute;
+
+        &-head {
+          height: @TopHeadHeight;
+          font-size: 20px;
+          background: @TopHeadNormalBackColor;
+          text-align: center;
+          line-height: @TopHeadHeight;
+
+          a {
+            font-weight: bold;
+            color: @TopHeadNormalTextColor;
+          }
+        }
+
+        &-main {
+          top: @TopHeadHeight;
+          left: 0;
+          bottom: 0;
+          width: @LeftMainWidth;
+          background: @LeftMainNormalBackColor;
+          position: absolute;
+
+          a {
+            color: #fff;
+            padding: 0;
+            display: block;
+            font-size: 16px;
+            text-align: center;
+            line-height: @LeftMainWidth;
+
+            &.active {
+              color: @LeftMainActiveTextColor;
+              background: @LeftMainActiveBackColor;
+            }
+
+            &:hover:not(.active) {
+              background: rgba(0, 0, 0, .1);
+            }
+
+            i {
+              display: block;
+              font-size: 18px;
+            }
+          }
+        }
+
+        &-tree {
+          top: @TopHeadHeight;
+          left: @LeftMainWidth;
+          width: @LeftTreeWidth;
+          bottom: 0;
+          position: absolute;
+          background: @LeftTreeNormalBackColor;
+
+          .layui-menu {
+            margin: 0;
+
+            li {
+              line-height: 40px;
+
+              &:after {
+                display: none;
+              }
+            }
+          }
+        }
+      }
+
+      .layout-head {
+        left: @LeftMainWidth+@LeftTreeWidth;
+        right: 0;
+        height: @TopHeadHeight;
+        position: absolute;
+        background: @TopHeadNormalBackColor;
+
+        .layui-nav {
+          margin: 0;
+          padding: 0;
+          background: @TopHeadNormalBackColor;
+
+          &.layout-head-left {
+            float: left;
+          }
+
+          &.layout-head-right {
+            float: right;
+          }
+
+          .layui-nav-item {
+            height: @TopHeadHeight;
+
+            > li {
+              color: @TopHeadNormalTextColor;
+              height: @TopHeadHeight;
+              line-height: @TopHeadHeight;
+
+              &:after {
+                display: none;
+              }
+
+              &.layui-this {
+                color: @TopHeadActiveTextColor;
+                background: @TopHeadActiveBackColor;
+              }
+            }
+          }
+        }
+      }
+
+      .layout-body {
+        top: @TopHeadHeight;
+        left: @LeftMainWidth+@LeftTreeWidth;
+        right: 0;
+        bottom: 0;
+        padding: 20px;
+        overflow: auto;
+        position: absolute;
+        box-sizing: border-box;
+        background: @BodyMainBackColor;
+      }
+    </style>
+</head>
+<body>
+
+<div class="layout-menu">
+    <div class="layout-menu-head">
+        <a href="javascript:void(0)">Layout Demo</a>
+        <a href="javascript:void(0)" style="position:absolute;right: 10px">
+            <i class="layui-icon layui-icon-spread-left"></i>
+        </a>
+    </div>
+    <div class="layout-menu-main">
+        <a href="#" title="首页">
+            <i class="layui-icon layui-icon-home"></i>
+        </a>
+        <a href="#" class="active" title="文件上传">
+            <i class="layui-icon layui-icon-upload"></i>
+        </a>
+        <a href="#" title="首页">
+            <i class="layui-icon layui-icon-app"></i>
+        </a>
+        <a href="#" title="首页">
+            <i class="layui-icon layui-icon-camera"></i>
+        </a>
+        <a href="#" title="首页">
+            <i class="layui-icon layui-icon-about"></i>
+        </a>
+    </div>
+    <div class="layout-menu-tree">
+        <ul class="layui-menu">
+            <li lay-options="{id: 100}">
+                <div class="layui-menu-body-title">menu item 1</div>
+            </li>
+            <li lay-options="{id: 101}">
+                <div class="layui-menu-body-title">
+                    <a href="#">menu item 2 <span class="layui-badge-dot"></span></a>
+                </div>
+            </li>
+            <li class="layui-menu-item-divider"></li>
+            <li class="layui-menu-item-group layui-menu-item-down" lay-options="{type: 'group'}">
+                <div class="layui-menu-body-title">menu item 3 group <i class="layui-icon layui-icon-up"></i></div>
+                <ul>
+                    <li lay-options="{id: 1031}">menu item 3-1</li>
+                    <li lay-options="{id: 1032}">
+                        <div class="layui-menu-body-title">menu item 3-2</div>
+                    </li>
+                </ul>
+            </li>
+            <li class="layui-menu-item-divider"></li>
+            <li lay-options="{id: 104}">
+                <div class="layui-menu-body-title">menu item 4</div>
+            </li>
+            <li lay-options="{id: 106}">
+                <div class="layui-menu-body-title">menu item 6</div>
+            </li>
+        </ul>
+    </div>
+</div>
+
+<div class="layout-head">
+    <ul class="layui-nav layout-head-left">
+        <li class="layui-nav-item layui-this"><a href="javascript:void(0)"><span>应用管理</span></a></li>
+        <li class="layui-nav-item"><a href="javascript:void(0)"><span>系统管理</span></a></li>
+    </ul>
+    <ul class="layui-nav layout-head-right">
+        <li class="layui-nav-item"><a data-reload=""><i class="layui-icon layui-icon-refresh-3"></i></a></li>
+        <li class="layui-nav-item">
+            <dl class="layui-nav-child">
+                <dd><a><i class="layui-icon layui-icon-set-fill"></i> 基本资料</a></dd>
+                <dd><a><i class="layui-icon layui-icon-component"></i> 安全设置</a></dd>
+                <dd><a><i class="layui-icon layui-icon-template-1"></i> 缓存加速</a></dd>
+                <dd><a><i class="layui-icon layui-icon-fonts-clear"></i> 清理缓存</a></dd>
+                <dd><a><i class="layui-icon layui-icon-release"></i> 退出登录</a></dd>
+            </dl>
+            <a class="layui-elip">
+                <span class="headimg" data-lazy-src="https://v6.thinkadmin.top/upload/fa/16bb16ed899662e4776762c4c8253f.jpg"></span>
+                <span>admin</span><i class="layui-icon layui-icon-down layui-nav-more"></i>
+            </a>
+        </li>
+    </ul>
+
+</div>
+
+<div class="layout-body">
+    <div class="layout-body-nav"></div>
+    <div>首页</div>
+    <div>首页</div>
+    <div>首页</div>
+    <div>首页</div>
+    <div>首页</div>
+    <div>首页</div>
+    <div>首页</div>
+    <div>首页</div>
+    <div>首页</div>
+    <div>首页</div>
+    <div>首页</div>
+    <div>首页</div>
+    <div>首页</div>
+    <div>首页</div>
+    <div>首页</div>
+    <div>首页</div>
+    <div>首页</div>
+    <div>首页</div>
+    <div>首页</div>
+    <div>首页</div>
+    <div>首页</div>
+    <div>首页</div>
+    <div>首页</div>
+    <div>首页</div>
+    <div>首页</div>
+    <div>首页</div>
+    <div>首页</div>
+    <div>首页</div>
+    <div>首页</div>
+    <div>首页</div>
+    <div>首页</div>
+    <div>首页</div>
+    <div>首页</div>
+    <div>首页</div>
+    <div>首页</div>
+    <div>首页</div>
+    <div>首页</div>
+    <div>首页</div>
+    <div>首页</div>
+    <div>首页</div>
+    <div>首页</div>
+    <div>首页</div>
+    <div>首页</div>
+    <div>首页</div>
+    <div>首页</div>
+    <div>首页</div>
+    <div>首页</div>
+    <div>首页</div>
+    <div>首页</div>
+    <div>首页</div>
+    <div>首页</div>
+    <div>首页</div>
+    <div>首页</div>
+    <div>首页</div>
+    <div>首页</div>
+    <div>首页</div>
+    <div>首页</div>
+    <div>首页</div>
+    <div>首页</div>
+    <div>首页</div>
+    <div>首页</div>
+    <div>首页</div>
+    <div>首页</div>
+    <div>首页</div>
+    <div>首页</div>
+    <div>首页</div>
+    <div>首页</div>
+    <div>首页</div>
+    <div>首页</div>
+    <div>首页</div>
+    <div>首页</div>
+    <div>首页</div>
+    <div>首页</div>
+    <div>首页</div>
+    <div>首页</div>
+</div>
+
+
+<!-- 引入 layui.js -->
+<script src="https://unpkg.com/layui@2.6.8/dist/layui.js"></script>
+<script src="https://cdn.bootcdn.net/ajax/libs/less.js/4.1.1/less.min.js"></script>
+
+</body>
+</html>
