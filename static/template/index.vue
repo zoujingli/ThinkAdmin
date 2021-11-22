@@ -9,7 +9,7 @@ export default {
   name: "index",
   data() {
     return {
-      userName: "张三32"
+      userName: "张三"
     }
   },
   created() {

@@ -29,22 +29,23 @@
     });
 
     router.beforeEach(function (to, fr, next) {
-        console.log(fr.fullPath, '-- to -->', to.fullPath)
 
         let page = to.fullPath;
         if (to.fullPath === '/') {
             page = './static/template/index.vue';
         }
 
-        if (router.hasRoute(to.fullPath)) {
+        let name = page.replace(/[.\/]+/g, '_');
+        if (router.hasRoute(name)) {
             next();
         } else {
-            router.addRoute({name: to.fullPath, path: to.fullPath, component: loadVueFile(page)});
-            next({name: to.fullPath});
+            router.addRoute({name: name, path: to.fullPath, component: loadVueFile(page)});
+            next({name: name});
         }
     });
 
     router.afterEach(function (to) {
+        console.log('afterEach', to);
         if (router.hasRoute(to.fullPath)) {
             router.removeRoute(to.fullPath)
         }
