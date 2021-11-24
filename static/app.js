@@ -11,8 +11,9 @@
             });
         },
         addStyle(textContent) {
+            const style = document.head.getElementsByTagName('style')[0] || null;
             const object = Object.assign(document.createElement('style'), {textContent});
-            document.head.insertBefore(object, document.head.getElementsByTagName('style')[0] || null);
+            document.head.insertBefore(object, style);
         },
     };
 
@@ -22,7 +23,7 @@
 
     const app = Vue.createApp({
         name: 'app',
-        components: {'layout': await loadVue('./static/template/layout.vue')}
+        components: {layout: await loadVue('./static/template/layout.vue')}
     });
 
     const router = VueRouter.createRouter({
