@@ -13,6 +13,45 @@
   </el-container>
 </template>
 
+<style lang="less">
+html, body, #app {
+  height: 100%;
+  display: block;
+  margin: 0;
+  padding: 0;
+}
+
+#app > .el-container {
+  height: 100%;
+
+  > .el-header {
+    color: #fff;
+    background: #0d84ff;
+    line-height: 60px;
+  }
+
+  > .el-container {
+
+    > .el-aside {
+      background: #53a8ff;
+    }
+
+    > .el-container {
+
+      > .el-main {
+        background: gray;
+      }
+
+      > .el-footer {
+        color: #fff;
+        background: #333;
+        line-height: 60px;
+      }
+
+    }
+  }
+}
+</style>
 
 <script>
 export default {

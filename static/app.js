@@ -1,16 +1,18 @@
 ;(async () => {
     const options = {
-        moduleCache: {vue: Vue},
+        moduleCache: {
+            vue: Vue,
+            less: less
+        },
         getFile(url) {
             return fetch(url).then(res => {
                 if (!res.ok) throw Object.assign(new Error(url + ' ' + res.statusText), {res});
                 return res.text();
-            })
+            });
         },
         addStyle(textContent) {
-            document.head.insertBefore(
-                Object.assign(document.createElement('style'), {textContent}),
-                document.head.getElementsByTagName('style')[0] || null);
+            const object = Object.assign(document.createElement('style'), {textContent});
+            document.head.insertBefore(object, document.head.getElementsByTagName('style')[0] || null);
         },
     };
 
