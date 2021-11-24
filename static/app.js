@@ -33,12 +33,12 @@
 
     router.beforeEach(function (to, fr, next) {
 
-        let page = to.fullPath;
+        const page = to.fullPath;
         if (to.fullPath === '/') {
             page = './static/template/index.vue';
         }
 
-        let name = page.replace(/[.\/]+/g, '_');
+        const name = page.replace(/[.\/]+/g, '_');
         if (router.hasRoute(name)) {
             next();
         } else {
