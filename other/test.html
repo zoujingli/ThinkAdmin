@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <script src="https://unpkg.com/vue@3"></script>
+    <script src="https://unpkg.com/vue-router@4"></script>
+    <script src="https://unpkg.com/http-vue-loader"></script>
+</head>
+
+<body>
+
+<div>
+    <h1>Hello App!</h1>
+    <div id="app">
+        <div>
+            <router-link to="/">Go to Home</router-link>
+        </div>
+        <div>
+            <router-link to="/about">Go to 1</router-link>
+        </div>
+        <div>
+            <router-link to="/4213412">Go to 2</router-link>
+        </div>
+        <div>
+            <router-link to="/fdasfa">Go to 3</router-link>
+        </div>
+        <router-view></router-view>
+    </div>
+    <script>
+
+        const router = VueRouter.createRouter({
+            routes: [],
+            history: VueRouter.createWebHashHistory(),
+        });
+
+        router.beforeEach(function (to, fr, next) {
+            console.log(fr.fullPath, '-- to -->', to.fullPath)
+            if (router.hasRoute(to.fullPath)) {
+                next();
+            } else {
+                router.addRoute({
+                    name: to.fullPath,
+                    path: to.fullPath,
+                    component: httpVueLoader('test.html.vue')
+                });
+                next({name: to.fullPath});
+            }
+        });
+
+        router.afterEach(function (to) {
+            if (router.hasRoute(to.fullPath)) {
+                router.removeRoute(to.fullPath)
+            }
+        });
+
+        Vue.createApp({}).use(router).mount('#app')
+    </script>
+</body>
+</html>
