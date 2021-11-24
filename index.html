@@ -6,51 +6,17 @@
     <title>Layout Demo - 这是一个技术实践分支，仅用于测试使用</title>
 
     <!-- 加载框架样式 -->
-    <link rel="stylesheet" href="./static/plugs/core/vue.element.plus.css"/>
+    <link rel="stylesheet" href="static/plugs/core/vue.element.plus.css">
 
-    <style type="text/less">
-      html, body, #app {
-        height: 100%;
-        display: block;
-        margin: 0;
-        padding: 0;
-      }
-
-      #app > .el-container {
-        height: 100%;
-
-        > .el-header {
-          color: #fff;
-          background: #0d84ff;
-          line-height: 60px;
-        }
-
-        > .el-container {
-          > .el-aside {
-            background: #53a8ff;
-          }
-
-          > .el-container {
-            > .el-main {
-              background: gray;
-            }
-
-            > .el-footer {
-              color: #fff;
-              background: #333;
-              line-height: 60px;
-            }
-          }
-        }
-      }
-    </style>
 
     <!-- 加载基础框架组件 -->
     <script src="static/plugs/core/vue.min.js"></script>
     <script src="static/plugs/core/vue.router.js"></script>
     <script src="static/plugs/core/vue.sfc.loader.js"></script>
     <script src="static/plugs/core/vue.element.plus.js"></script>
-    <script src="static/plugs/less/less.min.js"></script>
+    <script src="static/plugs/less/less.min.js" async></script>
+    
+    <link rel="stylesheet/less" href="static/app.less">
 
     <!-- 加载基础框架模块 -->
     <script type="module" src="static/app.js"></script>

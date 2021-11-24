@@ -13,8 +13,8 @@
   </el-container>
 </template>
 
-<script>
 
+<script>
 export default {
   name: "layout",
   components: {},
