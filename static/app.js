@@ -33,7 +33,7 @@
 
     router.beforeEach(function (to, fr, next) {
 
-        const page = to.fullPath;
+        let page = to.fullPath;
         if (to.fullPath === '/') {
             page = './static/template/index.vue';
         }
