@@ -111,7 +111,7 @@ body > .el-container {
   }
 }
 
-.layout-head .el-menu {
+.layout-head.el-menu {
   .el-menu-item:not(.is-disabled) {
     border-bottom: 0 !important;
 
@@ -201,9 +201,6 @@ export default {
         {name: 'FOR', title: 'SHOW-FOR-LIST', subs: []},
       ]
     }
-  },
-  created() {
-  },
-  methods: {}
+  }
 }
 </script>
