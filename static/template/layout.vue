@@ -37,6 +37,7 @@
 </template>
 
 <style lang="less">
+
 html, body {
   margin: 0;
   height: 100%;
@@ -67,6 +68,36 @@ body > .el-container {
         color: #fff;
         background: #333;
         line-height: 60px;
+      }
+    }
+  }
+}
+
+.el-menu {
+  .el-menu-item:not(.is-disabled) {
+    border-bottom: 0 !important;
+
+    &:hover {
+      color: #FFF !important;
+      background: rgba(54, 25, 88, 0.9) !important;
+    }
+
+    &.is-active {
+      color: #FFF !important;
+      background: rgba(0, 0, 0, 0.4);
+      border-bottom: 0 !important;
+    }
+  }
+
+  .el-sub-menu {
+    .el-sub-menu__title {
+      color: #FFF !important;
+      background: none !important;
+    }
+
+    &.is-opened {
+      .el-sub-menu__title {
+        background: rgba(0, 0, 0, 0.1) !important;
       }
     }
   }
@@ -114,36 +145,6 @@ body > .el-container {
     height: 100% !important;
     background: red;
     text-align: center;
-  }
-}
-
-.el-menu {
-  .el-menu-item:not(.is-disabled) {
-    border-bottom: 0 !important;
-
-    &:hover {
-      color: #FFF !important;
-      background: rgba(54, 25, 88, 0.9) !important;
-    }
-
-    &.is-active {
-      color: #FFF !important;
-      background: rgba(0, 0, 0, 0.4);
-      border-bottom: 0 !important;
-    }
-  }
-
-  .el-sub-menu {
-    .el-sub-menu__title {
-      color: #FFF !important;
-      background: none !important;
-    }
-
-    &.is-opened {
-      .el-sub-menu__title {
-        background: rgba(0, 0, 0, 0.1) !important;
-      }
-    }
   }
 }
 </style>
