@@ -2,12 +2,9 @@
   <el-container>
     <el-header style="padding:0">
       <el-menu
-          mode="horizontal"
           :default-active="1"
-          text-color="#fff"
-          background-color="rgba(54,25,88,.9)"
-          active-text-color="rgba(54,25,88,1)"
-          style="border-bottom:0"
+          mode="horizontal" text-color="#fff" style="border-bottom:0"
+          background-color="rgba(54,25,88,0.9)" active-text-color="rgba(54,25,88,1.0)"
       >
         <el-menu-item route="/" index="1">ThinkAdmin For HTML</el-menu-item>
         <el-sub-menu index="2">
@@ -137,6 +134,32 @@ body > .el-container {
   text-align: center;
 }
 
+.el-menu {
+  .el-menu-item:not(.is-disabled) {
+    &:hover {
+      color: #FFF !important;
+      background: rgba(54, 25, 88, 0.9) !important;
+    }
+
+    &.is-active {
+      color: #FFF !important;
+      background: rgba(0, 0, 0, 0.4);
+    }
+  }
+
+  .el-sub-menu {
+    .el-sub-menu__title {
+      color: #FFF !important;
+      background: none !important;
+    }
+
+    &.is-opened {
+      .el-sub-menu__title {
+        background: rgba(0, 0, 0, 0.1) !important;
+      }
+    }
+  }
+}
 </style>
 
 <script>
