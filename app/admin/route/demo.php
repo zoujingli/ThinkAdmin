@@ -36,9 +36,6 @@ invoke(function (App $app) {
         $app->route->post('config/storage', function () {
             return json(['code' => 0, 'info' => '演示环境禁止修改系统配置！']);
         });
-        $app->route->post('menu', function () {
-            return json(['code' => 0, 'info' => '演示环境禁止给菜单排序！']);
-        });
         $app->route->post('menu/index', function () {
             return json(['code' => 0, 'info' => '演示环境禁止给菜单排序！']);
         });
