@@ -15,7 +15,7 @@
           <el-menu-item index="2-2">item two</el-menu-item>
           <el-menu-item index="2-3">item three</el-menu-item>
         </el-sub-menu>
-        <el-menu-item index="3" disabled>Info</el-menu-item>
+        <el-menu-item index="3">Info</el-menu-item>
         <el-menu-item index="4">Orders</el-menu-item>
       </el-menu>
     </el-header>
@@ -23,7 +23,7 @@
       <el-aside width="280px">
         <el-container style="height:100%">
           <el-aside width="80px" style="background:rgba(54,25,88,.9);height:100%">
-            
+
           </el-aside>
           <el-container style="background:#8c939d">
             <el-menu default-active="1" style="width:100%">
