@@ -61,8 +61,8 @@
     });
 
     // 全局字体文件
-    const icons = await loadVue("https://unpkg.com/@element-plus/icons@0.0.11/lib/index.js");
-    for (let i in icons) window.$think.component(i, icons[i]);
+    // const icons = await loadVue("https://unpkg.com/@element-plus/icons@0.0.11/lib/index.js");
+    // for (let i in icons) window.$think.component(i, icons[i]);
 
     window.$think.use(router).use(ElementPlus).mount(document.body);
 

@@ -3,10 +3,11 @@
     <el-header style="padding:0">
       <el-menu
           mode="horizontal"
-          text-color="#fff"
           :default-active="1"
+          text-color="#fff"
           background-color="rgba(54,25,88,.9)"
           active-text-color="rgba(54,25,88,1)"
+          style="border-bottom:0"
       >
         <el-menu-item route="/" index="1">ThinkAdmin For HTML</el-menu-item>
         <el-sub-menu index="2">
@@ -21,52 +22,28 @@
     </el-header>
     <el-container>
       <el-aside width="280px">
-        <el-container style="height:100%">
-          <el-aside width="80px" style="background:rgba(54,25,88,.9);height:100%">
-
-          </el-aside>
-          <el-container style="background:#8c939d">
-            <el-menu default-active="1" style="width:100%">
-              <el-sub-menu index="1">
-                <template #title>
-                  <el-icon>
-                    <location/>
-                  </el-icon>
-                  <span>Navigator One</span>
-                </template>
-                <el-menu-item-group title="Group One">
-                  <el-menu-item index="1-1">item one</el-menu-item>
-                  <el-menu-item index="1-2">item one</el-menu-item>
-                </el-menu-item-group>
-                <el-menu-item-group title="Group Two">
-                  <el-menu-item index="1-3">item three</el-menu-item>
-                </el-menu-item-group>
-                <el-sub-menu index="1-4">
-                  <template #title>item four</template>
-                  <el-menu-item index="1-4-1">item one</el-menu-item>
-                </el-sub-menu>
-              </el-sub-menu>
-              <el-menu-item index="2">
-                <el-icon>
-                  <icon-menu/>
-                </el-icon>
-                <span>Navigator Two</span>
-              </el-menu-item>
-              <el-menu-item index="3" disabled>
-                <el-icon>
-                  <document/>
-                </el-icon>
-                <span>Navigator Three</span>
-              </el-menu-item>
-              <el-menu-item index="4">
-                <el-icon>
-                  <setting/>
-                </el-icon>
-                <span>Navigator Four</span>
-              </el-menu-item>
-            </el-menu>
-          </el-container>
-        </el-container>
+        <el-tabs tab-position="left" style="height:100%">
+          <el-tab-pane>
+            <template #label>ONE</template>
+            <h3>ONE - MENU</h3>
+          </el-tab-pane>
+          <el-tab-pane>
+            <template #label>TWO</template>
+            <h3>TWO - MENU</h3>
+          </el-tab-pane>
+          <el-tab-pane>
+            <template #label>THR</template>
+            <h3>THR - MENU</h3>
+          </el-tab-pane>
+          <el-tab-pane>
+            <template #label>FUR</template>
+            <h3>FUR - MENU</h3>
+          </el-tab-pane>
+          <el-tab-pane>
+            <template #label>FIV</template>
+            <h3>FIV - MENU</h3>
+          </el-tab-pane>
+        </el-tabs>
       </el-aside>
       <el-container>
         <el-main>
@@ -116,6 +93,50 @@ body > .el-container {
     }
   }
 }
+
+.el-tabs__header {
+  width: 60px;
+  margin: 0 !important;
+  background: rgba(54, 25, 88, 0.8);
+
+  .el-tabs__active-bar {
+    display: none !important;
+
+  }
+
+  .el-tabs__nav-wrap {
+    margin-right: 0 !important;
+
+    &::after {
+      display: none;
+    }
+  }
+
+  .el-tabs__item {
+    color: #FFF;
+    width: 100% !important;
+    height: 60px !important;
+    padding: 0 !important;
+    line-height: 60px !important;
+    text-align: center !important;
+
+    &.is-active {
+      background: rgba(0, 0, 0, 0.4);
+    }
+
+    &:hover:not(.is-active) {
+      background: rgba(0, 0, 0, 0.1);
+    }
+  }
+}
+
+.el-tabs__content {
+  width: 220px !important;
+  height: 100% !important;
+  background: red;
+  text-align: center;
+}
+
 </style>
 
 <script>
