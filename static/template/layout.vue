@@ -1,7 +1,7 @@
 <template>
   <el-container>
     <el-header style="padding:0">
-      <el-menu class="layout-head"
+      <el-menu class="think-header"
                :default-active="1"
                mode="horizontal" text-color="#fff" style="border-bottom:0"
                background-color="rgba(54,25,88,0.9)" active-text-color="rgba(54,25,88,1.0)"
@@ -111,7 +111,7 @@ body > .el-container {
   }
 }
 
-.layout-head.el-menu {
+.think-header.el-menu {
   .el-menu-item:not(.is-disabled) {
     border-bottom: 0 !important;
 
