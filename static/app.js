@@ -6,8 +6,8 @@
         },
         getFile(url) {
             return fetch(url).then(res => {
-                if (!res.ok) throw Object.assign(new Error(url + ' ' + res.statusText), {res});
-                return res.text();
+                if (res.ok) return res.text();
+                throw Object.assign(new Error(url + ' ' + res.statusText), {res});
             });
         },
         addStyle(textContent) {
@@ -21,10 +21,6 @@
     const loadVue = (vuePath) => loadModule(vuePath, options);
     const loadVueFile = (vuePath) => () => loadVue(vuePath);
 
-    const app = Vue.createApp({
-        name: 'app',
-        components: {layout: await loadVue('./static/template/layout.vue')}
-    });
 
     const router = VueRouter.createRouter({
         routes: [],
@@ -54,8 +50,19 @@
         }
     });
 
-    app.use(ElementPlus).use(router).mount("#app");
+    window.app = Vue.createApp({
+        name: 'app',
+        components: {
+            layout: await loadVue('./static/template/layout.vue'),
+        }
+    });
 
+    // 全局字体文件
+    const icons = await loadVue("https://unpkg.com/@element-plus/icons@0.0.11/lib/index.js");
+    for (let i in icons) app.component(i, icons[i]);
+
+    app.use(router).use(ElementPlus).mount(document.body);
+    
 })().catch(function (ex) {
     console.error(ex);
 });
