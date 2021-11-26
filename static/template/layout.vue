@@ -20,25 +20,9 @@
     <el-container>
       <el-aside width="280px">
         <el-tabs tab-position="left" style="height:100%">
-          <el-tab-pane>
-            <template #label>ONE</template>
-            <h3>ONE - MENU</h3>
-          </el-tab-pane>
-          <el-tab-pane>
-            <template #label>TWO</template>
-            <h3>TWO - MENU</h3>
-          </el-tab-pane>
-          <el-tab-pane>
-            <template #label>THR</template>
-            <h3>THR - MENU</h3>
-          </el-tab-pane>
-          <el-tab-pane>
-            <template #label>FUR</template>
-            <h3>FUR - MENU</h3>
-          </el-tab-pane>
-          <el-tab-pane>
-            <template #label>FIV</template>
-            <h3>FIV - MENU</h3>
+          <el-tab-pane v-for="menu in menus">
+            <template #label>{{ menu.name }}</template>
+            <h3 v-text="menu.title"></h3>
           </el-tab-pane>
         </el-tabs>
       </el-aside>
@@ -54,9 +38,9 @@
 
 <style lang="less">
 html, body {
+  margin: 0;
   height: 100%;
   display: block;
-  margin: 0;
   padding: 0;
 }
 
@@ -70,13 +54,11 @@ body > .el-container {
   }
 
   > .el-container {
-
     > .el-aside {
       background: #53a8ff;
     }
 
     > .el-container {
-
       > .el-main {
         background: #efefef;
       }
@@ -86,7 +68,6 @@ body > .el-container {
         background: #333;
         line-height: 60px;
       }
-
     }
   }
 }
@@ -173,7 +154,12 @@ export default {
   components: {},
   data() {
     return {
-      menus: []
+      menus: [
+        {name: 'ONE', title: 'SHOW-ONE-LIST', subs: []},
+        {name: 'TWO', title: 'SHOW-TWO-LIST', subs: []},
+        {name: 'THR', title: 'SHOW-THR-LIST', subs: []},
+        {name: 'FOR', title: 'SHOW-FOR-LIST', subs: []},
+      ]
     }
   },
   created() {
