@@ -9,20 +9,25 @@
           active-text-color="rgba(54,25,88,1.0)"
       >
         <el-menu-item route="/" index="1">ThinkAdmin For HTML</el-menu-item>
+
         <el-sub-menu index="2">
           <template #title>Workspace</template>
           <el-menu-item index="2-1">item one</el-menu-item>
           <el-menu-item index="2-2">item two</el-menu-item>
           <el-menu-item index="2-3">item three</el-menu-item>
         </el-sub-menu>
+
         <el-menu-item index="3">Info</el-menu-item>
         <el-menu-item index="4">Orders</el-menu-item>
+
         <el-sub-menu index="5">
-          <template #title>Workspace</template>
-          <el-menu-item index="2-1">item one</el-menu-item>
-          <el-menu-item index="2-2">item two</el-menu-item>
-          <el-menu-item index="2-3">item three</el-menu-item>
+          <template #title>系统管理员</template>
+          <el-menu-item index="2-1">个人中心</el-menu-item>
+          <el-menu-item index="2-2">安全设置</el-menu-item>
+          <el-menu-item index="2-3">清空缓存</el-menu-item>
+          <el-menu-item index="2-4">退出登录</el-menu-item>
         </el-sub-menu>
+
       </el-menu>
     </el-header>
     <el-container>
@@ -118,6 +123,7 @@ body > .el-container {
             }
           }
 
+
           &:hover {
             color: #FFF !important;
             background: rgba(54, 25, 88, 0.9) !important;
@@ -131,15 +137,19 @@ body > .el-container {
       }
 
       .el-sub-menu {
-        .el-sub-menu__title {
-          color: #FFF !important;
-          background: none !important;
+        &:last-child {
+          margin-left: auto;
         }
 
         &.is-opened {
           .el-sub-menu__title {
             background: rgba(0, 0, 0, 0.1) !important;
           }
+        }
+
+        .el-sub-menu__title {
+          color: #FFF !important;
+          background: none !important;
         }
       }
     }
@@ -248,6 +258,10 @@ body > .el-container {
       }
     }
   }
+}
+
+.LoginSubMenu {
+  text-align: center;
 }
 </style>
 
