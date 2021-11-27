@@ -17,20 +17,30 @@
         </el-sub-menu>
         <el-menu-item index="3">Info</el-menu-item>
         <el-menu-item index="4">Orders</el-menu-item>
+        <el-sub-menu index="5">
+          <template #title>Workspace</template>
+          <el-menu-item index="2-1">item one</el-menu-item>
+          <el-menu-item index="2-2">item two</el-menu-item>
+          <el-menu-item index="2-3">item three</el-menu-item>
+        </el-sub-menu>
       </el-menu>
     </el-header>
     <el-container>
       <el-aside>
         <el-tabs tab-position="left">
           <el-tab-pane v-for="menu in menus">
-            <template #label>{{ menu.name }}</template>
+            <template #label>
+              <el-tooltip effect="dark" placement="right" :content="menu.title">
+                <div v-text="menu.name"></div>
+              </el-tooltip>
+            </template>
             <h5 v-text="menu.title">Default colors</h5>
             <el-menu default-active="2">
               <el-sub-menu index="1">
                 <template #title>
-                  <!--                  <el-icon>-->
-                  <!--                    <location></location>-->
-                  <!--                  </el-icon>-->
+                  <!--<el-icon>-->
+                  <!--<location></location>-->
+                  <!--</el-icon>-->
                   <span>Navigator One</span>
                 </template>
 
@@ -40,21 +50,21 @@
 
               </el-sub-menu>
               <el-menu-item index="2">
-                <!--                <el-icon>-->
-                <!--                  <icon-menu></icon-menu>-->
-                <!--                </el-icon>-->
+                <!--<el-icon>-->
+                <!--<icon-menu></icon-menu>-->
+                <!--</el-icon>-->
                 <span>Navigator Two</span>
               </el-menu-item>
               <el-menu-item index="3">
-                <!--                <el-icon>-->
-                <!--                  <document></document>-->
-                <!--                </el-icon>-->
+                <!--<el-icon>-->
+                <!--<document></document>-->
+                <!--</el-icon>-->
                 <span>Navigator Three</span>
               </el-menu-item>
               <el-menu-item index="4">
-                <!--                <el-icon>-->
-                <!--                  <setting></setting>-->
-                <!--                </el-icon>-->
+                <!--<el-icon>-->
+                <!--<setting></setting>-->
+                <!--</el-icon>-->
                 <span>Navigator Four</span>
               </el-menu-item>
             </el-menu>
@@ -138,8 +148,8 @@ body > .el-container {
   > .el-container {
     > .el-aside {
       background: #53a8ff;
-      --el-aside-width: 280px;
       box-shadow: 10px 10px 5px #888888;
+      --el-aside-width: 280px;
 
       .el-tabs {
         height: 100%;
@@ -148,7 +158,7 @@ body > .el-container {
         -moz-user-select: none;
 
         .el-tabs__header {
-          width: 60px;
+          width: 58px;
           margin: 0 !important;
           background: rgba(54, 25, 88, 0.8);
 
@@ -167,9 +177,9 @@ body > .el-container {
           .el-tabs__item {
             color: #FFF;
             width: 100% !important;
-            height: 60px !important;
             padding: 0 !important;
-            line-height: 60px !important;
+            height: 58px !important;
+            line-height: 58px !important;
             text-align: center !important;
 
             &.is-active {
@@ -184,16 +194,16 @@ body > .el-container {
         }
 
         .el-tabs__content {
-          width: 220px !important;
+          width: 221px !important;
           height: 100% !important;
           background: #FFF;
 
           h5 {
             margin: 0;
             padding: 0;
-            text-align: center;
-            line-height: 60px;
             display: none;
+            text-align: center;
+            line-height: 58px;
             border-bottom: 1px solid #CCC;
           }
 
