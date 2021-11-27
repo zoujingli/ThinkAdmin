@@ -21,7 +21,10 @@
         <el-menu-item index="4">Orders</el-menu-item>
 
         <el-sub-menu index="5">
-          <template #title>系统管理员</template>
+          <template #title>
+            <el-avatar size="small">U</el-avatar>
+            <span style="margin-left:5px">系统管理员</span>
+          </template>
           <el-menu-item index="2-1">个人中心</el-menu-item>
           <el-menu-item index="2-2">安全设置</el-menu-item>
           <el-menu-item index="2-3">清空缓存</el-menu-item>
