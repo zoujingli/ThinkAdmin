@@ -101,6 +101,7 @@ body > .el-container {
   > .el-header {
     margin: 0;
     padding: 0;
+
     user-select: none;
     -ms-user-select: none;
     -moz-user-select: none;
@@ -122,7 +123,6 @@ body > .el-container {
               background: rgba(0, 0, 0, 0) !important;
             }
           }
-
 
           &:hover {
             color: #FFF !important;
