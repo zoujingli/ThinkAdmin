@@ -146,9 +146,9 @@ body > .el-container {
   }
 
   > .el-container {
+
     > .el-aside {
       background: #53a8ff;
-      box-shadow: 10px 10px 5px #888888;
       --el-aside-width: 280px;
 
       .el-tabs {
@@ -183,7 +183,7 @@ body > .el-container {
             text-align: center !important;
 
             &.is-active {
-              color: #333333;
+              color: #333;
               background: #FFF;
             }
 
@@ -221,8 +221,8 @@ body > .el-container {
 
         > .el-container {
           > .el-header {
+            background: white;
             line-height: 60px;
-            background: rgb(255, 255, 255);
           }
 
           > .el-main {
@@ -232,7 +232,7 @@ body > .el-container {
       }
 
       > .el-footer {
-        color: #333333;
+        color: #333;
         background: #CCCCCC;
         line-height: 60px;
         text-align: center;
