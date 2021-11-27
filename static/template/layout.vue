@@ -220,13 +220,21 @@ body > .el-container {
         background: #EFEFEF;
 
         > .el-container {
+          height: 100%;
+
           > .el-header {
             background: white;
             line-height: 60px;
           }
 
           > .el-main {
+            height: 1px;
+            padding: 0;
 
+            > .el-scrollbar {
+              padding: 20px;
+              box-sizing: border-box;
+            }
           }
         }
       }
