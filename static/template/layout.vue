@@ -113,13 +113,13 @@ body > .el-container {
             font-weight: bold;
 
             &:hover, &:active, &:focus, &.is-active {
-              color: #FFFFFF !important;
+              color: #FFF !important;
               background: rgba(0, 0, 0, 0) !important;
             }
           }
 
           &:hover {
-            color: #FFFFFF !important;
+            color: #FFF !important;
             background: rgba(54, 25, 88, 0.9) !important;
           }
 
@@ -132,7 +132,7 @@ body > .el-container {
 
       .el-sub-menu {
         .el-sub-menu__title {
-          color: #FFFFFF !important;
+          color: #FFF !important;
           background: none !important;
         }
 
@@ -184,7 +184,7 @@ body > .el-container {
 
             &.is-active {
               color: #333333;
-              background: #FFFFFF;
+              background: #FFF;
             }
 
             &:hover:not(.is-active) {
@@ -196,7 +196,7 @@ body > .el-container {
         .el-tabs__content {
           width: 221px !important;
           height: 100% !important;
-          background: #FFF;
+          background: #FFF !important;
 
           h5 {
             margin: 0;
