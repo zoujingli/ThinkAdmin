@@ -30,7 +30,7 @@
         <el-tabs tab-position="left">
           <el-tab-pane v-for="menu in menus">
             <template #label>
-              <el-tooltip effect="dark" placement="right" :content="menu.title">
+              <el-tooltip :content="menu.title" effect="dark" placement="right">
                 <div v-text="menu.name"></div>
               </el-tooltip>
             </template>
@@ -146,6 +146,7 @@ body > .el-container {
   }
 
   > .el-container {
+    height: 1px;
 
     > .el-aside {
       background: #53a8ff;
@@ -260,6 +261,21 @@ export default {
         {name: 'TWO', title: 'SHOW-TWO-LIST', subs: []},
         {name: 'THR', title: 'SHOW-THR-LIST', subs: []},
         {name: 'FOR', title: 'SHOW-FOR-LIST', subs: []},
+        {name: 'FIV', title: 'SHOW-FOR-LIST', subs: []},
+        {name: 'SIX', title: 'SHOW-FOR-LIST', subs: []},
+        {name: 'SEN', title: 'SHOW-FOR-LIST', subs: []},
+        {name: 'SIX', title: 'SHOW-FOR-LIST', subs: []},
+        {name: 'EVN', title: 'SHOW-FOR-LIST', subs: []},
+        {name: 'TEN', title: 'SHOW-FOR-LIST', subs: []},
+        {name: '111', title: 'SHOW-FOR-LIST', subs: []},
+        {name: '122', title: 'SHOW-FOR-LIST', subs: []},
+        {name: '133', title: 'SHOW-FOR-LIST', subs: []},
+        {name: '144', title: 'SHOW-FOR-LIST', subs: []},
+        {name: '155', title: 'SHOW-FOR-LIST', subs: []},
+        {name: '166', title: 'SHOW-FOR-LIST', subs: []},
+        {name: '177', title: 'SHOW-FOR-LIST', subs: []},
+        {name: '188', title: 'SHOW-FOR-LIST', subs: []},
+        {name: '199', title: 'SHOW-FOR-LIST', subs: []},
       ]
     }
   }
