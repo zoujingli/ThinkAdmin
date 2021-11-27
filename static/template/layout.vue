@@ -259,10 +259,6 @@ body > .el-container {
     }
   }
 }
-
-.LoginSubMenu {
-  text-align: center;
-}
 </style>
 
 <script>
