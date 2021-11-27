@@ -47,7 +47,7 @@
     });
 
     router.afterEach(function (to) {
-        console.log('afterEach', to);
+        console.log('Route: ', to.name);
         if (router.hasRoute(to.fullPath)) {
             router.removeRoute(to.fullPath)
         }
