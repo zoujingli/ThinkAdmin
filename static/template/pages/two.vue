@@ -2,7 +2,7 @@
   <el-container>
     <el-header>
       <el-row justify="space-between">
-        <el-col :span="12">页面标题 - 导航条 - TWO-PAGE</el-col>
+        <el-col :span="12">Item-Two-Page</el-col>
         <el-col :span="12" style="text-align:right">
           <el-button>功能按钮1</el-button>
           <el-button>功能按钮2</el-button>

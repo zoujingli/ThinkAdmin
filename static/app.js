@@ -27,26 +27,23 @@
     const loadVueFile = (vuePath) => () => loadVue(vuePath);
 
     const router = VueRouter.createRouter({
-        routes: [],
-        history: VueRouter.createWebHashHistory(),
+        routes: [], history: VueRouter.createWebHashHistory(),
     });
 
     router.beforeEach(function (to, fr, next) {
 
         let page = to.fullPath;
-
         if (to.fullPath === '/') {
             page = './static/template/pages/one.vue';
         }
         page = page.replace(/-/g, '/');
-
-        console.log('before', page)
 
         const name = page.replace(/[.\/]+/g, '_');
         if (router.hasRoute(name)) {
             next();
         } else {
             router.addRoute({name: name, path: to.fullPath, component: loadVueFile(page)});
+            // component: Vue.defineAsyncComponent(() => loadVue(page))
             next({name: name});
         }
     });
@@ -58,12 +55,15 @@
         }
     });
 
-    window.$think = Vue.createApp({
-        name: 'ThinkAdmin',
-        components: {
-            layout: await loadVue('./static/template/layout.vue'),
-        }
-    });
+    // window.$think = Vue.createApp({
+    //     // name: 'ThinkAdmin',
+    //     components: {
+    //         layout: await loadVue('./static/template/layout.vue'),
+    //     }
+    // });
+
+    window.$think = Vue.createApp(Vue.defineAsyncComponent(() => loadVue('./static/template/layout.vue')));
+
 
     // 全局字体文件
     // const icons = await loadVue("https://unpkg.com/@element-plus/icons@0.0.11/lib/index.js");
