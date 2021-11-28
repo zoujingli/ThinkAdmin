@@ -42,8 +42,8 @@
                 <div v-text="menu.name"></div>
               </el-tooltip>
             </template>
-            <h5 v-text="menu.title">Default colors</h5>
-            <el-menu default-active="2">
+            <h5 v-text="menu.title"></h5>
+            <el-menu :default-active="1" :open="1" :router="true">
               <el-sub-menu index="1">
                 <template #title>
                   <!--<el-icon>-->
@@ -52,9 +52,9 @@
                   <span>Navigator One</span>
                 </template>
 
-                <el-menu-item index="1-1">item one</el-menu-item>
-                <el-menu-item index="1-2">item one</el-menu-item>
-                <el-menu-item index="1-3">item three</el-menu-item>
+                <el-menu-item index="1-1" route="static-template-pages-one.vue">item one route</el-menu-item>
+                <el-menu-item index="1-2" route="static-template-pages-two.vue">item two route</el-menu-item>
+                <el-menu-item index="1-3" route="static-template-pages-thr.vue">item thr route</el-menu-item>
 
               </el-sub-menu>
               <el-menu-item index="2">

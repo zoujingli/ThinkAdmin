@@ -2,13 +2,14 @@
     const options = {
         moduleCache: {
             vue: Vue,
-            less: less,
-            storage: {}
+            less: less
         },
         getFile(url) {
             return fetch(url).then(res => {
                 if (res.ok) {
                     return {getContentData: binary => binary ? res.arrayBuffer() : res.text()};
+                } else if (res.status === 404) {
+                    return `<template><el-empty description="${res.status}，${res.statusText}">${url}</el-empty></template>`;
                 } else {
                     throw Object.assign(new Error(url + ' ' + res.statusText), {res});
                 }
@@ -33,9 +34,13 @@
     router.beforeEach(function (to, fr, next) {
 
         let page = to.fullPath;
+
         if (to.fullPath === '/') {
-            page = './static/template/index.vue';
+            page = './static/template/pages/one.vue';
         }
+        page = page.replace(/-/g, '/');
+
+        console.log('before', page)
 
         const name = page.replace(/[.\/]+/g, '_');
         if (router.hasRoute(name)) {
