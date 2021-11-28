@@ -11,7 +11,7 @@
     </el-header>
     <el-main>
       <el-scrollbar>
-        <div style="padding:20px;border-radius:10px;background:white">
+        <div style="padding:15px;background:white;border-radius:10px">
 
           <el-form :inline="true" class="demo-form-inline">
             <el-form-item label="Approved by">
