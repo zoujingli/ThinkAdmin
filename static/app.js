@@ -39,7 +39,11 @@
         if (router.hasRoute(name)) {
             next();
         } else {
+            let loading = ElementPlus.ElLoading.service({
+                lock: true, text: 'Loading', background: 'rgba(0, 0, 0, 0.3)',
+            });
             router.addRoute({name: name, path: to.fullPath, component: loadVueFile(to.fullPath)});
+            setTimeout(() => loading.close(), 1000);
             next({name: name});
         }
     });
@@ -49,7 +53,7 @@
         console.log('Route: ', to.name);
         let name = to.fullPath.replace(/[.\/]+/g, '_');
         if (router.hasRoute(name)) {
-            console.log('clear', name)
+            console.log('Clear: ', name)
             router.removeRoute(name)
         }
     });
@@ -61,7 +65,9 @@
     //     }
     // });
 
-    const app = Vue.createApp(Vue.defineAsyncComponent(() => loadVue('./static/template/layout.vue')));
+    const app = Vue.createApp(Vue.defineAsyncComponent(function () {
+        return loadVue('./static/template/layout.vue');
+    }));
 
     // 全局字体文件
     // const icons = await loadVue("https://unpkg.com/@element-plus/icons@0.0.11/lib/index.js");
