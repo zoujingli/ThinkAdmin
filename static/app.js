@@ -30,28 +30,27 @@
         routes: [], history: VueRouter.createWebHashHistory(),
     });
 
+    // 添加默认路由
+    router.addRoute({path: '/', redirect: '/static/template/pages/one.vue'});
+
+    // 路由前置处理
     router.beforeEach(function (to, fr, next) {
-
-        let page = to.fullPath;
-        if (to.fullPath === '/') {
-            page = './static/template/pages/one.vue';
-        }
-        page = page.replace(/-/g, '/');
-
-        const name = page.replace(/[.\/]+/g, '_');
+        let name = to.fullPath.replace(/[.\/]+/g, '_');
         if (router.hasRoute(name)) {
             next();
         } else {
-            router.addRoute({name: name, path: to.fullPath, component: loadVueFile(page)});
-            // component: Vue.defineAsyncComponent(() => loadVue(page))
+            router.addRoute({name: name, path: to.fullPath, component: loadVueFile(to.fullPath)});
             next({name: name});
         }
     });
 
+    // 动态注销路由
     router.afterEach(function (to) {
         console.log('Route: ', to.name);
-        if (router.hasRoute(to.fullPath)) {
-            router.removeRoute(to.fullPath)
+        let name = to.fullPath.replace(/[.\/]+/g, '_');
+        if (router.hasRoute(name)) {
+            console.log('clear', name)
+            router.removeRoute(name)
         }
     });
 
@@ -62,14 +61,13 @@
     //     }
     // });
 
-    window.$think = Vue.createApp(Vue.defineAsyncComponent(() => loadVue('./static/template/layout.vue')));
-
+    const app = Vue.createApp(Vue.defineAsyncComponent(() => loadVue('./static/template/layout.vue')));
 
     // 全局字体文件
     // const icons = await loadVue("https://unpkg.com/@element-plus/icons@0.0.11/lib/index.js");
-    // for (let i in icons) window.$think.component(i, icons[i]);
+    // for (let i in icons) app.component(i, icons[i]);
 
-    window.$think.use(router).use(ElementPlus).mount(document.body);
+    app.use(router).use(ElementPlus).mount(document.body);
 
 })().catch(function (ex) {
     console.error(ex);

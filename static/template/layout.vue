@@ -46,7 +46,7 @@
               </el-tooltip>
             </template>
             <h5 v-text="menu.title"></h5>
-            <el-menu :default-active="1" :open="1" :router="true">
+            <el-menu :default-active="1" :open="1">
               <el-sub-menu index="1">
                 <template #title>
                   <!--<el-icon>-->
@@ -55,9 +55,9 @@
                   <span>Navigator One</span>
                 </template>
 
-                <el-menu-item index="1-1" route="static-template-pages-one.vue">item one route</el-menu-item>
-                <el-menu-item index="1-2" route="static-template-pages-two.vue">item two route</el-menu-item>
-                <el-menu-item index="1-3" route="static-template-pages-thr.vue">item thr route</el-menu-item>
+                <el-menu-item index="1-1" data-route="/static/template/pages/one.vue">item one route</el-menu-item>
+                <el-menu-item index="1-2" data-route="/static/template/pages/two.vue">item two route</el-menu-item>
+                <el-menu-item index="1-3" data-route="/static/template/pages/thr.vue">item thr route</el-menu-item>
 
               </el-sub-menu>
               <el-menu-item index="2">
@@ -294,6 +294,19 @@ export default {
         {name: '199', title: 'SHOW-FOR-LIST', subs: []},
       ]
     }
+  },
+  created() {
+    let app = this;
+
+    // data-route 路由处理
+    document.addEventListener('click', function (event) {
+      event.path.some(function (ele) {
+        if (ele.dataset && ele.dataset.route) {
+          app.$router.push(ele.dataset.route);
+          return true;
+        }
+      });
+    })
   }
 }
 </script>
