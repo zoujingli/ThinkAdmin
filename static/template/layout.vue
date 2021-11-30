@@ -55,9 +55,9 @@
                   <span>Navigator One</span>
                 </template>
 
-                <el-menu-item index="1-1" data-route="/static/template/pages/one.vue">item one route</el-menu-item>
-                <el-menu-item index="1-2" data-route="/static/template/pages/two.vue">item two route</el-menu-item>
-                <el-menu-item index="1-3" data-route="/static/template/pages/thr.vue">item thr route</el-menu-item>
+                <el-menu-item index="1-1" data-route="./static/template/pages/one.vue">item one route</el-menu-item>
+                <el-menu-item index="1-2" data-route="./static/template/pages/two.vue">item two route</el-menu-item>
+                <el-menu-item index="1-3" data-route="./static/template/pages/thr.vue">item thr route</el-menu-item>
 
               </el-sub-menu>
               <el-menu-item index="2">
