@@ -31,7 +31,7 @@
     });
 
     // 添加默认路由
-    router.addRoute({path: '/', redirect: '/static/template/pages/one.vue'});
+    router.addRoute({path: '/', redirect: './static/template/pages/one.vue'});
 
     // 路由前置处理
     router.beforeEach(function (to, fr, next) {
