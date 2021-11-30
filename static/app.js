@@ -1,10 +1,10 @@
 ;(async () => {
     const options = {
         moduleCache: {
-            vue: Vue,
-            less: less
+            vue: Vue, less: less
         },
         getFile(url) {
+            console.log('load.file', url)
             return fetch(url).then(res => {
                 if (res.ok) {
                     return {getContentData: binary => binary ? res.arrayBuffer() : res.text()};
@@ -34,28 +34,35 @@
     router.addRoute({path: '/', redirect: '/static/template/pages/one.vue'});
 
     // 路由前置处理
+    let loading = null;
     router.beforeEach(function (to, fr, next) {
         let name = to.fullPath.replace(/[.\/]+/g, '_');
         if (router.hasRoute(name)) {
-            next();
-        } else {
-            let loading = ElementPlus.ElLoading.service({
+            console.log('');
+            console.log('load.open', to.fullPath)
+            loading = ElementPlus.ElLoading.service({
                 lock: true, text: 'Loading', background: 'rgba(0, 0, 0, 0.3)',
             });
+            next();
+        } else {
             router.addRoute({name: name, path: to.fullPath, component: loadVueFile(to.fullPath)});
-            setTimeout(() => loading.close(), 1000);
             next({name: name});
         }
     });
 
     // 动态注销路由
+
     router.afterEach(function (to) {
-        console.log('Route: ', to.name);
         let name = to.fullPath.replace(/[.\/]+/g, '_');
         if (router.hasRoute(name)) {
-            console.log('Clear: ', name)
             router.removeRoute(name)
         }
+        if (loading) {
+            console.log('load.done')
+            loading.close();
+            loading = null;
+        }
+
     });
 
     // window.$think = Vue.createApp({
