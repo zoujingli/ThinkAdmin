@@ -1,9 +1,17 @@
+/*! 静态插件库路径 */
+window.baseRoot = (function (src) {
+    return src.substring(0, src.lastIndexOf("/") + 1);
+})(document.scripts[document.scripts.length - 1].src);
+
+console.log('baseRoot', baseRoot)
+
 ;(async () => {
     const options = {
         moduleCache: {
             vue: Vue, less: less
         },
         getFile(url) {
+            document.get
             console.log('load.file', url)
             return fetch(url).then(res => {
                 if (res.ok) {
