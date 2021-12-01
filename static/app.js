@@ -1,23 +1,19 @@
-/*! 脚本应用根路径 */
-window.appRoot = (function (src) {
-    return src.pop(), src.pop(), src.join('/') + '/';
-})(document.scripts[document.scripts.length - 1].src.split('/'));
-
-console.log('baseRoot', appRoot)
+/*! 项目应用根路径 */
+window.appRoot = (function (script) {
+    let src = script.src.split('/').slice(3);
+    return src.pop(), src.pop(), '/' + src.join('/') + '/';
+})(document.querySelector('script[src][type=module]:last-child'));
 
 ;(async () => {
     const options = {
         moduleCache: {
-            vue: Vue, less: less
+            vue: Vue,
+            less: less
         },
         getFile(url) {
-            console.log('load.file', url)
-            if (!/^https?:\/\//.test(url)) {
-                url = appRoot + url;
+            if (!/^(https?:)?\/\//.test(url)) {
+                url = (appRoot + url).replace(/\/+.?\/+/g, '/');
             }
-            url = url.replace(/\/+.\/+/g, '/');
-            console.log(url)
-
             return fetch(url).then(res => {
                 if (res.ok) {
                     return {getContentData: binary => binary ? res.arrayBuffer() : res.text()};
