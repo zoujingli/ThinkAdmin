@@ -12,7 +12,7 @@ console.log('baseRoot', appRoot)
         },
         getFile(url) {
             console.log('load.file', url)
-            if (!url.test(/^https?:\/\//)) {
+            if (!/^https?:\/\//.test(url)) {
                 url += url;
             }
             return fetch(url).then(res => {
