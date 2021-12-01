@@ -36,6 +36,7 @@
     // 路由前置处理
     let loading = null;
     router.beforeEach(function (to, fr, next) {
+        console.log(to)
         let name = to.fullPath.replace(/[.\/]+/g, '_');
         if (router.hasRoute(name)) {
             console.log('');
@@ -45,7 +46,6 @@
             });
             next();
         } else {
-            console.log(to)
             router.addRoute({name: name, path: to.fullPath, component: loadVueFile(to.fullPath)});
             next({name: name});
         }
