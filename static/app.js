@@ -1,7 +1,6 @@
 /*! 项目应用根路径 */
 window.appRoot = (function (script) {
-    let src = script.src.split('/').slice(3);
-    return src.pop(), src.pop(), '/' + src.join('/') + '/';
+    return '/' + script.src.split('/').slice(3, -2).join('/') + '/';
 })(document.querySelector('script[src][type=module]:last-child'));
 
 ;(async () => {
