@@ -15,6 +15,7 @@ console.log('baseRoot', appRoot)
             if (!/^https?:\/\//.test(url)) {
                 url += url;
             }
+            url = url.replace(/\/.\//g, '/');
             return fetch(url).then(res => {
                 if (res.ok) {
                     return {getContentData: binary => binary ? res.arrayBuffer() : res.text()};
