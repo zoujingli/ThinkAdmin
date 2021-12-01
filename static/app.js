@@ -13,9 +13,11 @@ console.log('baseRoot', appRoot)
         getFile(url) {
             console.log('load.file', url)
             if (!/^https?:\/\//.test(url)) {
-                url += url;
+                url = appRoot + url;
             }
-            url = url.replace(/\/.\//g, '/');
+            url = url.replace(/\/+.\/+/g, '/');
+            console.log(url)
+
             return fetch(url).then(res => {
                 if (res.ok) {
                     return {getContentData: binary => binary ? res.arrayBuffer() : res.text()};
@@ -47,7 +49,6 @@ console.log('baseRoot', appRoot)
     // 路由前置处理
     let loading = null;
     router.beforeEach(function (to, fr, next) {
-        console.log(to)
         let name = to.fullPath.replace(/[.\/]+/g, '_');
         if (router.hasRoute(name)) {
             console.log('');
@@ -85,7 +86,7 @@ console.log('baseRoot', appRoot)
     // });
 
     const app = Vue.createApp(Vue.defineAsyncComponent(function () {
-        return loadVue('./static/template/layout.vue');
+        return loadVue('/static/template/layout.vue');
     }));
 
     // 全局字体文件
