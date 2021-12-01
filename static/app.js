@@ -45,6 +45,7 @@
             });
             next();
         } else {
+            console.log(to)
             router.addRoute({name: name, path: to.fullPath, component: loadVueFile(to.fullPath)});
             next({name: name});
         }
