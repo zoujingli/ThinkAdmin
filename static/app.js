@@ -11,8 +11,10 @@ console.log('baseRoot', appRoot)
             vue: Vue, less: less
         },
         getFile(url) {
-            document.get
             console.log('load.file', url)
+            if (!url.test(/^https?:\/\//)) {
+                url += url;
+            }
             return fetch(url).then(res => {
                 if (res.ok) {
                     return {getContentData: binary => binary ? res.arrayBuffer() : res.text()};
