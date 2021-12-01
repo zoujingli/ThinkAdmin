@@ -1,9 +1,9 @@
-/*! 静态插件库路径 */
-window.baseRoot = (function (src) {
-    return src.substring(0, src.lastIndexOf("/") + 1);
-})(document.scripts[document.scripts.length - 1].src);
+/*! 脚本应用根路径 */
+window.appRoot = (function (src) {
+    return src.pop(), src.pop(), src.join('/') + '/';
+})(document.scripts[document.scripts.length - 1].src.split('/'));
 
-console.log('baseRoot', baseRoot)
+console.log('baseRoot', appRoot)
 
 ;(async () => {
     const options = {
