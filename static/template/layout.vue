@@ -57,22 +57,22 @@
 
                 <el-menu-item index="1-1" data-route="/static/template/pages/one.vue">item one route</el-menu-item>
                 <el-menu-item index="1-2" data-route="/static/template/pages/two.vue">item two route</el-menu-item>
-                <el-menu-item index="1-3" data-route="/static/template/pages/thr.vue">item thr route</el-menu-item>
+                <el-menu-item index="1-3" data-route="/static/template/pages/thr.vue">item Three route</el-menu-item>
 
               </el-sub-menu>
-              <el-menu-item index="2">
+              <el-menu-item index="2" data-route="/static/template/pages/two.vue">
                 <!--<el-icon>-->
                 <!--<icon-menu></icon-menu>-->
                 <!--</el-icon>-->
                 <span>Navigator Two</span>
               </el-menu-item>
-              <el-menu-item index="3">
+              <el-menu-item index="3" data-route="/static/template/pages/thr.vue">
                 <!--<el-icon>-->
                 <!--<document></document>-->
                 <!--</el-icon>-->
                 <span>Navigator Three</span>
               </el-menu-item>
-              <el-menu-item index="4">
+              <el-menu-item index="4" data-route="/static/template/pages/four.vue">
                 <!--<el-icon>-->
                 <!--<setting></setting>-->
                 <!--</el-icon>-->
