@@ -8,7 +8,7 @@
           background-color="rgba(54,25,88,0.9)"
           active-text-color="rgba(54,25,88,1.0)"
       >
-        <el-menu-item route="/" index="1">
+        <el-menu-item data-route="/" index="1">
           <el-avatar size="small">Ta</el-avatar>
           <span style="margin-left:5px">ThinkAdmin For HTML</span>
         </el-menu-item>
