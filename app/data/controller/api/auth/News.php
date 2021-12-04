@@ -69,7 +69,6 @@ class News extends Auth
 
     /**
      * 添加内容收藏
-     * @throws \think\db\exception\DbException
      */
     public function addCollect()
     {
@@ -92,7 +91,6 @@ class News extends Auth
 
     /**
      * 取消收藏文章
-     * @throws \think\db\exception\DbException
      */
     public function delCollect()
     {
@@ -126,7 +124,6 @@ class News extends Auth
 
     /**
      * 添加内容点赞
-     * @throws \think\db\exception\DbException
      */
     public function addLike()
     {
@@ -149,7 +146,6 @@ class News extends Auth
 
     /**
      * 取消内容点赞
-     * @throws \think\db\exception\DbException
      */
     public function delLike()
     {
@@ -183,7 +179,6 @@ class News extends Auth
 
     /**
      * 添加用户的浏览历史
-     * @throws \think\db\exception\DbException
      */
     public function addHistory()
     {
