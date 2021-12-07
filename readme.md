@@ -30,7 +30,7 @@ ThinkAdmin v6 基于`v1-v5`版本的积累，结合`ThinkPHP 6.0`的思维重新
 
 本地开发请使用`php think run`运行服务，访问`http://127.0.0.1:8000`即可进入项目。
 
-官方地址及开发指南：https://thinkadmin.top ，如果实在无法解决问题可以加入官方 QQ 群交流。
+官方地址及开发指南：https://thinkadmin.top ，如果实在无法解决问题可以加入官方微信群交流。
 
 <img src="https://thinkadmin.top/static/img/wx.png"  width="300">
 
