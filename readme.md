@@ -32,9 +32,7 @@ ThinkAdmin v6 基于`v1-v5`版本的积累，结合`ThinkPHP 6.0`的思维重新
 
 官方地址及开发指南：https://thinkadmin.top ，如果实在无法解决问题可以加入官方 QQ 群交流。
 
-PHP 开发技术交流（ QQ 群 513350915）
-
-[![PHP微信开发群 (SDK)](http://pub.idqqimg.com/wpa/images/group.png)](http://shang.qq.com/wpa/qunwpa?idkey=ae25cf789dafbef62e50a980ffc31242f150bc61a61164458216dd98c411832a)
+<img src="https://thinkadmin.top/static/img/wx.png"  width="300">
 
 ## 注解权限
 
