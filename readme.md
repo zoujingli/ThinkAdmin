@@ -145,7 +145,3 @@ ThinkAdmin 为 MIT 协议开源项目，安装使用或二次开发不受约束�
 * 在线体验地址：https://v1.thinkadmin.top
 * Gitee 代码地址：https://gitee.com/zoujingli/ThinkAdmin/tree/v1
 * Github 代码地址：https://github.com/zoujingli/ThinkAdmin/tree/v1
-
-## 赞助打赏
-
-![赞助](https://thinkadmin.top/static/img/pay.png)
