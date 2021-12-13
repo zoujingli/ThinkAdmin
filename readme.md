@@ -6,10 +6,10 @@
 
 ##### **集成组件：**
 
-* vue v3.2.22
+* vue v3.2.26
 * vue.router v4.0.12
 * vue.sfc.loader v0.8.4
-* vue element-plus v1.2.0-beta.3
+* vue element-plus v1.2.0-beta.6
 
 ##### **在线体验：**
 
