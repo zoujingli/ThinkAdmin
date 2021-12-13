@@ -1,6 +1,7 @@
 /*! 项目应用根路径 */
 window.appRoot = (function (script) {
-    return '/' + script.src.split('/').slice(3, -2).join('/') + '/';
+    let src = script.src.split('/').slice(3);
+    return src.pop(), src.pop(), '/' + src.join('/') + '/';
 })(document.querySelector('script[src][type=module]:last-child'));
 
 ;(async () => {
@@ -10,7 +11,7 @@ window.appRoot = (function (script) {
             less: less
         },
         getFile(url) {
-            if (!/^(https?:)?\/\//.test(url)) {
+            if (!(/^(https?:)?\/\//)) {
                 url = (appRoot + url).replace(/\/+.?\/+/g, '/');
             }
             return fetch(url).then(res => {
@@ -87,6 +88,10 @@ window.appRoot = (function (script) {
     // 全局字体文件
     const icons = await loadVue("/static/plugs/core/vue.element.icons.js");
     for (let i in icons) app.component(i, icons[i]);
+
+    // 全局字体文件
+    // const icons = await loadVue("https://unpkg.com/@element-plus/icons@0.0.11/lib/index.js");
+    // for (let i in icons) app.component(i, icons[i]);
 
     app.use(router).use(ElementPlus).mount(document.body);
 
