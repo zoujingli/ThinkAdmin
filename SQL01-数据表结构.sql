@@ -29,8 +29,8 @@ CREATE TABLE IF NOT EXISTS `base_postage_company` (
 
 DROP TABLE IF EXISTS `base_postage_region`;
 CREATE TABLE IF NOT EXISTS `base_postage_region` (
-  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'ID',
-  `pid` int(11) DEFAULT '0' COMMENT '上级PID',
+  `id` bigint(20) NOT NULL DEFAULT '0' COMMENT 'ID',
+  `pid` bigint(20) DEFAULT NULL COMMENT '上级PID',
   `first` varchar(50) DEFAULT '' COMMENT '首字母',
   `short` varchar(100) DEFAULT '' COMMENT '区域简称',
   `name` varchar(100) DEFAULT '' COMMENT '区域名称',
@@ -43,7 +43,7 @@ CREATE TABLE IF NOT EXISTS `base_postage_region` (
   PRIMARY KEY (`id`) USING BTREE,
   KEY `idx_base_postage_region_pid` (`pid`) USING BTREE,
   KEY `idx_base_postage_region_name` (`name`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=4019 DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT COMMENT='数据-快递-区域';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT COMMENT='数据-快递-区域';
 
 DROP TABLE IF EXISTS `base_postage_template`;
 CREATE TABLE IF NOT EXISTS `base_postage_template` (
