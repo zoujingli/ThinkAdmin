@@ -11,14 +11,11 @@
     </el-header>
     <el-main>
       <el-scrollbar>
-        <el-row :gutter="20">
-          <el-col :span="6">
 
+        <div v-for="icon in icons">
+          <div><b>{{ icon.name }}：</b>{{ icon }}</div>
+        </div>
 
-            <el-icon v-for="icon in icons"></el-icon>
-
-          </el-col>
-        </el-row>
       </el-scrollbar>
     </el-main>
   </el-container>
