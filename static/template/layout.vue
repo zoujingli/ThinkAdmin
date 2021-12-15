@@ -2,7 +2,6 @@
   <el-container>
     <el-header>
       <el-menu
-          :default-active="1"
           mode="horizontal"
           text-color="#fff"
           background-color="rgba(54,25,88,0.9)"
@@ -46,7 +45,7 @@
               </el-tooltip>
             </template>
             <h5 v-text="menu.title"></h5>
-            <el-menu :default-active="1" :open="1">
+            <el-menu :open="1">
               <el-sub-menu index="1">
                 <template #title>
                   <el-icon>

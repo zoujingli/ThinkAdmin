@@ -9,8 +9,7 @@ window.appRoot = (function (script) {
         moduleCache: {
             vue: Vue,
             less: less
-        },
-        getFile(url) {
+        }, getFile(url) {
             if (!(/^(https?:)?\/\//)) {
                 url = (appRoot + url).replace(/\/+.?\/+/g, '/');
             }
@@ -23,8 +22,7 @@ window.appRoot = (function (script) {
                     throw Object.assign(new Error(url + ' ' + res.statusText), {res});
                 }
             });
-        },
-        addStyle(style) {
+        }, addStyle(style) {
             const before = document.head.getElementsByTagName('style')[0] || null;
             const object = Object.assign(document.createElement('style'), {textContent: style});
             document.head.insertBefore(object, before);
@@ -33,8 +31,7 @@ window.appRoot = (function (script) {
 
     const {loadModule} = window['vue3-sfc-loader'];
     const loadVue = (vuePath) => loadModule(vuePath, options);
-    const loadVueFile = (vuePath) => () => loadVue(vuePath);
-
+    // const loadVueFile = (vuePath) => () => loadVue(vuePath);
     const router = VueRouter.createRouter({
         routes: [], history: VueRouter.createWebHashHistory(),
     });
@@ -42,59 +39,49 @@ window.appRoot = (function (script) {
     // 添加默认路由
     router.addRoute({path: '/', redirect: '/static/template/pages/one.vue'});
 
-    // 路由前置处理
+    // 动态注册路由
     let loading = null;
     router.beforeEach(function (to, fr, next) {
         let name = to.fullPath.replace(/[.\/]+/g, '_');
         if (router.hasRoute(name)) {
-            console.log('');
-            console.log('load.open', to.fullPath)
+            console.log('open.load', to.fullPath)
             loading = ElementPlus.ElLoading.service({
                 lock: true, text: 'Loading', background: 'rgba(0, 0, 0, 0.3)',
             });
             next();
         } else {
-            router.addRoute({name: name, path: to.fullPath, component: loadVueFile(to.fullPath)});
+            router.addRoute({name: name, path: to.fullPath, component: () => loadVue(to.fullPath)});
             next({name: name});
         }
     });
 
     // 动态注销路由
-
     router.afterEach(function (to) {
         let name = to.fullPath.replace(/[.\/]+/g, '_');
         if (router.hasRoute(name)) {
             router.removeRoute(name)
         }
         if (loading) {
-            console.log('load.done')
-            loading.close();
-            loading = null;
+            loading = loading.close(), null;
         }
-
     });
 
-    // window.$think = Vue.createApp({
-    //     // name: 'ThinkAdmin',
-    //     components: {
-    //         layout: await loadVue('./static/template/layout.vue'),
-    //     }
-    // });
-
+    // 创建 Vue 应用
     const app = Vue.createApp(Vue.defineAsyncComponent(function () {
         return loadVue('/static/template/layout.vue');
     }));
 
-    // 全局字体文件
-    const icons = await loadVue("/static/plugs/core/vue.element.icons.js");
-    for (let i in icons) app.component(i, icons[i]);
+    // 定义全局缓存
+    app.cache = {loadVue: loadVue};
 
     // 全局字体文件
-    // const icons = await loadVue("https://unpkg.com/@element-plus/icons@0.0.11/lib/index.js");
-    // for (let i in icons) app.component(i, icons[i]);
+    app.cache.icons = await loadVue("/static/plugs/core/vue.element.icons.js");
+    for (let i in app.cache.icons) app.component(i, app.cache.icons[i]);
 
-    app.use(router).use(ElementPlus).mount(document.body);
+    // 注册获取应用
+    window.getApp = () => app;
 
-})().catch(function (ex) {
-    console.error(ex);
-});
+    // 应用组件及路由
+    app.use(ElementPlus).use(router).mount(document.body);
+
+})().catch(ex => console.error(ex));

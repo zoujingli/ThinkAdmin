@@ -11,81 +11,14 @@
     </el-header>
     <el-main>
       <el-scrollbar>
-        <div>{{ userName }}: 你好，这里是为下一代 ThinkAdmin 后台管理系统预设计的 UI 结构。</div>
-        <div>{{ userName }}: 你好，这里是为下一代 ThinkAdmin 后台管理系统预设计的 UI 结构。</div>
-        <div>{{ userName }}: 你好，这里是为下一代 ThinkAdmin 后台管理系统预设计的 UI 结构。</div>
-        <div>{{ userName }}: 你好，这里是为下一代 ThinkAdmin 后台管理系统预设计的 UI 结构。</div>
-        <div>{{ userName }}: 你好，这里是为下一代 ThinkAdmin 后台管理系统预设计的 UI 结构。</div>
-        <div>{{ userName }}: 你好，这里是为下一代 ThinkAdmin 后台管理系统预设计的 UI 结构。</div>
-        <div>{{ userName }}: 你好，这里是为下一代 ThinkAdmin 后台管理系统预设计的 UI 结构。</div>
-        <div>{{ userName }}: 你好，这里是为下一代 ThinkAdmin 后台管理系统预设计的 UI 结构。</div>
-        <div>{{ userName }}: 你好，这里是为下一代 ThinkAdmin 后台管理系统预设计的 UI 结构。</div>
-        <div>{{ userName }}: 你好，这里是为下一代 ThinkAdmin 后台管理系统预设计的 UI 结构。</div>
-        <div>{{ userName }}: 你好，这里是为下一代 ThinkAdmin 后台管理系统预设计的 UI 结构。</div>
-        <div>{{ userName }}: 你好，这里是为下一代 ThinkAdmin 后台管理系统预设计的 UI 结构。</div>
-        <div>{{ userName }}: 你好，这里是为下一代 ThinkAdmin 后台管理系统预设计的 UI 结构。</div>
-        <div>{{ userName }}: 你好，这里是为下一代 ThinkAdmin 后台管理系统预设计的 UI 结构。</div>
-        <div>{{ userName }}: 你好，这里是为下一代 ThinkAdmin 后台管理系统预设计的 UI 结构。</div>
-        <div>{{ userName }}: 你好，这里是为下一代 ThinkAdmin 后台管理系统预设计的 UI 结构。</div>
-        <div>{{ userName }}: 你好，这里是为下一代 ThinkAdmin 后台管理系统预设计的 UI 结构。</div>
-        <div>{{ userName }}: 你好，这里是为下一代 ThinkAdmin 后台管理系统预设计的 UI 结构。</div>
-        <div>{{ userName }}: 你好，这里是为下一代 ThinkAdmin 后台管理系统预设计的 UI 结构。</div>
-        <div>{{ userName }}: 你好，这里是为下一代 ThinkAdmin 后台管理系统预设计的 UI 结构。</div>
-        <div>{{ userName }}: 你好，这里是为下一代 ThinkAdmin 后台管理系统预设计的 UI 结构。</div>
-        <div>{{ userName }}: 你好，这里是为下一代 ThinkAdmin 后台管理系统预设计的 UI 结构。</div>
-        <div>{{ userName }}: 你好，这里是为下一代 ThinkAdmin 后台管理系统预设计的 UI 结构。</div>
-        <div>{{ userName }}: 你好，这里是为下一代 ThinkAdmin 后台管理系统预设计的 UI 结构。</div>
-        <div>{{ userName }}: 你好，这里是为下一代 ThinkAdmin 后台管理系统预设计的 UI 结构。</div>
-        <div>{{ userName }}: 你好，这里是为下一代 ThinkAdmin 后台管理系统预设计的 UI 结构。</div>
-        <div>{{ userName }}: 你好，这里是为下一代 ThinkAdmin 后台管理系统预设计的 UI 结构。</div>
-        <div>{{ userName }}: 你好，这里是为下一代 ThinkAdmin 后台管理系统预设计的 UI 结构。</div>
-        <div>{{ userName }}: 你好，这里是为下一代 ThinkAdmin 后台管理系统预设计的 UI 结构。</div>
-        <div>{{ userName }}: 你好，这里是为下一代 ThinkAdmin 后台管理系统预设计的 UI 结构。</div>
-        <div>{{ userName }}: 你好，这里是为下一代 ThinkAdmin 后台管理系统预设计的 UI 结构。</div>
-        <div>{{ userName }}: 你好，这里是为下一代 ThinkAdmin 后台管理系统预设计的 UI 结构。</div>
-        <div>{{ userName }}: 你好，这里是为下一代 ThinkAdmin 后台管理系统预设计的 UI 结构。</div>
-        <div>{{ userName }}: 你好，这里是为下一代 ThinkAdmin 后台管理系统预设计的 UI 结构。</div>
-        <div>{{ userName }}: 你好，这里是为下一代 ThinkAdmin 后台管理系统预设计的 UI 结构。</div>
-        <div>{{ userName }}: 你好，这里是为下一代 ThinkAdmin 后台管理系统预设计的 UI 结构。</div>
-        <div>{{ userName }}: 你好，这里是为下一代 ThinkAdmin 后台管理系统预设计的 UI 结构。</div>
-        <div>{{ userName }}: 你好，这里是为下一代 ThinkAdmin 后台管理系统预设计的 UI 结构。</div>
-        <div>{{ userName }}: 你好，这里是为下一代 ThinkAdmin 后台管理系统预设计的 UI 结构。</div>
-        <div>{{ userName }}: 你好，这里是为下一代 ThinkAdmin 后台管理系统预设计的 UI 结构。</div>
-        <div>{{ userName }}: 你好，这里是为下一代 ThinkAdmin 后台管理系统预设计的 UI 结构。</div>
-        <div>{{ userName }}: 你好，这里是为下一代 ThinkAdmin 后台管理系统预设计的 UI 结构。</div>
-        <div>{{ userName }}: 你好，这里是为下一代 ThinkAdmin 后台管理系统预设计的 UI 结构。</div>
-        <div>{{ userName }}: 你好，这里是为下一代 ThinkAdmin 后台管理系统预设计的 UI 结构。</div>
-        <div>{{ userName }}: 你好，这里是为下一代 ThinkAdmin 后台管理系统预设计的 UI 结构。</div>
-        <div>{{ userName }}: 你好，这里是为下一代 ThinkAdmin 后台管理系统预设计的 UI 结构。</div>
-        <div>{{ userName }}: 你好，这里是为下一代 ThinkAdmin 后台管理系统预设计的 UI 结构。</div>
-        <div>{{ userName }}: 你好，这里是为下一代 ThinkAdmin 后台管理系统预设计的 UI 结构。</div>
-        <div>{{ userName }}: 你好，这里是为下一代 ThinkAdmin 后台管理系统预设计的 UI 结构。</div>
-        <div>{{ userName }}: 你好，这里是为下一代 ThinkAdmin 后台管理系统预设计的 UI 结构。</div>
-        <div>{{ userName }}: 你好，这里是为下一代 ThinkAdmin 后台管理系统预设计的 UI 结构。</div>
-        <div>{{ userName }}: 你好，这里是为下一代 ThinkAdmin 后台管理系统预设计的 UI 结构。</div>
-        <div>{{ userName }}: 你好，这里是为下一代 ThinkAdmin 后台管理系统预设计的 UI 结构。</div>
-        <div>{{ userName }}: 你好，这里是为下一代 ThinkAdmin 后台管理系统预设计的 UI 结构。</div>
-        <div>{{ userName }}: 你好，这里是为下一代 ThinkAdmin 后台管理系统预设计的 UI 结构。</div>
-        <div>{{ userName }}: 你好，这里是为下一代 ThinkAdmin 后台管理系统预设计的 UI 结构。</div>
-        <div>{{ userName }}: 你好，这里是为下一代 ThinkAdmin 后台管理系统预设计的 UI 结构。</div>
-        <div>{{ userName }}: 你好，这里是为下一代 ThinkAdmin 后台管理系统预设计的 UI 结构。</div>
-        <div>{{ userName }}: 你好，这里是为下一代 ThinkAdmin 后台管理系统预设计的 UI 结构。</div>
-        <div>{{ userName }}: 你好，这里是为下一代 ThinkAdmin 后台管理系统预设计的 UI 结构。</div>
-        <div>{{ userName }}: 你好，这里是为下一代 ThinkAdmin 后台管理系统预设计的 UI 结构。</div>
-        <div>{{ userName }}: 你好，这里是为下一代 ThinkAdmin 后台管理系统预设计的 UI 结构。</div>
-        <div>{{ userName }}: 你好，这里是为下一代 ThinkAdmin 后台管理系统预设计的 UI 结构。</div>
-        <div>{{ userName }}: 你好，这里是为下一代 ThinkAdmin 后台管理系统预设计的 UI 结构。</div>
-        <div>{{ userName }}: 你好，这里是为下一代 ThinkAdmin 后台管理系统预设计的 UI 结构。</div>
-        <div>{{ userName }}: 你好，这里是为下一代 ThinkAdmin 后台管理系统预设计的 UI 结构。</div>
-        <div>{{ userName }}: 你好，这里是为下一代 ThinkAdmin 后台管理系统预设计的 UI 结构。</div>
-        <div>{{ userName }}: 你好，这里是为下一代 ThinkAdmin 后台管理系统预设计的 UI 结构。</div>
-        <div>{{ userName }}: 你好，这里是为下一代 ThinkAdmin 后台管理系统预设计的 UI 结构。</div>
-        <div>{{ userName }}: 你好，这里是为下一代 ThinkAdmin 后台管理系统预设计的 UI 结构。</div>
-        <div>{{ userName }}: 你好，这里是为下一代 ThinkAdmin 后台管理系统预设计的 UI 结构。</div>
-        <div>{{ userName }}: 你好，这里是为下一代 ThinkAdmin 后台管理系统预设计的 UI 结构。</div>
-        <div>{{ userName }}: 你好，这里是为下一代 ThinkAdmin 后台管理系统预设计的 UI 结构。</div>
-        <div>{{ userName }}: 你好，这里是为下一代 ThinkAdmin 后台管理系统预设计的 UI 结构。</div>
-        <div>{{ userName }}: 你好，这里是为下一代 ThinkAdmin 后台管理系统预设计的 UI 结构。</div>
+        <el-row :gutter="20">
+          <el-col :span="6">
+
+
+            <el-icon v-for="icon in icons"></el-icon>
+
+          </el-col>
+        </el-row>
       </el-scrollbar>
     </el-main>
   </el-container>
@@ -95,7 +28,8 @@
 export default {
   data() {
     return {
-      userName: "ThinkAdmin"
+      userName: "ThinkAdmin",
+      icons: getApp().cache.icons
     }
   }
 }
