@@ -6,8 +6,7 @@ window.appRoot = (function (script) {
 ;(async () => {
     const options = {
         moduleCache: {
-            vue: Vue,
-            less: less
+            vue: Vue, less: less
         }, getFile(url) {
             if (!(/^(https?:)?\/\//)) {
                 url = (appRoot + url).replace(/\/+.?\/+/g, '/');
@@ -49,6 +48,9 @@ window.appRoot = (function (script) {
             });
             next();
         } else {
+            // 删除页面缓存，重新加载
+            delete options.moduleCache[to.fullPath];
+            // 动态注册路由并触发新路由
             router.addRoute({name: name, path: to.fullPath, component: () => loadVue(to.fullPath)});
             next({name: name});
         }
