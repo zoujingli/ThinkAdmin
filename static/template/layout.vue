@@ -2,7 +2,6 @@
   <el-container>
     <el-header>
       <el-menu
-          :default-active="1"
           mode="horizontal"
           text-color="#fff"
           background-color="rgba(54,25,88,0.9)"
@@ -46,12 +45,12 @@
               </el-tooltip>
             </template>
             <h5 v-text="menu.title"></h5>
-            <el-menu :default-active="1" :open="1">
+            <el-menu :open="1">
               <el-sub-menu index="1">
                 <template #title>
-                  <!--<el-icon>-->
-                  <!--<location></location>-->
-                  <!--</el-icon>-->
+                  <el-icon>
+                    <location></location>
+                  </el-icon>
                   <span>Navigator One</span>
                 </template>
 
@@ -61,21 +60,21 @@
 
               </el-sub-menu>
               <el-menu-item index="2" data-route="/static/template/pages/two.vue">
-                <!--<el-icon>-->
-                <!--<icon-menu></icon-menu>-->
-                <!--</el-icon>-->
+                <el-icon>
+                  <aim></aim>
+                </el-icon>
                 <span>Navigator Two</span>
               </el-menu-item>
               <el-menu-item index="3" data-route="/static/template/pages/thr.vue">
-                <!--<el-icon>-->
-                <!--<document></document>-->
-                <!--</el-icon>-->
+                <el-icon>
+                  <document></document>
+                </el-icon>
                 <span>Navigator Three</span>
               </el-menu-item>
               <el-menu-item index="4" data-route="/static/template/pages/four.vue">
-                <!--<el-icon>-->
-                <!--<setting></setting>-->
-                <!--</el-icon>-->
+                <el-icon>
+                  <setting></setting>
+                </el-icon>
                 <span>Navigator Four</span>
               </el-menu-item>
             </el-menu>
