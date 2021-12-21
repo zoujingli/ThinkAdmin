@@ -42,7 +42,7 @@ window.appRoot = (function (script) {
     router.beforeEach(function (to, fr, next) {
         let name = to.fullPath.replace(/[.\/]+/g, '_');
         if (router.hasRoute(name)) {
-            console.log('open.load', to.fullPath)
+            console.log('loadPage', to.fullPath)
             loading = ElementPlus.ElLoading.service({
                 lock: true, text: 'Loading', background: 'rgba(0, 0, 0, 0.3)',
             });
@@ -59,12 +59,8 @@ window.appRoot = (function (script) {
     // 动态注销路由
     router.afterEach(function (to) {
         let name = to.fullPath.replace(/[.\/]+/g, '_');
-        if (router.hasRoute(name)) {
-            router.removeRoute(name)
-        }
-        if (loading) {
-            loading = loading.close(), null;
-        }
+        if (router.hasRoute(name)) router.removeRoute(name)
+        if (loading) loading = loading.close(), null;
     });
 
     // 创建 Vue 应用
