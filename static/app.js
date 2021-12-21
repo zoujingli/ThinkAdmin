@@ -6,7 +6,9 @@ window.appRoot = (function (script) {
 ;(async () => {
     const options = {
         moduleCache: {
-            vue: Vue, less: less
+            vue: Vue,
+            less: less,
+            cache: {},
         }, getFile(url) {
             if (!(/^(https?:)?\/\//)) {
                 url = (appRoot + url).replace(/\/+.?\/+/g, '/');

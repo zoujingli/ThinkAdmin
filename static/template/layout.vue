@@ -268,7 +268,7 @@ body > .el-container {
 
 <script>
 export default {
-  components: {},
+  name: 'layout',
   data() {
     return {
       menus: [
