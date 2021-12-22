@@ -104,21 +104,21 @@ class Fans extends Command
     public function _black(string $next = '', int $done = 0): string
     {
         $wechat = WechatService::WeChatUser();
-        $this->setQueueProgress("开始更新黑名单的微信用户");
+        $this->setQueueProgress("开始更新黑名单列表");
 
-        // 解决：如果本地拉黑，在官方删除后，获取粉丝，本地黑名单依旧在
-        $this->setQueueProgress("开始删除本地黑名单用户");
-        WechatFans::mk()->where(['is_black' => 1])->delete();
+        // 清理原来的黑名单，重新批量更新黑名单列表
+        WechatFans::mk()->where(['is_black' => 1])->update(['is_black' => 0]);
 
-        while (!is_null($next) && is_array($result = $wechat->getBlackList($next)) && !empty($result['data']['openid'])) {
+        $result = ['total' => 0];
+        while (!is_null($next) && is_array($result = $wechat->getBlackList($next))) {
+            if (empty($result['data']['openid'])) break;
             foreach (array_chunk($result['data']['openid'], 100) as $chunk) {
                 $done += count($chunk);
-                $map = [['is_black', '=', 0], ['openid', 'in', $chunk]];
-                WechatFans::mk()->where($map)->update(['is_black' => 1]);
+                WechatFans::mk()->whereIn('openid', $chunk)->update(['is_black' => 1]);
             }
             $next = $result['total'] > $done ? $result['next_openid'] : null;
         }
-        $this->setQueueProgress('完成更新黑名单的微信用户', null, -1);
+        $this->setQueueProgress("完成更新 {$result['total']} 个黑名单", null, 1);
         $this->output->newLine();
         if (empty($result['total'])) {
             return ', 其中黑名单 0 人';
