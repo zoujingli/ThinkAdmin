@@ -105,11 +105,11 @@ class Fans extends Command
     {
         $wechat = WechatService::WeChatUser();
         $this->setQueueProgress("开始更新黑名单的微信用户");
-        
-        //解决：如果本地拉黑，在官方删除后，获取粉丝，本地黑名单依旧在
+
+        // 解决：如果本地拉黑，在官方删除后，获取粉丝，本地黑名单依旧在
         $this->setQueueProgress("开始删除本地黑名单用户");
-        WechatFans::mk()->update(['is_black' => 1])->delete();
-        
+        WechatFans::mk()->where(['is_black' => 1])->delete();
+
         while (!is_null($next) && is_array($result = $wechat->getBlackList($next)) && !empty($result['data']['openid'])) {
             foreach (array_chunk($result['data']['openid'], 100) as $chunk) {
                 $done += count($chunk);
