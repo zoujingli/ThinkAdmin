@@ -487,10 +487,10 @@ $(function () {
                 return $(ele).data('input-info', $html.css(style).insertAfter(ele)), $html;
             };
             /*! 表单元素验证 */
-            this.form.attr({onsubmit: 'return false;', novalidate: 'novalidate', autocomplete: 'off'});
+            this.form.attr({onsubmit: 'return false;', novalidate: 'novalidate'});
             this.form.off(this.evts, this.tags).on(this.evts, this.tags, function () {
                 that.checkInput(this);
-            }).data('validate', this).bind("submit", function (evt) {
+            }).attr('novalidate', 'novalidate').data('validate', this).bind("submit", function (evt) {
                 evt.button = that.form.find('button[type=submit],button:not([type=button])');
                 /* 检查所有表单元素是否通过H5的规则验证 */
                 if (that.checkAllInput() && typeof callable === 'function') {
