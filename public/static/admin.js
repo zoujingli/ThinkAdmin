@@ -707,13 +707,14 @@ $(function () {
             });
 
             // 生成初始化参数
-            function bindData(opts) {
+            function bindData(options) {
                 data['output'] = 'layui.table';
                 if (sort.field && sort.type) {
                     data['_order_'] = sort.type, data['_field_'] = sort.field;
-                    opts.initSort = {type: sort.type.split(',')[0].split(' ')[0], field: sort.field.split(',')[0].split(' ')[0]};
+                    options.initSort = {type: sort.type.split(',')[0].split(' ')[0], field: sort.field.split(',')[0].split(' ')[0]};
                 }
-                return (opts['where'] = data), opts;
+                if (options.page === false) options.limit = '';
+                return (options['where'] = data), options;
             }
         });
     }
