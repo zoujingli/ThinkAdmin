@@ -13,7 +13,10 @@
       <el-scrollbar>
 
         <div v-for="icon in icons">
-          <div><b>{{ icon.name }}：</b>{{ icon }}</div>
+          <div>
+            <component :size="10" :is="icon.name"></component>
+            <b>{{ icon.name }}：</b>{{ icon }}
+          </div>
         </div>
 
       </el-scrollbar>
