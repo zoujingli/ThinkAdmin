@@ -51,7 +51,7 @@ class UserAdminService extends Service
 
     /**
      * 更新用户用户参数
-     * @param array $map 查询条件
+     * @param mixed $map 查询条件
      * @param array $data 更新数据
      * @param string $type 接口类型
      * @param boolean $force 强刷令牌
@@ -59,43 +59,40 @@ class UserAdminService extends Service
      * @throws \think\admin\Exception
      * @throws \think\db\exception\DbException
      */
-    public function set(array $map, array $data, string $type, bool $force = false): array
+    public static function set($map, array $data, string $type, bool $force = false): array
     {
-        $user = DataUser::mk()->where($map)->where(['deleted' => 0])->find();
-        // 更新或写入用户数据
         unset($data['id'], $data['deleted'], $data['create_at']);
-        if (empty($user)) ($user = DataUser::mk())->save($data);
-        elseif (!empty($data)) $user->save($data);
-        // 强行刷新用户认证令牌
-        if ($force) UserTokenService::instance()->token($user['id'], $type);
-        // 返回当前用户资料数据
-        return $this->get($user['id'], $type);
+        $user = DataUser::mk()->where($map)->where(['deleted' => 0])->findOrEmpty();
+        if (!$user->save($data)) throw new Exception("更新用户资料失败！");
+        // 刷新用户认证令牌
+        if ($force) UserTokenService::token($user['id'], $type);
+        // 返回当前用户资料
+        return static::get($user['id'], $type);
     }
 
     /**
      * 获取用户数据
      * @param integer $uuid 用户UID
-     * @param ?string $type 接口类型
+     * @param string $type 接口类型
      * @return array
      * @throws \think\admin\Exception
      * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\DbException
      * @throws \think\db\exception\ModelNotFoundException
      */
-    public function get(int $uuid, ?string $type = null): array
+    public static function get(int $uuid, string $type): array
     {
-        $user = DataUser::mk()->where(['id' => $uuid, 'deleted' => 0])->find();
-        if (empty($user)) throw new Exception('用户还没有注册！');
-        if (!is_null($type)) {
-            $data = DataUserToken::mk()->where(['uuid' => $uuid, 'type' => $type])->find();
-            if (empty($data)) {
-                [$state, $info, $data] = UserTokenService::instance()->token($uuid, $type);
-                if (empty($state) || empty($data)) throw new Exception($info);
-            }
-            $user['token'] = ['token' => $data['token'], 'expire' => $data['time']];
+        $map = ['id' => $uuid, 'deleted' => 0];
+        $user = DataUser::mk()->where($map)->findOrEmpty();
+        if ($user->isEmpty()) throw new Exception('用户还没有注册！');
+        // 用户认证令牌处理
+        $map = ['uuid' => $uuid, 'type' => $type];
+        if (!($access = DataUserToken::mk()->where($map)->find())) {
+            [$state, $message, $access] = UserTokenService::token($uuid, $type);
+            if (empty($state) || empty($access)) throw new Exception($message);
         }
-        unset($user['deleted'], $user['password']);
-        return $user->toArray();
+        $user['token'] = ['token' => $access['token'], 'expire' => $access['time']];
+        return $user->hidden(['deleted', 'password'])->toArray();
     }
 
     /**
@@ -115,7 +112,7 @@ class UserAdminService extends Service
      * @param string $unionid 用户UNIONID值
      * @return array
      */
-    public function getUserUniMap(string $field, string $openid, string $unionid = ''): array
+    public static function getUserUniMap(string $field, string $openid, string $unionid = ''): array
     {
         if (!empty($unionid)) {
             [$map1, $map2] = [[['unionid', '=', $unionid]], [[$field, '=', $openid]]];

@@ -42,9 +42,6 @@ class Discount extends Controller
     /**
      * 添加折扣方案
      * @auth true
-     * @throws \think\db\exception\DataNotFoundException
-     * @throws \think\db\exception\DbException
-     * @throws \think\db\exception\ModelNotFoundException
      */
     public function add()
     {
@@ -54,9 +51,6 @@ class Discount extends Controller
     /**
      * 编辑折扣方案
      * @auth true
-     * @throws \think\db\exception\DataNotFoundException
-     * @throws \think\db\exception\DbException
-     * @throws \think\db\exception\ModelNotFoundException
      */
     public function edit()
     {
@@ -88,7 +82,6 @@ class Discount extends Controller
     /**
      * 修改折扣方案状态
      * @auth true
-     * @throws \think\db\exception\DbException
      */
     public function state()
     {
@@ -98,7 +91,6 @@ class Discount extends Controller
     /**
      * 删除折扣方案配置
      * @auth true
-     * @throws \think\db\exception\DbException
      */
     public function remove()
     {

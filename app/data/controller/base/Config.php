@@ -131,7 +131,7 @@ class Config extends Controller
      * @throws \think\db\exception\DbException
      * @throws \think\db\exception\ModelNotFoundException
      */
-    private function __sysdata(string $template, $history = '')
+    private function __sysdata(string $template, string $history = '')
     {
         if ($this->request->isGet()) {
             $this->data = sysdata($this->skey);

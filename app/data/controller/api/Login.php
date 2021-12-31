@@ -54,7 +54,7 @@ class Login extends Controller
         if (empty($user)) $this->error('该手机号还没有注册哦！');
         if (empty($user['status'])) $this->error('该用户账号状态异常！');
         if (md5($data['password']) === $user['password']) {
-            $this->success('手机登录成功！', UserAdminService::instance()->set($map, [], $this->type, true));
+            $this->success('手机登录成功！', UserAdminService::set($map, [], $this->type, true));
         } else {
             $this->error('账号登录失败，请稍候再试！');
         }
@@ -72,22 +72,20 @@ class Login extends Controller
             'region_city.default'     => '',
             'region_area.default'     => '',
             'username.default'        => '',
-            'phone.mobile'            => '手机号码格式错误！',
-            'phone.require'           => '手机号码不能为空！',
-            // 'verify.require'          => '验证码不能为空！',
+            'phone.mobile'            => '手机格式错误！',
+            'phone.require'           => '手机不能为空！',
+            'verify.require'          => '验证码不能为空！',
             'password.require'        => '登录密码不能为空！',
         ]);
-        // if (MessageService::instance()->checkVerifyCode($data['verify'], $data['phone'])) {
-        //     @验证码验证能完
-        // } else {
-        //     $this->error('验证失败！');
-        // }
+        if (!MessageService::instance()->checkVerifyCode($data['verify'], $data['phone'])) {
+            $this->error('手机短信验证失败！');
+        }
         $map = ['phone' => $data['phone'], 'deleted' => 0];
         if (DataUser::mk()->where($map)->count() > 0) {
             $this->error('手机号已注册，请使用其它手机号！');
         }
         $data['password'] = md5($data['password']);
-        $user = UserAdminService::instance()->set($map, $data, $this->type, true);
+        $user = UserAdminService::set($map, $data, $this->type, true);
         empty($user) ? $this->error('手机注册失败！') : $this->success('用户注册成功！', $user);
     }
 

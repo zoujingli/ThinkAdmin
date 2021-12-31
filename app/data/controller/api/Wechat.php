@@ -85,8 +85,8 @@ class Wechat extends Controller
             $data['base_sex'] = ['未知', '男', '女'][$data['sex']] ?? '未知';
             if (isset($result['unionid'])) $data['unionid'] = $result['unionid'];
             if (isset($data['headimgurl'])) $data['headimg'] = $data['headimgurl'];
-            $map = UserAdminService::instance()->getUserUniMap($this->field, $data[$this->field], $data['unionid'] ?? '');
-            $result['userinfo'] = UserAdminService::instance()->set($map, array_merge($map, $data), $this->type, true);
+            $map = UserAdminService::getUserUniMap($this->field, $data[$this->field], $data['unionid'] ?? '');
+            $result['userinfo'] = UserAdminService::set($map, array_merge($map, $data), $this->type, true);
             $script[] = "window.WeChatOpenid='{$result['openid']}'";
             $script[] = 'window.WeChatFansInfo=' . json_encode($result['fansinfo'], JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT);
             $script[] = 'window.WeChatUserInfo=' . json_encode($result['userinfo'], JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT);

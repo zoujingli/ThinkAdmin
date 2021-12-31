@@ -16,7 +16,6 @@ class News extends Auth
 
     /**
      * 用户评论内容
-     * @throws \think\db\exception\DbException
      */
     public function addComment()
     {
