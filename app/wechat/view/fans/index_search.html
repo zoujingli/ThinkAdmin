@@ -15,7 +15,7 @@
                 <select class="layui-select" name="subscribe">
                     <option value=''>-- 全部 --</option>
                     {foreach ['显示未订阅的粉丝','显示已订阅的粉丝'] as $k=>$v}
-                    {if $k.'' eq input('subscribe')}
+                    {if isset($get.subscribe) and $get.subscribe eq $k.""}
                     <option selected value="{$k}">{$v}</option>
                     {else}
                     <option value="{$k}">{$v}</option>
@@ -30,7 +30,7 @@
                 <select class="layui-select" name="is_black">
                     <option value=''>-- 全部 --</option>
                     {foreach ['显示未拉黑的粉丝','显示已拉黑的粉丝'] as $k=>$v}
-                    {if $k.'' eq input('is_black')}
+                    {if isset($get.is_black) and $get.is_black eq $k.""}
                     <option selected value="{$k}">{$v}</option>
                     {else}
                     <option value="{$k}">{$v}</option>

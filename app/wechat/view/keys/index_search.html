@@ -26,7 +26,7 @@
                 <select class="layui-select" name="status">
                     <option value="">-- 全部 --</option>
                     {foreach ['显示已禁止的规则','显示已激活的规则'] as $k=>$v}
-                    {if $k.'' eq input('status')}
+                    {if isset($get.status) and $get.status eq $k.""}
                     <option selected value="{$k}">{$v}</option>
                     {else}
                     <option value="{$k}">{$v}</option>
