@@ -57,10 +57,10 @@ class Center extends Auth
             $data = $this->_vali(['base64.require' => '图片内容不为空！']);
             if (preg_match('|^data:image/(.*?);base64,|i', $data['base64'])) {
                 [$ext, $img] = explode('|||', preg_replace('|^data:image/(.*?);base64,|i', '$1|||', $data['base64']));
-                if (!in_array(strtolower($ext), ['png', 'jpg', 'jpeg'])) {
+                if (empty($ext) || !in_array(strtolower($ext), ['png', 'jpg', 'jpeg'])) {
                     $this->error('图片格式异常！');
                 }
-                $info = Storage::instance()->set(Storage::name($img, $ext ?: 'png', 'image/'), base64_decode($img));
+                $info = Storage::instance()->set(Storage::name($img, $ext, 'image/'), base64_decode($img));
                 $this->success('图片上传成功！', ['url' => $info['url']]);
             } else {
                 $this->error('解析内容失败！');
