@@ -1,14 +1,14 @@
-/*! 项目应用根路径 */
-window.appRoot = (function (script) {
-    return '/' + script.src.split('/').slice(3, -2).join('/') + '/';
-})(document.querySelector('script[src][type=module]:last-child'));
-
 ;(async () => {
+
+    /*! 项目应用根路径 */
+    window.appRoot = (function (script) {
+        return '/' + script.src.split('/').slice(3, -2).join('/') + '/';
+    })(document.querySelector('script[type=module][src*="app.js"]'));
+
+    /*! 模块加载请求处理 */
     const options = {
         moduleCache: {
-            vue: Vue,
-            less: less,
-            cache: {},
+            vue: Vue, less: less
         }, getFile(url) {
             if (!(/^(https?:)?\/\//)) {
                 url = (appRoot + url).replace(/\/+.?\/+/g, '/');
@@ -71,7 +71,10 @@ window.appRoot = (function (script) {
     }));
 
     // 定义全局缓存
-    app.cache = {loadVue: loadVue};
+    app.cache = {
+        loadOpt: options,
+        loadVue: loadVue,
+    };
 
     // 全局字体文件
     app.cache.icons = await loadVue("/static/plugs/core/vue.element.icons.js");
