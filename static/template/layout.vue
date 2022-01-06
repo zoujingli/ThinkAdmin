@@ -164,6 +164,7 @@ body > .el-container {
     height: 1px;
 
     > .el-aside {
+      z-index: 99;
       background: #53a8ff;
       --el-aside-width: 280px;
 
@@ -239,17 +240,32 @@ body > .el-container {
           height: 100%;
 
           > .el-header {
+            z-index: 99;
             background: white;
             line-height: 60px;
+            box-shadow: 0 0 6px 0 rgb(0 0 0 / 20%);
           }
 
           > .el-main {
             height: 1px;
-            padding: 0;
+            z-index: 88;
+            --el-main-padding: 0;
 
             > .el-scrollbar {
-              padding: 20px;
+              padding: 0;
               box-sizing: border-box;
+
+              > .el-scrollbar__wrap {
+                border-radius: 5px;
+
+                > .el-scrollbar__view {
+                  margin: 15px;
+                  padding: 20px;
+                  background: #FFF;
+                  border-radius: 5px;
+                  box-shadow: 0 0 6px 0 rgb(0 0 0 / 20%);
+                }
+              }
             }
           }
         }
@@ -257,7 +273,9 @@ body > .el-container {
 
       > .el-footer {
         color: #333;
-        background: #CCCCCC;
+        z-index: 99;
+        box-shadow: 0 0 6px 0 rgb(0 0 0 / 20%);
+        background: #FFF;
         line-height: 60px;
         text-align: center;
       }
