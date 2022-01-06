@@ -13,9 +13,9 @@
       <el-scrollbar>
 
         <div v-for="icon in icons">
-          <div style="line-height:3em">
-            <component style="vertical-align:middle;color:#F56C6C" :width="20" :height="20" :is="icon.name"></component>
-            <b style="margin-left:1em">{{ icon.name }}：</b>{{ icon }}
+          <div style="line-height:2em">
+            <component style="vertical-align:middle;color:#F66" :width="20" :height="20" :is="icon.name"></component>
+            <b style="color:#333;margin-left:1em" v-text="icon.name"></b>：<span style="color:gray" v-text="icon"></span>
           </div>
         </div>
 
