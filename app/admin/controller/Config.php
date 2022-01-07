@@ -71,7 +71,7 @@ class Config extends Controller
                 SystemService::instance()->setRuntime(null, [$xpath => 'admin']);
             }
             // 修改网站 ICON 图标文件
-            if (($icon = $this->request->post('site_icon'))) {
+            if (($icon = $this->request->post('site_icon')) && preg_match('#^https?://#', $icon)) {
                 if (($info = LocalStorage::down($icon)) && !empty($info['file'])) try {
                     $favicon = new FaviconExtend($info['file']);
                     $favicon->saveIco($this->app->getRootPath() . 'public/favicon.ico');
