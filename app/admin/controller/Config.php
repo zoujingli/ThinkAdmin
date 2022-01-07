@@ -17,10 +17,12 @@
 namespace app\admin\controller;
 
 use think\admin\Controller;
+use think\admin\extend\FaviconExtend;
 use think\admin\service\AdminService;
 use think\admin\service\ModuleService;
 use think\admin\service\SystemService;
 use think\admin\storage\AliossStorage;
+use think\admin\storage\LocalStorage;
 use think\admin\storage\QiniuStorage;
 use think\admin\storage\TxcosStorage;
 
@@ -58,6 +60,7 @@ class Config extends Controller
             $this->title = '修改系统参数';
             $this->fetch();
         } else {
+            // 修改网站后台入口路径
             if ($xpath = $this->request->post('xpath')) {
                 if (!preg_match('/^[a-zA-Z_][a-zA-Z0-9_]*$/', $xpath)) {
                     $this->error('后台入口名称需要是由英文字母开头！');
@@ -67,6 +70,16 @@ class Config extends Controller
                 }
                 SystemService::instance()->setRuntime(null, [$xpath => 'admin']);
             }
+            // 修改网站 ICON 图标文件
+            if (!($icon = $this->request->post('site_icon'))) {
+                if (($info = LocalStorage::down($icon)) && !empty($info['file'])) try {
+                    $favicon = new FaviconExtend($info['file']);
+                    $favicon->saveIco($this->app->getRootPath() . 'public/favicon.ico');
+                } catch (\Exception $exception) {
+                    trace_file($exception);
+                }
+            }
+            // 数据数据到系统配置表
             foreach ($this->request->post() as $name => $value) sysconf($name, $value);
             sysoplog('系统配置管理', "修改系统参数成功");
             $this->success('修改系统参数成功！', 'javascript:location.reload()');
