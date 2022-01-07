@@ -60,27 +60,34 @@ class Config extends Controller
             $this->title = '修改系统参数';
             $this->fetch();
         } else {
-            // 修改网站后台入口路径
-            if ($xpath = $this->request->post('xpath')) {
-                if (!preg_match('/^[a-zA-Z_][a-zA-Z0-9_]*$/', $xpath)) {
+            $post = $this->request->post();
+            // 修改网站后台入口路径，配置运行环境变量
+            if (!empty($post['xpath'])) {
+                if (!preg_match('/^[a-zA-Z_][a-zA-Z0-9_]*$/', $post['xpath'])) {
                     $this->error('后台入口名称需要是由英文字母开头！');
                 }
-                if ($xpath !== 'admin' && file_exists($this->app->getBasePath() . $xpath)) {
-                    $this->error("后台入口名称{$xpath}已经存在应用！");
+                if ($post['xpath'] !== 'admin' && file_exists($this->app->getBasePath() . $post['xpath'])) {
+                    $this->error("后台入口名称{$post['xpath']}已经存在应用！");
                 }
-                SystemService::instance()->setRuntime(null, [$xpath => 'admin']);
+                SystemService::instance()->setRuntime(null, [$post['xpath'] => 'admin']);
             }
-            // 修改网站 ICON 图标文件
-            if (($icon = $this->request->post('site_icon')) && preg_match('#^https?://#', $icon)) {
-                if (($info = LocalStorage::down($icon)) && !empty($info['file'])) try {
+            // 修改网站 ICON 图标文件，替换 public/favicon.ico 文件
+            if (preg_match('#^https?://#', $icon = $post['site_icon'] ?? '')) try {
+                if (preg_match('#/upload/(\w{2}/\w{30}.\w+)$#', $icon, $vars)) {
+                    $info = LocalStorage::instance()->info($vars[1]);
+                }
+                if (empty($info) || empty($info['file'])) {
+                    $info = LocalStorage::down($icon);
+                }
+                if (!empty($info) && !empty($info['file'])) {
                     $favicon = new FaviconExtend($info['file']);
                     $favicon->saveIco($this->app->getRootPath() . 'public/favicon.ico');
-                } catch (\Exception $exception) {
-                    trace_file($exception);
                 }
+            } catch (\Exception $exception) {
+                trace_file($exception);
             }
             // 数据数据到系统配置表
-            foreach ($this->request->post() as $name => $value) sysconf($name, $value);
+            foreach ($post as $k => $v) sysconf($k, $v);
             sysoplog('系统配置管理', "修改系统参数成功");
             $this->success('修改系统参数成功！', 'javascript:location.reload()');
         }
