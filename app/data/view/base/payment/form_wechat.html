@@ -1,11 +1,11 @@
 <label class="layui-form-item block relative">
-    <span class="help-block"><b>绑定公众号</b>Bind WeChat Appid</span>
+    <span class="help-label"><b>绑定公众号</b>Bind WeChat Appid</span>
     <input class="layui-input" maxlength="18" name="wechat_appid" pattern="^wx[0-9a-z]{16}$" placeholder="请输入18位绑定公众号（必填）" required value="{$vo.content.wechat_appid|default=''}">
     <span class="help-block">公众号APPID，微信商户绑定的服务号APPID或小程序APPID</span>
 </label>
 
 <label class="layui-form-item block relative">
-    <span class="help-block"><b>微信商户号</b>WeChat Payment Number</span>
+    <span class="help-label"><b>微信商户号</b>WeChat Payment Number</span>
     <input class="layui-input" name="wechat_mch_id" placeholder="请输入微信商户号（必填）" required value="{$vo.content.wechat_mch_id|default=''}">
     <span class="help-block">微信商户编号，需要在微信商户平台获取，微信商户号 与 公众号APPID 匹配</span>
 </label>

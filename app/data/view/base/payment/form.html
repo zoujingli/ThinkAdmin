@@ -7,7 +7,7 @@
         <div class="layui-form-item label-required-prev">
             <span class="help-label"><b>支付方式图标</b>Payment Image</span>
             <label class="relative block label-required-null">
-                <input class="layui-input" name="cover" placeholder="请上传支付方式图标" required value='{$vo.cover|default=""}'>
+                <input class="layui-input" pattern="^https?://" name="cover" placeholder="请上传支付方式图标" required value='{$vo.cover|default=""}'>
                 <a class="layui-icon layui-icon-upload input-right-icon" data-field="cover" data-file data-type="png,jpg,gif"></a>
                 <script>$('[name="cover"]').uploadOneImage()</script>
             </label>
