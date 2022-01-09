@@ -47,15 +47,15 @@ class JoinpayPaymentService extends PaymentService
      * 创建订单支付参数
      * @param string $openid 用户OPENID
      * @param string $orderNo 交易订单单号
-     * @param string $paymentAmount 交易订单金额（元）
-     * @param string $paymentTitle 交易订单名称
-     * @param string $paymentRemark 订单订单描述
-     * @param string $paymentReturn 完成回跳地址
-     * @param string $paymentImage 支付凭证图片
+     * @param string $payAmount 交易订单金额（元）
+     * @param string $payTitle 交易订单名称
+     * @param string $payRemark 订单订单描述
+     * @param string $payReturn 完成回跳地址
+     * @param string $payImage 支付凭证图片
      * @return array
      * @throws Exception
      */
-    public function create(string $openid, string $orderNo, string $paymentAmount, string $paymentTitle, string $paymentRemark, string $paymentReturn = '', string $paymentImage = ''): array
+    public function create(string $openid, string $orderNo, string $payAmount, string $payTitle, string $payRemark, string $payReturn = '', string $payImage = ''): array
     {
         try {
             if (isset(static::TYPES[$this->type])) {
@@ -67,10 +67,10 @@ class JoinpayPaymentService extends PaymentService
                 'p0_Version'         => '1.0',
                 'p1_MerchantNo'      => $this->mchid,
                 'p2_OrderNo'         => $orderNo,
-                'p3_Amount'          => $paymentAmount,
+                'p3_Amount'          => $payAmount,
                 'p4_Cur'             => '1',
-                'p5_ProductName'     => $paymentTitle,
-                'p6_ProductDesc'     => $paymentRemark,
+                'p5_ProductName'     => $payTitle,
+                'p6_ProductDesc'     => $payRemark,
                 'p9_NotifyUrl'       => sysuri("@data/api.notify/joinpay/scene/order/param/{$this->code}", [], false, true),
                 'q1_FrpCode'         => $tradeType ?? '',
                 'q5_OpenId'          => $openid,
@@ -80,12 +80,12 @@ class JoinpayPaymentService extends PaymentService
             if (empty($data['q5_OpenId'])) unset($data['q5_OpenId']);
             $this->uri = 'https://www.joinpay.com/trade/uniPayApi.action';
             $result = $this->_doReuest($data);
-            if (is_array($result) && isset($result['ra_Code']) && intval($result['ra_Code']) === 100) {
+            if (isset($result['ra_Code']) && intval($result['ra_Code']) === 100) {
                 // 创建支付记录
-                $this->createPaymentAction($orderNo, $paymentTitle, $paymentAmount);
+                $this->createPaymentAction($orderNo, $payTitle, $payAmount);
                 // 返回支付参数
                 return json_decode($result['rc_Result'], true);
-            } elseif (is_array($result) && isset($result['rb_CodeMsg'])) {
+            } elseif (isset($result['rb_CodeMsg'])) {
                 throw new Exception($result['rb_CodeMsg']);
             } else {
                 throw new Exception('获取预支付码失败！');
@@ -134,9 +134,6 @@ class JoinpayPaymentService extends PaymentService
     /**
      * 支付结果处理
      * @return string
-     * @throws \think\db\exception\DataNotFoundException
-     * @throws \think\db\exception\DbException
-     * @throws \think\db\exception\ModelNotFoundException
      */
     public function notify(): string
     {

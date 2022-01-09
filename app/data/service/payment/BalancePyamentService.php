@@ -39,44 +39,44 @@ class BalancePyamentService extends PaymentService
      * 创建订单支付参数
      * @param string $openid 用户OPENID
      * @param string $orderNo 交易订单单号
-     * @param string $paymentAmount 交易订单金额（元）
-     * @param string $paymentTitle 交易订单名称
-     * @param string $paymentRemark 订单订单描述
-     * @param string $paymentReturn 完成回跳地址
-     * @param string $paymentImage 支付凭证图片
+     * @param string $payAmount 交易订单金额（元）
+     * @param string $payTitle 交易订单名称
+     * @param string $payRemark 订单订单描述
+     * @param string $payReturn 完成回跳地址
+     * @param string $payImage 支付凭证图片
      * @return array
      * @throws \think\admin\Exception
      * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\DbException
      * @throws \think\db\exception\ModelNotFoundException
      */
-    public function create(string $openid, string $orderNo, string $paymentAmount, string $paymentTitle, string $paymentRemark, string $paymentReturn = '', string $paymentImage = ''): array
+    public function create(string $openid, string $orderNo, string $payAmount, string $payTitle, string $payRemark, string $payReturn = '', string $payImage = ''): array
     {
         $order = ShopOrder::mk()->where(['order_no' => $orderNo])->find();
         if (empty($order)) throw new Exception("订单不存在");
         if ($order['status'] !== 2) throw new Exception("不可发起支付");
         // 创建支付行为
-        $this->createPaymentAction($orderNo, $paymentTitle, $paymentAmount);
+        $this->createPaymentAction($orderNo, $payTitle, $payAmount);
         // 检查能否支付
         [$total, $count] = UserBalanceService::instance()->amount($order['uuid'], [$orderNo]);
-        if ($paymentAmount > $total - $count) throw new Exception("可抵扣余额不足");
+        if ($payAmount > $total - $count) throw new Exception("可抵扣余额不足");
         try {
             // 扣减用户余额
-            $this->app->db->transaction(function () use ($order, $paymentAmount) {
+            $this->app->db->transaction(function () use ($order, $payAmount) {
                 // 更新订单余额
                 ShopOrder::mk()->where(['order_no' => $order['order_no']])->update([
-                    'payment_balance' => $paymentAmount,
+                    'payment_balance' => $payAmount,
                 ]);
                 // 扣除余额金额
                 data_save(DataUserBalance::mk(), [
                     'uuid'   => $order['uuid'],
                     'code'   => "KC{$order['order_no']}",
                     'name'   => "账户余额支付",
-                    'remark' => "支付订单 {$order['order_no']} 的扣除余额 {$paymentAmount} 元",
-                    'amount' => -$paymentAmount,
+                    'remark' => "支付订单 {$order['order_no']} 的扣除余额 {$payAmount} 元",
+                    'amount' => -$payAmount,
                 ], 'code');
                 // 更新支付行为
-                $this->updatePaymentAction($order['order_no'], CodeExtend::uniqidDate(20), $paymentAmount, '账户余额支付');
+                $this->updatePaymentAction($order['order_no'], CodeExtend::uniqidDate(20), $payAmount, '账户余额支付');
             });
             // 刷新用户余额
             UserBalanceService::instance()->amount($order['uuid']);

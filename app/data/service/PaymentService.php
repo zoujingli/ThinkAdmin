@@ -280,49 +280,49 @@ abstract class PaymentService
      * 创建支付订单
      * @param string $openid 用户OPENID
      * @param string $orderNo 交易订单单号
-     * @param string $paymentAmount 交易订单金额（元）
-     * @param string $paymentTitle 交易订单名称
-     * @param string $paymentRemark 交易订单描述
-     * @param string $paymentReturn 支付回跳地址
-     * @param string $paymentImage 支付凭证图片
+     * @param string $payAmount 交易订单金额（元）
+     * @param string $payTitle 交易订单名称
+     * @param string $payRemark 交易订单描述
+     * @param string $payReturn 支付回跳地址
+     * @param string $payImage 支付凭证图片
      * @return array
      */
-    abstract public function create(string $openid, string $orderNo, string $paymentAmount, string $paymentTitle, string $paymentRemark, string $paymentReturn = '', string $paymentImage = ''): array;
+    abstract public function create(string $openid, string $orderNo, string $payAmount, string $payTitle, string $payRemark, string $payReturn = '', string $payImage = ''): array;
 
     /**
      * 创建支付行为
      * @param string $orderNo 商户订单单号
-     * @param string $paymentTitle 商户订单标题
-     * @param string $paymentAmount 需要支付金额
+     * @param string $payTitle 商户订单标题
+     * @param string $payAmount 需要支付金额
      */
-    protected function createPaymentAction(string $orderNo, string $paymentTitle, string $paymentAmount)
+    protected function createPaymentAction(string $orderNo, string $payTitle, string $payAmount)
     {
         DataUserPayment::mk()->insert([
             'payment_code' => $this->code,
             'payment_type' => $this->type,
             'order_no'     => $orderNo,
-            'order_name'   => $paymentTitle,
-            'order_amount' => $paymentAmount,
+            'order_name'   => $payTitle,
+            'order_amount' => $payAmount,
         ]);
     }
 
     /**
      * 更新支付记录并更新订单
      * @param string $orderNo 商户订单单号
-     * @param string $paymentTrade 平台交易单号
-     * @param string $paymentAmount 实际到账金额
-     * @param string $paymentRemark 平台支付备注
+     * @param string $payTrade 平台交易单号
+     * @param string $payAmount 实际到账金额
+     * @param string $payRemark 平台支付备注
      * @return boolean
      */
-    protected function updatePaymentAction(string $orderNo, string $paymentTrade, string $paymentAmount, string $paymentRemark = '在线支付'): bool
+    protected function updatePaymentAction(string $orderNo, string $payTrade, string $payAmount, string $payRemark = '在线支付'): bool
     {
         // 更新支付记录
         DataUserPayment::mUpdate([
             'order_no'         => $orderNo,
             'payment_code'     => $this->code,
             'payment_type'     => $this->type,
-            'payment_trade'    => $paymentTrade,
-            'payment_amount'   => $paymentAmount,
+            'payment_trade'    => $payTrade,
+            'payment_amount'   => $payAmount,
             'payment_status'   => 1,
             'payment_datatime' => date('Y-m-d H:i:s'),
         ], 'order_no', [
@@ -330,19 +330,19 @@ abstract class PaymentService
             'payment_type' => $this->type,
         ]);
         // 更新记录状态
-        return $this->updatePaymentOrder($orderNo, $paymentTrade, $paymentAmount, $paymentRemark);
+        return $this->updatePaymentOrder($orderNo, $payTrade, $payAmount, $payRemark);
     }
 
     /**
      * 订单支付更新操作
      * @param string $orderNo 订单单号
-     * @param string $paymentTrade 交易单号
-     * @param string $paymentAmount 支付金额
-     * @param string $paymentRemark 支付描述
-     * @param string $paymentImage 支付凭证
+     * @param string $payTrade 交易单号
+     * @param string $payAmount 支付金额
+     * @param string $payRemark 支付描述
+     * @param string $payImage 支付凭证
      * @return boolean
      */
-    protected function updatePaymentOrder(string $orderNo, string $paymentTrade, string $paymentAmount, string $paymentRemark = '在线支付', string $paymentImage = ''): bool
+    protected function updatePaymentOrder(string $orderNo, string $payTrade, string $payAmount, string $payRemark = '在线支付', string $payImage = ''): bool
     {
         $map = ['status' => 2, 'order_no' => $orderNo, 'payment_status' => 0];
         $order = ShopOrder::mk()->where($map)->findOrEmpty();
@@ -359,10 +359,10 @@ abstract class PaymentService
         $order['stauts'] = $status;
         $order['payment_code'] = $this->code;
         $order['payment_type'] = $this->type;
-        $order['payment_trade'] = $paymentTrade;
-        $order['payment_image'] = $paymentImage;
-        $order['payment_amount'] = $paymentAmount;
-        $order['payment_remark'] = $paymentRemark;
+        $order['payment_trade'] = $payTrade;
+        $order['payment_image'] = $payImage;
+        $order['payment_amount'] = $payAmount;
+        $order['payment_remark'] = $payRemark;
         $order['payment_status'] = 1;
         $order['payment_datetime'] = date('Y-m-d H:i:s');
         $order->save();
