@@ -43,14 +43,15 @@ abstract class PaymentService
     const PAYMENT_ALIPAY_WAP = 'alipay_wap';
     const PAYMENT_ALIPAY_WEB = 'alipay_web';
 
-    // 支付参数配置
+    // 支付通道配置，不需要的可以注释
     const TYPES = [
-        // 微信支付配置（不需要的直接注释）
+        // 空支付，金额为零时自动完成支付
         self::PAYMENT_EMPTY       => [
             'type' => 'EMPTY',
             'name' => '订单无需支付',
             'bind' => [],
         ],
+        // 余额支付，使用账号余额完成支付
         self::PAYMENT_BALANCE     => [
             'type' => 'BALANCE',
             'name' => '账号余额支付',
@@ -60,6 +61,7 @@ abstract class PaymentService
                 UserAdminService::API_TYPE_IOSAPP, UserAdminService::API_TYPE_ANDROID,
             ],
         ],
+        // 凭证支付，上传凭证后台审核支付
         self::PAYMENT_VOUCHER     => [
             'type' => 'VOUCHER',
             'name' => '单据凭证支付',
@@ -69,6 +71,7 @@ abstract class PaymentService
                 UserAdminService::API_TYPE_IOSAPP, UserAdminService::API_TYPE_ANDROID,
             ],
         ],
+        // 微信支付配置（不需要的直接注释）
         self::PAYMENT_WECHAT_WAP  => [
             'type' => 'MWEB',
             'name' => '微信WAP支付',
@@ -164,7 +167,7 @@ abstract class PaymentService
     /**
      * 根据配置实例支付服务
      * @param string $code 支付配置编号
-     * @return JoinpayPaymentService|WechatPaymentService|AlipayPaymentService|BalancePyamentService|VoucherPaymentService|EmptyPaymentService
+     * @return PaymentService
      * @throws \think\admin\Exception
      */
     public static function instance(string $code): PaymentService
@@ -310,14 +313,11 @@ abstract class PaymentService
      * @param string $paymentAmount 实际到账金额
      * @param string $paymentRemark 平台支付备注
      * @return boolean
-     * @throws \think\db\exception\DataNotFoundException
-     * @throws \think\db\exception\DbException
-     * @throws \think\db\exception\ModelNotFoundException
      */
     protected function updatePaymentAction(string $orderNo, string $paymentTrade, string $paymentAmount, string $paymentRemark = '在线支付'): bool
     {
         // 更新支付记录
-        data_save(DataUserPayment::mk(), [
+        DataUserPayment::mUpdate([
             'order_no'         => $orderNo,
             'payment_code'     => $this->code,
             'payment_type'     => $this->type,
@@ -330,7 +330,7 @@ abstract class PaymentService
             'payment_type' => $this->type,
         ]);
         // 更新记录状态
-        return $this->updateOrder($orderNo, $paymentTrade, $paymentAmount, $paymentRemark);
+        return $this->updatePaymentOrder($orderNo, $paymentTrade, $paymentAmount, $paymentRemark);
     }
 
     /**
@@ -341,15 +341,12 @@ abstract class PaymentService
      * @param string $paymentRemark 支付描述
      * @param string $paymentImage 支付凭证
      * @return boolean
-     * @throws \think\db\exception\DataNotFoundException
-     * @throws \think\db\exception\DbException
-     * @throws \think\db\exception\ModelNotFoundException
      */
-    public function updateOrder(string $orderNo, string $paymentTrade, string $paymentAmount, string $paymentRemark = '在线支付', string $paymentImage = ''): bool
+    protected function updatePaymentOrder(string $orderNo, string $paymentTrade, string $paymentAmount, string $paymentRemark = '在线支付', string $paymentImage = ''): bool
     {
         $map = ['status' => 2, 'order_no' => $orderNo, 'payment_status' => 0];
-        $order = ShopOrder::mk()->where($map)->find();
-        if (empty($order)) return false;
+        $order = ShopOrder::mk()->where($map)->findOrEmpty();
+        if ($order->isEmpty()) return false;
         // 检查订单支付状态
         if ($this->type === self::PAYMENT_VOUCHER) {
             $status = 3; # 凭证支付需要审核
@@ -359,19 +356,16 @@ abstract class PaymentService
             $status = 4; # 实物订单需要发货
         }
         // 更新订单支付状态
-        $data = [
-            'status'           => $status,
-            'payment_type'     => $this->type,
-            'payment_code'     => $this->code,
-            'payment_trade'    => $paymentTrade,
-            'payment_image'    => $paymentImage,
-            'payment_amount'   => $paymentAmount,
-            'payment_remark'   => $paymentRemark,
-            'payment_status'   => 1,
-            'payment_datetime' => date('Y-m-d H:i:s'),
-        ];
-        if (empty($data['payment_type'])) unset($data['payment_type']);
-        ShopOrder::mk()->where($map)->update($data);
+        $order['stauts'] = $status;
+        $order['payment_code'] = $this->code;
+        $order['payment_type'] = $this->type;
+        $order['payment_trade'] = $paymentTrade;
+        $order['payment_image'] = $paymentImage;
+        $order['payment_amount'] = $paymentAmount;
+        $order['payment_remark'] = $paymentRemark;
+        $order['payment_status'] = 1;
+        $order['payment_datetime'] = date('Y-m-d H:i:s');
+        $order->save();
         // 触发订单更新事件
         if ($status >= 4) {
             $this->app->event->trigger('ShopOrderPayment', $orderNo);
