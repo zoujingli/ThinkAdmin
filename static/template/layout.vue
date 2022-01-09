@@ -113,6 +113,7 @@ body > .el-container {
 
     .el-menu {
       border-bottom: 0;
+      --el-menu-item-height: 60px;
 
       .el-menu-item {
         border-bottom: 0;
@@ -155,6 +156,7 @@ body > .el-container {
         .el-sub-menu__title {
           color: #FFF !important;
           background: none !important;
+          border-bottom: 0 !important;
         }
       }
     }
