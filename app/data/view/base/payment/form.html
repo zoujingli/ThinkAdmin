@@ -5,7 +5,7 @@
     <div class="layui-card-body padding-40">
 
         <div class="layui-form-item label-required-prev">
-            <span class="help-block"><b>支付方式图标</b>Payment Image</span>
+            <span class="help-label"><b>支付方式图标</b>Payment Image</span>
             <label class="relative block label-required-null">
                 <input class="layui-input" name="cover" placeholder="请上传支付方式图标" required value='{$vo.cover|default=""}'>
                 <a class="layui-icon layui-icon-upload input-right-icon" data-field="cover" data-file data-type="png,jpg,gif"></a>
@@ -14,13 +14,13 @@
         </div>
 
         <label class="layui-form-item relative block">
-            <span class="help-block"><b>支付方式名称</b>Payment Name</span>
+            <span class="help-label"><b>支付方式名称</b>Payment Name</span>
             <input class="layui-input" maxlength="50" name="name" placeholder="请输入支付名称" required value="{$vo.name|default=''}"/>
             <span class="help-block"><b>必填，</b>请填写支付方式名称，支付名称尽量不要重复，字符不要太长一般4-6个汉字</span>
         </label>
 
         <div class="layui-form-item">
-            <span class="help-block"><b>支付通道方式</b>Payment Channel</span>
+            <span class="help-label"><b>支付通道方式</b>Payment Channel</span>
             <label class="block full-width">
                 {empty name='vo.type'}
                 <select name="type" class="layui-select" lay-filter="payment-type" lay-search>
@@ -49,13 +49,10 @@
         <div class="layui-hide" data-payment-type="joinpay">{include file='base/payment/form_joinpay'}</div>
         <div class="layui-hide" data-payment-type="voucher">{include file='base/payment/form_voucher'}</div>
 
-        <div class="layui-form-item relative layui-hide">
-            <span class="color-green font-w7">支付描述</span>
-            <span class="color-desc margin-left-5">Payment Remark</span>
-            <label class="relative block">
-                <textarea class="layui-textarea" name="remark" placeholder="请输入支付描述">{$vo.remark|default=''}</textarea>
-            </label>
-        </div>
+        <label class="layui-form-item relative layui-hide">
+            <span class="help-label"><b>支付描述</b>Payment Remark</span>
+            <textarea class="layui-textarea" name="remark" placeholder="请输入支付描述">{$vo.remark|default=''}</textarea>
+        </label>
 
         <div class="hr-line-dashed"></div>
         {notempty name='vo.id'}<input name='id' type='hidden' value='{$vo.id}'>{/notempty}
