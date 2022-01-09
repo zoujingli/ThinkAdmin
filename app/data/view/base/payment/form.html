@@ -4,9 +4,8 @@
 <form action="{:request()->url()}" autocomplete="off" class="layui-form layui-card" data-auto="true" method="post">
     <div class="layui-card-body padding-40">
 
-        <div class="layui-form-item">
-            <span class="color-green font-w7 label-required-prev">支付方式图标</span>
-            <span class="color-desc margin-left-5">Payment Image</span>
+        <div class="layui-form-item label-required-prev">
+            <span class="help-block"><b>支付方式图标</b>Payment Image</span>
             <label class="relative block label-required-null">
                 <input class="layui-input" name="cover" placeholder="请上传支付方式图标" required value='{$vo.cover|default=""}'>
                 <a class="layui-icon layui-icon-upload input-right-icon" data-field="cover" data-file data-type="png,jpg,gif"></a>
@@ -15,18 +14,16 @@
         </div>
 
         <label class="layui-form-item relative block">
-            <span class="color-green font-w7">支付方式名称</span>
-            <span class="color-desc margin-left-5">Payment Name</span>
+            <span class="help-block"><b>支付方式名称</b>Payment Name</span>
             <input class="layui-input" maxlength="50" name="name" placeholder="请输入支付名称" required value="{$vo.name|default=''}"/>
             <span class="help-block"><b>必填，</b>请填写支付方式名称，支付名称尽量不要重复，字符不要太长一般4-6个汉字</span>
         </label>
 
         <div class="layui-form-item">
-            <span class="color-green font-w7 label-required-prev">支付通道方式</span>
-            <span class="color-desc margin-left-5">Payment Channel</span>
+            <span class="help-block"><b>支付通道方式</b>Payment Channel</span>
             <label class="block full-width">
                 {empty name='vo.type'}
-                <select class="layui-select" lay-filter="payment-type" lay-search name="type">
+                <select name="type" class="layui-select" lay-filter="payment-type" lay-search>
                     {foreach $payments as $k=>$v}{if isset($vo.type) and $vo.type eq $k}
                     <option selected value="{$k}">{$v.name} ( {$v.allow} )</option>
                     {else}
@@ -34,7 +31,7 @@
                     {/if}{/foreach}
                 </select>
                 {else}
-                <select class="layui-select" disabled lay-filter="payment-type" name="type">
+                <select name="type" class="layui-select" disabled lay-filter="payment-type">
                     {foreach $payments as $k=>$v}{if isset($vo.type) and $vo.type eq $k}
                     <option selected value="{$k}">{$v.name} ( {$v.allow} )</option>
                     {else}
