@@ -356,7 +356,7 @@ $(function () {
             vars = {}, attrs = [], elem = elem || document.createElement('a');
             if (uri.indexOf('?') > -1) uri.split('?')[1].split('&').forEach(function (item) {
                 if (item.indexOf('=') > -1 && (temp = item.split('=')) && typeof temp[0] === 'string' && temp[0].length > 0) {
-                    vars[temp[0]] = decodeURIComponent(temp[1].replace(/%2B/ig, '%20'));
+                    vars[temp[0]] = encodeURIComponent(decodeURIComponent(temp[1].replace(/%2B/ig, '%20')));
                 }
             });
             uri = this.getUri(uri);
