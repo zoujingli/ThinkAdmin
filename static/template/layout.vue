@@ -30,7 +30,7 @@
           <el-menu-item index="2-1">个人中心</el-menu-item>
           <el-menu-item index="2-2">安全设置</el-menu-item>
           <el-menu-item index="2-3">清空缓存</el-menu-item>
-          <el-menu-item index="2-4">退出登录</el-menu-item>
+          <el-menu-item data-route="/static/template/login.vue" index="2-4">退出登录</el-menu-item>
         </el-sub-menu>
 
       </el-menu>
@@ -316,16 +316,6 @@ export default {
   },
   created() {
     let app = this;
-
-    // data-route 路由处理
-    document.addEventListener('click', function (event) {
-      event.path.some(function (ele) {
-        if (ele.dataset && ele.dataset.route) {
-          app.$router.push(ele.dataset.route);
-          return true;
-        }
-      });
-    })
   }
 }
 </script>
