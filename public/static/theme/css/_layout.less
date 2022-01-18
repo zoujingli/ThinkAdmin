@@ -178,9 +178,14 @@
       overflow: auto;
       position: absolute;
 
+      .layui-side-icon {
+        display: none;
+      }
+
       .layui-nav-tree {
         width: @LayoutDefaLeftSzie;
         background: none !important;
+
       }
 
       &:after {
@@ -317,11 +322,7 @@
   }
 }
 
-.layui-side-scroll .layui-side-icon {
-  display: none;
-}
-
-.layui-theme-left {
+.layui-layout-theme {
   > .layui-side {
     width: 260px;
   }
@@ -335,7 +336,7 @@
       }
 
       .layui-nav-item:first-child {
-        //display: inline-block;
+        display: inline-block;
       }
 
       .layui-nav-item:last-child {
@@ -352,44 +353,46 @@
     }
   }
 
-  .layui-side-scroll {
-    display: flex !important;
+  .layui-side {
+    .layui-side-scroll {
+      display: flex !important;
 
-    .layui-side-icon {
-      width: 60px;
-      height: 100%;
-      display: block;
-      background: #333;
-
-      a {
-        color: #fff;
-        height: 60px;
+      .layui-side-icon {
+        width: 60px;
+        height: 100%;
         display: block;
-        text-align: center;
-        line-height: 60px;
-      }
+        background: #333;
 
-      .layui-icon {
-        color: @LeftMainNavActiveBackColor
-      }
-
-      > .layui-this {
-        background: @LeftMainBackColor;
+        a {
+          color: #fff;
+          height: 60px;
+          display: block;
+          text-align: center;
+          line-height: 60px;
+        }
 
         .layui-icon {
-          color: @LeftMainNavActiveTextColor;
+          color: @LeftMainNavActiveBackColor
+        }
+
+        > .layui-this {
+          background: @LeftMainBackColor;
+
+          .layui-icon {
+            color: @LeftMainNavActiveTextColor;
+          }
         }
       }
-    }
 
-    .layui-side-tree {
-      flex: 1;
-      height: 100%;
-      display: block;
-    }
+      .layui-side-tree {
+        flex: 1;
+        height: 100%;
+        display: block;
+      }
 
-    .layui-nav-tree {
-      width: 100% !important;
+      .layui-nav-tree {
+        width: 100% !important;
+      }
     }
   }
 }
@@ -423,6 +426,10 @@
 
     .layui-nav-more {
       display: none !important
+    }
+
+    .layui-side-scroll .layui-side-icon {
+      display: none;
     }
 
     .layui-nav-item {
