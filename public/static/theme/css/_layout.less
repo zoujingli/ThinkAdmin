@@ -217,10 +217,13 @@
           background-color: @LeftMainNavNormalBackColor;
         }
 
-        dd.layui-this,
-        dd.layui-this > a {
-          color: @LeftMainNavActiveTextColor;
-          background-color: @LeftMainNavActiveBackColor;
+        dd.layui-this {
+          background: none !important;
+
+          > a {
+            color: @LeftMainNavActiveTextColor;
+            background-color: @LeftMainNavActiveBackColor;
+          }
         }
 
         a {
@@ -319,6 +322,15 @@
 
   > .layui-header {
     left: 260px;
+    background: #925cc3 !important;
+
+    .layui-nav-item > a {
+      color: #fff !important;
+
+      &:hover {
+        color: #fff !important;
+      }
+    }
 
     .layui-layout-left {
       .layui-nav-item {
@@ -343,21 +355,23 @@
     }
   }
 
+
   .layui-side {
+    background-color: #fff !important;
+
+    .layui-logo {
+      background: #925cc3 !important;
+    }
+
     .layui-side-scroll {
       display: flex !important;
 
       .layui-side-icon {
         width: 60px;
-        height: 100%;
-        display: block;
-        overflow: auto;
-        overflow-x: hidden;
-        background: #333;
+        background: #563d7c;
         #MinScrollbar();
 
         a {
-          color: #FFF;
           height: 60px;
           display: block;
           text-align: center;
@@ -365,29 +379,50 @@
         }
 
         .layui-icon {
-          color: @LeftMainNavActiveBackColor
+          color: #fff;
         }
 
         > .layui-this {
-          background: @LeftMainBackColor;
+          background: #fff;
 
           .layui-icon {
-            color: @LeftMainNavActiveTextColor;
+            color: #333;
           }
         }
       }
 
       .layui-side-tree {
         flex: 1;
-        height: 100%;
-        display: block;
-        overflow: auto;
-        overflow-x: hidden;
         #MinScrollbar();
-      }
 
-      .layui-nav-tree {
-        width: 100% !important;
+        .layui-nav-item {
+          background: none !important;
+
+          a {
+            color: #333 !important;
+            background: none !important;
+            border-bottom: none !important;
+
+            &:hover {
+              color: #098 !important;
+            }
+          }
+
+          .layui-this, &.layui-this {
+            > a {
+              color: #098 !important;
+              background: none !important;
+
+              &:hover {
+                background: none !important;
+              }
+            }
+          }
+
+          &ed > a {
+            color: #999 !important;
+          }
+        }
       }
     }
   }

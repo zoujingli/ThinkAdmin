@@ -1544,8 +1544,11 @@ label.think-checkbox {
   bottom: 0;
   width: 100% !important;
   height: 100% !important;
-  overflow: auto;
   position: absolute;
+  height: 100%;
+  display: block;
+  overflow: auto;
+  overflow-x: hidden;
 }
 .layui-layout > .layui-side .layui-side-scroll .layui-side-icon {
   display: none;
@@ -1583,7 +1586,9 @@ label.think-checkbox {
 .layui-layout > .layui-side .layui-side-scroll .layui-nav-item dd > a {
   background-color: none;
 }
-.layui-layout > .layui-side .layui-side-scroll .layui-nav-item dd.layui-this,
+.layui-layout > .layui-side .layui-side-scroll .layui-nav-item dd.layui-this {
+  background: none !important;
+}
 .layui-layout > .layui-side .layui-side-scroll .layui-nav-item dd.layui-this > a {
   color: #FFF;
   background-color: #098;
@@ -1665,6 +1670,13 @@ label.think-checkbox {
 }
 .layui-layout-theme > .layui-header {
   left: 260px;
+  background: #925cc3 !important;
+}
+.layui-layout-theme > .layui-header .layui-nav-item > a {
+  color: #fff !important;
+}
+.layui-layout-theme > .layui-header .layui-nav-item > a:hover {
+  color: #fff !important;
 }
 .layui-layout-theme > .layui-header .layui-layout-left .layui-nav-item {
   display: none;
@@ -1681,16 +1693,22 @@ label.think-checkbox {
 .layui-layout-theme > .layui-body > .think-page-body > .layui-card > .layui-card-header {
   left: 260px;
 }
+.layui-layout-theme .layui-side {
+  background-color: #fff !important;
+}
+.layui-layout-theme .layui-side .layui-logo {
+  background: #925cc3 !important;
+}
 .layui-layout-theme .layui-side .layui-side-scroll {
   display: flex !important;
 }
 .layui-layout-theme .layui-side .layui-side-scroll .layui-side-icon {
   width: 60px;
+  background: #563d7c;
   height: 100%;
   display: block;
   overflow: auto;
   overflow-x: hidden;
-  background: #333;
 }
 .layui-layout-theme .layui-side .layui-side-scroll .layui-side-icon::-webkit-scrollbar {
   width: 3px !important;
@@ -1702,20 +1720,19 @@ label.think-checkbox {
   background-color: #999 !important;
 }
 .layui-layout-theme .layui-side .layui-side-scroll .layui-side-icon a {
-  color: #FFF;
   height: 60px;
   display: block;
   text-align: center;
   line-height: 60px;
 }
 .layui-layout-theme .layui-side .layui-side-scroll .layui-side-icon .layui-icon {
-  color: #098;
+  color: #fff;
 }
 .layui-layout-theme .layui-side .layui-side-scroll .layui-side-icon > .layui-this {
-  background: #393D49 !important;
+  background: #fff;
 }
 .layui-layout-theme .layui-side .layui-side-scroll .layui-side-icon > .layui-this .layui-icon {
-  color: #FFF;
+  color: #333;
 }
 .layui-layout-theme .layui-side .layui-side-scroll .layui-side-tree {
   flex: 1;
@@ -1733,8 +1750,28 @@ label.think-checkbox {
 .layui-layout-theme .layui-side .layui-side-scroll .layui-side-tree::-webkit-scrollbar-thumb {
   background-color: #999 !important;
 }
-.layui-layout-theme .layui-side .layui-side-scroll .layui-nav-tree {
-  width: 100% !important;
+.layui-layout-theme .layui-side .layui-side-scroll .layui-side-tree .layui-nav-item {
+  background: none !important;
+}
+.layui-layout-theme .layui-side .layui-side-scroll .layui-side-tree .layui-nav-item a {
+  color: #333 !important;
+  background: none !important;
+  border-bottom: none !important;
+}
+.layui-layout-theme .layui-side .layui-side-scroll .layui-side-tree .layui-nav-item a:hover {
+  color: #098 !important;
+}
+.layui-layout-theme .layui-side .layui-side-scroll .layui-side-tree .layui-nav-item .layui-this > a,
+.layui-layout-theme .layui-side .layui-side-scroll .layui-side-tree .layui-nav-item.layui-this > a {
+  color: #098 !important;
+  background: none !important;
+}
+.layui-layout-theme .layui-side .layui-side-scroll .layui-side-tree .layui-nav-item .layui-this > a:hover,
+.layui-layout-theme .layui-side .layui-side-scroll .layui-side-tree .layui-nav-item.layui-this > a:hover {
+  background: none !important;
+}
+.layui-layout-theme .layui-side .layui-side-scroll .layui-side-tree .layui-nav-itemed > a {
+  color: #999 !important;
 }
 .layui-layout-left-mini .layui-header {
   left: 50px !important;
