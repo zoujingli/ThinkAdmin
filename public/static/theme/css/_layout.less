@@ -328,6 +328,20 @@
 
   > .layui-header {
     left: 260px;
+
+    .layui-layout-left {
+      .layui-nav-item {
+        display: none;
+      }
+
+      .layui-nav-item:first-child {
+        //display: inline-block;
+      }
+
+      .layui-nav-item:last-child {
+        display: inline-block;
+      }
+    }
   }
 
   > .layui-body {
@@ -342,17 +356,17 @@
     display: flex !important;
 
     .layui-side-icon {
-      width: 50px;
+      width: 60px;
       height: 100%;
       display: block;
-      background: @LeftMainNavActiveTextColor;
+      background: #333;
 
       a {
         color: #fff;
-        height: 50px;
+        height: 60px;
         display: block;
         text-align: center;
-        line-height: 50px;
+        line-height: 60px;
       }
 
       .layui-icon {

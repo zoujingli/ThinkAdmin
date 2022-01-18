@@ -1666,6 +1666,12 @@ label.think-checkbox {
 .layui-theme-left > .layui-header {
   left: 260px;
 }
+.layui-theme-left > .layui-header .layui-layout-left .layui-nav-item {
+  display: none;
+}
+.layui-theme-left > .layui-header .layui-layout-left .layui-nav-item:last-child {
+  display: inline-block;
+}
 .layui-theme-left > .layui-body {
   left: 260px;
 }
@@ -1676,17 +1682,17 @@ label.think-checkbox {
   display: flex !important;
 }
 .layui-theme-left .layui-side-scroll .layui-side-icon {
-  width: 50px;
+  width: 60px;
   height: 100%;
   display: block;
-  background: #FFF;
+  background: #333;
 }
 .layui-theme-left .layui-side-scroll .layui-side-icon a {
   color: #fff;
-  height: 50px;
+  height: 60px;
   display: block;
   text-align: center;
-  line-height: 50px;
+  line-height: 60px;
 }
 .layui-theme-left .layui-side-scroll .layui-side-icon .layui-icon {
   color: #098;
