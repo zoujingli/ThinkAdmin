@@ -1563,10 +1563,10 @@ label.think-checkbox {
   width: 3px !important;
 }
 .layui-layout > .layui-side .layui-side-scroll::-webkit-scrollbar-track {
-  background: #ccc !important;
+  background: #666 !important;
 }
 .layui-layout > .layui-side .layui-side-scroll::-webkit-scrollbar-thumb {
-  background-color: #666 !important;
+  background-color: #999 !important;
 }
 .layui-layout > .layui-side .layui-side-scroll .layui-nav-item > a {
   background: rgba(100, 100, 100, 0.5) !important;
@@ -1688,10 +1688,21 @@ label.think-checkbox {
   width: 60px;
   height: 100%;
   display: block;
+  overflow: auto;
+  overflow-x: hidden;
   background: #333;
 }
+.layui-layout-theme .layui-side .layui-side-scroll .layui-side-icon::-webkit-scrollbar {
+  width: 3px !important;
+}
+.layui-layout-theme .layui-side .layui-side-scroll .layui-side-icon::-webkit-scrollbar-track {
+  background: #666 !important;
+}
+.layui-layout-theme .layui-side .layui-side-scroll .layui-side-icon::-webkit-scrollbar-thumb {
+  background-color: #999 !important;
+}
 .layui-layout-theme .layui-side .layui-side-scroll .layui-side-icon a {
-  color: #fff;
+  color: #FFF;
   height: 60px;
   display: block;
   text-align: center;
@@ -1710,6 +1721,17 @@ label.think-checkbox {
   flex: 1;
   height: 100%;
   display: block;
+  overflow: auto;
+  overflow-x: hidden;
+}
+.layui-layout-theme .layui-side .layui-side-scroll .layui-side-tree::-webkit-scrollbar {
+  width: 3px !important;
+}
+.layui-layout-theme .layui-side .layui-side-scroll .layui-side-tree::-webkit-scrollbar-track {
+  background: #666 !important;
+}
+.layui-layout-theme .layui-side .layui-side-scroll .layui-side-tree::-webkit-scrollbar-thumb {
+  background-color: #999 !important;
 }
 .layui-layout-theme .layui-side .layui-side-scroll .layui-nav-tree {
   width: 100% !important;

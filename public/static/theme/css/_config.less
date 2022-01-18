@@ -65,3 +65,18 @@
 // 左侧菜单大小
 @LayoutMiniLeftSize: 50px;
 @LayoutDefaLeftSzie: 200px;
+
+// 最小滚动条样式
+#MinScrollbar() {
+  &::-webkit-scrollbar {
+    width: 3px !important;
+
+    &-track {
+      background: #666 !important
+    }
+
+    &-thumb {
+      background-color: #999 !important
+    }
+  }
+}

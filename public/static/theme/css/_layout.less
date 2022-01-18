@@ -194,17 +194,7 @@
         content: '';
       }
 
-      &::-webkit-scrollbar {
-        width: 3px !important;
-
-        &-track {
-          background: #ccc !important
-        }
-
-        &-thumb {
-          background-color: #666 !important
-        }
-      }
+      #MinScrollbar();
 
       .layui-nav-item {
         > a {
@@ -361,10 +351,13 @@
         width: 60px;
         height: 100%;
         display: block;
+        overflow: auto;
+        overflow-x: hidden;
         background: #333;
+        #MinScrollbar();
 
         a {
-          color: #fff;
+          color: #FFF;
           height: 60px;
           display: block;
           text-align: center;
@@ -388,6 +381,9 @@
         flex: 1;
         height: 100%;
         display: block;
+        overflow: auto;
+        overflow-x: hidden;
+        #MinScrollbar();
       }
 
       .layui-nav-tree {
