@@ -12,10 +12,7 @@
         </li>
         {foreach $menus as $one}
         <li class="layui-nav-item">
-            <a data-menu-node="m-{$one.id}" data-open="{$one.url}">
-                <!--{notempty name='one.icon'}<span class='{$one.icon} padding-right-5'></span>{/notempty}-->
-                <span>{$one.title|default=''}</span>
-            </a>
+            <a data-menu-node="m-{$one.id}" data-open="{$one.url}"><span>{$one.title|default=''}</span></a>
         </li>
         {/foreach}
     </ul>
