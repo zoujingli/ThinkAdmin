@@ -71,7 +71,6 @@
 
       > a {
         color: @TopHeaderNavNormalTextColor !important;
-        background: @TopHeaderNavNormalBackColor !important;
 
         &:hover {
           color: @TopHeaderNavHoverTextColor !important;
@@ -181,6 +180,7 @@
 
       .layui-nav-tree {
         width: @LayoutDefaLeftSzie;
+        background: none !important;
       }
 
       &:after {
@@ -202,15 +202,23 @@
       }
 
       .layui-nav-item {
-        border-bottom: 1px solid rgba(0, 0, 0, .2);
+        > a {
+          background: rgba(100, 100, 100, 0.5) !important;
+          border-bottom: 1px solid rgba(0, 0, 0, .2);
+
+          &:hover {
+            background-color: rgba(100, 100, 100, 0.6) !important;
+          }
+        }
 
         .layui-nav-child {
           padding: 0;
-          background-color: @LeftMainSubBackColor;
+          // background-color: @LeftMainSubBackColor;
+          background-color: unset !important;
         }
 
         dd, dd > a {
-          color: @LeftMainNavNormalTextColor;
+          //color: @LeftMainNavNormalTextColor;
           background-color: @LeftMainNavNormalBackColor;
         }
 
@@ -305,6 +313,69 @@
           top: 45px;
         }
       }
+    }
+  }
+}
+
+.layui-side-scroll .layui-side-icon {
+  display: none;
+}
+
+.layui-theme-left {
+  > .layui-side {
+    width: 260px;
+  }
+
+  > .layui-header {
+    left: 260px;
+  }
+
+  > .layui-body {
+    left: 260px;
+
+    > .think-page-body > .layui-card > .layui-card-header {
+      left: 260px;
+    }
+  }
+
+  .layui-side-scroll {
+    display: flex !important;
+
+    .layui-side-icon {
+      width: 50px;
+      height: 100%;
+      display: block;
+      background: @LeftMainNavActiveTextColor;
+
+      a {
+        color: #fff;
+        height: 50px;
+        display: block;
+        text-align: center;
+        line-height: 50px;
+      }
+
+      .layui-icon {
+        color: @LeftMainNavActiveBackColor
+      }
+
+      > .layui-this {
+        background: @LeftMainBackColor;
+
+        .layui-icon {
+          color: @LeftMainNavActiveTextColor;
+        }
+      }
+    }
+
+    .layui-side-tree {
+      flex: 1;
+      height: 100%;
+      display: block;
+    }
+
+    .layui-nav-tree {
+      width: 100% !important;
     }
   }
 }
