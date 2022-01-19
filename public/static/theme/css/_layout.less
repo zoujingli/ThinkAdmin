@@ -190,6 +190,13 @@
         width: @LayoutDefaLeftSzie;
         background: none !important;
 
+        > li.layui-this {
+          background: @LeftMainNavActiveBackColor;
+
+          > a {
+            background: none !important;
+          }
+        }
       }
 
       &:after {
@@ -202,22 +209,20 @@
 
       .layui-nav-item {
         > a {
-          background: rgba(100, 100, 100, 0.5) !important;
-          border-bottom: 1px solid rgba(0, 0, 0, .2);
+          background: rgba(100, 100, 100, .30) !important;
+          border-bottom: 1px solid rgba(0, 0, 0, .20);
 
           &:hover {
-            background-color: rgba(100, 100, 100, 0.6) !important;
+            background-color: rgba(100, 100, 100, .35) !important;
           }
         }
 
         .layui-nav-child {
           padding: 0;
-          // background-color: @LeftMainSubsBackColor;
           background-color: unset !important;
         }
 
         dd, dd > a {
-          //color: @LeftMainNavNormalTextColor;
           background-color: @LeftMainNavNormalBackColor;
         }
 
@@ -313,158 +318,6 @@
 
         & + .layui-card-body {
           top: 45px;
-        }
-      }
-    }
-  }
-}
-
-.layui-layout-theme-white {
-  &.layui-layout-left-mini {
-    > .layui-side .layui-side-target:before {
-      transform: rotate(0deg);
-    }
-  }
-
-  > .layui-header {
-    background: none !important;
-
-    .layui-nav-item {
-      &.layui-this > a {
-        color: #098 !important;
-        font-weight: bold;
-        background: none !important;
-      }
-
-      > a {
-        color: #333 !important;
-
-        &:hover {
-          color: #098 !important;
-          background: none !important;
-        }
-      }
-    }
-  }
-
-  > .layui-body {
-    > .think-page-body > .layui-card > .layui-card-header {
-      height: 50px;
-      line-height: 50px;
-      box-sizing: border-box;
-      box-shadow: none !important;
-      border-bottom: @TopHeaderBottomLine;
-    }
-  }
-
-  .layui-side {
-    background-color: #fff !important;
-
-    .layui-side-target {
-      &:before {
-        content: "\e65b";
-        color: #FFF;
-        width: 100%;
-        height: 100%;
-        display: block;
-        line-height: 50px;
-        text-align: center;
-        font-family: layui-icon !important;
-        font-size: 10px;
-        font-style: normal;
-        transform: rotate(180deg);
-        -webkit-font-smoothing: antialiased;
-        -moz-osx-font-smoothing: grayscale;
-      }
-
-      top: 50%;
-      right: 0;
-      color: #fff;
-      width: 12px;
-      height: 50px;
-      z-index: 99;
-      display: block;
-      cursor: pointer;
-      position: absolute;
-      margin-top: -25px;
-      background: rgba(0, 0, 0, 0.4);
-      border-top-left-radius: 100%;
-      border-bottom-left-radius: 100%;
-    }
-
-    .layui-logo,
-    .layui-logo-mini {
-      color: #333;
-      box-shadow: none;
-      font-weight: bold;
-
-      .headimg {
-        margin: 0 !important;
-      }
-    }
-
-    .layui-side-scroll {
-      display: flex !important;
-      box-sizing: border-box;
-      border-right: @TopHeaderBottomLine;
-
-      .layui-side-icon {
-        width: 60px;
-        display: none;
-        background: #fff;
-        #defaScrollbar();
-
-        a {
-          height: 60px;
-          display: block;
-          text-align: center;
-          line-height: 60px;
-        }
-
-        .layui-icon {
-          color: #999;
-        }
-
-        > .layui-this {
-          background: #fff;
-
-          .layui-icon {
-            color: #098 !important;
-          }
-        }
-      }
-
-      .layui-side-tree {
-        flex: 1;
-
-        .layui-nav-item {
-          background: none !important;
-
-          a {
-            color: #333 !important;
-            background: none !important;
-            border-bottom: none !important;
-
-            &:hover {
-              color: #098 !important;
-            }
-          }
-
-          .layui-this, &.layui-this {
-            > a {
-              color: #098 !important;
-              background: none !important;
-              font-weight: bold !important;
-
-              &:hover {
-                background: none !important;
-              }
-            }
-          }
-
-          &ed > a {
-            color: #999 !important;
-          }
         }
       }
     }
