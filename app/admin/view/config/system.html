@@ -17,6 +17,22 @@
         </div>
 
         <div class="layui-form-item">
+            <div class="help-label label-required-prev"><b>后台默认主题</b>Theme</div>
+            <div class="layui-input">
+                {foreach ['default'=>'默认主题','white'=>'简约白色'] as $k=>$v}
+                <label class="think-radio">
+                    {if sysconf('base.site_theme') eq $k}
+                    <input name="site_theme" type="radio" value="{$k}" lay-ignore checked> {$v}
+                    {else}
+                    <input name="site_theme" type="radio" value="{$k}" lay-ignore> {$v}
+                    {/if}
+                </label>
+                {/foreach}
+            </div>
+            <span class="help-block">用户登录管理后台默认会以此配置的主题显示管理界面，用户也可以单独修改配置主题！</span>
+        </div>
+
+        <div class="layui-form-item">
             <div class="help-label label-required-prev"><b>浏览器小图标</b>Icon</div>
             <label class="relative block label-required-null">
                 <input class="layui-input" required pattern="^(http|/)" placeholder="请上传浏览器图标" value="{:sysconf('site_icon')}" name="site_icon">
