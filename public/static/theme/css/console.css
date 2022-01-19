@@ -1706,6 +1706,7 @@ label.think-checkbox {
   display: block;
   cursor: pointer;
   position: absolute;
+  margin-top: -25px;
   background: rgba(0, 0, 0, 0.4);
   border-top-left-radius: 100%;
   border-bottom-left-radius: 100%;
@@ -1832,7 +1833,12 @@ label.think-checkbox {
 }
 .layui-layout-left-mini > .layui-side .layui-nav-item .nav-icon {
   padding: 0 !important;
+  font-size: 16px !important;
   display: inline-block !important;
+  transition: all 0.2s linear;
+  -o-transition: all 0.2s linear;
+  -moz-transition: all 0.2s linear;
+  -webkit-transition: all 0.2s linear;
 }
 .layui-layout-left-mini > .layui-side .layui-nav-item .layui-nav-child {
   padding: 0;
