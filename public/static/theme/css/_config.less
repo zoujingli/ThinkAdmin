@@ -67,7 +67,7 @@
 @LayoutDefaLeftSzie: 200px;
 
 // 最小滚动条样式
-#MinScrollbar() {
+#defaScrollbar() {
   height: 100%;
   display: block;
   overflow: auto;
@@ -83,4 +83,12 @@
       background-color: #999 !important
     }
   }
+}
+
+// 通用延时动态
+#defaTransition() {
+  transition: all .2s linear;
+  -o-transition: all .2s linear;
+  -moz-transition: all .2s linear;
+  -webkit-transition: all .2s linear;
 }

@@ -1426,6 +1426,9 @@ label.think-checkbox {
   padding: 0;
   white-space: nowrap;
 }
+.layui-layout > .layui-header > ul.layui-nav .layui-logo {
+  display: block;
+}
 .layui-layout > .layui-header > ul.layui-nav .layui-logo-hide {
   width: 50px !important;
   padding: 0 !important;
@@ -1665,79 +1668,29 @@ label.think-checkbox {
 .layui-layout > .layui-body > .think-page-body > .layui-card > .layui-card-header + .layui-card-body {
   top: 45px;
 }
-.layui-layout-theme.layui-layout-left-hide > .layui-side,
-.layui-layout-theme.layui-layout-left-mini > .layui-side {
-  width: 60px !important;
-  display: block !important;
-  background-color: unset !important;
-  z-index: 77;
+.layui-layout-theme-white.layui-layout-left-mini > .layui-side .layui-side-target:before {
+  transform: rotate(0deg);
 }
-.layui-layout-theme.layui-layout-left-hide > .layui-side > .layui-logo,
-.layui-layout-theme.layui-layout-left-mini > .layui-side > .layui-logo {
-  display: none !important;
+.layui-layout-theme-white > .layui-header {
+  background: none !important;
 }
-.layui-layout-theme.layui-layout-left-hide > .layui-side > .layui-logo-mini,
-.layui-layout-theme.layui-layout-left-mini > .layui-side > .layui-logo-mini {
-  width: 60px;
-  display: inline-block;
+.layui-layout-theme-white > .layui-header .layui-nav-item > a {
+  color: #666 !important;
 }
-.layui-layout-theme.layui-layout-left-hide > .layui-side .layui-side-scroll .layui-side-icon,
-.layui-layout-theme.layui-layout-left-mini > .layui-side .layui-side-scroll .layui-side-icon {
-  display: inline-block;
+.layui-layout-theme-white > .layui-header .layui-nav-item > a:hover {
+  color: #333 !important;
 }
-.layui-layout-theme.layui-layout-left-hide > .layui-side .layui-side-scroll .layui-side-tree,
-.layui-layout-theme.layui-layout-left-mini > .layui-side .layui-side-scroll .layui-side-tree {
-  display: block;
-}
-.layui-layout-theme.layui-layout-left-hide > .layui-body,
-.layui-layout-theme.layui-layout-left-mini > .layui-body {
-  z-index: 88;
-  left: 60px !important;
-}
-.layui-layout-theme.layui-layout-left-hide > .layui-body > .think-page-body > .layui-card > .layui-card-header,
-.layui-layout-theme.layui-layout-left-mini > .layui-body > .think-page-body > .layui-card > .layui-card-header {
-  left: 60px !important;
-}
-.layui-layout-theme > .layui-side {
-  width: 260px;
-}
-.layui-layout-theme > .layui-header {
-  left: 260px;
-  background: #925cc3 !important;
-  display: none !important;
-}
-.layui-layout-theme > .layui-header .layui-nav-item > a {
-  color: #fff !important;
-}
-.layui-layout-theme > .layui-header .layui-nav-item > a:hover {
-  color: #fff !important;
-}
-.layui-layout-theme > .layui-header .layui-layout-left .layui-nav-item {
-  display: none;
-}
-.layui-layout-theme > .layui-header .layui-layout-left .layui-nav-item:first-child {
-  display: inline-block;
-}
-.layui-layout-theme > .layui-header .layui-layout-left .layui-nav-item:last-child {
-  display: inline-block;
-}
-.layui-layout-theme > .layui-body {
-  top: 0;
-  left: 260px;
-}
-.layui-layout-theme > .layui-body > .think-page-body > .layui-card > .layui-card-header {
-  top: 0;
-  left: 260px;
+.layui-layout-theme-white > .layui-body > .think-page-body > .layui-card > .layui-card-header {
   height: 50px;
   line-height: 50px;
+  box-sizing: border-box;
+  box-shadow: none !important;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.16);
 }
-.layui-layout-theme > .layui-body > .think-page-body > .layui-card > .layui-card-header + .layui-card-body {
-  top: 50px;
-}
-.layui-layout-theme .layui-side {
+.layui-layout-theme-white .layui-side {
   background-color: #fff !important;
 }
-.layui-layout-theme .layui-side .layui-side-target {
+.layui-layout-theme-white .layui-side .layui-side-target {
   top: 50%;
   right: 0;
   color: #fff;
@@ -1748,101 +1701,97 @@ label.think-checkbox {
   cursor: pointer;
   position: absolute;
   background: rgba(0, 0, 0, 0.4);
-  border-top-left-radius: 80%;
-  border-bottom-left-radius: 80%;
+  border-top-left-radius: 100%;
+  border-bottom-left-radius: 100%;
 }
-.layui-layout-theme .layui-side .layui-side-target:before {
-  content: '≪';
+.layui-layout-theme-white .layui-side .layui-side-target:before {
+  content: "\e65b";
   color: #FFF;
   width: 100%;
   height: 100%;
   display: block;
   line-height: 50px;
   text-align: center;
+  font-family: layui-icon !important;
+  font-size: 10px;
+  font-style: normal;
+  transform: rotate(180deg);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
-.layui-layout-theme .layui-side .layui-logo,
-.layui-layout-theme .layui-side .layui-logo-mini {
-  background: #925cc3 !important;
-  border-bottom: none !important;
+.layui-layout-theme-white .layui-side .layui-logo,
+.layui-layout-theme-white .layui-side .layui-logo-mini {
+  color: #333;
+  box-shadow: none;
+  font-weight: bold;
 }
-.layui-layout-theme .layui-side .layui-logo .headimg,
-.layui-layout-theme .layui-side .layui-logo-mini .headimg {
-  margin: 0;
+.layui-layout-theme-white .layui-side .layui-logo .headimg,
+.layui-layout-theme-white .layui-side .layui-logo-mini .headimg {
+  margin: 0 !important;
 }
-.layui-layout-theme .layui-side .layui-side-scroll {
-  top: 50px;
+.layui-layout-theme-white .layui-side .layui-side-scroll {
   display: flex !important;
+  box-sizing: border-box;
+  border-right: 1px solid rgba(0, 0, 0, 0.16);
 }
-.layui-layout-theme .layui-side .layui-side-scroll .layui-side-icon {
+.layui-layout-theme-white .layui-side .layui-side-scroll .layui-side-icon {
   width: 60px;
-  background: #563d7c;
+  display: none;
+  background: #fff;
   height: 100%;
   display: block;
   overflow: auto;
   overflow-x: hidden;
 }
-.layui-layout-theme .layui-side .layui-side-scroll .layui-side-icon::-webkit-scrollbar {
+.layui-layout-theme-white .layui-side .layui-side-scroll .layui-side-icon::-webkit-scrollbar {
   width: 3px !important;
 }
-.layui-layout-theme .layui-side .layui-side-scroll .layui-side-icon::-webkit-scrollbar-track {
+.layui-layout-theme-white .layui-side .layui-side-scroll .layui-side-icon::-webkit-scrollbar-track {
   background: #666 !important;
 }
-.layui-layout-theme .layui-side .layui-side-scroll .layui-side-icon::-webkit-scrollbar-thumb {
+.layui-layout-theme-white .layui-side .layui-side-scroll .layui-side-icon::-webkit-scrollbar-thumb {
   background-color: #999 !important;
 }
-.layui-layout-theme .layui-side .layui-side-scroll .layui-side-icon a {
+.layui-layout-theme-white .layui-side .layui-side-scroll .layui-side-icon a {
   height: 60px;
   display: block;
   text-align: center;
   line-height: 60px;
 }
-.layui-layout-theme .layui-side .layui-side-scroll .layui-side-icon .layui-icon {
-  color: #fff;
+.layui-layout-theme-white .layui-side .layui-side-scroll .layui-side-icon .layui-icon {
+  color: #999;
 }
-.layui-layout-theme .layui-side .layui-side-scroll .layui-side-icon > .layui-this {
+.layui-layout-theme-white .layui-side .layui-side-scroll .layui-side-icon > .layui-this {
   background: #fff;
 }
-.layui-layout-theme .layui-side .layui-side-scroll .layui-side-icon > .layui-this .layui-icon {
-  color: #333;
+.layui-layout-theme-white .layui-side .layui-side-scroll .layui-side-icon > .layui-this .layui-icon {
+  color: #098 !important;
 }
-.layui-layout-theme .layui-side .layui-side-scroll .layui-side-tree {
+.layui-layout-theme-white .layui-side .layui-side-scroll .layui-side-tree {
   flex: 1;
-  height: 100%;
-  display: block;
-  overflow: auto;
-  overflow-x: hidden;
 }
-.layui-layout-theme .layui-side .layui-side-scroll .layui-side-tree::-webkit-scrollbar {
-  width: 3px !important;
-}
-.layui-layout-theme .layui-side .layui-side-scroll .layui-side-tree::-webkit-scrollbar-track {
-  background: #666 !important;
-}
-.layui-layout-theme .layui-side .layui-side-scroll .layui-side-tree::-webkit-scrollbar-thumb {
-  background-color: #999 !important;
-}
-.layui-layout-theme .layui-side .layui-side-scroll .layui-side-tree .layui-nav-item {
+.layui-layout-theme-white .layui-side .layui-side-scroll .layui-side-tree .layui-nav-item {
   background: none !important;
 }
-.layui-layout-theme .layui-side .layui-side-scroll .layui-side-tree .layui-nav-item a {
+.layui-layout-theme-white .layui-side .layui-side-scroll .layui-side-tree .layui-nav-item a {
   color: #333 !important;
   background: none !important;
   border-bottom: none !important;
 }
-.layui-layout-theme .layui-side .layui-side-scroll .layui-side-tree .layui-nav-item a:hover {
+.layui-layout-theme-white .layui-side .layui-side-scroll .layui-side-tree .layui-nav-item a:hover {
   color: #098 !important;
 }
-.layui-layout-theme .layui-side .layui-side-scroll .layui-side-tree .layui-nav-item .layui-this > a,
-.layui-layout-theme .layui-side .layui-side-scroll .layui-side-tree .layui-nav-item.layui-this > a {
+.layui-layout-theme-white .layui-side .layui-side-scroll .layui-side-tree .layui-nav-item .layui-this > a,
+.layui-layout-theme-white .layui-side .layui-side-scroll .layui-side-tree .layui-nav-item.layui-this > a {
   color: #098 !important;
   background: none !important;
   font-weight: bold !important;
 }
-.layui-layout-theme .layui-side .layui-side-scroll .layui-side-tree .layui-nav-item .layui-this > a:hover,
-.layui-layout-theme .layui-side .layui-side-scroll .layui-side-tree .layui-nav-item.layui-this > a:hover {
+.layui-layout-theme-white .layui-side .layui-side-scroll .layui-side-tree .layui-nav-item .layui-this > a:hover,
+.layui-layout-theme-white .layui-side .layui-side-scroll .layui-side-tree .layui-nav-item.layui-this > a:hover {
   background: none !important;
 }
-.layui-layout-theme .layui-side .layui-side-scroll .layui-side-tree .layui-nav-itemed > a {
+.layui-layout-theme-white .layui-side .layui-side-scroll .layui-side-tree .layui-nav-itemed > a {
   color: #999 !important;
 }
 .layui-layout-left-mini .layui-header {
