@@ -329,11 +329,20 @@
   > .layui-header {
     background: none !important;
 
-    .layui-nav-item > a {
-      color: #666 !important;
+    .layui-nav-item {
+      &.layui-this > a {
+        color: #098 !important;
+        font-weight: bold;
+        background: none !important;
+      }
 
-      &:hover {
+      > a {
         color: #333 !important;
+
+        &:hover {
+          color: #098 !important;
+          background: none !important;
+        }
       }
     }
   }
