@@ -188,6 +188,13 @@
         display: none;
       }
 
+      .layui-side-icon:after,
+      .layui-side-tree:after {
+        height: @TopHeaderHeight;
+        display: block;
+        content: '';
+      }
+
       .layui-nav-tree {
         width: @LayoutDefaLeftSzie;
         background: none !important;
@@ -199,12 +206,6 @@
             background: none !important;
           }
         }
-      }
-
-      &:after {
-        height: @TopHeaderHeight;
-        display: block;
-        content: '';
       }
 
       #defaScrollbar();
@@ -357,10 +358,6 @@
 
     .layui-nav-more {
       display: none !important
-    }
-
-    .layui-side-scroll .layui-side-icon {
-      display: none;
     }
 
     .layui-nav-item {
