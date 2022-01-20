@@ -251,7 +251,6 @@
   height: 580px;
   position: relative;
   background: url(../img/wechat/mobile_head.png) no-repeat 0 0;
-  box-shadow: @ShadowMaxOuter;
   border-radius: @BoxBorderRadius;
 
   .mobile-header {
@@ -279,6 +278,7 @@
     bottom: 0;
     position: absolute;
     background: #F5F5F5;
+    border: 1px solid #666;
     border-radius: 0 0 @BoxBorderRadius @BoxBorderRadius;
 
     iframe {
@@ -289,11 +289,12 @@
   }
 
   .mobile-footer {
-    left: 0;
-    right: 0;
-    bottom: 0;
+    left: 1px;
+    right: 1px;
+    bottom: 1px;
     position: absolute;
     padding-left: 44px;
+    border-top: 1px solid rgb(208, 208, 208);
     background: url(../img/wechat/mobile_foot.png) no-repeat 0 0;
     border-radius: 0 0 @BoxBorderRadius @BoxBorderRadius;
 
@@ -315,7 +316,7 @@
         text-decoration: none;
 
         &:after {
-          top: 0;
+          top: -1px;
           left: 0;
           right: 0;
           bottom: 0;
@@ -329,7 +330,7 @@
 
         &.active:after {
           border: 1px solid #44b549;
-          box-shadow: 0 0 1px #44b549;
+          box-shadow: 0 0 3px #44b549;
           z-index: 11;
         }
 
@@ -390,6 +391,7 @@
       bottom: 60px;
       display: block;
       position: absolute;
+      margin-bottom: -1px;
       background-color: #fafafa;
 
       ul li {
@@ -401,7 +403,7 @@
         }
 
         a:after {
-          margin: -1px 0 0 0;
+          margin: -1px 0 1px 0;
         }
       }
     }
@@ -424,13 +426,13 @@
     }
 
     .arrow_in {
-      bottom: -5px;
+      bottom: -4px;
       z-index: 11;
       border-top-color: #fafafa
     }
 
     .arrow_out {
-      bottom: -6px;
+      bottom: -5px;
       z-index: 10;
       border-top-color: #d0d0d0
     }
