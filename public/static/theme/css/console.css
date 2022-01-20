@@ -1829,14 +1829,26 @@ fieldset legend {
   bottom: 0;
   width: 100% !important;
   height: 100% !important;
+  overflow: auto;
   position: absolute;
+}
+.layui-layout > .layui-side .layui-side-scroll .layui-side-icon {
+  display: none;
+}
+.layui-layout > .layui-side .layui-side-scroll .layui-side-tree {
   height: 100%;
   display: block;
   overflow: auto;
   overflow-x: hidden;
 }
-.layui-layout > .layui-side .layui-side-scroll .layui-side-icon {
-  display: none;
+.layui-layout > .layui-side .layui-side-scroll .layui-side-tree::-webkit-scrollbar {
+  width: 3px !important;
+}
+.layui-layout > .layui-side .layui-side-scroll .layui-side-tree::-webkit-scrollbar-track {
+  background: #666 !important;
+}
+.layui-layout > .layui-side .layui-side-scroll .layui-side-tree::-webkit-scrollbar-thumb {
+  background-color: #999 !important;
 }
 .layui-layout > .layui-side .layui-side-scroll .layui-side-icon:after,
 .layui-layout > .layui-side .layui-side-scroll .layui-side-tree:after {
@@ -1854,14 +1866,8 @@ fieldset legend {
 .layui-layout > .layui-side .layui-side-scroll .layui-nav-tree > li.layui-this > a {
   background: none !important;
 }
-.layui-layout > .layui-side .layui-side-scroll::-webkit-scrollbar {
-  width: 3px !important;
-}
-.layui-layout > .layui-side .layui-side-scroll::-webkit-scrollbar-track {
-  background: #666 !important;
-}
-.layui-layout > .layui-side .layui-side-scroll::-webkit-scrollbar-thumb {
-  background-color: #999 !important;
+.layui-layout > .layui-side .layui-side-scroll .layui-nav-item {
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
 }
 .layui-layout > .layui-side .layui-side-scroll .layui-nav-item > a {
   background: rgba(100, 100, 100, 0.3) !important;
@@ -2102,19 +2108,6 @@ fieldset legend {
   width: 60px;
   display: none;
   background: #fff;
-  height: 100%;
-  display: block;
-  overflow: auto;
-  overflow-x: hidden;
-}
-.layui-layout-theme-white .layui-side .layui-side-scroll .layui-side-icon::-webkit-scrollbar {
-  width: 3px !important;
-}
-.layui-layout-theme-white .layui-side .layui-side-scroll .layui-side-icon::-webkit-scrollbar-track {
-  background: #666 !important;
-}
-.layui-layout-theme-white .layui-side .layui-side-scroll .layui-side-icon::-webkit-scrollbar-thumb {
-  background-color: #999 !important;
 }
 .layui-layout-theme-white .layui-side .layui-side-scroll .layui-side-icon a {
   height: 60px;
@@ -2136,6 +2129,7 @@ fieldset legend {
 }
 .layui-layout-theme-white .layui-side .layui-side-scroll .layui-side-tree .layui-nav-item {
   background: none !important;
+  border-bottom-color: #fff;
 }
 .layui-layout-theme-white .layui-side .layui-side-scroll .layui-side-tree .layui-nav-item a {
   color: #333 !important;

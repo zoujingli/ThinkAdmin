@@ -188,6 +188,10 @@
         display: none;
       }
 
+      .layui-side-tree {
+        #defaScrollbar();
+      }
+
       .layui-side-icon:after,
       .layui-side-tree:after {
         height: @TopHeaderHeight;
@@ -208,9 +212,9 @@
         }
       }
 
-      #defaScrollbar();
-
       .layui-nav-item {
+        border-bottom: @TopHeaderBottomLine;
+
         > a {
           background: rgba(100, 100, 100, .30) !important;
 
