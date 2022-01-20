@@ -154,6 +154,7 @@
       overflow: hidden;
       position: relative;
       text-align: center;
+      box-shadow: none !important;
       line-height: @TopHeaderHeight;
       border-bottom: @TopHeaderBottomLine;
 
@@ -227,8 +228,8 @@
       .layui-side-icon:after,
       .layui-side-tree:after {
         height: @TopHeaderHeight;
-        display: block;
         content: '';
+        display: block;
       }
 
       .layui-nav-tree {
@@ -245,19 +246,14 @@
       }
 
       .layui-nav-item {
-        border-bottom: @TopHeaderBottomLine;
+        // border-bottom: @TopHeaderBottomLine;
 
-        > a {
-          background: rgba(100, 100, 100, .30) !important;
-
-          &:hover {
-            background-color: rgba(100, 100, 100, .35) !important;
-          }
+        > a:hover {
+          // background-color: rgba(100, 100, 100, .2) !important;
         }
 
         .layui-nav-child {
           padding: 0;
-          background-color: unset !important;
         }
 
         dd, dd > a {
@@ -279,12 +275,6 @@
           line-height: 45px;
           padding-top: 0;
           padding-bottom: 0;
-          color: @LeftMainNavNormalTextColor;
-
-          &:hover {
-            color: @LeftMainNavHoverTextColor;
-            background: @LeftMainNavHoverBackColor
-          }
 
           .nav-icon {
             padding-right: 5px;
@@ -394,6 +384,10 @@
 
     .layui-nav-more {
       display: none !important
+    }
+
+    .layui-side-target:before {
+      transform: rotate(0deg);
     }
 
     .layui-nav-item {

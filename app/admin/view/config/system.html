@@ -19,7 +19,7 @@
         <div class="layui-form-item">
             <div class="help-label label-required-prev"><b>后台默认主题</b>Theme</div>
             <div class="layui-input">
-                {foreach ['default'=>'默认主题','white'=>'简约白色','black'=>'精典黑色'] as $k=>$v}
+                {foreach ['default'=>'默认色','white'=>'简约白','black'=>'精典黑','red'=>'玫瑰红','blue'=>'天空蓝'] as $k=>$v}
                 <label class="think-radio">
                     {if sysconf('base.site_theme') eq $k}
                     <input name="site_theme" type="radio" value="{$k}" lay-ignore checked> {$v}

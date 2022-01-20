@@ -2,11 +2,6 @@
 @import "_config.less";
 
 .layui-layout-theme-white {
-  &.layui-layout-left-mini {
-    > .layui-side .layui-side-target:before {
-      transform: rotate(0deg);
-    }
-  }
 
   > .layui-header {
     background: none !important;
@@ -50,6 +45,10 @@
       display: flex !important;
       box-sizing: border-box;
       border-right: @TopHeaderBottomLine;
+
+      .layui-nav-child {
+        background: none !important;
+      }
 
       .layui-side-icon {
         width: 60px;

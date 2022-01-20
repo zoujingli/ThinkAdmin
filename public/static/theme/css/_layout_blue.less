@@ -2,15 +2,15 @@
 @import "_config.less";
 
 
-.layui-layout-theme-black {
-  @mainActiveBack: #23262E !important;
+.layui-layout-theme-blue {
+  @mainActiveBack: #1890FF !important;
   @mainNormalBack: rgba(0, 0, 0, 0.1) !important;
 
   @mainActionText: #FFFFFF !important;
   @mainNormalText: #EEEEEE !important;
 
   @headNormalBackColor: @mainActiveBack;
-  @headActiveBackColor: #098 !important;
+  @headActiveBackColor: @mainNormalBack;
 
   @headNormalTextColor: @mainNormalText;
   @headActionTextColor: @mainActionText;
@@ -19,7 +19,7 @@
   @leftActiveTextColor: @mainActionText;
 
   @leftNormalBackColor: @mainNormalBack;
-  @leftActiveBackColor: #098 !important;
+  @leftActiveBackColor: @mainActiveBack;
 
   @import (multiple)"_layout_.less";
 }
