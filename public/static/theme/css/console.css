@@ -1701,7 +1701,7 @@ fieldset legend {
   position: absolute;
   box-sizing: content-box;
   background: #FFF !important;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.16) !important;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1) !important;
 }
 .layui-layout > .layui-header > ul.layui-nav {
   margin: 0;
@@ -1808,7 +1808,7 @@ fieldset legend {
   position: relative;
   text-align: center;
   line-height: 50px;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.15);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
 }
 .layui-layout > .layui-side .layui-logo .headimg {
   margin: 0 10px 0 0;
@@ -2053,7 +2053,7 @@ fieldset legend {
 .layui-layout-theme-white > .layui-body > .think-page-body > .layui-card > .layui-card-header {
   box-sizing: border-box;
   box-shadow: none !important;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.16);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
 }
 .layui-layout-theme-white .layui-side {
   background-color: #fff !important;
@@ -2096,7 +2096,7 @@ fieldset legend {
 .layui-layout-theme-white .layui-side .layui-side-scroll {
   display: flex !important;
   box-sizing: border-box;
-  border-right: 1px solid rgba(0, 0, 0, 0.16);
+  border-right: 1px solid rgba(0, 0, 0, 0.1);
 }
 .layui-layout-theme-white .layui-side .layui-side-scroll .layui-side-icon {
   width: 60px;
