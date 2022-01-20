@@ -1714,6 +1714,9 @@ fieldset legend {
   display: none;
   text-align: center;
 }
+.layui-layout > .layui-header > ul.layui-nav .layui-logo-hide .headimg {
+  margin: 0;
+}
 .layui-layout > .layui-header > ul.layui-nav.layui-layout-left {
   left: 0;
 }
