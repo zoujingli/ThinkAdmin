@@ -1,10 +1,9 @@
 <div class="layui-side notselect">
     <a class="layui-side-target" data-target-menu-type></a>
     <a class="layui-logo layui-elip" href="{:sysuri('@')}" title="{:sysconf('app_name')}">
-        {:sysconf('app_name')} {if sysconf('app_version')}<sup>{:sysconf('app_version')}</sup>{/if}
+        <span class="headimg headimg-no headimg-xs" data-lazy-src="{:sysconf('site_icon')}"></span>
+        <span class="headtxt">{:sysconf('app_name')} {if sysconf('app_version')}<sup>{:sysconf('app_version')}</sup>{/if}</span>
     </a>
-    <a class="layui-logo-mini layui-elip" href="{:sysuri('@')}" title="{:sysconf('app_name')}">
-        <span class="headimg headimg-xs" data-lazy-src="{:sysconf('site_icon')}"></span>
     </a>
     <div class="layui-side-scroll">
         <div class="layui-side-icon">

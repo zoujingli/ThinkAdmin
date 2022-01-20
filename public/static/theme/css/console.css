@@ -1708,9 +1708,6 @@ fieldset legend {
   padding: 0;
   white-space: nowrap;
 }
-.layui-layout > .layui-header > ul.layui-nav .layui-logo {
-  display: block;
-}
 .layui-layout > .layui-header > ul.layui-nav .layui-logo-hide {
   width: 50px !important;
   padding: 0 !important;
@@ -1799,27 +1796,27 @@ fieldset legend {
   overflow: hidden;
   background-color: #393D49 !important;
 }
-.layui-layout > .layui-side .layui-logo,
-.layui-layout > .layui-side .layui-logo-mini {
+.layui-layout > .layui-side .layui-logo {
   color: #FFF;
   width: auto;
   height: 50px;
   display: block;
   overflow: hidden;
   position: relative;
-  font-size: 18px;
   text-align: center;
   line-height: 50px;
   border-bottom: 1px solid rgba(0, 0, 0, 0.15);
 }
-.layui-layout > .layui-side .layui-logo sup,
-.layui-layout > .layui-side .layui-logo-mini sup {
+.layui-layout > .layui-side .layui-logo .headimg {
+  margin: 0 10px 0 0;
+}
+.layui-layout > .layui-side .layui-logo .headtxt {
+  font-size: 18px;
+}
+.layui-layout > .layui-side .layui-logo .headtxt sup {
   font-size: 9px;
   line-height: 9px;
   padding-left: 5px;
-}
-.layui-layout > .layui-side .layui-logo-mini {
-  display: none;
 }
 .layui-layout > .layui-side .layui-nav-bar {
   display: none !important;
@@ -1864,7 +1861,6 @@ fieldset legend {
 }
 .layui-layout > .layui-side .layui-side-scroll .layui-nav-item > a {
   background: rgba(100, 100, 100, 0.3) !important;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.2);
 }
 .layui-layout > .layui-side .layui-side-scroll .layui-nav-item > a:hover {
   background-color: rgba(100, 100, 100, 0.35) !important;
@@ -1968,11 +1964,12 @@ fieldset legend {
 .layui-layout-left-mini > .layui-body > .think-page-body > .layui-card > .layui-card-header {
   left: 50px !important;
 }
-.layui-layout-left-mini > .layui-side .layui-logo {
-  display: none;
+.layui-layout-left-mini > .layui-side .layui-logo .headimg {
+  margin: 0;
+  display: inline-block;
 }
-.layui-layout-left-mini > .layui-side .layui-logo-mini {
-  display: block;
+.layui-layout-left-mini > .layui-side .layui-logo .headtxt {
+  display: none;
 }
 .layui-layout-left-mini > .layui-side .layui-nav-more {
   display: none !important;
@@ -2053,14 +2050,9 @@ fieldset legend {
   background: none !important;
 }
 .layui-layout-theme-white > .layui-body > .think-page-body > .layui-card > .layui-card-header {
-  height: 50px;
-  line-height: 50px;
   box-sizing: border-box;
   box-shadow: none !important;
   border-bottom: 1px solid rgba(0, 0, 0, 0.16);
-}
-.layui-layout-theme-white > .layui-body > .think-page-body > .layui-card > .layui-card-header + .layui-card-body {
-  top: 50px;
 }
 .layui-layout-theme-white .layui-side {
   background-color: #fff !important;
@@ -2095,15 +2087,10 @@ fieldset legend {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
-.layui-layout-theme-white .layui-side .layui-logo,
-.layui-layout-theme-white .layui-side .layui-logo-mini {
+.layui-layout-theme-white .layui-side .layui-logo {
   color: #333;
   box-shadow: none;
   font-weight: bold;
-}
-.layui-layout-theme-white .layui-side .layui-logo .headimg,
-.layui-layout-theme-white .layui-side .layui-logo-mini .headimg {
-  margin: 0 !important;
 }
 .layui-layout-theme-white .layui-side .layui-side-scroll {
   display: flex !important;

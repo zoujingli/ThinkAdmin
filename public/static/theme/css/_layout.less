@@ -30,10 +30,6 @@
       padding: 0;
       white-space: nowrap;
 
-      .layui-logo {
-        display: block;
-      }
-
       .layui-logo-hide {
         width: 50px !important;
         padding: 0 !important;
@@ -146,28 +142,30 @@
     overflow: hidden;
     background-color: @LeftMainBackColor;
 
-    .layui-logo,
-    .layui-logo-mini {
+    .layui-logo {
       color: #FFF;
       width: auto;
       height: @TopHeaderHeight;
       display: block;
       overflow: hidden;
       position: relative;
-      font-size: 18px;
       text-align: center;
       line-height: @TopHeaderHeight;
       border-bottom: 1px solid rgba(0, 0, 0, .15);
 
-      sup {
-        font-size: 9px;
-        line-height: 9px;
-        padding-left: 5px;
+      .headimg {
+        margin: 0 10px 0 0;
       }
-    }
 
-    .layui-logo-mini {
-      display: none;
+      .headtxt {
+        font-size: 18px;
+
+        sup {
+          font-size: 9px;
+          line-height: 9px;
+          padding-left: 5px;
+        }
+      }
     }
 
     .layui-nav-bar {
@@ -210,7 +208,6 @@
       .layui-nav-item {
         > a {
           background: rgba(100, 100, 100, .30) !important;
-          border-bottom: 1px solid rgba(0, 0, 0, .20);
 
           &:hover {
             background-color: rgba(100, 100, 100, .35) !important;
@@ -344,11 +341,14 @@
   > .layui-side {
 
     .layui-logo {
-      display: none;
-    }
+      .headimg {
+        margin: 0;
+        display: inline-block;
+      }
 
-    .layui-logo-mini {
-      display: block;
+      .headtxt {
+        display: none;
+      }
     }
 
     .layui-nav-more {

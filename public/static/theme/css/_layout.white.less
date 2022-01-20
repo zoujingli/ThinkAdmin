@@ -1,3 +1,6 @@
+@charset "UTF-8";
+@import "_config.less";
+
 .layui-layout-theme-white {
   &.layui-layout-left-mini {
     > .layui-side .layui-side-target:before {
@@ -28,14 +31,14 @@
 
   > .layui-body {
     > .think-page-body > .layui-card > .layui-card-header {
-      height: 50px;
-      line-height: 50px;
+      //height: 50px;
+      //line-height: 50px;
       box-sizing: border-box;
       box-shadow: none !important;
       border-bottom: @TopHeaderBottomLine;
 
       + .layui-card-body {
-        top: 50px;
+        //top: 50px;
       }
     }
   }
@@ -75,15 +78,10 @@
       border-bottom-left-radius: 100%;
     }
 
-    .layui-logo,
-    .layui-logo-mini {
+    .layui-logo {
       color: #333;
       box-shadow: none;
       font-weight: bold;
-
-      .headimg {
-        margin: 0 !important;
-      }
     }
 
     .layui-side-scroll {
