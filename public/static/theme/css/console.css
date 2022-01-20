@@ -1823,6 +1823,36 @@ fieldset legend {
   line-height: 9px;
   padding-left: 5px;
 }
+.layui-layout > .layui-side .layui-side-target {
+  top: 50%;
+  right: 0;
+  color: #fff;
+  width: 12px;
+  height: 50px;
+  z-index: 99;
+  cursor: pointer;
+  display: block;
+  position: absolute;
+  margin-top: -25px;
+  background: rgba(0, 0, 0, 0.4);
+  border-top-left-radius: 100%;
+  border-bottom-left-radius: 100%;
+}
+.layui-layout > .layui-side .layui-side-target:before {
+  content: "\e65b";
+  color: #FFF;
+  width: 100%;
+  height: 100%;
+  display: block;
+  line-height: 50px;
+  text-align: center;
+  font-family: layui-icon !important;
+  font-size: 10px;
+  font-style: normal;
+  transform: rotate(180deg);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
 .layui-layout > .layui-side .layui-nav-bar {
   display: none !important;
 }
@@ -2066,36 +2096,6 @@ fieldset legend {
 .layui-layout-theme-white .layui-side {
   background-color: #fff !important;
 }
-.layui-layout-theme-white .layui-side .layui-side-target {
-  top: 50%;
-  right: 0;
-  color: #fff;
-  width: 12px;
-  height: 50px;
-  z-index: 99;
-  cursor: pointer;
-  display: block;
-  position: absolute;
-  margin-top: -25px;
-  background: rgba(0, 0, 0, 0.4);
-  border-top-left-radius: 100%;
-  border-bottom-left-radius: 100%;
-}
-.layui-layout-theme-white .layui-side .layui-side-target:before {
-  content: "\e65b";
-  color: #FFF;
-  width: 100%;
-  height: 100%;
-  display: block;
-  line-height: 50px;
-  text-align: center;
-  font-family: layui-icon !important;
-  font-size: 10px;
-  font-style: normal;
-  transform: rotate(180deg);
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
 .layui-layout-theme-white .layui-side .layui-logo {
   color: #333;
   box-shadow: none;
@@ -2153,5 +2153,69 @@ fieldset legend {
 }
 .layui-layout-theme-white .layui-side .layui-side-scroll .layui-side-tree .layui-nav-itemed > a {
   color: #999 !important;
+}
+.layui-layout-theme-black.layui-layout-left-mini > .layui-side .layui-side-target:before {
+  transform: rotate(0deg);
+}
+.layui-layout-theme-black > .layui-header {
+  background: #393D49 !important;
+}
+.layui-layout-theme-black > .layui-header .layui-nav-item.layui-this > a {
+  color: #ffffff !important;
+  background: #098 !important;
+}
+.layui-layout-theme-black > .layui-header .layui-nav-item > a {
+  color: #fefefe !important;
+}
+.layui-layout-theme-black > .layui-header .layui-nav-item > a:hover {
+  color: #ffffff !important;
+}
+.layui-layout-theme-black > .layui-body > .think-page-body > .layui-card > .layui-card-header {
+  box-sizing: border-box;
+  box-shadow: none !important;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+.layui-layout-theme-black .layui-side .layui-logo {
+  color: #fff;
+  box-shadow: none;
+  font-weight: bold;
+}
+.layui-layout-theme-black .layui-side .layui-side-scroll {
+  display: flex !important;
+  box-sizing: border-box;
+  border-right: 1px solid rgba(0, 0, 0, 0.1);
+}
+.layui-layout-theme-black .layui-side .layui-side-scroll .layui-side-icon {
+  width: 60px;
+  display: none;
+}
+.layui-layout-theme-black .layui-side .layui-side-scroll .layui-side-icon a {
+  height: 60px;
+  display: block;
+  text-align: center;
+  line-height: 60px;
+}
+.layui-layout-theme-black .layui-side .layui-side-scroll .layui-side-icon .layui-icon {
+  color: #fff;
+}
+.layui-layout-theme-black .layui-side .layui-side-scroll .layui-side-tree {
+  flex: 1;
+}
+.layui-layout-theme-black .layui-side .layui-side-scroll .layui-side-tree .layui-nav-item {
+  border-bottom-color: rgba(0, 0, 0, 0);
+}
+.layui-layout-theme-black .layui-side .layui-side-scroll .layui-side-tree .layui-nav-item a {
+  color: #fff !important;
+  border-bottom: none !important;
+}
+.layui-layout-theme-black .layui-side .layui-side-scroll .layui-side-tree .layui-nav-item a:hover {
+  color: #fff !important;
+}
+.layui-layout-theme-black .layui-side .layui-side-scroll .layui-side-tree .layui-nav-item .layui-this > a,
+.layui-layout-theme-black .layui-side .layui-side-scroll .layui-side-tree .layui-nav-item.layui-this > a {
+  color: #fff !important;
+}
+.layui-layout-theme-black .layui-side .layui-side-scroll .layui-side-tree .layui-nav-itemed > a {
+  color: #fff !important;
 }
 /*# sourceMappingURL=console.css.map */

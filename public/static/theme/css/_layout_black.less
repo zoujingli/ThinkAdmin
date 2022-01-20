@@ -1,0 +1,95 @@
+@charset "UTF-8";
+@import "_config.less";
+
+.layui-layout-theme-black {
+  &.layui-layout-left-mini {
+    > .layui-side .layui-side-target:before {
+      transform: rotate(0deg);
+    }
+  }
+
+  > .layui-header {
+    background: #393D49 !important;
+
+    .layui-nav-item {
+      &.layui-this > a {
+        color: #ffffff !important;
+        background: #098 !important;
+      }
+
+      > a {
+        color: #fefefe !important;
+
+        &:hover {
+          color: #ffffff !important;
+        }
+      }
+    }
+  }
+
+  > .layui-body {
+    > .think-page-body > .layui-card > .layui-card-header {
+      box-sizing: border-box;
+      box-shadow: none !important;
+      border-bottom: @TopHeaderBottomLine;
+    }
+  }
+
+  .layui-side {
+
+    .layui-logo {
+      color: #fff;
+      box-shadow: none;
+      font-weight: bold;
+    }
+
+    .layui-side-scroll {
+      display: flex !important;
+      box-sizing: border-box;
+      border-right: @TopHeaderBottomLine;
+
+      .layui-side-icon {
+        width: 60px;
+        display: none;
+
+        a {
+          height: 60px;
+          display: block;
+          text-align: center;
+          line-height: 60px;
+        }
+
+        .layui-icon {
+          color: #fff;
+        }
+      }
+
+      .layui-side-tree {
+        flex: 1;
+
+        .layui-nav-item {
+          border-bottom-color: rgba(0, 0, 0, 0);
+
+          a {
+            color: #fff !important;
+            border-bottom: none !important;
+
+            &:hover {
+              color: #fff !important;
+            }
+          }
+
+          .layui-this, &.layui-this {
+            > a {
+              color: #fff !important;
+            }
+          }
+
+          &ed > a {
+            color: #fff !important;
+          }
+        }
+      }
+    }
+  }
+}
