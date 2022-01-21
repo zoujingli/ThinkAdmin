@@ -11,7 +11,7 @@
         {/notempty}
     </div>
     <form data-login-form onsubmit="return false" method="post" class="layui-anim layui-anim-upbit" autocomplete="off">
-        <h2 class="notselect">系统管理</h2>
+        <h2 class="notselect">{:sysconf('login_name')?:'系统管理'}</h2>
         <ul>
             <li class="username">
                 <label class="label-required-null">
