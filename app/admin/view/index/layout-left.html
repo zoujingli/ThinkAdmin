@@ -10,7 +10,7 @@
             {foreach $menus as $one}
             <div>
                 <a data-menu-node="m-{$one.id}" data-open="{$one.url}" data-target-tips="{$one.title|default=''}">
-                    <i class="{$one.icon|default='layui-icon layui-icon-ie'}"></i>
+                    {notempty name='one.icon'}<i class="{$one.icon|default=''}"></i>{/notempty}
                     <span>{$one.title|default=''}</span>
                 </a>
             </div>
