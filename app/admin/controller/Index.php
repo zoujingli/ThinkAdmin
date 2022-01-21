@@ -51,7 +51,7 @@ class Index extends Controller
             $this->title = '系统管理后台';
             $this->super = AdminService::instance()->isSuper();
             $this->theme = AdminService::instance()->getUserTheme();
-            $this->fetch('layout');
+            $this->fetch();
         }
     }
 
