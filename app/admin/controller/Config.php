@@ -39,6 +39,7 @@ class Config extends Controller
         'red-1'   => '玫瑰红1',
         'blue-1'  => '深空蓝1',
         'black-1' => '精典黑1',
+        'green-1' => '小草绿1',
         'red-2'   => '玫瑰红2',
         'blue-2'  => '深空蓝2',
         'black-2' => '精典黑2',
