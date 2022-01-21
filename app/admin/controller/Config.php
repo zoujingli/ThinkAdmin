@@ -34,8 +34,8 @@ use think\admin\storage\TxcosStorage;
 class Config extends Controller
 {
     const themes = [
-        'default' => '默认色',
-        'white'   => '简约白1',
+        'default' => '默认色0',
+        'white'   => '简约白0',
         'red-1'   => '玫瑰红1',
         'blue-1'  => '天空蓝1',
         'black-1' => '精典黑1',
