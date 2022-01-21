@@ -74,7 +74,9 @@
   background-color: @mainActiveBack;
 
   .layui-btn {
-    border-color: @mainActiveBack;
+    &:hover:not(.layui-btn-active) {
+      color: @mainActiveBack;
+    }
 
     &.layui-btn-active {
       background-color: @mainActiveBack

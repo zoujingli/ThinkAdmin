@@ -186,7 +186,9 @@
   background-color: @mainColor;
 
   .layui-btn {
-    border-color: @mainColor;
+    &:hover:not(.layui-btn-active) {
+      color: @mainColor;
+    }
 
     &.layui-btn-active {
       background-color: @mainColor
