@@ -38,7 +38,6 @@ class Index extends Controller
     public function index()
     {
         /*! 根据运行模式刷新权限 */
-
         $debug = $this->app->isDebug();
         AdminService::instance()->apply($debug);
         /*! 读取当前用户权限菜单树 */
