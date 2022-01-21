@@ -37,10 +37,10 @@ class Config extends Controller
         'default' => '默认色0',
         'white'   => '简约白0',
         'red-1'   => '玫瑰红1',
-        'blue-1'  => '天空蓝1',
+        'blue-1'  => '深空蓝1',
         'black-1' => '精典黑1',
         'red-2'   => '玫瑰红2',
-        'blue-2'  => '天空蓝2',
+        'blue-2'  => '深空蓝2',
         'black-2' => '精典黑2',
         'green-2' => '小草绿2',
     ];
