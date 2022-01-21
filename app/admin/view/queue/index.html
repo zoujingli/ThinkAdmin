@@ -1,7 +1,7 @@
 {extend name='table'}
 
 {block name="button"}
-<!--{if isset($isSuper) and $isSuper}-->
+<!--{if isset($super) and $super}-->
 <a class="layui-btn layui-btn-sm layui-btn-primary" data-queue="{:url('admin/api.plugs/optimize')}">优化数据库</a>
 <!--{if $iswin}-->
 <button data-load='{:url("admin/api.queue/start")}' class='layui-btn layui-btn-sm layui-btn-primary'>开启后台服务</button>

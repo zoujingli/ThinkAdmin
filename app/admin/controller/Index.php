@@ -3,7 +3,7 @@
 // +----------------------------------------------------------------------
 // | ThinkAdmin
 // +----------------------------------------------------------------------
-// | 版权所有 2014~2021 广州楚才信息科技有限公司 [ http://www.cuci.cc ]
+// | 版权所有 2014~2022 广州楚才信息科技有限公司 [ http://www.cuci.cc ]
 // +----------------------------------------------------------------------
 // | 官方网站: https://thinkadmin.top
 // +----------------------------------------------------------------------
@@ -28,7 +28,6 @@ use think\admin\service\MenuService;
  */
 class Index extends Controller
 {
-
     /**
      * 显示后台首页
      * @throws \ReflectionException
@@ -39,6 +38,7 @@ class Index extends Controller
     public function index()
     {
         /*! 根据运行模式刷新权限 */
+
         $debug = $this->app->isDebug();
         AdminService::instance()->apply($debug);
         /*! 读取当前用户权限菜单树 */
@@ -50,9 +50,33 @@ class Index extends Controller
             $this->redirect(sysuri('admin/login/index'));
         } else {
             $this->title = '系统管理后台';
-            $this->isSuper = AdminService::instance()->isSuper();
-            $this->theme = sysconf('base.site_theme') ?: 'default';
+            $this->super = AdminService::instance()->isSuper();
+            $this->theme = AdminService::instance()->getUserTheme();
             $this->fetch('layout');
+        }
+    }
+
+    /**
+     * 后台主题切换
+     * @login true
+     * @return void
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\DbException
+     * @throws \think\db\exception\ModelNotFoundException
+     */
+    public function theme()
+    {
+        if ($this->request->isGet()) {
+            $this->theme = AdminService::instance()->getUserTheme();
+            $this->themes = Config::themes;
+            $this->fetch();
+        } else {
+            $data = $this->_vali(['site_theme.require' => '主题名称不能为空！']);
+            if (AdminService::instance()->setUserTheme($data['site_theme'])) {
+                $this->success('主题配置保存成功！');
+            } else {
+                $this->error('主题配置保存失败！');
+            }
         }
     }
 

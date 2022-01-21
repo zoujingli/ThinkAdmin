@@ -1,43 +1,10 @@
-<form onsubmit="return false" data-auto="true" action="{:sysuri()}" method="post" class='layui-form layui-card' autocomplete="off">
+<form data-auto="true" action="{:sysuri()}" method="post" class='layui-form layui-card'>
     <div class="layui-card-body padding-left-40">
 
-        <div class="layui-form-item">
-            <div class="help-label"><b>登录背景图片</b>Back Image</div>
-            <table class="layui-table">
-                <thead>
-                <tr>
-                    <th class="padding-bottom-5">
-                        <input type="hidden" value="{:sysconf('login_image')}" name="login_image">
-                        <script>$('[name="login_image"]').uploadMultipleImage()</script>
-                    </th>
-                </tr>
-                </thead>
-            </table>
-        </div>
-
-        <div class="layui-row layui-col-space15 layui-form-item margin-bottom-5">
-            <div class="layui-col-xs6 padding-top-0 padding-bottom-0">
-                <div class="help-label label-required-prev"><b>后台登录入口</b>Login Entry</div>
-                <label class="layui-input relative block label-required-null">
-                    <span>{:sysuri('@',[],false,true)}</span>
-                    <input autofocus required pattern="[a-zA-Z_][a-zA-Z0-9_]*" placeholder="请输入后台登录入口" class="layui-input inline-block padding-0 border-0" style="width:auto;background:none" value="{:substr(sysuri('admin/index/index',[],false), strlen(sysuri('@')))}" name="xpath">
-                </label>
-            </div>
-            <div class="layui-col-xs6 padding-top-0 padding-bottom-0">
-                <label class="relative block">
-                    <span class="help-label"><b>登录表单标题</b>Login Name</span>
-                    <input name="login_name" required placeholder="请输入登录页面的表单标题" value="{:sysconf('login_name')?:'系统管理'}" class="layui-input">
-                </label>
-            </div>
-            <div class="layui-col-xs12 padding-top-0 padding-bottom-0">
-                <span class="help-block">后台登录入口由英文字母开头且不能有相同名称的模块，设置之后原地址不能继续访问 ~</span>
-            </div>
-        </div>
-
-        <div class="layui-form-item margin-bottom-5 label-required-prev">
-            <div class="help-label"><b>默认主题样式</b>Theme Style</div>
-            <div class="layui-input">
-                {foreach ['default'=>'默认色','white'=>'简约白','black'=>'精典黑','red'=>'玫瑰红','blue'=>'天空蓝'] as $k=>$v}
+        <div class="layui-form-item margin-bottom-5">
+            <div class="help-label label-required-prev"><b>默认主题样式</b>Theme Style</div>
+            <div class="layui-textarea" style="min-height:unset">
+                {foreach $themes as $k=>$v}
                 <label class="think-radio">
                     {if sysconf('base.site_theme') eq $k}
                     <input name="site_theme" type="radio" value="{$k}" lay-ignore checked> {$v}
@@ -47,10 +14,37 @@
                 </label>
                 {/foreach}
             </div>
-            <span class="help-block">用户登录管理后台默认会以此配置的主题显示管理界面，用户也可以单独修改配置主题 ~</span>
+            <span class="help-block">用户登录管理后台，未配置个性化主题的用户默认会使用此处配置的主题样式 ~</span>
         </div>
 
-        <div class="layui-form-item">
+        <div class="layui-row layui-col-space15 margin-bottom-5">
+            <div class="layui-col-xs6 padding-bottom-0">
+                <label class="relative block">
+                    <span class="help-label"><b>登录表单标题</b>Login Name</span>
+                    <input name="login_name" required placeholder="请输入登录页面的表单标题" value="{:sysconf('login_name')?:'系统管理'}" class="layui-input">
+                </label>
+            </div>
+            <div class="layui-col-xs6 padding-bottom-0">
+                <div class="help-label label-required-prev"><b>后台登录入口</b>Login Entry</div>
+                <label class="layui-input relative block label-required-null">
+                    <span>{:sysuri('@',[],false,true)}</span>
+                    <input autofocus required pattern="[a-zA-Z_][a-zA-Z0-9_]*" placeholder="请输入后台登录入口" class="layui-input inline-block padding-0 border-0" style="width:auto;background:none" value="{:substr(sysuri('admin/index/index',[],false), strlen(sysuri('@')))}" name="xpath">
+                </label>
+            </div>
+            <div class="layui-col-xs12 padding-top-0 padding-bottom-0">
+                <span class="help-block">后台登录入口是由英文字母开头，且不能有相同名称的模块，设置之后原地址不能继续访问，请谨慎配置 ~</span>
+            </div>
+        </div>
+
+        <div class="layui-form-item margin-bottom-5">
+            <div class="help-label"><b>登录背景图片</b>Background Image</div>
+            <div class="layui-textarea think-bg-gray" style="min-height:unset;padding:10px 10px 3px 10px">
+                <input type="hidden" value="{:sysconf('login_image')}" name="login_image">
+                <script>$('[name=login_image]').uploadMultipleImage();</script>
+            </div>
+        </div>
+
+        <div class="layui-form-item margin-bottom-5">
             <div class="help-label label-required-prev"><b>浏览器小图标</b>Browser Icon</div>
             <label class="relative block label-required-null">
                 <input class="layui-input" required pattern="^(http|/)" placeholder="请上传浏览器图标" value="{:sysconf('site_icon')}" name="site_icon">
@@ -59,22 +53,22 @@
             <span class="help-block">建议上传 <span class="color-blue">128x128</span> | <span class="color-blue">256x256</span> 的 ico 或 png 图片，可以通过 <a href="https://www.favicon-icon-generator.com" target="_blank">ICON </a>在线制作 ico 后缀文件 ~</span>
         </div>
 
-        <div class="layui-row layui-col-space15">
-            <div class="layui-col-xs4 padding-top-0 padding-bottom-0">
+        <div class="layui-row layui-col-space15 margin-bottom-5">
+            <div class="layui-col-xs4 padding-bottom-0">
                 <label class="layui-form-item margin-bottom-5 relative block">
                     <span class="help-label"><b>网站名称</b>Site Name</span>
                     <input name="site_name" required placeholder="请输入网站名称" value="{:sysconf('site_name')}" class="layui-input">
                     <span class="help-block">网站名称将显示在浏览器的标签上 ~</span>
                 </label>
             </div>
-            <div class="layui-col-xs4 padding-top-0 padding-bottom-0">
+            <div class="layui-col-xs4 padding-bottom-0">
                 <label class="layui-form-item margin-bottom-5 relative block">
                     <span class="help-label"><b>后台程序名称</b>App Name</span>
                     <input name="app_name" required placeholder="请输入程序名称" value="{:sysconf('app_name')}" class="layui-input">
                     <span class="help-block">管理程序名称显示在后台左上标题处 ~</span>
                 </label>
             </div>
-            <div class="layui-col-xs4 padding-top-0 padding-bottom-0">
+            <div class="layui-col-xs4 padding-bottom-0">
                 <label class="layui-form-item margin-bottom-5 relative block">
                     <span class="help-label"><b>后台程序版本</b>App Version</span>
                     <input name="app_version" placeholder="请输入程序版本" value="{:sysconf('app_version')}" class="layui-input">

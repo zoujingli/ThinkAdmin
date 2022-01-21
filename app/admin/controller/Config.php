@@ -3,7 +3,7 @@
 // +----------------------------------------------------------------------
 // | ThinkAdmin
 // +----------------------------------------------------------------------
-// | 版权所有 2014~2021 广州楚才信息科技有限公司 [ http://www.cuci.cc ]
+// | 版权所有 2014~2022 广州楚才信息科技有限公司 [ http://www.cuci.cc ]
 // +----------------------------------------------------------------------
 // | 官方网站: https://thinkadmin.top
 // +----------------------------------------------------------------------
@@ -33,6 +33,14 @@ use think\admin\storage\TxcosStorage;
  */
 class Config extends Controller
 {
+    const themes = [
+        'default' => '默认色',
+        'red'     => '玫瑰红',
+        'blue'    => '天空蓝',
+        'black'   => '精典黑',
+        'white'   => '简约白'
+    ];
+
     /**
      * 系统参数配置
      * @auth true
@@ -41,7 +49,7 @@ class Config extends Controller
     public function index()
     {
         $this->title = '系统参数配置';
-        $this->isSuper = AdminService::instance()->isSuper();
+        $this->super = AdminService::instance()->isSuper();
         $this->version = ModuleService::instance()->getVersion();
         $this->fetch();
     }
@@ -58,6 +66,7 @@ class Config extends Controller
         $this->_applyFormToken();
         if ($this->request->isGet()) {
             $this->title = '修改系统参数';
+            $this->themes = static::themes;
             $this->fetch();
         } else {
             $post = $this->request->post();
@@ -81,7 +90,7 @@ class Config extends Controller
                 }
                 if (!empty($info) && !empty($info['file'])) {
                     $favicon = new FaviconExtend($info['file']);
-                    $favicon->saveIco($this->app->getRootPath() . 'public/favicon.ico');
+                    $favicon->saveIco("{$this->app->getRootPath()}public/favicon.ico");
                 }
             } catch (\Exception $exception) {
                 trace_file($exception);

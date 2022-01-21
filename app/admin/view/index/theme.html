@@ -1,0 +1,36 @@
+<form data-auto="true" action="{:sysuri()}" method="post" id="theme" class='layui-form layui-card' autocomplete="off">
+    <div class="layui-card-body padding-left-40">
+
+        <div class="layui-form-item margin-bottom-5 label-required-prev">
+            <div class="help-label"><b>后台主题样式</b>Theme Style</div>
+            <div class="layui-textarea" style="min-height:unset">
+                {foreach $themes as $k=>$v}
+                <label class="think-radio">
+                    {if isset($theme) and $theme eq $k}
+                    <input name="site_theme" type="radio" value="{$k}" lay-ignore checked> {$v}
+                    {else}
+                    <input name="site_theme" type="radio" value="{$k}" lay-ignore> {$v}
+                    {/if}
+                </label>
+                {/foreach}
+            </div>
+        </div>
+    </div>
+
+    <div class="hr-line-dashed"></div>
+    <div class="layui-form-item text-center">
+        <button class="layui-btn" type="submit">保存配置</button>
+        <button class="layui-btn layui-btn-danger" type='button' data-close>取消修改</button>
+    </div>
+</form>
+
+<script>
+    layui.form.render();
+    $('form#theme input[name=site_theme]').on('click', function () {
+        var alls = '', that = this, prox = 'layui-layout-theme-', curt = prox + that.value;
+        $('form#theme input[name=site_theme]').map(function () {
+            if (this.value !== that.value) alls += ' ' + prox + this.value;
+        });
+        $('.layui-layout-admin').removeClass(alls).addClass(curt)
+    });
+</script>

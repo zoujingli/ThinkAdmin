@@ -1,7 +1,7 @@
 {extend name="main"}
 
 {block name="button"}
-<!--{if isset($isSuper) and $isSuper}-->
+<!--{if isset($super) and $super}-->
 <a class="layui-btn layui-btn-sm layui-btn-primary" data-load="{:url('admin/api.runtime/config')}">清理无效配置</a>
 <!--{/if}-->
 
@@ -11,7 +11,7 @@
 {/block}
 
 {block name="content"}
-<!--{notempty name='isSuper'}-->
+<!--{notempty name='super'}-->
 <div class="layui-card padding-20 shadow">
     <div class="layui-card-header notselect">
         <b>运行模式</b><span class="color-desc font-s12 padding-left-5">Run Mode</span>
