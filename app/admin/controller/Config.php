@@ -35,11 +35,13 @@ class Config extends Controller
 {
     const themes = [
         'default' => '默认色',
+        'white'   => '简约白1',
         'red-1'   => '玫瑰红1',
         'blue-1'  => '天空蓝1',
         'black-1' => '精典黑1',
-        'white-1' => '简约白1',
+        'red-2'   => '玫瑰红2',
         'blue-2'  => '天空蓝2',
+        'black-2' => '精典黑2',
         'green-2' => '小草绿2',
     ];
 
