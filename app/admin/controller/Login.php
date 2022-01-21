@@ -86,10 +86,9 @@ class Login extends Controller
             }
             $this->app->session->set('user', $user->toArray());
             $this->app->session->delete("LoginInputSessionError");
-            $user->save([
-                'login_ip'  => $this->app->request->ip(),
-                'login_at'  => $this->app->db->raw('now()'),
-                'login_num' => $this->app->db->raw('login_num+1'),
+            $user->inc('login_num')->save([
+                'login_at' => date('Y-m-d H:i:s'),
+                'login_ip' => $this->app->request->ip(),
             ]);
             sysoplog('系统用户登录', '登录系统后台成功');
             $this->success('登录成功', sysuri('admin/index/index'));
