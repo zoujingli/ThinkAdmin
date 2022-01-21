@@ -1,15 +1,15 @@
 @charset "UTF-8";
 @import "_config.less";
 
-.layui-layout-theme-black {
-  @mainActiveBack: #393D49 !important;
+.layui-layout-theme-red-1 {
+  @mainActiveBack: #AA3130 !important;
   @mainNormalBack: rgba(0, 0, 0, 0.1) !important;
 
   @mainActionText: #FFFFFF !important;
   @mainNormalText: #EEEEEE !important;
 
   @headNormalBackColor: @mainActiveBack;
-  @headActiveBackColor: #098 !important;
+  @headActiveBackColor: @mainNormalBack;
 
   @headNormalTextColor: @mainNormalText;
   @headActionTextColor: @mainActionText;
@@ -19,7 +19,7 @@
 
   @leftBackColor: #20222A !important;
   @leftNormalBackColor: @mainNormalBack;
-  @leftActiveBackColor: #098 !important;
+  @leftActiveBackColor: @mainActiveBack;
 
-  @import (multiple)"_layout_.less";
+  @import (multiple)"_layout_1.less";
 }
