@@ -71,8 +71,8 @@ class Login extends Controller
             }
             /*! 用户信息验证 */
             $map = ['username' => $data['username'], 'is_deleted' => 0];
-            $user = SystemUser::mk()->where($map)->find();
-            if (empty($user)) {
+            $user = SystemUser::mk()->where($map)->findOrEmpty();
+            if ($user->isEmpty()) {
                 $this->app->session->set("LoginInputSessionError", true);
                 $this->error('登录账号或密码错误，请重新输入!');
             }
@@ -86,9 +86,10 @@ class Login extends Controller
             }
             $this->app->session->set('user', $user->toArray());
             $this->app->session->delete("LoginInputSessionError");
-            $user['login_at'] = date('Y-m-d H:i:s');
-            $user['login_ip'] = $this->app->request->ip();
-            $user->inc('login_num')->save();
+            $user->inc('login_num')->update([
+                'login_at' => date('Y-m-d H:i:s'),
+                'login_ip' => $this->app->request->ip(),
+            ]);
             sysoplog('系统用户登录', '登录系统后台成功');
             $this->success('登录成功', sysuri('admin/index/index'));
         }
