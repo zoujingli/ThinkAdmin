@@ -637,15 +637,20 @@
     position: absolute;
     text-align: center;
     line-height: 22px;
-    background: rgba(0, 0, 0, .5)
+    box-shadow: @ShadowMinOuter;
+    background: rgba(0, 0, 0, .8);
   }
 
   span.layui-icon:first-child {
-    left: 0;
+    right: 0;
+    border-top-right-radius: 3px;
+    border-bottom-right-radius: 3px;
   }
 
   span.layui-icon:last-child {
-    right: 0;
+    right: 21px;
+    border-top-left-radius: 3px;
+    border-bottom-left-radius: 3px;
   }
 
   &:hover span.layui-icon {
