@@ -4,7 +4,7 @@
 // +----------------------------------------------------------------------
 // | ThinkAdmin
 // +----------------------------------------------------------------------
-// | 版权所有 2014~2022 广州楚才信息科技有限公司 [ http://www.cuci.cc ]
+// | 版权所有 2014~2021 广州楚才信息科技有限公司 [ http://www.cuci.cc ]
 // +----------------------------------------------------------------------
 // | 官方网站: http://demo.thinkadmin.top
 // +----------------------------------------------------------------------
@@ -628,9 +628,7 @@
   box-shadow: @ShadowMinOuter;
   background: url('../img/upimg.png') no-repeat center center;
   background-size: cover;
-
-  span.layui-icon {
-    right: 0;
+  span.layui-icon{
     color: #fff;
     width: 20px;
     height: 20px;
@@ -639,6 +637,14 @@
     text-align: center;
     line-height: 22px;
     background: rgba(0, 0, 0, .5)
+  }
+  
+  span.layui-icon:first-child {
+    left: 0;
+  }
+   
+  span.layui-icon:last-child {
+    right: 0;
   }
 
   &:hover span.layui-icon {
