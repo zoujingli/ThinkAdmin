@@ -1,7 +1,7 @@
 // +----------------------------------------------------------------------
 // | ThinkAdmin
 // +----------------------------------------------------------------------
-// | 版权所有 2014~2021 广州楚才信息科技有限公司 [ http://www.cuci.cc ]
+// | 版权所有 2014~2022 广州楚才信息科技有限公司 [ http://www.cuci.cc ]
 // +----------------------------------------------------------------------
 // | 官方网站: https://thinkadmin.top
 // +----------------------------------------------------------------------
@@ -58,8 +58,7 @@ window.form = layui.form, window.layer = layui.layer, window.laydate = layui.lay
 
 /*! 配置 require 参数  */
 require.config({
-    waitSeconds: 60,
-    baseUrl: baseRoot,
+    baseUrl: baseRoot, waitSeconds: 60,
     map: {'*': {css: baseRoot + 'plugs/require/css.js'}},
     paths: {
         'vue': ['plugs/vue/vue.min'],
