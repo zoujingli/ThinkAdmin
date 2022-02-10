@@ -7,9 +7,8 @@
 
         <!--{notempty name='marks'}-->
         <div class="layui-form-item relative block">
-            <span class="color-green font-w7 label-required-prev">商品标签</span>
-            <span class="color-desc margin-left-5">Mark Name</span>
-            <div class="layui-textarea">
+            <span class="help-label label-required-prev"><b>商品标签</b>Mark Name</span>
+            <div class="layui-textarea padding-bottom-10" style="min-height:unset">
                 {foreach $marks as $mark}{if isset($vo.marks) && is_array($vo.marks) && in_array($mark, $vo.marks)}
                 <input checked name="marks[]" title="{$mark}" type="checkbox" value="{$mark}">
                 {else}
@@ -21,8 +20,7 @@
 
         <!--{notempty name='cates'}-->
         <label class="layui-form-item block relative">
-            <span class="color-green font-w7 label-required-prev">所属分类</span>
-            <span class="color-desc margin-left-5">Category Name</span>
+            <span class="help-label label-required-prev"><b>所属分类</b>Category Name</span>
             <select class="layui-select" lay-search name="cateids">
                 {foreach $cates as $cate}{if in_array($cate.id, $vo.cateids)}
                 <option selected value="{:arr2str($cate.ids)}">{:join(' ＞ ', $cate.names)}</option>
@@ -35,9 +33,8 @@
 
         <!--{notempty name='payments'}-->
         <div class="layui-form-item relative block">
-            <span class="color-green font-w7 label-required-prev">支付方式</span>
-            <span class="color-desc margin-left-5">Goods Payment</span>
-            <div class="layui-textarea">
+            <span class="help-label label-required-prev"><b>支付方式</b>Goods Payment</span>
+            <div class="layui-textarea padding-bottom-10" style="min-height:unset">
                 {foreach $payments as $payment}{if isset($vo.payment) && is_array($vo.payment) && in_array($payment.code, $vo.payment)}
                 <input checked name="payment[]" title="{$payment.name}" type="checkbox" value="{$payment.code}">
                 {else}
@@ -48,15 +45,13 @@
         <!--{/notempty}-->
 
         <label class="layui-form-item block relative">
-            <span class="color-green font-w7">商品名称</span>
-            <span class="color-desc margin-left-5">Goods Name</span>
+            <span class="help-label"><b>商品名称</b>Goods Name</span>
             <input class="layui-input" name="name" placeholder="请输入商品名称" required value="{$vo.name|default=''}">
         </label>
 
         <!--{notempty name='trucks'}-->
         <label class="layui-form-item block relative">
-            <span class="color-green font-w7 label-required-prev">邮费模板</span>
-            <span class="color-desc margin-left-5">Truck Template</span>
+            <span class="help-label label-required-prev"><b>邮费模板</b>Truck Template</span>
             <select class="layui-select" lay-search name="truck_code">
                 <option value="">--- 包 邮 ---</option>
                 {foreach $trucks as $truck}{if isset($vo.truck_code) and $vo.truck_code eq $truck.code}
@@ -277,7 +272,7 @@
         </div>
 
         <label class="layui-form-item block">
-            <span class="font-w7 color-green">商品简介描述</span>
+            <span class="help-label"><b>商品简介描述</b></span>
             <textarea class="layui-textarea" name="remarks" placeholder="请输入商品简介描述">{$vo.remarks|default=''|raw}</textarea>
         </label>
 
