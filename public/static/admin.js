@@ -578,7 +578,7 @@ $(function () {
                 index = $(this).index();
                 event.stopPropagation();
                 if (index === 0) $bt.attr('style', ''), $in.val('');
-                else if($in.val()) $.previewImage(encodeURI($in.val()));
+                else if ($in.val()) $.previewImage(encodeURI($in.val()));
 
             }), $in.on('change', function () {
                 if (this.value) $bt.css('backgroundImage', 'url(' + encodeURI(this.value) + ')');
