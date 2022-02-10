@@ -6,7 +6,7 @@
 
 ##### **集成组件：**
 
-* vue v3.2.29
+* vue v3.2.30
 * vue.router v4.0.12
 * vue.sfc.loader v0.8.4
 * vue element-plus v2.0.1
@@ -15,6 +15,6 @@
 
 http://html.thinkadmin.top
 
-##### **建议收集：** 
+##### **建议收集：**
 
 https://gitee.com/zoujingli/ThinkAdmin/issues/I4CK3H
