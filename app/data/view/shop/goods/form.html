@@ -69,8 +69,7 @@
         <!--{/notempty}-->
 
         <div class="layui-form-item">
-            <span class="color-green font-w7 label-required-prev">商品封面及轮播图片</span>
-            <span class="color-desc margin-left-5">Cover and Carousel Pictures</span>
+            <span class="help-label label-required-prev"><b>商品封面及轮播图片</b>Cover and Carousel Pictures</span>
             <table class="layui-table">
                 <thead>
                 <tr>
@@ -130,9 +129,6 @@
                     </label>
                 </fieldset>
                 <!--{/notempty}-->
-            </div>
-
-            <div class="layui-clear">
                 <fieldset>
                     <legend><span class="layui-badge think-bg-violet">物流配送发货类型</span></legend>
                     <div class="layui-form-item">
@@ -286,7 +282,7 @@
         </label>
 
         <div class="layui-form-item block">
-            <span class="label-required-prev font-w7 color-green">商品富文本详情</span>
+            <span class="help-label label-required-prev"><b>商品富文本详情</b></span>
             <textarea class="layui-hide" name="content">{$vo.content|default=''|raw}</textarea>
         </div>
 
@@ -306,6 +302,7 @@
     <textarea id="GoodsSpecs">{$vo.data_specs|raw|default=''}</textarea>
     <textarea id="GoodsItems">{$vo.data_items|raw|default=''}</textarea>
 </label>
+
 <script>
     /*! 表单初始化 */
     window.form.render();

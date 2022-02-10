@@ -175,16 +175,16 @@
 
     .layui-side-target {
       &:before {
-        content: "\e65b";
         color: #FFF;
         width: 100%;
         height: 100%;
         display: block;
+        content: "\e65b";
         line-height: 50px;
         text-align: center;
-        font-family: layui-icon !important;
         font-size: 10px;
         font-style: normal;
+        font-family: layui-icon !important;
         transform: rotate(180deg);
         -webkit-font-smoothing: antialiased;
         -moz-osx-font-smoothing: grayscale;
@@ -275,6 +275,11 @@
           line-height: 45px;
           padding-top: 0;
           padding-bottom: 0;
+          color: @LeftMainNavNormalTextColor;
+
+          &:hover {
+            color: @LeftMainNavActiveTextColor;
+          }
 
           .nav-icon {
             padding-right: 5px;
