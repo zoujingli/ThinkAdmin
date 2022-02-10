@@ -125,7 +125,7 @@ class Menu extends Controller
      */
     private function _buildMenuData(array $list): array
     {
-        foreach ($list as $key => &$item) {
+        foreach ($list as &$item) {
             if (empty($item['sub_button'])) {
                 $item = $this->_buildMenuDataItem($item);
             } else {

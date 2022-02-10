@@ -148,7 +148,7 @@ class News extends Controller
                 $id = intval($vo['id']);
                 $result = WechatNewsArticle::mk()->where('id', $id)->update($vo);
             }
-            if ($result !== false) array_push($ids, $id);
+            if ($result !== false) $ids[] = $id;
         }
         return join(',', $ids);
     }

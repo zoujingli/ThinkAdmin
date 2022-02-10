@@ -223,10 +223,10 @@ class Push extends Controller
             case 'news':
                 [$news, $articles] = [MediaService::instance()->news($data['news_id']), []];
                 if (empty($news['articles'])) return false;
-                foreach ($news['articles'] as $vo) array_push($articles, [
+                foreach ($news['articles'] as $vo) $articles[] = [
                     'url'   => url("@wechat/api.view/item/id/{$vo['id']}", [], false, true)->build(),
                     'title' => $vo['title'], 'picurl' => $vo['local_url'], 'description' => $vo['digest'],
-                ]);
+                ];
                 return $this->_sendMessage('news', ['articles' => $articles], $custom);
             case 'music':
                 if (empty($data['music_url']) || empty($data['music_title']) || empty($data['music_desc'])) return false;
