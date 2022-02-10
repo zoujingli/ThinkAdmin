@@ -54,13 +54,9 @@ class FansService extends Service
      * 获取粉丝信息
      * @param string $openid
      * @return array
-     * @throws \think\db\exception\DataNotFoundException
-     * @throws \think\db\exception\DbException
-     * @throws \think\db\exception\ModelNotFoundException
      */
     public function get(string $openid): array
     {
-        $user = WechatFans::mk()->where(['openid' => $openid])->find();
-        return empty($user) ? [] : $user->toArray();
+        return WechatFans::mk()->where(['openid' => $openid])->findOrEmpty()->toArray();
     }
 }
