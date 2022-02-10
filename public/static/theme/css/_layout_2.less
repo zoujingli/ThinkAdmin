@@ -1,6 +1,149 @@
-&.layui-layout-left-hide,
-&.layui-layout-left-mini {
-  .layui-side {
+> .layui-layout-admin {
+  > .layui-side {
+    width: 260px;
+    display: block !important;
+    background-color: @mainColor;
+
+    .layui-logo {
+      color: #fff;
+      box-shadow: none;
+      font-weight: bold;
+    }
+
+    .layui-side-scroll {
+      display: flex !important;
+      box-sizing: border-box;
+
+      .layui-nav-child {
+        background: none !important;
+      }
+
+      .layui-side-icon {
+        width: 100px;
+        display: block;
+        background: @mainColor;
+
+        a {
+          height: 60px;
+          display: block;
+          font-size: 14px;
+          text-align: center;
+          line-height: 60px;
+          white-space: nowrap;
+
+          &:hover {
+            background-color: rgba(0, 0, 0, 0.1);;
+          }
+
+          .layui-icon, span {
+            color: #fff;
+            overflow: hidden;
+            max-width: 4em;
+            margin-right: 5px;
+            text-overflow: ellipsis;
+            vertical-align: middle;
+            display: inline-block !important;
+          }
+        }
+
+        > .layui-this {
+          background: #fff;
+
+          a {
+            &:hover {
+              background-color: #fff;
+            }
+
+            .layui-icon, span {
+              color: @textColor;
+            }
+          }
+        }
+      }
+
+      .layui-side-tree {
+        flex: 1;
+        background-color: #fff;
+
+        > .layui-nav-tree {
+          width: unset !important;
+        }
+
+        .layui-nav-item {
+          background: none !important;
+          border-bottom-color: #fff;
+
+          a {
+            color: #333 !important;
+            background: none !important;
+            border-bottom: none !important;
+
+            &:hover {
+              color: @textColor;
+            }
+          }
+
+          .layui-this, &.layui-this {
+            > a {
+              color: @textColor;
+              background: none !important;
+              font-weight: bold !important;
+
+              &:hover {
+                background: none !important;
+              }
+            }
+          }
+
+          &ed > a {
+            color: #999 !important;
+          }
+        }
+      }
+    }
+  }
+
+  > .layui-body {
+    left: 260px;
+
+    > .think-page-body > .layui-card > .layui-card-header {
+      left: 261px;
+      box-sizing: border-box;
+      border-bottom: unset;
+    }
+  }
+
+  > .layui-header {
+    left: 260px;
+    background-color: @mainColor;
+
+    .layui-layout-left {
+      .layui-nav-item {
+        display: none !important;
+      }
+    }
+
+    .layui-nav-item {
+      &.layui-this > a {
+        color: #fff !important;
+        font-weight: bold;
+      }
+
+      > a {
+        color: #eee !important;
+
+        &:hover {
+          color: #fff !important;
+          background: none !important;
+        }
+      }
+    }
+  }
+}
+
+> .layui-layout-left-hide,
+> .layui-layout-left-mini {
+  > .layui-side {
     width: 260px;
     z-index: 11;
 
@@ -26,10 +169,6 @@
     }
   }
 
-  > .layui-header {
-    left: 260px !important;
-  }
-
   > .layui-body {
     z-index: 11;
     left: @iconWidth;
@@ -38,151 +177,14 @@
       left: @iconWidth;
     }
   }
-}
 
-> .layui-header {
-  left: 260px;
-  background-color: @mainColor;
-
-  .layui-layout-left {
-    .layui-nav-item {
-      display: none !important;
-    }
-  }
-
-  .layui-nav-item {
-    &.layui-this > a {
-      color: #fff !important;
-      font-weight: bold;
-    }
-
-    > a {
-      color: #eee !important;
-
-      &:hover {
-        color: #fff !important;
-        background: none !important;
-      }
-    }
-  }
-}
-
-> .layui-side {
-  width: 260px;
-  display: block !important;
-  background-color: @mainColor;
-
-  .layui-logo {
-    color: #fff;
-    box-shadow: none;
-    font-weight: bold;
-  }
-
-  .layui-side-scroll {
-    display: flex !important;
-    box-sizing: border-box;
-
-    .layui-nav-child {
-      background: none !important;
-    }
-
-    .layui-side-icon {
-      width: 100px;
-      display: block;
-      background: @mainColor;
-
-      a {
-        height: 60px;
-        display: block;
-        font-size: 14px;
-        text-align: center;
-        line-height: 60px;
-        white-space: nowrap;
-
-        &:hover {
-          background-color: rgba(0, 0, 0, 0.1);;
-        }
-
-        .layui-icon, span {
-          color: #fff;
-          overflow: hidden;
-          max-width: 4em;
-          margin-right: 5px;
-          text-overflow: ellipsis;
-          vertical-align: middle;
-          display: inline-block !important;
-        }
-      }
-
-      > .layui-this {
-        background: #fff;
-
-        a {
-          &:hover {
-            background-color: #fff;
-          }
-
-          .layui-icon, span {
-            color: @textColor;
-          }
-        }
-      }
-    }
-
-    .layui-side-tree {
-      flex: 1;
-      background-color: #fff;
-
-      > .layui-nav-tree {
-        width: unset !important;
-      }
-
-      .layui-nav-item {
-        background: none !important;
-        border-bottom-color: #fff;
-
-        a {
-          color: #333 !important;
-          background: none !important;
-          border-bottom: none !important;
-
-          &:hover {
-            color: @textColor;
-          }
-        }
-
-        .layui-this, &.layui-this {
-          > a {
-            color: @textColor;
-            background: none !important;
-            font-weight: bold !important;
-
-            &:hover {
-              background: none !important;
-            }
-          }
-        }
-
-        &ed > a {
-          color: #999 !important;
-        }
-      }
-    }
-  }
-}
-
-> .layui-body {
-  left: 260px;
-
-  > .think-page-body > .layui-card > .layui-card-header {
-    left: 261px;
-    box-sizing: border-box;
-    border-bottom: unset;
+  > .layui-header {
+    left: 260px !important;
   }
 }
 
 .help-label b {
-  color: @mainColor
+  color: @textColor;
 }
 
 .layui-btn-group {

@@ -19,10 +19,10 @@
     <script src="__ROOT__/static/plugs/jquery/pace.min.js"></script>
 </head>
 
-<body class="layui-layout-body">
+<body class="layui-layout-body layui-layout-theme-{$theme|default=''}">
 
 {block name='body'}
-<div class="layui-layout layui-layout-admin layui-layout-left-hide layui-layout-theme-{$theme|default=''}">
+<div class="layui-layout layui-layout-admin layui-layout-left-hide">
 
     <!-- 顶部菜单 开始 -->
     {include file='index/index-top'}

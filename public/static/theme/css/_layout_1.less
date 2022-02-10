@@ -1,68 +1,70 @@
-> .layui-header {
-  background: @headNormalBackColor;
+> .layui-layout-admin {
+  > .layui-side {
+    background-color: @leftBackColor;
 
-  .layui-nav-item {
-    &.layui-this > a {
-      color: @headActionTextColor;
-      background: @headActiveBackColor;
+    .layui-logo {
+      color: #FFF;
+      box-shadow: none;
+      font-weight: bold;
     }
 
-    > a {
-      color: @headNormalTextColor;
+    .layui-side-scroll {
+      display: flex !important;
+      box-sizing: border-box;
 
-      &:hover {
-        color: @headActionTextColor;
+      .layui-side-icon {
+        display: none;
+      }
+
+      .layui-side-tree {
+        flex: 1;
+
+        .layui-nav-item {
+
+          a {
+            color: @leftNormalTextColor;
+            border-bottom: none !important;
+
+            &:hover {
+              color: @leftActiveTextColor;
+            }
+          }
+
+          .layui-this, &.layui-this {
+            > a {
+              color: @leftActiveTextColor;
+              background: @leftActiveBackColor;
+            }
+          }
+
+          &ed > a {
+            color: @leftActiveTextColor;
+          }
+        }
       }
     }
   }
-}
 
-> .layui-body {
-  > .think-page-body > .layui-card > .layui-card-header {
-    box-sizing: border-box;
-  }
-}
-
-.layui-side {
-  background-color: @leftBackColor;
-
-  .layui-logo {
-    color: #FFF;
-    box-shadow: none;
-    font-weight: bold;
-  }
-
-  .layui-side-scroll {
-    display: flex !important;
-    box-sizing: border-box;
-
-    .layui-side-icon {
-      display: none;
+  > .layui-body {
+    > .think-page-body > .layui-card > .layui-card-header {
+      box-sizing: border-box;
     }
+  }
 
-    .layui-side-tree {
-      flex: 1;
+  > .layui-header {
+    background: @headNormalBackColor;
 
-      .layui-nav-item {
+    .layui-nav-item {
+      &.layui-this > a {
+        color: @headActionTextColor;
+        background: @headActiveBackColor;
+      }
 
-        a {
-          color: @leftNormalTextColor;
-          border-bottom: none !important;
+      > a {
+        color: @headNormalTextColor;
 
-          &:hover {
-            color: @leftActiveTextColor;
-          }
-        }
-
-        .layui-this, &.layui-this {
-          > a {
-            color: @leftActiveTextColor;
-            background: @leftActiveBackColor;
-          }
-        }
-
-        &ed > a {
-          color: @leftActiveTextColor;
+        &:hover {
+          color: @headActionTextColor;
         }
       }
     }
