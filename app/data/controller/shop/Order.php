@@ -89,7 +89,11 @@ class Order extends Controller
         UserAdminService::instance()->buildByUid($data);
         UserAdminService::instance()->buildByUid($data, 'puid1', 'from');
         OrderService::instance()->buildData($data);
-        foreach ($data as &$vo) $vo['payment_name'] = PaymentService::name($vo['payment_type']);
+        foreach ($data as &$vo){
+            if (!is_null($vo['payment_type']) and ''!=$vo['payment_type']) {
+                $vo['payment_name'] = PaymentService::name($vo['payment_type']);
+            }
+        }
     }
 
     /**
