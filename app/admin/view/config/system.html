@@ -1,35 +1,29 @@
 <form data-auto="true" action="{:sysuri()}" method="post" class='layui-form layui-card'>
     <div class="layui-card-body padding-left-40">
 
-        <div class="layui-form-item margin-bottom-5">
-            <div class="help-label label-required-prev"><b>默认配色方案</b>Theme Style</div>
-            <div class="layui-textarea" style="min-height:unset">
-                {foreach $themes as $k=>$v}
-                <label class="think-radio">
-                    {if sysconf('base.site_theme') eq $k}
-                    <input name="site_theme" type="radio" value="{$k}" lay-ignore checked> {$v}
-                    {else}
-                    <input name="site_theme" type="radio" value="{$k}" lay-ignore> {$v}
-                    {/if}
-                </label>
-                {/foreach}
-            </div>
-            <span class="help-block">用户登录管理后台，未配置个性化主题的用户默认会使用此处配置的配色方案 ~</span>
-        </div>
-
         <div class="layui-row layui-col-space15 margin-bottom-5">
-            <div class="layui-col-xs6 padding-bottom-0">
+            <div class="layui-col-xs4 padding-bottom-0">
                 <label class="relative block">
                     <span class="help-label"><b>登录表单标题</b>Login Name</span>
                     <input name="login_name" required placeholder="请输入登录页面的表单标题" value="{:sysconf('login_name')?:'系统管理'}" class="layui-input">
                 </label>
             </div>
-            <div class="layui-col-xs6 padding-bottom-0">
+            <div class="layui-col-xs4 padding-bottom-0">
                 <div class="help-label label-required-prev"><b>后台登录入口</b>Login Entry</div>
-                <label class="layui-input relative block label-required-null">
+                <label class="layui-input relative block nowrap label-required-null">
                     <span>{:sysuri('@',[],false,true)}</span>
-                    <input autofocus required pattern="[a-zA-Z_][a-zA-Z0-9_]*" placeholder="请输入后台登录入口" class="layui-input inline-block padding-0 border-0" style="width:auto;background:none" value="{:substr(sysuri('admin/index/index',[],false), strlen(sysuri('@')))}" name="xpath">
+                    <input autofocus required pattern="[a-zA-Z_][a-zA-Z0-9_]*" placeholder="请输入后台登录入口" class="layui-input inline-block padding-0 border-0" style="width:100px;background:none" value="{:substr(sysuri('admin/index/index',[],false), strlen(sysuri('@')))}" name="xpath">
                 </label>
+            </div>
+            <div class="layui-col-xs4 padding-bottom-0">
+                <div class="help-label label-required-prev"><b>后台默认配色</b>Theme Style</div>
+                <select class="layui-select" name="site_theme" lay-filter="SiteTheme">
+                    {foreach $themes as $k=>$v}{if sysconf('base.site_theme') eq $k}
+                    <option selected value="{$k}">{$v}</option>
+                    {else}
+                    <option value="{$k}">{$v}</option>
+                    {/if}{/foreach}
+                </select>
             </div>
             <div class="layui-col-xs12 padding-top-0 padding-bottom-0">
                 <span class="help-block">后台登录入口是由英文字母开头，且不能有相同名称的模块，设置之后原地址不能继续访问，请谨慎配置 ~</span>
@@ -108,10 +102,10 @@
 
 <script>
     layui.form.render();
-    $('[name="site_theme"]').on('click', function () {
-        var alls = '', that = this, prox = 'layui-layout-theme-', curt = prox + that.value;
-        $('[name="site_theme"]').map(function () {
-            if (this.value !== that.value) alls += ' ' + prox + this.value;
+    layui.form.on('select(SiteTheme)', function (data) {
+        var alls = '', prox = 'layui-layout-theme-', curt = prox + data.value;
+        $(data.elem.options).map(function () {
+            if (this.value !== data.value) alls += ' ' + prox + this.value;
         });
         $('.layui-layout-body').removeClass(alls).addClass(curt)
     });
