@@ -1,7 +1,7 @@
 .autocompleter {
     left: 0;
     top: 37px;
-    width: 100%;
+    min-width: 100%;
     z-index: 100;
     background: #fff;
     position: absolute;
