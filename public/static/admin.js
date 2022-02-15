@@ -499,7 +499,7 @@ $(function () {
                     /* 触发表单提交后，锁定三秒不能再次提交表单 */
                     if (that.form.attr('submit-locked')) return false;
                     that.form.attr('submit-locked', 1), evt.button.addClass('submit-button-loading');
-                    callable.call(this, that.form.formToJson()), setTimeout(function () {
+                    callable.call(this, that.form.formToJson(), []), setTimeout(function () {
                         that.form.removeAttr('submit-locked'), evt.button.removeClass('submit-button-loading');
                     }, 3000);
                 }
