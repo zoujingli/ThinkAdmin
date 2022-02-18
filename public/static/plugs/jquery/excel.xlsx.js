@@ -20,7 +20,7 @@ define(function () {
             var method = this.dataset.method || form.attr('method') || 'get';
             var location = this.dataset.excel || this.dataset.formExport || form.attr('action') || '';
             that.load(location, form.serialize(), method).then(function (ret) {
-                that.export(done(ret), name);
+                that.export(done(ret, []), name);
             }).fail(function (ret) {
                 $.msg.tips(ret || '文件导出失败');
             });
