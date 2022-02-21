@@ -16,7 +16,7 @@
 
 return [
     // 字段名称
-    'name'   => 'PHPSESSID',
+    'name'   => 'ssid',
     // 驱动方式
     'type'   => 'file',
     // 存储连接
