@@ -574,12 +574,9 @@ $(function () {
         return this.each(function () {
             if ($(this).data('inited')) return true; else $(this).data('inited', true);
             var $in = $(this), $bt = $('<a data-file class="uploadimage transition margin-top-5"><span class="layui-icon">&#x1006;</span><span class="layui-icon">&#xe615;</span></a>').data('input', this);
-            $bt.attr('data-size', $in.data('size') || 0).attr('data-type', $in.data('type') || 'png,jpg,gif').find('span').on('click', function (event, index) {
-                index = $(this).index();
+            $bt.attr('data-size', $in.data('size') || 0).attr('data-type', $in.data('type') || 'png,jpg,gif,jpeg').find('span').on('click', function (event) {
                 event.stopPropagation();
-                if (index === 0) $bt.attr('style', ''), $in.val('');
-                else if ($in.val()) $.previewImage(encodeURI($in.val()));
-
+                if ($(this).index() === 0) $bt.attr('style', ''), $in.val(''); else $in.val() && $.previewImage(encodeURI($in.val()));
             }), $in.on('change', function () {
                 if (this.value) $bt.css('backgroundImage', 'url(' + encodeURI(this.value) + ')');
             }).after($bt).trigger('change');
