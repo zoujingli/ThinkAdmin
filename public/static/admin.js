@@ -588,7 +588,7 @@ $(function () {
         return this.each(function () {
             if ($(this).data('inited')) return true; else $(this).data('inited', true);
             var $in = $(this), $bt = $('<a data-file="mul" class="uploadimage"></a>'), imgs = this.value ? this.value.split('|') : []
-            $in.after($bt.attr('data-size', $in.data('size') || 0).attr('data-type', $in.data('type') || 'png,jpg,gif').uploadFile(function (src) {
+            $in.after($bt.attr('data-size', $in.data('size') || 0).attr('data-type', $in.data('type') || 'png,jpg,gif,jpeg').uploadFile(function (src) {
                 imgs.push(src), $in.val(imgs.join('|')), showImageContainer([src]);
             })), (imgs.length > 0 && showImageContainer(imgs));
 
