@@ -141,7 +141,8 @@ $(function () {
     /*! 消息组件实例 */
     $.msg = new function () {
         var that = this;
-        this.idx = [], this.shade = [0.02, '#000'];
+        this.idx = [], this.mdx = [];
+        this.shade = [0.02, '#000000'];
         /*! 关闭消息框 */
         this.close = function (index) {
             if (index !== null) return layer.close(index);
@@ -201,10 +202,10 @@ $(function () {
             var url = ret.url || (typeof ret.data === 'string' ? ret.data : '');
             var msg = ret.msg || (typeof ret.info === 'string' ? ret.info : '');
             if (parseInt(ret.code) === 1 && time === 'false') {
-                return url ? (location.href = url) : $.form.reload();
-            }
-            return (parseInt(ret.code) === 1) ? this.success(msg, time, function () {
-                (url ? (location.href = url) : $.form.reload()), that.close(null);
+                return url ? location.href = url : $.form.reload();
+            } else return (parseInt(ret.code) === 1) ? this.success(msg, time, function () {
+                url ? location.href = url : $.form.reload();
+                that.close($.msg.mdx.length > 0 ? $.msg.mdx.pop() : null);
             }) : this.error(msg, 3, function () {
                 url ? location.href = url : '';
             });
@@ -317,7 +318,7 @@ $(function () {
         this.modal = function (url, data, name, call, load, tips, area, offset) {
             this.load(url, data, 'GET', function (res) {
                 if (typeof (res) === 'object') return $.msg.auto(res), false;
-                $.msg.idx.push(layer.open({
+                $.msg.mdx.push(layer.open({
                     type: 1, btn: false, area: area || "800px", resize: false, content: res, title: name || '', offset: offset || 'auto', success: function ($dom, idx) {
                         $.form.reInit($dom.off('click', '[data-close]').on('click', '[data-close]', function () {
                             (function (confirm, callable) {
