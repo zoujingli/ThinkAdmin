@@ -144,8 +144,8 @@ $(function () {
         this.idx = [], this.mdx = [];
         this.shade = [0.02, '#000000'];
         /*! 关闭消息框 */
-        this.close = function (index) {
-            if (index !== null) return layer.close(index);
+        this.close = function (idx) {
+            if (idx !== null) return layer.close(idx);
             for (var i in this.idx) that.close(this.idx[i]);
             this.idx = [];
         };
