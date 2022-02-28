@@ -246,7 +246,6 @@
       }
 
       .layui-nav-item {
-        // border-bottom: @TopHeaderBottomLine;
 
         > a:hover {
           background-color: rgba(100, 100, 100, 0.1) !important;
@@ -317,6 +316,10 @@
         > .layui-card-table {
           padding: 15px;
           box-sizing: border-box;
+
+          > form.layui-form {
+            box-shadow: @ShadowMaxOuter;
+          }
         }
 
         > .layui-card-html {
@@ -324,6 +327,10 @@
           min-width: 100%;
           position: absolute;
           box-sizing: border-box;
+
+          > form.layui-form {
+            box-shadow: @ShadowMaxOuter;
+          }
         }
 
         > div > .layui-tab.layui-tab-card {
