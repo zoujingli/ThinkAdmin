@@ -317,8 +317,8 @@ $(function () {
         /*! 加载 HTML 到弹出层 */
         this.modal = function (url, data, name, call, load, tips, area, offset) {
             this.load(url, data, 'GET', function (res) {
-                if (typeof (res) === 'object') return $.msg.auto(res), false;
-                $.msg.mdx.push(layer.open({
+                if (typeof res === 'object') return $.msg.auto(res) && false;
+                return $.msg.mdx.push(layer.open({
                     type: 1, btn: false, area: area || "800px", resize: false, content: res, title: name || '', offset: offset || 'auto', success: function ($dom, idx) {
                         $.form.reInit($dom.off('click', '[data-close]').on('click', '[data-close]', function () {
                             (function (confirm, callable) {
@@ -326,10 +326,9 @@ $(function () {
                             })(this.dataset.confirm, function () {
                                 layer.close(idx);
                             });
-                        }));
+                        })) && typeof call === 'function' && call.call(that, $dom);
                     }
-                }));
-                return (typeof call === 'function') && call.call(that);
+                })) && false;
             }, load, tips);
         };
     };
@@ -516,9 +515,17 @@ $(function () {
     $.vali.listen = function () {
         $('form[data-auto]').map(function (index, form) {
             $(this).vali(function (data) {
-                var type = form.method || 'POST', href = form.action || location.href;
-                var call = window[form.dataset.callable || '_default_callable'] || undefined;
+                var taid = form.dataset.tableId || false;
+                var type = form.method || 'post', href = form.action || location.href;
                 var tips = form.dataset.tips || undefined, time = form.dataset.time || undefined;
+                var call = window[form.dataset.callable || '_default_callable'] || (taid ? function (ret) {
+                    if (typeof ret === 'object' && ret.code > 0 && $('#' + taid).size() > 0) {
+                        return $.msg.success(ret.info, 3, function () {
+                            (typeof ret.data === 'string' && ret.data) ? location.href = ret.data : $('#' + taid).trigger('reload');
+                            $.msg.close($.msg.mdx.length > 0 ? $.msg.mdx.pop() : null);
+                        }) && false;
+                    }
+                } : undefined);
                 (function (confirm, callable) {
                     confirm ? $.msg.confirm(confirm, callable) : callable();
                 })(form.dataset.confirm, function () {
