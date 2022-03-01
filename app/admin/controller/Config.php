@@ -94,7 +94,7 @@ class Config extends Controller
                     $info = LocalStorage::down($icon);
                 }
                 if (!empty($info) && !empty($info['file'])) {
-                    $favicon = new FaviconExtend($info['file']);
+                    $favicon = new FaviconExtend($info['file'], [256, 256]);
                     $favicon->saveIco("{$this->app->getRootPath()}public/favicon.ico");
                 }
             } catch (\Exception $exception) {
