@@ -117,7 +117,7 @@ $(function () {
                 temp = [], regx = new RegExp(/^{(.*?)}$/);
                 if (regx.test(rule[idx1]) && (field = rule[idx1].replace(regx, '$1'))) {
                     for (idx2 in json) if (json[idx2][field]) temp.push(json[idx2][field]);
-                    if (temp.length < 1) return $.msg.tips('请选择需要更改的数据！') && false;
+                    if (temp.length < 1) return $.msg.tips('请选择需要更改的数据！') , false;
                     data[idx1] = temp.join(',');
                 } else {
                     data[idx1] = rule[idx1];
@@ -131,7 +131,7 @@ $(function () {
                 });
                 return array.length > 0 ? rule.replace('{key}', array.join(',')) : '';
             })(elem.dataset.rule || '', []) || '';
-            if (value.length < 1) return $.msg.tips('请选择需要更改的数据！') && false;
+            if (value.length < 1) return $.msg.tips('请选择需要更改的数据！') , false;
             return value.split(';').forEach(function (item) {
                 data[item.split('#')[0]] = item.split('#')[1];
             }), data;
@@ -300,7 +300,7 @@ $(function () {
         /*! 加载 HTML 到 BODY 位置 */
         this.open = function (url, data, call, load, tips) {
             this.load(url, data, 'get', function (ret) {
-                return (typeof ret === 'object' ? $.msg.auto(ret) : that.show(ret)) && false;
+                return (typeof ret === 'object' ? $.msg.auto(ret) : that.show(ret)) , false;
             }, load, tips);
         };
         /*! 打开 IFRAME 窗口 */
@@ -310,7 +310,7 @@ $(function () {
         /*! 加载 HTML 到弹出层 */
         this.modal = function (url, data, name, call, load, tips, area, offset) {
             this.load(url, data, 'GET', function (res) {
-                if (typeof res === 'object') return $.msg.auto(res) && false;
+                if (typeof res === 'object') return $.msg.auto(res) , false;
                 return $.msg.mdx.push(layer.open({
                     type: 1, btn: false, area: area || "800px", resize: false, content: res, title: name || '', offset: offset || 'auto', success: function ($dom, idx) {
                         $.form.reInit($dom.off('click', '[data-close]').on('click', '[data-close]', function () {
@@ -321,7 +321,7 @@ $(function () {
                             });
                         })) && typeof call === 'function' && call.call(that, $dom);
                     }
-                })) && false;
+                })) , false;
             }, load, tips);
         };
     };
@@ -453,6 +453,7 @@ $(function () {
             }, this.checkAllInput = function () {
                 var status = true;
                 return that.form.find(this.tags).each(function () {
+                    console.log(this, that.checkInput(this))
                     if (that.checkInput(this) === false) return $(this).focus(), status = false;
                 }), status;
             }, this.checkInput = function (input) {
@@ -464,13 +465,11 @@ $(function () {
                 return this.isRegex(input) ? (this.hideError(input), true) : this.remind(input);
             }, this.remind = function (input) {
                 if (!$(input).is(':visible')) return true;
-                return this.showError(input, input.getAttribute('title') || input.getAttribute('placeholder') || '输入错误') && false;
+                return this.showError(input, input.getAttribute('title') || input.getAttribute('placeholder') || '输入错误') , false;
             }, this.showError = function (ele, tip) {
-                $(ele).addClass('validate-error');
-                this.insertError(ele).addClass('layui-anim-fadein').css({width: 'auto'}).html(tip);
+                this.insertError($(ele).addClass('validate-error')).addClass('layui-anim-fadein').css({width: 'auto'}).html(tip);
             }, this.hideError = function (ele) {
-                $(ele).removeClass('validate-error');
-                this.insertError(ele).removeClass('layui-anim-fadein').css({width: '30px'}).html('');
+                this.insertError($(ele).removeClass('validate-error')).removeClass('layui-anim-fadein').css({width: '30px'}).html('');
             }, this.insertError = function (ele) {
                 if ($(ele).data('input-info')) return $(ele).data('input-info');
                 var $html = $('<span class="absolute block layui-anim text-center font-s12 notselect" style="color:#A44;z-index:2"></span>');
@@ -479,10 +478,10 @@ $(function () {
                 return $(ele).data('input-info', $html.css(style).insertAfter(ele)), $html;
             };
             /*! 表单元素验证 */
-            this.form.attr({onsubmit: 'return false;', novalidate: 'novalidate'});
+            this.form.attr({onsubmit: 'return false;', novalidate: 'novalidate', autocomplete: 'off'});
             this.form.off(this.evts, this.tags).on(this.evts, this.tags, function () {
                 that.checkInput(this);
-            }).attr('novalidate', 'novalidate').data('validate', this).bind("submit", function (evt) {
+            }).data('validate', this).bind("submit", function (evt) {
                 evt.button = that.form.find('button[type=submit],button:not([type=button])');
                 /* 检查所有表单元素是否通过H5的规则验证 */
                 if (that.checkAllInput() && typeof callable === 'function') {
@@ -496,7 +495,7 @@ $(function () {
                         that.form.removeAttr('submit-locked'), evt.button.removeClass('submit-button-loading');
                     }, 3000);
                 }
-                return evt.preventDefault() && false;
+                return evt.preventDefault() , false;
             }).find('[data-form-loaded]').map(function () {
                 $(this).html(this.dataset.formLoaded || this.innerHTML);
                 $(this).removeAttr('data-form-loaded').removeClass('layui-disabled');
@@ -516,7 +515,7 @@ $(function () {
                         return $.msg.success(ret.info, 3, function () {
                             (typeof ret.data === 'string' && ret.data) ? location.href = ret.data : $('#' + taid).trigger('reload');
                             $.msg.close($.msg.mdx.length > 0 ? $.msg.mdx.pop() : null);
-                        }) && false;
+                        }) , false;
                     }
                 } : undefined);
                 (function (confirm, callable) {
@@ -807,7 +806,7 @@ $(function () {
                                     that.$percent.attr('lay-percent', (parseFloat(ret.data.progress || '0.00').toFixed(2)) + '%'), layui.element.render();
                                     that.$coder.html('<p class="layui-elip">' + lines.join('</p><p class="layui-elip">') + '</p>').animate({scrollTop: that.$coder[0].scrollHeight + 'px'}, 200);
                                     return parseInt(ret.data.status) === 3 || parseInt(ret.data.status) === 4 || setTimeout(that.LoadProgress, Math.floor(Math.random() * 200)), false;
-                                } else return setTimeout(that.LoadProgress, Math.floor(Math.random() * 500) + 200) && false;
+                                } else return setTimeout(that.LoadProgress, Math.floor(Math.random() * 500) + 200) , false;
                             }
                         }, false);
                     })();
@@ -850,7 +849,7 @@ $(function () {
             $.form.load(emap.load, data, 'get', !emap.tableId ? false : function (ret) {
                 if (ret.code > 0) return $.msg.success(ret.info, 3, function () {
                     $('#' + emap.tableId).trigger('reload');
-                }) && false;
+                }) , false;
             }, true, emap.tips, emap.time);
         });
     });
@@ -891,7 +890,7 @@ $(function () {
             confirm ? $.msg.confirm(confirm, callable) : callable();
         })(emap.confirm, function () {
             $.form.load(emap.actionBlur || emap.blurAction, data, emap.method || 'post', function (ret) {
-                return that.css('border', (ret && ret.code) ? '1px solid #e6e6e6' : '1px solid red') && false;
+                return that.css('border', (ret && ret.code) ? '1px solid #e6e6e6' : '1px solid red') , false;
             }, emap.loading !== 'false', emap.loading, emap.time)
         });
     });
@@ -923,7 +922,7 @@ $(function () {
             var call = !emap.tableId ? false : function (ret) {
                 if (ret.code > 0) return $.msg.success(ret.info, 3, function () {
                     $('#' + emap.tableId).trigger('reload');
-                }) && false;
+                }) , false;
             }
             $.form.load(emap.action, data, emap.method || 'post', call, load, tips, emap.time)
         });
@@ -973,7 +972,7 @@ $(function () {
         })(this.dataset.confirm, function () {
             $.form.load(that.dataset.queue, {}, 'post', function (ret) {
                 if (typeof ret.data === 'string' && ret.data.indexOf('Q') === 0) {
-                    return $.loadQueue(ret.data, true, that) && false;
+                    return $.loadQueue(ret.data, true, that) , false;
                 }
             });
         });
