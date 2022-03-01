@@ -1,13 +1,13 @@
 /*! 定义编辑器标准配置 */
 CKEDITOR.editorConfig = function (config) {
-    config.language = 'zh-cn';
     config.toolbar = [
         {name: 'document', items: ['Source']},
         {name: 'styles', items: ['Font', 'FontSize']},
         {name: 'basicstyles', items: ['Bold', 'Italic', 'Underline', 'Strike', 'RemoveFormat', 'TextColor', 'BGColor', 'JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock', 'NumberedList', 'BulletedList']},
-        {name: 'uimage', items: ['Link', 'Unlink', 'Table', 'UploadImage', 'UploadMusic', 'UploadVideo', 'UploadHtml']},
-        {name: 'tools', items: ['Maximize']}
+        {name: 'element', items: ['Link', 'Unlink', 'Table', 'UploadImage', 'UploadMusic', 'UploadVideo', 'UploadHtml']},
+        {name: 'tools', items: ['ExportPdf', 'Print', 'Maximize']}
     ];
+    config.language = 'zh-cn';
     config.format_tags = 'p;h1;h2;h3;pre';
     config.extraPlugins = 'uimage,umusic,uhtml,uvideo';
     config.removeButtons = 'Underline,Subscript,Superscript';
@@ -49,7 +49,7 @@ CKEDITOR.plugins.add('umusic', {
 /*! 自定义视频插入插件 */
 CKEDITOR.plugins.add('uvideo', {
     init: function (editor) {
-        editor.ui.addButton("UploadVideo", {label: "上传MP4文件", command: 'uvideo', icon: 'flash', toolbar: 'insert,10'});
+        editor.ui.addButton("UploadVideo", {label: "上传MP4文件", command: 'uvideo', icon: 'iframe', toolbar: 'insert,10'});
         setTimeout(function () {
             $('#cke_' + editor.name).find('.cke_button__uploadvideo_label').parent().map(function () {
                 $(this).attr('data-type', 'mp4').attr('data-file', 'mul').uploadFile(function (url) {
