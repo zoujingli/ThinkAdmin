@@ -42,9 +42,11 @@
             <div class="help-label label-required-prev"><b>浏览器小图标</b>Browser Icon</div>
             <label class="relative block label-required-null">
                 <input class="layui-input" required pattern="^(http|/)" placeholder="请上传浏览器图标" value="{:sysconf('site_icon')}" name="site_icon">
-                <a class="input-right-icon layui-icon layui-icon-upload-drag" data-file="btn" data-type="ico,png,jpg" data-field="site_icon"></a>
+                <a class="input-right-icon layui-icon layui-icon-upload-drag" data-file="btn" data-type="png,jpg,jpeg" data-field="site_icon"></a>
             </label>
-            <span class="help-block">建议上传 <span class="color-blue">128x128</span> | <span class="color-blue">256x256</span> 的 ico 或 png 图片，可以通过 <a href="https://www.favicon-icon-generator.com" target="_blank">ICON </a>在线制作 ico 后缀文件 ~</span>
+            <div class="help-block sub-span-blue">
+                建议上传 <span>128x128</span> 或 <span>256x256</span> 的 <span>JPG</span>,<span>PNG</span>,<span>JPEG</span> 图片，保存后会自动生成 <span>48x48</span> 的 <span>ICO</span> 文件 ~
+            </div>
         </div>
 
         <div class="layui-row layui-col-space15 margin-bottom-5">

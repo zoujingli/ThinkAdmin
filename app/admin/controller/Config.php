@@ -94,11 +94,12 @@ class Config extends Controller
                     $info = LocalStorage::down($icon);
                 }
                 if (!empty($info) && !empty($info['file'])) {
-                    $favicon = new FaviconExtend($info['file'], [256, 256]);
+                    $favicon = new FaviconExtend($info['file'], [48, 48]);
                     $favicon->saveIco("{$this->app->getRootPath()}public/favicon.ico");
                 }
             } catch (\Exception $exception) {
                 trace_file($exception);
+                $this->error($exception->getMessage());
             }
             // 数据数据到系统配置表
             foreach ($post as $k => $v) sysconf($k, $v);
