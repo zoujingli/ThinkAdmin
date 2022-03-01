@@ -5,11 +5,12 @@ CKEDITOR.editorConfig = function (config) {
         {name: 'styles', items: ['Font', 'FontSize']},
         {name: 'basicstyles', items: ['Bold', 'Italic', 'Underline', 'Strike', 'RemoveFormat', 'TextColor', 'BGColor', 'JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock', 'NumberedList', 'BulletedList']},
         {name: 'element', items: ['Link', 'Unlink', 'Table', 'UploadImage', 'UploadMusic', 'UploadVideo', 'UploadHtml']},
-        {name: 'tools', items: ['ExportPdf', 'Print', 'Maximize']}
+        {name: 'tools', items: ['Print', 'Maximize']}
     ];
     config.language = 'zh-cn';
     config.format_tags = 'p;h1;h2;h3;pre';
     config.extraPlugins = 'uimage,umusic,uhtml,uvideo';
+    config.removePlugins = 'easyimage,cloudservices,exportpdf';
     config.removeButtons = 'Underline,Subscript,Superscript';
     config.removeDialogTabs = 'image:advanced;link:advanced';
     // 内容过滤
