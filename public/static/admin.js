@@ -117,7 +117,7 @@ $(function () {
                 temp = [], regx = new RegExp(/^{(.*?)}$/);
                 if (regx.test(rule[idx1]) && (field = rule[idx1].replace(regx, '$1'))) {
                     for (idx2 in json) if (json[idx2][field]) temp.push(json[idx2][field]);
-                    if (temp.length < 1) return $.msg.tips('请选择需要更改的数据！'), false;
+                    if (temp.length < 1) return $.msg.tips('请选择需要更改的数据！') && false;
                     data[idx1] = temp.join(',');
                 } else {
                     data[idx1] = rule[idx1];
@@ -131,7 +131,7 @@ $(function () {
                 });
                 return array.length > 0 ? rule.replace('{key}', array.join(',')) : '';
             })(elem.dataset.rule || '', []) || '';
-            if (value.length < 1) return $.msg.tips('请选择需要更改的数据！'), false;
+            if (value.length < 1) return $.msg.tips('请选择需要更改的数据！') && false;
             return value.split(';').forEach(function (item) {
                 data[item.split('#')[0]] = item.split('#')[1];
             }), data;
@@ -219,9 +219,7 @@ $(function () {
         this.selecter = '.layui-layout-admin>.layui-body>.think-page-body';
         /*! 刷新当前页面 */
         this.reload = function (force) {
-            if (force) top.location.reload();
-            else if (self !== top) location.reload();
-            else window.onhashchange.call(this);
+            force ? top.location.reload() : (self !== top ? location.reload() : window.onhashchange.call(this));
         };
         /*! 内容区域动态加载后初始化 */
         this.reInit = function ($dom) {
@@ -246,21 +244,15 @@ $(function () {
                     }
                 });
             }), $dom.find('[data-lazy-src]:not([data-lazy-loaded])').each(function () {
-                if (this.dataset.lazyLoaded !== 'true') {
-                    this.dataset.lazyLoaded = "true";
-                    if (this.nodeName === 'IMG') {
-                        this.src = this.dataset.lazySrc;
-                    } else {
-                        this.style.backgroundImage = 'url(' + this.dataset.lazySrc + ')';
-                    }
-                }
+                if (this.dataset.lazyLoaded === 'true') return;
+                this.dataset.lazyLoaded = 'true';
+                if (this.nodeName === 'IMG') this.src = this.dataset.lazySrc;
+                else this.style.backgroundImage = 'url(' + this.dataset.lazySrc + ')';
             }), $dom;
         };
         /*! 在内容区显示视图 */
         this.show = function (html) {
-            $(this.selecter).html(html), setTimeout(function () {
-                that.reInit($(that.selecter));
-            }, 500);
+            return that.reInit($(this.selecter).html(html));
         };
         /*! 异步加载的数据 */
         this.load = function (url, data, method, callable, loading, tips, time, headers) {
@@ -300,15 +292,15 @@ $(function () {
         };
         /*! 以 HASH 打开新网页 */
         this.href = function (url, ele) {
-            // 重置表格页数缓存
-            if (ele && ele.dataset.menuNode) layui.sessionData('pages', null);
-            if (url !== '#') location.hash = $.menu.parseUri(url, ele);
-            else if (ele && ele.dataset.menuNode) $('[data-menu-node^="' + ele.dataset.menuNode + '-"]:first').trigger('click');
+            var isNode = ele && ele.dataset.menuNode;
+            isNode && layui.sessionData('pages', null);
+            if (url !== '#') return location.hash = $.menu.parseUri(url, ele);
+            isNode && $('[data-menu-node^="' + ele.dataset.menuNode + '-"]:first').trigger('click');
         };
         /*! 加载 HTML 到 BODY 位置 */
         this.open = function (url, data, call, load, tips) {
             this.load(url, data, 'get', function (ret) {
-                return (typeof ret === 'object' ? $.msg.auto(ret) : that.show(ret)), false;
+                return (typeof ret === 'object' ? $.msg.auto(ret) : that.show(ret)) && false;
             }, load, tips);
         };
         /*! 打开 IFRAME 窗口 */
@@ -472,7 +464,7 @@ $(function () {
                 return this.isRegex(input) ? (this.hideError(input), true) : this.remind(input);
             }, this.remind = function (input) {
                 if (!$(input).is(':visible')) return true;
-                return this.showError(input, input.getAttribute('title') || input.getAttribute('placeholder') || '输入错误'), false;
+                return this.showError(input, input.getAttribute('title') || input.getAttribute('placeholder') || '输入错误') && false;
             }, this.showError = function (ele, tip) {
                 $(ele).addClass('validate-error');
                 this.insertError(ele).addClass('layui-anim-fadein').css({width: 'auto'}).html(tip);
@@ -504,7 +496,7 @@ $(function () {
                         that.form.removeAttr('submit-locked'), evt.button.removeClass('submit-button-loading');
                     }, 3000);
                 }
-                return evt.preventDefault(), false;
+                return evt.preventDefault() && false;
             }).find('[data-form-loaded]').map(function () {
                 $(this).html(this.dataset.formLoaded || this.innerHTML);
                 $(this).removeAttr('data-form-loaded').removeClass('layui-disabled');
@@ -756,7 +748,7 @@ $(function () {
     /*! 显示任务进度消息 */
     $.loadQueue = function (code, doScript, element) {
         var doAjax = true, doReload = false;
-        layui.layer.open({
+        layer.open({
             type: 1, title: false, area: ['560px', '315px'], anim: 2, shadeClose: false, end: function () {
                 doAjax = false;
                 if (doReload && doScript) {
@@ -815,7 +807,7 @@ $(function () {
                                     that.$percent.attr('lay-percent', (parseFloat(ret.data.progress || '0.00').toFixed(2)) + '%'), layui.element.render();
                                     that.$coder.html('<p class="layui-elip">' + lines.join('</p><p class="layui-elip">') + '</p>').animate({scrollTop: that.$coder[0].scrollHeight + 'px'}, 200);
                                     return parseInt(ret.data.status) === 3 || parseInt(ret.data.status) === 4 || setTimeout(that.LoadProgress, Math.floor(Math.random() * 200)), false;
-                                } else return setTimeout(that.LoadProgress, Math.floor(Math.random() * 500) + 200), false;
+                                } else return setTimeout(that.LoadProgress, Math.floor(Math.random() * 500) + 200) && false;
                             }
                         }, false);
                     })();
@@ -855,12 +847,11 @@ $(function () {
         (function (confirm, callable) {
             confirm ? $.msg.confirm(confirm, callable) : callable();
         })(emap.confirm, function () {
-            var call = !emap.tableId ? false : function (ret) {
+            $.form.load(emap.load, data, 'get', !emap.tableId ? false : function (ret) {
                 if (ret.code > 0) return $.msg.success(ret.info, 3, function () {
                     $('#' + emap.tableId).trigger('reload');
-                }), false;
-            }
-            $.form.load(emap.load, data, 'get', call, true, emap.tips, emap.time);
+                }) && false;
+            }, true, emap.tips, emap.time);
         });
     });
 
@@ -900,7 +891,7 @@ $(function () {
             confirm ? $.msg.confirm(confirm, callable) : callable();
         })(emap.confirm, function () {
             $.form.load(emap.actionBlur || emap.blurAction, data, emap.method || 'post', function (ret) {
-                return that.css('border', (ret && ret.code) ? '1px solid #e6e6e6' : '1px solid red'), false;
+                return that.css('border', (ret && ret.code) ? '1px solid #e6e6e6' : '1px solid red') && false;
             }, emap.loading !== 'false', emap.loading, emap.time)
         });
     });
@@ -932,7 +923,7 @@ $(function () {
             var call = !emap.tableId ? false : function (ret) {
                 if (ret.code > 0) return $.msg.success(ret.info, 3, function () {
                     $('#' + emap.tableId).trigger('reload');
-                }), false;
+                }) && false;
             }
             $.form.load(emap.action, data, emap.method || 'post', call, load, tips, emap.time)
         });
@@ -982,7 +973,7 @@ $(function () {
         })(this.dataset.confirm, function () {
             $.form.load(that.dataset.queue, {}, 'post', function (ret) {
                 if (typeof ret.data === 'string' && ret.data.indexOf('Q') === 0) {
-                    return $.loadQueue(ret.data, true, that), false;
+                    return $.loadQueue(ret.data, true, that) && false;
                 }
             });
         });
@@ -993,7 +984,7 @@ $(function () {
         var opts = {tips: [$(this).attr('data-tips-type') || 3, '#78BA32'], time: 0};
         var layidx = layer.tips($(this).attr('data-tips-text') || this.innerText, this, opts);
         $(this).off('mouseleave').on('mouseleave', function () {
-            setTimeout("layui.layer.close('" + layidx + "')", 100);
+            setTimeout("layer.close('" + layidx + "')", 100);
         });
     });
 
@@ -1004,7 +995,7 @@ $(function () {
             img.layopt = {time: 0, skin: 'layui-layer-image', anim: 5, isOutAnim: false, scrollbar: false};
             img.referrerPolicy = 'no-referrer', img.style.maxWidth = '260px', img.style.maxHeight = '260px';
             ele.data('layidx', layer.tips(img.outerHTML, this, img.layopt)).off('mouseleave').on('mouseleave', function () {
-                layui.layer.close(ele.data('layidx'));
+                layer.close(ele.data('layidx'));
             });
         }
     });
