@@ -87,16 +87,7 @@ class Config extends Controller
             }
             // 修改网站 ICON 图标文件，替换 public/favicon.ico 文件
             if (preg_match('#^https?://#', $icon = $post['site_icon'] ?? '')) try {
-                if (preg_match('#/upload/(\w{2}/\w{30}.\w+)$#', $icon, $vars)) {
-                    $info = LocalStorage::instance()->info($vars[1]);
-                }
-                if (empty($info) || empty($info['file'])) {
-                    $info = LocalStorage::down($icon);
-                }
-                if (!empty($info) && !empty($info['file'])) {
-                    $favicon = new FaviconExtend($info['file'], [48, 48]);
-                    $favicon->saveIco("{$this->app->getRootPath()}public/favicon.ico");
-                }
+                SystemService::instance()->setFavicon($icon);
             } catch (\Exception $exception) {
                 trace_file($exception);
                 $this->error($exception->getMessage());
