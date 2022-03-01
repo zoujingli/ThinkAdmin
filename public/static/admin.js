@@ -453,7 +453,6 @@ $(function () {
             }, this.checkAllInput = function () {
                 var status = true;
                 return that.form.find(this.tags).each(function () {
-                    console.log(this, that.checkInput(this))
                     if (that.checkInput(this) === false) return $(this).focus(), status = false;
                 }), status;
             }, this.checkInput = function (input) {
