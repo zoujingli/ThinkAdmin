@@ -980,7 +980,7 @@ $(function () {
         (function (content, $textarea) {
             $body.append($textarea.val(content)), $textarea.select();
             document.execCommand('Copy') ? $.msg.tips('已复制到剪贴板！') : $.msg.tips('请使用鼠标操作复制！');
-            $textarea.remove(), $textarea.unselect();
+            $textarea.unselect(), $textarea.remove();
         })(this.dataset.copy, $('<textarea style="position:fixed;top:-500px"></textarea>'));
     });
 
