@@ -42,7 +42,7 @@ class Menu extends Controller
     {
         $this->title = '系统菜单管理';
         $this->type = input('get.type', 'index');
-        SystemMenu::mQuery()->order('sort desc,id asc')->page(false, true);
+        SystemMenu::mQuery()->order('sort desc,id asc')->layTable();//->page(false, true);
     }
 
     /**
@@ -131,7 +131,6 @@ class Menu extends Controller
      */
     public function state()
     {
-        $this->_applyFormToken();
         SystemMenu::mSave($this->_vali([
             'status.in:0,1'  => '状态值范围异常！',
             'status.require' => '状态值不能为空！',
@@ -144,7 +143,6 @@ class Menu extends Controller
      */
     public function remove()
     {
-        $this->_applyFormToken();
         SystemMenu::mDelete();
     }
 }
