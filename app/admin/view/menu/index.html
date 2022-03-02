@@ -45,7 +45,7 @@
                 {checkbox: true, field: 'ids'},
                 {field: 'sort', title: '排序权重', width: 100, align: 'center', sort: true, templet: '#SortInputTpl'},
                 {
-                    field: 'icon', title: '图标', width: 100, align: 'center', templet: function (d) {
+                    field: 'icon', title: '图标', width: 80, align: 'center', templet: function (d) {
                         return layui.laytpl('<i class="{{d.icon}} font-s18"></i>').render(d);
                     }
                 },
@@ -54,8 +54,9 @@
                         return layui.laytpl('<span class="color-desc">{{d.spl}}</span>{{d.title}}').render(d);
                     }
                 },
+                {field: 'url', title: '跳转链接', minWidth: 200},
                 {field: 'status', title: '菜单状态', minWidth: 120, align: 'center', templet: '#StatusSwitchTpl'},
-                //{field: 'create_at', title: '创建时间', minWidth: 170, align: 'center'},
+                // {field: 'create_at', title: '创建时间', minWidth: 170, align: 'center'},
                 {toolbar: '#toolbar', title: '操作面板', minWidth: 170, align: 'center', fixed: 'right'},
             ]]
         });
