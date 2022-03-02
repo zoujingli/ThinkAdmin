@@ -226,6 +226,7 @@ $(function () {
         };
         /*! 内容区域动态加载后初始化 */
         this.reInit = function ($dom) {
+            layui.form.render(), layui.element.render();
             $(window).trigger('scroll'), $.vali.listen(this), $dom = $dom || $(this.selecter);
             return $dom.find('[required]').map(function ($parent) {
                 if (($parent = $(this).parent()) && $parent.is('label')) {
