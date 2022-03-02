@@ -30,7 +30,7 @@ invoke(function (App $app) {
         $app->route->post('index/pass', function () {
             return json(['code' => 0, 'info' => '演示环境禁止修改用户密码！']);
         });
-        $app->route->post('config/system', function () {
+        $app->route->post('admin/config/system', function () {
             return json(['code' => 0, 'info' => '演示环境禁止修改系统配置！']);
         });
         $app->route->post('config/storage', function () {
