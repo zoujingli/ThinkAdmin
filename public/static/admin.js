@@ -977,11 +977,16 @@ $(function () {
 
     /*! 注册 data-copy 事件行为 */
     onEvent('click', '[data-copy]', function () {
-        (function (content, $textarea) {
-            $body.append($textarea.val(content)), $textarea.select();
-            document.execCommand('Copy') ? $.msg.tips('已复制到剪贴板！') : $.msg.tips('请使用鼠标操作复制！');
-            $textarea.remove();
-        })(this.dataset.copy, $('<textarea readonly style="position:fixed;top:-500px"></textarea>'));
+        var content = this.dataset.copy || this.innerText;
+        if (window.clipboardData) {
+            window.clipboardData.clearData('text');
+            window.clipboardData.setData('text', content);
+            return $.msg.tips('已复制到剪贴板！');
+        }
+        var $textarea = $('<textarea readonly style="position:fixed;top:-500px"></textarea>');
+        $textarea.appendTo($body).val(content).select();
+        $.msg.tips(document.execCommand('Copy') ? '已复制到剪贴板！' : '请使用鼠标操作复制！');
+        $textarea.remove();
     });
 
     /*! 异步任务状态监听与展示 */
