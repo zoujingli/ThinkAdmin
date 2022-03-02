@@ -430,9 +430,7 @@ $(function () {
             window.onhashchange.call(this);
         };
     };
-
-
-    /*! 注册对象到Jq */
+    /*! 表单验证组件 */
     $.vali = function (form, callable) {
         return $(form).data('validate') || new Validate();
 
@@ -511,7 +509,7 @@ $(function () {
         }
     };
 
-    /*! 自动监听规则内表单 */
+    /*! 自动监听表单 */
     $.vali.listen = function () {
         $('form[data-auto]').map(function (index, form) {
             $(this).vali(function (data) {
@@ -707,7 +705,8 @@ $(function () {
                 if (evt.type === 'render') {
                     layui.table.reload(table.id, bindData(opts || {}));
                 } else {
-                    layui.table.reloadData(table.id, bindData(opts || {}));
+                    layui.table.reload(table.id, bindData(opts || {}));
+                    // layui.table.reloadData(table.id, bindData(opts || {}));
                 }
             }).bind('row sort tool edit radio toolbar checkbox rowDouble', function (evt, call) {
                 layui.table.on(evt.type + '(' + table.dataset.id + ')', call)
