@@ -20,7 +20,7 @@
 
 {block name="content"}
 <div class="think-box-notify">
-    <b>任务统计：</b>待处理 {$total.pre|default=0} 个任务，处理中 {$total.dos|default=0} 个任务，待处理 {$total.oks|default=0} 个任务，已失败 {$total.ers|default=0} 个任务。
+    <b>任务统计：</b>待处理 <b class="color-text">{$total.pre|default=0}</b> 个任务，处理中 <b class="color-blue">{$total.dos|default=0}</b> 个任务，已完成 <b class="color-green">{$total.oks|default=0}</b> 个任务，已失败 <b class="color-red">{$total.ers|default=0}</b> 个任务。
 </div>
 <div class="think-box-shadow">
     {include file='queue/index_search'}
