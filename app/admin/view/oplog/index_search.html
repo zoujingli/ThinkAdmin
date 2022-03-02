@@ -1,6 +1,7 @@
 <fieldset>
     <legend>条件搜索</legend>
     <form class="layui-form layui-form-pane form-search" action="{:sysuri()}" onsubmit="return false" method="get" autocomplete="off">
+
         <div class="layui-form-item layui-inline">
             <label class="layui-form-label">操作账号</label>
             <div class="layui-input-inline">
@@ -14,12 +15,14 @@
                 </select>
             </div>
         </div>
+
         <div class="layui-form-item layui-inline">
             <label class="layui-form-label">操作节点</label>
             <label class="layui-input-inline">
                 <input name="node" value="{$get.node|default=''}" placeholder="请输入操作内容" class="layui-input">
             </label>
         </div>
+
         <div class="layui-form-item layui-inline">
             <label class="layui-form-label">操作行为</label>
             <div class="layui-input-inline">
@@ -33,24 +36,28 @@
                 </select>
             </div>
         </div>
+
         <div class="layui-form-item layui-inline">
             <label class="layui-form-label">操作描述</label>
             <label class="layui-input-inline">
                 <input name="content" value="{$get.content|default=''}" placeholder="请输入操作内容" class="layui-input">
             </label>
         </div>
+
         <div class="layui-form-item layui-inline">
             <label class="layui-form-label">访问地址</label>
             <label class="layui-input-inline">
                 <input name="geoip" value="{$get.geoip|default=''}" placeholder="请输入访问地址" class="layui-input">
             </label>
         </div>
+
         <div class="layui-form-item layui-inline">
             <label class="layui-form-label">操作时间</label>
             <label class="layui-input-inline">
                 <input data-date-range name="create_at" value="{$get.create_at|default=''}" placeholder="请选择操作时间" class="layui-input">
             </label>
         </div>
+
         <div class="layui-form-item layui-inline">
             <button type="submit" class="layui-btn layui-btn-primary"><i class="layui-icon">&#xe615;</i> 搜 索</button>
             <button type="button" data-form-export="{:url('index')}?type={$type|default=''}" class="layui-btn layui-btn-primary">
@@ -61,7 +68,6 @@
 </fieldset>
 
 <script>
-    window.form.render();
     require(['excel'], function (excel) {
         excel.bind(function (data) {
             data.forEach(function (item, index) {

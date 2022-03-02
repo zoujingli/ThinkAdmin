@@ -15,7 +15,6 @@
                 {/if}{/foreach}
             </select>
             <script>
-                layui.form.render();
                 (function (callable) {
                     layui.form.on('select(DataType)', callable);
                     callable({value: "{$vo.type|default=''}" || $('[lay-filter=DataType]').val()});

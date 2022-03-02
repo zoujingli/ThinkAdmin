@@ -2,7 +2,7 @@
 
 {block name="button"}
 <!--{if auth("add")}-->
-<button data-modal='{:url("add")}?type={$type|default=""}' data-title="添加数据" class='layui-btn layui-btn-sm layui-btn-primary'>添加数据</button>
+<button data-modal='{:url("add")}?type={$type|default=""}' data-table-id="BaseData" data-title="添加数据" class='layui-btn layui-btn-sm layui-btn-primary'>添加数据</button>
 <!--{/if}-->
 
 <!--{if auth("remove")}-->

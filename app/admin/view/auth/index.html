@@ -2,7 +2,7 @@
 
 {block name="button"}
 <!--{if auth("add")}-->
-<button data-modal='{:url("add")}' data-title="添加权限" class='layui-btn layui-btn-sm layui-btn-primary'>添加权限</button>
+<button data-modal='{:url("add")}' data-table-id="RoleData" class='layui-btn layui-btn-sm layui-btn-primary'>添加权限</button>
 <!--{/if}-->
 
 <!--{if auth("remove")}-->
@@ -26,17 +26,17 @@
             sort: {field: 'sort desc,id', type: 'desc'},
             cols: [[
                 {checkbox: true, fixed: true},
-                {field: 'sort', title: '排序权重', align: 'center', width: 100, sort: true, templet: '#SortInputTpl'},
+                {field: 'sort', title: '排序权重', align: 'center', width: 100, sort: true, templet: '#SortInputRoleDataTpl'},
                 {field: 'title', title: '权限名称', align: 'center', minWidth: 140},
                 {field: 'desc', title: '权限描述', align: 'center', minWidth: 110, templet: '<div>{{d.desc||"-"}}</div>'},
-                {field: 'status', title: '权限状态', align: 'center', minWidth: 110, templet: '#StatusSwitchTpl'},
+                {field: 'status', title: '权限状态', align: 'center', minWidth: 110, templet: '#StatusSwitchRoleDataTpl'},
                 {field: 'create_at', title: '创建时间', align: 'center', minWidth: 170, sort: true},
-                {toolbar: '#toolbar', title: '操作面板', align: 'center', minWidth: 210, fixed: 'right'},
+                {toolbar: '#ToolbarRoleDataTpl', title: '操作面板', align: 'center', minWidth: 210, fixed: 'right'},
             ]]
         });
 
         // 数据状态切换操作
-        layui.form.on('switch(StatusSwitch)', function (obj) {
+        layui.form.on('switch(StatusSwitchRoleData)', function (obj) {
             $.form.load("{:url('state')}", {id: obj.value, status: obj.elem.checked > 0 ? 1 : 0}, 'post', function (ret) {
                 if (ret.code < 1) $.msg.error(ret.info, 3, function () {
                     $('#RoleData').trigger('reload'); // 操作异常时重载数据
@@ -49,21 +49,21 @@
 </script>
 
 <!-- 列表排序权重模板 -->
-<script type="text/html" id="SortInputTpl">
-    <input min="0" type="number" data-blur-number="0" data-action-blur="{:sysuri()}" data-value="id#{{d.id}};action#sort;sort#{value}" data-loading="false" value="{{d.sort}}" class="layui-input text-center">
+<script type="text/html" id="SortInputRoleDataTpl">
+    <input type="number" min="0" data-blur-number="0" data-action-blur="{:sysuri()}" data-value="id#{{d.id}};action#sort;sort#{value}" data-loading="false" value="{{d.sort}}" class="layui-input text-center">
 </script>
 
 <!-- 数据状态切换模板 -->
-<script type="text/html" id="StatusSwitchTpl">
+<script type="text/html" id="StatusSwitchRoleDataTpl">
     <!--{if auth("state")}-->
-    <input type="checkbox" value="{{d.id}}" lay-skin="switch" lay-text="已激活|已禁用" lay-filter="StatusSwitch" {{d.status>0?'checked':''}}>
+    <input type="checkbox" value="{{d.id}}" lay-skin="switch" lay-text="已激活|已禁用" lay-filter="StatusSwitchRoleData" {{d.status>0?'checked':''}}>
     <!--{else}-->
     {{d.status ? '<b class="color-green">已启用</b>' : '<b class="color-red">已禁用</b>'}}
     <!--{/if}-->
 </script>
 
 <!-- 数据操作工具条模板 -->
-<script type="text/html" id="toolbar">
+<script type="text/html" id="ToolbarRoleDataTpl">
     <!--{if auth('edit')}-->
     <a class="layui-btn layui-btn-primary layui-btn-sm" data-title="编辑权限" data-modal='{:url("edit")}?id={{d.id}}'>编 辑</a>
     <!--{/if}-->
