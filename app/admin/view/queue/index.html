@@ -20,6 +20,11 @@
 
 {block name="content"}
 <div class="think-box-notify">
+    <!--{if isset($super) and $super}-->
+    <b>服务状态：</b><b class="margin-right-5" data-queue-message><span class="color-desc">检查中</span></b>
+    <b data-tips-text="点击可复制【任务服务启动指令】" class="layui-icon pointer margin-right-20" data-copy="{$command|default=''}">&#xe60e;</b>
+    <script>$('[data-queue-message]').load('{:sysuri("admin/api.queue/status")}')</script>
+    <!--{/if}-->
     <b>任务统计：</b>待处理 <b class="color-text">{$total.pre|default=0}</b> 个任务，处理中 <b class="color-blue">{$total.dos|default=0}</b> 个任务，已完成 <b class="color-green">{$total.oks|default=0}</b> 个任务，已失败 <b class="color-red">{$total.ers|default=0}</b> 个任务。
 </div>
 <div class="think-box-shadow">

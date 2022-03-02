@@ -1,16 +1,3 @@
-<!--{if isset($super) and $super}-->
-<fieldset class="margin-bottom-15">
-    <legend class="notselect">服务状态</legend>
-    <div class="layui-code border-0 margin-top-0">
-        <h4 class="color-desc notselect">后台服务主进程运行状态</h4>
-        <div data-queue-message>Checking task process running status ...</div>
-        <script>$('[data-queue-message]').load('{:sysuri("admin/api.queue/status")}')</script>
-        <h4 class="color-desc margin-top-10 notselect">配置定时任务来检查并启动进程（建议每分钟执行）</h4>
-        <div>{$command|default='--'}</div>
-    </div>
-</fieldset>
-<!--{/if}-->
-
 <fieldset>
     <legend>条件搜索</legend>
     <form class="layui-form layui-form-pane form-search" action="{:sysuri()}" onsubmit="return false" method="get" autocomplete="off">
