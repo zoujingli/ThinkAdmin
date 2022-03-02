@@ -97,7 +97,7 @@
                         } else {
                             d.html += '<span class="color-desc">任务未执行</span>'
                         }
-                        return d.html + '<br>执行结果：<span class="color-blue">' + (d.exec_desc || '-') + '</span>';
+                        return d.html + '<br>执行结果：<span class="color-blue">' + (d.exec_desc || '<span class="color-desc">未获取到执行结果</span>') + '</span>';
                     }
                 },
                 {toolbar: '#toolbar', title: '操作面板', align: 'center', minWidth: 200}
