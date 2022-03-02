@@ -17,12 +17,10 @@
 namespace app\admin\controller;
 
 use think\admin\Controller;
-use think\admin\extend\FaviconExtend;
 use think\admin\service\AdminService;
 use think\admin\service\ModuleService;
 use think\admin\service\SystemService;
 use think\admin\storage\AliossStorage;
-use think\admin\storage\LocalStorage;
 use think\admin\storage\QiniuStorage;
 use think\admin\storage\TxcosStorage;
 
