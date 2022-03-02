@@ -3,18 +3,19 @@
 {block name="button"}
 <!--{if isset($super) and $super}-->
 <a class="layui-btn layui-btn-sm layui-btn-primary" data-queue="{:url('admin/api.plugs/optimize')}">优化数据库</a>
-{if $iswin}
-<button data-load='{:url("admin/api.queue/start")}' class='layui-btn layui-btn-sm layui-btn-primary'>开启后台服务</button>
-<button data-load='{:url("admin/api.queue/stop")}' class='layui-btn layui-btn-sm layui-btn-primary'>关闭后台服务</button>
-{/if}
+<!--{/if}-->
+
+<!--{if isset($super) and $super and $iswin}-->
+<button data-load='{:url("admin/api.queue/start")}' class='layui-btn layui-btn-sm layui-btn-primary'>开启服务</button>
+<button data-load='{:url("admin/api.queue/stop")}' class='layui-btn layui-btn-sm layui-btn-primary'>关闭服务</button>
 <!--{/if}-->
 
 <!--{if auth("clean")}-->
-<button data-queue='{:url("clean")}' class='layui-btn layui-btn-sm layui-btn-primary'>定时清理数据</button>
+<button data-queue='{:url("clean")}' class='layui-btn layui-btn-sm layui-btn-primary'>定时清理</button>
 <!--{/if}-->
 
 <!--{if auth("remove")}-->
-<button data-action='{:url("remove")}' data-rule="id#{id}" data-table-id="QueueData" data-confirm="确定批量删除记录吗？" class='layui-btn layui-btn-sm layui-btn-primary'>批量删除任务</button>
+<button data-action='{:url("remove")}' data-rule="id#{id}" data-table-id="QueueData" data-confirm="确定批量删除记录吗？" class='layui-btn layui-btn-sm layui-btn-primary'>批量删除</button>
 <!--{/if}-->
 {/block}
 
