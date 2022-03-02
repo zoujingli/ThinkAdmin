@@ -143,12 +143,35 @@ fieldset {
 .layui-select {
   line-height: 38px;
   border-color: @InputBorderNormalColor;
-  appearance: revert;
-  -moz-appearance: revert;
-  -webkit-appearance: revert;
 
   &:hover, &:active, &:focus {
     border-color: @InputBorderActiveColor;
+  }
+}
+
+.layui-select {
+  appearance: revert;
+  -moz-appearance: revert;
+  -webkit-appearance: revert;
+}
+
+div.layui-textarea.help-images {
+  min-height: unset;
+  color: #333;
+  padding: 12px 0 1px 12px;
+  background: linear-gradient(-113deg, #EEEEEE, #EEEEEE) !important;
+
+  &:after {
+    clear: both;
+    content: '';
+    display: block;
+  }
+
+  > * {
+    float: left;
+    width: 78px;
+    height: 78px;
+    margin: 0 10px 10px 0;
   }
 }
 
