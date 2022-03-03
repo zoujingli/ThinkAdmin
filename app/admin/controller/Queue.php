@@ -54,17 +54,29 @@ class Queue extends Controller
                     $this->command = "sudo -u {$_SERVER['USER']} {$process->think('xadmin:queue start')}";
                 }
             }
-            // 任务状态统计
-            $this->total = ['dos' => 0, 'pre' => 0, 'oks' => 0, 'ers' => 0];
-            SystemQueue::mk()->field('status,count(1) count')->group('status')->select()->map(function ($item) {
-                if ($item['status'] === 1) $this->total['pre'] = $item['count'];
-                if ($item['status'] === 2) $this->total['dos'] = $item['count'];
-                if ($item['status'] === 3) $this->total['oks'] = $item['count'];
-                if ($item['status'] === 4) $this->total['ers'] = $item['count'];
-            });
         }, function (QueryHelper $query) {
             $query->equal('status')->like('code,title,command');
             $query->timeBetween('enter_time,exec_time')->dateBetween('create_at');
+        });
+    }
+
+    /**
+     * 分页数据回调处理
+     * @param array $data
+     * @param array $result
+     * @return void
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\DbException
+     * @throws \think\db\exception\ModelNotFoundException
+     */
+    protected function _index_page_filter(array $data, array &$result)
+    {
+        $result['extra'] = ['dos' => 0, 'pre' => 0, 'oks' => 0, 'ers' => 0];
+        SystemQueue::mk()->field('status,count(1) count')->group('status')->select()->map(function ($item) use (&$result) {
+            if ($item['status'] === 1) $result['extra']['pre'] = $item['count'];
+            if ($item['status'] === 2) $result['extra']['dos'] = $item['count'];
+            if ($item['status'] === 3) $result['extra']['oks'] = $item['count'];
+            if ($item['status'] === 4) $result['extra']['ers'] = $item['count'];
         });
     }
 
