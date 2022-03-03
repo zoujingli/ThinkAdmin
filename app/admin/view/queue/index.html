@@ -55,6 +55,7 @@
         $('#QueueTable').layTable({
             even: true, height: 'full',
             sort: {field: 'loops_time desc,id', type: 'desc'},
+            // 扩展数据处理，需要返回原 items 数据
             filter: function (items, result) {
                 return result && result.extra && $('[data-extra]').map(function () {
                     this.innerHTML = result.extra[this.dataset.extra] || 0;
