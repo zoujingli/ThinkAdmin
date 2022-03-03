@@ -317,24 +317,18 @@
         position: absolute;
         box-sizing: border-box;
 
-        > .layui-card-table {
-          padding: 15px;
-          box-sizing: border-box;
-
-          > form.layui-form {
-            box-shadow: @ShadowMaxOuter;
-          }
-        }
-
         > .layui-card-html {
           padding: 15px;
           min-width: 100%;
           position: absolute;
           box-sizing: border-box;
+          #bodyLayout();
+        }
 
-          > form.layui-form {
-            box-shadow: @ShadowMaxOuter;
-          }
+        > .layui-card-table {
+          padding: 15px;
+          box-sizing: border-box;
+          #bodyLayout();
         }
 
         > div > .layui-tab.layui-tab-card {
