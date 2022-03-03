@@ -103,7 +103,6 @@
 </form>
 
 <script>
-    layui.form.render();
     layui.form.on('select(SiteTheme)', function (data) {
         var alls = '', prox = 'layui-layout-theme-', curt = prox + data.value;
         $(data.elem.options).map(function () {

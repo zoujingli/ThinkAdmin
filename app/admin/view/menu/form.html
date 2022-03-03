@@ -78,7 +78,6 @@
 
 {block name='script'}
 <script>
-    layui.form.render();
     require(['jquery.autocompleter'], function () {
         $('[name="icon"]').on('change', function () {
             $(this).parent().next().find('i').get(0).className = this.value
