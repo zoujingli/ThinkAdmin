@@ -20,6 +20,7 @@
     right: 0;
     color: @TopHeaderTextColor !important;
     height: @TopHeaderHeight !important;
+    z-index: 222;
     position: absolute;
     box-sizing: content-box;
     background: @TopHeaderBackColor !important;
@@ -142,8 +143,10 @@
     top: 0;
     bottom: 0;
     width: @LayoutDefaLeftSzie;
+    z-index: 333;
     position: fixed;
     overflow: hidden;
+    box-shadow: @LeftMainRightShadow;
     background-color: @LeftMainBackColor;
 
     .layui-logo {
@@ -292,6 +295,7 @@
     top: @BodyMainTop;
     left: @LayoutDefaLeftSzie;
     padding: 0;
+    z-index: 111;
     background: @BodyMainBackColor;
     box-shadow: @ShadowDownInset;
 
