@@ -2,24 +2,25 @@
 
 {block name="button"}
 <!--{if auth("remove")}-->
-<button data-action='{:url("remove")}' data-rule="id#{id}" data-table-id="OplogData" data-confirm="确定要删除选中的日志吗？" class='layui-btn layui-btn-sm layui-btn-primary'>批量删除</button>
+<button data-table-id="OplogTable" data-action='{:url("remove")}' data-rule="id#{id}" data-confirm="确定要删除选中的日志吗？" class='layui-btn layui-btn-sm layui-btn-primary'>批量删除</button>
 <!--{/if}-->
+
 <!--{if auth("clear")}-->
-<button data-load='{:url("clear")}' data-table-id="OplogData" data-confirm="确定要清空所有日志吗？" class='layui-btn layui-btn-sm layui-btn-primary'>清空日志</button>
+<button data-table-id="OplogTable" data-load='{:url("clear")}' data-confirm="确定要清空所有日志吗？" class='layui-btn layui-btn-sm layui-btn-primary'>清空日志</button>
 <!--{/if}-->
 {/block}
 
 {block name="content"}
 <div class="think-box-shadow">
     {include file='oplog/index_search'}
-    <table id="OplogData" data-url="{:sysuri()}" data-target-search="form.form-search"></table>
+    <table id="OplogTable" data-url="{:sysuri()}" data-target-search="form.form-search"></table>
 </div>
 {/block}
 
 {block name='script'}
 <script>
     $(function () {
-        $('#OplogData').layTable({
+        $('#OplogTable').layTable({
             even: true, height: 'full',
             sort: {field: 'id', type: 'desc'},
             cols: [[

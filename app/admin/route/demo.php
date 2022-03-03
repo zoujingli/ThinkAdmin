@@ -58,5 +58,4 @@ invoke(function (App $app) {
             return json(['code' => 0, 'info' => '演示环境禁止修改用户密码！']);
         });
     }
-
 });

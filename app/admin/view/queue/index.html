@@ -15,7 +15,7 @@
 <!--{/if}-->
 
 <!--{if auth("remove")}-->
-<button data-action='{:url("remove")}' data-rule="id#{id}" data-table-id="QueueData" data-confirm="确定批量删除记录吗？" class='layui-btn layui-btn-sm layui-btn-primary'>批量删除</button>
+<button data-action='{:url("remove")}' data-rule="id#{id}" data-confirm="确定批量删除记录吗？" class='layui-btn layui-btn-sm layui-btn-primary'>批量删除</button>
 <!--{/if}-->
 {/block}
 
@@ -30,29 +30,29 @@
 </div>
 <div class="think-box-shadow">
     {include file='queue/index_search'}
-    <table id="QueueData" data-url="{:sysuri()}" data-target-search="form.form-search"></table>
+    <table id="QueueTable" data-url="{:sysuri()}" data-target-search="form.form-search"></table>
 </div>
 {/block}
 
 {block name='script'}
 <style>
-    #QueueData + div tbody .layui-table-cell {
+    #QueueTable + div tbody .layui-table-cell {
         height: 44px;
-        line-height: 22px;
+        line-height: 24px;
     }
 
-    #QueueData + div tbody .layui-table-cell .layui-btn {
+    #QueueTable + div tbody .layui-table-cell .layui-btn {
         margin-top: 8px;
     }
 
-    #QueueData + div tbody .layui-table-cell.laytable-cell-checkbox {
+    #QueueTable + div tbody .layui-table-cell.laytable-cell-checkbox {
         line-height: 44px;
     }
 </style>
 
 <script>
     $(function () {
-        $('#QueueData').layTable({
+        $('#QueueTable').layTable({
             height: 'full',
             even: true, sort: {field: 'loops_time desc,id', type: 'desc'},
             cols: [[
@@ -95,7 +95,7 @@
                         d.enter_time = d.enter_time || '', d.outer_time = d.outer_time || '0.0000';
                         if (d.enter_time.length > 12) {
                             d.html += d.enter_time.substring(12) + '<span class="color-desc"> ( 耗时 ' + d.outer_time + ' )</span>';
-                            d.html += '，已执行 <b>' + (d.attempts || 0) + '</b> 次';
+                            d.html += ' 已执行 <b class="color-blue">' + (d.attempts || 0) + '</b> 次';
                         } else {
                             d.html += '<span class="color-desc">任务未执行</span>'
                         }

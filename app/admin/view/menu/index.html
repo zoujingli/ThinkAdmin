@@ -6,11 +6,11 @@
 <!--{/if}-->
 
 <!--{if $type eq 'index' and auth("state")}-->
-<button data-action='{:url("state")}' data-csrf="{:systoken('state')}" data-rule="id#{key};status#0" class='layui-btn layui-btn-sm layui-btn-primary'>禁用菜单</button>
+<button data-action='{:url("state")}' data-rule="id#{key};status#0" class='layui-btn layui-btn-sm layui-btn-primary'>禁用菜单</button>
 <!--{/if}-->
 
 <!--{if $type eq 'recycle' and auth("state")}-->
-<button data-action='{:url("state")}' data-csrf="{:systoken('state')}" data-rule="id#{key};status#1" class='layui-btn layui-btn-sm layui-btn-primary'>激活菜单</button>
+<button data-action='{:url("state")}' data-rule="id#{key};status#1" class='layui-btn layui-btn-sm layui-btn-primary'>激活菜单</button>
 <!--{/if}-->
 {/block}
 
@@ -66,7 +66,7 @@
             var data = {id: obj.value, status: obj.elem.checked > 0 ? 1 : 0};
             if (data.status > 0) data.id += obj.elem.dataset.path.replace(/-/g, ',');
             $.form.load("{:url('state')}", data, 'post', function (ret) {
-                if (obj.value.indexOf(',') > -1) {
+                if (obj.value.split(',').length > 2) {
                     $('#MenuData').trigger('reload');
                 } else if (ret.code < 1) $.msg.error(ret.info, 3, function () {
                     $('#MenuData').trigger('reload');

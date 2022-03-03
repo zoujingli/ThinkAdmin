@@ -18,6 +18,7 @@ namespace app\admin\controller;
 
 use think\admin\Controller;
 use think\admin\extend\DataExtend;
+use think\admin\helper\QueryHelper;
 use think\admin\model\SystemMenu;
 use think\admin\service\AdminService;
 use think\admin\service\MenuService;
@@ -40,9 +41,12 @@ class Menu extends Controller
      */
     public function index()
     {
-        $this->title = '系统菜单管理';
         $this->type = input('get.type', 'index');
-        SystemMenu::mQuery()->order('sort desc,id asc')->layTable();//->page(false, true);
+        SystemMenu::mQuery()->layTable(function () {
+            $this->title = '系统菜单管理';
+        }, function (QueryHelper $query) {
+            $query->order('sort desc,id asc');
+        });
     }
 
     /**
@@ -68,7 +72,7 @@ class Menu extends Controller
             if ($vo['url'] !== '#' && !preg_match('/^(https?:)?(\/\/|\\\\)/i', $vo['url'])) {
                 $vo['url'] = trim(url($vo['url']) . ($vo['params'] ? "?{$vo['params']}" : ''), '\\/');
             }
-            $vo['ids'] = join(',', DataExtend::getArrSubIds($data, $vo['id']));
+            $vo['ids'] = arr2str(DataExtend::getArrSubIds($data, $vo['id']));
         }
     }
 

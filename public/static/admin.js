@@ -693,8 +693,7 @@ $(function () {
             option.done = function () {
                 layui.sessionData('pages', {key: table.id, value: this.page.curr || 1}), (table.loading = true);
                 $table.next().find('[data-load],[data-queue],[data-action],[data-iframe]').not('[data-table-id]').attr('data-table-id', table.id);
-            };
-            option.parseData = function (res) {
+            }, option.parseData = function (res) {
                 if (typeof params.filter === 'function') res.data = params.filter(res.data);
                 var maxp = Math.ceil(res.count / table.limit), curp = layui.sessionData('pages')[option.id] || 1;
                 if (curp > maxp && curp > 1) table.elem.trigger('reload', {page: {curr: maxp}});
@@ -703,14 +702,13 @@ $(function () {
             // 实例并绑定的对象
             $table.data('this', layui.table.render(bindData(option)));
             // 绑定实例重载事件
-            $table.bind('reload render', function (evt, opts) {
+            $table.bind('reload render reloadData', function (evt, opts) {
                 opts = opts || {}, opts.loading = true;
                 data = $.extend({}, data, opts.where || {});
-                if (evt.type === 'render') {
-                    layui.table.reload(table.id, bindData(opts || {}));
+                if (evt.type === 'render1' || evt.type === 'reloadData') {
+                    layui.table.reloadData(table.id, bindData(opts || {}));
                 } else {
                     layui.table.reload(table.id, bindData(opts || {}));
-                    // layui.table.reloadData(table.id, bindData(opts || {}));
                 }
             }).bind('row sort tool edit radio toolbar checkbox rowDouble', function (evt, call) {
                 layui.table.on(evt.type + '(' + table.dataset.id + ')', call)
