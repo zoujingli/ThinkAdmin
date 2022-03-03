@@ -80,7 +80,7 @@
 <script>
     (new function (type) {
         type = "{:sysconf('wechat.mch_ssl_type')}" || 'none';
-        layui.form.render(), layui.form.val('payment', {'wechat.mch_ssl_type': type});
+        layui.form.val('payment', {'wechat.mch_ssl_type': type});
         layui.form.on('radio(data-mch-type)', apply), apply.call(this, {value: type});
         ['wechat.mch_ssl_p12', 'wechat.mch_ssl_key', 'wechat.mch_ssl_cer'].forEach(function (type) {
             $('input[name="' + type + '"]').on('change', function (that) {

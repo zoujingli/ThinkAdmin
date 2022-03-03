@@ -26,8 +26,8 @@
 {block name='script'}
 <script>
     $(function () {
+        window.form.on('radio(wechat_type)', apply);
         apply({value: '{:sysconf("wechat.type")}' || 'api'});
-        window.form.render(), window.form.on('radio(wechat_type)', apply);
 
         function apply(data) {
             this.$active = $("[data-wechat-type='" + data.value + "']").trigger('click');
