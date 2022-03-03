@@ -38,7 +38,7 @@
 <style>
     #QueueTable + div tbody .layui-table-cell {
         height: 44px;
-        line-height: 24px;
+        line-height: 22px;
     }
 
     #QueueTable + div tbody .layui-table-cell .layui-btn {
@@ -84,17 +84,16 @@
                 },
                 {
                     field: 'loops_time', title: '执行状态', width: 400, templet: function (d) {
-                        d.html = [
-                            '<span class="layui-badge layui-badge-middle layui-bg-gray pull-left" style="width:2em">未知</span>',
-                            '<span class="layui-badge layui-badge-middle layui-bg-black pull-left" style="width:2em">等待</span>',
-                            '<span class="layui-badge layui-badge-middle layui-bg-blue pull-left" style="width:2em">执行</span>',
-                            '<span class="layui-badge layui-badge-middle layui-bg-green pull-left" style="width:2em">完成</span>',
-                            '<span class="layui-badge layui-badge-middle layui-bg-red pull-left" style="width:2em">失败</span>',
-                        ][d.status] || '';
-                        d.html += '执行时间：';
+                        d.html = ([
+                            '<span class="pull-left layui-badge layui-badge-middle layui-bg-gray">未知</span>',
+                            '<span class="pull-left layui-badge layui-badge-middle layui-bg-black">等待</span>',
+                            '<span class="pull-left layui-badge layui-badge-middle layui-bg-blue">执行</span>',
+                            '<span class="pull-left layui-badge layui-badge-middle layui-bg-green">完成</span>',
+                            '<span class="pull-left layui-badge layui-badge-middle layui-bg-red">失败</span>',
+                        ][d.status] || '') + '执行时间：';
                         d.enter_time = d.enter_time || '', d.outer_time = d.outer_time || '0.0000';
                         if (d.enter_time.length > 12) {
-                            d.html += d.enter_time.substring(12) + '<span class="color-desc"> ( 耗时 ' + d.outer_time + ' )</span>';
+                            d.html += d.enter_time.substring(12) + '<span class="color-desc"> ( 耗时 ' + d.outer_time + ' ) </span>';
                             d.html += ' 已执行 <b class="color-blue">' + (d.attempts || 0) + '</b> 次';
                         } else {
                             d.html += '<span class="color-desc">任务未执行</span>'
