@@ -1,8 +1,8 @@
 {extend name="../../admin/view/main"}
 
 {block name='content'}
-<form action="{:request()->url()}" autocomplete="off" class="layui-form layui-card" data-auto="true" method="post">
-    <div class="layui-card-body padding-40">
+<form action="{:sysuri()}" autocomplete="off" class="layui-form layui-card" data-auto="true" method="post">
+    <div class="layui-card-body">
 
         <label class="layui-form-item relative block">
             <span class="color-green font-w7">页面名称</span>
@@ -29,9 +29,8 @@
 </form>
 
 <script>
-    layui.form.render();
     require(['ckeditor'], function () {
-        window.createEditor('[name=content]', {height: 500});
+        window.createEditor('[name=content]', {height: 535});
     });
 </script>
 {/block}

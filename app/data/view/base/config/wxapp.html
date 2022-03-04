@@ -2,7 +2,7 @@
 
 {block name="content"}
 <div class="think-box-shadow">
-    <form action="{:request()->url()}" autocomplete="off" class="layui-form layui-card" data-auto="true" method="post" style="width:850px">
+    <form action="{:sysuri()}" autocomplete="off" class="layui-form layui-card" data-auto="true" method="post" style="width:850px">
         <div class="layui-card-header text-center margin-20 font-w7 color-text layui-bg-gray border-radius-5">
             {$title|default='小程序接口配置'}<span class="color-desc font-s12"> ( 微信公众号平台配置获取 )</span>
         </div>

@@ -1,8 +1,9 @@
 {extend name="../../admin/view/main"}
 
 {block name='content'}
-<form action="{:request()->url()}" autocomplete="off" class="layui-form layui-card" data-auto="true" method="post">
-    <div class="layui-card-body padding-40">
+<form action="{:sysuri()}" class="layui-form layui-card" data-auto="true" method="post">
+    <div class="layui-card-body">
+
         {notempty name='marks'}
         <div class="layui-form-item relative block">
             <span class="color-green font-w7 label-required-prev">文章标签</span>

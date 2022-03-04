@@ -1,4 +1,4 @@
-<style xmlns="http://www.w3.org/1999/html">
+<style>
     .payment-type td .layui-form-checkbox {
         margin: 0 !important;
         padding-left: 25px !important;
@@ -15,6 +15,7 @@
     .transfer-image .uploadimage {
         width: 35px;
         height: 35px;
+        margin: 0;
     }
 
     .transfer-image .uploadimage span.layui-icon {
@@ -22,12 +23,11 @@
     }
 </style>
 
-<form action="{:request()->url()}" autocomplete="off" class="layui-form layui-card" data-auto="true" method="post">
+<form action="{:sysuri()}" class="layui-form layui-card" data-auto="true" method="post">
     <div class="layui-card-body padding-left-40">
 
         <div class="layui-form-item relative block">
-            <span class="color-green font-w7 label-required-prev">用户提现状态</span>
-            <span class="color-desc margin-left-5">Transfer Status</span>
+            <span class="help-label"><b>用户提现状态</b>Transfer Status</span>
             <div class="layui-textarea" style="min-height:auto;padding:10px 0 13px 18px">
                 {php} $data['status'] = $data['status'] ?? 0; {/php}
                 {foreach ['关闭返利提现', '开启返利提现'] as $k => $v}
@@ -52,19 +52,19 @@
             <table class="layui-table payment-type" lay-skin="nob">
                 <thead>
                 <tr>
-                    <th class="text-center notselect nowrap padding-col-5"><b>提现转账方式</b></th>
-                    <td class="text-center notselect nowrap padding-col-5"><b>是否需要审核</b></td>
-                    <td class="text-center notselect nowrap padding-col-5"><b>图 标</b></td>
-                    <td class="text-center notselect nowrap padding-col-5"><b>单笔最小金额（ 元 ）</b></td>
+                    <th class="text-center notselect nowrap"><b>提现转账方式</b></th>
+                    <td class="text-center notselect nowrap"><b>是否需要审核</b></td>
+                    <td class="text-center notselect nowrap"><b>图 标</b></td>
+                    <td class="text-center notselect nowrap"><b>单笔最小金额（ 元 ）</b></td>
                     <td class="padding-col-0"></td>
-                    <td class="text-center notselect nowrap padding-col-5"><b>单笔最大金额（ 元 ）</b></td>
-                    <td class="text-center notselect nowrap padding-col-5"><b>每日限提现次数</b></td>
+                    <td class="text-center notselect nowrap"><b>单笔最大金额（ 元 ）</b></td>
+                    <td class="text-center notselect nowrap"><b>每日限提现次数</b></td>
                 </tr>
                 </thead>
                 <tbody>
                 {foreach $types as $k => $t}
                 <tr class="think-bg-white">
-                    <td class="nowrap padding-col-5">
+                    <td class="nowrap">
                         {php} $key = 'transfer['.$k.']["state"]'; {/php}
                         <input name="{$key}" type="hidden" value="0">
                         {if isset($data['transfer'][$k]['state']) and $data['transfer'][$k]['state'] eq 1}
@@ -73,7 +73,7 @@
                         <input lay-skin="primary" name="{$key}" title="{$t}" type="checkbox" value="1">
                         {/if}
                     </td>
-                    <td class="text-center padding-col-5" style="width:80px">
+                    <td class="text-center" style="width:80px">
                         {php} $key = 'transfer['.$k.']["audit"]'; {/php}
                         <input name="{$key}" type="hidden" value="0">
                         {if isset($data['transfer'][$k]['audit']) and $data['transfer'][$k]['audit'] eq 1}
@@ -89,20 +89,20 @@
                         <input name="{$key}" type="hidden" value="{$data['transfer'][$k]['image'] ?? ''}">
                         <script>$("[name='{$key}']").uploadOneImage()</script>
                     </td>
-                    <td class="text-center padding-col-5">
+                    <td class="text-center">
                         <label>
                             {php} $key = 'transfer['.$k.'][minAmount]'; {/php}
                             <input class="layui-input" data-blur-number="2" data-value-min="0.00" name="{$key}" placeholder="￥" value="{$data['transfer'][$k]['minAmount'] ?? '1.00'}">
                         </label>
                     </td>
-                    <td class="text-center padding-col-5">-</td>
-                    <td class="text-center padding-col-5">
+                    <td class="text-center">-</td>
+                    <td class="text-center">
                         <label>
                             {php} $key = 'transfer['.$k.'][maxAmount]'; {/php}
                             <input class="layui-input" data-blur-number="2" data-value-max="100000.00" name="{$key}" placeholder="￥" value="{$data['transfer'][$k]['maxAmount'] ?? '2000.00'}">
                         </label>
                     </td>
-                    <td class="text-center padding-col-5">
+                    <td class="text-center">
                         <label>
                             {php} $key = 'transfer['.$k.'][dayNumber]'; {/php}
                             <input class="layui-input text-center padding-left-0" data-blur-number="0" data-value-max="100" data-value-min="1" name="{$key}" value="{$data['transfer'][$k]['dayNumber'] ?? '1'}">
@@ -130,6 +130,4 @@
         <button class="layui-btn" type='submit'>保存数据</button>
         <button class="layui-btn layui-btn-danger" data-close data-confirm="确定要取消编辑吗？" type='button'>取消编辑</button>
     </div>
-
-    <script>layui.form.render();</script>
 </form>

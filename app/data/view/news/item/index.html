@@ -43,7 +43,7 @@
                 <label><input class="list-check-box" type='checkbox' value='{$vo.id}'></label>
             </td>
             <td class='list-table-sort-td'>
-                <label><input class="list-sort-input" data-action-blur="{:request()->url()}" data-loading="false" data-value="id#{$vo.id};action#sort;sort#{value}" value="{$vo.sort}"></label>
+                <label><input class="list-sort-input" data-action-blur="{:sysuri()}" data-loading="false" data-value="id#{$vo.id};action#sort;sort#{value}" value="{$vo.sort}"></label>
             </td>
             <td class="text-left nowrap">{$vo.code|default=''}</td>
             <td class="text-left nowrap">{$vo.name|default=''}</td>

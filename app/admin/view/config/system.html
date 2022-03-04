@@ -34,7 +34,6 @@
             <div class="help-label"><b>登录背景图片</b>Background Image</div>
             <div class="layui-textarea help-images">
                 <input type="hidden" value="{:sysconf('login_image')}" name="login_image">
-                <script>$('[name=login_image]').uploadMultipleImage();</script>
             </div>
         </div>
 
@@ -103,6 +102,7 @@
 </form>
 
 <script>
+    $('[name=login_image]').uploadMultipleImage();
     layui.form.on('select(SiteTheme)', function (data) {
         var alls = '', prox = 'layui-layout-theme-', curt = prox + data.value;
         $(data.elem.options).map(function () {

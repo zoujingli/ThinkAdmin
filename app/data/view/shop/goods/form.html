@@ -68,15 +68,15 @@
             <table class="layui-table">
                 <thead>
                 <tr>
-                    <th class="text-center" style="width:90px">商品封面</th>
-                    <th class="text-left" style="width:auto">轮播图片</th>
+                    <th class="text-center">封面</th>
+                    <th class="text-left" style="width:100%">轮播图片</th>
                 </tr>
                 <tr>
-                    <td class="text-center">
+                    <td class="text-center help-images text-top">
                         <input name="cover" type="hidden" value="{$vo.cover|default=''}">
                         <script>$('[name="cover"]').uploadOneImage();</script>
                     </td>
-                    <td class="text-left">
+                    <td class="text-left help-images">
                         <input name="slider" type="hidden" value="{$vo.slider|default=''}">
                         <script>$('[name="slider"]').uploadMultipleImage();</script>
                     </td>

@@ -147,8 +147,26 @@
   color: #999 !important;
 
   b {
-    margin-right: 5px;
     color: #090 !important;
+    margin-right: 5px !important;
+  }
+}
+
+.help-images {
+  color: #333;
+  padding: 10px 0 0 10px !important;
+  min-height: unset;
+  background: linear-gradient(-113deg, #EEEEEE, #EEEEEE) !important;
+
+  &:after {
+    clear: left;
+    content: '';
+    display: block;
+  }
+
+  > * {
+    float: left;
+    margin: 0 10px 10px 0;
   }
 }
 
@@ -627,7 +645,6 @@
   display: inline-block;
   position: relative;
   overflow: hidden;
-  margin-right: 10px;
   border-radius: 3px;
   box-shadow: @ShadowMinOuter;
   background: url('../img/upimg.png') no-repeat center center;
@@ -663,6 +680,8 @@
 }
 
 .uploadimagemtl {
+  margin-right: 10px;
+
   > div {
     right: 0;
     display: none;
