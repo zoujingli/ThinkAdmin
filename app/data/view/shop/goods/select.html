@@ -40,7 +40,6 @@
 
 {block name='script'}
 <script>
-    layui.form.render();
     $('[data-item]').on('click', function () {
         top.setItemValue(this.getAttribute('data-item') || '');
         parent.layer.close(parent.layer.getFrameIndex(window.name));

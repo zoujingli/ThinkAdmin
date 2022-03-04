@@ -32,8 +32,7 @@
 {block name='script'}
 <script>
     $(function () {
-        $.form.reInit(), layui.form.render();
-        $('[data-item]').on('click', function () {
+        $.form.reInit(), $('[data-item]').on('click', function () {
             top.setItemValue(this.getAttribute('data-item') || '');
             parent.layer.close(parent.layer.getFrameIndex(window.name));
         });

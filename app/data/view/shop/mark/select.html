@@ -29,7 +29,6 @@
 {block name='script'}
 <script>
     $(function () {
-        layui.form.render();
         $('[data-article]').on('click', function () {
             if (top.setItemValue) top.setItemValue(this.getAttribute('data-item') || '');
             parent.layer.close(parent.layer.getFrameIndex(window.name));

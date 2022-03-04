@@ -164,7 +164,7 @@
     <script>
 
         (function ($ele) {
-            form.render(), form.on('select(number)', apply);
+            layui.form.on('select(number)', apply);
             apply({value: parseInt("{$vo.number|default='0'}")});
 
             function apply(data) {

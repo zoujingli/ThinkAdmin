@@ -299,9 +299,6 @@
 </label>
 
 <script>
-    /*! 表单初始化 */
-    window.form.render();
-
     /*! 入会礼包切换 */
     window.form.on('radio(vip_entry)', setVipEntry);
     setVipEntry({value: ('{$vo.vip_entry|default="0"}')});
