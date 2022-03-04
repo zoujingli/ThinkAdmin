@@ -25,13 +25,13 @@
         {/if}{/foreach}
     </ul>
     <div class="layui-tab-content">
-        <table id="MenuData" data-url="{:sysuri()}" data-target-search="form.form-search"></table>
+        <table id="MenuTable" data-url="{:sysuri()}" data-target-search="form.form-search"></table>
     </div>
 </div>
 
 <script>
     $(function () {
-        $('#MenuData').layTable({
+        $('#MenuTable').layTable({
             even: true, height: 'full', page: false,
             sort: {field: 'sort desc,id', type: 'asc'},
             where: {type: '{$type|default="index"}'},
@@ -43,9 +43,9 @@
             },
             cols: [[
                 {checkbox: true, field: 'sps'},
-                {field: 'sort', title: '排序权重', width: 100, align: 'center', sort: true, templet: '#SortInputTpl'},
+                {field: 'sort', title: '排序权重', width: 100, align: 'center', templet: '#SortInputTpl'},
                 {
-                    field: 'icon', title: '图标', width: 80, align: 'center', templet: function (d) {
+                    field: 'icon', title: '图 标', width: 80, align: 'center', templet: function (d) {
                         return layui.laytpl('<i class="{{d.icon}} font-s18"></i>').render(d);
                     }
                 },
@@ -67,9 +67,9 @@
             if (data.status > 0) data.id += obj.elem.dataset.path.replace(/-/g, ',');
             $.form.load("{:url('state')}", data, 'post', function (ret) {
                 if (ret.code < 1) $.msg.error(ret.info, 3, function () {
-                    $('#MenuData').trigger('reload');
+                    $('#MenuTable').trigger('reload');
                 }); else if (obj.value.split(',').length > 2) {
-                    $('#MenuData').trigger('reload');
+                    $('#MenuTable').trigger('reload');
                 }
                 return false;
             }, false);

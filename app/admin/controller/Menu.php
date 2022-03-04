@@ -41,12 +41,9 @@ class Menu extends Controller
      */
     public function index()
     {
+        $this->title = '系统菜单管理';
         $this->type = input('get.type', 'index');
-        SystemMenu::mQuery()->layTable(function () {
-            $this->title = '系统菜单管理';
-        }, function (QueryHelper $query) {
-            $query->order('sort desc,id asc');
-        });
+        SystemMenu::mQuery()->layTable();
     }
 
     /**

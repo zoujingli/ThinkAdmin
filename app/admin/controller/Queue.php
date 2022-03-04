@@ -45,7 +45,6 @@ class Queue extends Controller
         SystemQueue::mQuery()->layTable(function () {
             $this->title = '系统任务管理';
             $this->iswin = ProcessService::instance()->iswin();
-            // 超级管理面板
             if ($this->super = AdminService::instance()->isSuper()) {
                 $process = ProcessService::instance();
                 if ($process->iswin() || empty($_SERVER['USER'])) {
