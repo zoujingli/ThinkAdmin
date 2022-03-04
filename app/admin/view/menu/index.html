@@ -66,11 +66,11 @@
             var data = {id: obj.value, status: obj.elem.checked > 0 ? 1 : 0};
             if (data.status > 0) data.id += obj.elem.dataset.path.replace(/-/g, ',');
             $.form.load("{:url('state')}", data, 'post', function (ret) {
-                if (obj.value.split(',').length > 2) {
+                if (ret.code < 1) $.msg.error(ret.info, 3, function () {
                     $('#MenuData').trigger('reload');
-                } else if (ret.code < 1) $.msg.error(ret.info, 3, function () {
+                }); else if (obj.value.split(',').length > 2) {
                     $('#MenuData').trigger('reload');
-                });
+                }
                 return false;
             }, false);
         });
