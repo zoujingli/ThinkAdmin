@@ -1027,7 +1027,7 @@ $(function () {
 
     /*! 注册 data-tips-image 事件行为 */
     onEvent('click', '[data-tips-image]', function () {
-        $.previewImage(this.dataset.tipsImage || this.dataset.lazySrc || this.src, this.dataset.with);
+        $.previewImage(this.dataset.tipsImage || this.dataset.lazySrc || this.src, this.dataset.width);
     });
 
     /*! 注册 data-phone-view 事件行为 */
