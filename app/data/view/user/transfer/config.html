@@ -28,11 +28,11 @@
 
         <div class="layui-form-item relative block">
             <span class="help-label"><b>用户提现状态</b>Transfer Status</span>
-            <div class="layui-textarea" style="min-height:auto;padding:10px 0 13px 18px">
+            <div class="layui-textarea" style="min-height:unset">
                 {php} $data['status'] = $data['status'] ?? 0; {/php}
                 {foreach ['关闭返利提现', '开启返利提现'] as $k => $v}
                 {if $data.status eq $k}
-                <input checked class="layui-input layui-bg-gray" name="status" title="{$v}" type="radio" value="{$k}">
+                <input checked class="layui-input layui-bg-gray" name="status" title="{$v}" type="checkbox" value="{$k}">
                 {else}
                 <input class="layui-input layui-bg-gray" name="status" title="{$v}" type="radio" value="{$k}">
                 {/if}{/foreach}
@@ -52,7 +52,7 @@
             <table class="layui-table payment-type" lay-skin="nob">
                 <thead>
                 <tr>
-                    <th class="text-center notselect nowrap"><b>提现转账方式</b></th>
+                    <th class="notselect nowrap"><b>提现转账方式</b></th>
                     <td class="text-center notselect nowrap"><b>是否需要审核</b></td>
                     <td class="text-center notselect nowrap"><b>图 标</b></td>
                     <td class="text-center notselect nowrap"><b>单笔最小金额（ 元 ）</b></td>
@@ -92,20 +92,20 @@
                     <td class="text-center">
                         <label>
                             {php} $key = 'transfer['.$k.'][minAmount]'; {/php}
-                            <input class="layui-input" data-blur-number="2" data-value-min="0.00" name="{$key}" placeholder="￥" value="{$data['transfer'][$k]['minAmount'] ?? '1.00'}">
+                            <input type="number" min="0" data-blur-number="2" data-value-min="0.00" class="layui-input text-center" name="{$key}" placeholder="￥" value="{$data['transfer'][$k]['minAmount'] ?? '1.00'}">
                         </label>
                     </td>
                     <td class="text-center">-</td>
                     <td class="text-center">
                         <label>
                             {php} $key = 'transfer['.$k.'][maxAmount]'; {/php}
-                            <input class="layui-input" data-blur-number="2" data-value-max="100000.00" name="{$key}" placeholder="￥" value="{$data['transfer'][$k]['maxAmount'] ?? '2000.00'}">
+                            <input type="number" min="1" data-blur-number="2" data-value-max="100000.00" class="layui-input text-center" name="{$key}" placeholder="￥" value="{$data['transfer'][$k]['maxAmount'] ?? '2000.00'}">
                         </label>
                     </td>
                     <td class="text-center">
                         <label>
                             {php} $key = 'transfer['.$k.'][dayNumber]'; {/php}
-                            <input class="layui-input text-center padding-left-0" data-blur-number="0" data-value-max="100" data-value-min="1" name="{$key}" value="{$data['transfer'][$k]['dayNumber'] ?? '1'}">
+                            <input type="number" min="1" data-blur-number="0" data-value-min="1" data-value-max="100" class="layui-input text-center" name="{$key}" value="{$data['transfer'][$k]['dayNumber'] ?? '1'}">
                         </label>
                     </td>
                 </tr>

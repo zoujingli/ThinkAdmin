@@ -34,6 +34,7 @@ class Message extends Controller
      */
     public function add()
     {
+        $this->title = '添加系统通知';
         BaseUserMessage::mForm('form');
     }
 
@@ -43,6 +44,7 @@ class Message extends Controller
      */
     public function edit()
     {
+        $this->title = '编辑系统通知';
         BaseUserMessage::mForm('form');
     }
 
