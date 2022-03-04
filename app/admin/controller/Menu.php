@@ -72,7 +72,6 @@ class Menu extends Controller
             if ($vo['url'] !== '#' && !preg_match('/^(https?:)?(\/\/|\\\\)/i', $vo['url'])) {
                 $vo['url'] = trim(url($vo['url']) . ($vo['params'] ? "?{$vo['params']}" : ''), '\\/');
             }
-            $vo['ids'] = arr2str(DataExtend::getArrSubIds($data, $vo['id']));
         }
     }
 

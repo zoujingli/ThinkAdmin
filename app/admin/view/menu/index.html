@@ -42,7 +42,7 @@
                 });
             },
             cols: [[
-                {checkbox: true, field: 'ids'},
+                {checkbox: true, field: 'sps'},
                 {field: 'sort', title: '排序权重', width: 100, align: 'center', sort: true, templet: '#SortInputTpl'},
                 {
                     field: 'icon', title: '图标', width: 80, align: 'center', templet: function (d) {
@@ -81,7 +81,7 @@
 <script type="text/html" id="StatusSwitchTpl">
     <!--{if auth("state")}-->
     {{# if( "{$type|default='index'}"==='index' || (d.spc<1 || d.status<1)){ }}
-    <input type="checkbox" value="{{d.ids}}" data-path="{{d.path}}" lay-skin="switch" lay-text="已激活|已禁用" lay-filter="StatusSwitch" {{d.status>0?'checked':''}}>
+    <input type="checkbox" value="{{d.sps}}" data-path="{{d.path}}" lay-skin="switch" lay-text="已激活|已禁用" lay-filter="StatusSwitch" {{d.status>0?'checked':''}}>
     {{# }else{ }}
     {{d.status ? '<b class="color-green">已激活</b>' : '<b class="color-red">已禁用</b>'}}
     {{# } }}
@@ -113,7 +113,7 @@
     {if auth('remove')}
 
     {{# if( (d.spc<1 || d.status<1)){ }}
-    <a class="layui-btn layui-btn-sm layui-btn-danger" data-confirm="确定要删除菜单吗？" data-action="{:url('remove')}" data-value="id#{{d.ids}}">删 除</a>
+    <a class="layui-btn layui-btn-sm layui-btn-danger" data-confirm="确定要删除菜单吗？" data-action="{:url('remove')}" data-value="id#{{d.sps}}">删 除</a>
 
     {{# }else{ }}
     <a class="layui-btn layui-btn-disabled layui-btn-sm">删 除</a>
