@@ -8,7 +8,7 @@
         <!--{notempty name='marks'}-->
         <div class="layui-form-item relative block">
             <span class="help-label label-required-prev"><b>商品标签</b>Mark Name</span>
-            <div class="layui-textarea" style="min-height:unset">
+            <div class="layui-textarea help-checks">
                 {foreach $marks as $mark}{if isset($vo.marks) && is_array($vo.marks) && in_array($mark, $vo.marks)}
                 <input checked name="marks[]" title="{$mark}" type="checkbox" value="{$mark}">
                 {else}
@@ -34,7 +34,7 @@
         <!--{notempty name='payments'}-->
         <div class="layui-form-item relative block">
             <span class="help-label label-required-prev"><b>支付方式</b>Goods Payment</span>
-            <div class="layui-textarea padding-bottom-10" style="min-height:unset">
+            <div class="layui-textarea help-checks">
                 {foreach $payments as $payment}{if isset($vo.payment) && is_array($vo.payment) && in_array($payment.code, $vo.payment)}
                 <input checked name="payment[]" title="{$payment.name}" type="checkbox" value="{$payment.code}">
                 {else}

@@ -255,11 +255,20 @@
   }
 }
 
+.help-checks:not(td) {
+  padding: 10px 0 10px 10px;
+  min-height: unset;
+  border-radius: @BoxBorderRadius;
+  // background: linear-gradient(-113deg, #EEEEEE, #EEEEEE) !important;
+  #flex();
+  #flexWrap(wrap);
+}
+
 .help-images:not(td) {
-  color: #333;
   padding: 10px 0 0 10px !important;
   min-height: unset;
-  background: linear-gradient(-113deg, #EEEEEE, #EEEEEE) !important;
+  border-radius: @BoxBorderRadius;
+  // background: linear-gradient(-113deg, #EEEEEE, #EEEEEE) !important;
 
   #flex();
   #flexWrap(wrap);
@@ -1177,6 +1186,10 @@ label.think-checkbox {
   &red {
     color: #FFF;
     background: linear-gradient(-125deg, #ff7d7d, #fb2c95) !important
+  }
+
+  &none {
+    background: none !important;
   }
 
   &gray {

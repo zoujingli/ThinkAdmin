@@ -37,7 +37,7 @@
             {if !empty($bases)}
             <div class="layui-form-item">
                 <div class="help-label"><b>角色身份</b>Role Identity</div>
-                <div class="layui-textarea" style="min-height:auto">
+                <div class="layui-textarea help-checks">
                     {foreach $bases as $base}
                     <label class="think-checkbox">
                         {if isset($vo.usertype) and $vo.usertype eq $base.code}
@@ -53,9 +53,9 @@
             {if !empty($authorizes)}
             <div class="layui-form-item">
                 <div class="help-label"><b>访问权限</b>Role Permission</div>
-                <div class="layui-textarea" style="min-height:auto">
+                <div class="layui-textarea help-checks">
                     {if isset($vo.username) and $vo.username eq $superName}
-                    <span class="color-desc">超级用户拥所有访问权限，不需要配置权限。</span>
+                    <span class="color-desc padding-left-5">超级用户拥所有访问权限，不需要配置权限。</span>
                     {else}{foreach $authorizes as $authorize}
                     <label class="think-checkbox">
                         {if in_array($authorize.id, $vo.authorize)}
