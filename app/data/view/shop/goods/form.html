@@ -8,7 +8,7 @@
         <!--{notempty name='marks'}-->
         <div class="layui-form-item relative block">
             <span class="help-label label-required-prev"><b>商品标签</b>Mark Name</span>
-            <div class="layui-textarea padding-bottom-10" style="min-height:unset">
+            <div class="layui-textarea" style="min-height:unset">
                 {foreach $marks as $mark}{if isset($vo.marks) && is_array($vo.marks) && in_array($mark, $vo.marks)}
                 <input checked name="marks[]" title="{$mark}" type="checkbox" value="{$mark}">
                 {else}
@@ -94,7 +94,7 @@
             <div class="layui-clear">
                 <fieldset>
                     <legend><span class="layui-badge think-bg-violet">商品返利配置</span></legend>
-                    <div class="layui-form-item">
+                    <div>
                         {foreach ['非返利商品，其代理不会获得奖励','是返利商品，其代理将会获得奖励'] as $k => $v}
                         {if (isset($vo.rebate_type) and $vo.rebate_type eq $k) or (empty($vo.rebate_type) and $k eq 0)}
                         <input checked name="rebate_type" title="{$v}" type="radio" value="{$k}">
@@ -105,7 +105,7 @@
                 </fieldset>
                 <fieldset>
                     <legend><span class="layui-badge think-bg-violet">入会礼包配置</span></legend>
-                    <div class="layui-form-item">
+                    <div>
                         {foreach ['非入会礼包，购买后不会升级等级','是入会礼包，购买后升级会员等级'] as $k=>$v}
                         {if (isset($vo.vip_entry) and $vo.vip_entry eq $k) or (empty($vo.vip_entry) and $k eq 0)}
                         <input checked lay-filter="vip_entry" name="vip_entry" title="{$v}" type="radio" value="{$k}">
@@ -117,7 +117,7 @@
                 <!--{notempty name='upgrades'}-->
                 <fieldset>
                     <legend><span class="layui-badge think-bg-violet">升级用户等级</span></legend>
-                    <label class="layui-form-item">
+                    <label>
                         <select class="layui-select" lay-filter="vip_upgrade" name="vip_upgrade">
                             {foreach $upgrades as $upgrade}{if isset($vo.vip_upgrade) and $vo.vip_upgrade eq $upgrade.number}
                             <option selected value="{$upgrade.number|default=0}">[ {$upgrade.number|default='0'} ] {$upgrade.name|default=''}</option>
@@ -131,7 +131,7 @@
                 <!--{/notempty}-->
                 <fieldset>
                     <legend><span class="layui-badge think-bg-violet">物流配送发货类型</span></legend>
-                    <div class="layui-form-item">
+                    <div>
                         {foreach ['虚拟商品，无需物流配送','实物商品，需要物流配送'] as $k=>$v}
                         {if (isset($vo.truck_type) and $vo.truck_type eq $k) or (empty($vo.truck_type) and $k eq 0)}
                         <input checked name="truck_type" title="{$v}" type="radio" value="{$k}">
@@ -143,7 +143,7 @@
                 <!--{notempty name='discounts'}-->
                 <fieldset>
                     <legend><span class="layui-badge think-bg-violet">用户购买折扣方案</span></legend>
-                    <label class="layui-form-item">
+                    <label>
                         <select class="layui-select" lay-search name="discount_id">
                             <option value="0"> -- 不设置 --</option>
                             {foreach $discounts as $discount}{if isset($vo.discount_id) and $vo.discount_id eq $discount.id}
@@ -159,7 +159,7 @@
                 <!--{notempty name='upgrades'}-->
                 <fieldset>
                     <legend><span class="layui-badge think-bg-violet">限制最低购买等级</span></legend>
-                    <label class="layui-form-item">
+                    <label>
                         <select class="layui-select" name="limit_low_vip">
                             <option value="0"> -- 不设置 --</option>
                             {foreach $upgrades as $upgrade}{if isset($vo.limit_low_vip) and $vo.limit_low_vip eq $upgrade.number}
@@ -174,8 +174,8 @@
                 <!--{/notempty}-->
                 <fieldset>
                     <legend><span class="layui-badge think-bg-violet">商品限购数量</span></legend>
-                    <label class="layui-form-item">
-                        <input class="layui-input" data-blur-number="0" name="limit_max_num" placeholder="请输入商品限购数量" value="{$vo.limit_max_num|default=0}">
+                    <label>
+                        <input class="layui-input" type="number" min="0" data-blur-number="0" name="limit_max_num" placeholder="请输入商品限购数量" value="{$vo.limit_max_num|default=0}">
                         <span class="help-block">限制每人可购买数量（为 0 时不限制）！</span>
                     </label>
                 </fieldset>
