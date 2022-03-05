@@ -17,7 +17,6 @@
       .layui-side-scroll {
         display: flex !important;
         box-sizing: border-box;
-        border-right: @TopHeaderBottomLine;
 
         .layui-nav-child {
           background: none !important;
@@ -86,10 +85,22 @@
     }
 
     > .layui-body {
-      > .think-page-body > .layui-card > .layui-card-header {
-        box-sizing: border-box;
-        box-shadow: none !important;
-        border-bottom: @TopHeaderBottomLine;
+      > .think-page-body > .layui-card {
+        &:before {
+          top: 0;
+          left: 0;
+          bottom: 0;
+          z-index: 4;
+          content: '';
+          position: absolute;
+          box-shadow: @ShadowBodyRight;
+        }
+
+        > .layui-card-header {
+          box-sizing: border-box;
+          box-shadow: none !important;
+          border-left: @BoxBottomLine;
+        }
       }
     }
 

@@ -24,7 +24,6 @@
     position: absolute;
     box-sizing: content-box;
     background: @TopHeaderBackColor !important;
-    border-bottom: @TopHeaderBottomLine !important;
 
     > ul.layui-nav {
       margin: 0;
@@ -146,7 +145,7 @@
     z-index: 333;
     position: fixed;
     overflow: hidden;
-    box-shadow: @ShadowMainRight;
+    box-shadow: @ShadowBodyLeft;
     background-color: @LeftMainBackColor;
 
     .layui-logo {
@@ -159,7 +158,7 @@
       text-align: center;
       box-shadow: none !important;
       line-height: @TopHeaderHeight;
-      border-bottom: @TopHeaderBottomLine;
+      border-bottom: @BoxBottomLine;
 
       .headimg {
         margin: 0 10px 0 0;
@@ -167,6 +166,7 @@
 
       .headtxt {
         font-size: 18px;
+        font-weight: bold;
 
         sup {
           font-size: 9px;
@@ -296,7 +296,7 @@
     left: @LayoutDefaLeftSzie;
     padding: 0;
     z-index: 111;
-    box-shadow: @ShadowBodyInset1;
+    overflow: hidden;
     background: @BodyMainBackColor;
 
 
@@ -317,7 +317,6 @@
         overflow: auto;
         position: absolute;
         box-sizing: border-box;
-        box-shadow: @ShadowBodyInset2;
 
         > .layui-card-html {
           padding: 15px;
@@ -335,7 +334,7 @@
 
         > div > .layui-tab.layui-tab-card {
           border: none;
-          box-shadow: @ShadowMaxOuter;
+          box-shadow: @ShadowOuterMax;
 
           & > .layui-tab-content.think-box-shadow {
             box-shadow: none;
@@ -343,20 +342,35 @@
         }
       }
 
+      > .layui-card-line {
+        top: 0;
+        left: 0;
+        right: 0;
+        z-index: 3;
+        position: absolute;
+        box-shadow: @ShadowBodyTop;
+      }
+
       > .layui-card-header {
         top: @BodyMainTop;
         left: @LayoutDefaLeftSzie;
+        border-top: @BoxBottomLine;
+        border-bottom-width: 0 !important;
+
         right: 0;
         height: 45px;
-        border: none;
-        z-index: 3;
+        z-index: 4;
         padding: 0 15px;
         position: fixed;
         background: #FFF;
         line-height: 45px;
 
-        & + .layui-card-body {
-          top: 45px;
+        & + .layui-card-line {
+          top: 46px;
+
+          & + .layui-card-body {
+            top: 46px;
+          }
         }
       }
     }

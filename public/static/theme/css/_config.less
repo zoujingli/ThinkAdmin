@@ -14,6 +14,7 @@
 // +----------------------------------------------------------------------
 
 // 默认盒边框样式
+@BoxBottomLine: 1px solid rgba(0, 0, 0, 0.10);
 @BoxBorderColor: #EEE;
 @BoxBorderRadius: 3px;
 
@@ -23,17 +24,16 @@
 @InputBorderActiveColor: #DDD;
 
 // 基础阴影配置
-@ShadowMinOuter: 0 0 4px 0 rgba(0, 0, 0, 0.20);
-@ShadowMaxOuter: 0 0 6px 0 rgba(0, 0, 0, 0.20);
-@ShadowMainRight: 2px 0 6px rgba(0, 21, 41, .35);
-@ShadowMaxInset: 0 1px 20px 0 rgba(0, 0, 0, 0.10) inset;
-@ShadowBodyInset1: 1px 1px 6px 0 rgba(0, 0, 0, 0.10) inset;
-@ShadowBodyInset2: 1px 1px 6px 2px rgba(0, 0, 0, 0.10) inset;
+@ShadowOuterMin: 0 0 4px 0 rgba(0, 0, 0, 0.20);
+@ShadowOuterMax: 0 0 6px 0 rgba(0, 0, 0, 0.20);
+@ShadowBodyTop: 0 2px 6px 2px rgba(0, 21, 41, 0.35);
+@ShadowBodyLeft: 1px 0 6px 2px rgba(0, 21, 41, 0.35);
+@ShadowBodyRight: 0 1px 6px 2px rgba(0, 21, 41, 0.35);
+@ShadowInset: 0 1px 20px 0 rgba(0, 0, 0, 0.10) inset;
 
 // 导航条颜色配置
 @TopHeaderTextColor: #333;
 @TopHeaderBackColor: #FFF;
-@TopHeaderBottomLine: 1px solid rgba(0, 0, 0, 0.10);
 @TopHeaderNavNormalTextColor: @TopHeaderTextColor;
 @TopHeaderNavNormalBackColor: @TopHeaderBackColor;
 
@@ -60,7 +60,7 @@
 @LoadBackColor: #EFEFEF;
 
 // 窗口页面背景颜色
-@BodyMainTop: 51px;
+@BodyMainTop: 50px;
 @BodyMainBackColor: #EFEFEF;
 
 // 左侧菜单大小
@@ -98,7 +98,7 @@
 #bodyLayout() {
   > form.layui-form.layui-card {
     margin: 0;
-    box-shadow: @ShadowMaxOuter;
+    box-shadow: @ShadowOuterMax;
 
     > .layui-card-body {
       padding: 40px 40px 10px 40px;

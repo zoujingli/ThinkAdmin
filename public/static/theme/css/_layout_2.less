@@ -6,8 +6,7 @@
     background-color: @mainColor;
 
     .layui-logo {
-      box-shadow: none;
-      font-weight: bold;
+      z-index: 3;
     }
 
     .layui-side-target {
@@ -110,16 +109,27 @@
   > .layui-body {
     left: 260px;
 
-    > .think-page-body > .layui-card > .layui-card-header {
-      left: 261px;
-      box-sizing: border-box;
-      border-bottom: unset;
+    > .think-page-body > .layui-card {
+      &:before {
+        top: 0;
+        left: 0;
+        bottom: 0;
+        z-index: 4;
+        content: '';
+        position: absolute;
+        box-shadow: @ShadowBodyRight;
+      }
+
+      > .layui-card-header {
+        left: 261px;
+        box-sizing: border-box;
+        border-bottom: unset;
+      }
     }
   }
 
   > .layui-header {
     left: 260px;
-
     background-color: @mainColor;
 
     .layui-layout-left {
