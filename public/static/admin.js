@@ -181,6 +181,8 @@ $(function () {
             this.$main = $('.think-page-body+.think-page-loader');
             this.stat = function () {
                 return this.$body.is(':visible');
+            }, this.done = function () {
+                that.page.$body.fadeOut();
             }, this.show = function () {
                 this.stat() || this.$main.removeClass('layui-hide').show();
             }, this.hide = function () {
@@ -293,6 +295,7 @@ $(function () {
                     if (typeof callable === 'function' && callable.call(that, ret) === false) return false;
                     return typeof ret === 'object' ? $.msg.auto(ret, time || ret.wait || undefined) : that.show(ret);
                 }, complete: function () {
+                    $.msg.page.done();
                     $.msg.close(loadidx);
                 }
             });
@@ -1041,11 +1044,6 @@ $(function () {
             history.back();
         })
     });
-
-    /*! 延时关闭加载动画 */
-    window.addEventListener('load', function () {
-        setTimeout("$('body>.think-page-loader').fadeOut()", 200);
-    }, true);
 
     /*! 图片加载异常处理 */
     document.addEventListener('error', function (event) {
