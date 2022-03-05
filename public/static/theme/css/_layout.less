@@ -185,12 +185,8 @@
         content: "\e65b";
         line-height: 50px;
         text-align: center;
-        font-size: 10px;
-        font-style: normal;
-        font-family: layui-icon !important;
         transform: rotate(180deg);
-        -webkit-font-smoothing: antialiased;
-        -moz-osx-font-smoothing: grayscale;
+        #iconLayout(10px);
       }
 
       top: 50%;
@@ -278,6 +274,10 @@
           padding-top: 0;
           padding-bottom: 0;
           color: @LeftMainNavNormalTextColor;
+
+          .layui-nav-more {
+            padding: 0;
+          }
 
           &:hover {
             color: @LeftMainNavActiveTextColor;

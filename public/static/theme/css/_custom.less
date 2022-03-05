@@ -14,6 +14,109 @@
 // | github 代码仓库：https://github.com/zoujingli/ThinkAdmin
 // +----------------------------------------------------------------------
 
+.flex {
+  #flex();
+
+  &-inline {
+    display: inline-flex;
+  }
+
+  &-wrap {
+    #flexWrap(wrap);
+
+    &-no {
+      #flexWrap(nowrap);
+    }
+
+    &-rev {
+      #flexWrap(wrap-reverse);
+    }
+  }
+
+  // 主轴方向
+  &-direction- {
+    &row {
+      #flexDirection(row);
+
+      &reverse {
+        #flexDirection(row-reverse);
+      }
+    }
+
+    &column {
+      #flexDirection(column);
+
+      &-reverse {
+        #flexDirection(column-reverse);
+      }
+    }
+  }
+
+  // 垂直方向
+  &-align- {
+    &start {
+      #flexAlign(flex-start);
+    }
+
+    &end {
+      #flexAlign(flex-end);
+    }
+
+    &center {
+      #flexAlign(center)
+    }
+  }
+
+  // 横向布局
+  &-justify- {
+    &start {
+      #flexJustify(flex-start);
+    }
+
+    &center {
+      #flexJustify(center);
+    }
+
+    &end {
+      #flexJustify(flex-end);
+    }
+
+    &space- {
+      &between {
+        #flexJustify(space-between);
+      }
+
+      &around {
+        #flexJustify(space-around);
+      }
+
+      &evenly {
+        #flexJustify(space-evenly);
+      }
+    }
+  }
+
+  &-1 {
+    flex: 1;
+  }
+
+  &-2 {
+    flex: 2;
+  }
+
+  &-3 {
+    flex: 3;
+  }
+
+  &-4 {
+    flex: 4;
+  }
+
+  &-5 {
+    flex: 5;
+  }
+}
+
 .fixed {
   position: fixed !important;
 }
@@ -152,20 +255,16 @@
   }
 }
 
-.help-images {
+.help-images:not(td) {
   color: #333;
   padding: 10px 0 0 10px !important;
   min-height: unset;
   background: linear-gradient(-113deg, #EEEEEE, #EEEEEE) !important;
 
-  &:after {
-    clear: left;
-    content: '';
-    display: block;
-  }
+  #flex();
+  #flexWrap(wrap);
 
-  > * {
-    float: left;
+  .uploadimage {
     margin: 0 10px 10px 0;
   }
 }
@@ -758,12 +857,8 @@
     position: absolute;
     margin-left: -8px;
 
+    #iconLayout(15px);
     content: "\e63d";
-    font-family: layui-icon !important;
-    font-size: 16px;
-    font-style: normal;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
 
     animation-name: layui-rotate;
     -webkit-animation-name: layui-rotate;
@@ -876,12 +971,8 @@ label.think-checkbox {
       cursor: pointer;
       padding: 2px;
       content: "\e605";
-      font-size: 12px;
-      font-style: normal;
+      #iconLayout(12px);
       font-weight: 700;
-      font-family: layui-icon !important;
-      -webkit-font-smoothing: antialiased;
-      -moz-osx-font-smoothing: grayscale
     }
   }
 }

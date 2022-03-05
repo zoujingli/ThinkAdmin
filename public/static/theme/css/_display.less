@@ -165,30 +165,8 @@ fieldset {
 .layui-nav {
   .layui-nav-item {
     .layui-nav-more {
-      top: 0;
       right: 15px;
-      width: auto;
-      height: auto;
-      border: none;
-      padding: 0 !important;
       font-size: 14px !important;
-      font-style: normal;
-      font-family: "layui-icon" !important;
-      -moz-osx-font-smoothing: grayscale;
-      -webkit-font-smoothing: antialiased;
-
-      &::before {
-        content: "\e619"
-      }
-    }
-
-    & .layui-nav-mored, &ed .layui-nav-more {
-      border: none;
-      transform: rotate(180deg);
-      -o-transform: rotate(180deg);
-      -ms-transform: rotate(180deg);
-      -moz-transform: rotate(180deg);
-      -webkit-transform: rotate(180deg)
     }
   }
 }
@@ -383,22 +361,39 @@ fieldset {
   }
 }
 
-.layui-form-radio {
-  margin-top: 0;
-}
 
-.layui-form-select dl {
-  top: 37px;
-  padding: 0;
-  border-color: @InputBorderActiveColor;
-}
+.layui-form-select {
+  .layui-edge {
+    top: 50%;
+    width: unset;
+    height: unset;
+    border: none;
+    margin-top: -7px;
+    line-height: 15px;
+    #iconLayout(15px);
 
-.layui-form-selected dl {
-  min-height: fit-content;
+    &:before {
+      content: "\e61a"
+    }
+  }
+
+  dl {
+    top: 37px;
+    padding: 0;
+    border-color: @InputBorderActiveColor;
+  }
+
+  &ed dl {
+    min-height: fit-content;
+  }
 }
 
 .layui-form-onswitch em {
   white-space: nowrap;
+}
+
+.layui-form-radio {
+  margin-top: 0;
 }
 
 .layui-form-checkbox.layui-form-checked {

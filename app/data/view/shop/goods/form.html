@@ -72,13 +72,18 @@
                     <th class="text-left" style="width:100%">轮播图片</th>
                 </tr>
                 <tr>
-                    <td class="text-center help-images text-top">
-                        <input name="cover" type="hidden" value="{$vo.cover|default=''}">
-                        <script>$('[name="cover"]').uploadOneImage();</script>
+                    <td class="text-center text-top padding-0">
+                        <div class="help-images">
+                            <input name="cover" type="hidden" value="{$vo.cover|default=''}">
+                            <script>$('[name="cover"]').uploadOneImage();</script>
+                        </div>
                     </td>
-                    <td class="text-left help-images">
-                        <input name="slider" type="hidden" value="{$vo.slider|default=''}">
-                        <script>$('[name="slider"]').uploadMultipleImage();</script>
+                    <td class="text-left padding-0">
+                        <div class="help-images">
+
+                            <input name="slider" type="hidden" value="{$vo.slider|default=''}">
+                            <script>$('[name="slider"]').uploadMultipleImage();</script>
+                        </div>
                     </td>
                 </tr>
                 </thead>
