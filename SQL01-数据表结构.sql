@@ -866,27 +866,6 @@ CREATE TABLE `system_menu`
 ) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '系统-菜单' ROW_FORMAT = COMPACT;
 
 -- ----------------------------
--- Table structure for system_menu_copy1
--- ----------------------------
-DROP TABLE IF EXISTS `system_menu_copy1`;
-CREATE TABLE `system_menu_copy1`
-(
-    `id`        bigint(20) NOT NULL AUTO_INCREMENT,
-    `pid`       bigint(20) NULL DEFAULT 0 COMMENT '上级ID',
-    `title`     varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '菜单名称',
-    `icon`      varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '菜单图标',
-    `node`      varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '节点代码',
-    `url`       varchar(400) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '链接节点',
-    `params`    varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '链接参数',
-    `target`    varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '_self' COMMENT '打开方式',
-    `sort`      int(11) NULL DEFAULT 0 COMMENT '排序权重',
-    `status`    tinyint(1) NULL DEFAULT 1 COMMENT '状态(0:禁用,1:启用)',
-    `create_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-    PRIMARY KEY (`id`) USING BTREE,
-    INDEX       `idx_system_menu_status`(`status`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '系统-菜单' ROW_FORMAT = COMPACT;
-
--- ----------------------------
 -- Table structure for system_oplog
 -- ----------------------------
 DROP TABLE IF EXISTS `system_oplog`;
