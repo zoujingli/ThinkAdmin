@@ -79,6 +79,7 @@ ThinkAdmin 为 MIT 协议开源项目，安装使用或二次开发不受约束�
 * 执行 `build.cmd` 可更新 `composer` 插件，会删除并替换 `vendor` 目录
 * 执行 `php think run` 启用本地开发环境，访问 `http://127.0.0.1:8000`
 * 执行 `php think xadmin:fansall` 同步微信粉丝数据（依赖于 `wechat` 模块）
+* 执行 `php think xadmin:sysmenu` 重写系统菜单并生成新编号并清理已禁用的菜单
 * 执行 `php think xadmin:version` 查看当前版本号，显示 `ThinkPHP` 版本及 `ThinkLibrary` 版本
 
 #### 1. 线上代码更新
