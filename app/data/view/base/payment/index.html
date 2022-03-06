@@ -42,7 +42,7 @@
                 <label><input class="list-sort-input" data-action-blur="{:sysuri()}" data-loading="false" data-value="id#{$vo.id};action#sort;sort#{value}" value="{$vo.sort}"></label>
             </td>
             <td class="text-left nowrap">
-                <div class="headimg headimg-xs headimg-no" data-lazy-src="{$vo.cover}"></div>
+                <div class="headimg headimg-xs headimg-no" data-tips-hover data-tips-image data-lazy-src="{$vo.cover}"></div>
                 {$vo.name|default=''}
             </td>
             <td class="text-left nowrap">{$vo.code|default=''}</td>
