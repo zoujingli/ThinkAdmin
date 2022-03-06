@@ -60,9 +60,9 @@
                 </td>
                 <td class='nowrap'>
                     {notempty name='vo.cover'}
-                    <div class="headimg" data-lazy-src="{$vo.cover}" data-tips-image></div>
+                    <div class="headimg headimg-no" data-tips-hover data-tips-image data-lazy-src="{$vo.cover}"></div>
                     {/notempty}
-                    <div class="inline-block text-top sub-span-blue">
+                    <div class="inline-block sub-span-blue">
                         <div>商品名称：<span>{$vo.name|default='--'}</span></div>
                         <div>商品编号：<span>{$vo.code|default='--'}</span></div>
                     </div>
