@@ -24,6 +24,7 @@
     position: absolute;
     box-sizing: content-box;
     background: @TopHeaderBackColor !important;
+    #NotSelect();
 
     > ul.layui-nav {
       margin: 0;
@@ -147,6 +148,7 @@
     overflow: hidden;
     box-shadow: @ShadowBodyLeft;
     background-color: @LeftMainBackColor;
+    #NotSelect();
 
     .layui-logo {
       color: #FFF;
@@ -356,6 +358,7 @@
         left: @LayoutDefaLeftSzie;
         border-top: @BoxBottomLine;
         border-bottom: 1px solid #fff !important;
+        #NotSelect();
 
         right: 0;
         height: 45px;
@@ -366,10 +369,10 @@
         line-height: 45px;
 
         & + .layui-card-line {
-          top: 46px;
+          top: 47px;
 
           & + .layui-card-body {
-            top: 46px;
+            top: 47px;
           }
         }
       }
