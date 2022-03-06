@@ -57,7 +57,7 @@
                 {field: 'url', title: '跳转链接', minWidth: 200},
                 {field: 'status', title: '菜单状态', minWidth: 120, align: 'center', templet: '#StatusSwitchTpl'},
                 // {field: 'create_at', title: '创建时间', minWidth: 170, align: 'center'},
-                {toolbar: '#toolbar', title: '操作面板', minWidth: 170, align: 'center', fixed: 'right'},
+                {toolbar: '#toolbar', title: '操作面板', minWidth: 150, align: 'center', fixed: 'right'},
             ]]
         });
 
@@ -111,16 +111,12 @@
     {/if}
     <!-- {else} -->
     {if auth('remove')}
-
     {{# if( (d.spc<1 || d.status<1)){ }}
     <a class="layui-btn layui-btn-sm layui-btn-danger" data-confirm="确定要删除菜单吗？" data-action="{:url('remove')}" data-value="id#{{d.sps}}">删 除</a>
-
     {{# }else{ }}
     <a class="layui-btn layui-btn-disabled layui-btn-sm">删 除</a>
     {{# } }}
-
     {/if}
-
     <!-- {/if} -->
 
 </script>
