@@ -695,7 +695,7 @@ $(function () {
             // 动态计算最大页数
             option.done = function () {
                 layui.sessionData('pages', {key: table.id, value: this.page.curr || 1}), (table.loading = true);
-                $table.next().find('[data-load],[data-queue],[data-action],[data-iframe]').not('[data-table-id]').attr('data-table-id', table.id);
+                $.form.reInit($table.next()).find('[data-load],[data-queue],[data-action],[data-iframe]').not('[data-table-id]').attr('data-table-id', table.id);
             }, option.parseData = function (res) {
                 if (typeof params.filter === 'function') res.data = params.filter(res.data, res);
                 var maxp = Math.ceil(res.count / table.limit), curp = layui.sessionData('pages')[option.id] || 1;
