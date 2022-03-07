@@ -28,11 +28,11 @@
 
         <div class="layui-form-item relative block">
             <span class="help-label"><b>用户提现状态</b>Transfer Status</span>
-            <div class="layui-textarea" style="min-height:unset">
+            <div class="layui-textarea help-checks">
                 {php} $data['status'] = $data['status'] ?? 0; {/php}
                 {foreach ['关闭返利提现', '开启返利提现'] as $k => $v}
                 {if $data.status eq $k}
-                <input checked class="layui-input layui-bg-gray" name="status" title="{$v}" type="checkbox" value="{$k}">
+                <input checked class="layui-input layui-bg-gray" name="status" title="{$v}" type="radio" value="{$k}">
                 {else}
                 <input class="layui-input layui-bg-gray" name="status" title="{$v}" type="radio" value="{$k}">
                 {/if}{/foreach}
