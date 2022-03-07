@@ -741,8 +741,12 @@
   background: #22df80
 }
 
-input:not(.layui-hide,[type=hidden]) + .uploadimage {
-  margin-top: 5px;
+input:not(.layui-hide,[type=hidden]) {
+  &, & + span {
+    + .uploadimage {
+      margin-top: 5px;
+    }
+  }
 }
 
 .uploadimage {
