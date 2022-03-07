@@ -51,7 +51,7 @@
                     <label><input class="list-check-box" type='checkbox' value='{$vo.id}'></label>
                 </td>
                 <td class="nowrap">
-                    <div class="headimg headimg-md" data-lazy-src="{$vo.headimg|default='__ROOT__/static/theme/img/headimg.png'}" data-tips-image></div>
+                    <div class="headimg headimg-md" data-tips-hover data-tips-image data-lazy-src="{$vo.headimg|default='__ROOT__/static/theme/img/headimg.png'}"></div>
                     <div class="inline-block">
                         <div>
                             {notempty name='vo.username'}
@@ -66,8 +66,8 @@
                 </td>
                 <td class="nowrap">
                     {notempty name='vo.from'}
-                    <div class="headimg headimg-md" data-lazy-src="{$vo.from.headimg|default='__ROOT__/static/theme/img/headimg.png'}" data-tips-image></div>
-                    <div class="inline-block text-middle">
+                    <div class="headimg headimg-md" data-tips-hover data-tips-image data-lazy-src="{$vo.from.headimg|default='__ROOT__/static/theme/img/headimg.png'}"></div>
+                    <div class="inline-block">
                         <div>
                             {notempty name='vo.from.username'}
                             用户姓名：<span class="color-text">{$vo.from.username|default='-'}</span>

@@ -132,18 +132,13 @@
 .headimg {
   width: 32px;
   height: 32px;
-  display: inline-block;
-  overflow: hidden;
-  text-align: center;
   margin-right: 5px;
   border-radius: 50%;
-  vertical-align: middle;
-  background-size: cover;
-  background-repeat: no-repeat;
-  background-position: center center;
+  #imageBgCover();
 
   &-no {
     border: none;
+    box-shadow: none;
     border-radius: 2px;
   }
 
@@ -236,6 +231,10 @@
   display: block !important
 }
 
+.inline-block {
+  display: inline-block !important
+}
+
 .help-block {
   color: #999;
   font-size: 12px
@@ -269,10 +268,6 @@
   .uploadimage {
     margin: 0 10px 10px 0;
   }
-}
-
-.inline-block {
-  display: inline-block !important
 }
 
 /*! 搜索表单样式 */
@@ -719,10 +714,7 @@
 }
 
 [data-lazy-src] {
-  overflow: hidden;
-  position: relative;
-  background-size: cover;
-  background-position: center center;
+  #imageBgCover();
 }
 
 .pace-inactive {
@@ -752,12 +744,10 @@ input:not(.layui-hide,[type=hidden]) {
   height: 76px;
   cursor: pointer;
   display: inline-block;
-  position: relative;
-  overflow: hidden;
   border-radius: 3px;
+  #imageBgCover();
+  background-image: url('../img/upimg.png');
   box-shadow: @ShadowOuterMin;
-  background: url('../img/upimg.png') no-repeat center center;
-  background-size: cover;
 
   span.layui-icon {
     color: #fff;
