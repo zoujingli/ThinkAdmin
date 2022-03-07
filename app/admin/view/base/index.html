@@ -48,9 +48,10 @@
 
         // 数据状态切换操作
         layui.form.on('switch(StatusSwitch)', function (obj) {
-            $.form.load("{:url('state')}", {id: obj.value, status: obj.elem.checked > 0 ? 1 : 0}, 'post', function (ret) {
+            var data = {id: obj.value, status: obj.elem.checked > 0 ? 1 : 0};
+            $.form.load("{:url('state')}", data, 'post', function (ret) {
                 if (ret.code < 1) $.msg.error(ret.info, 3, function () {
-                    $('#BaseTable').trigger('reload'); // 操作异常时重载数据
+                    $('#BaseTable').trigger('reload');
                 });
                 return false;
             }, false);
