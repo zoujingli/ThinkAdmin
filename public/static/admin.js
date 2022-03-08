@@ -222,9 +222,9 @@ $(function () {
         this.selecter = '.layui-layout-admin>.layui-body>.think-page-body';
         /*! 刷新当前页面 */
         this.reload = function (force) {
-            if (force) top.location.reload();
-            else if (self !== top) location.reload();
-            else window.onhashchange.call(this);
+            if (force) return top.location.reload();
+            if (self !== top) return location.reload();
+            return $.menu.href(location.hash);
         };
         /*! 内容区域动态加载后初始化 */
         this.reInit = function ($dom) {
@@ -343,7 +343,7 @@ $(function () {
         /*! 计算 URL 地址中有效的 URI */
         this.getUri = function (uri) {
             uri = uri || location.href;
-            uri = (uri.indexOf(location.host) > -1 ? uri.split(location.host)[1] : uri);
+            uri = uri.indexOf(location.host) > -1 ? uri.split(location.host)[1] : uri;
             return (uri.indexOf('#') > -1 ? uri.split('#')[1] : uri).split('?')[0];
         };
         /*! 通过 URI 查询最有可能的菜单 NODE */
@@ -371,22 +371,20 @@ $(function () {
         /*! 后台菜单动作初始化 */
         this.listen = function () {
             /*! 菜单模式切换 */
-            var $menu = $('.layui-layout-admin'), miniClass = 'layui-layout-left-mini';
+            var $menu = $('.layui-layout-admin'), mclass = 'layui-layout-left-mini';
             /*! Mini 菜单模式切换及显示 */
-            if (layui.data('admin-menu-type')['type-mini']) $menu.addClass(miniClass);
+            if (layui.data('AdminMenuType')['mini']) $menu.addClass(mclass);
             /*! 菜单切换事件处理 */
             onEvent('click', '[data-target-menu-type]', function () {
-                layui.data('admin-menu-type', {key: 'type-mini', value: $menu.toggleClass(miniClass).hasClass(miniClass)});
+                layui.data('AdminMenuType', {key: 'mini', value: $menu.toggleClass(mclass).hasClass(mclass)});
             });
             /*! 监听窗口尺寸处理 */
-            (function (callable) {
-                $(window).on('resize', callable).trigger('resize');
-            })(function () {
-                (layui.data('admin-menu-type')['type-mini'] || $body.width() < 1000) ? $menu.addClass(miniClass) : $menu.removeClass(miniClass);
-            });
+            $(window).on('resize', function () {
+                (layui.data('AdminMenuType')['mini'] || $body.width() < 1000) ? $menu.addClass(mclass) : $menu.removeClass(mclass);
+            }).trigger('resize');
             /*! Mini 菜单模式时TIPS文字显示 */
             $('[data-target-tips]').mouseenter(function () {
-                if ($menu.hasClass(miniClass)) (function (idx) {
+                if ($menu.hasClass(mclass)) (function (idx) {
                     $(this).mouseleave(function () {
                         layer.close(idx);
                     });
@@ -400,38 +398,45 @@ $(function () {
             this.syncOpenStatus = function (mode) {
                 $('[data-submenu-layout]').map(function () {
                     var node = this.dataset.submenuLayout;
-                    if (mode === 1) layui.data('admin-menu-stat', {key: node, value: $(this).hasClass('layui-nav-itemed') ? 2 : 1});
-                    else if ((layui.data('admin-menu-stat')[node] || 2) === 2) $(this).addClass('layui-nav-itemed');
+                    if (mode === 1) layui.data('AdminMenuState', {key: node, value: $(this).hasClass('layui-nav-itemed') ? 2 : 1});
+                    else if ((layui.data('AdminMenuState')[node] || 2) === 2) $(this).addClass('layui-nav-itemed');
                 });
             };
-            window.onhashchange = function () {
-                var hash = location.hash || '', node;
-                if (hash.length < 1) return $('[data-menu-node]:first').trigger('click');
-                if (/^#(https?:)?(\/\/|\\\\)/.test(hash)) return $.msg.tips('禁止访问外部链接！');
-                // $.msg.page.show(),$.form.load(hash, {}, 'get', $.msg.page.hide, true),that.syncOpenStatus(2);
-                $.form.load(hash, {}, 'get', false, !$.msg.page.stat()), that.syncOpenStatus(2);
-                /*! 菜单选择切换 */
-                if (/^m-/.test(node = that.queryNode(that.getUri()))) {
-                    var $all = $('a[data-menu-node]').parent(), tmp = node.split('-'), tmpNode = tmp.shift();
-                    while (tmp.length > 0) {
-                        tmpNode = tmpNode + '-' + tmp.shift();
-                        $all = $all.not($('a[data-menu-node="' + tmpNode + '"]').parent().addClass('layui-this'));
-                    }
-                    $all.removeClass('layui-this');
-                    /*! 菜单模式切换 */
-                    if (node.split('-').length > 2) {
-                        var _tmp = node.split('-'), _node = _tmp.shift() + '-' + _tmp.shift();
-                        $('[data-menu-layout]').not($('[data-menu-layout="' + _node + '"]').removeClass('layui-hide')).addClass('layui-hide');
-                        $('[data-menu-node="' + node + '"]').parent().parent().parent().addClass('layui-nav-itemed');
-                        $('.layui-layout-admin').removeClass('layui-layout-left-hide');
-                    } else {
-                        $('.layui-layout-admin').addClass('layui-layout-left-hide');
-                    }
-                    that.syncOpenStatus(1);
+            /*! 监听 HASH 切换事件 */
+            $(window).on('hashchange', function () {
+                if (/^#(https?:)?(\/\/|\\\\)/.test(location.hash)) {
+                    return $.msg.tips('禁止访问外部链接！');
+                } else if (location.hash.length < 1) {
+                    return $('[data-menu-node]:first').trigger('click');
+                } else {
+                    that.href(location.hash);
                 }
-            };
-            /*! URI初始化动作 */
-            window.onhashchange.call(this);
+            }).trigger('hashchange');
+        };
+        // 全局 URL-HASH 跳转处理
+        this.href = function (hash, node) {
+            if ((hash || '').length < 1) return $('[data-menu-node]:first').trigger('click');
+            // $.msg.page.show(),$.form.load(hash, {}, 'get', $.msg.page.hide, true),that.syncOpenStatus(2);
+            $.form.load(hash, {}, 'get', false, !$.msg.page.stat()), that.syncOpenStatus(2);
+            /*! 菜单选择切换 */
+            if (/^m-/.test(node = that.queryNode(that.getUri()))) {
+                var $all = $('a[data-menu-node]').parent(), tmp = node.split('-'), tmpNode = tmp.shift();
+                while (tmp.length > 0) {
+                    tmpNode = tmpNode + '-' + tmp.shift();
+                    $all = $all.not($('a[data-menu-node="' + tmpNode + '"]').parent().addClass('layui-this'));
+                }
+                $all.removeClass('layui-this');
+                /*! 菜单模式切换 */
+                if (node.split('-').length > 2) {
+                    var _tmp = node.split('-'), _node = _tmp.shift() + '-' + _tmp.shift();
+                    $('[data-menu-layout]').not($('[data-menu-layout="' + _node + '"]').removeClass('layui-hide')).addClass('layui-hide');
+                    $('[data-menu-node="' + node + '"]').parent().parent().parent().addClass('layui-nav-itemed');
+                    $('.layui-layout-admin').removeClass('layui-layout-left-hide');
+                } else {
+                    $('.layui-layout-admin').addClass('layui-layout-left-hide');
+                }
+                that.syncOpenStatus(1);
+            }
         };
     };
     /*! 表单验证组件 */
