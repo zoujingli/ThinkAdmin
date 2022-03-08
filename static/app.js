@@ -40,9 +40,7 @@
     router.addRoute({
         name: 'layout', path: '/', component: () => {
             return loadVue('/static/template/layout.vue');
-        }, children: [
-            {path: '/', redirect: '/static/template/login.vue'},
-        ]
+        }, children: [{path: '/', redirect: '/static/template/login.vue'},]
     });
 
     // 动态注销路由
@@ -69,7 +67,7 @@
             // 删除页面缓存
             delete options.moduleCache[to.fullPath];
             // 登录页面处理
-            if (to.fullPath === '/static/template/login.vue') {
+            if (to.fullPath.indexOf('/login.vue') > -1) {
                 router.addRoute({name: name, path: to.fullPath, component: () => loadVue(to.fullPath)})
             } else {
                 // 动态注册路由并触发新路由
@@ -94,8 +92,7 @@
     document.addEventListener('click', function (event) {
         event.path.some(function (ele) {
             if (ele.dataset && ele.dataset.route) {
-                router.push(ele.dataset.route);
-                return true;
+                return router.push(ele.dataset.route);
             }
         });
     });
