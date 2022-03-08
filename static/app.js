@@ -3,7 +3,7 @@
     /*! 项目应用根路径 */
     window.appRoot = (function (script) {
         return '/' + script.src.split('/').slice(3, -2).join('/') + '/';
-    })(document.querySelector('script[type=module][src*="app.js"]'));
+    })(document.querySelector('script[src*="app.js"]'));
 
     /*! 模块加载请求处理 */
     const options = {
@@ -31,7 +31,6 @@
 
     const {loadModule} = window['vue3-sfc-loader'];
     const loadVue = (vuePath) => loadModule(vuePath, options);
-    // const loadVueFile = (vuePath) => () => loadVue(vuePath);
 
     const router = VueRouter.createRouter({
         routes: [], history: VueRouter.createWebHashHistory(),
@@ -51,6 +50,9 @@
         let name = to.fullPath.replace(/[.\/]+/g, '_');
         if (router.hasRoute(name)) router.removeRoute(name)
         if (loading) loading = loading.close(), null;
+        document.querySelectorAll('.think-page-loader').forEach(function (el) {
+            el.style.display = 'none';
+        });
     });
 
     // 动态注册路由
@@ -58,7 +60,7 @@
     router.beforeEach(function (to, fr, next) {
         let name = to.fullPath.replace(/[.\/]+/g, '_');
         if (router.hasRoute(name)) {
-            console.log('loadPage', to.fullPath)
+            console.log('PAGE-LOADING:', to.fullPath)
             loading = ElementPlus.ElLoading.service({
                 lock: true, text: 'Loading', background: 'rgba(0, 0, 0, 0.3)',
             });

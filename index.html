@@ -23,9 +23,90 @@
 
     <!-- 加载基础框架模块 -->
     <script type="module" src="static/app.js"></script>
+
+    <style>
+        @keyframes shadow {
+            0%,
+            100% {
+                transform: scale(1, 1);
+            }
+            50% {
+                transform: scale(1.2, 1);
+            }
+        }
+
+        @keyframes loading {
+            17% {
+                border-bottom-right-radius: 3px;
+            }
+            25% {
+                transform: translateY(9px) rotate(22.5deg);
+            }
+            50% {
+                border-bottom-right-radius: 40px;
+                transform: translateY(18px) scale(1, 0.9) rotate(45deg);
+            }
+            75% {
+                transform: translateY(9px) rotate(67.5deg);
+            }
+            100% {
+                transform: translateY(0) rotate(90deg);
+            }
+        }
+
+        .think-page-loader {
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            z-index: 1999;
+            position: fixed;
+            text-align: center;
+            background-color: #EFEFEF;
+        }
+
+        .think-page-loader .loader {
+            top: 50%;
+            width: 50px;
+            height: 50px;
+            margin: -35px 0 0 -35px;
+            z-index: 999999;
+            display: inline-block;
+            position: fixed;
+            background-color: #EFEFEF;
+        }
+
+        .think-page-loader .loader:before {
+            top: 59px;
+            left: 0;
+            width: 50px;
+            height: 7px;
+            opacity: 0.1;
+            content: "";
+            position: absolute;
+            border-radius: 50%;
+            background-color: #000;
+            animation: shadow .5s linear infinite;
+        }
+
+        .think-page-loader .loader:after {
+            top: 0;
+            left: 0;
+            width: 50px;
+            height: 50px;
+            content: "";
+            position: absolute;
+            border-radius: 3px;
+            background-color: #5FB878;
+            animation: loading .5s linear infinite;
+        }
+    </style>
 </head>
 
 <body>
+<div class="think-page-loader">
+    <div class="loader"></div>
+</div>
 <router-view></router-view>
 </body>
 
