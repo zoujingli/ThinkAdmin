@@ -37,22 +37,15 @@ if (typeof Array.prototype.forEach !== 'function') {
 }
 
 /*! 脚本应用根路径 */
-window.appRoot = (function (src) {
-    return src.pop(), src.pop(), src.join('/') + '/';
-})(document.scripts[document.scripts.length - 1].src.split('/'));
-
+var srcs = document.scripts[document.scripts.length - 1].src.split('/');
+window.appRoot = srcs.slice(0, -2).join('/') + '/';
 /*! 静态插件库路径 */
-window.baseRoot = (function (src) {
-    return src.substring(0, src.lastIndexOf("/") + 1);
-})(document.scripts[document.scripts.length - 1].src);
-
+window.baseRoot = srcs.slice(0, -1).join('/') + '/';
 /*! 动态插件库路径 */
 window.tapiRoot = window.tapiRoot || window.appRoot + "admin";
 
-/*! 配置 layui 插件 */
-layui.config({base: baseRoot + 'plugs/layui_exts/'});
-
 /*! 挂载 layui & jquery 对象 */
+layui.config({base: baseRoot + 'plugs/layui_exts/'});
 window.form = layui.form, window.layer = layui.layer;
 window.laytpl = layui.laytpl, window.laydate = layui.laydate;
 window.jQuery = window.$ = window.jQuery || window.$ || layui.$;
