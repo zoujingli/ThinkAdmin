@@ -343,15 +343,15 @@ $(function () {
             uri = uri.indexOf(location.host) > -1 ? uri.split(location.host)[1] : uri;
             return (uri.indexOf('#') > -1 ? uri.split('#')[1] : uri).split('?')[0];
         };
-        /*! 通过 URI 查询最有可能的菜单 NODE */
-        this.queryNode = function (url, node) {
+        /*! 通过 URI 查询最佳菜单 NODE */
+        this.queryNode = function (uri, node) {
             if (!/^m-/.test(node = node || location.href.replace(/.*spm=([\d\-m]+).*/ig, '$1'))) {
-                var $menu = $('[data-menu-node][data-open*="' + url.replace(/\.html$/ig, '') + '"]');
+                var $menu = $('[data-menu-node][data-open*="' + uri.replace(/\.html$/ig, '') + '"]');
                 return $menu.size() ? $menu.get(0).dataset.menuNode : '';
             }
             return node;
         };
-        /*! URL 转 URI */
+        /*! 完整 URL 转 URI 地址 */
         this.parseUri = function (uri, elem, vars, temp, attrs) {
             vars = {}, attrs = [], elem = elem || document.createElement('a');
             if (uri.indexOf('?') > -1) uri.split('?')[1].split('&').forEach(function (item) {
@@ -368,33 +368,25 @@ $(function () {
         /*! 后台菜单动作初始化 */
         this.listen = function () {
             var layout = $('.layui-layout-admin'), mclass = 'layui-layout-left-mini';
-            /*! 菜单模式显示 */
-            if (layui.data('AdminMenuType')['mini']) layout.addClass(mclass);
-            /*! 菜单切换事件 */
+            /*! 菜单切及MiniTips处理 */
             onEvent('click', '[data-target-menu-type]', function () {
                 layui.data('AdminMenuType', {key: 'mini', value: layout.toggleClass(mclass).hasClass(mclass)});
+            }).on('click', '[data-submenu-layout]>a', function () {
+                setTimeout("$.menu.sync(1);", 100);
+            }).on('mouseenter', '[data-target-tips]', function (evt) {
+                if (!layout.hasClass(mclass) || !this.dataset.targetTips) return;
+                evt.idx = layer.tips(this.dataset.targetTips, this, {time: 0});
+                $(this).mouseleave(function () {
+                    layer.close(evt.idx);
+                });
             });
-            /*! 监听窗口尺寸 */
+            /*! 监听窗口大小及HASH切换 */
             $(window).on('resize', function () {
                 (layui.data('AdminMenuType')['mini'] || $body.width() < 1000) ? layout.addClass(mclass) : layout.removeClass(mclass);
-            }).trigger('resize');
-            /*! Mini 模式 TIPS 显示 */
-            $('[data-target-tips]').mouseenter(function () {
-                if (layout.hasClass(mclass)) (function (idx) {
-                    $(this).mouseleave(function () {
-                        layer.close(idx);
-                    });
-                }).call(this, layer.tips(this.dataset.targetTips || '', this, {time: 0}));
-            });
-            /*! 左则二级菜单展示 */
-            $('[data-submenu-layout]>a').on('click', function () {
-                setTimeout("$.menu.sync(1);", 100);
-            });
-            /*! 监听 HASH 切换事件 */
-            $(window).on('hashchange', function () {
+            }).trigger('resize').on('hashchange', function () {
                 if (/^#(https?:)?(\/\/|\\\\)/.test(location.hash)) return $.msg.tips('禁止访问外部链接！');
                 if (location.hash.length < 1) return $body.find('[data-menu-node]:first').trigger('click');
-                else that.href(location.hash);
+                else return that.href(location.hash);
             }).trigger('hashchange');
         };
         /*! 同步二级菜单展示状态 */
@@ -411,7 +403,7 @@ $(function () {
             // $.msg.page.show(),$.form.load(hash, {}, 'get', $.msg.page.hide, true),that.sync(2);
             $.form.load(hash, {}, 'get', false, !$.msg.page.stat()), that.sync(2);
             /*! 菜单选择切换 */
-            if (/^m-/.test(node = that.queryNode(that.getUri()))) {
+            if (/^m-/.test(node = node || that.queryNode(that.getUri()))) {
                 var arr = node.split('-'), tmp = arr.shift(), $all = $('a[data-menu-node]').parent('.layui-this');
                 while (arr.length > 0) {
                     tmp = tmp + '-' + arr.shift();
@@ -431,6 +423,7 @@ $(function () {
             }
         };
     };
+
     /*! 表单验证组件 */
     $.vali = function (form, callable) {
         return $(form).data('validate') || new Validate();
