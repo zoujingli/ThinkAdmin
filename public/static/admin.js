@@ -36,12 +36,10 @@ if (typeof Array.prototype.forEach !== 'function') {
     };
 }
 
-/*! 脚本应用根路径 */
+/*! 应用根路径，静态插件库路径，动态插件库路径 */
 var srcs = document.scripts[document.scripts.length - 1].src.split('/');
 window.appRoot = srcs.slice(0, -2).join('/') + '/';
-/*! 静态插件库路径 */
 window.baseRoot = srcs.slice(0, -1).join('/') + '/';
-/*! 动态插件库路径 */
 window.tapiRoot = window.tapiRoot || window.appRoot + "admin";
 
 /*! 挂载 layui & jquery 对象 */
@@ -677,24 +675,34 @@ $(function () {
             }
             // 动态计算最大页数
             option.done = function () {
-                layui.sessionData('pages', {key: table.id, value: this.page.curr || 1}), (table.loading = true);
+                $table.data('that', this);
+                layui.sessionData('pages', {key: table.id, value: this.page.curr || 1}), (option.loading = true);
                 $.form.reInit($table.next()).find('[data-load],[data-queue],[data-action],[data-iframe]').not('[data-table-id]').attr('data-table-id', table.id);
             }, option.parseData = function (res) {
                 if (typeof params.filter === 'function') res.data = params.filter(res.data, res);
-                var maxp = Math.ceil(res.count / table.limit), curp = layui.sessionData('pages')[option.id] || 1;
-                if (curp > maxp && curp > 1) table.elem.trigger('reload', {page: {curr: maxp}});
+                if (!this.page || !this.page.curr) return res;
+                var curp = this.page.curr, maxp = Math.ceil(res.count / option.limit);
+                if (curp > maxp && maxp > 1) $table.trigger('reload', {page: {curr: maxp}});
                 return res;
             };
             // 实例并绑定的对象
             $table.data('this', layui.table.render(bindData(option)));
             // 绑定实例重载事件
             $table.bind('reload render reloadData', function (evt, opts) {
-                opts = opts || {}, opts.loading = true;
-                data = $.extend({}, data, opts.where || {});
-                if (evt.type === 'render1' || evt.type === 'reloadData') {
-                    layui.table.reloadData(table.id, bindData(opts || {}));
+                data = $.extend({}, data, (opts = opts || {}).where || {});
+                opts = bindData($.extend({}, opts, {loading: true}));
+                if (evt.type.indexOf('reload') > -1) {
+                    var $that = $table.data('that');
+                    if ($that && $that.page && $that.page.jump) {
+                        $that.sort = $that.initSort = opts.initSort;
+                        $that.where = data, $that.loading = opts.loading;
+                        if (opts.page && opts.page.curr) $that.page.curr = opts.page.curr || 1;
+                        $that.page.jump({curr: $that.page.curr, limit: option.limit});
+                    } else {
+                        layui.table.reloadData(table.id, opts);
+                    }
                 } else {
-                    layui.table.reload(table.id, bindData(opts || {}));
+                    layui.table.reload(table.id, opts);
                 }
             }).bind('row sort tool edit radio toolbar checkbox rowDouble', function (evt, call) {
                 layui.table.on(evt.type + '(' + table.dataset.id + ')', call)
