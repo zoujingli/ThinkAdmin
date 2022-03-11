@@ -245,7 +245,7 @@ $(function () {
                     if (this.nodeName === 'IMG') this.src = this.dataset.lazySrc;
                     else this.style.backgroundImage = 'url(' + this.dataset.lazySrc + ')';
                 }
-            }), $dom;
+            }), $body.trigger('reInit', $dom), $dom;
         };
         /*! 在内容区显示视图 */
         this.show = function (html) {

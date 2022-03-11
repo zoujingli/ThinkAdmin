@@ -29,13 +29,13 @@ return [
             // 数据库类型
             'type'            => 'mysql',
             // 服务器地址
-            'hostname'        => '127.0.0.1',
+            'hostname'        => 'thinkadmin.top',
             // 数据库名
             'database'        => 'admin_v6',
             // 用户名
-            'username'        => 'admin_v6',
+            'username'        => 'admin',
             // 密码
-            'password'        => 'FbYBHcWKr2',
+            'password'        => '@admin123',
             // 端口
             'hostport'        => '3306',
             // 数据库连接参数
