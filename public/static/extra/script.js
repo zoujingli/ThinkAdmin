@@ -20,4 +20,9 @@ $(function () {
     //         'vue': ['json']
     //     },
     // });
+    // require(['vue'], function (vue) {
+    //     console.log(vue)
+    // });
+
+    /*! 其他 javascript 脚本代码 */
 });
