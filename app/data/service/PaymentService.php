@@ -356,7 +356,7 @@ abstract class PaymentService
             $status = 4; # 实物订单需要发货
         }
         // 更新订单支付状态
-        $order['stauts'] = $status;
+        $order['status'] = $status;
         $order['payment_code'] = $this->code;
         $order['payment_type'] = $this->type;
         $order['payment_trade'] = $payTrade;
