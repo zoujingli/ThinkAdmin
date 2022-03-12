@@ -8,7 +8,7 @@
 
 {block name="content"}
 <div class="think-box-shadow layui-form">
-    <div class="nowrap" style="margin-left:99px">
+    <div class="nowrap" style="margin-left:99px;max-width:850px">
         {foreach ['api'=>'微信公众平台直接模式','thr'=>'微信开放平台授权模式'] as $k=>$v}
         <input type="radio" data-wechat-type="{$k}" name="wechat.type" value="{$k}" title="{$v}" lay-filter="wechat_type">
         {/foreach}
@@ -16,7 +16,7 @@
     </div>
 </div>
 <div class="think-box-shadow margin-top-15">
-    <div class="padding-top-20">
+    <div class="padding-top-20" style="max-width:850px">
         <div class="layui-anim layui-anim-fadein" data-type="api">{include file='config/options_form_api'}</div>
         <div class="layui-anim layui-anim-fadein" data-type="thr">{include file='config/options_form_thr'}</div>
     </div>
