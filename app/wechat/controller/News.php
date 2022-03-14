@@ -20,6 +20,7 @@ use app\wechat\model\WechatNews;
 use app\wechat\model\WechatNewsArticle;
 use app\wechat\service\MediaService;
 use think\admin\Controller;
+use think\admin\helper\QueryHelper;
 use think\admin\service\AdminService;
 
 /**
@@ -33,14 +34,13 @@ class News extends Controller
      * 微信图文管理
      * @auth true
      * @menu true
-     * @throws \think\db\exception\DataNotFoundException
-     * @throws \think\db\exception\DbException
-     * @throws \think\db\exception\ModelNotFoundException
      */
     public function index()
     {
         $this->title = '微信图文列表';
-        WechatNews::mQuery()->where(['is_deleted' => 0])->order('id desc')->page();
+        WechatNews::mQuery(null, function (QueryHelper $query) {
+            $query->where(['is_deleted' => 0])->order('id desc')->page();
+        });
     }
 
     /**
@@ -60,9 +60,6 @@ class News extends Controller
     /**
      * 图文选择器
      * @auth true
-     * @throws \think\db\exception\DataNotFoundException
-     * @throws \think\db\exception\DbException
-     * @throws \think\db\exception\ModelNotFoundException
      */
     public function select()
     {

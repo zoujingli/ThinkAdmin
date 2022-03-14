@@ -19,6 +19,7 @@ namespace app\wechat\controller;
 use app\wechat\model\WechatKeys;
 use app\wechat\service\WechatService;
 use think\admin\Controller;
+use think\admin\helper\QueryHelper;
 use think\exception\HttpResponseException;
 
 /**
@@ -41,9 +42,6 @@ class Keys extends Controller
      * 回复规则管理
      * @auth true
      * @menu true
-     * @throws \think\db\exception\DataNotFoundException
-     * @throws \think\db\exception\DbException
-     * @throws \think\db\exception\ModelNotFoundException
      */
     public function index()
     {
@@ -59,8 +57,10 @@ class Keys extends Controller
         }
         // 数据列表分页处理
         $this->title = '回复规则管理';
-        $query = WechatKeys::mQuery()->whereNotIn('keys', ['subscribe', 'default']);
-        $query->equal('status')->like('keys,type')->dateBetween('create_at')->order('sort desc,id desc')->page();
+        WechatKeys::mQuery(null, function (QueryHelper $query) {
+            $query->equal('status')->like('keys,type')->dateBetween('create_at');
+            $query->whereNotIn('keys', ['subscribe', 'default'])->order('sort desc,id desc')->page();
+        });
     }
 
     /**

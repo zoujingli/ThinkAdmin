@@ -19,6 +19,7 @@ namespace app\wechat\controller;
 use app\wechat\model\WechatAuto;
 use think\admin\Controller;
 use think\admin\extend\CodeExtend;
+use think\admin\helper\QueryHelper;
 
 /**
  * 关注自动回复
@@ -41,15 +42,14 @@ class Auto extends Controller
      * 关注自动回复
      * @auth true
      * @menu true
-     * @throws \think\db\exception\DataNotFoundException
-     * @throws \think\db\exception\DbException
-     * @throws \think\db\exception\ModelNotFoundException
      */
     public function index()
     {
         $this->title = '关注自动回复';
-        $query = WechatAuto::mQuery()->like('code,type');
-        $query->equal('status')->dateBetween('create_at')->order('time asc')->page();
+        WechatAuto::mQuery(null, function (QueryHelper $query) {
+            $query->like('code,type')->equal('status');
+            $query->dateBetween('create_at')->order('time asc')->page();
+        });
     }
 
     /**

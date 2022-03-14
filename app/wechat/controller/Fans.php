@@ -17,6 +17,7 @@
 namespace app\wechat\controller;
 
 use app\wechat\model\WechatFans;
+use app\wechat\model\WechatFansTags;
 use app\wechat\service\WechatService;
 use think\admin\Controller;
 use think\admin\helper\QueryHelper;
@@ -115,7 +116,7 @@ class Fans extends Controller
     {
         try {
             WechatFans::mQuery()->empty();
-            WechatFans::mQuery()->empty();
+            WechatFansTags::mQuery()->empty();
             $this->success('清空用户数据成功！');
         } catch (HttpResponseException $exception) {
             throw  $exception;
