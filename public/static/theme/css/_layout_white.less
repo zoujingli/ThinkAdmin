@@ -1,125 +1,119 @@
 @charset "UTF-8";
 @import "_config.less";
 
-.layui-layout-theme-white {
+.layui-layout-theme-white > .layui-layout-admin {
+  > .layui-side {
+    box-shadow: none;
+    background-color: #fff !important;
 
-  > .layui-layout-admin {
-    > .layui-side {
+    .layui-logo {
+      color: #333;
       box-shadow: none;
-      background-color: #fff !important;
+      font-weight: bold;
+    }
 
-      .layui-logo {
-        color: #333;
-        box-shadow: none;
-        font-weight: bold;
+    .layui-side-scroll {
+      display: flex !important;
+      box-sizing: border-box;
+
+      .layui-nav-child {
+        background: none !important;
       }
 
-      .layui-side-scroll {
-        display: flex !important;
-        box-sizing: border-box;
+      .layui-side-icon {
+        width: 60px;
+        display: none;
+        background: #fff;
 
-        .layui-nav-child {
-          background: none !important;
+        a {
+          height: 60px;
+          display: block;
+          text-align: center;
+          line-height: 60px;
         }
 
-        .layui-side-icon {
-          width: 60px;
-          display: none;
+        .layui-icon {
+          color: #999;
+        }
+
+        > .layui-this {
           background: #fff;
 
-          a {
-            height: 60px;
-            display: block;
-            text-align: center;
-            line-height: 60px;
-          }
-
           .layui-icon {
-            color: #999;
-          }
-
-          > .layui-this {
-            background: #fff;
-
-            .layui-icon {
-              color: #098 !important;
-            }
+            color: #090 !important;
           }
         }
+      }
 
-        .layui-side-tree {
-          flex: 1;
+      .layui-side-tree {
+        flex: 1;
 
-          .layui-nav-item {
+        .layui-nav-item {
+          background: none !important;
+          border-bottom-color: #fff;
+
+          a {
+            color: #333 !important;
             background: none !important;
-            border-bottom-color: #fff;
+            border-bottom: none !important;
 
-            a {
-              color: #333 !important;
+            &:hover {
+              color: #090 !important;
+            }
+          }
+
+          .layui-this, &.layui-this {
+            > a {
+              color: #090 !important;
               background: none !important;
-              border-bottom: none !important;
+              font-weight: bold !important;
 
               &:hover {
-                color: #098 !important;
-              }
-            }
-
-            .layui-this, &.layui-this {
-              > a {
-                color: #098 !important;
                 background: none !important;
-                font-weight: bold !important;
-
-                &:hover {
-                  background: none !important;
-                }
               }
             }
+          }
 
-            &ed > a {
-              color: #999 !important;
-            }
+          &ed > a {
+            color: #999 !important;
           }
         }
       }
     }
+  }
 
-    > .layui-body {
-      > .think-page-body > .layui-card {
-        &:before {
-          top: 0;
-          left: 0;
-          bottom: 0;
-          z-index: 4;
-          content: '';
-          position: absolute;
-          box-shadow: @ShadowBodyRight;
-        }
-
-        > .layui-card-header {
-          box-shadow: none !important;
-          border-left: @BoxBottomLine;
-        }
-      }
+  > .layui-body > .think-page-body > .layui-card {
+    &:before {
+      top: 0;
+      left: 0;
+      bottom: 0;
+      z-index: 4;
+      content: '';
+      position: absolute;
+      box-shadow: @ShadowBodyRight;
     }
 
-    > .layui-header {
-      background: none !important;
+    > .layui-card-header {
+      border-left: @BoxBottomLine;
+    }
+  }
 
-      .layui-nav-item {
-        &.layui-this > a {
-          color: #098 !important;
-          font-weight: bold;
+  > .layui-header {
+    background: #fff !important;
+
+    .layui-nav-item {
+      &.layui-this > a {
+        color: #090 !important;
+        font-weight: bold;
+        background: none !important;
+      }
+
+      > a {
+        color: #333 !important;
+
+        &:hover {
+          color: #090 !important;
           background: none !important;
-        }
-
-        > a {
-          color: #333 !important;
-
-          &:hover {
-            color: #098 !important;
-            background: none !important;
-          }
         }
       }
     }
