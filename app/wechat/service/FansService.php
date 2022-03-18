@@ -47,6 +47,7 @@ class FansService extends Service
         if ($appid !== '') $user['appid'] = $appid;
         unset($user['privilege'], $user['groupid']);
         $this->app->event->trigger('WechatFansUpdate', $user);
+        foreach ($user as $k => $v) if ($v === '') unset($user[$k]);
         return !!data_save(WechatFans::class, $user, 'openid');
     }
 
