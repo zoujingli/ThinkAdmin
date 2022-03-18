@@ -79,8 +79,7 @@ class UserTokenService extends Service
     public static function token(int $uuid, string $type): array
     {
         // 清理无效认证数据
-        $time = time();
-        $map1 = [['token', '<>', 'token'], ['time', '<', $time]];
+        $map1 = [['token', '<>', 'token'], ['time', '<', $time = time()]];
         $map2 = [['token', '<>', 'token'], ['type', '=', $type], ['uuid', '=', $uuid]];
         DataUserToken::mk()->whereOr([$map1, $map2])->delete();
         // 创建新的认证数据
@@ -90,7 +89,7 @@ class UserTokenService extends Service
         $data = array_merge($map, [
             'uuid'   => $uuid,
             'time'   => $time + static::$expire,
-            'tokenv' => static::buildVerify()
+            'tokenv' => static::buildVerify(),
         ]);
         if (DataUserToken::mk()->insert($data) !== false) {
             return [1, '刷新认证成功', $data];
