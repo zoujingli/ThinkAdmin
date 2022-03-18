@@ -665,6 +665,8 @@ $(function () {
             option.id = table.id, option.elem = table, option.url = params.url || table.dataset.url || location.href;
             option.page = params.page !== false ? (params.page || true) : false, option.limit = params.limit || 20;
             option.loading = params.loading === true, option.autoSort = params.autoSort === true, option.cols = params.cols || [[]];
+            // 初始化不显示头部
+            option.css = (option.css || '') + '.layui-table-box{opacity:0}.layui-table-page{opacity:0}';
             // 默认动态设置页数, 动态设置最大高度
             if (option.page === true) option.page = {curr: layui.sessionData('pages')[option.id] || 1};
             if (option.height === 'full') if ($table.parents('.iframe-pagination').size()) {
@@ -675,8 +677,8 @@ $(function () {
             }
             // 动态计算最大页数
             option.done = function () {
-                $table.data('that', this);
                 layui.sessionData('pages', {key: table.id, value: this.page.curr || 1}), (option.loading = true);
+                $table.data('that', this).next().find('.layui-table-box,.layui-table-page').animate({opacity: 1})
                 $.form.reInit($table.next()).find('[data-load],[data-queue],[data-action],[data-iframe]').not('[data-table-id]').attr('data-table-id', table.id);
             }, option.parseData = function (res) {
                 if (typeof params.filter === 'function') res.data = params.filter(res.data, res);
@@ -685,9 +687,8 @@ $(function () {
                 if (curp > maxp && maxp > 1) $table.trigger('reload', {page: {curr: maxp}});
                 return res;
             };
-            // 实例并绑定的对象
+            // 实例并绑定事件
             $table.data('this', layui.table.render(bindData(option)));
-            // 绑定实例重载事件
             $table.bind('reload render reloadData', function (evt, opts) {
                 data = $.extend({}, data, (opts = opts || {}).where || {});
                 opts = bindData($.extend({}, opts, {loading: true}));
