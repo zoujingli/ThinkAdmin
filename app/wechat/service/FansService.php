@@ -32,9 +32,6 @@ class FansService extends Service
      * @param array $user 粉丝信息
      * @param string $appid 微信APPID
      * @return boolean
-     * @throws \think\db\exception\DataNotFoundException
-     * @throws \think\db\exception\DbException
-     * @throws \think\db\exception\ModelNotFoundException
      */
     public function set(array $user, string $appid = ''): bool
     {
@@ -46,9 +43,9 @@ class FansService extends Service
         }
         if ($appid !== '') $user['appid'] = $appid;
         unset($user['privilege'], $user['groupid']);
-        $this->app->event->trigger('WechatFansUpdate', $user);
         foreach ($user as $k => $v) if ($v === '') unset($user[$k]);
-        return !!data_save(WechatFans::class, $user, 'openid');
+        $this->app->event->trigger('WechatFansUpdate', $user);
+        return !!WechatFans::mUpdate($user, 'openid');
     }
 
     /**
