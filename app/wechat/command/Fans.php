@@ -49,10 +49,7 @@ class Fans extends Command
      */
     public function handle()
     {
-        $message = $this->_list();
-        $message .= $this->_tags();
-        $message .= $this->_black();
-        $this->setQueueSuccess($message);
+        $this->setQueueSuccess($this->_list() . $this->_tags() . $this->_black());
     }
 
     /**
