@@ -677,11 +677,13 @@ $(function () {
             }
             // 动态计算最大页数
             option.done = function () {
-                layui.sessionData('pages', {key: table.id, value: this.page.curr || 1}), (option.loading = true);
-                $table.data('that', this).next().find('.layui-table-box,.layui-table-page').animate({opacity: 1})
+                $table.data('that', this).next().find('.layui-table-box,.layui-table-page').animate({opacity: 1});
+                (option.loading = this.loading = true) && layui.sessionData('pages', {key: table.id, value: this.page.curr || 1});
                 $.form.reInit($table.next()).find('[data-load],[data-queue],[data-action],[data-iframe]').not('[data-table-id]').attr('data-table-id', table.id);
             }, option.parseData = function (res) {
-                if (typeof params.filter === 'function') res.data = params.filter(res.data, res);
+                if (typeof params.filter === 'function') {
+                    res.data = params.filter(res.data, res);
+                }
                 if (!this.page || !this.page.curr) return res;
                 var curp = this.page.curr, maxp = Math.ceil(res.count / option.limit);
                 if (curp > maxp && maxp > 1) $table.trigger('reload', {page: {curr: maxp}});
@@ -695,8 +697,7 @@ $(function () {
                 if (evt.type.indexOf('reload') > -1) {
                     var $that = $table.data('that');
                     if ($that && $that.page && $that.page.jump) {
-                        $that.sort = $that.initSort = opts.initSort;
-                        $that.where = data, $that.loading = opts.loading;
+                        $that.sort = $that.initSort = opts.initSort, $that.where = data;
                         if (opts.page && opts.page.curr) $that.page.curr = opts.page.curr || 1;
                         $that.page.jump({curr: $that.page.curr, limit: option.limit});
                     } else {
