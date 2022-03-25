@@ -1023,11 +1023,14 @@ $(function () {
 
     /*! 注册 data-tips-image 事件行为 */
     onEvent('click', '[data-tips-image]', function () {
-        var $imgs, items = [];
+        var items = [], $imgs;
         ($imgs = $(this).parent().find('[data-tips-image]')).map(function () {
             items.push({src: this.dataset.tipsImage || this.dataset.lazySrc || this.src});
-        }) && layui.layer.photos({anim: 5, photos: {start: $imgs.index(this), data: items}});
-        // $.previewImage(this.dataset.tipsImage || this.dataset.lazySrc || this.src, this.dataset.width);
+        }) && layui.layer.photos({
+            anim: 5, closeBtn: 1, photos: {start: $imgs.index(this), data: items}, tab: function (pic, $ele) {
+                $ele.find('.layui-layer-close').css({position: 'fixed', top: 0, right: 0});
+            }
+        });
     });
 
     /*! 注册 data-phone-view 事件行为 */
