@@ -1,5 +1,6 @@
 <form class="layui-form layui-card" data-table-id="UserTable" action="{:sysuri()}" data-auto="true" method="post">
     <div class="layui-card-body padding-left-40">
+
         <div class="layui-form-item">
             <label class="relative block">
                 <span class="help-label"><b>登录用户账号</b>Username</span>
@@ -27,7 +28,7 @@
                 <span class="help-label"><b>新的登录密码</b>New Password</span>
                 <input type="password" name="password" maxlength="32" pattern="^(?![\d]+$)(?![a-zA-Z]+$)(?![^\da-zA-Z]+$).{6,32}$" required placeholder="请输入新的登录密码" class="layui-input">
             </label>
-            <p class="color-desc">密码必需包含大小写字母、数字、符号的任意两者组合。</p>
+            <p class="color-desc">密码必须包含大小写字母、数字、符号的任意两者组合。</p>
         </div>
 
         <div class="layui-form-item">
@@ -35,7 +36,7 @@
                 <span class="help-label"><b>重复登录密码</b>Repeat Password</span>
                 <input type="password" name="repassword" maxlength="32" pattern="^(?![\d]+$)(?![a-zA-Z]+$)(?![^\da-zA-Z]+$).{6,32}$" required placeholder="请重复输入登录密码" class="layui-input">
             </label>
-            <p class="color-desc">密码必需包含大小写字母、数字、符号的任意两者组合。</p>
+            <p class="color-desc">密码必须包含大小写字母、数字、符号的任意两者组合。</p>
         </div>
     </div>
 
