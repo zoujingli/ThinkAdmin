@@ -12,7 +12,7 @@
                     <option value='{$menu.id}'>{$menu.spl|raw}{$menu.title}</option>
                     {/eq}{/foreach}
                 </select>
-                <p class="help-block"><b>必选</b>，请选择上级菜单或顶级菜单（目前最多支持三级菜单）</p>
+                <p class="help-block"><b>必选</b>，请选择上级菜单或顶级菜单 ( 目前最多支持三级菜单 )</p>
             </div>
         </div>
 
@@ -20,7 +20,7 @@
             <label class="layui-form-label">菜单名称</label>
             <div class="layui-input-block">
                 <input name="title" value='{$vo.title|default=""}' required placeholder="请输入菜单名称" class="layui-input">
-                <p class="help-block"><b>必选</b>，请填写菜单名称（如：系统管理），建议字符不要太长，一般4-6个汉字</p>
+                <p class="help-block"><b>必选</b>，请填写菜单名称 ( 如：系统管理 )，建议字符不要太长，一般 4-6 个汉字</p>
             </div>
         </div>
 
@@ -29,8 +29,8 @@
             <div class="layui-input-block">
                 <input onblur="this.value=this.value === ''?'#':this.value" name="url" required placeholder="请输入菜单链接" value="{$vo.url|default='#'}" class="layui-input">
                 <p class="help-block">
-                    <b>必选</b>，请填写链接地址或选择系统节点（如：https://domain.com/admin/user/index.html 或 admin/user/index）
-                    <br>当填写链接地址时，以下面的“权限节点”来判断菜单自动隐藏或显示，注意未填写“权限节点”时将不会隐藏该菜单哦
+                    <b>必选</b>，请填写链接地址或选择系统节点 ( 如：https://domain.com/admin/user/index.html 或 admin/user/index )
+                    <br>当填写链接地址时，以下面的 “权限节点” 来判断菜单自动隐藏或显示，注意未填写 “权限节点” 时将不会隐藏该菜单哦
                 </p>
             </div>
         </div>
@@ -39,7 +39,7 @@
             <label class="layui-form-label">链接参数</label>
             <div class="layui-input-block">
                 <input name="params" placeholder="请输入链接参数" value="{$vo.params|default=''}" class="layui-input">
-                <p class="help-block">可选，设置菜单链接的GET访问参数（如：name=1&age=3）</p>
+                <p class="help-block">可选，设置菜单链接的 GET 访问参数 ( 如：name=1&age=3 )</p>
             </div>
         </div>
 
@@ -47,7 +47,7 @@
             <label class="layui-form-label">权限节点</label>
             <div class="layui-input-block">
                 <input name="node" placeholder="请输入权限节点" value="{$vo.node|default=''}" class="layui-input">
-                <p class="help-block">可选，请填写系统权限节点（如：admin/user/index），未填写时默认解释"菜单链接"判断是否拥有访问权限；</p>
+                <p class="help-block">可选，请填写系统权限节点 ( 如：admin/user/index )，未填写时默认解释"菜单链接"判断是否拥有访问权限；</p>
             </div>
         </div>
 
