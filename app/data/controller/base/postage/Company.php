@@ -88,9 +88,8 @@ class Company extends Controller
         try {
             $result = ExpressService::instance()->company();
             if (empty($result['code'])) $this->error($result['info']);
-            foreach ($result['data'] as $vo) data_save(BasePostageCompany::class, [
-                'code_1' => $vo['code_1'], 'code_2' => $vo['code_2'],
-                'code_3' => $vo['code_3'], 'name' => $vo['title'], 'deleted' => 0,
+            foreach ($result['data'] as $vo) BasePostageCompany::mUpdate([
+                'code_1' => $vo['code_1'], 'code_2' => $vo['code_2'], 'code_3' => $vo['code_3'], 'name' => $vo['title'], 'deleted' => 0,
             ], 'code_1');
             $this->success('同步快递公司成功！');
         } catch (HttpResponseException $exception) {
