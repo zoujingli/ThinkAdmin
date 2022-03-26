@@ -664,7 +664,7 @@ $(function () {
             var option = params || {}, data = option.where || {}, sort = option.initSort || option.sort || {};
             option.id = table.id, option.elem = table, option.url = params.url || table.dataset.url || location.href;
             option.page = params.page !== false ? (params.page || true) : false, option.limit = params.limit || 20;
-            option.loading = params.loading !== false, option.autoSort = params.autoSort === true, option.cols = params.cols || [[]];
+            option.loading = !!params.loading, option.autoSort = params.autoSort === true, option.cols = params.cols || [[]];
             // 初始化不显示头部
             option.css = (option.css || '') + '.layui-table-header{opacity:0}.layui-table-body{opacity:0}.layui-table-page{opacity:0}';
             // 默认动态设置页数, 动态设置最大高度
