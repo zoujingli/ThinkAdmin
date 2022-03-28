@@ -1022,13 +1022,12 @@ $(function () {
     });
 
     /*! 注册 data-tips-image 事件行为 */
-    onEvent('click', '[data-tips-image]', function () {
-        var items = [], $imgs;
-        ($imgs = $(this).parent().find('[data-tips-image]')).map(function () {
-            items.push({src: this.dataset.tipsImage || this.dataset.lazySrc || this.src});
+    onEvent('click', '[data-tips-image]', function (event) {
+        (event.items = [], event.$imgs = $(this).parent().find('[data-tips-image]')).map(function () {
+            event.items.push({src: this.dataset.tipsImage || this.dataset.lazySrc || this.src});
         }) && layui.layer.photos({
-            anim: 5, closeBtn: 1, photos: {start: $imgs.index(this), data: items}, tab: function (pic, $ele) {
-                $ele.find('.layui-layer-close').css({position: 'fixed', top: 0, right: 0});
+            anim: 5, closeBtn: 1, photos: {start: event.$imgs.index(this), data: event.items}, tab: function (pic, $ele) {
+                $ele.find('.layui-layer-close').css({top: 0, right: 0, position: 'fixed'});
             }
         });
     });
