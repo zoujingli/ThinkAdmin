@@ -96,6 +96,21 @@ $(function () {
         return $body.off(event, select).on(event, select, callable);
     }
 
+    /*! 注册确认回调 */
+    function onConfirm(confirm, callable) {
+        confirm ? $.msg.confirm(confirm, callable) : callable();
+    }
+
+    /*! 获取加载回调 */
+    onConfirm.getLoadCallable = function (tabldId, callable) {
+        typeof callable === 'function' && callable();
+        return tabldId ? function (ret) {
+            if (ret.code > 0) return $.msg.success(ret.info, 3, function () {
+                $.layTable.reload(tabldId);
+            }) && false;
+        } : false;
+    }
+
     /*! 读取 data-rule 绑定 table 值 */
     function applyRuleValue(elem, data) {
         // 新 tableId 规则兼容处理
@@ -312,9 +327,7 @@ $(function () {
                 return $.msg.mdx.push(layer.open({
                     type: 1, btn: false, area: area || "800px", resize: false, content: res, title: name || '', offset: offset || 'auto', success: function ($dom, idx) {
                         $.form.reInit($dom.off('click', '[data-close]').on('click', '[data-close]', function () {
-                            (function (confirm, callable) {
-                                confirm ? $.msg.confirm(confirm, callable) : callable();
-                            })(this.dataset.confirm, function () {
+                            onConfirm(this.dataset.confirm, function () {
                                 layer.close(idx);
                             });
                         }));
@@ -363,7 +376,7 @@ $(function () {
             onEvent('click', '[data-target-menu-type]', function () {
                 layui.data('AdminMenuType', {key: 'mini', value: layout.toggleClass(mclass).hasClass(mclass)});
             }).on('click', '[data-submenu-layout]>a', function () {
-                setTimeout("$.menu.sync(1);", 100);
+                setTimeout("$.menu.sync(1)", 100);
             }).on('mouseenter', '[data-target-tips]', function (evt) {
                 if (!layout.hasClass(mclass) || !this.dataset.targetTips) return;
                 evt.idx = layer.tips(this.dataset.targetTips, this, {time: 0});
@@ -424,7 +437,8 @@ $(function () {
             /* 绑定表单元素 */
             this.form = $(form);
             /* 绑定元素事件, 筛选表单元素 */
-            this.evts = 'blur change', this.tags = 'input,select,textarea';
+            this.evts = 'blur change';
+            this.tags = 'input,select,textarea';
             /* 预设检测规则 */
             this.patterns = {
                 phone: '^1[3-9][0-9]{9}$',
@@ -506,12 +520,10 @@ $(function () {
                         return $.msg.success(ret.info, 3, function () {
                             (typeof ret.data === 'string' && ret.data) ? location.href = ret.data : $.layTable.reload(taid);
                             $.msg.close($.msg.mdx.length > 0 ? $.msg.mdx.pop() : null);
-                        }), false;
+                        }) && false;
                     }
                 } : undefined);
-                (function (confirm, callable) {
-                    confirm ? $.msg.confirm(confirm, callable) : callable();
-                })(form.dataset.confirm, function () {
+                onConfirm(form.dataset.confirm, function () {
                     $.form.load(href, data, type, call, true, tips, time);
                 });
             });
@@ -531,12 +543,10 @@ $(function () {
         var rules = {key: /[a-zA-Z0-9_]+|(?=\[])/g, push: /^$/, fixed: /^\d+$/, named: /^[a-zA-Z0-9_]+$/};
         this.build = function (base, key, value) {
             return (base[key] = value), base;
-        };
-        this.pushCounter = function (name) {
+        }, this.pushCounter = function (name) {
             if (push[name] === undefined) push[name] = 0;
             return push[name]++;
-        };
-        $.each($(this).serializeArray(), function () {
+        }, $.each($(this).serializeArray(), function () {
             var key, keys = this.name.match(rules.key), merge = this.value, name = this.name;
             while ((key = keys.pop()) !== undefined) {
                 name = name.replace(new RegExp("\\[" + key + "\\]$"), '');
@@ -607,7 +617,7 @@ $(function () {
             var $text = $('<textarea class="layui-input layui-input-inline layui-tag-input"></textarea>');
             var $tags = $('<div class="layui-tags"></div>').append($text);
             $this.parent().append($tags), $text.off('keydown blur'), (tags.length > 0 && showTags(tags));
-            $text.on('keydown blur', function (event, value) {
+            $text.on('blur keydown', function (event, value) {
                 if (event.keyCode === 13 || event.type === 'blur') {
                     event.preventDefault(), (value = $text.val().replace(/^\s*|\s*$/g, ''));
                     if (tags.indexOf($(this).val()) > -1) return layer.msg('该标签已经存在！');
@@ -759,13 +769,13 @@ $(function () {
     /*! 以手机模式显示内容 */
     $.previewPhonePage = function (href, title) {
         var template = '<div class="mobile-preview"><div class="mobile-header">{{d.title}}</div><div class="mobile-body"><iframe src="{{d.url}}"></iframe></div></div>';
-        layer.style(layer.open({type: true, resize: false, scrollbar: false, area: ['320px', '600px'], title: false, closeBtn: true, shadeClose: false, skin: 'layui-layer-nobg', content: layui.laytpl(template).render({title: title || '公众号', url: href})}), {boxShadow: 'none'});
+        layer.style(layer.open({type: true, resize: false, scrollbar: false, area: ['320px', '600px'], title: false, closeBtn: true, shadeClose: false, skin: 'layui-layer-nobg', content: laytpl(template).render({title: title || '公众号', url: href})}), {boxShadow: 'none'});
     };
 
     /*! 显示任务进度消息 */
     $.loadQueue = function (code, doScript, element) {
         var doAjax = true, doReload = false;
-        layui.layer.open({
+        layer.open({
             type: 1, title: false, area: ['560px', '315px'], anim: 2, shadeClose: false, end: function () {
                 doAjax = false;
                 if (doReload && doScript) {
@@ -835,14 +845,12 @@ $(function () {
 
     /*! 注册 data-search 表单搜索行为 */
     onEvent('submit', 'form.form-search', function () {
-        var tableId = this.dataset.tableId;
-        if (tableId) return $('table#' + tableId).trigger('reload', {
+        if (this.dataset.tableId) return $('table#' + this.dataset.tableId).trigger('reload', {
             page: {curr: 1}, where: $(this).formToJson()
         });
         var url = $(this).attr('action').replace(/&?page=\d+/g, '');
         if ((this.method || 'get').toLowerCase() === 'get') {
-            var split = url.indexOf('?') > -1 ? '&' : '?';
-            var stype = location.href.indexOf('spm=') > -1 ? '#' : '';
+            var split = url.indexOf('?') > -1 ? '&' : '?', stype = location.href.indexOf('spm=') > -1 ? '#' : '';
             return location.href = stype + $.menu.parseUri(url + split + $(this).serialize());
         }
         return $.form.load(url, this, 'post');
@@ -860,15 +868,8 @@ $(function () {
     /*! 注册 data-load 事件行为 */
     onEvent('click', '[data-load]', function () {
         var emap = this.dataset, data = {};
-        if (this.dataset.rule && (applyRuleValue(this, data)) === false) return false;
-        (function (confirm, callable) {
-            confirm ? $.msg.confirm(confirm, callable) : callable();
-        })(emap.confirm, function () {
-            $.form.load(emap.load, data, 'get', emap.tableId ? function (ret) {
-                if (ret.code > 0) return $.msg.success(ret.info, 3, function () {
-                    $.layTable.reload(emap.tableId);
-                }), false;
-            } : false, true, emap.tips, emap.time);
+        if (emap.rule && (applyRuleValue(this, data)) === false) return false; else onConfirm(emap.confirm, function () {
+            $.form.load(emap.load, data, 'get', onConfirm.getLoadCallable(emap.tableId), true, emap.tips, emap.time);
         });
     });
 
@@ -904,12 +905,10 @@ $(function () {
         var that = $(this), emap = this.dataset, data = {'_token_': emap.token || emap.csrf || '--'};
         var attrs = (emap.value || '').replace('{value}', that.val()).split(';');
         for (var i in attrs) data[attrs[i].split('#')[0]] = attrs[i].split('#')[1];
-        (function (confirm, callable) {
-            confirm ? $.msg.confirm(confirm, callable) : callable();
-        })(emap.confirm, function () {
+        onConfirm(emap.confirm, function () {
             $.form.load(emap.actionBlur || emap.blurAction, data, emap.method || 'post', function (ret) {
-                return that.css('border', (ret && ret.code) ? '1px solid #e6e6e6' : '1px solid red'), false;
-            }, emap.loading !== 'false', emap.loading, emap.time)
+                return that.css('border', (ret && ret.code) ? '1px solid #e6e6e6' : '1px solid red') && false;
+            }, emap.loading !== 'false', emap.loading, emap.time);
         });
     });
 
@@ -933,15 +932,8 @@ $(function () {
     onEvent('click', '[data-action]', function () {
         var emap = this.dataset, data = {'_token_': emap.token || emap.csrf || '--'};
         var load = emap.loading !== 'false', tips = typeof load === 'string' ? load : undefined;
-        if ((applyRuleValue(this, data)) === false) return false;
-        (function (confirm, callable) {
-            confirm ? $.msg.confirm(confirm, callable) : callable();
-        })(emap.confirm, function () {
-            $.form.load(emap.action, data, emap.method || 'post', emap.tableId ? function (ret) {
-                if (ret.code > 0) return $.msg.success(ret.info, 3, function () {
-                    $.layTable.reload(emap.tableId);
-                }), false;
-            } : false, load, tips, emap.time)
+        if ((applyRuleValue(this, data)) === false) return false; else onConfirm(emap.confirm, function () {
+            $.form.load(emap.action, data, emap.method || 'post', onConfirm.getLoadCallable(emap.tableId), load, tips, emap.time)
         });
     });
 
@@ -974,25 +966,22 @@ $(function () {
 
     /*! 注册 data-copy 事件行为 */
     onEvent('click', '[data-copy]', function () {
-        var content = this.dataset.copy || this.innerText;
+        var copy = this.dataset.copy || this.innerText;
         if (window.clipboardData) {
-            window.clipboardData.clearData('text');
-            window.clipboardData.setData('text', content);
-            return $.msg.tips('已复制到剪贴板！');
+            window.clipboardData.setData('text', copy);
+            $.msg.tips('已复制到剪贴板！');
+        } else {
+            var $input = $('<textarea readonly></textarea>');
+            $input.css({position: 'fixed', top: '-500px'}).appendTo($body).val(copy).select();
+            $.msg.tips(document.execCommand('Copy') ? '已复制到剪贴板！' : '请使用鼠标操作复制！') && $input.remove();
         }
-        var $textarea = $('<textarea readonly style="position:fixed;top:-500px"></textarea>');
-        $textarea.appendTo($body).val(content).select();
-        $.msg.tips(document.execCommand('Copy') ? '已复制到剪贴板！' : '请使用鼠标操作复制！');
-        $textarea.remove();
     });
 
     /*! 异步任务状态监听与展示 */
     onEvent('click', '[data-queue]', function () {
-        var that = this;
-        (function (confirm, callable) {
-            confirm ? $.msg.confirm(confirm, callable) : callable();
-        })(this.dataset.confirm, function () {
-            $.form.load(that.dataset.queue, {}, 'post', function (ret) {
+        var that = this, emap = this.dataset;
+        onConfirm(emap.confirm || false, function () {
+            $.form.load(emap.queue, {}, 'post', function (ret) {
                 if (typeof ret.data === 'string' && ret.data.indexOf('Q') === 0) {
                     return $.loadQueue(ret.data, true, that), false;
                 }
@@ -1005,7 +994,7 @@ $(function () {
         var opts = {tips: [$(this).attr('data-tips-type') || 3, '#78BA32'], time: 0};
         var layidx = layer.tips($(this).attr('data-tips-text') || this.innerText, this, opts);
         $(this).off('mouseleave').on('mouseleave', function () {
-            setTimeout("layui.layer.close('" + layidx + "')", 100);
+            setTimeout("layer.close('" + layidx + "')", 100);
         });
     });
 
@@ -1016,7 +1005,7 @@ $(function () {
             img.layopt = {time: 0, skin: 'layui-layer-image', anim: 5, isOutAnim: false, scrollbar: false};
             img.referrerPolicy = 'no-referrer', img.style.maxWidth = '260px', img.style.maxHeight = '260px';
             ele.data('layidx', layer.tips(img.outerHTML, this, img.layopt)).off('mouseleave').on('mouseleave', function () {
-                layui.layer.close(ele.data('layidx'));
+                layer.close(ele.data('layidx'));
             });
         }
     });
@@ -1025,7 +1014,7 @@ $(function () {
     onEvent('click', '[data-tips-image]', function (event) {
         (event.items = [], event.$imgs = $(this).parent().find('[data-tips-image]')).map(function () {
             event.items.push({src: this.dataset.tipsImage || this.dataset.lazySrc || this.src});
-        }) && layui.layer.photos({
+        }) && layer.photos({
             anim: 5, closeBtn: 1, photos: {start: event.$imgs.index(this), data: event.items}, tab: function (pic, $ele) {
                 $ele.find('.layui-layer-close').css({top: 0, right: 0, position: 'fixed'});
             }
@@ -1046,10 +1035,8 @@ $(function () {
 
     /*! 图片加载异常处理 */
     document.addEventListener('error', function (event) {
-        var elem = event.target;
-        if (elem.nodeName === 'IMG') {
-            elem.src = baseRoot + 'theme/img/404_icon.png';
-        }
+        if (event.target.nodeName !== 'IMG') return;
+        event.target.src = baseRoot + 'theme/img/404_icon.png';
     }, true);
 
     /*! 系统菜单表单页面初始化 */
