@@ -234,8 +234,8 @@ $(function () {
         };
         /*! 内容区域动态加载后初始化 */
         this.reInit = function ($dom) {
-            layui.form.render(), layui.element.render();
-            $(window).trigger('scroll'), $.vali.listen(this), $dom = $dom || $(this.selecter);
+            $.vali.listen($dom = $dom || $(this.selecter));
+            layui.form.render(), layui.element.render(), $(window).trigger('scroll');
             return $dom.find('[required]').map(function ($parent) {
                 if (($parent = $(this).parent()) && $parent.is('label')) {
                     $parent.addClass('label-required-prev');
@@ -326,12 +326,12 @@ $(function () {
                 if (typeof res === 'object') return $.msg.auto(res), false;
                 return $.msg.mdx.push(layer.open({
                     type: 1, btn: false, area: area || "800px", resize: false, content: res, title: name || '', offset: offset || 'auto', success: function ($dom, idx) {
+                        typeof call === 'function' && call.call(that, $dom);
                         $.form.reInit($dom.off('click', '[data-close]').on('click', '[data-close]', function () {
                             onConfirm(this.dataset.confirm, function () {
                                 layer.close(idx);
                             });
                         }));
-                        typeof call === 'function' && call.call(that, $dom);
                     }
                 })), false;
             }, load, tips);
@@ -509,13 +509,14 @@ $(function () {
     };
 
     /*! 自动监听表单 */
-    $.vali.listen = function () {
-        $('form[data-auto]').map(function (index, form) {
+    $.vali.listen = function ($dom, $els) {
+        $els = $($dom || $body).find('form[data-auto]');
+        $dom && $($dom).filter('form[data-auto]') && $els.add($dom);
+        $els.size() > 0 && $els.map(function (idx, form) {
             $(this).vali(function (data) {
-                var taid = form.dataset.tableId || false;
-                var type = form.method || 'post', href = form.action || location.href;
-                var tips = form.dataset.tips || undefined, time = form.dataset.time || undefined;
-                var call = window[form.dataset.callable || '_default_callable'] || (taid ? function (ret) {
+                var emap = form.dataset, type = form.method || 'POST', href = form.action || location.href;
+                var tips = emap.tips || undefined, time = emap.time || undefined, taid = emap.tableId || false;
+                var call = window[emap.callable || '_default_callable'] || (taid ? function (ret) {
                     if (typeof ret === 'object' && ret.code > 0 && $('#' + taid).size() > 0) {
                         return $.msg.success(ret.info, 3, function () {
                             (typeof ret.data === 'string' && ret.data) ? location.href = ret.data : $.layTable.reload(taid);
@@ -523,7 +524,7 @@ $(function () {
                         }) && false;
                     }
                 } : undefined);
-                onConfirm(form.dataset.confirm, function () {
+                onConfirm(emap.confirm, function () {
                     $.form.load(href, data, type, call, true, tips, time);
                 });
             });
@@ -589,7 +590,7 @@ $(function () {
         return this.each(function () {
             if ($(this).data('inited')) return true; else $(this).data('inited', true);
             var $in = $(this), $bt = $('<a data-file="mul" class="uploadimage"></a>'), imgs = this.value ? this.value.split('|') : []
-            $in.after($bt.attr('data-size', $in.data('size') || 0).attr('data-type', $in.data('type') || 'png,jpg,gif,jpeg').uploadFile(function (src) {
+            $in.after($bt.attr('data-size', $in.data('size') || 0).attr('data-type', $in.data('type') || 'gif,png,jpg,jpeg').uploadFile(function (src) {
                 imgs.push(src), $in.val(imgs.join('|')), showImageContainer([src]);
             })), (imgs.length > 0 && showImageContainer(imgs));
 
@@ -1040,5 +1041,5 @@ $(function () {
     }, true);
 
     /*! 系统菜单表单页面初始化 */
-    $.menu.listen(), $.vali.listen(), $.form.reInit($body);
+    $.menu.listen(), $.form.reInit($body);
 });
