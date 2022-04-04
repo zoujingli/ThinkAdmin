@@ -611,6 +611,20 @@ $(function () {
         });
     };
 
+    /*! 上传单个视频 */
+    $.fn.uploadOneVideo = function () {
+        return this.each(function () {
+            if ($(this).data('inited')) return true; else $(this).data('inited', true);
+            var $in = $(this), $bt = $('<a data-file class="uploadimage transition"><span class="layui-icon">&#x1006;</span><span class="layui-icon">&#xe615;</span></a>').data('input', this);
+            $bt.attr('data-size', $in.data('size') || 0).attr('data-type', $in.data('type') || 'mp4').find('span').on('click', function (event) {
+                event.stopPropagation();
+                if ($(this).index() === 0) $bt.attr('style', ''), $in.val(''); else $in.val() && $.previewImage(encodeURI($in.val()));
+            }), $in.on('change', function () {
+                if (this.value) $bt.html('<video width="76" height="76" controls><source src="' + encodeURI(this.value) + '" type="video/mp4"></video>');
+            }).after($bt).trigger('change');
+        });
+    };
+
     /*! 标签输入插件 */
     $.fn.initTagInput = function () {
         return this.each(function () {
