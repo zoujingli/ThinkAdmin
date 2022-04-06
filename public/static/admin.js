@@ -104,10 +104,14 @@ $(function () {
     /*! 获取加载回调 */
     onConfirm.getLoadCallable = function (tabldId, callable) {
         typeof callable === 'function' && callable();
-        return tabldId ? function (ret) {
-            if (ret.code > 0) return $.msg.success(ret.info, 3, function () {
-                $.layTable.reload(tabldId);
-            }) && false;
+        return tabldId ? function (ret, time) {
+            if (ret.code > 0) {
+                if (time === 'false') $.layTable.reload(tabldId);
+                else $.msg.success(ret.info, time, function () {
+                    $.layTable.reload(tabldId);
+                });
+                return false;
+            }
         } : false;
     }
 
@@ -295,8 +299,9 @@ $(function () {
                         this.success(XMLHttpRequest.responseText);
                     }
                 }, success: function (ret) {
-                    if (typeof callable === 'function' && callable.call(that, ret) === false) return false;
-                    return typeof ret === 'object' ? $.msg.auto(ret, time || ret.wait || undefined) : that.show(ret);
+                    time = time || ret.wait || undefined;
+                    if (typeof callable === 'function' && callable.call(that, ret, time) === false) return false;
+                    return typeof ret === 'object' ? $.msg.auto(ret, time) : that.show(ret);
                 }, complete: function () {
                     $.msg.page.done();
                     $.msg.close(loadidx);
