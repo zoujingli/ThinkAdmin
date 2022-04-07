@@ -238,14 +238,15 @@ $(function () {
         };
         /*! 内容区域动态加载后初始化 */
         this.reInit = function ($dom) {
-            $.vali.listen($dom = $dom || $(this.selecter));
             layui.form.render(), layui.element.render(), $(window).trigger('scroll');
-            return $dom.find('[required]').map(function ($parent) {
-                if (($parent = $(this).parent()) && $parent.is('label')) {
-                    $parent.addClass('label-required-prev');
-                } else {
-                    $parent.prevAll('label').addClass('label-required-next');
-                }
+            $.vali.listen($dom = $dom || $(this.selecter)), $body.trigger('reInit', $dom);
+            return $dom.find('[required]').map(function () {
+                this.$parent = $(this).parent();
+                if (this.$parent.is('label')) this.$parent.addClass('label-required-prev');
+                else this.$parent.prevAll('label.layui-form-label').addClass('label-required-next');
+            }), $dom.find('[data-lazy-src]:not([data-lazy-loaded])').map(function () {
+                if (this.dataset.lazyLoaded === 'true') return; else this.dataset.lazyLoaded = 'true';
+                if (this.nodeName === 'IMG') this.src = this.dataset.lazySrc; else this.style.backgroundImage = 'url(' + this.dataset.lazySrc + ')';
             }), $dom.find('input[data-date-range]').map(function () {
                 this.setAttribute('autocomplete', 'off'), laydate.render({
                     type: this.dataset.dateRange || 'date', range: true, elem: this, done: function (value) {
@@ -258,13 +259,7 @@ $(function () {
                         $(this.elem).val(value).trigger('change');
                     }
                 });
-            }), $dom.find('[data-lazy-src]:not([data-lazy-loaded])').each(function () {
-                if (this.dataset.lazyLoaded !== 'true') {
-                    this.dataset.lazyLoaded = 'true';
-                    if (this.nodeName === 'IMG') this.src = this.dataset.lazySrc;
-                    else this.style.backgroundImage = 'url(' + this.dataset.lazySrc + ')';
-                }
-            }), $body.trigger('reInit', $dom), $dom;
+            }), $dom;
         };
         /*! 在内容区显示视图 */
         this.show = function (html) {
