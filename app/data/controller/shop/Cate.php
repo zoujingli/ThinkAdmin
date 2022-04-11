@@ -34,9 +34,6 @@ class Cate extends Controller
      */
     protected function _index_page_filter(array &$data)
     {
-        foreach ($data as &$vo) {
-            $vo['ids'] = join(',', DataExtend::getArrSubIds($data, $vo['id']));
-        }
         $data = DataExtend::arr2table($data);
     }
 

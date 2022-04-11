@@ -30,7 +30,7 @@
         {foreach $list as $key=>$vo}
         <tr>
             <td class='list-table-check-td think-checkbox'>
-                <label><input class="list-check-box" type='checkbox' value='{$vo.ids}'></label>
+                <label><input class="list-check-box" type='checkbox' value='{$vo.sps}'></label>
             </td>
             <td class='list-table-sort-td'>
                 <label><input class="list-sort-input" data-action-blur="{:sysuri()}" data-loading="false" data-value="id#{$vo.id};action#sort;sort#{value}" value="{$vo.sort}"></label>
@@ -49,15 +49,15 @@
                 <!--{/if}-->
 
                 <!--{if $vo.status eq 0 and auth("state")}-->
-                <a class="layui-btn layui-btn-warm layui-btn-xs" data-action="{:url('state')}" data-csrf="{:systoken('state')}" data-value="id#{$vo.ids};status#1">激 活</a>
+                <a class="layui-btn layui-btn-warm layui-btn-xs" data-action="{:url('state')}" data-csrf="{:systoken('state')}" data-value="id#{$vo.sps};status#1">激 活</a>
                 <!--{/if}-->
 
                 <!--{if $vo.status eq 1 and auth("state")}-->
-                <a class="layui-btn layui-btn-warm layui-btn-xs" data-action="{:url('state')}" data-csrf="{:systoken('state')}" data-value="id#{$vo.ids};status#0">禁 用</a>
+                <a class="layui-btn layui-btn-warm layui-btn-xs" data-action="{:url('state')}" data-csrf="{:systoken('state')}" data-value="id#{$vo.sps};status#0">禁 用</a>
                 <!--{/if}-->
 
                 <!--{if auth("remove")}-->
-                <a class="layui-btn layui-btn-danger layui-btn-xs" data-action="{:url('remove')}" data-confirm="确定要删除数据吗?" data-csrf="{:systoken('remove')}" data-value="id#{$vo.ids}">删 除</a>
+                <a class="layui-btn layui-btn-danger layui-btn-xs" data-action="{:url('remove')}" data-confirm="确定要删除数据吗?" data-csrf="{:systoken('remove')}" data-value="id#{$vo.sps}">删 除</a>
                 <!--{/if}-->
 
             </td>
