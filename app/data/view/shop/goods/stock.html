@@ -1,4 +1,4 @@
-<form action="{:sysuri()}" autocomplete="off" class="layui-form layui-card" data-auto="true" method="post">
+<form action="{:sysuri()}?code={$get.code|default=''}" autocomplete="off" class="layui-form layui-card" data-auto="true" method="post">
     <div class="layui-card-body padding-left-40">
 
         <div class="layui-form-item relative block">
@@ -44,7 +44,7 @@
                     </thead>
                 </table>
                 <div style="max-height:500px;overflow-y:scroll">
-                    <table class="layui-table margin-0" lay-skin="nob">
+                    <table class="layui-table margin-0" lay-skin="line">
                         <colgroup>
                             <col style="width:auto">
                             <col style="width:80px">
@@ -66,9 +66,9 @@
                             <td class="padding-0 nowrap">
                                 <input name="goods_code[]" type="hidden" value="{$goods.goods_code|default=''}">
                                 <input name="goods_spec[]" type="hidden" value="{$goods.goods_spec|default=''}">
-                                <label>
-                                    <input class="layui-input text-right border-0 padding-right-40" data-blur-number="0" maxlength="20" name="goods_stock[]" value="0">
-                                    <span class="input-right-icon layui-bg-gray">件</span>
+                                <label class="relative flex flex-align-center">
+                                    <input class="layui-input text-center border-0 flex-1" type="number" min="0" data-blur-number="0" maxlength="20" name="goods_stock[]" value="0">
+                                    <span class="layui-bg-gray padding-left-5 padding-right-5">件</span>
                                 </label>
                             </td>
                         </tr>
@@ -81,6 +81,7 @@
     </div>
 
     <div class="hr-line-dashed"></div>
+
     <div class="layui-form-item text-center">
         <button class="layui-btn" type='submit'>确定入库</button>
         <button class="layui-btn layui-btn-danger" data-close data-confirm="确定要取消入库吗？" type='button'>取消入库</button>
@@ -90,11 +91,12 @@
 <script>
     $('[data-batchset]').on('click', function () {
         layer.prompt({
-            title: '请输入库存数量【 取值范围：1 - 999999 】', formType: 0, value: 1, success: function ($fn) {
-                $fn.find('.layui-layer-input').attr({'data-value-min': 1, 'data-value-max': 999999, 'data-blur-number': 0});
+            title: '请输入库存数量【 取值范围：1 - 999999 】', formType: 0, value: 1, success: function ($ele) {
+                $ele.find('.layui-layer-input').attr({'data-value-min': 1, 'data-value-max': 999999, 'data-blur-number': 0});
             }
         }, function (value, index) {
-            layer.close(index), $('[name^="goods_stock"]').val(parseInt(value) || 0);
+            layer.close(index);
+            $('[name^="goods_stock"]').val(parseInt(value) || 0);
         });
     });
 </script>
