@@ -2,15 +2,15 @@
 
 {block name="button"}
 <!--{if $type eq 'index' and auth("add")}-->
-<button data-modal='{:url("add")}' class='layui-btn layui-btn-sm layui-btn-primary'>添加菜单</button>
+<button data-modal='{:url("add")}' data-table-id="MenuTable" class='layui-btn layui-btn-sm layui-btn-primary'>添加菜单</button>
 <!--{/if}-->
 
 <!--{if $type eq 'index' and auth("state")}-->
-<button data-action='{:url("state")}' data-rule="id#{key};status#0" class='layui-btn layui-btn-sm layui-btn-primary'>禁用菜单</button>
+<button data-action='{:url("state")}' data-table-id="MenuTable" data-rule="id#{sps};status#0" class='layui-btn layui-btn-sm layui-btn-primary'>禁用菜单</button>
 <!--{/if}-->
 
 <!--{if $type eq 'recycle' and auth("state")}-->
-<button data-action='{:url("state")}' data-rule="id#{key};status#1" class='layui-btn layui-btn-sm layui-btn-primary'>激活菜单</button>
+<button data-action='{:url("state")}' data-table-id="MenuTable" data-rule="id#{spp};status#1" class='layui-btn layui-btn-sm layui-btn-primary'>激活菜单</button>
 <!--{/if}-->
 {/block}
 
@@ -63,12 +63,14 @@
 
         // 数据状态切换操作
         layui.form.on('switch(StatusSwitch)', function (obj) {
-            var data = {id: obj.value, status: obj.elem.checked > 0 ? 1 : 0};
-            if (data.status > 0) data.id += obj.elem.dataset.path.replace(/-/g, ',');
+            var data = {status: obj.elem.checked > 0 ? 1 : 0};
+            data.id = data.status > 0 ? obj.elem.dataset.spp : obj.elem.dataset.sps;
             $.form.load("{:url('state')}", data, 'post', function (ret) {
                 if (ret.code < 1) $.msg.error(ret.info, 3, function () {
                     $('#MenuTable').trigger('reload');
-                }); else $('#MenuTable').trigger('reload');
+                }); else {
+                    $('#MenuTable').trigger('reload');
+                }
                 return false;
             }, false);
         });
@@ -79,7 +81,7 @@
 <script type="text/html" id="StatusSwitchTpl">
     <!--{if auth("state")}-->
     {{# if( "{$type|default='index'}"==='index' || (d.spc<1 || d.status<1)){ }}
-    <input type="checkbox" value="{{d.sps}}" data-path="{{d.path}}" lay-skin="switch" lay-text="已激活|已禁用" lay-filter="StatusSwitch" {{d.status>0?'checked':''}}>
+    <input type="checkbox" value="{{d.sps}}" data-sps="{{d.sps}}" data-spp="{{d.spp}}" lay-skin="switch" lay-text="已激活|已禁用" lay-filter="StatusSwitch" {{d.status>0?'checked':''}}>
     {{# }else{ }}
     {{d.status ? '<b class="color-green">已激活</b>' : '<b class="color-red">已禁用</b>'}}
     {{# } }}

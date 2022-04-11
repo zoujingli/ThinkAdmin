@@ -18,7 +18,6 @@ namespace app\admin\controller;
 
 use think\admin\Controller;
 use think\admin\extend\DataExtend;
-use think\admin\helper\QueryHelper;
 use think\admin\model\SystemMenu;
 use think\admin\service\AdminService;
 use think\admin\service\MenuService;
