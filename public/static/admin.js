@@ -703,9 +703,9 @@ $(function () {
             }
             // 动态计算最大页数
             option.done = function () {
-                $table.data('that', this).next().find(cls.join(',')).animate({opacity: 1});
-                (option.loading = this.loading = true) && layui.sessionData('pages', {key: table.id, value: this.page.curr || 1});
+                layui.sessionData('pages', {key: table.id, value: this.page.curr || 1});
                 $.form.reInit($table.next()).find('[data-load],[data-queue],[data-action],[data-iframe]').not('[data-table-id]').attr('data-table-id', table.id);
+                (option.loading = this.loading = true) && $table.data('next', this).next().find(cls.join(',')).animate({opacity: 1});
             }, option.parseData = function (res) {
                 if (typeof params.filter === 'function') {
                     res.data = params.filter(res.data, res);
