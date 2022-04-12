@@ -67,9 +67,9 @@
             object.data.id = object.value.split('|')[object.data.status] || object.value;
             $.form.load("{:url('state')}", object.data, 'post', function (ret) {
                 if (ret.code < 1) $.msg.error(ret.info, 3, function () {
-                    $('#FormTable').trigger('reload');
+                    $('#MenuTable').trigger('reload');
                 }); else {
-                    $('#FormTable').trigger('reload');
+                    $('#MenuTable').trigger('reload');
                 }
                 return false;
             }, false);
