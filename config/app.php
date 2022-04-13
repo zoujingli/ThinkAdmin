@@ -40,5 +40,5 @@ return [
     // CORS 授权请求方法
     'cors_methods'     => 'GET,PUT,POST,PATCH,DELETE',
     // CORS 跨域头部字段
-    'cors_headers'     => 'Api-Name,Api-Type,Api-Token,User-Form-Token,User-Token,Token',
+    'cors_headers'     => 'Api-Type,Api-Name,Api-Uuid,Api-Token,User-Form-Token,User-Token,Token',
 ];
