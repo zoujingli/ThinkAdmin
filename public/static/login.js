@@ -17,14 +17,14 @@ $(function () {
     window.$body = $('body');
 
     /*! 后台加密登录处理 */
-    $body.find('[data-login-form]').map(function (that) {
-        (that = this), require(["md5"], function (md5) {
-            $("form").vali(function (data) {
+    $body.find('form[data-login-form]').each(function (idx, form) {
+        require(['md5'], function (md5) {
+            $(form).vali(function (data) {
                 data['password'] = md5.hash(md5.hash(data['password']) + data['uniqid']);
                 $.form.load(location.href, data, "post", function (ret) {
                     if (parseInt(ret.code) !== 1) {
-                        $(that).find('[data-captcha]').trigger('click');
-                        $(that).find('.verify.layui-hide').removeClass('layui-hide');
+                        $(form).find('[data-captcha]').trigger('click');
+                        $(form).find('.verify.layui-hide').removeClass('layui-hide');
                     }
                 }, null, null, 'false');
             });
