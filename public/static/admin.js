@@ -867,7 +867,7 @@ $(function () {
         var url = $(this).attr('action').replace(/&?page=\d+/g, '');
         if ((this.method || 'get').toLowerCase() === 'get') {
             var split = url.indexOf('?') > -1 ? '&' : '?', stype = location.href.indexOf('spm=') > -1 ? '#' : '';
-            return location.href = stype + $.menu.parseUri(url + split + $(this).serialize());
+            return location.href = stype + $.menu.parseUri(url + split + $(this).serialize().replace(/\+/g, ' '));
         }
         return $.form.load(url, this, 'post');
     });
