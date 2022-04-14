@@ -304,11 +304,11 @@ $(function () {
             });
         };
         /*! 以 HASH 打开新网页 */
-        this.href = function (url, ele) {
-            // 重置表格页数缓存
-            if (ele && ele.dataset.menuNode) layui.sessionData('pages', null);
-            if (url !== '#') location.hash = $.menu.parseUri(url, ele);
-            else if (ele && ele.dataset.menuNode) $('[data-menu-node^="' + ele.dataset.menuNode + '-"]:first').trigger('click');
+        this.href = function (url, elem) {
+            this.isMenu = elem && elem.dataset.menuNode;
+            if (this.isMenu) layui.sessionData('pages', null);
+            if (url !== '#') return location.hash = $.menu.parseUri(url, elem);
+            if (this.isMenu) return $('[data-menu-node^="' + elem.dataset.menuNode + '-"]:first').trigger('click');
         };
         /*! 加载 HTML 到 BODY 位置 */
         this.open = function (url, data, call, load, tips) {
