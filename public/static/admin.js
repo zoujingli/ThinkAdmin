@@ -721,11 +721,11 @@ $(function () {
                 data = $.extend({}, data, (opts = opts || {}).where || {});
                 opts = bindData($.extend({}, opts, {loading: true}));
                 if (evt.type.indexOf('reload') > -1) {
-                    var $that = $table.data('that');
-                    if ($that && $that.page && $that.page.jump) {
-                        $that.sort = $that.initSort = opts.initSort, $that.where = data;
-                        if (opts.page && opts.page.curr) $that.page.curr = opts.page.curr || 1;
-                        $that.page.jump({curr: $that.page.curr, limit: option.limit});
+                    var $next = $table.data('next');
+                    if ($next && $next.page && $next.page.jump) {
+                        $next.sort = $next.initSort = opts.initSort, $next.where = data;
+                        if (opts.page && opts.page.curr) $next.page.curr = opts.page.curr || 1;
+                        $next.page.jump({curr: $next.page.curr, limit: option.limit});
                     } else {
                         layui.table.reloadData(table.id, opts);
                     }
