@@ -35,6 +35,19 @@ class ShopGoodsCate extends Model
     }
 
     /**
+     * 获取数据树
+     * @return array
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\DbException
+     * @throws \think\db\exception\ModelNotFoundException
+     */
+    public static function getTreeData(): array
+    {
+        $query = static::mk()->where(['deleted' => 0, 'status' => 1])->order('sort desc,id desc');
+        return DataExtend::arr2tree($query->withoutField('sort,status,deleted,create_at')->select()->toArray());
+    }
+
+    /**
      * 获取列表数据
      * @param bool $simple 仅子级别
      * @return array

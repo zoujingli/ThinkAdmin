@@ -5,7 +5,9 @@ namespace app\data\controller\shop;
 use app\data\model\BaseUserDiscount;
 use app\data\model\BaseUserPayment;
 use app\data\model\ShopGoods;
+use app\data\model\ShopGoodsCate;
 use app\data\model\ShopGoodsItem;
+use app\data\model\ShopGoodsMark;
 use app\data\model\ShopGoodsStock;
 use app\data\service\ExpressService;
 use app\data\service\GoodsService;
@@ -20,12 +22,6 @@ use think\admin\extend\CodeExtend;
  */
 class Goods extends Controller
 {
-    /**
-     * 最大分类等级
-     * @var integer
-     */
-    protected $cateLevel;
-
     /**
      * 商品数据管理
      * @auth true
@@ -73,8 +69,8 @@ class Goods extends Controller
      */
     protected function _page_filter(array &$data)
     {
-        $this->marks = GoodsService::instance()->getMarkData();
-        $this->cates = GoodsService::instance()->getCateTree('arr2table');
+        $this->marks = ShopGoodsMark::items();
+        $this->cates = ShopGoodsCate::getLevelData();
         GoodsService::instance()->bindData($data, false);
     }
 
@@ -139,8 +135,8 @@ class Goods extends Controller
             $data['payment'] = str2arr($data['payment'] ?? '');
             $data['cateids'] = str2arr($data['cateids'] ?? '');
             // 其他表单数据
-            $this->marks = GoodsService::instance()->getMarkData();
-            $this->cates = GoodsService::instance()->getCateData();
+            $this->marks = ShopGoodsMark::items();
+            $this->cates = ShopGoodsCate::getLevelData();
             $this->trucks = ExpressService::instance()->templates();
             $this->upgrades = UserUpgradeService::instance()->levels();
             $this->payments = BaseUserPayment::mk()->where(['status' => 1, 'deleted' => 0])->order('sort desc,id desc')->column('type,code,name', 'code');

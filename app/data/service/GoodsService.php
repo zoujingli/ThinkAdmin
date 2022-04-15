@@ -8,7 +8,6 @@ use app\data\model\ShopGoodsItem;
 use app\data\model\ShopGoodsMark;
 use app\data\model\ShopGoodsStock;
 use app\data\model\ShopOrder;
-use think\admin\extend\DataExtend;
 use think\admin\Service;
 
 /**
@@ -18,58 +17,6 @@ use think\admin\Service;
  */
 class GoodsService extends Service
 {
-
-    /**
-     * 获取商品标签数据
-     * @return array
-     */
-    public function getMarkData(): array
-    {
-        $map = ['status' => 1];
-        return ShopGoodsMark::mk()->where($map)->order('sort desc,id desc')->column('name');
-    }
-
-    /**
-     * 获取分类数据
-     * @param string $type 数据格式 arr2tree | arr2table
-     * @return array
-     * @throws \think\db\exception\DataNotFoundException
-     * @throws \think\db\exception\DbException
-     * @throws \think\db\exception\ModelNotFoundException
-     */
-    public function getCateTree(string $type = 'arr2tree'): array
-    {
-        $query = ShopGoodsCate::mk()->where(['deleted' => 0, 'status' => 1])->order('sort desc,id desc');
-        return DataExtend::$type($query->withoutField('sort,status,deleted,create_at')->select()->toArray());
-    }
-
-    /**
-     * 获取分类数据
-     * @param boolean $simple 简化数据
-     * @return array
-     */
-    public function getCateData(bool $simple = true): array
-    {
-        $cates = ShopGoodsCate::mk()->where(['status' => 1, 'deleted' => 0])->column('id,pid,name', 'id');
-        foreach ($cates as $cate) if (isset($cates[$cate['pid']])) $cates[$cate['id']]['parent'] =& $cates[$cate['pid']];
-        foreach ($cates as $key => $cate) {
-            $id = $cate['id'];
-            $cates[$id]['ids'][] = $cate['id'];
-            $cates[$id]['names'][] = $cate['name'];
-            while (isset($cate['parent']) && $cate = $cate['parent']) {
-                $cates[$id]['ids'][] = $cate['id'];
-                $cates[$id]['names'][] = $cate['name'];
-            }
-            $cates[$id]['ids'] = array_reverse($cates[$id]['ids']);
-            $cates[$id]['names'] = array_reverse($cates[$id]['names']);
-            if (isset($pky) && $simple && in_array($cates[$pky]['name'], $cates[$id]['names'])) {
-                unset($cates[$pky]);
-            }
-            $pky = $key;
-        }
-        return $cates;
-    }
-
     /**
      * 更新商品库存数据
      * @param string $code
@@ -122,8 +69,9 @@ class GoodsService extends Service
      */
     public function bindData(array &$data = [], bool $simple = true): array
     {
-        [$cates, $codes] = [$this->getCateData(), array_unique(array_column($data, 'code'))];
-        $marks = ShopGoodsMark::mk()->where(['status' => 1])->column('name');
+        $marks = ShopGoodsMark::items();
+        $cates = ShopGoodsCate::getLevelData();
+        $codes = array_unique(array_column($data, 'code'));
         $items = ShopGoodsItem::mk()->whereIn('goods_code', $codes)->where(['status' => 1])->select()->toArray();
         foreach ($data as &$vo) {
             [$vo['marks'], $vo['cateids'], $vo['cateinfo']] = [str2arr($vo['marks'], ',', $marks), str2arr($vo['cateids']), []];
@@ -134,5 +82,4 @@ class GoodsService extends Service
         }
         return $data;
     }
-
 }

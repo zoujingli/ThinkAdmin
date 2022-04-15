@@ -11,5 +11,13 @@ use think\admin\Model;
  */
 class ShopGoodsMark extends Model
 {
-
+    /**
+     * 获取所有标签
+     * @return array
+     */
+    public static function items(): array
+    {
+        $map = ['status' => 1];
+        return static::mk()->where($map)->order('sort desc,id desc')->column('name');
+    }
 }

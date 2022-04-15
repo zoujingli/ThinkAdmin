@@ -3,6 +3,8 @@
 namespace app\data\controller\api;
 
 use app\data\model\ShopGoods;
+use app\data\model\ShopGoodsCate;
+use app\data\model\ShopGoodsMark;
 use app\data\service\ExpressService;
 use app\data\service\GoodsService;
 use think\admin\Controller;
@@ -22,7 +24,7 @@ class Goods extends Controller
      */
     public function getCate()
     {
-        $this->success('获取分类成功', GoodsService::instance()->getCateTree());
+        $this->success('获取分类成功', ShopGoodsCate::getTreeData());
     }
 
     /**
@@ -30,7 +32,7 @@ class Goods extends Controller
      */
     public function getMark()
     {
-        $this->success('获取标签成功', GoodsService::instance()->getMarkData());
+        $this->success('获取标签成功', ShopGoodsMark::items());
     }
 
     /**
