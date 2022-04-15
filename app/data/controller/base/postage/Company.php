@@ -5,6 +5,7 @@ namespace app\data\controller\base\postage;
 use app\data\model\BasePostageCompany;
 use app\data\service\ExpressService;
 use think\admin\Controller;
+use think\admin\helper\QueryHelper;
 use think\exception\HttpResponseException;
 
 /**
@@ -24,18 +25,13 @@ class Company extends Controller
      */
     public function index()
     {
-        $this->title = '快递公司管理';
-
-        // 加载对应数据
-        $map = ['deleted' => 0];
         $this->type = input('get.type', 'index');
-        if ($this->type === 'index') $map['status'] = 1;
-        if ($this->type === 'recycle') $map['status'] = 0;
-
-        // 列表显示分页
-        $query = BasePostageCompany::mQuery();
-        $query->like('name,code')->equal('status')->dateBetween('craete_at');
-        $query->where($map)->order('sort desc,id desc')->page();
+        BasePostageCompany::mQuery()->layTable(function () {
+            $this->title = '快递公司管理';
+        }, function (QueryHelper $query) {
+            $query->where(['deleted' => 0, 'status' => intval($this->type === 'index')]);
+            $query->like('name,code_1|code_3#code')->equal('status')->dateBetween('create_at');
+        });
     }
 
     /**
@@ -56,6 +52,20 @@ class Company extends Controller
     {
         $this->title = '编辑快递公司';
         BasePostageCompany::mForm('form');
+    }
+
+    /**
+     * 同步字段编号
+     * @param array $data
+     * @return void
+     */
+    protected function _form_filter(array &$data)
+    {
+        if ($this->request->isPost()) {
+            if (empty($data['code_2'])) {
+                $data['code_2'] = $data['code_3'];
+            }
+        }
     }
 
     /**
@@ -89,7 +99,11 @@ class Company extends Controller
             $result = ExpressService::instance()->company();
             if (empty($result['code'])) $this->error($result['info']);
             foreach ($result['data'] as $vo) BasePostageCompany::mUpdate([
-                'code_1' => $vo['code_1'], 'code_2' => $vo['code_2'], 'code_3' => $vo['code_3'], 'name' => $vo['title'], 'deleted' => 0,
+                'name'    => $vo['title'],
+                'code_1'  => $vo['code_1'],
+                'code_2'  => $vo['code_2'],
+                'code_3'  => $vo['code_3'],
+                'deleted' => 0,
             ], 'code_1');
             $this->success('同步快递公司成功！');
         } catch (HttpResponseException $exception) {
