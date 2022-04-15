@@ -4,6 +4,7 @@ namespace app\data\controller\news;
 
 use app\data\model\DataNewsMark;
 use think\admin\Controller;
+use think\admin\helper\QueryHelper;
 
 /**
  * 文章标签管理
@@ -15,16 +16,31 @@ class Mark extends Controller
     /**
      * 文章标签管理
      * @auth true
+     * @return void
      * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\DbException
      * @throws \think\db\exception\ModelNotFoundException
      */
     public function index()
     {
-        $this->title = '文章标签管理';
-        $query = DataNewsMark::mQuery();
-        $query->like('name')->equal('status')->dateBetween('create_at');
-        $query->where(['deleted' => 0])->order('sort desc,id desc')->page();
+        DataNewsMark::mQuery()->layTable(function () {
+            $this->title = '文章标签管理';
+        }, function (QueryHelper $query) {
+            $query->where(['deleted' => 0]);
+            $query->like('name')->equal('status')->dateBetween('create_at');
+        });
+    }
+
+    /**
+     * 文章标签选择
+     * @login true
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\DbException
+     * @throws \think\db\exception\ModelNotFoundException
+     */
+    public function select()
+    {
+        DataNewsMark::mQuery()->order('sort desc,id desc')->page();
     }
 
     /**
@@ -46,15 +62,24 @@ class Mark extends Controller
     }
 
     /**
+     * 表单结果处理
+     * @param bool $state
+     * @return void
+     */
+    protected function _form_result(bool $state)
+    {
+        if ($state) {
+            $this->success('修改标签成功', "javascript:$('#TagsData').trigger('reload')");
+        }
+    }
+
+    /**
      * 修改文章标签状态
      * @auth true
      */
     public function state()
     {
-        DataNewsMark::mSave($this->_vali([
-            'status.in:0,1'  => '状态值范围异常！',
-            'status.require' => '状态值不能为空！',
-        ]));
+        DataNewsMark::mSave();
     }
 
     /**
