@@ -4,10 +4,11 @@ namespace app\data\controller\base;
 
 use app\data\model\BaseUserMessage;
 use think\admin\Controller;
+use think\admin\helper\QueryHelper;
 
 /**
  * 系统通知管理
- * Class Message
+ * Class Notify
  * @package app\data\controller\base
  */
 class Message extends Controller
@@ -22,10 +23,12 @@ class Message extends Controller
      */
     public function index()
     {
-        $this->title = '系统通知管理';
-        $query = BaseUserMessage::mQuery();
-        $query->like('name')->equal('status')->dateBetween('create_at');
-        $query->where(['deleted' => 0])->order('sort desc,id desc')->page();
+        BaseUserMessage::mQuery()->layTable(function () {
+            $this->title = '系统通知管理';
+        }, function (QueryHelper $query) {
+            $query->where(['deleted' => 0]);
+            $query->like('name')->equal('status')->dateBetween('create_at');
+        });
     }
 
     /**

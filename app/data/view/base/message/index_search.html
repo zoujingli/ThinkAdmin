@@ -1,6 +1,7 @@
 <fieldset>
     <legend>条件搜索</legend>
     <form action="{:sysuri()}" autocomplete="off" class="layui-form layui-form-pane form-search" method="get" onsubmit="return false">
+
         <div class="layui-form-item layui-inline">
             <label class="layui-form-label">通知标题</label>
             <label class="layui-input-inline">
@@ -14,7 +15,7 @@
                 <select class="layui-select" name="status">
                     <option value=''>-- 全部 --</option>
                     {foreach ['显示禁止的通知', '显示正常的通知'] as $k=>$v}
-                    {if $k.'' eq input('status')}
+                    {if isset($get.status) and $get.status eq $k.''}
                     <option selected value="{$k}">{$v}</option>
                     {else}
                     <option value="{$k}">{$v}</option>
