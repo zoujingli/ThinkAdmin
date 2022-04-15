@@ -2,11 +2,11 @@
 
 {block name='button'}
 <!--{if auth("add")}-->
-<button class='layui-btn layui-btn-sm layui-btn-primary' data-open='{:url("add")}'>添加通知</button>
+<button class='layui-btn layui-btn-sm layui-btn-primary' data-table-id="MessageTable" data-open='{:url("add")}'>添加通知</button>
 <!--{/if}-->
 
 <!--{if auth("remove")}-->
-<button class='layui-btn layui-btn-sm layui-btn-primary' data-action='{:url("remove")}' data-confirm="确定要删除这些通知吗？" data-rule="id#{id}">删除通知</button>
+<button class='layui-btn layui-btn-sm layui-btn-primary' data-table-id="MessageTable" data-action='{:url("remove")}' data-rule="id#{id}" data-confirm="确定要删除这些通知吗？">删除通知</button>
 <!--{/if}-->
 {/block}
 
