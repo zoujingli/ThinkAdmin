@@ -81,6 +81,7 @@
             </label>
 
             <div class="hr-line-dashed margin-top-30"></div>
+            {notempty name='vo.id'}<input name="id" type="hidden" value="{$vo.id}">{/notempty}
             {notempty name='vo.code'}<input name="code" type="hidden" value="{$vo.code}">{/notempty}
 
             <div class="layui-form-item text-center">
