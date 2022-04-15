@@ -50,7 +50,6 @@ PCAS.init = function (PCA) {
         PCA.PCAP[ID1] = VAL1.split("$")[0], PCA.PCAC[ID1] = [], PCA.PCAA[ID1] = [];
         VAL1.split("$")[1].split("|").forEach(function (VAL2, ID2) {
             PCA.PCAC[ID1].push((PCA.PCAR = VAL2.split(",")).shift()), PCA.PCAA[ID1][ID2] = PCA.PCAR;
-            if (PCA.PCAA[ID1][ID2].length === 1) PCA.PCAA[ID1][ID2][1] = SAT;
         });
     });
     return this;
