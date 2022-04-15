@@ -5,6 +5,7 @@ namespace app\data\controller\shop;
 use app\data\model\ShopGoodsCate;
 use think\admin\Controller;
 use think\admin\extend\DataExtend;
+use think\admin\helper\QueryHelper;
 
 /**
  * 商品分类管理
@@ -13,6 +14,12 @@ use think\admin\extend\DataExtend;
  */
 class Cate extends Controller
 {
+    /**
+     * 最大级别
+     * @var integer
+     */
+    protected $maxLevel = 5;
+
     /**
      * 商品分类管理
      * @auth true
@@ -23,9 +30,12 @@ class Cate extends Controller
      */
     public function index()
     {
-        $this->title = "商品分类管理";
-        $query = ShopGoodsCate::mQuery()->like('name')->dateBetween('create_at');
-        $query->equal('status')->where(['deleted' => 0])->order('sort desc,id desc')->page(false);
+        ShopGoodsCate::mQuery()->layTable(function () {
+            $this->title = "商品分类管理";
+        }, function (QueryHelper $query) {
+            $query->where(['deleted' => 0]);
+            $query->like('name')->equal('status')->dateBetween('create_at');
+        });
     }
 
     /**
@@ -66,12 +76,9 @@ class Cate extends Controller
     {
         if ($this->request->isGet()) {
             $data['pid'] = intval($data['pid'] ?? input('pid', '0'));
-            $cates = ShopGoodsCate::mk()->where(['deleted' => 0])->order('sort desc,id desc')->select()->toArray();
-            $this->cates = DataExtend::arr2table(array_merge($cates, [['id' => '0', 'pid' => '-1', 'name' => '顶部分类']]));
-            if (isset($data['id'])) foreach ($this->cates as $cate) if ($cate['id'] === $data['id']) $data = $cate;
-            foreach ($this->cates as $key => $cate) if ((isset($data['spt']) && $data['spt'] <= $cate['spt'])) {
-                unset($this->cates[$key]);
-            }
+            $this->cates = ShopGoodsCate::getParentData($this->maxLevel, $data, [
+                'id' => '0', 'pid' => '-1', 'name' => '顶部分类',
+            ]);
         }
     }
 
