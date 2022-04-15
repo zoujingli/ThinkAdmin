@@ -2,17 +2,15 @@
 
 {block name="content"}
 <div id="TruckForm">
-    <form action="{:sysuri()}" autocomplete="off" class='layui-form layui-card' data-auto="true" method="post" onsubmit="return false;">
-        <div class="layui-card-body padding-40">
+    <form action="{:sysuri()}" class='layui-form layui-card shadow' data-auto="true" method="post">
+        <div class="layui-card-body padding-40 padding-bottom-10">
             <label class="layui-form-item block relative">
-                <span class="color-green font-w7">邮费模板名称</span>
-                <span class="color-desc margin-left-5">Name</span>
+                <span class="help-label"><b>邮费模板名称</b>Name</span>
                 <input class="layui-input" name="name" placeholder="请输入邮费模板名称" required value='{$vo.name|default=""}'>
-                <p class="color-desc"><b>必填</b>，邮费模板名称用于区分邮费模板规则，仅在后台选择邮费模板时使用。</p>
+                <span class="color-desc"><b>必填</b>，邮费模板名称用于区分邮费模板规则，仅在后台选择邮费模板时使用。</span>
             </label>
-            <div class="layui-form-item">
-                <span class="color-green font-w7 label-required-prev">配送区域计费规则</span>
-                <span class="color-desc margin-left-5">Region</span>
+            <div class="layui-form-item label-required-prev">
+                <span class="help-label"><b>配送区域计费规则</b>Region</span>
                 <table class="layui-table">
                     <thead>
                     <tr>
@@ -76,12 +74,15 @@
                     </tbody>
                 </table>
             </div>
+
             <label class="layui-form-item layui-hide">
                 <textarea class="layui-textarea layui-bg-gray" name="normal">{{defs.rule}}</textarea>
                 <textarea class="layui-textarea layui-bg-gray" name="content">{{GetRuleData()}}</textarea>
             </label>
+
             <div class="hr-line-dashed margin-top-30"></div>
             {notempty name='vo.code'}<input name="code" type="hidden" value="{$vo.code}">{/notempty}
+
             <div class="layui-form-item text-center">
                 <button class="layui-btn" type='submit'>保存数据</button>
             </div>

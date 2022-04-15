@@ -7,6 +7,7 @@ use app\data\model\BasePostageTemplate;
 use app\data\service\ExpressService;
 use think\admin\Controller;
 use think\admin\extend\CodeExtend;
+use think\admin\helper\QueryHelper;
 
 /**
  * 邮费模板管理
@@ -25,10 +26,13 @@ class Template extends Controller
      */
     public function index()
     {
-        $this->title = '快递邮费模板';
-        $query = BasePostageTemplate::mQuery();
-        $query->like('code,name')->equal('status')->dateBetween('create_at');
-        $query->where(['deleted' => 0])->order('sort desc,id desc')->page();
+        $this->type = input('get.type', 'index');
+        BasePostageTemplate::mQuery()->layTable(function () {
+            $this->title = '快递邮费模板';
+        }, function (QueryHelper $query) {
+            $query->where(['deleted' => 0, 'status' => intval($this->type === 'index')]);
+            $query->like('code,name')->equal('status')->dateBetween('create_at');
+        });
     }
 
     /**
@@ -56,7 +60,7 @@ class Template extends Controller
     public function add()
     {
         $this->title = '添加配送邮费模板';
-        BasePostageTemplate::mForm('form', 'code');
+        BasePostageTemplate::mForm('form');
     }
 
     /**
@@ -66,7 +70,7 @@ class Template extends Controller
     public function edit()
     {
         $this->title = '编辑配送邮费模板';
-        BasePostageTemplate::mForm('form', 'code');
+        BasePostageTemplate::mForm('form');
     }
 
     /**
@@ -103,7 +107,7 @@ class Template extends Controller
         BasePostageTemplate::mSave($this->_vali([
             'status.in:0,1'  => '状态值范围异常！',
             'status.require' => '状态值不能为空！',
-        ]), 'code');
+        ]));
     }
 
     /**
@@ -112,6 +116,6 @@ class Template extends Controller
      */
     public function remove()
     {
-        BasePostageTemplate::mDelete('code');
+        BasePostageTemplate::mDelete();
     }
 }
