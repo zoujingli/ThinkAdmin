@@ -90,10 +90,10 @@
 
 <!-- 操作面板模板 -->
 <script type="text/html" id="toolbar">
-    <!--{if auth("edit") and $type eq 'index'}-->
+    <!--{if auth("edit") and isset($type) and $type eq 'index'}-->
     <a class="layui-btn layui-btn-sm" data-modal="{:url('edit')}?id={{d.id}}" data-title="编辑快递公司">编 辑</a>
     <!--{/if}-->
-    <!--{if auth("remove") and $type neq 'index'}-->
+    <!--{if auth("remove") and isset($type) and $type neq 'index'}-->
     <a class="layui-btn layui-btn-sm layui-btn-danger" data-action="{:url('remove')}" data-value="id#{{d.id}}" data-confirm="确定要删除该用户吗？">删 除</a>
     <!--{/if}-->
 </script>
