@@ -688,8 +688,8 @@ $(function () {
             // 插件初始化参数
             var option = params || {}, data = option.where || {}, sort = option.initSort || option.sort || {};
             option.id = table.id, option.elem = table, option.url = params.url || table.dataset.url || location.href;
-            option.page = params.page !== false ? (params.page || true) : false, option.limit = params.limit || 20;
-            option.loading = params.loading !== false, option.autoSort = params.autoSort === true, option.cols = params.cols || [[]];
+            option.limit = params.limit || 20, option.loading = params.loading !== false, option.autoSort = params.autoSort === true;
+            option.page = params.page !== false ? (params.page || true) : false, option.cols = params.cols || [[]], option.success = params.done || '';
             // 初始化不显示头部
             var cls = ['.layui-table-header', '.layui-table-fixed', '.layui-table-body', '.layui-table-page'];
             option.css = (option.css || '') + cls.join('{opacity:0}') + '{opacity:0}';
@@ -703,7 +703,7 @@ $(function () {
             }
             // 动态计算最大页数
             option.done = function () {
-                typeof params.done === 'function' && params.done.call(this);
+                typeof option.success === 'function' && option.success.call(this);
                 layui.sessionData('pages', {key: table.id, value: this.page.curr || 1});
                 $.form.reInit($table.next()).find('[data-load],[data-queue],[data-action],[data-iframe]').not('[data-table-id]').attr('data-table-id', table.id);
                 (option.loading = this.loading = true) && $table.data('next', this).next().find(cls.join(',')).animate({opacity: 1});
