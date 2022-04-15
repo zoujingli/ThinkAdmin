@@ -70,7 +70,7 @@ class Goods extends Controller
     protected function _page_filter(array &$data)
     {
         $this->marks = ShopGoodsMark::items();
-        $this->cates = ShopGoodsCate::treeTable(true);
+        $this->cates = ShopGoodsCate::treeTable();
         GoodsService::instance()->bindData($data, false);
     }
 
@@ -136,7 +136,7 @@ class Goods extends Controller
             $data['cateids'] = str2arr($data['cateids'] ?? '');
             // 其他表单数据
             $this->marks = ShopGoodsMark::items();
-            $this->cates = ShopGoodsCate::treeTable();
+            $this->cates = ShopGoodsCate::treeTable(true);
             $this->trucks = ExpressService::instance()->templates();
             $this->upgrades = UserUpgradeService::instance()->levels();
             $this->payments = BaseUserPayment::mk()->where(['status' => 1, 'deleted' => 0])->order('sort desc,id desc')->column('type,code,name', 'code');
