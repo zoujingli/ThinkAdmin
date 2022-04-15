@@ -32,18 +32,6 @@ class Mark extends Controller
     }
 
     /**
-     * 文章标签选择
-     * @login true
-     * @throws \think\db\exception\DataNotFoundException
-     * @throws \think\db\exception\DbException
-     * @throws \think\db\exception\ModelNotFoundException
-     */
-    public function select()
-    {
-        DataNewsMark::mQuery()->order('sort desc,id desc')->page();
-    }
-
-    /**
      * 添加文章标签
      * @auth true
      */

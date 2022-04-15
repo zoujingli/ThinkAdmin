@@ -4,6 +4,7 @@ namespace app\data\controller\shop;
 
 use app\data\model\ShopGoodsMark;
 use think\admin\Controller;
+use think\admin\helper\QueryHelper;
 
 /**
  * 商品标签管理
@@ -21,22 +22,11 @@ class Mark extends Controller
      */
     public function index()
     {
-        $this->title = '商品标签管理';
-        $query = ShopGoodsMark::mQuery();
-        $query->like('name')->dateBetween('create_at');
-        $query->equal('status')->order('sort desc,id desc')->page();
-    }
-
-    /**
-     * 商品标签选择
-     * @login true
-     * @throws \think\db\exception\DataNotFoundException
-     * @throws \think\db\exception\DbException
-     * @throws \think\db\exception\ModelNotFoundException
-     */
-    public function select()
-    {
-        ShopGoodsMark::mQuery()->order('sort desc,id desc')->page();
+        ShopGoodsMark::mQuery()->layTable(function () {
+            $this->title = '商品标签管理';
+        }, function (QueryHelper $query) {
+            $query->like('name')->equal('status')->dateBetween('create_at');
+        });
     }
 
     /**
