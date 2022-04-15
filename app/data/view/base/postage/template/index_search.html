@@ -16,21 +16,6 @@
         </div>
 
         <div class="layui-form-item layui-inline">
-            <label class="layui-form-label">使用状态</label>
-            <label class="layui-input-inline">
-                <select class="layui-select" name="status">
-                    <option value=''>-- 全部状态 --</option>
-                    {foreach ['已禁用的模板','已激活的模板'] as $k=>$v}
-                    {if input('status','-') eq $k.''}
-                    <option selected value="{$k}">{$v}</option>
-                    {else}
-                    <option value="{$k}">{$v}</option>
-                    {/if}{/foreach}
-                </select>
-            </label>
-        </div>
-
-        <div class="layui-form-item layui-inline">
             <label class="layui-form-label">添加时间</label>
             <label class="layui-input-inline">
                 <input class="layui-input" data-date-range name="create_at" placeholder="请选择添加时间" value="{$get.create_at|default=''}">
