@@ -12,7 +12,7 @@
 
 {block name="content"}
 <div class="think-box-notify">
-    <b>注意：</b>产品分类需要在上传产品前添加，当产品分类关联有产品时不建议进行 <b class="color-blue">移动</b> 或 <b class="color-blue">删除</b> 操作!
+    <b>注意：</b>商品分类需要在上传商品前添加，当商品分类关联有商品时不建议进行 <b class="color-blue">移动</b> 或 <b class="color-blue">删除</b> 操作!
 </div>
 
 <div class="think-box-shadow">
@@ -74,14 +74,14 @@
 
     <!--{if auth('add')}-->
     {{# if(d.spt<'{$maxLevel-1}'){ }}
-    <a class="layui-btn layui-btn-sm layui-btn-primary" data-title="添加产品分类" data-modal='{:url("add")}?pid={{d.id}}'>添 加</a>
+    <a class="layui-btn layui-btn-sm layui-btn-primary" data-title="添加商品分类" data-modal='{:url("add")}?pid={{d.id}}'>添 加</a>
     {{# }else{ }}
     <a class="layui-btn layui-btn-sm layui-btn-disabled">添 加</a>
     {{# } }}
     <!--{/if}-->
 
     <!--{if auth('edit')}-->
-    <a class="layui-btn layui-btn-sm" data-title="编辑产品分类" data-modal='{:url("edit")}?id={{d.id}}'>编 辑</a>
+    <a class="layui-btn layui-btn-sm" data-title="编辑商品分类" data-modal='{:url("edit")}?id={{d.id}}'>编 辑</a>
     <!--{/if}-->
 
     <!--{if auth('remove')}-->

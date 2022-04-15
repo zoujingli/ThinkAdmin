@@ -149,7 +149,7 @@ class Test extends Controller
         p($notify);
         // 微信统一下单处理
         $options = [
-            'body'             => "测试商品，产品ID：{$notify['product_id']}",
+            'body'             => "测试商品，商品ID：{$notify['product_id']}",
             'total_fee'        => '1',
             'trade_type'       => 'NATIVE',
             'notify_url'       => sysuri('wechat/api.test/notify', [], false, true),
