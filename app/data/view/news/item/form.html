@@ -5,10 +5,9 @@
     <div class="layui-card-body">
 
         {notempty name='marks'}
-        <div class="layui-form-item relative block">
-            <span class="color-green font-w7 label-required-prev">文章标签</span>
-            <span class="color-desc margin-left-5">Mark Name</span>
-            <div class="markbox layui-textarea">
+        <div class="layui-form-item">
+            <span class="help-label"><b>文章标签</b>Mark Name</span>
+            <div class="layui-textarea help-checks">
                 {foreach $marks as $tag}{if isset($vo.mark) && is_array($vo.mark) && in_array($tag.name, $vo.mark)}
                 <label class="think-checkbox notselect"><input checked lay-ignore name="mark[]" type="checkbox" value="{$tag.name}"> {$tag.name}</label>
                 {else}
@@ -18,31 +17,27 @@
         </div>
         {/notempty}
 
-        <div class="layui-form-item relative block">
-            <span class="color-green font-w7 label-required-prev">文章封面</span>
-            <span class="color-desc margin-left-5">Conver Image</span>
-            <label class="relative block label-required-null">
-                <input class="layui-input" name="cover" placeholder="请上传文章封面&nbsp;&nbsp;&nbsp;&nbsp;" required value='{$vo.cover|default=""}'>
+        <div class="layui-form-item label-required-prev">
+            <span class="help-label"><b>文章封面</b>Conver Image</span>
+            <div class="relative block label-required-null">
+                <input class="layui-input think-bg-gray" readonly name="cover" placeholder="请上传文章封面" required value='{$vo.cover|default=""}'>
                 <a class="input-right-icon layui-icon layui-icon-upload" data-field="cover" data-file data-type="png,jpg,gif"></a>
                 <script>$('[name="cover"]').uploadOneImage()</script>
-            </label>
+            </div>
         </div>
 
         <label class="layui-form-item relative block">
-            <span class="color-green font-w7">文章标题</span>
-            <span class="color-desc margin-left-5">Article Name</span>
+            <span class="help-label"><b>文章标题</b>Article Name</span>
             <input class="layui-input" name="name" placeholder="请输入文章标题" required value='{$vo.name|default=""}'>
         </label>
 
         <label class="layui-form-item relative block">
-            <span class="color-green font-w7">简介描述</span>
-            <span class="color-desc margin-left-5">Article Remark</span>
+            <span class="help-label"><b>简介描述</b>Article Remark</span>
             <textarea class="layui-textarea" name="remark" placeholder="请输入简介描述" required>{$vo.remark|default=''}</textarea>
         </label>
 
-        <div class="layui-form-item relative block">
-            <span class="color-green font-w7 label-required-prev">富文本内容</span>
-            <span class="color-desc margin-left-5">Article Content</span>
+        <div class="layui-form-item label-required-prev">
+            <span class="help-label"><b>富文本内容</b>Article Content</span>
             <label class="relative block">
                 <textarea class="layui-textarea" name="content" placeholder="请输入文章内容">{$vo.content|default=''}</textarea>
             </label>
