@@ -75,4 +75,14 @@ class ShopGoodsCate extends Model
         foreach ($cates as &$cate) unset($cate['parent']);
         return array_values($cates);
     }
+
+    /**
+     * 格式化创建时间
+     * @param string $value
+     * @return string
+     */
+    public function getCreateAtAttr(string $value): string
+    {
+        return format_datetime($value);
+    }
 }
