@@ -41,9 +41,9 @@ class ShopGoodsCate extends Model
      * @throws \think\db\exception\DbException
      * @throws \think\db\exception\ModelNotFoundException
      */
-    public static function treeJson(): array
+    public static function treeData(): array
     {
-        $query = static::mk()->where(['deleted' => 0, 'status' => 1])->order('sort desc,id desc');
+        $query = static::mk()->where(['status' => 1, 'deleted' => 0])->order('sort desc,id desc');
         return DataExtend::arr2tree($query->withoutField('sort,status,deleted,create_at')->select()->toArray());
     }
 
@@ -54,7 +54,7 @@ class ShopGoodsCate extends Model
      */
     public static function treeTable(bool $simple = false): array
     {
-        $query = static::mk()->where(['status' => 1])->order('sort desc,id asc');
+        $query = static::mk()->where(['status' => 1, 'deleted' => 0])->order('sort desc,id asc');
         $cates = array_column(DataExtend::arr2table($query->column('id,pid,name', 'id')), null, 'id');
         foreach ($cates as $cate) isset($cates[$cate['pid']]) && $cates[$cate['id']]['parent'] =& $cates[$cate['pid']];
         foreach ($cates as $key => $cate) {
