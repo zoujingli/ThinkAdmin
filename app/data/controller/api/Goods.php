@@ -24,7 +24,7 @@ class Goods extends Controller
      */
     public function getCate()
     {
-        $this->success('获取分类成功', ShopGoodsCate::getTreeData());
+        $this->success('获取分类成功', ShopGoodsCate::treeJson());
     }
 
     /**

@@ -70,7 +70,7 @@ class GoodsService extends Service
     public function bindData(array &$data = [], bool $simple = true): array
     {
         $marks = ShopGoodsMark::items();
-        $cates = ShopGoodsCate::getLevelData();
+        $cates = ShopGoodsCate::treeTable();
         $codes = array_unique(array_column($data, 'code'));
         $items = ShopGoodsItem::mk()->whereIn('goods_code', $codes)->where(['status' => 1])->select()->toArray();
         foreach ($data as &$vo) {

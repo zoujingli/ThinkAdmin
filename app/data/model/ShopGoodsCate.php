@@ -41,7 +41,7 @@ class ShopGoodsCate extends Model
      * @throws \think\db\exception\DbException
      * @throws \think\db\exception\ModelNotFoundException
      */
-    public static function getTreeData(): array
+    public static function treeJson(): array
     {
         $query = static::mk()->where(['deleted' => 0, 'status' => 1])->order('sort desc,id desc');
         return DataExtend::arr2tree($query->withoutField('sort,status,deleted,create_at')->select()->toArray());
@@ -52,7 +52,7 @@ class ShopGoodsCate extends Model
      * @param bool $simple 仅子级别
      * @return array
      */
-    public static function getLevelData(bool $simple = false): array
+    public static function treeTable(bool $simple = false): array
     {
         $query = static::mk()->where(['status' => 1])->order('sort desc,id asc');
         $cates = array_column(DataExtend::arr2table($query->column('id,pid,name', 'id')), null, 'id');
