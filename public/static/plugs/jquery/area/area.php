@@ -1,11 +1,12 @@
 <?php
 
-PHP_SAPI === 'cli' or die('只能在 CLI 模式运行！');
+PHP_SAPI === 'cli' or die('Can only run in CLI mode.');
 
-$items = [];
+// 从腾讯地址接口获取数据
 $url = 'https://apis.map.qq.com/ws/district/v1/list?key=AVDBZ-VXMC6-VD2SU-M7DX2-TGSV7-WVF3U';
 $result = json_decode(file_get_contents($url), true)['result'];
 
+$items = [];
 foreach ($result[0] as $pro) {
     $items[$pro['id']] = ['name' => $pro['fullname'], 'list' => []];
 }
