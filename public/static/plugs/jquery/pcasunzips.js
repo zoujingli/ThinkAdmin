@@ -54,6 +54,7 @@ PCAS.init = function (PCA) {
     });
     return this;
 };
+
 PCAS.SetP = function (PCA) {
     PCA.PCAP.forEach(function (VAL, IDX) {
         PCA.PCAT = PCA.PCAV = VAL;
@@ -62,6 +63,7 @@ PCAS.SetP = function (PCA) {
         if (PCA.DefP === PCA.PCAV) PCA.SelP[IDX].selected = true
     }), PCA.SelC ? PCAS.SetC(PCA) : $(PCA.SelP).trigger('change');
 };
+
 PCAS.SetC = function (PCA) {
     PCA.SelC.length = 0;
     PCA.PCAC[PCA.SelP.selectedIndex].forEach(function (VAL, IDX) {
@@ -71,6 +73,7 @@ PCAS.SetC = function (PCA) {
         if (PCA.DefC === PCA.PCAV) PCA.SelC[IDX].selected = true
     }), PCA.SelA ? PCAS.SetA(PCA) : $(PCA.SelC).trigger('change');
 };
+
 PCAS.SetA = function (PCA) {
     PCA.SelA.length = 0;
     PCA.PCAA[PCA.SelP.selectedIndex][PCA.SelC.selectedIndex].forEach(function (VAL, IDX) {
