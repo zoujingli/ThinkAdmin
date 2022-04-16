@@ -47,6 +47,12 @@
                     }
                 },
                 /* {/marks} */
+                {
+                    field: 'cover', title: '图片', width: 60, align: 'center', templet: function (d) {
+                        if (!d.cover) return '';
+                        return layui.laytpl('<div data-tips-image data-tips-hover class="headimg headimg-xs headimg-no margin-0" data-lazy-src="{{d.cover}}"></div>').render(d);
+                    }
+                },
                 {field: 'name', title: '文章标题', align: 'left', minWidth: 140},
                 {field: 'num_read', title: '阅读数', align: 'center', minWidth: 80, sort: true, style: 'color:blue;font-size:16px'},
                 {field: 'status', title: '状态', align: 'center', minWidth: 110, templet: '#StatusSwitchTpl'},
