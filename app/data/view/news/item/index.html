@@ -2,18 +2,18 @@
 
 {block name="button"}
 <!--{if auth("add")}-->
-<button data-open='{:url("add")}' class='layui-btn layui-btn-sm layui-btn-primary'>添加资讯</button>
+<button data-open='{:url("add")}' class='layui-btn layui-btn-sm layui-btn-primary'>添加文章</button>
 <!--{/if}-->
 
 <!--{if auth("remove")}-->
-<button data-action='{:url("remove")}' data-table-id="NewsTable" data-rule="id#{id}" data-confirm="确定要批量删除资讯吗？" class='layui-btn layui-btn-sm layui-btn-primary'>批量删除</button>
+<button data-action='{:url("remove")}' data-table-id="NewsTable" data-rule="id#{id}" data-confirm="确定要批量删除文章吗？" class='layui-btn layui-btn-sm layui-btn-primary'>批量删除</button>
 <!--{/if}-->
 {/block}
 
 {block name="content"}
 <div class="layui-tab layui-tab-card">
     <ul class="layui-tab-title">
-        {foreach ['index'=>'资讯管理','recycle'=>'回 收 站'] as $k=>$v}{if isset($type) and $type eq $k}
+        {foreach ['index'=>'文章管理','recycle'=>'回 收 站'] as $k=>$v}{if isset($type) and $type eq $k}
         <li data-open="{:url('index')}?type={$k}" class="layui-this color-green">{$v}</li>
         {else}
         <li data-open="{:url('index')}?type={$k}">{$v}</li>
@@ -40,14 +40,14 @@
                 {field: 'id', title: 'ID', align: "left", width: 80},
                 /* {notempty name='marks'} */
                 {
-                    field: 'mark', title: '资讯标签', align: 'left', minWidth: 100, templet: function (d) {
+                    field: 'mark', title: '文章标签', align: 'left', minWidth: 100, templet: function (d) {
                         return (d.html = ''), d.mark.forEach(function (val) {
                             d.html += '<span class="layui-badge layui-bg-blue">' + val + '</span>';
                         }), d.html;
                     }
                 },
                 /* {/marks} */
-                {field: 'name', title: '资讯标题', align: 'left', minWidth: 140},
+                {field: 'name', title: '文章标题', align: 'left', minWidth: 140},
                 {field: 'num_read', title: '阅读数', align: 'center', minWidth: 80, sort: true, style: 'color:blue;font-size:16px'},
                 {field: 'status', title: '状态', align: 'center', minWidth: 110, templet: '#StatusSwitchTpl'},
                 {field: 'create_at', title: '创建时间', align: 'center', minWidth: 170, sort: true},
@@ -92,7 +92,7 @@
     <!--{/if}-->
 
     <!--{if auth("remove") and isset($type) and $type neq 'index'}-->
-    <a class="layui-btn layui-btn-danger layui-btn-sm" data-action="{:url('remove')}" data-value="id#{{d.id}}" data-confirm="确定要删除资讯吗?">删 除</a>
+    <a class="layui-btn layui-btn-danger layui-btn-sm" data-action="{:url('remove')}" data-value="id#{{d.id}}" data-confirm="确定要删除文章吗?">删 除</a>
     <!--{/if}-->
 </script>
 {/block}

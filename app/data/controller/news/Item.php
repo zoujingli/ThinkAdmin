@@ -32,8 +32,8 @@ class Item extends Controller
             $this->title = '文章内容管理';
             $this->marks = DataNewsMark::items();
         }, function (QueryHelper $query) {
+            $query->like('code,name')->like('mark', ',')->dateBetween('create_at');
             $query->where(['status' => intval($this->type === 'index'), 'deleted' => 0]);
-            $query->like('name')->like('mark', ',')->dateBetween('create_at');
         });
     }
 

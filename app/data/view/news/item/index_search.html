@@ -4,10 +4,10 @@
 
         <!-- {notempty name='marks'} -->
         <div class="layui-form-item layui-inline">
-            <label class="layui-form-label">资讯标签</label>
+            <label class="layui-form-label">文章标签</label>
             <div class="layui-input-inline">
                 <select name="mark" lay-search class="layui-select">
-                    <option value=''>-- 资讯标签 --</option>
+                    <option value=''>-- 文章标签 --</option>
                     {foreach $marks as $mark}{if isset($get.mark) and $mark eq $get.mark}
                     <option selected value="{$mark.name}">{$mark.name}</option>
                     {else}
@@ -19,25 +19,17 @@
         <!-- {/notempty} -->
 
         <div class="layui-form-item layui-inline">
-            <label class="layui-form-label">资讯标题</label>
+            <label class="layui-form-label">文章编号</label>
             <label class="layui-input-inline">
-                <input class="layui-input" name="name" placeholder="请输入资讯标题" value="{$get.name|default=''}">
+                <input class="layui-input" name="code" placeholder="请输入文章编号" value="{$get.code|default=''}">
             </label>
         </div>
 
         <div class="layui-form-item layui-inline">
-            <label class="layui-form-label">使用状态</label>
-            <div class="layui-input-inline">
-                <select class="layui-select" name="status">
-                    <option value=''>-- 全部 --</option>
-                    {foreach ['显示禁用的资讯', '显示正常的资讯'] as $k=>$v}
-                    {if isset($get.status) and $get.status eq $k.''}
-                    <option selected value="{$k}">{$v}</option>
-                    {else}
-                    <option value="{$k}">{$v}</option>
-                    {/if}{/foreach}
-                </select>
-            </div>
+            <label class="layui-form-label">文章标题</label>
+            <label class="layui-input-inline">
+                <input class="layui-input" name="name" placeholder="请输入文章标题" value="{$get.name|default=''}">
+            </label>
         </div>
 
         <div class="layui-form-item layui-inline">
