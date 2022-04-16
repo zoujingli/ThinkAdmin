@@ -6,7 +6,7 @@ use think\admin\Controller;
 use think\admin\model\SystemBase;
 
 /**
- * 轮播图片管理
+ * 图片内容管理
  * Class Slider
  * @package app\data\controller\base
  */
@@ -27,7 +27,7 @@ class Slider extends Controller
      * 数据类型
      * @var string
      */
-    protected $type = '轮播图片';
+    protected $type = '图片内容';
 
     /**
      * 页面类型
@@ -45,18 +45,18 @@ class Slider extends Controller
     }
 
     /**
-     * 轮播图片管理
+     * 图片内容管理
      * @auth true
      * @menu true
      */
     public function index()
     {
-        $this->title = '轮播图片管理';
+        $this->title = '图片内容管理';
         $this->fetch();
     }
 
     /**
-     * 编辑轮播图片
+     * 编辑图片内容
      * @auth true
      * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\DbException
@@ -72,7 +72,7 @@ class Slider extends Controller
     }
 
     /**
-     * 保存轮播图片
+     * 保存图片内容
      * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\DbException
      * @throws \think\db\exception\ModelNotFoundException

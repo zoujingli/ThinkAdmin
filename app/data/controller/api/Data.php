@@ -26,7 +26,7 @@ class Data extends Controller
     }
 
     /**
-     * 获取轮播图片数据
+     * 获取图片内容数据
      * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\DbException
      * @throws \think\db\exception\ModelNotFoundException
@@ -34,7 +34,7 @@ class Data extends Controller
     public function getSlider()
     {
         $data = sysdata(input('keys', 'slider'));
-        $this->success('获取轮播图片', $data);
+        $this->success('获取图片内容', $data);
     }
 
     /**
