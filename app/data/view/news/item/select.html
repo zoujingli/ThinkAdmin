@@ -1,41 +1,77 @@
-{extend name="../../admin/view/full"}
+{block name="content"}
+<div class="iframe-pagination notfooter">
+    <fieldset>
+        <legend>条件搜索</legend>
+        <form action="{:sysuri()}" id="NewsTableSearch" autocomplete="off" class="layui-form layui-form-pane form-search" method="get" onsubmit="return false">
 
-{block name='content'}
-<div class="iframe-pagination">
-    {include file='news/item/select_search'}
-    <table class="layui-table" lay-skin="line">
-        {notempty name='list'}
-        <thead>
-        <tr>
-            <th>文章标题</th>
-            <th>文章状态</th>
-            <th>创建时间</th>
-            <th></th>
-        </tr>
-        </thead>
-        {/notempty}
-        <tbody>
-        {foreach $list as $key => $vo}
-        <tr>
-            <td class="nowrap">{$vo.name|default=''}</td>
-            <td>{if $vo.status eq 0}<span class="color-red">已禁用</span>{elseif $vo.status eq 1}<span class="color-green">已激活</span>{/if}</td>
-            <td>{$vo.create_at|format_datetime}</td>
-            <td class='text-right'><a class="layui-btn layui-btn-sm layui-btn-normal" data-item="{$vo.code}">选择文章</a></td>
-        </tr>
-        {/foreach}
-        </tbody>
-    </table>
-    {empty name='list'}<span class="notdata">没有记录哦</span>{else}{$pagehtml|raw|default=''}{/empty}
+            <div class="layui-form-item layui-inline">
+                <label class="layui-form-label">资讯标签</label>
+                <div class="layui-input-inline">
+                    <select name="mark" class="layui-select" lay-search>
+                        <option value=''>-- 资讯标签 --</option>
+                        {foreach $marks as $mark}{if isset($get.mark) and $mark.code eq $get.mark}
+                        <option selected value="{$mark.code}">{$mark.name} ( {$mark.code} )</option>
+                        {else}
+                        <option value="{$mark.code}">{$mark.name} ( {$mark.code} )</option>
+                        {/if}{/foreach}
+                    </select>
+                </div>
+            </div>
+
+            <div class="layui-form-item layui-inline">
+                <label class="layui-form-label">资讯标题</label>
+                <label class="layui-input-inline">
+                    <input class="layui-input" name="name" placeholder="请输入资讯标题" value="{$get.name|default=''}">
+                </label>
+            </div>
+
+            <div class="layui-form-item layui-inline">
+                <label class="layui-form-label">创建时间</label>
+                <label class="layui-input-inline">
+                    <input class="layui-input" data-date-range name="create_at" placeholder="请选择创建时间" value="{$get.create_at|default=''}">
+                </label>
+            </div>
+
+            <div class="layui-form-item layui-inline">
+                <button class="layui-btn layui-btn-primary"><i class="layui-icon">&#xe615;</i> 搜 索</button>
+            </div>
+        </form>
+    </fieldset>
+    <table id="NewsTable" data-url="{:sysuri()}" data-target-search="#NewsTableSearch"></table>
 </div>
 {/block}
 
 {block name='script'}
 <script>
     $(function () {
-        $.form.reInit(), $('[data-item]').on('click', function () {
-            top.setItemValue(this.getAttribute('data-item') || '');
-            parent.layer.close(parent.layer.getFrameIndex(window.name));
+        // 初始化表格组件
+        $('#NewsTable').layTable({
+            even: true, height: 'full',
+            sort: {field: 'sort desc,id', type: 'desc'},
+            cols: [[
+                {field: 'id', title: 'ID', align: 'center', width: 60, sort: true},
+                {field: 'mark', title: '资讯标签', align: 'center', width: 100},
+                {field: 'name', title: '资讯标题', align: 'left', minWidth: 140},
+                {field: 'num_read', title: '阅读数', align: 'center', width: 80, sort: true, style: 'color:blue;font-size:16px'},
+                {field: 'status', title: '状态', align: 'center', width: 80, templet: '#StatusSwitchTpl'},
+                {field: 'create_at', title: '创建时间', align: 'center', width: 170, sort: true},
+                {toolbar: '#toolbar', title: '操作', align: 'center', width: 100}
+            ]]
+        }).trigger('tool', function (item) {
+            window.setItemValue(item.data.id, item.data.name);
+            item.tr.parents('div.layui-layer-page').find('a.layui-layer-close').trigger('click');
         });
     });
 </script>
+
+<!-- 操作工具条模板 -->
+<script type="text/html" id="toolbar">
+    <a class="layui-btn layui-btn-sm" lay-event="select">选 择</a>
+</script>
+
+<!-- 数据状态切换模板 -->
+<script type="text/html" id="StatusSwitchTpl">
+    {{d.status ? '<b class="color-green">已激活</b>' : '<b class="color-red">已禁用</b>'}}
+</script>
+
 {/block}

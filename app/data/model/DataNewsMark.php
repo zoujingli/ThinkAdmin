@@ -11,6 +11,19 @@ use think\admin\Model;
 class DataNewsMark extends Model
 {
     /**
+     * 获取标签数据
+     * @return array
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\DbException
+     * @throws \think\db\exception\ModelNotFoundException
+     */
+    public static function items(): array
+    {
+        $query = static::mk()->where(['status' => 1, 'deleted' => 0]);
+        return $query->field('id,name,remark')->order('sort desc,id desc')->select()->toArray();
+    }
+
+    /**
      * 格式化创建时间
      * @param string $value
      * @return string

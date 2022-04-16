@@ -86,7 +86,7 @@
             };
             if (data.value === '#') return input.val('#');
             if (data.value === 'LK') return /^https?:\/\//.test(input.val()) || input.val('#').focus();
-            if (data.value === 'NS') return this.openModel('{:url("data/base.news/select")}');
+            if (data.value === 'NS') return this.openModel('{:url("data/news.item/select")}');
             return window.setItemValue();
         });
 
