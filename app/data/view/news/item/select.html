@@ -4,19 +4,21 @@
         <legend>条件搜索</legend>
         <form action="{:sysuri()}" id="NewsTableSearch" autocomplete="off" class="layui-form layui-form-pane form-search" method="get" onsubmit="return false">
 
+            <!-- {notempty name='marks'} -->
             <div class="layui-form-item layui-inline">
                 <label class="layui-form-label">文章标签</label>
                 <div class="layui-input-inline">
-                    <select name="mark" class="layui-select" lay-search>
+                    <select name="mark" lay-search class="layui-select">
                         <option value=''>-- 文章标签 --</option>
-                        {foreach $marks as $mark}{if isset($get.mark) and $mark.code eq $get.mark}
-                        <option selected value="{$mark.code}">{$mark.name} ( {$mark.code} )</option>
+                        {foreach $marks as $mark}{if isset($get.mark) and $mark eq $get.mark}
+                        <option selected value="{$mark.name}">{$mark.name}</option>
                         {else}
-                        <option value="{$mark.code}">{$mark.name} ( {$mark.code} )</option>
+                        <option value="{$mark.name}">{$mark.name}</option>
                         {/if}{/foreach}
                     </select>
                 </div>
             </div>
+            <!-- {/notempty} -->
 
             <div class="layui-form-item layui-inline">
                 <label class="layui-form-label">文章标题</label>
@@ -50,9 +52,17 @@
             sort: {field: 'sort desc,id', type: 'desc'},
             cols: [[
                 {field: 'id', title: 'ID', align: 'center', width: 60, sort: true},
-                {field: 'mark', title: '文章标签', align: 'center', width: 100},
+                /* {notempty name='marks'} */
+                {
+                    field: 'mark', title: '文章标签', align: 'left', minWidth: 100, templet: function (d) {
+                        return (d.html = ''), d.mark.forEach(function (val) {
+                            d.html += '<span class="layui-badge layui-bg-blue">' + val + '</span>';
+                        }), d.html;
+                    }
+                },
+                /* {/marks} */
                 {field: 'name', title: '文章标题', align: 'left', minWidth: 140},
-                {field: 'num_read', title: '阅读数', align: 'center', width: 80, sort: true, style: 'color:blue;font-size:16px'},
+                {field: 'num_read', title: '阅读数', align: 'center', width: 85, sort: true, style: 'color:blue;font-size:16px'},
                 {field: 'status', title: '状态', align: 'center', width: 80, templet: '#StatusSwitchTpl'},
                 {field: 'create_at', title: '创建时间', align: 'center', width: 170, sort: true},
                 {toolbar: '#toolbar', title: '操作', align: 'center', width: 100}
