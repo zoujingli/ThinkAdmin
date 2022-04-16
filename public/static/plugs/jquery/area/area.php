@@ -41,7 +41,7 @@ foreach ($items as &$prov) {
 
 $jsonFile = __DIR__ . '/data.json';
 $scriptFile = dirname(__DIR__) . '/pcasunzips.js';
-$jsonContent = json_encode(array_values($items), JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT);
+$jsonContent = json_encode(array_values($items), JSON_UNESCAPED_UNICODE);
 $scriptContent = str_replace('__STRING__', join('#', $data), <<<EOL
 /********************************************************
  *** 加载脚本文件 ***
