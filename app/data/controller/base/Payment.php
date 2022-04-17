@@ -7,6 +7,7 @@ use app\data\service\PaymentService;
 use app\data\service\UserAdminService;
 use think\admin\Controller;
 use think\admin\extend\CodeExtend;
+use think\admin\helper\QueryHelper;
 
 /**
  * 支付通道管理
@@ -31,10 +32,25 @@ class Payment extends Controller
      */
     public function index()
     {
-        $this->title = '支付通道管理';
-        $query = BaseUserPayment::mQuery();
-        $query->where(['deleted' => 0])->order('sort desc,id desc');
-        $query->like('name,code')->equal('type,status')->dateBetween('create_at')->page();
+        $this->type = input('get.type', 'index');
+        BaseUserPayment::mQuery()->layTable(function () {
+            $this->title = '支付通道管理';
+        }, function (QueryHelper $query) {
+            $query->where(['status' => intval($this->type === 'index'), 'deleted' => 0]);
+            $query->like('name,code')->equal('status,type#ptype')->dateBetween('create_at');
+        });
+    }
+
+    /**
+     * 获取支付名称
+     * @param array $data
+     * @return void
+     */
+    protected function _page_filter(array &$data)
+    {
+        foreach ($data as &$vo) {
+            $vo['ntype'] = $this->types[$vo['type']]['name'] ?? $vo['type'];
+        }
     }
 
     /**
