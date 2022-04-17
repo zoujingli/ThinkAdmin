@@ -7620,9 +7620,9 @@ VALUES (2, 1, '数据管理', '', '', '#', '', '_self', 0, 1, '2022-03-04 20:34:
 INSERT INTO `system_menu`
 VALUES (3, 2, '数据统计报表', 'layui-icon layui-icon-theme', 'data/total.portal/index', 'data/total.portal/index', '', '_self', 0, 1, '2022-03-04 20:34:40');
 INSERT INTO `system_menu`
-VALUES (4, 2, '轮播图片管理', 'layui-icon layui-icon-carousel', 'data/base.config/sliderhome', 'data/base.config/sliderhome', '', '_self', 0, 1, '2022-03-04 20:34:40');
+VALUES (4, 2, '轮播图片管理', 'layui-icon layui-icon-carousel', 'data/base.slider/index', 'data/base.slider/index', '', '_self', 0, 1, '2022-03-04 20:34:40');
 INSERT INTO `system_menu`
-VALUES (5, 2, '页面内容管理', 'layui-icon layui-icon-read', 'data/base.config/pagehome', 'data/base.config/pagehome', '', '_self', 0, 1, '2022-03-04 20:34:40');
+VALUES (5, 2, '页面内容管理', 'layui-icon layui-icon-read', 'data/base.pager/index', 'data/base.pager/index', '', '_self', 0, 1, '2022-03-04 20:34:40');
 INSERT INTO `system_menu`
 VALUES (6, 2, '文章内容管理', 'layui-icon layui-icon-template', 'data/news.item/index', 'data/news.item/index', '', '_self', 0, 1, '2022-03-04 20:34:40');
 INSERT INTO `system_menu`
