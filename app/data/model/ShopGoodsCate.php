@@ -24,7 +24,7 @@ class ShopGoodsCate extends Model
      */
     public static function getParentData(int $max, array &$data, array $parent = []): array
     {
-        $items = static::mk()->where(['status' => 1, 'deleted' => 0])->order('sort desc,id asc')->select()->toArray();
+        $items = static::mk()->where(['deleted' => 0])->order('sort desc,id asc')->select()->toArray();
         $cates = DataExtend::arr2table(empty($parent) ? $items : array_merge([$parent], $items));
         if (isset($data['id'])) foreach ($cates as $cate) if ($cate['id'] === $data['id']) $data = $cate;
         foreach ($cates as $key => $cate) {
