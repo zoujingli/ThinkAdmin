@@ -2,7 +2,7 @@
 
 {block name="content"}
 {include file='shop/goods/formstyle'}
-<form autocomplete="off" class='layui-form layui-card' data-auto="true" id="GoodsForm" method="post" onsubmit="return false;">
+<form action="{:sysuri()}" method="post" data-auto="true" class="layui-form layui-card" id="GoodsForm">
     <div class="layui-card-body padding-40 padding-bottom-20">
 
         <!--{notempty name='marks'}-->

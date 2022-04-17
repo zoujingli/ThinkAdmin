@@ -1,22 +1,22 @@
-<form action="{:sysuri()}" autocomplete="off" class="layui-form layui-card" data-auto="true" method="post">
+<form action="{:sysuri()}" method="post" data-auto="true" class="layui-form layui-card">
 
     <div class="layui-card-body padding-left-40">
 
         <div class="layui-row layui-form-item layui-col-space15">
             <label class="layui-col-xs3">
-                <span class="color-green font-w7">提现单号</span>
+                <span class="help-label"><b>提现单号</b></span>
                 <input class='layui-input layui-disabled layui-bg-gray' disabled value='{$vo.code|default="-"}'>
             </label>
             <label class="layui-col-xs3">
-                <span class="color-green font-w7">提现金额</span>
+                <span class="help-label"><b>提现金额</b></span>
                 <input class='layui-input layui-disabled layui-bg-gray' disabled value='{$vo.amount|default="0.00"}'>
             </label>
             <label class="layui-col-xs3">
-                <span class="color-green font-w7">提现手续费</span>
+                <span class="help-label"><b>提现手续费</b></span>
                 <input class='layui-input layui-disabled layui-bg-gray' disabled value='{$vo.charge_amount|default="0.00"}'>
             </label>
             <label class="layui-col-xs3">
-                <span class="color-green font-w7 label-required-prev">提现方式</span>
+                <span class="help-label"><b>提现方式</b></span>
                 <input class='layui-input layui-disabled layui-bg-gray' disabled value='{$vo.type|default="-"}'>
             </label>
         </div>

@@ -1,9 +1,9 @@
-<form action="{:sysuri()}" autocomplete="off" class="layui-form layui-card" data-auto="true" method="post">
+<form action="{:sysuri()}" method="post" data-auto="true" class="layui-form layui-card">
     <div class="layui-card-body padding-left-40">
 
         <div class="layui-form-item label-required-prev">
             <span class="help-label"><b>绑定公众号</b>Bind WeChat Type</span>
-            <div class="layui-textarea" style="min-height:unset">
+            <div class="layui-textarea help-checks">
                 {php} $data['wechat_type'] = $data['wechat_type'] ?? 'normal'; {/php}
                 {foreach ['normal'=>'兼容模式', 'wxapp'=>'微信小程序', 'wechat'=>'微信服务号'] as $k=>$v}
                 {if $k eq $data.wechat_type}
@@ -22,20 +22,19 @@
         </label>
 
         <label class="layui-form-item block relative">
-            <span class="color-green font-w7">微信商户密钥</span>
-            <span class="color-desc margin-left-5">WeChat Payment Secret Key</span>
+            <span class="help-label"><b>微信商户密钥</b>WeChat Payment Secret Key</span>
             <input class="layui-input" maxlength="32" name="wechat_mch_key" pattern=".{32}" placeholder="请输入32位微信商户密钥（必填）" required value="{$data.wechat_mch_key|default=''}">
             <span class="help-block">微信商户密钥，需要在微信商户平台操作设置密码并获取密钥，建议定期更换密钥</span>
         </label>
 
         <label class="layui-form-item block relative">
-            <span class="color-green font-w7">微信商户密钥文件内容</span><span class="nowrap color-desc">（ 需要填写文件的全部内容 ）</span>
+            <span class="help-label"><b>微信商户密钥文件内容</b>（ 需要填写文件的全部内容 ）</span>
             <textarea class="layui-textarea" name="wechat_mch_key_text" placeholder="请输入微信商户 KEY 密钥内容" required>{$data.wechat_mch_key_text|default=''}</textarea>
             <span class="help-block">从商户平台上下载支付证书，解压并取得其中的 apiclient_key.pem 用记事本打开并复制文件内容填至此处</span>
         </label>
 
         <label class="layui-form-item block relative">
-            <span class="color-green font-w7">微信商户证书文件内容</span><span class="nowrap color-desc">（ 需要填写文件的全部内容 ）</span>
+            <span class="help-label"><b>微信商户证书文件内容</b>（ 需要填写文件的全部内容 ）</span>
             <textarea class="layui-textarea" name="wechat_mch_cert_text" placeholder="请输入微信商户 CERT 证书内容" required>{$data.wechat_mch_cert_text|default=''}</textarea>
             <span class="help-block">从商户平台上下载支付证书，解压并取得其中的 apiclient_cert.pem 用记事本打开并复制文件内容填至此处</span>
         </label>

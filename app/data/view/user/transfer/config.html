@@ -23,7 +23,7 @@
     }
 </style>
 
-<form action="{:sysuri()}" class="layui-form layui-card" data-auto="true" method="post">
+<form action="{:sysuri()}" method="post" data-auto="true" class="layui-form layui-card">
     <div class="layui-card-body padding-left-40">
 
         <div class="layui-form-item relative block">
@@ -40,15 +40,13 @@
         </div>
 
         <label class="layui-form-item relative block">
-            <span class="color-green font-w7 label-required-prev">提现手续费配置</span>
-            <span class="color-desc margin-left-5">Transfer Charge</span>
-            <input class='layui-input' data-blur-number="4" data-value-max="50.0000" data-value-min="0.0000" name="charge" value='{$data.charge|default="0.0000"}'>
+            <span class="help-label"><b>提现手续费配置</b>Transfer Charge</span>
+            <input class='layui-input' required data-blur-number="4" data-value-max="50.0000" data-value-min="0.0000" name="charge" value='{$data.charge|default="0.0000"}'>
             <span class='help-block'>请输入提现金额的百分比，费率的取值范围为 0.0000% - 50.0000%</span>
         </label>
 
-        <div class="layui-form-item">
-            <span class="color-green font-w7 label-required-prev">提现方式状态配置</span>
-            <span class="color-desc margin-left-5">Transfer Types</span>
+        <div class="layui-form-item label-required-prev">
+            <span class="help-label"><b>提现方式状态配置</b>Transfer Types</span>
             <table class="layui-table payment-type" lay-skin="nob">
                 <thead>
                 <tr>
@@ -115,8 +113,7 @@
         </div>
 
         <div class="layui-form-item relative block">
-            <span class="color-green font-w7">用户提现描述内容</span>
-            <span class="color-desc margin-left-5">Transfer Remark</span>
+            <span class="help-label"><b>用户提现描述内容</b>Transfer Remark</span>
             <label class="relative block">
                 <textarea class="layui-textarea" name="remark" placeholder="请输入用户提现描述内容">{$data.remark|default=''}</textarea>
             </label>

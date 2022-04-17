@@ -1,15 +1,13 @@
-<form action="{:sysuri()}" autocomplete="off" class="layui-form layui-card" data-auto="true" method="post">
+<form action="{:sysuri()}" method="post" data-auto="true" class="layui-form layui-card">
     <div class="layui-card-body padding-left-40">
 
         <label class="layui-form-item block relative">
-            <span class="color-green font-w7 label-required-prev">折扣方案名称</span>
-            <span class="color-desc margin-left-5">Discount Name</span>
+            <span class="help-label"><b>折扣方案名称</b>Discount Name</span>
             <input class="layui-input" name="name" placeholder="请输入折扣方案名称" required value="{$vo.name|default=''}">
         </label>
 
-        <div class="layui-form-item">
-            <span class="color-green font-w7 label-required-prev">用户等级折扣</span>
-            <span class="color-desc margin-left-5">Discount Scheme</span>
+        <div class="layui-form-item label-required-prev">
+            <span class="help-label"><b>用户等级折扣</b>Discount Scheme</span>
             <table class="layui-table think-level-box" lay-skin="line">
                 <thead>
                 <tr>
@@ -37,8 +35,7 @@
         </div>
 
         <label class="layui-form-item block relative">
-            <span class="color-green font-w7">折扣方案备注</span>
-            <span class="color-desc margin-left-5">Discount Remark</span>
+            <span class="help-label"><b>折扣方案备注</b>Discount Remark</span>
             <textarea class="layui-textarea" name="remark" placeholder="请输入折扣方案备注">{$vo.remark|default=''}</textarea>
         </label>
 

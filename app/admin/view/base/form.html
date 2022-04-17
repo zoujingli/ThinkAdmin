@@ -1,9 +1,9 @@
-<form class="layui-form layui-card" data-table-id="BaseTable" action="{:sysuri()}" data-auto="true" method="post">
+<form action="{:sysuri()}" method="post" data-auto="true" class="layui-form layui-card" data-table-id="BaseTable">
 
     <div class="layui-card-body padding-left-40">
 
-        <div class="layui-form-item">
-            <div class="help-label label-required-prev"><b>数据类型</b>DataType</div>
+        <div class="layui-form-item label-required-prev">
+            <div class="help-label"><b>数据类型</b>DataType</div>
             {if isset($vo.type)}
             <label><input readonly value="{$vo.type|default=''}" class="layui-input think-bg-gray"></label>
             {else}

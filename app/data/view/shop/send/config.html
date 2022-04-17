@@ -1,18 +1,18 @@
-<form action="{:sysuri()}" autocomplete="off" class="layui-form layui-card margin-bottom-0" data-auto="true" method="post">
+<form action="{:sysuri()}" method="post" data-auto="true" class="layui-form layui-card">
     <div class="layui-card-body padding-left-40">
 
         <label class="layui-form-item relative block">
-            <span class="color-green font-w7 label-required-prev">发货人姓名</span>
+            <span class="help-label"><b>发货人姓名</b></span>
             <input class="layui-input" name="name" placeholder="请输入发货人姓名" required value="{$vo.name|default=''}">
         </label>
 
         <label class="layui-form-item relative block">
-            <span class="color-green font-w7 label-required-prev">发货人手机</span>
+            <span class="help-label"><b>发货人手机</b></span>
             <input class="layui-input" name="phone" placeholder="请输入发货人手机" required value="{$vo.phone|default=''}">
         </label>
 
-        <div class="layui-form-item relative block">
-            <span class="color-green font-w7 label-required-prev">发货所在区域</span>
+        <div class="layui-form-item label-required-prev">
+            <span class="help-label"><b>发货所在区域</b></span>
             <div class="layui-row layui-col-space10">
                 <label class="layui-col-xs4"><select class="layui-select block full-width" lay-ignore name="province"></select></label>
                 <label class="layui-col-xs4"><select class="layui-select block full-width" lay-ignore name="city"></select></label>
@@ -21,7 +21,7 @@
         </div>
 
         <label class="layui-form-item relative block">
-            <span class="color-green font-w7 label-required-prev">发货详细地址</span>
+            <span class="help-label"><b>发货详细地址</b></span>
             <textarea class="layui-textarea" name="content" placeholder="请输入发货详细地址" required>{$vo.content|default=""}</textarea>
         </label>
     </div>
