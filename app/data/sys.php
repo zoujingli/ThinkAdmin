@@ -25,14 +25,15 @@ if ($app->request->isCli()) {
 } else {
     // 注册订单支付处理事件
     $app->event->listen('ShopOrderPayment', function ($orderNo) use ($app) {
-        $app->log->notice("订单 {$orderNo} 支付事件，执行用户升级行为");
-        OrderService::instance()->upgrade($orderNo);
 
         $app->log->notice("订单 {$orderNo} 支付事件，执行用户返利行为");
         RebateService::instance()->execute($orderNo);
 
         $app->log->notice("订单 {$orderNo} 支付事件，执行发放余额行为");
         UserBalanceService::instance()->confirm($orderNo);
+
+        $app->log->notice("订单 {$orderNo} 支付事件，执行用户升级行为");
+        OrderService::instance()->upgrade($orderNo);
     });
 
     // 注册订单确认支付事件
