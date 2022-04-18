@@ -59,7 +59,7 @@ class Runtime extends Controller
         if (AdminService::instance()->isSuper()) try {
             AdminService::instance()->clearCache();
             SystemService::instance()->clearRuntime();
-            sysoplog('系统运维管理', '清理日志及缓存数据');
+            sysoplog('系统运维管理', '清理网站日志及缓存数据');
             $this->success('清空缓存日志成功！', 'javascript:location.reload()');
         } catch (HttpResponseException $exception) {
             throw $exception;
