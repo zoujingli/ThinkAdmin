@@ -34,7 +34,7 @@
                 {field: 'id', title: 'ID', align: "center", width: 80},
                 {field: 'name', title: '折扣名称', align: 'left', minWidth: 140},
                 {
-                    field: 'items', title: '折扣方案', align: 'left', minWidth: 200, templet: function (d) {
+                    field: 'items', title: '折扣方案', align: 'left', width: '30%', templet: function (d) {
                         return (d.html = ''), d.items.forEach(function (item) {
                             d.html += laytpl('<span class="layui-badge layui-bg-gray">VIP{{d.level}} 折扣 {{d.discount}}%</span>').render(item);
                         }), d.html;
