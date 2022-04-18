@@ -54,8 +54,8 @@
             </label>
             <div class="inline-block margin-left-5">
                 <select class="layui-select" name="type[]" lay-filter="TypeSelect" data-item-rule lay-ignore>
-                    {foreach $rules as $k=>$v}
-                    <option value="{$k}">{$k} - {$v}</option>
+                    {foreach $rules as $key=>$rule}
+                    <option value="{$key}" data-node="{$rule.node|default=''}">{$key} - {$rule.name}</option>
                     {/foreach}
                 </select>
             </div>
@@ -78,15 +78,17 @@
         /*! 跳转规则选择器 */
         layui.form.on('select(TypeSelect)', function (data) {
             var input = $(data.elem).parent().prev('label').find('input');
-            var title = data.elem.options[data.elem.selectedIndex].innerText.split(' - ').pop();
+            var option = data.elem.options[data.elem.options.selectedIndex];
+            var title = option.innerText.split(' - ').pop(), node = option.dataset.node;
             window.setItemValue = function (id, name) {
                 input.val(data.value + '#' + (id || '0') + '#' + (name || title));
             }, this.openModel = function (url) {
                 return $.form.modal(url, {}, title, null, true, null, '840px', '5%');
             };
+
             if (data.value === '#') return input.val('#');
             if (data.value === 'LK') return /^https?:\/\//.test(input.val()) || input.val('#').focus();
-            if (data.value === 'NS') return this.openModel('{:url("data/news.item/select")}');
+            if (node.length > 0) return this.openModel('{:url("@URLTEMP")}'.replace('URLTEMP', node));
             return window.setItemValue();
         });
 

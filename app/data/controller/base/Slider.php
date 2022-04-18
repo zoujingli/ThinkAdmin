@@ -17,10 +17,10 @@ class Slider extends Controller
      * @var string[]
      */
     protected $rules = [
-        '#'  => '不跳转',
-        'LK' => '自定义链接',
-        'NL' => '新闻资讯列表',
-        'NS' => '新闻资讯详情',
+        '#'  => ['name' => '不跳转'],
+        'LK' => ['name' => '自定义链接'],
+        'NL' => ['name' => '新闻资讯列表'],
+        'NS' => ['name' => '新闻资讯详情', 'node' => 'data/news.item/select'],
     ];
 
     /**
