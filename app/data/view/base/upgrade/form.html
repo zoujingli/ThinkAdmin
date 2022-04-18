@@ -14,6 +14,14 @@
         background: rgba(0, 0, 0, 0.4);
         text-shadow: #666 1px 1px 3px;
     }
+
+    .min-input {
+        width: 80px
+    }
+
+    .min-input[type=number] {
+        padding-left: 15px
+    }
 </style>
 
 <form action="{:sysuri()}" class="layui-form layui-card" data-auto="true" method="post">
@@ -76,7 +84,7 @@
                 <div>
                     <label class="think-checkbox notselect">
                         {if isset($vo.goods_vip_status) and $vo.goods_vip_status eq 1}
-                        ① <input checked lay-ignore name="goods_vip_status" type="checkbox" value="1">开启
+                        ① <input lay-ignore name="goods_vip_status" type="checkbox" value="1" checked>开启
                         {else}
                         ① <input lay-ignore name="goods_vip_status" type="checkbox" value="1">开启
                         {/if}
@@ -86,48 +94,48 @@
                 <div>
                     <label class="think-checkbox notselect">
                         {if isset($vo.teams_direct_status) and $vo.teams_direct_status eq 1}
-                        ② <input checked lay-ignore name="teams_direct_status" type="checkbox" value="1">开启
+                        ② <input lay-ignore name="teams_direct_status" type="checkbox" value="1" checked>开启
                         {else}
                         ② <input lay-ignore name="teams_direct_status" type="checkbox" value="1">开启
                         {/if}
                         <span class="color-blue">直推团队</span> 升级，<span class="color-blue">直推团队</span> 达到
-                        <input class="inline-block text-center" data-blur-number="0" name="teams_direct_number" style="width:80px" value="{$vo.teams_direct_number|default='0'}">
+                        <input class="inline-block text-center min-input" name="teams_direct_number" data-blur-number="0" min="0" type="number" value="{$vo.teams_direct_number|default='0'}">
                         人；
                     </label>
                 </div>
                 <div>
                     <label class="think-checkbox notselect">
                         {if isset($vo.teams_indirect_status) and $vo.teams_indirect_status eq 1}
-                        ③ <input checked lay-ignore name="teams_indirect_status" type="checkbox" value="1">开启
+                        ③ <input lay-ignore name="teams_indirect_status" type="checkbox" value="1" checked>开启
                         {else}
                         ③ <input lay-ignore name="teams_indirect_status" type="checkbox" value="1">开启
                         {/if}
                         <span class="color-blue">间接团队</span> 升级，<span class="color-blue">间接团队</span> 达到
-                        <input class="inline-block text-center" data-blur-number="0" name="teams_indirect_number" style="width:80px" value="{$vo.teams_indirect_number|default='0'}">
+                        <input class="inline-block text-center min-input" name="teams_indirect_number" data-blur-number="0" min="0" type="number" value="{$vo.teams_indirect_number|default='0'}">
                         人；
                     </label>
                 </div>
                 <div>
                     <label class="think-checkbox notselect">
                         {if isset($vo.teams_users_status) and $vo.teams_users_status eq 1}
-                        ④ <input checked lay-ignore name="teams_users_status" type="checkbox" value="1">开启
+                        ④ <input lay-ignore name="teams_users_status" type="checkbox" value="1" checked>开启
                         {else}
                         ④ <input lay-ignore name="teams_users_status" type="checkbox" value="1">开启
                         {/if}
                         <span class="color-blue">团队总数</span> 升级，<span class="color-blue">团队总数</span> 达到
-                        <input class="inline-block text-center" data-blur-number="0" name="teams_users_number" style="width:80px" value="{$vo.teams_users_number|default='0'}">
+                        <input class="inline-block text-center min-input" name="teams_users_number" data-blur-number="0" min="0" type="number" value="{$vo.teams_users_number|default='0'}">
                         人；
                     </label>
                 </div>
                 <div>
                     <label class="think-checkbox notselect">
                         {if isset($vo.order_amount_status) and $vo.order_amount_status eq 1}
-                        ⑤ <input checked lay-ignore name="order_amount_status" type="checkbox" value="1">开启
+                        ⑤ <input lay-ignore name="order_amount_status" type="checkbox" value="1" checked>开启
                         {else}
                         ⑤ <input lay-ignore name="order_amount_status" type="checkbox" value="1">开启
                         {/if}
                         <span class="color-blue">订单总额</span> 升级，<span class="color-blue">订单总额</span> 达到
-                        <input class="inline-block text-center" data-blur-number="2" name="order_amount_number" style="width:80px" value="{$vo.order_amount_number|default='0'}">
+                        <input class="inline-block text-center min-input" name="order_amount_number" data-blur-number="2" min="0" type="number" value="{$vo.order_amount_number|default='0'}">
                         元；
                     </label>
                 </div>
@@ -139,7 +147,7 @@
             <legend><span class="layui-badge layui-bg-cyan">奖利规则</span></legend>
             <div class="layui-form-item notselect relative">
                 {foreach $prizes as $prize}{if isset($vo.rebate_rule) && is_array($vo.rebate_rule) && in_array($prize.code, $vo.rebate_rule)}
-                <label class="think-checkbox"><input checked lay-ignore name="rebate_rule[]" type="checkbox" value="{$prize.code}"> {$prize.name}</label>
+                <label class="think-checkbox"><input lay-ignore name="rebate_rule[]" type="checkbox" value="{$prize.code}" checked> {$prize.name}</label>
                 {else}
                 <label class="think-checkbox"><input lay-ignore name="rebate_rule[]" type="checkbox" value="{$prize.code}"> {$prize.name}</label>
                 {/if}{/foreach}
