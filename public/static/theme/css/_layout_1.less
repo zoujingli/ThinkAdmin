@@ -1,16 +1,27 @@
+@charset "UTF-8";
+@import "_config.less";
+
 > .layui-layout-admin {
   > .layui-side {
-    background-color: @leftBackColor;
+    background: @leftBackColor;
+
+    #leftBackColor() {
+      background-color: rgba(0, 0, 0, 0.6);
+    }
 
     .layui-logo {
+      #leftBackColor();
+
       .headtxt {
-        text-shadow: rgba(0, 0, 0, .5) 1px 2px 2px;
+        text-shadow: rgba(0, 0, 0, 0.5) 1px 2px 2px;
       }
     }
 
     .layui-side-scroll {
       display: flex !important;
       box-sizing: border-box;
+      #leftBackColor();
+      #defaTransition(0.2s, 'background-color');
 
       .layui-side-icon {
         display: none;
@@ -47,6 +58,7 @@
 
   > .layui-header {
     background: @headNormalBackColor;
+    #defaTransition(0.2s, 'background-color');
 
     .layui-nav-item {
       &.layui-this > a {
@@ -65,9 +77,9 @@
   }
 }
 
-//.help-label b {
-//  color: @mainActiveBack
-//}
+.help-label b {
+  color: @mainActiveBack
+}
 
 .layui-btn-group {
   border-color: @mainActiveBack;

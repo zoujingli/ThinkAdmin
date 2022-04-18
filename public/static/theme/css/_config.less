@@ -86,11 +86,11 @@
 }
 
 // 通用延时动态
-#defaTransition(@time:0.2s) {
-  transition: all @time linear;
-  -o-transition: all @time linear;
-  -moz-transition: all @time linear;
-  -webkit-transition: all @time linear;
+#defaTransition(@time:0.2s,@type:all) {
+  transition: @type @time linear;
+  -o-transition: @type @time linear;
+  -moz-transition: @type @time linear;
+  -webkit-transition: @type @time linear;
 }
 
 // 内容主体布局
