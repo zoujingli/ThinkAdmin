@@ -2,11 +2,11 @@
 
 {block name="button"}
 <!--{if auth("add")}-->
-<button class='layui-btn layui-btn-sm layui-btn-primary' data-table-id="UpgradeTable" data-modal="{:url('add')}">添加用户等级</button>
+<button class='layui-btn layui-btn-sm layui-btn-primary' data-table-id="UpgradeTable" data-modal="{:url('add')}">添加等级</button>
 <!--{/if}-->
 
 <!--{if auth("sync")}-->
-<button class='layui-btn layui-btn-sm layui-btn-primary' data-queue="{:url('sync')}">刷新用户数据</button>
+<button class='layui-btn layui-btn-sm layui-btn-primary' data-queue="{:url('sync')}">添加用户</button>
 <!--{/if}-->
 {/block}
 
@@ -111,7 +111,7 @@
 <!-- 数据操作工具条模板 -->
 <script type="text/html" id="toolbar">
     <!--{if auth('edit')}-->
-    <a class="layui-btn layui-btn-primary layui-btn-sm" data-table-id="UpgradeTable" data-modal='{:url("edit")}?id={{d.id}}'>编 辑</a>
+    <a class="layui-btn layui-btn-primary layui-btn-sm" data-table-id="UpgradeTable" data-title="编辑等级" data-modal='{:url("edit")}?id={{d.id}}'>编 辑</a>
     <!--{/if}-->
 
     <!--{if auth("remove")}-->
