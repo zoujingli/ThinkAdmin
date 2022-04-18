@@ -6,10 +6,9 @@
 <!--{/if}-->
 
 <!--{if auth("sync")}-->
-<button class='layui-btn layui-btn-sm layui-btn-primary' data-queue="{:url('sync')}">添加用户</button>
+<button class='layui-btn layui-btn-sm layui-btn-primary' data-queue="{:url('sync')}">同步用户</button>
 <!--{/if}-->
 {/block}
-
 
 {block name="content"}
 <div class="think-box-shadow">
@@ -24,10 +23,14 @@
         $('#UpgradeTable').layTable({
             even: true, height: 'full',
             cols: [[
-                {field: 'number', title: '等级名称', align: 'left', minWidth: 140, templet: '<div>[ VIP{{d.number}} ] {{d.name}}</div>'},
+                {
+                    field: 'number', title: '等级名称', align: 'left', minWidth: 140, templet: function (d) {
+                        return laytpl('<div>[ <b class="color-blue">VIP{{d.number}}</b> ] {{d.name}}</div>').render(d);
+                    }
+                },
                 {
                     field: 'upgrade_team', title: '团队计数', align: 'center', minWidth: 80, templet: function (d) {
-                        if (!d.upgrade_team || d.upgrade_team < 1) return '';
+                        if (!d.upgrade_team || d.upgrade_team < 1) return '-';
                         return '<b class="layui-icon layui-icon-ok-circle color-green"></b>';
                     }
                 },
@@ -39,7 +42,7 @@
                 },
                 {
                     field: 'goods_vip_status', title: '入会礼包', align: 'center', minWidth: 80, templet: function (d) {
-                        if (!d.goods_vip_status || d.goods_vip_status < 1) return '';
+                        if (!d.goods_vip_status || d.goods_vip_status < 1) return '-';
                         return '<b class="layui-icon layui-icon-ok-circle color-green"></b>';
                     }
                 },
@@ -68,7 +71,7 @@
                     }
                 },
                 {
-                    field: 'rebate_rule', title: '奖利规则', align: 'center', minWidth: 140, templet: function (d) {
+                    field: 'rebate_rule', title: '奖利规则', align: 'center', minWidth: 100, templet: function (d) {
                         return (d.html = ''), (d.rebate_rule || []).forEach(function (rule) {
                             d.html += laytpl('<span class="layui-badge layui-bg-gray">{{d.v}}</span>').render({v: rule});
                         }), d.html || '-';

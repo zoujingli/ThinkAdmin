@@ -80,6 +80,11 @@ class Upgrade extends Controller
             $vo['teams_direct_status'] = isset($vo['teams_direct_status']) ? 1 : 0;
             $vo['teams_indirect_status'] = isset($vo['teams_indirect_status']) ? 1 : 0;
             $vo['order_amount_status'] = isset($vo['order_amount_status']) ? 1 : 0;
+            // 默认等级去除条件
+            if (empty($vo['number'])) {
+                $vo['rebate_rule'] = [];
+                foreach ($vo as $k => &$v) if (is_numeric(stripos($k, '_status'))) $v = 0;
+            }
             // 根据数量判断状态
             $vo['teams_users_status'] = intval($vo['teams_users_status'] && $vo['teams_users_number'] > 0);
             $vo['teams_direct_status'] = intval($vo['teams_direct_status'] && $vo['teams_direct_number'] > 0);
@@ -108,7 +113,7 @@ class Upgrade extends Controller
                 $order = 'number asc,utime desc';
             }
             foreach (BaseUserUpgrade::mk()->order($order)->select() as $number => $upgrade) {
-                $upgrade->save(['number' => $number + 1]);
+                $upgrade->save(['number' => $number]);
             }
         }
     }
