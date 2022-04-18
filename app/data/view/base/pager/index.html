@@ -1,7 +1,7 @@
 {extend name="../../admin/view/main"}
 
 {block name='content'}
-<div class="think-box-notify">温馨提示：如需添加新内容，需要在系统管理的基础数据添加类似为 “<b>{$type|default=''}</b>” 的基础数据。</div>
+<div class="think-box-notify">温馨提示：如需添加新内容，需要在系统管理的基础数据添加类型为 “<b>{$type|default=''}</b>” 的基础数据。</div>
 <div class="layui-row layui-col-space20 portal-block-container notselect">
     {foreach $types as $key=>$type}
     <div class="layui-col-sm4 layui-col-md4 layui-col-lg3">
