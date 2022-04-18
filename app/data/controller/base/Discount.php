@@ -64,9 +64,9 @@ class Discount extends Controller
             }
             $vo['items'] = json_encode($rule, JSON_UNESCAPED_UNICODE);
         } else {
-            $this->levels = UserUpgradeService::instance()->levels();
+            $this->levels = UserUpgradeService::levels();
             if (empty($this->levels)) $this->error('未配置用户等级！');
-            if (!empty($vo['items'])) foreach (json_decode($vo['items'], true) as $item) {
+            foreach ($vo['items'] ?? [] as $item) {
                 $vo["_level_{$item['level']}"] = $item['discount'];
             }
         }

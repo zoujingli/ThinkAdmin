@@ -21,7 +21,7 @@ class UserUpgradeService extends Service
      * 获取用户等级数据
      * @return array
      */
-    public function levels(): array
+    public static function levels(): array
     {
         $model = BaseUserUpgrade::mk()->where(['status' => 1]);
         return $model->order('number asc')->column('*', 'number');
