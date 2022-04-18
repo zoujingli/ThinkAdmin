@@ -2,7 +2,7 @@
 
 {block name="button"}
 <!--{if auth("add")}-->
-<button class='layui-btn layui-btn-sm layui-btn-primary' data-modal="{:url('add')}">添加用户等级</button>
+<button class='layui-btn layui-btn-sm layui-btn-primary' data-table-id="UpgradeTable" data-modal="{:url('add')}">添加用户等级</button>
 <!--{/if}-->
 
 <!--{if auth("sync")}-->
@@ -13,7 +13,7 @@
 
 {block name="content"}
 <div class="think-box-shadow">
-    <table id="MessageTable" data-url="{:sysuri()}" data-target-search="form.form-search"></table>
+    <table id="UpgradeTable" data-url="{:sysuri()}" data-target-search="form.form-search"></table>
 </div>
 {/block}
 
@@ -21,7 +21,7 @@
 <script>
     $(function () {
         // 初始化表格组件
-        $('#MessageTable').layTable({
+        $('#UpgradeTable').layTable({
             even: true, height: 'full',
             cols: [[
                 {field: 'number', title: '等级名称', align: 'left', minWidth: 140, templet: '<div>[ VIP{{d.number}} ] {{d.name}}</div>'},
@@ -32,7 +32,7 @@
                     }
                 },
                 {
-                    field: 'upgrade_type', title: '升级规则', align: 'center', minWidth: 100, templet: function (d) {
+                    field: 'upgrade_type', title: '升级规则', align: 'center', minWidth: 80, templet: function (d) {
                         if (d.upgrade_type === 1) return '<span class="color-green">全部完成</span>';
                         else return '<span class="color-blue">任何条件</span>';
                     }
@@ -45,25 +45,25 @@
                 },
                 {
                     field: 'teams_users_status', title: '团队总数', align: 'center', minWidth: 80, templet: function (d) {
-                        if (!d.teams_users_status || d.teams_users_status < 1) return '';
+                        if (!d.teams_users_status || d.teams_users_status < 1) return '-';
                         return laytpl('<b>{{d.teams_users_number}}</b>').render(d);
                     }
                 },
                 {
                     field: 'teams_direct_status', title: '直属团队', align: 'center', minWidth: 80, templet: function (d) {
-                        if (!d.teams_direct_status || d.teams_direct_status < 1) return '';
+                        if (!d.teams_direct_status || d.teams_direct_status < 1) return '-';
                         return laytpl('<b>{{d.teams_direct_number}}</b>').render(d);
                     }
                 },
                 {
                     field: 'teams_indirect_status', title: '间接团队', align: 'center', minWidth: 80, templet: function (d) {
-                        if (!d.teams_indirect_status || d.teams_indirect_status < 1) return '';
+                        if (!d.teams_indirect_status || d.teams_indirect_status < 1) return '-';
                         return laytpl('<b>{{d.teams_indirect_number}}</b>').render(d);
                     }
                 },
                 {
                     field: 'order_amount_status', title: '订单金额', align: 'center', minWidth: 80, templet: function (d) {
-                        if (!d.order_amount_status || d.order_amount_status < 1) return '';
+                        if (!d.order_amount_status || d.order_amount_status < 1) return '-';
                         return laytpl('<b>{{d.order_amount_number}}</b>').render(d);
                     }
                 },
@@ -71,7 +71,7 @@
                     field: 'rebate_rule', title: '奖利规则', align: 'center', minWidth: 140, templet: function (d) {
                         return (d.html = ''), (d.rebate_rule || []).forEach(function (rule) {
                             d.html += laytpl('<span class="layui-badge layui-bg-gray">{{d.v}}</span>').render({v: rule});
-                        }), d.html;
+                        }), d.html || '-';
                     }
                 },
                 {field: 'status', title: '等级状态', align: 'center', minWidth: 110, templet: '#StatusSwitchTpl'},
@@ -85,7 +85,7 @@
             var data = {id: obj.value, status: obj.elem.checked > 0 ? 1 : 0};
             $.form.load("{:url('state')}", data, 'post', function (ret) {
                 if (ret.code < 1) $.msg.error(ret.info, 3, function () {
-                    $('#MessageTable').trigger('reload');
+                    $('#UpgradeTable').trigger('reload');
                 });
                 return false;
             }, false);
@@ -111,7 +111,7 @@
 <!-- 数据操作工具条模板 -->
 <script type="text/html" id="toolbar">
     <!--{if auth('edit')}-->
-    <a class="layui-btn layui-btn-primary layui-btn-sm" data-open='{:url("edit")}?id={{d.id}}'>编 辑</a>
+    <a class="layui-btn layui-btn-primary layui-btn-sm" data-table-id="UpgradeTable" data-modal='{:url("edit")}?id={{d.id}}'>编 辑</a>
     <!--{/if}-->
 
     <!--{if auth("remove")}-->
