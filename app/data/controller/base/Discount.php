@@ -5,6 +5,7 @@ namespace app\data\controller\base;
 use app\data\model\BaseUserDiscount;
 use app\data\service\UserUpgradeService;
 use think\admin\Controller;
+use think\admin\helper\QueryHelper;
 
 /**
  * 折扣方案管理
@@ -23,20 +24,12 @@ class Discount extends Controller
      */
     public function index()
     {
-        $this->title = '折扣方案管理';
-        $query = BaseUserDiscount::mQuery();
-        $query->where(['deleted' => 0])->order('sort desc,id desc')->page();
-    }
-
-    /**
-     * 数据列表处理
-     * @param array $data
-     */
-    protected function _page_filter(array &$data)
-    {
-        foreach ($data as &$vo) {
-            $vo['items'] = json_decode($vo['items'], true);
-        }
+        $this->type = input('get.type', 'index');
+        BaseUserDiscount::mQuery()->layTable(function () {
+            $this->title = '折扣方案管理';
+        }, function (QueryHelper $query) {
+            $query->where(['status' => intval($this->type === 'index'), 'deleted' => 0]);
+        });
     }
 
     /**

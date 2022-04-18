@@ -1,4 +1,4 @@
-<form action="{:sysuri()}" method="post" data-auto="true" class="layui-form layui-card">
+<form action="{:sysuri()}" method="post" data-auto="true" class="layui-form layui-card" data-table-id="DiscountTable">
     <div class="layui-card-body padding-left-40">
 
         <label class="layui-form-item block relative">
@@ -12,19 +12,17 @@
                 <thead>
                 <tr>
                     <th class="text-left" style="width:auto">用户等级</th>
-                    <th class="text-right" style="width:180px">原价比例 ( 0.00% - 100.00% )</th>
+                    <th class="text-right">原价比例 ( 0.00% - 100.00% )</th>
                 </tr>
                 </thead>
                 <tbody>
                 {foreach $levels as $level}
                 <tr class="think-bg-white">
-                    <td class="nowrap sub-span-blue">
-                        [ <span>VIP{$level.number|default='0'}</span> ] {$level.name|default=''}
-                    </td>
+                    <td class="nowrap sub-span-blue">[ <span>VIP{$level.number|default='0'}</span> ] {$level.name|default=''}</td>
                     <td class="nowrap padding-0">
                         <label>
-                            {php} $key = "_level_" . $level['number']; {/php}
-                            <input data-blur-number="4" data-value-max="100" data-value-min="0" name="_level_{$level.number}" placeholder="请输入用户等级折扣" value="{$vo[$key]??'100.0000'}">
+                            {php} $key = '_level_' . $level['number']; {/php}
+                            <input data-blur-number="4" data-value-min="0" data-value-max="100" name="_level_{$level.number}" value="{$vo[$key]??'100.0000'}" placeholder="请输入用户等级折扣">
                             <span class="notselect margin-left-5">%</span>
                         </label>
                     </td>
@@ -49,6 +47,7 @@
     </div>
 
 </form>
+
 <style>
     .think-level-box tr input {
         width: 90%;

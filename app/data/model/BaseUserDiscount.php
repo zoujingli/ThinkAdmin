@@ -11,5 +11,23 @@ use think\admin\Model;
  */
 class BaseUserDiscount extends Model
 {
+    /**
+     * 格式化等级规则
+     * @param mixed $value
+     * @return mixed
+     */
+    public function getItemsAttr($value)
+    {
+        return empty($value) ? json_decode($value, true) : $value;
+    }
 
+    /**
+     * 格式化创建时间
+     * @param string $value
+     * @return string
+     */
+    public function getCreateAtAttr(string $value): string
+    {
+        return format_datetime($value);
+    }
 }
