@@ -18,7 +18,7 @@ class BaseUserDiscount extends Model
      */
     public function getItemsAttr($value)
     {
-        return empty($value) ? json_decode($value, true) : $value;
+        return empty($value) ? $value : json_decode($value, true);
     }
 
     /**
