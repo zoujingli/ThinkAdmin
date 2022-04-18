@@ -58,7 +58,7 @@ class Menu extends Controller
                 if (!empty($p2['sub'])) foreach ($p2['sub'] as $k3 => $p3) {
                     if ($p3['status'] > 0) unset($p2['sub'][$k3]);
                 }
-                if (empty($p2['sub']) && ($p2['url'] === '#' or $p1['status'] > 0)) unset($p1['sub'][$k2]);
+                if (empty($p2['sub']) && ($p2['url'] === '#' or $p2['status'] > 0)) unset($p1['sub'][$k2]);
             }
             if (empty($p1['sub']) && ($p1['url'] === '#' or $p1['status'] > 0)) unset($data[$k1]);
         }
