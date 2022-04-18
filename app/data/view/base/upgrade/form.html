@@ -23,7 +23,7 @@
                 <div class="layui-col-xs3 block relative">
                     <b class="color-green label-required-prev">等级序号</b><span class="margin-left-5 color-desc">Serial</span>
                     <select class="layui-select" name="number" lay-filter="number">
-                        {for start="0" end="10" name="i"}{if isset($vo.number) and $vo.number eq $i}
+                        {for start="1" end="$max" name="i"}{if isset($vo.number) and $vo.number eq $i}
                         <option selected value="{$i}">当前 VIP {$vo.number} 等级</option>
                         {else}
                         <option value="{$i}">设置 VIP {$i} 等级</option>

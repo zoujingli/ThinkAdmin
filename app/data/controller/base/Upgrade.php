@@ -47,6 +47,7 @@ class Upgrade extends Controller
      */
     public function add()
     {
+        $this->max = BaseUserUpgrade::maxNumber() + 1;
         BaseUserUpgrade::mForm('form');
     }
 
@@ -56,6 +57,7 @@ class Upgrade extends Controller
      */
     public function edit()
     {
+        $this->max = BaseUserUpgrade::maxNumber();
         BaseUserUpgrade::mForm('form');
     }
 
@@ -67,9 +69,7 @@ class Upgrade extends Controller
     {
         if ($this->request->isGet()) {
             $this->prizes = RebateService::PRIZES;
-            if (!isset($vo['number'])) {
-                $vo['number'] = BaseUserUpgrade::mk()->order('number desc')->value('number', -1) + 1;
-            }
+            $vo['number'] = $vo['number'] ?? BaseUserUpgrade::maxNumber();
             $vo['rebate_rule'] = str2arr($vo['rebate_rule'] ?? '');
         } else {
             $vo['utime'] = time();
@@ -108,7 +108,7 @@ class Upgrade extends Controller
                 $order = 'number asc,utime desc';
             }
             foreach (BaseUserUpgrade::mk()->order($order)->select() as $number => $upgrade) {
-                $upgrade->save(['number' => $number]);
+                $upgrade->save(['number' => $number + 1]);
             }
         }
     }
