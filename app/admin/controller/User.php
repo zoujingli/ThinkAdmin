@@ -46,15 +46,11 @@ class User extends Controller
         // 创建快捷查询工具
         SystemUser::mQuery()->layTable(function () {
             $this->title = '系统用户管理';
-            $this->bases = SystemBase::mk()->items('身份权限');
+            $this->bases = SystemBase::items('身份权限');
         }, function (QueryHelper $query) {
 
             // 加载对应数据列表
-            if ($this->type === 'index') {
-                $query->where(['is_deleted' => 0, 'status' => 1]);
-            } elseif ($this->type = 'recycle') {
-                $query->where(['is_deleted' => 0, 'status' => 0]);
-            }
+            $query->where(['is_deleted' => 0, 'status' => intval($this->type === 'index')]);
 
             // 关联用户身份资料
             $query->with(['userinfo' => function (Relation $relation) {
@@ -145,10 +141,10 @@ class User extends Controller
             // 权限绑定处理
             $data['authorize'] = str2arr($data['authorize'] ?? '');
             // 用户身份数据
-            $this->bases = SystemBase::mk()->items('身份权限');
+            $this->bases = SystemBase::items('身份权限');
             // 用户权限管理
             $this->superName = AdminService::instance()->getSuperName();
-            $this->authorizes = SystemAuth::mk()->items();
+            $this->authorizes = SystemAuth::items();
         }
     }
 
