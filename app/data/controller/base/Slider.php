@@ -42,6 +42,14 @@ class Slider extends Controller
     protected function initialize()
     {
         $this->types = SystemBase::mk()->items($this->type);
+        foreach ($this->types as &$type) {
+            if (preg_match('/^(.*?)#(\d+)$/', $type['name'], $matches)) {
+                $type['name'] = $matches[1];
+                $type['number'] = $matches[2];
+            } else {
+                $type['number'] = 0;
+            }
+        }
     }
 
     /**
@@ -67,7 +75,7 @@ class Slider extends Controller
         $this->skey = input('get.type', '');
         $this->base = $this->types[$this->skey] ?? [];
         if (empty($this->base)) $this->error('未配置基础数据！');
-        $this->number = 10;
+        $this->number = $this->base['number'];
         $this->sysdata();
     }
 
