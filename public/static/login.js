@@ -17,13 +17,14 @@ $(function () {
     window.$body = $('body');
 
     /*! 后台界面背景切换 */
-    $('[data-supersized]').map(function () {
-        var idx = 0, imgs = [];
-        window.setInterval(function () {
-            imgs.length > 0 && $body.css({backgroundImage: 'url(' + (imgs[++idx] || imgs[idx = 0]) + ')'});
-        }, 5000) && this.dataset.supersized.split(',').forEach(function (url) {
+    $('[data-supersized]').each(function (i, el) {
+        el.idx = 0, el.imgs = [], el.state = setInterval(function () {
+            el.imgs.length > 0 && $body.css({
+                backgroundImage: 'url(' + (el.imgs[++el.idx] || el.imgs[el.idx = 0]) + ')'
+            });
+        }, 5000) && el.dataset.supersized.split(',').forEach(function (url) {
             layui.img(url, function () {
-                imgs.push(url);
+                el.imgs.push(url);
             });
         });
     });
