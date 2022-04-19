@@ -1,7 +1,9 @@
 {extend name="../../admin/view/main"}
 
 {block name='content'}
-<div class="think-box-notify margin-bottom-15">温馨提示：如需添加新内容，需要在系统管理的基础数据添加类型为 “<b>{$type|default=''}</b>” 的基础数据。</div>
+<div class="think-box-notify margin-bottom-15">
+    <b>温馨提示：</b>如需添加新内容，需要在系统管理的基础数据添加类型为 “<b>{$type|default=''}</b>” 的基础数据。
+</div>
 <div class="layui-row layui-col-space15 portal-block-container notselect">
     {foreach $types as $key=>$type}
     <div class="layui-col-sm4 layui-col-md4 layui-col-lg3">
@@ -9,7 +11,7 @@
         <div class="pointer" data-open="{:url('edit')}?type={$key}">
             <div class="portal-block-item nowrap think-bg-violet">
                 <div class="font-s14">编辑图片</div>
-                <div class="font-s16">{$type.name|default=''}</div>
+                <div class="font-s18">{$type.name|default=''}</div>
             </div>
             <i class="portal-block-icon layui-icon layui-icon-carousel"></i>
         </div>
@@ -17,7 +19,7 @@
         <div>
             <div class="portal-block-item nowrap think-bg-violet">
                 <div class="font-s14">编辑图片</div>
-                <div class="font-s16">{$type.name|default=''}</div>
+                <div class="font-s18">{$type.name|default=''}</div>
             </div>
             <i class="portal-block-icon layui-icon layui-icon-carousel"></i>
         </div>
