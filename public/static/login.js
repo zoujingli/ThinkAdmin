@@ -16,6 +16,18 @@ $(function () {
 
     window.$body = $('body');
 
+    /*! 后台界面背景切换 */
+    $('[data-supersized]').map(function () {
+        var idx = 0, imgs = [];
+        window.setInterval(function () {
+            imgs.length > 0 && $body.css({backgroundImage: 'url(' + (imgs[++idx] || imgs[idx = 0]) + ')'});
+        }, 5000) && this.dataset.supersized.split(',').forEach(function (url) {
+            layui.img(url, function () {
+                imgs.push(url);
+            });
+        });
+    });
+
     /*! 后台加密登录处理 */
     $body.find('form[data-login-form]').each(function (idx, form) {
         require(['md5'], function (md5) {
