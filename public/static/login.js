@@ -16,7 +16,7 @@ $(function () {
 
     window.$body = $('body');
 
-    /*! 后台界面背景切换 */
+    /*! 登录界面背景切换 */
     $('[data-supersized]').each(function (i, el) {
         el.idx = 0, el.imgs = [], el.state = setInterval(function () {
             el.imgs.length > 0 && $body.css({
