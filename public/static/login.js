@@ -18,10 +18,9 @@ $(function () {
 
     /*! 登录界面背景切换 */
     $('[data-supersized]').each(function (i, el) {
-        el.idx = 0, el.imgs = [], el.state = setInterval(function () {
-            el.imgs.length > 0 && $body.css({
-                backgroundImage: 'url(' + (el.imgs[++el.idx] || el.imgs[el.idx = 0]) + ')'
-            });
+        el.idx = 0, el.imgs = [], el.lazy = setInterval(function () {
+            if (el.imgs.length > 0) return;
+            $body.css({backgroundImage: 'url(' + (el.imgs[++el.idx] || el.imgs[el.idx = 0]) + ')'});
         }, 5000) && el.dataset.supersized.split(',').forEach(function (url) {
             layui.img(url, function () {
                 el.imgs.push(url);
