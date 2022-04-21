@@ -47,7 +47,10 @@ class Login extends Controller
                 $this->captchaType = 'LoginCaptcha';
                 $this->captchaToken = CodeExtend::uniqidDate(18);
                 $this->developMode = SystemService::instance()->checkRunMode();
-                $this->backgrounds = strtr(sysconf('login_image') ?: '', '|', ',');
+                // 后台背景处理
+                $bgImages = str2arr(sysconf('login_image') ?: '', '|') ?: ['/static/theme/img/login/bg1.jpg', '/static/theme/img/login/bg2.jpg'];
+                $this->loginStyle = sprintf('style="background-image:url(%s)" data-bg-transition="%s"', $bgImages[0], join(',', $bgImages));
+
                 // 刷新当前后台域名
                 $host = "{$this->request->scheme()}://{$this->request->host()}";
                 if ($host !== sysconf('base.site_host')) sysconf('base.site_host', $host);

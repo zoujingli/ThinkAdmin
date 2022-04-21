@@ -17,11 +17,12 @@ $(function () {
     window.$body = $('body');
 
     /*! 登录界面背景切换 */
-    $('[data-supersized]').each(function (i, el) {
-        el.idx = 0, el.imgs = [], el.lazy = setInterval(function () {
-            if (el.imgs.length < 1) return;
-            $body.css({backgroundImage: 'url(' + (el.imgs[++el.idx] || el.imgs[el.idx = 0]) + ')'});
-        }, 5000) && el.dataset.supersized.split(',').forEach(function (url) {
+    $('[data-bg-transition]').each(function (i, el) {
+        el.setImg = function (url) {
+            return (el.style.backgroundImage = 'url(' + url + ')');
+        }, el.idx = 0, el.imgs = [], el.lazy = setInterval(function () {
+            el.imgs.length > 0 && el.setImg(el.imgs[++el.idx] || el.imgs[el.idx = 0]);
+        }, 5000) && el.dataset.bgTransition.split(',').forEach(function (url) {
             layui.img(url, function () {
                 el.imgs.push(url);
             });
