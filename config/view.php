@@ -42,5 +42,5 @@ return [
     // 标签默认过滤输出方法
     'default_filter'     => 'htmlentities=###,ENT_QUOTES',
     // 定义模板替换字符串
-    'tpl_replace_string' => SystemService::instance()->paths(),
+    'tpl_replace_string' => SystemService::instance()->uris(),
 ];
