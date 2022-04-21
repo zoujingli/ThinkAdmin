@@ -43,22 +43,28 @@ class Login extends Controller
             if (AdminService::instance()->isLogin()) {
                 $this->redirect(sysuri('admin/index/index'));
             } else {
-                $this->title = '系统登录';
+
+                // 登录验证码
                 $this->captchaType = 'LoginCaptcha';
                 $this->captchaToken = CodeExtend::uniqidDate(18);
-                $this->developMode = SystemService::instance()->checkRunMode();
-
+                // 当前运行模式
+                $system = SystemService::instance();
+                $this->developMode = $system->checkRunMode();
                 // 后台背景处理
-                $images = str2arr(sysconf('login_image') ?: '', '|') ?: ['/static/theme/img/login/bg1.jpg', '/static/theme/img/login/bg2.jpg'];
+                $images = str2arr(sysconf('login_image') ?: '', '|') ?: [
+                    $system->paths('/static/theme/img/login/bg1.jpg')['__ROOT__'],
+                    $system->paths('/static/theme/img/login/bg2.jpg')['__ROOT__'],
+                ];
                 $this->loginStyle = sprintf('style="background-image:url(%s)" data-bg-transition="%s"', $images[0], join(',', $images));
-
-                // 刷新当前后台域名
+                // 记录后台域名
                 $host = "{$this->request->scheme()}://{$this->request->host()}";
                 if ($host !== sysconf('base.site_host')) sysconf('base.site_host', $host);
                 // 标记登录验证令牌
                 if (!$this->app->session->get('LoginInputSessionError')) {
                     $this->app->session->set($this->captchaType, $this->captchaToken);
                 }
+                // 加载显示登录模板
+                $this->title = '系统登录';
                 $this->fetch();
             }
         } else {

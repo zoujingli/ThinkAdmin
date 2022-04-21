@@ -14,6 +14,8 @@
 // | github 代码仓库：https://github.com/zoujingli/ThinkAdmin
 // +----------------------------------------------------------------------
 
+use think\admin\service\SystemService;
+
 return [
     // 模板引擎类型使用 Think
     'type'               => 'Think',
@@ -40,9 +42,5 @@ return [
     // 标签默认过滤输出方法
     'default_filter'     => 'htmlentities=###,ENT_QUOTES',
     // 定义模板替换字符串
-    'tpl_replace_string' => [
-        '__APP__'  => rtrim(url('@')->build(), '\\/'),
-        '__ROOT__' => rtrim(dirname(request()->basefile()), '\\/'),
-        '__FULL__' => rtrim(dirname(request()->basefile(true)), '\\/'),
-    ],
+    'tpl_replace_string' => SystemService::instance()->paths(),
 ];

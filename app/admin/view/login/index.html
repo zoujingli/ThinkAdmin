@@ -1,11 +1,17 @@
 {extend name="index/index"}
 
+{block name='style'}
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
+<script>if (location.href.indexOf('#') > -1) location.replace(location.href.split('#')[0])</script>
+<link rel="stylesheet" href="__ROOT__/static/theme/css/login.css">
+{/block}
+
 {block name="body"}
-<div class="login-container" {$loginStyle|RAW}>
+<div class="login-container" {$loginStyle|raw}>
     <div class="header notselect layui-hide-xs">
         <a href="{:url('@')}" class="title">{:sysconf('app_name')}<span>{:sysconf('app_version')}</span></a>
         {notempty name='developMode'}
-        <a class="pull-right layui-anim layui-anim-fadein" href='https://gitee.com/zoujingli/ThinkAdmin'>
+        <a class="pull-right layui-anim layui-anim-fadein" target="_blank" href='https://gitee.com/zoujingli/ThinkAdmin'>
             <img src='https://gitee.com/zoujingli/ThinkAdmin/widgets/widget_1.svg' alt='Fork me on Gitee'>
         </a>
         {/notempty}
@@ -44,12 +50,6 @@
         {if sysconf('miitbeian')}<span class="padding-5">|</span><a target="_blank" href="https://beian.miit.gov.cn/">{:sysconf('miitbeian')}</a>{/if}
     </div>
 </div>
-{/block}
-
-{block name='style'}
-<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
-<script>if (location.href.indexOf('#') > -1) location.replace(location.href.split('#')[0])</script>
-<link rel="stylesheet" href="__ROOT__/static/theme/css/login.css">
 {/block}
 
 {block name='script'}
