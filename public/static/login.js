@@ -18,17 +18,19 @@ $(function () {
 
     /*! 登录界面背景切换 */
     $('[data-bg-transition]').each(function (i, el) {
-        el.idx = 0, el.imgs = [], el.lazy = setInterval(function () {
-            el.imgs.length > 0 && el.setImg(el.imgs[++el.idx] || el.imgs[el.idx = 0]);
-        }, 5000) && el.dataset.bgTransition.split(',').forEach(function (url) {
-            layui.img(url, function () {
-                el.imgs.push(url);
+        el.idx = 0, el.imgs = [], el.SetBackImage = function (css) {
+            window.setTimeout(function () {
+                $(el).removeClass(el.imgs.join(' ')).addClass(css)
+            }, 1000) && $body.removeClass(el.imgs.join(' ')).addClass(css)
+        }, window.setInterval(function () {
+            el.imgs.length > 0 && el.SetBackImage(el.imgs[++el.idx] || el.imgs[el.idx = 0]);
+        }, 5000) && el.dataset.bgTransition.split(',').forEach(function (image) {
+            layui.img(image, function (img, cssid, style) {
+                style = document.createElement('style'), cssid = 'LoginBackImage' + (el.imgs.length + 1);
+                style.innerHTML = '.' + cssid + '{background-image:url("' + encodeURI(image) + '")!important}';
+                document.head.appendChild(style) && el.imgs.push(cssid);
             });
-        }), el.setImg = function (url) {
-            setTimeout(function () {
-                el.style.backgroundImage = 'url(' + url + ')';
-            }, 1000) && $body.css({backgroundImage: 'url(' + url + ')'});
-        };
+        });
     });
 
     /*! 后台加密登录处理 */
