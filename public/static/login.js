@@ -22,7 +22,7 @@ $(function () {
             window.setTimeout(function () {
                 $(el).removeClass(el.imgs.join(' ')).addClass(css)
             }, 1000) && $body.removeClass(el.imgs.join(' ')).addClass(css)
-        }, window.setInterval(function () {
+        }, el.lazy = window.setInterval(function () {
             el.imgs.length > 0 && el.SetBackImage(el.imgs[++el.idx] || el.imgs[el.idx = 0]);
         }, 5000) && el.dataset.bgTransition.split(',').forEach(function (image) {
             layui.img(image, function (img, cssid, style) {
