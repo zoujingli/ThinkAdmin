@@ -29,43 +29,43 @@
                     }
                 },
                 {
-                    field: 'upgrade_team', title: '团队计数', align: 'center', minWidth: 80, templet: function (d) {
+                    field: 'upgrade_team', title: '团队计数', align: 'center', width: 80, templet: function (d) {
                         if (!d.upgrade_team || d.upgrade_team < 1) return '-';
                         return '<b class="layui-icon layui-icon-ok-circle color-green"></b>';
                     }
                 },
                 {
-                    field: 'upgrade_type', title: '升级规则', align: 'center', minWidth: 80, templet: function (d) {
+                    field: 'upgrade_type', title: '升级规则', align: 'center', width: 80, templet: function (d) {
                         if (d.upgrade_type === 1) return '<span class="color-green">全部完成</span>';
                         else return '<span class="color-blue">任何条件</span>';
                     }
                 },
                 {
-                    field: 'goods_vip_status', title: '入会礼包', align: 'center', minWidth: 80, templet: function (d) {
+                    field: 'goods_vip_status', title: '入会礼包', align: 'center', width: 80, templet: function (d) {
                         if (!d.goods_vip_status || d.goods_vip_status < 1) return '-';
                         return '<b class="layui-icon layui-icon-ok-circle color-green"></b>';
                     }
                 },
                 {
-                    field: 'teams_users_status', title: '团队总数', align: 'center', minWidth: 80, templet: function (d) {
+                    field: 'teams_users_status', title: '团队总数', align: 'center', width: 80, templet: function (d) {
                         if (!d.teams_users_status || d.teams_users_status < 1) return '-';
                         return laytpl('<b>{{d.teams_users_number}}</b>').render(d);
                     }
                 },
                 {
-                    field: 'teams_direct_status', title: '直属团队', align: 'center', minWidth: 80, templet: function (d) {
+                    field: 'teams_direct_status', title: '直属团队', align: 'center', width: 80, templet: function (d) {
                         if (!d.teams_direct_status || d.teams_direct_status < 1) return '-';
                         return laytpl('<b>{{d.teams_direct_number}}</b>').render(d);
                     }
                 },
                 {
-                    field: 'teams_indirect_status', title: '间接团队', align: 'center', minWidth: 80, templet: function (d) {
+                    field: 'teams_indirect_status', title: '间接团队', align: 'center', width: 80, templet: function (d) {
                         if (!d.teams_indirect_status || d.teams_indirect_status < 1) return '-';
                         return laytpl('<b>{{d.teams_indirect_number}}</b>').render(d);
                     }
                 },
                 {
-                    field: 'order_amount_status', title: '订单金额', align: 'center', minWidth: 80, templet: function (d) {
+                    field: 'order_amount_status', title: '订单金额', align: 'center', width: 80, templet: function (d) {
                         if (!d.order_amount_status || d.order_amount_status < 1) return '-';
                         return laytpl('<b>{{d.order_amount_number}}</b>').render(d);
                     }
@@ -77,8 +77,8 @@
                         }), d.html || '-';
                     }
                 },
-                {field: 'status', title: '等级状态', align: 'center', minWidth: 110, templet: '#StatusSwitchTpl'},
-                {field: 'create_at', title: '创建时间', align: 'center', minWidth: 170, sort: true},
+                {field: 'status', title: '等级状态', align: 'center', width: 110, templet: '#StatusSwitchTpl'},
+                {field: 'create_at', title: '创建时间', align: 'center', width: 170, sort: true},
                 {toolbar: '#toolbar', title: '操作面板', align: 'center', minWidth: 160, fixed: 'right'},
             ]]
         });
