@@ -8,6 +8,10 @@
 <!--{if auth("remove")}-->
 <button data-action='{:url("remove")}' data-table-id="NewsTable" data-rule="id#{id}" data-confirm="确定要批量删除文章吗？" class='layui-btn layui-btn-sm layui-btn-primary'>批量删除</button>
 <!--{/if}-->
+
+<!--{if auth("news.mark/index")}-->
+<button class='layui-btn layui-btn-sm layui-btn-primary' data-modal='{:url("news.mark/index")}' data-title="标签管理" data-width="920px">标签管理</button>
+<!--{/if}-->
 {/block}
 
 {block name="content"}
