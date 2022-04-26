@@ -21,8 +21,7 @@ define(['md5'], function (SparkMD5, allowMime) {
 
         /*! 初始化上传组件 */
         opt.uploader = layui.upload.render({
-            url: '{:sysuri("admin/api.upload/file")}', auto: false, elem: element, accept: 'file', multiple: opt.mult,
-            exts: opt.exts.join('|'), acceptMime: opt.mimes.join(','), choose: function (object) {
+            url: '{:sysuri("admin/api.upload/file")}', auto: false, elem: element, accept: 'file', multiple: opt.mult, exts: opt.exts.join('|'), acceptMime: opt.mimes.join(','), choose: function (object) {
                 opt.elem.triggerHandler('upload.choose', opt.files = object.pushFile());
                 opt.uploader.config.elem.next().val(''), layui.each(opt.files, function (index, file) {
                     if (opt.size > 0 && file.size > opt.size) return delete opt.files[index], $.msg.tips('文件大小超出限制！');
@@ -75,6 +74,8 @@ define(['md5'], function (SparkMD5, allowMime) {
                     $('[data-upload-progress]').html(number + '%');
                 }
             }, done: function (ret, idx) {
+                // 兼容部分环境不解析 JSON 数据
+                if (typeof ret === 'string') ret = JSON.parse(ret) || ret;
                 /*! 检查单个文件上传返回的结果 */
                 if (ret.code < 1) return $.msg.tips(ret.info || '文件上传失败！');
                 if (typeof opt.cache[idx].xurl !== 'string') return $.msg.tips('无效的文件上传对象！');
