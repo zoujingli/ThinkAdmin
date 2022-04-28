@@ -102,7 +102,8 @@
                 // currentRow:当前行索引
                 // currentCol:当前列索引
                 // fieldKey:当前字段索引
-                /* 转换为单元格数据为对象 */
+
+                /* 判断并转换单元格数据为对象，以便初始化样式 */
                 if (typeof oldCell !== 'object') oldCell = {v: oldCell};
                 oldCell.s = style2;
                 return (currentRow % 2 === 0) ? newCell : oldCell;
