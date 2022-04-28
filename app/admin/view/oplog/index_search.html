@@ -70,10 +70,51 @@
 <script>
     require(['excel'], function (excel) {
         excel.bind(function (data) {
+            // 设置表格内容
             data.forEach(function (item, index) {
                 data[index] = [item.username, item.node, item.geoip, item.geoisp, item.action, item.content, item.create_at];
             });
+            // 设置表头内容
             data.unshift(['操作账号', '访问节点', '访问IP地址', '访问地理区域', '访问操作', '操作内容', '操作时间']);
+            // 设置表头样式
+            layui.excel.setExportCellStyle(data, 'A1:G1', {
+                s: {
+                    font: {sz: 14, bold: true, color: {rgb: "FFFFFF"}, shadow: true},
+                    fill: {bgColor: {indexed: 64}, fgColor: {rgb: "5FB878"}},
+                    alignment: {vertical: 'center', horizontal: 'center'}
+                }
+            });
+            // 设置内容样式
+            var style1 = {
+                fill: {bgColor: {indexed: 64}, fgColor: {rgb: "EAEAEA"}},
+                alignment: {vertical: 'center', horizontal: 'center'}
+            }, style2 = {
+                fill: {bgColor: {indexed: 64}, fgColor: {rgb: "FFFFFF"}},
+                alignment: {vertical: 'center', horizontal: 'center'}
+            };
+            layui.excel.setExportCellStyle(data, 'A2:G' + data.length, {
+                s: style1
+            }, function (oldCell, newCell, row, config, currentRow, currentCol, fieldKey) {
+                // oldCell:原有数据，
+                // newCell:根据批量设置规则自动生成的样式
+                // row:所在行数据
+                // config:传入的配置
+                // currentRow:当前行索引
+                // currentCol:当前列索引
+                // fieldKey:当前字段索引
+                /* 转换为单元格数据为对象 */
+                if (typeof oldCell !== 'object') oldCell = {v: oldCell};
+                oldCell.s = style2;
+                return (currentRow % 2 === 0) ? newCell : oldCell;
+            });
+            // 设置表格行宽高，需要设置最后的行或列宽高，否则部分不生效 ？？？
+            var rowsC = {1: 40}, colsC = {'A': 160, 'G': 160};
+            rowsC[data.length] = 33, this.options.extend = {
+                '!rows': layui.excel.makeRowConfig(rowsC, 33), // 设置每行高度，默认 33
+                '!cols': layui.excel.makeColConfig(colsC, 160) // 设置每行宽度，默认 160
+            };
+            // 其他更多样式，可以配置 this.options.extend 参数，每次执行 bind 会被重置
+            // 在线文档：http://excel.wj2015.com/_book/docs/%E5%87%BD%E6%95%B0%E5%88%97%E8%A1%A8/%E6%A0%B7%E5%BC%8F%E8%AE%BE%E7%BD%AE%E7%9B%B8%E5%85%B3%E5%87%BD%E6%95%B0.html
             return data;
         }, '操作日志');
     });

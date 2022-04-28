@@ -5,22 +5,26 @@ define(function () {
         if (data && name) this.export(data, name);
     }
 
+    /*! 默认导出配置 */
+    Excel.prototype.options = {writeOpt: {bookSST: true}};
+
     /*! 导入 Excel 文件 */
     Excel.prototype.export = function (data, name) {
-        if (name.substr(-5).toLowerCase() !== '.xlsx') name += '.xlsx';
-        layui.excel.exportExcel(data, name, 'xlsx', {writeOpt: {bookSST: true}});
-    }
+        if (name.substring(0, -5).toLowerCase() !== '.xlsx') name += '.xlsx';
+        layui.excel.exportExcel(data, name, 'xlsx', this.options || {writeOpt: {bookSST: true}});
+    };
 
     /*! 绑定导出的事件 */
     Excel.prototype.bind = function (done, filename) {
         var that = this;
+        this.options = {writeOpt: {bookSST: true}};
         $('body').off('click', '[data-form-export]').on('click', '[data-form-export]', function () {
             var form = $(this).parents('form');
             var name = this.dataset.filename || filename;
             var method = this.dataset.method || form.attr('method') || 'get';
             var location = this.dataset.excel || this.dataset.formExport || form.attr('action') || '';
             that.load(location, form.serialize(), method).then(function (ret) {
-                that.export(done(ret, []), name);
+                that.export(done.call(that, ret, []), name);
             }).fail(function (ret) {
                 $.msg.tips(ret || '文件导出失败');
             });
