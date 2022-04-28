@@ -8,7 +8,7 @@ define(function () {
     /*! 默认导出配置 */
     Excel.prototype.options = {writeOpt: {bookSST: true}};
 
-    /*! 导入 Excel 文件 */
+    /*! 导出 Excel 文件 */
     Excel.prototype.export = function (data, name) {
         if (name.substring(0, -5).toLowerCase() !== '.xlsx') name += '.xlsx';
         layui.excel.exportExcel(data, name, 'xlsx', this.options || {writeOpt: {bookSST: true}});
