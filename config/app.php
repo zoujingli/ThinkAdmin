@@ -16,29 +16,36 @@
 
 return [
     // 应用命名空间
-    'app_namespace'    => '',
+    'app_namespace'           => '',
     // 应用快速访问
-    'app_express'      => true,
+    'app_express'             => true,
     // 是否启用路由
-    'with_route'       => true,
+    'with_route'              => true,
     // 超级用户账号
-    'super_user'       => 'admin',
+    'super_user'              => 'admin',
     // 默认时区
-    'default_timezone' => 'Asia/Shanghai',
+    'default_timezone'        => 'Asia/Shanghai',
     // 应用映射（自动多应用模式有效）
-    'app_map'          => [],
+    'app_map'                 => [],
     // 域名绑定（自动多应用模式有效）
-    'domain_bind'      => [],
+    'domain_bind'             => [],
     // 禁止URL访问的应用列表（自动多应用模式有效）
-    'deny_app_list'    => [],
+    'deny_app_list'           => [],
     // 非调试模式时显示错误的消息
-    'error_message'    => '页面错误！请稍后再试～',
+    'error_message'           => '页面错误！请稍后再试～',
     // CORS 自动配置跨域
-    'cors_auto'        => true,
+    'cors_auto'               => true,
     // CORS 配置跨域域名
-    'cors_host'        => [],
+    'cors_host'               => [],
     // CORS 授权请求方法
-    'cors_methods'     => 'GET,PUT,POST,PATCH,DELETE',
+    'cors_methods'            => 'GET,PUT,POST,PATCH,DELETE',
     // CORS 跨域头部字段
-    'cors_headers'     => 'Api-Type,Api-Name,Api-Uuid,Api-Token,User-Form-Token,User-Token,Token',
+    'cors_headers'            => 'Api-Type,Api-Name,Api-Uuid,Api-Token,User-Form-Token,User-Token,Token',
+    // 异常模板路径配置
+    'exception_tmpl'          => app()->getAppPath() . 'admin/view/error.php',
+    // 异常状态模板配置，非开发模式有效
+    'http_exception_template' => [
+        404 => app()->getRootPath() . 'public/static/theme/err/404.html',
+        500 => app()->getRootPath() . 'public/static/theme/err/500.html'
+    ]
 ];

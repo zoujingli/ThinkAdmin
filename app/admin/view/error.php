@@ -9,7 +9,7 @@ if (!function_exists('parse_padding')) {
 }
 
 if (!function_exists('parse_class')) {
-    function parse_class($name)
+    function parse_class($name): string
     {
         $names = explode('\\', $name);
         return '<abbr title="' . $name . '">' . end($names) . '</abbr>';
@@ -17,14 +17,14 @@ if (!function_exists('parse_class')) {
 }
 
 if (!function_exists('parse_file')) {
-    function parse_file($file, $line)
+    function parse_file($file, $line): string
     {
         return '<a class="toggle" title="' . "{$file} line {$line}" . '">' . basename($file) . " line {$line}" . '</a>';
     }
 }
 
 if (!function_exists('parse_args')) {
-    function parse_args($args)
+    function parse_args($args): string
     {
         $result = [];
         foreach ($args as $key => $item) {
@@ -386,7 +386,9 @@ if (!function_exists('echo_value')) {
             </div>
             <?php if (!empty($trace['source'])) { ?>
                 <div class="source-code">
-                    <pre class="prettyprint lang-php"><ol start="<?php echo $trace['source']['first']; ?>"><?php foreach ((array)$trace['source']['source'] as $key => $value) { ?><li class="line-<?php echo " {$index}-" . ($key + $trace['source']['first']) . ($trace['line'] === $key + $trace['source']['first'] ? ' line-error' : ''); ?>"><code><?php echo htmlentities($value); ?></code></li><?php } ?></ol></pre>
+<pre class="prettyprint lang-php">
+<ol start="<?php echo $trace['source']['first']; ?>"><!--<?php foreach ((array)$trace['source']['source'] as $key => $value) { ?>--><li class="line-<?php echo " {$index}-" . ($key + $trace['source']['first']) . ($trace['line'] === $key + $trace['source']['first'] ? ' line-error' : ''); ?>"><code><?php echo htmlentities($value); ?></code></li><!--<?php } ?>--></ol>
+</pre>
                 </div>
             <?php } ?>
             <div class="trace">
@@ -468,7 +470,6 @@ if (!function_exists('echo_value')) {
     <script>
         function $(selector, node) {
             var elements;
-
             node = node || document;
             if (document.querySelectorAll) {
                 elements = node.querySelectorAll(selector);
