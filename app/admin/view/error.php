@@ -212,8 +212,7 @@ if (!function_exists('echo_value')) {
             box-sizing: border-box;
             font-size: 14px;
             font-family: "Century Gothic", Consolas, "Liberation Mono", Courier, Verdana, serif;
-            padding-left: < ? php echo (isset($ source) & & ! empty($ source)) ? parse_padding($ source): 40;
-            ? > px;
+            padding-left: <?php echo (isset($source) && ! empty($source)) ? parse_padding($source): 40;?> px;
         }
 
         .exception .source-code pre li {
@@ -416,7 +415,7 @@ if (!function_exists('echo_value')) {
     <?php } ?>
 <?php } else { ?>
     <div class="exception">
-        <div class="info"><h1><?php echo htmlentities($message); ?></h1></div>
+        <div class="info"><h1><?php echo htmlentities(isset($message) ? $message : ''); ?></h1></div>
     </div>
 <?php } ?>
 
