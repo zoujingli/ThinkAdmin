@@ -17,7 +17,7 @@ define(function () {
     /*! 绑定导出的事件 */
     Excel.prototype.bind = function (done, filename) {
         var that = this;
-        this.options = {writeOpt: {bookSST: true}};
+        this.options = {}; // {writeOpt: {bookSST: true}};
         $('body').off('click', '[data-form-export]').on('click', '[data-form-export]', function () {
             var form = $(this).parents('form');
             var name = this.dataset.filename || filename;

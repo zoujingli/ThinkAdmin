@@ -73,11 +73,11 @@
 
             // 设置表格内容
             data.forEach(function (item, index) {
-                data[index] = [item.username, item.node, item.geoip, item.geoisp, item.action, item.content, item.create_at];
+                data[index] = [item.id, item.username, item.node, item.geoip, item.geoisp, item.action, item.content, item.create_at];
             });
 
             // 设置表头内容
-            data.unshift(['操作账号', '访问节点', '访问IP地址', '访问地理区域', '访问操作', '操作内容', '操作时间']);
+            data.unshift(['ID', '操作账号', '访问节点', '访问IP地址', '访问地理区域', '访问操作', '操作内容', '操作时间']);
 
             // 自动计算列序号
             var lastCol = layui.excel.numToTitle((function (count, idx) {
@@ -120,7 +120,7 @@
             });
 
             // 设置表格行宽高，需要设置最后的行或列宽高，否则部分不生效 ？？？
-            var rowsC = {1: 40}, colsC = {'A': 160};
+            var rowsC = {1: 40}, colsC = {A: 60, B: 100};
             rowsC[data.length] = 33, colsC[lastCol] = 160;
             this.options.extend = {
                 '!rows': layui.excel.makeRowConfig(rowsC, 33), // 设置每行高度，默认 33
