@@ -43,9 +43,10 @@ class Wxapp extends Controller
      */
     protected function initialize()
     {
+        $opt = sysdata('wxapp');
         $this->cfg = [
-            'appid'      => sysconf('data.wxapp_appid'),
-            'appsecret'  => sysconf('data.wxapp_appkey'),
+            'appid'      => $opt['appid'] ?? '',
+            'appsecret'  => $opt['appkey'] ?? '',
             'cache_path' => $this->app->getRootPath() . 'runtime' . DIRECTORY_SEPARATOR . 'wechat',
         ];
         if (empty(UserAdminService::TYPES[$this->type]['auth'])) {
