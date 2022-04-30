@@ -28,20 +28,6 @@ class Upgrade extends Controller
     }
 
     /**
-     * 数据列表处理
-     * @param array $data
-     */
-    protected function _page_filter(array &$data)
-    {
-        foreach ($data as &$vo) {
-            $vo['rebate_rule'] = str2arr($vo['rebate_rule']);
-            foreach ($vo['rebate_rule'] as &$v) {
-                $v = RebateService::instance()->name($v);
-            }
-        }
-    }
-
-    /**
      * 添加用户等级
      * @auth true
      */
@@ -70,10 +56,8 @@ class Upgrade extends Controller
         if ($this->request->isGet()) {
             $this->prizes = RebateService::PRIZES;
             $vo['number'] = $vo['number'] ?? BaseUserUpgrade::maxNumber();
-            $vo['rebate_rule'] = str2arr($vo['rebate_rule'] ?? '');
         } else {
             $vo['utime'] = time();
-            $vo['rebate_rule'] = arr2str($vo['rebate_rule'] ?? []);
             // 用户升级条件开关
             $vo['goods_vip_status'] = isset($vo['goods_vip_status']) ? 1 : 0;
             $vo['teams_users_status'] = isset($vo['teams_users_status']) ? 1 : 0;

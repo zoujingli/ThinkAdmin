@@ -72,7 +72,7 @@
                 },
                 {
                     field: 'rebate_rule', title: '奖利规则', align: 'center', minWidth: 100, templet: function (d) {
-                        return (d.html = ''), (d.rebate_rule || []).forEach(function (rule) {
+                        return (d.html = ''), layui.each(d.rebate_rule || {}, function (k, rule) {
                             d.html += laytpl('<span class="layui-badge layui-bg-gray">{{d.v}}</span>').render({v: rule});
                         }), d.html || '-';
                     }

@@ -146,7 +146,7 @@
         <fieldset class="layui-form-item">
             <legend><span class="layui-badge layui-bg-cyan">奖利规则</span></legend>
             <div class="notselect relative">
-                {foreach $prizes as $prize}{if isset($vo.rebate_rule) && is_array($vo.rebate_rule) && in_array($prize.code, $vo.rebate_rule)}
+                {foreach $prizes as $prize}{if isset($vo.rebate_rule) && is_array($vo.rebate_rule) && isset($vo.rebate_rule[$prize.code])}
                 <label class="think-checkbox"><input lay-ignore name="rebate_rule[]" type="checkbox" value="{$prize.code}" checked> {$prize.name}</label>
                 {else}
                 <label class="think-checkbox"><input lay-ignore name="rebate_rule[]" type="checkbox" value="{$prize.code}"> {$prize.name}</label>

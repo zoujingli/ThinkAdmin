@@ -417,7 +417,7 @@ class RebateService extends Service
      * @param string $prize
      * @return string
      */
-    public function name(string $prize): string
+    public static function name(string $prize): string
     {
         return self::PRIZES[$prize]['name'] ?? $prize;
     }
