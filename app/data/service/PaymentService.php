@@ -232,7 +232,7 @@ abstract class PaymentService
      */
     public static function name(string $type): string
     {
-        return self::TYPES[$type]['name'] ?? $type;
+        return static::TYPES[$type]['name'] ?? $type;
     }
 
     /**
@@ -243,7 +243,7 @@ abstract class PaymentService
     public static function getTypeAll(array $types = []): array
     {
         $binds = array_keys(UserAdminService::TYPES);
-        foreach (self::TYPES as $k => $v) if (isset($v['bind'])) {
+        foreach (static::TYPES as $k => $v) if (isset($v['bind'])) {
             if (array_intersect($v['bind'], $binds)) $types[$k] = $v;
         }
         return $types;

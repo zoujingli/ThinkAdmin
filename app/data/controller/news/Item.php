@@ -8,7 +8,6 @@ use app\data\service\NewsService;
 use think\admin\Controller;
 use think\admin\extend\CodeExtend;
 use think\admin\helper\QueryHelper;
-use think\admin\model\SystemBase;
 
 /**
  * 文章内容管理
