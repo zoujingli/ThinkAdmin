@@ -35,9 +35,9 @@
 
             // 初始化图片背景
             cropper = new Cropper(image, options = {
-                aspectRatio: 1, ready() {
+                viewMode: 1, aspectRatio: 1, ready: function () {
                     if (typeof defaData === 'object') cropper.setData(defaData);
-                }, crop() {
+                }, crop: function () {
                     $('#inputImage').val(image.src);
                     $('#inputData').val(JSON.stringify(cropper.getData()));
                 },
