@@ -107,7 +107,7 @@
             }, function (rawCell, newCell, row, config, currentRow, currentCol, fieldKey) {
                 /* 判断并转换单元格数据为对象，以便初始化样式 */
                 typeof rawCell !== 'object' && (rawCell = {v: rawCell});
-                rawCell.s = Object.assign(style2, rawCell.s || {});
+                rawCell.s = Object.assign({}, style2, rawCell.s || {});
                 return (currentRow % 2 === 0) ? newCell : rawCell;
             });
 
