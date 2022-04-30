@@ -4,6 +4,7 @@ namespace app\data\controller\shop;
 
 use app\data\model\BaseUserDiscount;
 use app\data\model\BaseUserPayment;
+use app\data\model\BaseUserUpgrade;
 use app\data\model\ShopGoods;
 use app\data\model\ShopGoodsCate;
 use app\data\model\ShopGoodsItem;
@@ -138,7 +139,7 @@ class Goods extends Controller
             $this->marks = ShopGoodsMark::items();
             $this->cates = ShopGoodsCate::treeTable(true);
             $this->trucks = ExpressService::instance()->templates();
-            $this->upgrades = UserUpgradeService::instance()->levels();
+            $this->upgrades = BaseUserUpgrade::items();
             $this->payments = BaseUserPayment::mk()->where(['status' => 1, 'deleted' => 0])->order('sort desc,id desc')->column('type,code,name', 'code');
             $this->discounts = BaseUserDiscount::mk()->where(['status' => 1, 'deleted' => 0])->order('sort desc,id desc')->column('id,name,items', 'id');
             // 商品规格处理

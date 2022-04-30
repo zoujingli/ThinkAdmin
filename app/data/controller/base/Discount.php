@@ -3,6 +3,7 @@
 namespace app\data\controller\base;
 
 use app\data\model\BaseUserDiscount;
+use app\data\model\BaseUserUpgrade;
 use app\data\service\UserUpgradeService;
 use think\admin\Controller;
 use think\admin\helper\QueryHelper;
@@ -64,7 +65,7 @@ class Discount extends Controller
             }
             $vo['items'] = json_encode($rule, JSON_UNESCAPED_UNICODE);
         } else {
-            $this->levels = UserUpgradeService::levels();
+            $this->levels = BaseUserUpgrade::items();
             if (empty($this->levels)) $this->error('未配置用户等级！');
             foreach ($vo['items'] ?? [] as $item) {
                 $vo["_level_{$item['level']}"] = $item['discount'];

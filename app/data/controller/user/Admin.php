@@ -2,6 +2,7 @@
 
 namespace app\data\controller\user;
 
+use app\data\model\BaseUserUpgrade;
 use app\data\model\DataUser;
 use app\data\service\UserAdminService;
 use app\data\service\UserUpgradeService;
@@ -25,7 +26,7 @@ class Admin extends Controller
     public function index()
     {
         // 用户等级分组
-        [$ts, $ls] = [[], UserUpgradeService::instance()->levels()];
+        [$ts, $ls] = [[], BaseUserUpgrade::items()];
         $ts['ta'] = ['vip' => '', 'name' => '全部用户', 'count' => 0];
         foreach ($ls as $k => $v) $ts["t{$k}"] = ['vip' => $k, 'name' => $v['name'], 'count' => 0,];
         $ts['to'] = ['vip' => '', 'name' => '其他用户', 'count' => 0];
@@ -62,7 +63,7 @@ class Admin extends Controller
      */
     protected function _page_filter(array &$data)
     {
-        $this->upgrades = UserUpgradeService::instance()->levels();
+        $this->upgrades = BaseUserUpgrade::items();
         UserAdminService::instance()->buildByUid($data, 'pid1', 'from');
     }
 
@@ -139,7 +140,7 @@ class Admin extends Controller
     public function parent()
     {
         if ($this->request->isGet()) {
-            $this->upgrades = UserUpgradeService::instance()->levels();
+            $this->upgrades = BaseUserUpgrade::items();
             $data = $this->_vali(['uuid.require' => '待操作UID不能为空！']);
 
             // 排除下级用户

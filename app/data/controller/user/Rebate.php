@@ -2,6 +2,7 @@
 
 namespace app\data\controller\user;
 
+use app\data\model\BaseUserUpgrade;
 use app\data\model\DataUser;
 use app\data\model\DataUserRebate;
 use app\data\model\ShopOrderItem;
@@ -83,7 +84,7 @@ class Rebate extends Controller
         $this->title = '用户返利配置';
         if ($this->request->isGet()) {
             $this->data = sysdata($this->skey);
-            $this->levels = UserUpgradeService::instance()->levels();
+            $this->levels = BaseUserUpgrade::items();
             $this->fetch();
         } else {
             sysdata($this->skey, $this->request->post());

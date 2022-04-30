@@ -3,6 +3,7 @@
 namespace app\data\controller\api\auth;
 
 use app\data\controller\api\Auth;
+use app\data\model\BaseUserUpgrade;
 use app\data\model\DataUser;
 use app\data\service\RebateService;
 use app\data\service\UserAdminService;
@@ -102,13 +103,7 @@ class Center extends Auth
      */
     public function levels()
     {
-        $levels = UserUpgradeService::instance()->levels();
-        foreach ($levels as &$level) {
-            $level['prizes'] = [];
-            foreach (str2arr($level['rebate_rule']) as $code) {
-                $level['prizes'][$code] = RebateService::instance()->name($code);
-            }
-        }
+        $levels = BaseUserUpgrade::items();
         $this->success('获取用户等级', array_values($levels));
     }
 

@@ -18,16 +18,6 @@ class UserUpgradeService extends Service
 {
 
     /**
-     * 获取用户等级数据
-     * @return array
-     */
-    public static function levels(): array
-    {
-        $model = BaseUserUpgrade::mk()->where(['status' => 1]);
-        return $model->order('number asc')->column('*', 'number');
-    }
-
-    /**
      * 尝试绑定上级代理
      * @param integer $uuid 用户UID
      * @param integer $pid0 代理UID
@@ -86,7 +76,7 @@ class UserUpgradeService extends Service
         $user = DataUser::mk()->where(['id' => $uuid])->find();
         if (empty($user)) return true;
         // 初始化等级参数
-        $levels = $this->levels();
+        $levels = BaseUserUpgrade::items();
         [$vipName, $vipCode, $vipTeam] = [$levels[0]['name'] ?? '普通用户', 0, []];
         // 统计用户数据
         foreach ($levels as $key => $level) if ($level['upgrade_team'] === 1) $vipTeam[] = $key;

@@ -2,6 +2,7 @@
 
 namespace app\data\controller\user;
 
+use app\data\model\BaseUserUpgrade;
 use app\data\model\DataUser;
 use app\data\model\DataUserBalance;
 use app\data\service\UserAdminService;
@@ -52,7 +53,7 @@ class Balance extends Controller
         UserAdminService::instance()->buildByUid($data);
         $uids = array_unique(array_column($data, 'create_by'));
         $users = SystemUser::mk()->whereIn('id', $uids)->column('username', 'id');
-        $this->upgrades = UserUpgradeService::instance()->levels();
+        $this->upgrades = BaseUserUpgrade::items();
         foreach ($data as &$vo) {
             $vo['upgradeinfo'] = $this->upgrades[$vo['upgrade']] ?? [];
             $vo['create_byname'] = $users[$vo['create_by']] ?? '';
@@ -84,7 +85,7 @@ class Balance extends Controller
             $data['code'] = CodeExtend::uniqidDate('20', 'B');
         }
         if ($this->request->isGet()) {
-            $this->upgrades = UserUpgradeService::instance()->levels();
+            $this->upgrades = BaseUserUpgrade::items();
         }
         if ($this->request->isPost()) {
             $data['create_by'] = AdminService::instance()->getUserId();
