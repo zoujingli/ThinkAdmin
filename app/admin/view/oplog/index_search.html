@@ -104,19 +104,11 @@
             };
             layui.excel.setExportCellStyle(data, 'A2:' + lastCol + data.length, {
                 s: style1
-            }, function (oldCell, newCell, row, config, currentRow, currentCol, fieldKey) {
-                // oldCell:原有数据，
-                // newCell:根据批量设置规则自动生成的样式
-                // row:所在行数据
-                // config:传入的配置
-                // currentRow:当前行索引
-                // currentCol:当前列索引
-                // fieldKey:当前字段索引
-
+            }, function (rawCell, newCell, row, config, currentRow, currentCol, fieldKey) {
                 /* 判断并转换单元格数据为对象，以便初始化样式 */
-                if (typeof oldCell !== 'object') oldCell = {v: oldCell};
-                oldCell.s = style2;
-                return (currentRow % 2 === 0) ? newCell : oldCell;
+                typeof rawCell !== 'object' && (rawCell = {v: rawCell});
+                rawCell.s = Object.assign(style2, rawCell.s || {});
+                return (currentRow % 2 === 0) ? newCell : rawCell;
             });
 
             // 设置表格行宽高，需要设置最后的行或列宽高，否则部分不生效 ？？？
