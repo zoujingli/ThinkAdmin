@@ -716,6 +716,16 @@ $(function () {
                 if (curp > maxp && maxp > 1) $table.trigger('reload', {page: {curr: maxp}});
                 return res;
             };
+            // 搜索表单关联
+            var sform, search = params.search || table.dataset.targetSearch;
+            if (search) (sform = $body.find(search)).map(function () {
+                $(this).attr('data-table-id', table.id);
+            });
+            // 绑定选择项关联
+            var checked = params.checked || table.dataset.targetChecked;
+            if (checked) $body.find(checked).map(function () {
+                $(this).attr('data-table-id', table.id);
+            });
             // 实例并绑定事件
             $table.data('this', layui.table.render(bindData(option)));
             $table.bind('reload render reloadData', function (evt, opts) {
@@ -740,16 +750,6 @@ $(function () {
             }).trigger('sort', function (rets) {
                 (sort = rets), $table.trigger('reload')
             });
-            // 搜索表单关联对象
-            var search = params.search || table.dataset.targetSearch;
-            if (search) $body.find(search).map(function () {
-                $(this).attr('data-table-id', table.id);
-            });
-            // 绑定选择项关联对象
-            var checked = params.checked || table.dataset.targetChecked;
-            if (checked) $body.find(checked).map(function () {
-                $(this).attr('data-table-id', table.id);
-            });
             return $table;
 
             // 生成初始化参数
@@ -758,6 +758,7 @@ $(function () {
                 if (sort.field && sort.type) {
                     data['_order_'] = sort.type, data['_field_'] = sort.field;
                     options.initSort = {type: sort.type.split(',')[0].split(' ')[0], field: sort.field.split(',')[0].split(' ')[0]};
+                    if (sform) $(sform).find('[data-form-export]').attr('data-sort-field', sort.field).attr('data-sort-type', sort.type);
                 }
                 if (options.page === false) options.limit = '';
                 return (options['where'] = data), options;

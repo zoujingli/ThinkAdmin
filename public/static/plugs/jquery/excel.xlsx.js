@@ -23,6 +23,10 @@ define(function () {
             var name = this.dataset.filename || filename;
             var method = this.dataset.method || form.attr('method') || 'get';
             var location = this.dataset.excel || this.dataset.formExport || form.attr('action') || '';
+            var sortType = $(this).attr('data-sort-type') || '', sortField = $(this).attr('data-sort-field') || '';
+            if (sortField.length > 0 && sortType.length > 0) {
+                location += (location.indexOf('?') > -1 ? '&' : '?') + '_order_=' + sortType + '&_field_=' + sortField;
+            }
             that.load(location, form.serialize(), method).then(function (ret) {
                 that.export(done.call(that, ret, []), name);
             }).fail(function (ret) {
