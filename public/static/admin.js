@@ -716,12 +716,12 @@ $(function () {
                 if (curp > maxp && maxp > 1) $table.trigger('reload', {page: {curr: maxp}});
                 return res;
             };
-            // 搜索表单关联
+            // 关联搜索表单
             var sform, search = params.search || table.dataset.targetSearch;
             if (search) (sform = $body.find(search)).map(function () {
                 $(this).attr('data-table-id', table.id);
             });
-            // 绑定选择项关联
+            // 关联绑定选择项
             var checked = params.checked || table.dataset.targetChecked;
             if (checked) $body.find(checked).map(function () {
                 $(this).attr('data-table-id', table.id);
