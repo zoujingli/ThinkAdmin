@@ -51,9 +51,9 @@ foreach ($items as &$prov) {
     $prov['list'] = array_values($prov['list']);
     foreach ($prov['list'] as &$city) {
         $city['list'] = array_values($city['list']);
-        $lines[] = $city['name'] . ',' . join(',', array_column($city['list'], 'name'));
+        $lines[] = $city['fullname'] . ',' . join(',', array_column($city['list'], 'fullname'));
     }
-    $data[] = $prov['name'] . '$' . join('|', $lines);
+    $data[] = $prov['fullname'] . '$' . join('|', $lines);
 }
 
 $jsonFile = __DIR__ . '/data.json';
