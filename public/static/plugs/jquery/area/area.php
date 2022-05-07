@@ -6,7 +6,7 @@ PHP_SAPI === 'cli' or die('Can only run in CLI mode.');
 $url = 'https://apis.map.qq.com/ws/district/v1/list?key=AVDBZ-VXMC6-VD2SU-M7DX2-TGSV7-WVF3U';
 $result = json_decode(file_get_contents($url), true)['result'];
 
-// 生成数据字典，方便查询
+// 生成数据字典(方便查询)
 $maps = [];
 foreach ($result as $items) foreach ($items as $item) {
     $id = preg_replace('#(0000$|00$)#', '', $item['id']);
@@ -35,17 +35,9 @@ foreach ($maps as $key => $map) {
     }
 }
 
-// 去除索引值（不去也可以）
-// $items = array_values($data);
-// foreach ($items as &$prov) {
-//    $prov['list'] = array_values($prov['list']);
-//    foreach ($prov['list'] as &$city) {
-//        $city['list'] = array_values($city['list']);
-//    }
-// }
-
-// 生成插件数据
+// 生成插件数据并去除索引值
 $data = [];
+$items = array_values($items);
 foreach ($items as &$prov) {
     $lines = [];
     $prov['list'] = array_values($prov['list']);
@@ -58,7 +50,7 @@ foreach ($items as &$prov) {
 
 $jsonFile = __DIR__ . '/data.json';
 $scriptFile = dirname(__DIR__) . '/pcasunzips.js';
-$jsonContent = json_encode(array_values($items), JSON_UNESCAPED_UNICODE);
+$jsonContent = json_encode($items, JSON_UNESCAPED_UNICODE);
 $scriptContent = str_replace('__STRING__', join('#', $data), <<<EOL
 /********************************************************
  *** 加载脚本文件 ***
