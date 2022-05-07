@@ -6,28 +6,45 @@ PHP_SAPI === 'cli' or die('Can only run in CLI mode.');
 $url = 'https://apis.map.qq.com/ws/district/v1/list?key=AVDBZ-VXMC6-VD2SU-M7DX2-TGSV7-WVF3U';
 $result = json_decode(file_get_contents($url), true)['result'];
 
-$items = [];
-foreach ($result[0] as $pro) {
-    $items[$pro['id']] = ['name' => $pro['fullname'], 'list' => []];
+// 生成数据字典，方便查询
+$maps = [];
+foreach ($result as $items) foreach ($items as $item) {
+    $id = preg_replace('#(0000$|00$)#', '', $item['id']);
+    $item['list'] = [];
+    $item['location'] = join(',', $item['location'] ?? []);
+    unset($item['cidx'], $item['pinyin']);
+    $maps[$id] = $item;
 }
+ksort($maps);
 
-foreach ($result[1] as $prov) {
-    $pkey = substr($prov['id'], 0, 2) . '0000';
-    if (substr($prov['id'], 4, 2) > 0) {
-        $ckey = substr($prov['id'], 0, 4) . '00';
-        $items[$pkey]['list'][$ckey]['name'] = $items[$pkey]['name'];
-        $items[$pkey]['list'][$ckey]['list'][$prov['id']] = ['name' => $prov['fullname'], 'list' => []];
+// 根据名称生成数据树
+$items = [];
+foreach ($maps as $key => $map) {
+    [$c1, $c2, $c3] = str_split("{$key}0000", 2);
+    $pname = $maps[$c1]['fullname'] ?? '';
+    $cname = $maps[$c1 . $c2]['fullname'] ?? $pname;
+    if ($c2 . $c3 === '0000') {
+        $items[$pname] = $map;
+    } elseif ($c3 === '00') {
+        $items[$pname]['list'][$cname] = $map;
     } else {
-        $items[$pkey]['list'][$prov['id']] = ['name' => $prov['fullname'], 'list' => []];
+        if (empty($items[$pname]['list'][$cname])) {
+            $items[$pname]['list'][$cname] = $items[$pname];
+        }
+        $items[$pname]['list'][$cname]['list'][] = $map;
     }
 }
 
-foreach ($result[2] as $area) {
-    $ckey = substr($area['id'], 0, 4) . '00';
-    $pkey = substr($area['id'], 0, 2) . '0000';
-    $items[$pkey]['list'][$ckey]['list'][$area['id']] = ['name' => $area['fullname'], 'list' => []];
-}
+// 去除索引值（不去也可以）
+// $items = array_values($data);
+// foreach ($items as &$prov) {
+//    $prov['list'] = array_values($prov['list']);
+//    foreach ($prov['list'] as &$city) {
+//        $city['list'] = array_values($city['list']);
+//    }
+// }
 
+// 生成插件数据
 $data = [];
 foreach ($items as &$prov) {
     $lines = [];
