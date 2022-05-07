@@ -1,5 +1,6 @@
 <?php
 
+// 禁止 HTTP 访问脚本文件
 PHP_SAPI === 'cli' or die('Can only run in CLI mode.');
 
 // 从腾讯地址接口获取数据
