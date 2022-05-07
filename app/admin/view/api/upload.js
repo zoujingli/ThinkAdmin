@@ -75,7 +75,11 @@ define(['md5'], function (SparkMD5, allowMime) {
                 }
             }, done: function (ret, idx) {
                 // 兼容部分环境不解析 JSON 数据
-                if (typeof ret === 'string') ret = JSON.parse(ret) || ret;
+                if (typeof ret === 'string' && ret.length > 0) try {
+                    ret = JSON.parse(ret) || ret;
+                } catch (e) {
+                    console.log(e)
+                }
                 /*! 检查单个文件上传返回的结果 */
                 if (ret.code < 1) return $.msg.tips(ret.info || '文件上传失败！');
                 if (typeof opt.cache[idx].xurl !== 'string') return $.msg.tips('无效的文件上传对象！');
