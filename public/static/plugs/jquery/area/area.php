@@ -35,7 +35,7 @@ foreach ($maps as $key => $map) {
     }
 }
 
-// 生成插件数据并去除索引值
+// 生成插件数据(去除索引值)
 $data = [];
 $items = array_values($items);
 foreach ($items as &$prov) {
