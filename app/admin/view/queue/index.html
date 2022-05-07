@@ -64,7 +64,7 @@
             cols: [[
                 {checkbox: true, fixed: 'left'},
                 {
-                    field: 'id', title: '任务名称', minWidth: 230, sort: true, templet: function (d) {
+                    field: 'id', title: '任务名称', width: '25%', sort: true, templet: function (d) {
                         if (d.loops_time > 0) {
                             d.one = '<span class="layui-badge think-bg-blue">循</span>';
                         } else {
@@ -79,7 +79,7 @@
                     }
                 },
                 {
-                    field: 'exec_time', title: '任务计划', minWidth: 300, templet: function (d) {
+                    field: 'exec_time', title: '任务计划', width: '25%', templet: function (d) {
                         d.html = '执行指令：' + d.command + '<br>计划执行：' + d.exec_time;
                         if (d.loops_time > 0) {
                             return d.html + ' ( 每 <b class="color-blue">' + d.loops_time + '</b> 秒 ) ';
@@ -89,7 +89,7 @@
                     }
                 },
                 {
-                    field: 'loops_time', title: '执行状态', minWidth: 400, templet: function (d) {
+                    field: 'loops_time', title: '执行状态', width: '30%', templet: function (d) {
                         d.html = ([
                             '<span class="pull-left layui-badge layui-badge-middle layui-bg-gray">未知</span>',
                             '<span class="pull-left layui-badge layui-badge-middle layui-bg-black">等待</span>',
