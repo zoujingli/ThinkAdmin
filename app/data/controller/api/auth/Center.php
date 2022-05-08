@@ -5,7 +5,6 @@ namespace app\data\controller\api\auth;
 use app\data\controller\api\Auth;
 use app\data\model\BaseUserUpgrade;
 use app\data\model\DataUser;
-use app\data\service\RebateService;
 use app\data\service\UserAdminService;
 use app\data\service\UserUpgradeService;
 use think\admin\Storage;
