@@ -76,9 +76,6 @@ class Address extends Auth
 
     /**
      * 修改地址状态
-     * @throws \think\db\exception\DataNotFoundException
-     * @throws \think\db\exception\DbException
-     * @throws \think\db\exception\ModelNotFoundException
      */
     public function state()
     {
@@ -129,14 +126,10 @@ class Address extends Auth
      * 获取指定的地址
      * @param string $code
      * @return null|array
-     * @throws \think\db\exception\DataNotFoundException
-     * @throws \think\db\exception\DbException
-     * @throws \think\db\exception\ModelNotFoundException
      */
     private function _getAddress(string $code): array
     {
         $map = ['code' => $code, 'uuid' => $this->uuid, 'deleted' => 0];
-        $data = DataUserAddress::mk()->withoutField('deleted')->where($map)->find();
-        return empty($data) ? [] : $data->toArray();
+        return DataUserAddress::mk()->withoutField('deleted')->where($map)->findOrEmpty()->toArray();
     }
 }
