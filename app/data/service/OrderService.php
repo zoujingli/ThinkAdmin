@@ -20,7 +20,7 @@ class OrderService extends Service
      * 获取随机减免金额
      * @return float
      */
-    public function getReduct(): float
+    public static function getReduct(): float
     {
         return rand(1, 100) / 100;
     }
@@ -33,7 +33,7 @@ class OrderService extends Service
      * @throws \think\db\exception\DbException
      * @throws \think\db\exception\ModelNotFoundException
      */
-    public function stock(string $orderNo): bool
+    public static function stock(string $orderNo): bool
     {
         $map = ['order_no' => $orderNo];
         $codes = ShopOrderItem::mk()->where($map)->column('goods_code');
@@ -49,7 +49,7 @@ class OrderService extends Service
      * @throws \think\db\exception\DbException
      * @throws \think\db\exception\ModelNotFoundException
      */
-    public function upgrade(string $orderNo): ?array
+    public static function upgrade(string $orderNo): ?array
     {
         // 目标订单数据
         $map = [['order_no', '=', $orderNo], ['status', '>=', 4]];
@@ -59,7 +59,7 @@ class OrderService extends Service
         $user = DataUser::mk()->where(['id' => $order['uuid']])->find();
         if (empty($user)) return null;
         // 更新用户购买资格
-        $entry = $this->vipEntry($order['uuid']);
+        $entry = static::vipEntry($order['uuid']);
         // 尝试绑定代理用户
         if (empty($user['pids']) && ($order['puid1'] > 0 || $user['pid1'] > 0)) {
             $puid1 = $order['puid1'] > 0 ? $order['puid1'] : $user['pid0'];
@@ -82,7 +82,7 @@ class OrderService extends Service
      * @param integer $uuid 用户UID
      * @return integer
      */
-    private function vipEntry(int $uuid): int
+    private static function vipEntry(int $uuid): int
     {
         // 检查是否购买入会礼包
         $query = ShopOrder::mk()->alias('a')->join('shop_order_item b', 'a.order_no=b.order_no');
@@ -102,7 +102,7 @@ class OrderService extends Service
      * @param float $disRate 默认比例
      * @return array [方案编号, 折扣比例]
      */
-    public function discount(int $disId, int $vipCode, float $disRate = 100.00): array
+    public static function discount(int $disId, int $vipCode, float $disRate = 100.00): array
     {
         if ($disId > 0) {
             $map = ['id' => $disId, 'status' => 1, 'deleted' => 0];
@@ -124,7 +124,7 @@ class OrderService extends Service
      * @throws \think\db\exception\DbException
      * @throws \think\db\exception\ModelNotFoundException
      */
-    public function buildData(array &$data = [], bool $from = true): array
+    public static function buildData(array &$data = [], bool $from = true): array
     {
         if (empty($data)) return $data;
         // 关联发货信息

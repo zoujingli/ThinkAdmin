@@ -30,7 +30,7 @@ class UserBalanceService extends Service
         $order = ShopOrder::mk()->where([['status', '>=', 4], ['order_no', '=', $orderNo]])->find();
         if (empty($order)) throw new Exception('需处理的订单状态异常');
 
-        if ($order['reward_balance'] > 0) data_save(DataUserBalance::class, [
+        if ($order['reward_balance'] > 0) DataUserBalance::mUpdate([
             'uuid'   => $order['uuid'],
             'code'   => "CZ{$order['order_no']}",
             'name'   => "订单余额充值",

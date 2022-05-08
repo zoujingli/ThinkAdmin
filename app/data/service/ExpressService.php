@@ -26,7 +26,7 @@ class ExpressService extends Service
      * @throws \think\db\exception\DbException
      * @throws \think\db\exception\ModelNotFoundException
      */
-    public function amount(array $codes, string $provName, string $cityName, int $truckCount = 0): array
+    public static function amount(array $codes, string $provName, string $cityName, int $truckCount = 0): array
     {
         if (empty($codes)) return [0, $truckCount, '', '邮费模板编码为空！'];
         $map = [['status', '=', 1], ['deleted', '=', 0], ['code', 'in', $codes]];
@@ -56,7 +56,7 @@ class ExpressService extends Service
      * 获取快递模板数据
      * @return array
      */
-    public function templates(): array
+    public static function templates(): array
     {
         $query = BasePostageTemplate::mk()->where(['status' => 1, 'deleted' => 0]);
         return $query->order('sort desc,id desc')->column('code,name,normal,content', 'code');
@@ -68,7 +68,7 @@ class ExpressService extends Service
      * @param null|integer $status 状态筛选
      * @return array
      */
-    public function region(int $level = 3, ?int $status = null): array
+    public static function region(int $level = 3, ?int $status = null): array
     {
         $query = BasePostageRegion::mk();
         if (is_numeric($level)) $query->where('level', '<=', $level);
@@ -91,9 +91,9 @@ class ExpressService extends Service
      * @return array
      * @throws \think\admin\Exception
      */
-    public function query(string $code, string $number): array
+    public static function query(string $code, string $number): array
     {
-        return $this->_getInterface()->doRequest('api.auth.express/query', [
+        return static::getInterface()->doRequest('api.auth.express/query', [
             'type' => 'free', 'express' => $code, 'number' => $number,
         ]);
     }
@@ -103,16 +103,16 @@ class ExpressService extends Service
      * @return array
      * @throws \think\admin\Exception
      */
-    public function company(): array
+    public static function company(): array
     {
-        return $this->_getInterface()->doRequest('api.auth.express/getCompany');
+        return static::getInterface()->doRequest('api.auth.express/getCompany');
     }
 
     /**
      * 获取楚才开放平台接口实例
      * @return InterfaceService
      */
-    private function _getInterface(): InterfaceService
+    private static function getInterface(): InterfaceService
     {
         $service = InterfaceService::instance();
         // 测试的账号及密钥随时可能会变更，请联系客服更新

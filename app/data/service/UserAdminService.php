@@ -100,7 +100,7 @@ class UserAdminService extends Service
      * @param int $uuid 用户UID
      * @return array
      */
-    public function total(int $uuid): array
+    public static function total(int $uuid): array
     {
         return ['my_invite' => DataUser::mk()->where(['pid1' => $uuid])->count()];
     }
@@ -131,7 +131,7 @@ class UserAdminService extends Service
      * @param string $cols 返回用户字段
      * @return array
      */
-    public function buildByUid(array &$list, string $keys = 'uuid', string $bind = 'user', string $cols = '*'): array
+    public static function buildByUid(array &$list, string $keys = 'uuid', string $bind = 'user', string $cols = '*'): array
     {
         if (count($list) < 1) return $list;
         $uids = array_unique(array_column($list, $keys));

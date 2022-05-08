@@ -25,7 +25,7 @@ class GoodsService extends Service
      * @throws \think\db\exception\DbException
      * @throws \think\db\exception\ModelNotFoundException
      */
-    public function stock(string $code): bool
+    public static function stock(string $code): bool
     {
         // 商品入库统计
         $query = ShopGoodsStock::mk()->field('goods_code,goods_spec,ifnull(sum(goods_stock),0) stock_total');
@@ -67,7 +67,7 @@ class GoodsService extends Service
      * @throws \think\db\exception\DbException
      * @throws \think\db\exception\ModelNotFoundException
      */
-    public function bindData(array &$data = [], bool $simple = true): array
+    public static function bindData(array &$data = [], bool $simple = true): array
     {
         $marks = ShopGoodsMark::items();
         $cates = ShopGoodsCate::treeTable();
