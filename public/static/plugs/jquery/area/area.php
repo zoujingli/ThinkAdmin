@@ -49,6 +49,7 @@ foreach ($items as &$prov) {
     $data[] = $prov['fullname'] . '$' . join('|', $lines);
 }
 
+// 数据写入文件
 $jsonFile = __DIR__ . '/data.json';
 $scriptFile = dirname(__DIR__) . '/pcasunzips.js';
 $jsonContent = json_encode($items, JSON_UNESCAPED_UNICODE);
