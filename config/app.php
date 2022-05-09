@@ -29,10 +29,8 @@ return [
     'app_map'                 => [],
     // 域名绑定（自动多应用模式有效）
     'domain_bind'             => [],
-    // 禁止URL访问的应用列表（自动多应用模式有效）
+    // 禁止访问（自动多应用模式有效）
     'deny_app_list'           => [],
-    // 非调试模式时显示错误的消息
-    'error_message'           => '页面错误！请稍后再试～',
     // CORS 自动配置跨域
     'cors_auto'               => true,
     // CORS 配置跨域域名
@@ -41,6 +39,8 @@ return [
     'cors_methods'            => 'GET,PUT,POST,PATCH,DELETE',
     // CORS 跨域头部字段
     'cors_headers'            => 'Api-Type,Api-Name,Api-Uuid,Api-Token,User-Form-Token,User-Token,Token',
+    // 显示错误的消息，仅产品模式有效
+    'error_message'           => '页面错误！请稍后再试～',
     // 异常模板路径配置，仅开发模式有效
     'exception_tmpl'          => app()->getAppPath() . 'admin/view/error.php',
     // 异常状态模板配置，仅生产模式有效
