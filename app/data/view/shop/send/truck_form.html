@@ -79,9 +79,8 @@
                 new PCAS("form_province", "form_city", "form_area", prov, city, area);
                 refresh(), form.on('select(form_province)', refresh), form.on('select(form_city)', refresh), form.on('select(form_area)', refresh);
             })('{$vo.address_province|default=""}', '{$vo.address_city|default=""}', '{$vo.address_area|default=""}', function (data) {
-                (data && $(data.elem).trigger('change')), setTimeout(function () {
-                    layui.form.render();
-                }, 100);
+                $('select:not([lay-ignore])').nextAll('div.layui-form-select').remove();
+                data && data.elem && $(data.elem).trigger('change'), layui.form.render('select');
             });
         });
 
