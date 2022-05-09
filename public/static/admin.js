@@ -1034,6 +1034,7 @@ $(function () {
             event.items.push({src: this.dataset.tipsImage || this.dataset.lazySrc || this.src});
         }) && layer.photos({
             anim: 5, closeBtn: 1, photos: {start: event.$imgs.index(this), data: event.items}, tab: function (pic, $ele) {
+                $ele.find('img').attr('referrer-policy', 'no-referrer');
                 $ele.find('.layui-layer-close').css({top: '20px', right: '20px', position: 'fixed'});
             }
         });
