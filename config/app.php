@@ -45,7 +45,6 @@ return [
     'exception_tmpl'          => app()->getAppPath() . 'admin/view/error.php',
     // 异常状态模板配置，仅生产模式有效
     'http_exception_template' => [
-        0   => app()->getRootPath() . 'public/static/theme/err/500.html',
         404 => app()->getRootPath() . 'public/static/theme/err/404.html',
         500 => app()->getRootPath() . 'public/static/theme/err/500.html',
     ],
