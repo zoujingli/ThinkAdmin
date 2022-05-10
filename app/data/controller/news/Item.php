@@ -93,7 +93,7 @@ class Item extends Controller
     protected function _form_result(bool $state)
     {
         if ($state) {
-            $this->success('文章内容保存成功！', 'javascript:history.back()');
+            $this->success('文章保存成功！', 'javascript:history.back()');
         }
     }
 
