@@ -23,8 +23,8 @@ class Data extends Controller
     public function getData()
     {
         $data = $this->_vali(['name.require' => '数据名称不能为空！']);
-        $extra = ['about', 'slider', 'agreement', 'cropper'];
-        if (isset(SystemBase::items('页面内容')[$data['name']]) || in_array($data['name'], $extra)) {
+        $extra = ['about', 'slider', 'agreement', 'cropper']; // 其他数据
+        if (in_array($data['name'], $extra) || isset(SystemBase::items('页面内容')[$data['name']])) {
             $this->success('获取数据对象', sysdata($data['name']));
         } else {
             $this->error('获取数据失败', []);
@@ -40,7 +40,8 @@ class Data extends Controller
     public function getSlider()
     {
         $keys = input('keys', 'slider');
-        if (isset(SystemBase::items('图片内容')[$keys])) {
+        $extra = []; // 其他数据
+        if (in_array($keys, $extra) || isset(SystemBase::items('图片内容')[$keys])) {
             $this->success('获取图片内容', sysdata($keys));
         } else {
             $this->error('获取图片失败', []);
