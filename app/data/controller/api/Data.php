@@ -26,7 +26,7 @@ class Data extends Controller
         if (isset(SystemBase::items('页面内容')[$data['name']])) {
             $this->success('获取数据对象', sysdata($data['name']));
         } else {
-            $this->success('获取数据失败', []);
+            $this->error('获取数据失败', []);
         }
     }
 
@@ -42,7 +42,7 @@ class Data extends Controller
         if (isset(SystemBase::items('图片内容')[$keys])) {
             $this->success('获取图片内容', sysdata($keys));
         } else {
-            $this->success('获取数据失败', []);
+            $this->error('获取图片失败', []);
         }
     }
 
