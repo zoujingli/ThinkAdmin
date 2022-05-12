@@ -4,6 +4,7 @@ namespace app\data\controller\api;
 
 use app\data\model\BaseUserMessage;
 use think\admin\Controller;
+use think\admin\model\SystemBase;
 
 /**
  * 基础数据接口
@@ -22,7 +23,11 @@ class Data extends Controller
     public function getData()
     {
         $data = $this->_vali(['name.require' => '数据名称不能为空！']);
-        $this->success('获取数据对象', sysdata($data['name']));
+        if (isset(SystemBase::items('页面数据')[$data['name']])) {
+            $this->success('获取数据对象', sysdata($data['name']));
+        } else {
+            $this->success('获取数据失败', []);
+        }
     }
 
     /**
@@ -33,8 +38,12 @@ class Data extends Controller
      */
     public function getSlider()
     {
-        $data = sysdata(input('keys', 'slider'));
-        $this->success('获取图片内容', $data);
+        $keys = input('keys', 'slider');
+        if (isset(SystemBase::items('图片内容')[$keys])) {
+            $this->success('获取图片内容', sysdata($keys));
+        } else {
+            $this->success('获取数据失败', []);
+        }
     }
 
     /**
