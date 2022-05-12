@@ -23,7 +23,8 @@ class Data extends Controller
     public function getData()
     {
         $data = $this->_vali(['name.require' => '数据名称不能为空！']);
-        if (isset(SystemBase::items('页面内容')[$data['name']])) {
+        $extra = ['about', 'slider', 'agreement', 'cropper'];
+        if (isset(SystemBase::items('页面内容')[$data['name']]) || in_array($data['name'], $extra)) {
             $this->success('获取数据对象', sysdata($data['name']));
         } else {
             $this->error('获取数据失败', []);
