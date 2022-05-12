@@ -14,25 +14,25 @@
 
 /*! 数组兼容处理 */
 if (typeof Array.prototype.some !== 'function') {
-    Array.prototype.some = function (callback) {
-        for (var i in this) if (callback(this[i], i, this) === true) {
+    Array.prototype.some = function (callable) {
+        for (var i in this) if (callable(this[i], i, this) === true) {
             return true;
         }
         return false;
     };
 }
 if (typeof Array.prototype.every !== 'function') {
-    Array.prototype.every = function (callback) {
-        for (var i in this) if (callback(this[i], i, this) === false) {
+    Array.prototype.every = function (callable) {
+        for (var i in this) if (callable(this[i], i, this) === false) {
             return false;
         }
         return true;
     };
 }
 if (typeof Array.prototype.forEach !== 'function') {
-    Array.prototype.forEach = function (callback, context) {
+    Array.prototype.forEach = function (callable, context) {
         typeof context === "undefined" ? context = window : null;
-        for (var i in this) callback.call(context, this[i], i, this)
+        for (var i in this) callable.call(context, this[i], i, this)
     };
 }
 
@@ -92,26 +92,24 @@ $(function () {
     window.$body = $('body');
 
     /*! 注册单次事件 */
-    function onEvent(event, select, callback) {
-        return $body.off(event, select).on(event, select, callback);
+    function onEvent(event, select, callable) {
+        return $body.off(event, select).on(event, select, callable);
     }
 
     /*! 注册确认回调 */
-    function onConfirm(confirm, callback) {
-        confirm ? $.msg.confirm(confirm, callback) : callback();
+    function onConfirm(confirm, callable) {
+        confirm ? $.msg.confirm(confirm, callable) : callable();
     }
 
     /*! 获取加载回调 */
-    onConfirm.getLoadCallback = function (tabldId, callback) {
-        typeof callback === 'function' && callback();
+    onConfirm.getLoadcallable = function (tabldId, callable) {
+        typeof callable === 'function' && callable();
         return tabldId ? function (ret, time) {
-            if (ret.code > 0) {
-                if (time === 'false') $.layTable.reload(tabldId);
-                else $.msg.success(ret.info, time, function () {
-                    $.layTable.reload(tabldId);
-                });
-                return false;
-            }
+            if (ret.code < 1) return true;
+            time === 'false' ? $.layTable.reload(tabldId) : $.msg.success(ret.info, time, function () {
+                $.layTable.reload(tabldId);
+            });
+            return false;
         } : false;
     }
 
@@ -266,7 +264,7 @@ $(function () {
             that.reInit($(this.selecter).html(html));
         };
         /*! 异步加载的数据 */
-        this.load = function (url, data, method, callback, loading, tips, time, headers) {
+        this.load = function (url, data, method, callable, loading, tips, time, headers) {
             // 如果主页面 loader 显示中，绝对不显示 loading 图标
             loading = $('.layui-page-loader').is(':visible') ? false : loading;
             var loadidx = loading !== false ? $.msg.loading(tips) : 0;
@@ -295,7 +293,7 @@ $(function () {
                     }
                 }, success: function (ret) {
                     time = time || ret.wait || undefined;
-                    if (typeof callback === 'function' && callback.call(that, ret, time) === false) return false;
+                    if (typeof callable === 'function' && callable.call(that, ret, time) === false) return false;
                     return typeof ret === 'object' ? $.msg.auto(ret, time) : that.show(ret);
                 }, complete: function () {
                     $.msg.page.done();
@@ -317,8 +315,10 @@ $(function () {
             }, load, tips);
         };
         /*! 打开 IFRAME 窗口 */
-        this.iframe = function (url, name, area, offset, destroy) {
-            return layer.open({title: name || '窗口', type: 2, area: area || ['800px', '580px'], end: destroy || null, offset: offset, fixed: true, maxmin: false, content: url});
+        this.iframe = function (url, name, area, offset, destroy, success, isfull) {
+            console.log(arguments)
+            this.idx = layer.open({title: name || '窗口', type: 2, area: area || ['800px', '580px'], end: destroy || null, offset: offset, fixed: true, maxmin: false, content: url, success: success});
+            return isfull && layer.full(this.idx), this.idx;
         };
         /*! 加载 HTML 到弹出层 */
         this.modal = function (url, data, name, call, load, tips, area, offset) {
@@ -429,7 +429,7 @@ $(function () {
     };
 
     /*! 表单验证组件 */
-    $.vali = function (form, callback) {
+    $.vali = function (form, callable) {
         return $(form).data('validate') || new Validate();
 
         function Validate() {
@@ -489,14 +489,14 @@ $(function () {
             }).data('validate', this).bind("submit", function (evt) {
                 evt.button = that.form.find('button[type=submit],button:not([type=button])');
                 /* 检查所有表单元素是否通过H5的规则验证 */
-                if (that.checkAllInput() && typeof callback === 'function') {
+                if (that.checkAllInput() && typeof callable === 'function') {
                     if (typeof CKEDITOR === 'object' && typeof CKEDITOR.instances === 'object') {
                         for (var i in CKEDITOR.instances) CKEDITOR.instances[i].updateElement();
                     }
                     /* 触发表单提交后，锁定三秒不能再次提交表单 */
                     if (that.form.attr('submit-locked')) return false;
                     that.form.attr('submit-locked', 1), evt.button.addClass('submit-button-loading');
-                    callback.call(this, that.form.formToJson(), []), setTimeout(function () {
+                    callable.call(this, that.form.formToJson(), []), setTimeout(function () {
                         that.form.removeAttr('submit-locked'), evt.button.removeClass('submit-button-loading');
                     }, 3000);
                 }
@@ -516,7 +516,7 @@ $(function () {
             $(this).vali(function (data) {
                 var emap = form.dataset, type = form.method || 'POST', href = form.action || location.href;
                 var tips = emap.tips || undefined, time = emap.time || undefined, taid = emap.tableId || false;
-                var call = window[emap.callback || '_default_callback'] || (taid ? function (ret) {
+                var call = window[emap.callable || '_default_callable'] || (taid ? function (ret) {
                     if (typeof ret === 'object' && ret.code > 0 && $('#' + taid).size() > 0) {
                         return $.msg.success(ret.info, 3, function () {
                             (typeof ret.data === 'string' && ret.data) ? location.href = ret.data : $.layTable.reload(taid);
@@ -532,9 +532,9 @@ $(function () {
     };
 
     /*! 注册对象到JqFn */
-    $.fn.vali = function (callback) {
+    $.fn.vali = function (callable) {
         return this.each(function () {
-            $.vali(this, callback);
+            $.vali(this, callable);
         });
     };
 
@@ -561,12 +561,12 @@ $(function () {
     };
 
     /*! 全局文件上传插件 */
-    $.fn.uploadFile = function (callback, initialize) {
+    $.fn.uploadFile = function (callable, initialize) {
         return this.each(function () {
             if ($(this).data('inited')) return false;
             var that = $(this), mult = '|one|btn|'.indexOf(that.data('file') || 'one') > -1 ? 0 : 1;
             that.data('inited', true).data('multiple', mult), require(['upload'], function (apply) {
-                apply(that, callback), (typeof initialize === 'function' && setTimeout(initialize, 100));
+                apply(that, callable), (typeof initialize === 'function' && setTimeout(initialize, 100));
             });
         });
     };
@@ -678,9 +678,9 @@ $(function () {
     };
     $.layTable = new function () {
         this.render = function (tabldId) {
-            return $('#' + tabldId).trigger('render');
-        }, this.reload = function (tabldId) {
-            return $('#' + tabldId).trigger('reload');
+            return this.reload(tabldId, true);
+        }, this.reload = function (tabldId, force) {
+            return typeof tabldId === 'string' ? $('#' + tabldId).trigger(force ? 'render' : 'reload') : $.form.reload();
         }, this.create = function (table, params) {
             // 动态初始化表格
             table.id = table.id || 't' + Math.random().toString().replace('.', '');
@@ -797,11 +797,7 @@ $(function () {
             type: 1, title: false, area: ['560px', '315px'], anim: 2, shadeClose: false, end: function () {
                 doAjax = false;
                 if (doReload && doScript) {
-                    if (element && element.dataset && element.dataset.tableId) {
-                        $.layTable.reload(element.dataset.tableId);
-                    } else {
-                        $.form.reload();
-                    }
+                    $.layTable.reload(((element || {}).dataset || {}).tableId || true);
                 }
             }, content: '' +
                 '<div class="padding-30 padding-bottom-0"  data-queue-load="' + code + '">' +
@@ -887,13 +883,13 @@ $(function () {
     onEvent('click', '[data-load]', function () {
         var emap = this.dataset, data = {};
         if (emap.rule && (applyRuleValue(this, data)) === false) return false; else onConfirm(emap.confirm, function () {
-            $.form.load(emap.load, data, 'get', onConfirm.getLoadCallback(emap.tableId), true, emap.tips, emap.time);
+            $.form.load(emap.load, data, 'get', onConfirm.getLoadcallable(emap.tableId), true, emap.tips, emap.time);
         });
     });
 
     /*! 注册 data-reload 事件行为 */
     onEvent('click', '[data-reload]', function () {
-        this.dataset.tableId ? $.layTable.reload(this.dataset.tableId) : $.form.reload();
+        $.layTable.reload(this.dataset.tableId || true);
     });
 
     /*! 注册 data-dbclick 事件行为 */
@@ -951,7 +947,7 @@ $(function () {
         var emap = this.dataset, data = {'_token_': emap.token || emap.csrf || '--'};
         var load = emap.loading !== 'false', tips = typeof load === 'string' ? load : undefined;
         if ((applyRuleValue(this, data)) === false) return false; else onConfirm(emap.confirm, function () {
-            $.form.load(emap.action, data, emap.method || 'post', onConfirm.getLoadCallback(emap.tableId), load, tips, emap.time)
+            $.form.load(emap.action, data, emap.method || 'post', onConfirm.getLoadcallable(emap.tableId), load, tips, emap.time)
         });
     });
 
@@ -969,11 +965,9 @@ $(function () {
         var name = emap.title || this.innerText || 'IFRAME 窗口';
         var area = emap.area || [emap.width || '800px', emap.height || '580px'];
         var frame = emap.iframe + (emap.iframe.indexOf('?') > -1 ? '&' : '?') + $.param(data);
-        $(this).attr('data-index', $.form.iframe(frame, name, area, emap.offset || 'auto', emap.tableId ? function () {
-            typeof emap.refresh !== 'undefined' && $.layTable.reload(emap.tableId);
-        } : function () {
-            typeof emap.refresh !== 'undefined' && $.form.reload();
-        }));
+        $(this).attr('data-index', $.form.iframe(frame, name, area, emap.offset || 'auto', function () {
+            typeof emap.refresh !== 'undefined' && $.layTable.reload(emap.tableId || true);
+        }, undefined, emap.full !== undefined));
     });
 
     /*! 注册 data-icon 事件行为 */
