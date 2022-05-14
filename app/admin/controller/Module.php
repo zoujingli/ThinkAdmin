@@ -56,10 +56,10 @@ class Module extends Controller
     public function change()
     {
         $data = $this->_vali(['name.require' => '模块名称不能为空！']);
-        $modules = ModuleService::instance()->online();
+        $online = ModuleService::instance()->online();
         $locals = ModuleService::instance()->getModules();
-        if (isset($modules[$data['name']])) {
-            $this->module = $modules[$data['name']];
+        if (isset($online[$data['name']])) {
+            $this->module = $online[$data['name']];
             $this->current = $locals[$data['name']] ?? [];
             $pattern = "|^(\d{4})\.(\d{2})\.(\d{2})\.(\d+)$|";
             $this->module['change'] = array_reverse($this->module['change']);
