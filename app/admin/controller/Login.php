@@ -81,19 +81,19 @@ class Login extends Controller
             $map = ['username' => $data['username'], 'is_deleted' => 0];
             $user = SystemUser::mk()->where($map)->findOrEmpty();
             if ($user->isEmpty()) {
-                $this->app->session->set("LoginInputSessionError", true);
+                $this->app->session->set('LoginInputSessionError', true);
                 $this->error('登录账号或密码错误，请重新输入!');
             }
             if (empty($user['status'])) {
-                $this->app->session->set("LoginInputSessionError", true);
+                $this->app->session->set('LoginInputSessionError', true);
                 $this->error('账号已经被禁用，请联系管理员!');
             }
             if (md5("{$user['password']}{$data['uniqid']}") !== $data['password']) {
-                $this->app->session->set("LoginInputSessionError", true);
+                $this->app->session->set('LoginInputSessionError', true);
                 $this->error('登录账号或密码错误，请重新输入!');
             }
             $this->app->session->set('user', $user->toArray());
-            $this->app->session->delete("LoginInputSessionError");
+            $this->app->session->delete('LoginInputSessionError');
             $user->inc('login_num')->update([
                 'login_at' => date('Y-m-d H:i:s'),
                 'login_ip' => $this->app->request->ip(),
