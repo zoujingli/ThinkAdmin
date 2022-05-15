@@ -50,11 +50,11 @@ class Admin extends Controller
         elseif ($this->type === 'o') $query->whereNotIn('vip_code', array_keys($ls));
 
         // 用户搜索查询
-        $db = DataUser::mQuery()->equal('vip_code#from_vipcode')->like('phone#from_phone,username|nickname#from_username')->db();
+        $db = DataUser::mQuery()->equal('vip_code#from_vipcode')->like('phone|username|nickname#from_keys')->db();
         if ($db->getOptions('where')) $query->whereRaw("pid1 in {$db->field('id')->buildSql()}");
 
         // 数据查询分页
-        $query->like('phone,username|nickname#username')->equal('status,vip_code')->dateBetween('create_at')->page();
+        $query->like('phone|username|nickname#username')->equal('status,vip_code')->dateBetween('create_at')->page();
     }
 
     /**
