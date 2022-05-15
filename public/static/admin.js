@@ -316,15 +316,14 @@ $(function () {
         };
         /*! 打开 IFRAME 窗口 */
         this.iframe = function (url, name, area, offset, destroy, success, isfull) {
-            console.log(arguments)
             this.idx = layer.open({title: name || '窗口', type: 2, area: area || ['800px', '580px'], end: destroy || null, offset: offset, fixed: true, maxmin: false, content: url, success: success});
             return isfull && layer.full(this.idx), this.idx;
         };
         /*! 加载 HTML 到弹出层 */
-        this.modal = function (url, data, name, call, load, tips, area, offset) {
+        this.modal = function (url, data, name, call, load, tips, area, offset, isfull) {
             this.load(url, data, 'GET', function (res) {
                 if (typeof res === 'object') return $.msg.auto(res), false;
-                return $.msg.mdx.push(layer.open({
+                return $.msg.mdx.push(this.idx = layer.open({
                     type: 1, btn: false, area: area || "800px", resize: false, content: res, title: name || '', offset: offset || 'auto', success: function ($dom, idx) {
                         typeof call === 'function' && call.call(that, $dom);
                         $.form.reInit($dom.off('click', '[data-close]').on('click', '[data-close]', function () {
@@ -333,7 +332,7 @@ $(function () {
                             });
                         }));
                     }
-                })), false;
+                })), isfull && layer.full(this.idx), false;
             }, load, tips);
         };
     };
@@ -953,9 +952,9 @@ $(function () {
 
     /*! 注册 data-modal 事件行为 */
     onEvent('click', '[data-modal]', function () {
-        var emap = this.dataset, data = {open_type: 'modal'}, un = undefined;
+        var un = undefined, emap = this.dataset, data = {open_type: 'modal'};
         if (emap.rule && (applyRuleValue(this, data)) === false) return false;
-        return $.form.modal(emap.modal, data, emap.title || this.innerText || '编辑', un, un, un, emap.area || emap.width || '800px', emap.offset || 'auto');
+        return $.form.modal(emap.modal, data, emap.title || this.innerText || '编辑', un, un, un, emap.area || emap.width || '800px', emap.offset || 'auto', emap.full !== un);
     });
 
     /*! 注册 data-iframe 事件行为 */
