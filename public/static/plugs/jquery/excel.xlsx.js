@@ -42,15 +42,14 @@ define(function () {
             return (lists = []), LoadNextPage(1, 1), defer;
 
             function LoadNextPage(curPage, maxPage, urlParams) {
-                $('[data-upload-count]').html((curPage / maxPage * 100).toFixed(2));
+                var proc = (curPage / maxPage * 100).toFixed(2);
+                $('[data-upload-count]').html(proc > 100 ? '100.00' : proc);
                 if (curPage > maxPage) return $.msg.close(loaded), defer.resolve(lists);
                 urlParams = (url.indexOf('?') > -1 ? '&' : '?') + 'output=json&not_cache_limit=1&limit=100&page=' + curPage;
                 $.form.load(url + urlParams, data, method, function (ret) {
                     if (ret.code) {
                         lists = lists.concat(ret.data.list);
-                        if (ret.data.page) {
-                            LoadNextPage((ret.data.page.current || 1) + 1, ret.data.page.pages || 1);
-                        }
+                        if (ret.data.page) LoadNextPage((ret.data.page.current || 1) + 1, ret.data.page.pages || 1);
                     } else {
                         defer.reject('数据加载异常');
                     }
@@ -88,32 +87,33 @@ define(function () {
 
         /*! 单项推送数据 */
         function PushQueue(items, total, ers, oks, idx) {
-            if ((total = items.length) < 1) return cleanAll(), $.msg.tips('未读取到有效数据');
-            return (ers = 0, oks = 0, idx = 0), $('[data-load-name]').html('更新'), doPostItem(idx, items[idx]);
+            if ((total = items.length) < 1) return CleanAll(), $.msg.tips('未读取到有效数据');
+            return (ers = 0, oks = 0, idx = 0), $('[data-load-name]').html('更新'), DoPostItem(idx, items[idx]);
 
             /*! 执行导入的数据 */
-            function doPostItem(idx, item, data) {
+            function DoPostItem(idx, item, data) {
                 if (idx >= total) {
-                    return cleanAll(), $.msg.success('共处理' + total + '条记录（ 成功 ' + oks + ' 条, 失败 ' + ers + ' 条 ）', 3, function () {
+                    return CleanAll(), $.msg.success('共处理' + total + '条记录（ 成功 ' + oks + ' 条, 失败 ' + ers + ' 条 ）', 3, function () {
                         $.form.reload();
                     });
                 } else {
-                    $('[data-load-count]').html((idx * 100 / total).toFixed(2) + '%（ 成功 ' + oks + ' 条, 失败 ' + ers + ' 条 ）');
+                    var proc = (idx * 100 / total).toFixed(2);
+                    $('[data-load-count]').html((proc > 100 ? '100.00' : proc) + '%（ 成功 ' + oks + ' 条, 失败 ' + ers + ' 条 ）');
                     /*! 单元数据过滤 */
                     data = item;
                     if (filter && (data = filter(item)) === false) {
-                        return (ers++), doPostItem(idx + 1, items[idx + 1]);
+                        return (ers++), DoPostItem(idx + 1, items[idx + 1]);
                     }
                     /*! 提交单个数据 */
-                    doUpdate(url, data).then(function (ret) {
-                        (ret.code ? oks++ : ers++), doPostItem(idx + 1, items[idx + 1]);
+                    DoUpdate(url, data).then(function (ret) {
+                        (ret.code ? oks++ : ers++), DoPostItem(idx + 1, items[idx + 1]);
                     });
                 }
             }
         }
 
         /*! 清理文件选择器 */
-        function cleanAll() {
+        function CleanAll() {
             $input.remove();
             if (loaded) $.msg.close(loaded);
         }
@@ -128,7 +128,7 @@ define(function () {
         }
 
         /*! 队列方式上传数据 */
-        function doUpdate(url, item) {
+        function DoUpdate(url, item) {
             return (function (defer) {
                 return $.form.load(url, item, 'post', function (ret) {
                     return defer.resolve(ret), false;
