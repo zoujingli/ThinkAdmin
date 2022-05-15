@@ -162,25 +162,27 @@
             </label>
         </fieldset>
 
-        <div class="hr-line-dashed"></div>
-        {if isset($vo.id)}<input name='id' type='hidden' value='{$vo.id}'>{/if}
-        {if isset($vo.number)}<input name='old_number' type='hidden' value='{$vo.number}'>{/if}
-
-        <div class="layui-form-item text-center">
-            <button class="layui-btn" type='submit'>保存数据</button>
-            <button class="layui-btn layui-btn-danger" data-close data-confirm="确定要取消编辑吗？" type='button'>取消编辑</button>
-        </div>
     </div>
 
-    <script>
-        $(function () {
-            var $elem = $('[data-level-zero]');
-            layui.form.on('select(number)', apply);
-            apply({value: parseInt("{$vo.number|default='0'}")});
+    <div class="hr-line-dashed"></div>
+    {if isset($vo.id)}<input name='id' type='hidden' value='{$vo.id}'>{/if}
+    {if isset($vo.number)}<input name='old_number' type='hidden' value='{$vo.number}'>{/if}
 
-            function apply(data) {
-                data.value > 0 ? $elem.addClass('layui-hide') : $elem.removeClass('layui-hide');
-            }
-        });
-    </script>
+    <div class="layui-form-item text-center">
+        <button class="layui-btn" type='submit'>保存数据</button>
+        <button class="layui-btn layui-btn-danger" data-close data-confirm="确定要取消编辑吗？" type='button'>取消编辑</button>
+    </div>
+
 </form>
+
+<script>
+    $(function () {
+        var $elem = $('[data-level-zero]');
+        layui.form.on('select(number)', apply);
+        apply({value: parseInt("{$vo.number|default=0}")});
+
+        function apply(data) {
+            data.value > 0 ? $elem.addClass('layui-hide') : $elem.removeClass('layui-hide');
+        }
+    });
+</script>

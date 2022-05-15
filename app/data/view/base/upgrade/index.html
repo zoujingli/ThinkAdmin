@@ -22,12 +22,10 @@
         // 初始化表格组件
         $('#UpgradeTable').layTable({
             even: true, height: 'full',
+            sort: {field: 'number', type: 'asc'},
             cols: [[
-                {
-                    field: 'number', title: '等级名称', align: 'left', minWidth: 140, templet: function (d) {
-                        return laytpl('<div>[ <b class="color-blue">VIP{{d.number}}</b> ] {{d.name}}</div>').render(d);
-                    }
-                },
+                {field: 'number', title: '序号', align: "center", width: 120, sort: true},
+                {field: 'name', title: '等级名称', align: 'center', minWidth: 120},
                 {
                     field: 'upgrade_team', title: '团队计数', align: 'center', width: 80, templet: function (d) {
                         if (!d.upgrade_team || d.upgrade_team < 1) return '-';

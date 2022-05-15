@@ -3,17 +3,38 @@
 {block name="content"}
 {include file='shop/goods/formstyle'}
 <form action="{:sysuri()}" method="post" data-auto="true" class="layui-form layui-card" id="GoodsForm">
-    <div class="layui-card-body padding-40 padding-bottom-20">
+    <div class="layui-card-body">
 
         <!--{notempty name='marks'}-->
-        <div class="layui-form-item relative block">
-            <span class="help-label label-required-prev"><b>商品标签</b>Mark Name</span>
+        <div class="layui-form-item label-required-prev">
+            <span class="help-label"><b>商品标签</b>Mark Name</span>
             <div class="layui-textarea help-checks">
-                {foreach $marks as $mark}{if isset($vo.marks) && is_array($vo.marks) && in_array($mark, $vo.marks)}
-                <input checked name="marks[]" title="{$mark}" type="checkbox" value="{$mark}">
-                {else}
-                <input name="marks[]" title="{$mark}" type="checkbox" value="{$mark}">
-                {/if}{/foreach}
+                {foreach $marks as $mark}
+                <label class="think-checkbox">
+                    {if isset($vo.marks) && is_array($vo.marks) && in_array($mark, $vo.marks)}
+                    <input name="marks[]" type="checkbox" value="{$mark}" lay-ignore checked> {$mark}
+                    {else}
+                    <input name="marks[]" type="checkbox" value="{$mark}" lay-ignore> {$mark}
+                    {/if}
+                </label>
+                {/foreach}
+            </div>
+        </div>
+        <!--{/notempty}-->
+
+        <!--{notempty name='payments'}-->
+        <div class="layui-form-item label-required-prev">
+            <span class="help-label"><b>支付方式</b>Goods Payment</span>
+            <div class="layui-textarea help-checks">
+                {foreach $payments as $payment}
+                <label class="think-checkbox">
+                    {if isset($vo.payment) && is_array($vo.payment) && in_array($payment.code, $vo.payment)}
+                    <input name="payment[]" type="checkbox" value="{$payment.code}" lay-ignore checked> {$payment.name}
+                    {else}
+                    <input name="payment[]" type="checkbox" value="{$payment.code}" lay-ignore> {$payment.name}
+                    {/if}
+                </label>
+                {/foreach}
             </div>
         </div>
         <!--{/notempty}-->
@@ -31,28 +52,15 @@
         </label>
         <!--{/notempty}-->
 
-        <!--{notempty name='payments'}-->
-        <div class="layui-form-item relative block">
-            <span class="help-label label-required-prev"><b>支付方式</b>Goods Payment</span>
-            <div class="layui-textarea help-checks">
-                {foreach $payments as $payment}{if isset($vo.payment) && is_array($vo.payment) && in_array($payment.code, $vo.payment)}
-                <input checked name="payment[]" title="{$payment.name}" type="checkbox" value="{$payment.code}">
-                {else}
-                <input name="payment[]" title="{$payment.name}" type="checkbox" value="{$payment.code}">
-                {/if}{/foreach}
-            </div>
-        </div>
-        <!--{/notempty}-->
-
         <label class="layui-form-item block relative">
             <span class="help-label"><b>商品名称</b>Goods Name</span>
             <input class="layui-input" name="name" placeholder="请输入商品名称" required value="{$vo.name|default=''}">
         </label>
 
         <!--{notempty name='trucks'}-->
-        <label class="layui-form-item block relative">
-            <span class="help-label label-required-prev"><b>邮费模板</b>Truck Template</span>
-            <select class="layui-select" lay-search name="truck_code">
+        <label class="layui-form-item block relative label-required-prev">
+            <span class="help-label"><b>邮费模板</b>Truck Template</span>
+            <select class="layui-select" name="truck_code" lay-search>
                 <option value="">--- 包 邮 ---</option>
                 {foreach $trucks as $truck}{if isset($vo.truck_code) and $vo.truck_code eq $truck.code}
                 <option selected value="{$truck.code}">{$truck.code} - {$truck.name|default=''}</option>
@@ -63,8 +71,8 @@
         </label>
         <!--{/notempty}-->
 
-        <div class="layui-form-item">
-            <span class="help-label label-required-prev"><b>商品封面及轮播图片</b>Cover and Carousel Pictures</span>
+        <div class="layui-form-item label-required-prev">
+            <span class="help-label"><b>商品封面及轮播图片</b>Cover and Carousel Pictures</span>
             <table class="layui-table">
                 <thead>
                 <tr>
@@ -80,7 +88,6 @@
                     </td>
                     <td class="text-left padding-0">
                         <div class="help-images">
-
                             <input name="slider" type="hidden" value="{$vo.slider|default=''}">
                             <script>$('[name="slider"]').uploadMultipleImage();</script>
                         </div>
@@ -91,7 +98,7 @@
         </div>
 
         <div class="goods-item-box">
-            <div class="layui-clear">
+            <div class="flex flex-wrap">
                 <fieldset>
                     <legend><span class="layui-badge think-bg-violet">商品返利配置</span></legend>
                     <div>

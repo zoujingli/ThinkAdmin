@@ -24,7 +24,7 @@ class Upgrade extends Controller
     public function index()
     {
         $this->title = '用户等级管理';
-        BaseUserUpgrade::mQuery()->order('number asc')->layTable();
+        BaseUserUpgrade::mQuery()->layTable();
     }
 
     /**
