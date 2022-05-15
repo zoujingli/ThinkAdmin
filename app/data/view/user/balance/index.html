@@ -8,11 +8,11 @@
 
 {block name="content"}
 <div class="think-box-notify">
-    余额统计：累计已充值余额 <b>{$balance.0|default=0.00|number_format}</b> 元，已使用 <b>{$balance.1|default=0.00|number_format}</b> 元，剩余可使用 <b>{$balance.0-$balance.1|number_format}</b> 元。
+    <b>余额统计：</b>累计已充值余额 <b>{$balance.0|default=0.00|number_format}</b> 元，已使用 <b>{$balance.1|default=0.00|number_format}</b> 元，剩余可使用 <b>{$balance.0-$balance.1|number_format}</b> 元。
 </div>
-<div class="think-box-shadow margin-top-10">
+<div class="think-box-shadow">
     {include file='user/balance/index_search'}
-    <table class="layui-table margin-top-10" lay-skin="line">
+    <table class="layui-table" lay-skin="line">
         {notempty name='list'}
         <thead>
         <tr>

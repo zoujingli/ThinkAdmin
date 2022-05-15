@@ -30,8 +30,8 @@
             sort: {field: 'sort desc,id', type: 'desc'},
             where: {type: '{$type|default="index"}'},
             cols: [[
-                {field: 'sort', title: '排序权重', align: 'center', width: 100, sort: true, templet: '#SortInputTpl'},
                 {field: 'id', title: 'ID', align: "center", width: 80},
+                {field: 'sort', title: '排序权重', align: 'center', width: 100, sort: true, templet: '#SortInputTpl'},
                 {field: 'name', title: '折扣名称', align: 'left', minWidth: 140},
                 {
                     field: 'items', title: '折扣方案', align: 'left', width: '33%', templet: function (d) {

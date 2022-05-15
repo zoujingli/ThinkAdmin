@@ -46,7 +46,7 @@ class Send extends Controller
         $query->like('address_phone,address_name,address_province|address_city|address_area|address_content#address_content');
 
         // 用户搜索查询
-        $db = DataUser::mQuery()->like('phone#user_phone,nickname#user_nickname')->db();
+        $db = DataUser::mQuery()->like('phone|nickname#user_keys')->db();
         if ($db->getOptions('where')) $query->whereRaw("uuid in {$db->field('id')->buildSql()}");
 
         // 订单搜索查询

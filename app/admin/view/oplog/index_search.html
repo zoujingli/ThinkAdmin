@@ -17,13 +17,6 @@
         </div>
 
         <div class="layui-form-item layui-inline">
-            <label class="layui-form-label">操作节点</label>
-            <label class="layui-input-inline">
-                <input name="node" value="{$get.node|default=''}" placeholder="请输入操作内容" class="layui-input">
-            </label>
-        </div>
-
-        <div class="layui-form-item layui-inline">
             <label class="layui-form-label">操作行为</label>
             <div class="layui-input-inline">
                 <select name="action" lay-search class="layui-select">
@@ -35,6 +28,13 @@
                     {/if}{/foreach}
                 </select>
             </div>
+        </div>
+
+        <div class="layui-form-item layui-inline">
+            <label class="layui-form-label">操作节点</label>
+            <label class="layui-input-inline">
+                <input name="node" value="{$get.node|default=''}" placeholder="请输入操作内容" class="layui-input">
+            </label>
         </div>
 
         <div class="layui-form-item layui-inline">

@@ -61,11 +61,11 @@ class Order extends Controller
         if ($db->getOptions('where')) $query->whereRaw("order_no in {$db->field('order_no')->buildSql()}");
 
         // 用户搜索查询
-        $db = DataUser::mQuery()->like('phone#user_phone,nickname#user_nickname')->db();
+        $db = DataUser::mQuery()->like('phone|nickname#user_keys')->db();
         if ($db->getOptions('where')) $query->whereRaw("uuid in {$db->field('id')->buildSql()}");
 
         // 代理搜索查询
-        $db = DataUser::mQuery()->like('phone#from_phone,nickname#from_nickname')->db();
+        $db = DataUser::mQuery()->like('phone|nickname#from_keys')->db();
         if ($db->getOptions('where')) $query->whereRaw("puid1 in {$db->field('id')->buildSql()}");
 
         // 列表选项卡
@@ -89,8 +89,8 @@ class Order extends Controller
         UserAdminService::instance()->buildByUid($data);
         UserAdminService::instance()->buildByUid($data, 'puid1', 'from');
         OrderService::instance()->buildData($data);
-        foreach ($data as &$vo){
-            if (!is_null($vo['payment_type']) and ''!=$vo['payment_type']) {
+        foreach ($data as &$vo) {
+            if (!is_null($vo['payment_type']) and '' != $vo['payment_type']) {
                 $vo['payment_name'] = PaymentService::name($vo['payment_type']);
             }
         }

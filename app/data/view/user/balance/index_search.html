@@ -1,17 +1,11 @@
 <fieldset>
     <legend>条件搜索</legend>
     <form action="{$request->url()}" autocomplete="off" class="layui-form layui-form-pane form-search" method="get" onsubmit="return false">
-        <div class="layui-form-item layui-inline">
-            <label class="layui-form-label">用户手机</label>
-            <label class="layui-input-inline">
-                <input class="layui-input" name="user_phone" placeholder="请输入用户手机" value="{$get.user_phone|default=''}">
-            </label>
-        </div>
 
         <div class="layui-form-item layui-inline">
-            <label class="layui-form-label">用户昵称</label>
+            <label class="layui-form-label">用户名称</label>
             <label class="layui-input-inline">
-                <input class="layui-input" name="user_nickname" placeholder="请输入用户昵称" value="{$get.user_nickname|default=''}">
+                <input class="layui-input" name="user_keys" placeholder="请输入手机或昵称" value="{$get.user_keys|default=''}">
             </label>
         </div>
 

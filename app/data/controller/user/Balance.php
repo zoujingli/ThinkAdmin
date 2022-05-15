@@ -38,7 +38,7 @@ class Balance extends Controller
         // 创建查询对象
         $query = DataUserBalance::mQuery()->equal('name,upgrade');
         // 用户搜索查询
-        $db = DataUser::mQuery()->like('phone#user_phone,nickname#user_nickname')->db();
+        $db = DataUser::mQuery()->like('phone|nickname#user_keys')->db();
         if ($db->getOptions('where')) $query->whereRaw("uuid in {$db->field('id')->buildSql()}");
         // 数据查询分页
         $query->where(['deleted' => 0])->like('code,remark')->dateBetween('create_at')->order('id desc')->page();
