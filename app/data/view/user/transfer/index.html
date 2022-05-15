@@ -19,7 +19,7 @@
     <!-- 0 $total, 1 $count, 2 $audit, 3 $locks -->
     提现统计：已产生提现累计 <b>{$transfer.0|default=0.00}</b> 元（ 含待转账 <b>{$transfer.3|default='0.00'}</b> 元，含待审核 <b>{$transfer.2|default='0.00'}</b> 元 ），累计已提现 <b>{$transfer.1|default=0.00}</b> 元。
 </div>
-<div class="think-box-shadow margin-top-10">
+<div class="think-box-shadow">
     {include file='user/transfer/index_search'}
     <table class="layui-table" lay-skin="line">
         {notempty name='list'}

@@ -1,0 +1,38 @@
+<fieldset>
+    <legend>条件搜索</legend>
+    <form action="{:sysuri()}" autocomplete="off" class="layui-form layui-form-pane form-search" method="get" onsubmit="return false">
+
+        <div class="layui-form-item layui-inline">
+            <label class="layui-form-label">等级名称</label>
+            <label class="layui-input-inline">
+                <input class="layui-input" name="name" placeholder="请输入等级名称" value="{$get.name|default=''}">
+            </label>
+        </div>
+
+        <div class="layui-form-item layui-inline">
+            <label class="layui-form-label">等级状态</label>
+            <div class="layui-input-inline">
+                <select name="status">
+                    <option value="">-- 全部 --</option>
+                    {foreach ['已禁用', '已激活'] as $k=>$v}
+                    {if input('status') eq $k.''}
+                    <option selected value="{$k}">{$v}</option>
+                    {else}
+                    <option value="{$k}">{$v}</option>
+                    {/if}{/foreach}
+                </select>
+            </div>
+        </div>
+
+        <div class="layui-form-item layui-inline">
+            <label class="layui-form-label">创建时间</label>
+            <div class="layui-input-inline">
+                <input class="layui-input" data-date-range name="create_at" placeholder="请选择创建时间" value="{$get.create_at|default=''}">
+            </div>
+        </div>
+
+        <div class="layui-form-item layui-inline">
+            <button class="layui-btn layui-btn-primary"><i class="layui-icon">&#xe615;</i> 搜 索</button>
+        </div>
+    </form>
+</fieldset>
