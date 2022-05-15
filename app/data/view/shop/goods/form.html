@@ -99,7 +99,7 @@
 
         <div class="goods-item-box">
             <div class="flex flex-wrap">
-                <fieldset>
+                <fieldset class="layui-bg-gray">
                     <legend><span class="layui-badge think-bg-violet">商品返利配置</span></legend>
                     <div>
                         {foreach ['非返利商品，其代理不会获得奖励','是返利商品，其代理将会获得奖励'] as $k => $v}
@@ -110,7 +110,7 @@
                         {/if}{/foreach}
                     </div>
                 </fieldset>
-                <fieldset>
+                <fieldset class="layui-bg-gray">
                     <legend><span class="layui-badge think-bg-violet">入会礼包配置</span></legend>
                     <div>
                         {foreach ['非入会礼包，购买后不会升级等级','是入会礼包，购买后升级会员等级'] as $k=>$v}
@@ -122,7 +122,7 @@
                     </div>
                 </fieldset>
                 <!--{notempty name='upgrades'}-->
-                <fieldset>
+                <fieldset class="layui-bg-gray">
                     <legend><span class="layui-badge think-bg-violet">升级用户等级</span></legend>
                     <label>
                         <select class="layui-select" lay-filter="vip_upgrade" name="vip_upgrade">
@@ -136,7 +136,7 @@
                     </label>
                 </fieldset>
                 <!--{/notempty}-->
-                <fieldset>
+                <fieldset class="layui-bg-gray">
                     <legend><span class="layui-badge think-bg-violet">物流配送发货类型</span></legend>
                     <div>
                         {foreach ['虚拟商品，无需物流配送','实物商品，需要物流配送'] as $k=>$v}
@@ -148,7 +148,7 @@
                     </div>
                 </fieldset>
                 <!--{notempty name='discounts'}-->
-                <fieldset>
+                <fieldset class="layui-bg-gray">
                     <legend><span class="layui-badge think-bg-violet">用户购买折扣方案</span></legend>
                     <label>
                         <select class="layui-select" lay-search name="discount_id">
@@ -164,7 +164,7 @@
                 </fieldset>
                 <!--{/notempty}-->
                 <!--{notempty name='upgrades'}-->
-                <fieldset>
+                <fieldset class="layui-bg-gray">
                     <legend><span class="layui-badge think-bg-violet">限制最低购买等级</span></legend>
                     <label>
                         <select class="layui-select" name="limit_low_vip">
@@ -179,7 +179,7 @@
                     </label>
                 </fieldset>
                 <!--{/notempty}-->
-                <fieldset>
+                <fieldset class="layui-bg-gray">
                     <legend><span class="layui-badge think-bg-violet">商品限购数量</span></legend>
                     <label>
                         <input class="layui-input" type="number" min="0" data-blur-number="0" name="limit_max_num" placeholder="请输入商品限购数量" value="{$vo.limit_max_num|default=0}">

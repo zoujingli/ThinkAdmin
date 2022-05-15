@@ -1,38 +1,38 @@
 <form action="{:sysuri()}" method="post" data-auto="true" class="layui-form layui-card" data-table-id="UserTable">
     <div class="layui-card-body padding-left-40">
 
-        <fieldset>
+        <fieldset class="layui-bg-gray">
             <legend><b class="layui-badge think-bg-violet">用户账号</b></legend>
+
             <div class="layui-row layui-col-space15">
-                <div class="layui-row layui-col-space15">
-                    <div class="layui-col-xs2 text-center">
-                        <input type="hidden" name="headimg" value="{$vo.headimg|default=''}">
-                        <script>$('[name=headimg]').uploadOneImage();</script>
-                    </div>
-                    <div class="layui-col-xs5">
-                        <label class="block relative">
-                            <span class="help-label"><b>登录账号</b>Login Username</span>
-                            {if isset($vo) and isset($vo.username)}
-                            <input disabled value='{$vo.username|default=""}' required class="layui-input think-bg-gray">
-                            {else}
-                            <input name="username" value='{$vo.username|default=""}' required pattern="^.{4,}$" placeholder="请输入登录账号" class="layui-input">
-                            {/if}
-                            <span class="help-block">登录账号不能重复并且创建后不能再次修改哦。</span>
-                        </label>
-                    </div>
-                    <div class="layui-col-xs5">
-                        <label class="block relative">
-                            <span class="help-label"><b>用户名称</b>User Nickname</span>
-                            <input name="nickname" value='{$vo.nickname|default=""}' required placeholder="请输入用户名称" class="layui-input">
-                            <span class="help-block">用于区分用户数据的用户名称，请尽量不要重复。</span>
-                        </label>
-                    </div>
+                <div class="layui-col-xs2 text-center padding-top-15">
+                    <input type="hidden" name="headimg" value="{$vo.headimg|default=''}">
+                    <script>$('[name=headimg]').uploadOneImage();</script>
+                </div>
+                <div class="layui-col-xs5">
+                    <label class="block relative">
+                        <span class="help-label"><b>登录账号</b>Login Username</span>
+                        {if isset($vo) and isset($vo.username)}
+                        <input disabled value='{$vo.username|default=""}' required class="layui-input think-bg-gray">
+                        {else}
+                        <input name="username" value='{$vo.username|default=""}' required pattern="^.{4,}$" placeholder="请输入登录账号" class="layui-input">
+                        {/if}
+                        <span class="help-block">登录账号不能重复并且创建后不能再次修改哦。</span>
+                    </label>
+                </div>
+                <div class="layui-col-xs5">
+                    <label class="block relative">
+                        <span class="help-label"><b>用户名称</b>User Nickname</span>
+                        <input name="nickname" value='{$vo.nickname|default=""}' required placeholder="请输入用户名称" class="layui-input">
+                        <span class="help-block">用于区分用户数据的用户名称，请尽量不要重复。</span>
+                    </label>
                 </div>
             </div>
+
         </fieldset>
 
         {if !empty($bases) || !empty($authorizes)}
-        <fieldset>
+        <fieldset class="layui-bg-gray">
             <legend><b class="layui-badge think-bg-violet">用户权限</b></legend>
             {if !empty($bases)}
             <div class="layui-form-item">
@@ -71,7 +71,7 @@
         </fieldset>
         {/if}
 
-        <fieldset>
+        <fieldset class="layui-bg-gray">
             <legend><b class="layui-badge think-bg-violet">用户资料</b></legend>
             <div class="layui-row layui-col-space15">
                 <div class="layui-col-xs4">
