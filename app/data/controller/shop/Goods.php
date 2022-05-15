@@ -43,7 +43,7 @@ class Goods extends Controller
         else $this->error("无法加载 {$this->type} 数据列表！");
 
         // 列表排序并显示
-        $query->like('code,name')->like('marks,cateids', ',');
+        $query->like('code|name#name')->like('marks,cateids', ',');
         $query->equal('status,vip_entry,truck_type,rebate_type')->order('sort desc,id desc')->page();
     }
 
