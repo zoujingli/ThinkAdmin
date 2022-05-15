@@ -88,7 +88,7 @@
             // 设置表头样式
             layui.excel.setExportCellStyle(data, 'A1:' + lastCol + '1', {
                 s: {
-                    font: {sz: 14, bold: true, color: {rgb: "FFFFFF"}, shadow: true},
+                    font: {sz: 12, bold: true, color: {rgb: "FFFFFF"}, name: '微软雅黑', shadow: true},
                     fill: {bgColor: {indexed: 64}, fgColor: {rgb: "5FB878"}},
                     alignment: {vertical: 'center', horizontal: 'center'}
                 }
@@ -96,27 +96,27 @@
 
             // 设置内容样式
             var style1 = {
+                font: {sz: 10, shadow: true, name: '微软雅黑'},
                 fill: {bgColor: {indexed: 64}, fgColor: {rgb: "EAEAEA"}},
                 alignment: {vertical: 'center', horizontal: 'center'}
             }, style2 = {
+                font: {sz: 10, shadow: true, name: '微软雅黑'},
                 fill: {bgColor: {indexed: 64}, fgColor: {rgb: "FFFFFF"}},
                 alignment: {vertical: 'center', horizontal: 'center'}
             };
-            layui.excel.setExportCellStyle(data, 'A2:' + lastCol + data.length, {
-                s: style1
-            }, function (rawCell, newCell, row, config, currentRow, currentCol, fieldKey) {
+            layui.excel.setExportCellStyle(data, 'A2:' + lastCol + data.length, {s: style1}, function (rawCell, newCell, row, config, curRow) {
                 /* 判断并转换单元格数据为对象，以便初始化样式 */
                 typeof rawCell !== 'object' && (rawCell = {v: rawCell});
                 rawCell.s = Object.assign({}, style2, rawCell.s || {});
-                return (currentRow % 2 === 0) ? newCell : rawCell;
+                return (curRow % 2 === 0) ? newCell : rawCell;
             });
 
             // 设置表格行宽高，需要设置最后的行或列宽高，否则部分不生效 ？？？
-            var rowsC = {1: 40}, colsC = {A: 60, B: 100};
-            rowsC[data.length] = 33, colsC[lastCol] = 160;
+            var rowsC = {1: 33}, colsC = {A: 60, B: 80, C: 99, E: 80, G: 120};
+            rowsC[data.length] = 28, colsC[lastCol] = 160;
             this.options.extend = {
-                '!rows': layui.excel.makeRowConfig(rowsC, 33), // 设置每行高度，默认 33
-                '!cols': layui.excel.makeColConfig(colsC, 160) // 设置每行宽度，默认 160
+                '!rows': layui.excel.makeRowConfig(rowsC, 28), // 设置每行高度，默认 33
+                '!cols': layui.excel.makeColConfig(colsC, 99), // 设置每行宽度，默认 99
             };
 
             // 其他更多样式，可以配置 this.options.extend 参数，每次执行 bind 会被重置
