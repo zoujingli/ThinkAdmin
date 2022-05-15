@@ -24,7 +24,7 @@ class Upgrade extends Controller
     public function index()
     {
         $this->title = '用户等级管理';
-        BaseUserUpgrade::mQuery()->equal('status')->like('name')->dateBetween('create_at')->layTable();
+        BaseUserUpgrade::mQuery()->like('name')->equal('status')->dateBetween('create_at')->layTable();
     }
 
     /**
