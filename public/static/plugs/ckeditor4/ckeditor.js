@@ -1436,7 +1436,8 @@ h&&l&&!g.data("cke-upload-id")&&!g.isReadOnly(1)&&(h=(h=d.match(/image\/([a-z]+?
 
 // 注册创建函数
 window.createEditor = function (selector, option) {
-    var $container = $(selector);
+    var $container = $(selector), editor;
     $container.attr('id', $container.attr('id') || (Math.random() + '').replace('.', '_'));
-    return CKEDITOR.replace($container.attr('id'), option || {});
+    editor = CKEDITOR.replace($container.attr('id'), option || {});
+    return $container.triggerHandler('editor.init', editor), editor;
 };

@@ -333,7 +333,7 @@
 
         function getRand(length, prefix) {
             return (function (time, code) {
-                code += parseInt(time.substr(0, 1)) + parseInt(time.substr(1, 1)) + time.substr(2, 8);
+                code += parseInt(time.substring(0, 1)) + parseInt(time.substring(1, 2)) + time.substring(2);
                 while (code.length < length) code += Math.round(Math.random() * 10);
                 return code;
             })(Date.now().toString(), prefix || '' + '')

@@ -49,9 +49,9 @@
 </form>
 
 <script>
+    $('input[name="cover"]').uploadOneImage();
     require(['ckeditor'], function () {
-        $('input[name="cover"]').uploadOneImage();
-        window.createEditor('[name=content]', {height: 350});
+        window.createEditor('[name=content]', {height: 350})
     });
 </script>
 {/block}

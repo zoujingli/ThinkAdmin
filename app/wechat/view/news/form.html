@@ -54,7 +54,7 @@
                 </div>
                 <div class="layui-form-item label-required-prev">
                     <span class="color-green">图文文章内容</span>
-                    <textarea ng-model="item.content" name='content'></textarea>
+                    <textarea class="layui-hide" ng-model="item.content" name='content'></textarea>
                 </div>
                 <label class="layui-form-item relative block">
                     <span class="help-block">摘要选填，如果不填写会默认抓取正文前54个字</span>
@@ -113,8 +113,14 @@
                 setTimeout(function () {
                     if (editor) editor.destroy();
                     editor = window.createEditor('[name="content"]');
-                    editor.setData($rootScope.item.content);
-                    $vali.checkAllInput();
+                    if (typeof editor !== 'undefined') {
+                        editor.setData($rootScope.item.content);
+                        $vali.checkAllInput();
+                    } else $('[name="content"]').on('editor.init', function (event, myEditor) {
+                        myEditor.setData($rootScope.item.content);
+                        editor = myEditor;
+                        $vali.checkAllInput();
+                    });
                 }, 100);
             }
 

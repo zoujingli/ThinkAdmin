@@ -11,9 +11,7 @@
 
         <div class="layui-form-item label-required-prev">
             <span class="help-label"><b>页面内容</b>Page Content</span>
-            <label class="relative block" style="height:606px">
-                <textarea class="layui-hide" name="content">{$data.content|default=$base.content}</textarea>
-            </label>
+            <textarea class="layui-hide" name="content">{$data.content|default=$base.content}</textarea>
         </div>
 
         <div class="hr-line-dashed"></div>
@@ -29,7 +27,7 @@
 
 <script>
     require(['ckeditor'], function () {
-        window.createEditor('[name=content]', {height: 533});
+        window.createEditor('[name=content]', {height: 565});
     });
 </script>
 {/block}

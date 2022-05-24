@@ -39,7 +39,7 @@ class Runtime extends Controller
         if (AdminService::instance()->isSuper()) try {
             AdminService::instance()->clearCache();
             SystemService::instance()->pushRuntime();
-            sysoplog('系统运维管理', '刷新并创建路由缓存');
+            sysoplog('系统运维管理', '刷新创建路由缓存');
             $this->success('网站缓存加速成功！', 'javascript:location.reload()');
         } catch (HttpResponseException $exception) {
             throw $exception;
@@ -59,8 +59,8 @@ class Runtime extends Controller
         if (AdminService::instance()->isSuper()) try {
             AdminService::instance()->clearCache();
             SystemService::instance()->clearRuntime();
-            sysoplog('系统运维管理', '清理网站日志及缓存数据');
-            $this->success('清空缓存日志成功！', 'javascript:location.reload()');
+            sysoplog('系统运维管理', '清理网站日志缓存');
+            $this->success('清空日志缓存成功！', 'javascript:location.reload()');
         } catch (HttpResponseException $exception) {
             throw $exception;
         } catch (\Exception $exception) {
@@ -84,6 +84,25 @@ class Runtime extends Controller
             SystemService::instance()->setRuntime('debug');
             sysoplog('系统运维管理', '生产模式切换为开发模式');
             $this->success('已切换为开发模式！', 'javascript:location.reload()');
+        } else {
+            $this->error('只有超级管理员才能操作！');
+        }
+    }
+
+    /**
+     * 修改富文本编辑器
+     * @return void
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\DbException
+     * @throws \think\db\exception\ModelNotFoundException
+     */
+    public function editor()
+    {
+        if (AdminService::instance()->isSuper()) {
+            $editor = input('editor', 'auto');
+            sysconf('base.editor', $editor);
+            sysoplog('系统运维管理', "切换编辑器为{$editor}");
+            $this->success('已切换后台编辑器！', 'javascript:location.reload()');
         } else {
             $this->error('只有超级管理员才能操作！');
         }

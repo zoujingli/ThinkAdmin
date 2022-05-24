@@ -50,9 +50,7 @@ window.jQuery = window.$ = window.jQuery || window.$ || layui.$;
 
 /*! 配置 require 参数  */
 require.config({
-    baseUrl: baseRoot, waitSeconds: 60,
-    map: {'*': {css: baseRoot + 'plugs/require/css.js'}},
-    paths: {
+    baseUrl: baseRoot, waitSeconds: 60, map: {'*': {css: baseRoot + 'plugs/require/css.js'}}, paths: {
         'vue': ['plugs/vue/vue.min'],
         'md5': ['plugs/jquery/md5.min'],
         'json': ['plugs/jquery/json.min'],
@@ -60,10 +58,12 @@ require.config({
         'excel': ['plugs/jquery/excel.xlsx'],
         'base64': ['plugs/jquery/base64.min'],
         'upload': [tapiRoot + '/api.upload/index?'],
+        'notify': ['plugs/notify/notify.min'],
         'angular': ['plugs/angular/angular.min'],
         'cropper': ['plugs/cropper/cropper.min'],
         'echarts': ['plugs/echarts/echarts.min'],
-        'ckeditor': ['plugs/ckeditor/ckeditor'],
+        'ckeditor4': ['plugs/ckeditor4/ckeditor'],
+        'ckeditor5': ['plugs/ckeditor5/ckeditor'],
         'websocket': ['plugs/socket/websocket'],
         'pcasunzips': ['plugs/jquery/pcasunzips'],
         'sortablejs': ['plugs/sortable/sortable.min'],
@@ -72,11 +72,12 @@ require.config({
         'jquery.masonry': ['plugs/jquery/masonry.min'],
         'jquery.cropper': ['plugs/cropper/cropper.min'],
         'jquery.autocompleter': ['plugs/jquery/autocompleter.min'],
-    },
-    shim: {
+    }, shim: {
         'excel': {deps: [baseRoot + 'plugs/layui_exts/excel.js']},
-        'websocket': {deps: [baseRoot + 'plugs/socket/swfobject.min.js']},
+        'notify': {deps: ['css!' + baseRoot + 'plugs/notify/light.css']},
         'cropper': {deps: ['css!' + baseRoot + 'plugs/cropper/cropper.min.css']},
+        'websocket': {deps: [baseRoot + 'plugs/socket/swfobject.min.js']},
+        'ckeditor5': {deps: ['jquery', 'upload', 'css!' + baseRoot + 'plugs/ckeditor5/ckeditor.css']},
         'vue.sortable': {deps: ['vue', 'sortablejs']},
         'jquery.ztree': {deps: ['jquery', 'css!' + baseRoot + 'plugs/ztree/zTreeStyle/zTreeStyle.css']},
         'jquery.autocompleter': {deps: ['jquery', 'css!' + baseRoot + 'plugs/jquery/autocompleter.css']},
@@ -86,6 +87,14 @@ require.config({
 /*! 注册 jquery 组件 */
 define('jquery', [], function () {
     return layui.$;
+});
+
+/*! 注册 ckeditor 组件 */
+define('ckeditor', (function (type) {
+    if (/^ckeditor[45]$/.test(type)) return [type];
+    return [Object.fromEntries ? 'ckeditor5' : 'ckeditor4'];
+})(window.taEditor || 'ckeditor4'), function (ckeditor) {
+    return ckeditor;
 });
 
 $(function () {
@@ -240,8 +249,7 @@ $(function () {
             $.vali.listen($dom = $dom || $(this.selecter)), $body.trigger('reInit', $dom);
             return $dom.find('[required]').map(function () {
                 this.$parent = $(this).parent();
-                if (this.$parent.is('label')) this.$parent.addClass('label-required-prev');
-                else this.$parent.prevAll('label.layui-form-label').addClass('label-required-next');
+                if (this.$parent.is('label')) this.$parent.addClass('label-required-prev'); else this.$parent.prevAll('label.layui-form-label').addClass('label-required-next');
             }), $dom.find('[data-lazy-src]:not([data-lazy-loaded])').map(function () {
                 if (this.dataset.lazyLoaded === 'true') return; else this.dataset.lazyLoaded = 'true';
                 if (this.nodeName === 'IMG') this.src = this.dataset.lazySrc; else this.style.backgroundImage = 'url(' + this.dataset.lazySrc + ')';
@@ -388,16 +396,14 @@ $(function () {
                 (layui.data('AdminMenuType')['mini'] || $body.width() < 1000) ? layout.addClass(mclass) : layout.removeClass(mclass);
             }).trigger('resize').on('hashchange', function () {
                 if (/^#(https?:)?(\/\/|\\\\)/.test(location.hash)) return $.msg.tips('禁止访问外部链接！');
-                if (location.hash.length < 1) return $body.find('[data-menu-node]:first').trigger('click');
-                else return that.href(location.hash);
+                if (location.hash.length < 1) return $body.find('[data-menu-node]:first').trigger('click'); else return that.href(location.hash);
             }).trigger('hashchange');
         };
         /*! 同步二级菜单展示状态 */
         this.sync = function (mode) {
             $('[data-submenu-layout]').map(function () {
                 var node = this.dataset.submenuLayout;
-                if (mode === 1) layui.data('AdminMenuState', {key: node, value: $(this).hasClass('layui-nav-itemed') ? 2 : 1});
-                else if (mode === 2) (layui.data('AdminMenuState')[node] || 2) === 2 && $(this).addClass('layui-nav-itemed');
+                if (mode === 1) layui.data('AdminMenuState', {key: node, value: $(this).hasClass('layui-nav-itemed') ? 2 : 1}); else if (mode === 2) (layui.data('AdminMenuState')[node] || 2) === 2 && $(this).addClass('layui-nav-itemed');
             });
         };
         /*! 页面 LOCATION-HASH 跳转 */
@@ -440,8 +446,7 @@ $(function () {
             this.tags = 'input,select,textarea';
             /* 预设检测规则 */
             this.patterns = {
-                phone: '^1[3-9][0-9]{9}$',
-                email: '^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$'
+                phone: '^1[3-9][0-9]{9}$', email: '^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$'
             };
             /*! 检测属性是否有定义 */
             this.hasProp = function (ele, prop) {
@@ -550,9 +555,7 @@ $(function () {
             var key, keys = this.name.match(rules.key), merge = this.value, name = this.name;
             while ((key = keys.pop()) !== undefined) {
                 name = name.replace(new RegExp("\\[" + key + "\\]$"), '');
-                if (key.match(rules.push)) merge = self.build([], self.pushCounter(name), merge);
-                else if (key.match(rules.fixed)) merge = self.build([], key, merge);
-                else if (key.match(rules.named)) merge = self.build({}, key, merge);
+                if (key.match(rules.push)) merge = self.build([], self.pushCounter(name), merge); else if (key.match(rules.fixed)) merge = self.build([], key, merge); else if (key.match(rules.named)) merge = self.build({}, key, merge);
             }
             data = $.extend(true, data, merge);
         });
@@ -598,8 +601,7 @@ $(function () {
                     $image = $('<div class="uploadimage uploadimagemtl transition"><div><a class="layui-icon">&#xe603;</a><a class="layui-icon">&#x1006;</a><a class="layui-icon">&#xe602;</a></div></div>');
                     $image.attr('data-tips-image', encodeURI(src)).css('backgroundImage', 'url(' + encodeURI(src) + ')').on('click', 'a', function (event, index, prevs, $item) {
                         event.stopPropagation(), $item = $(this).parent().parent(), index = $(this).index();
-                        if (index === 2 && $item.index() !== $bt.prevAll('div.uploadimage').length) $item.next().after($item);
-                        else if (index === 0 && $item.index() > 1) $item.prev().before($item); else if (index === 1) $item.remove();
+                        if (index === 2 && $item.index() !== $bt.prevAll('div.uploadimage').length) $item.next().after($item); else if (index === 0 && $item.index() > 1) $item.prev().before($item); else if (index === 1) $item.remove();
                         imgs = [], $bt.prevAll('.uploadimage').map(function () {
                             imgs.push($(this).attr('data-tips-image'));
                         });
@@ -660,7 +662,7 @@ $(function () {
                 (selection.text = value), selection.select(), selection.unselect();
             } else if (this.selectionStart || this.selectionStart === 0) {
                 var spos = this.selectionStart, apos = this.selectionEnd || spos;
-                this.value = this.value.substring(0, spos) + value + this.value.substring(apos, this.value.length);
+                this.value = this.value.substring(0, spos) + value + this.value.substring(apos);
                 this.selectionEnd = this.selectionStart = spos + value.length;
             } else {
                 this.value += value;
@@ -798,13 +800,7 @@ $(function () {
                 if (doReload && doScript) {
                     $.layTable.reload(((element || {}).dataset || {}).tableId || true);
                 }
-            }, content: '' +
-                '<div class="padding-30 padding-bottom-0"  data-queue-load="' + code + '">' +
-                '   <div class="layui-elip notselect nowrap" data-message-title></div>' +
-                '   <div class="margin-top-15 layui-progress layui-progress-big" lay-showPercent="yes"><div class="layui-progress-bar transition" lay-percent="0.00%"></div></div>' +
-                '   <div class="margin-top-15"><code class="layui-textarea layui-bg-black border-0" disabled style="resize:none;overflow:hidden;height:190px"></code></div>' +
-                '</div>',
-            success: function ($elem) {
+            }, content: '' + '<div class="padding-30 padding-bottom-0"  data-queue-load="' + code + '">' + '   <div class="layui-elip notselect nowrap" data-message-title></div>' + '   <div class="margin-top-15 layui-progress layui-progress-big" lay-showPercent="yes"><div class="layui-progress-bar transition" lay-percent="0.00%"></div></div>' + '   <div class="margin-top-15"><code class="layui-textarea layui-bg-black border-0" disabled style="resize:none;overflow:hidden;height:190px"></code></div>' + '</div>', success: function ($elem) {
                 new function () {
                     var that = this;
                     this.$box = $elem.find('[data-queue-load=' + code + ']');
@@ -839,8 +835,7 @@ $(function () {
                                 var lines = [];
                                 for (var idx in ret.data.history) {
                                     var line = ret.data.history[idx], percent = '[ ' + line.progress + '% ] ';
-                                    if (line.message.indexOf('javascript:') === -1) lines.push(line.message.indexOf('>>>') > -1 ? line.message : percent + line.message);
-                                    else if (!that.SetCache(code, idx) && doScript !== false) that.SetCache(code, idx, 1), location.href = line.message;
+                                    if (line.message.indexOf('javascript:') === -1) lines.push(line.message.indexOf('>>>') > -1 ? line.message : percent + line.message); else if (!that.SetCache(code, idx) && doScript !== false) that.SetCache(code, idx, 1), location.href = line.message;
                                 }
                                 if (ret.data.status > 0) {
                                     that.SetState(parseInt(ret.data.status), ret.data.message);

@@ -25,7 +25,7 @@
             even: true, height: 'full',
             sort: {field: 'number', type: 'asc'},
             cols: [[
-                {field: 'number', title: '序号', align: "center", minWidth: 80, sort: true},
+                {field: 'number', title: '序号', align: "center", width: 80, sort: true},
                 {field: 'name', title: '等级名称', align: 'center', minWidth: 100},
                 {
                     field: 'upgrade_team', title: '团队计数', align: 'center', width: 80, templet: function (d) {
@@ -70,7 +70,7 @@
                     }
                 },
                 {
-                    field: 'rebate_rule', title: '奖利规则', align: 'center', minWidth: 100, templet: function (d) {
+                    field: 'rebate_rule', title: '奖利规则', align: 'left', minWidth: 100, templet: function (d) {
                         return (d.html = ''), layui.each(d.rebate_rule || {}, function (k, rule) {
                             d.html += laytpl('<span class="layui-badge layui-bg-gray">{{d.v}}</span>').render({v: rule});
                         }), d.html || '-';

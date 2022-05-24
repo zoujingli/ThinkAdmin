@@ -73,7 +73,7 @@ class Oplog extends Controller
     {
         try {
             SystemOplog::mQuery()->empty();
-            sysoplog('系统运维管理', '成功清理所有日志数据');
+            sysoplog('系统运维管理', '成功清理所有日志');
             $this->success('日志清理成功！');
         } catch (HttpResponseException $exception) {
             throw $exception;

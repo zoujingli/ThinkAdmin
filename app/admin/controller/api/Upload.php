@@ -22,6 +22,7 @@ use think\admin\storage\AliossStorage;
 use think\admin\storage\LocalStorage;
 use think\admin\storage\QiniuStorage;
 use think\admin\storage\TxcosStorage;
+use think\admin\storage\UpyunStorage;
 use think\exception\HttpResponseException;
 use think\file\UploadedFile;
 use think\Response;
@@ -92,6 +93,12 @@ class Upload extends Controller
             $data['q-signature'] = $token['q-signature'];
             $data['q-sign-algorithm'] = $token['q-sign-algorithm'];
             $data['server'] = TxcosStorage::instance()->upload();
+        } elseif ('upyun' === $data['uptype']) {
+            $token = UpyunStorage::instance()->buildUploadToken($data['key'], 3600, $name, input('size'), input('hash'));
+            $data['url'] = $token['siteurl'];
+            $data['policy'] = $token['policy'];
+            $data['authorization'] = $token['authorization'];
+            $data['server'] = UpyunStorage::instance()->upload();
         }
         $this->success('获取上传授权参数', $data, 404);
     }
@@ -176,7 +183,7 @@ class Upload extends Controller
     private function getType(): string
     {
         $type = strtolower(input('uptype', ''));
-        if (in_array($type, ['local', 'qiniu', 'alioss', 'txcos'])) {
+        if (in_array($type, ['local', 'qiniu', 'alioss', 'txcos', 'uptype'])) {
             return $type;
         } else {
             return strtolower(sysconf('storage.type'));

@@ -1,7 +1,7 @@
 <form action="{:sysuri()}" method="post" data-auto="true" class="layui-form layui-card">
     <div class="layui-card-body padding-top-20">
 
-        <div class="color-text margin-left-40 margin-bottom-20 layui-code text-center layui-bg-gray" style="border-left-width:1px">
+        <div class="color-text layui-code text-center layui-bg-gray" style="border-left-width:1px;margin:0 0 15px 40px">
             <p class="margin-bottom-5 font-w7">文件将存储在本地服务器，默认保存在 public/upload 目录，文件以 HASH 命名。</p>
             <p>文件存储的目录需要有读写权限，有足够的存储空间。<span class="color-red">特别注意，本地存储暂不支持图片压缩！</span></p>
         </div>
@@ -10,7 +10,7 @@
 
         <div class="layui-form-item">
             <label class="layui-form-label label-required">
-                <span class="color-green font-w7">访问协议</span><br><span class="nowrap color-desc">Protocol</span>
+                <b class="color-green">访问协议</b><br><span class="nowrap color-desc">Protocol</span>
             </label>
             <div class="layui-input-block">
                 {if !sysconf('storage.local_http_protocol')}{php}sysconf('storage.local_http_protocol','http');{/php}{/if}
@@ -29,7 +29,7 @@
 
         <div class="layui-form-item">
             <label class="layui-form-label" for="storage.local_http_domain">
-                <span class="color-green font-w7">访问域名</span><br><span class="nowrap color-desc">Domain</span>
+                <b class="color-green">访问域名</b><br><span class="nowrap color-desc">Domain</span>
             </label>
             <div class="layui-input-block">
                 <input id="storage.local_http_domain" type="text" name="storage.local_http_domain" value="{:sysconf('storage.local_http_domain')}" placeholder="请输入上传后的访问域名 (非必填项)" class="layui-input">
