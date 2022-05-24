@@ -705,10 +705,14 @@ $(function () {
             $table.bind('reload render reloadData', function (evt, opts) {
                 data = $.extend({}, data, (opts = opts || {}).where || {});
                 opts = bindData($.extend({}, opts, {loading: true}));
-                if (evt.type.indexOf('reload') > -1 && layui.table.reloadData) {
-                    layui.table.reloadData(table.id, (opts.page || {}).curr || 1);
+                if (evt.type.indexOf('reload') > -1) {
+                    if (layui.table.reloadData) {
+                        layui.table.reloadData(table.id, (opts.page || {}).curr || 1);
+                    } else {
+                        layui.table.reload(table.id, opts);
+                    }
                 } else {
-                    layui.table.reload(table.id, opts);
+                    layui.table.render(table.id, opts);
                 }
             }).bind('row sort tool edit radio toolbar checkbox rowDouble', function (evt, call) {
                 layui.table.on(evt.type + '(' + table.dataset.id + ')', call)
