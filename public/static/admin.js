@@ -702,13 +702,13 @@ $(function () {
             });
             // 实例并绑定事件
             $table.data('this', layui.table.render(bindData(option)));
-            $table.bind('reload render reloadData', function (evt, opts) {
-                data = $.extend({}, data, (opts = opts || {}).where || {});
-                opts = bindData($.extend({}, opts, {loading: true}));
+            $table.bind('reload render reloadData', function (evt, opts, next) {
+                data = $.extend({}, data, (opts || {}).where || {});
+                opts = bindData($.extend({}, opts || {}, {loading: true}));
                 if (evt.type.indexOf('reload') > -1) {
                     if (layui.table.reloadData) {
-                        var $next = $table.data('next');
-                        $next.sort = $next.initSort = opts.initSort, $next.where = data;
+                        next = $table.data('next'), next.where = data;
+                        next.sort = next.initSort = opts.initSort || {};
                         layui.table.reloadData(table.id, (opts.page || {}).curr || 1);
                     } else {
                         layui.table.reload(table.id, opts);
