@@ -707,6 +707,8 @@ $(function () {
                 opts = bindData($.extend({}, opts, {loading: true}));
                 if (evt.type.indexOf('reload') > -1) {
                     if (layui.table.reloadData) {
+                        var $next = $table.data('next');
+                        $next.sort = $next.initSort = opts.initSort, $next.where = data;
                         layui.table.reloadData(table.id, (opts.page || {}).curr || 1);
                     } else {
                         layui.table.reload(table.id, opts);
