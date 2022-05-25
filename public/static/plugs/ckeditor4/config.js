@@ -26,7 +26,7 @@ CKEDITOR.plugins.add("uimage", {
         setTimeout(function () {
             $('#cke_' + editor.name).find('.cke_button__uploadimage_label').parent().map(function () {
                 $(this).attr('data-type', 'png,jpg,gif,jpeg').attr('data-file', 'mul').uploadFile(function (url) {
-                    editor.insertElement(CKEDITOR.dom.element.createFromHtml('<span><img style="max-width:100%;border:0" alt="" src="' + url + '"></span>'));
+                    editor.insertElement(CKEDITOR.dom.element.createFromHtml('<div><img style="border:0;max-width:100%;" alt="" src="' + url + '"></div>'));
                 });
             });
         }, 100);
