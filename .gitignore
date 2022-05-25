@@ -11,6 +11,7 @@ safefile
 nbproject
 composer.lock
 public/upload
+public/.user.ini
 public/favicon.ico
 public/static/theme/css/_*.css*
 public/static/theme/css/node_modules
