@@ -253,32 +253,33 @@ define(['md5', 'notify'], function (SparkMD5, Notify, allowMime) {
         return reader.readAsDataURL(file), defer.promise();
     }
 
-    /*! 图片压缩处理 */
-    function ImageToThumb(url, quality) {
-        var deferred = jQuery.Deferred();
-        var maxWidth = 500, maxHeight = 400, image = new Image();
+    /**
+     * 图片压缩处理
+     * @param {String} url
+     * @param {Object} option
+     * @constructor
+     */
+    function ImageToThumb(url, option) {
+        var defer = jQuery.Deferred(), image = new Image();
         image.src = url, image.onload = function () {
-            var canvas = document.createElement('canvas');
-            var context = canvas.getContext('2d');
-            // 原始尺寸
-            var originWidth = this.width, originHeight = this.height;
-            // 目标尺寸
-            var targetWidth = originWidth, targetHeight = originHeight;
-            // 图片尺寸超过最大值的限制
-            if (originWidth > maxWidth || originHeight > maxHeight) {
-                if (originWidth / originHeight > maxWidth / maxHeight) {
-                    targetWidth = maxWidth;
-                    targetHeight = Math.round(maxWidth * (originHeight / originWidth));
+            var canvas = document.createElement('canvas'), context = canvas.getContext('2d');
+            option.maxWidth = option.maxWidth || this.width, option.maxHeight = option.maxHeight || this.height;
+            var originWidth = this.width, originHeight = this.height, targetWidth = originWidth, targetHeight = originHeight;
+            if (originWidth > option.maxWidth || originHeight > option.maxHeight) {
+                if (originWidth / option.maxWidth > option.maxWidth / option.maxHeight) {
+                    targetWidth = option.maxWidth;
+                    targetHeight = Math.round(option.maxWidth * (originHeight / originWidth));
                 } else {
-                    targetHeight = maxHeight;
-                    targetWidth = Math.round(maxHeight * (originWidth / originHeight));
+                    targetHeight = option.maxHeight;
+                    targetWidth = Math.round(option.maxHeight * (originWidth / originHeight));
                 }
             }
             canvas.width = targetWidth, canvas.height = targetHeight;
             context.clearRect(0, 0, targetWidth, targetHeight);
             context.drawImage(this, 0, 0, targetWidth, targetHeight);
-            deferred.resolve(canvas.toDataURL('image/jpeg', quality || 0.92));
+            defer.resolve(canvas.toDataURL('image/jpeg', option.quality || 0.9));
         };
+        return defer.promise();
     }
 
     /*! 上传状态提示扩展插件 */
