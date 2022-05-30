@@ -73,7 +73,7 @@ define(['md5', 'notify'], function (SparkMD5, Notify, allowMime) {
                 file.notify = new NotifyExtend(file);
             }
         }), layui.each(files, function (index, file) {
-            // 启用图片限宽限高压缩
+            // 图片限宽限高压缩
             if (/^image\/*$/.test(file.type) && file.maxWidth > 0 || file.maxHeight > 0 || file.quality !== 1) {
                 FileToBase64(file).then(function (base64) {
                     ImageToThumb(base64, file).then(function (base64) {
