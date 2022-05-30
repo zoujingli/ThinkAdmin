@@ -73,7 +73,9 @@
             $.form.load("{:url('state')}", data, 'post', function (ret) {
                 if (ret.code < 1) $.msg.error(ret.info, 3, function () {
                     $('#UserTable').trigger('reload');
-                }); else $('#UserTable').trigger('reload')
+                }); else {
+                    $('#UserTable').trigger('reload')
+                }
                 return false;
             }, false);
         });

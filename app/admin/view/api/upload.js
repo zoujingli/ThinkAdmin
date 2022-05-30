@@ -12,6 +12,9 @@ define(['md5', 'notify'], function (SparkMD5, Notify, allowMime) {
             this.option.hide = this.option.elem.data('hload') ? 1 : 0;
             this.option.mult = this.option.elem.data('multiple') > 0;
             this.option.type = this.option.safe ? 'local' : this.option.elem.attr('data-uptype') || '';
+            this.option.quality = parseFloat(this.option.elem.data('quality') || '1.0');
+            this.option.maxWidth = parseInt(this.option.elem.data('max-width') || '0');
+            this.option.maxHeight = parseInt(this.option.elem.data('max-height') || '0');
 
             /*! 查找表单元素, 如果没有找到将不会自动写值 */
             if (!this.option.elem.data('input') && this.option.elem.data('field')) {
@@ -28,9 +31,15 @@ define(['md5', 'notify'], function (SparkMD5, Notify, allowMime) {
             this.adapter = new Adapter(this.option, layui.upload.render({
                 url: '{:url("admin/api.upload/file")}', auto: false, elem: elem, accept: 'file', multiple: this.option.mult, exts: this.option.exts.join('|'), acceptMime: this.option.mimes.join(','), choose: function (object) {
                     object.files = object.pushFile();
+                    layui.each(object.files, function (idx, file) {
+                        file.quality = that.option.quality;
+                        file.maxWidth = that.option.maxWidth;
+                        file.maxHeight = that.option.maxHeight;
+                    });
                     that.adapter.event('upload.choose', object.files);
-                    that.adapter.upload(object.files, done), layui.each(object.files, function (index) {
-                        delete object.files[index];
+                    that.adapter.upload(object.files, done);
+                    layui.each(object.files, function (idx) {
+                        delete object.files[idx];
                     });
                 }
             }));
@@ -64,9 +73,22 @@ define(['md5', 'notify'], function (SparkMD5, Notify, allowMime) {
                 file.notify = new NotifyExtend(file);
             }
         }), layui.each(files, function (index, file) {
-            that.hash(file).then(function (file) {
-                that.event('upload.hash', file).request(file, done);
-            });
+            // 启用图片限宽限高压缩
+            if (/^image\/*$/.test(file.type) && file.maxWidth > 0 || file.maxHeight > 0 || file.quality !== 1) {
+                FileToBase64(file).then(function (base64) {
+                    ImageToThumb(base64, file).then(function (base64) {
+                        files[index] = Base64ToFile(base64, file.name);
+                        files[index].notify = file.notify;
+                        that.hash(files[index]).then(function (file) {
+                            that.event('upload.hash', file).request(file, done);
+                        });
+                    });
+                });
+            } else {
+                that.hash(file).then(function (file) {
+                    that.event('upload.hash', file).request(file, done);
+                });
+            }
         });
     };
 
@@ -257,7 +279,6 @@ define(['md5', 'notify'], function (SparkMD5, Notify, allowMime) {
      * 图片压缩处理
      * @param {String} url
      * @param {Object} option
-     * @constructor
      */
     function ImageToThumb(url, option) {
         var defer = jQuery.Deferred(), image = new Image();
