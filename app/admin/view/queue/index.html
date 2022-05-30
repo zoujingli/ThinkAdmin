@@ -75,7 +75,7 @@
                         } else {
                             d.two = '<span class="layui-badge think-bg-violet">单</span>';
                         }
-                        return laytpl('{{d.one}}任务编号：<b>{{d.code}}</b><br>{{d.two}}任务名称：{{d.title}}').render(d);
+                        return laytpl('{{-d.one}}任务编号：<b>{{d.code}}</b><br>{{-d.two}}任务名称：{{d.title}}').render(d);
                     }
                 },
                 {
