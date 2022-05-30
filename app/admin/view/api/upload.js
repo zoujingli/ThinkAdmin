@@ -215,7 +215,11 @@ define(['md5', 'notify'], function (SparkMD5, Notify, allowMime) {
         return this;
     };
 
-    /*! 计算文件 HASH 值 */
+    /**
+     * 计算文件 HASH 值
+     * @param {File} file 文件对象
+     * @return {Promise}
+     */
     Adapter.prototype.hash = function (file) {
         var defer = jQuery.Deferred();
         file.xext = file.name.indexOf('.') > -1 ? file.name.split('.').pop() : 'tmp';
@@ -257,7 +261,12 @@ define(['md5', 'notify'], function (SparkMD5, Notify, allowMime) {
 
     return UploadAdapter;
 
-    /*! Base64 内容转 File 对象 */
+    /**
+     * Base64 转 File 对象
+     * @param {String} base64 Base64内容
+     * @param {String} filename 新文件名称
+     * @return {File}
+     */
     function Base64ToFile(base64, filename) {
         var arr = base64.split(',');
         var mime = arr[0].match(/:(.*?);/)[1], suffix = mime.split('/')[1];
@@ -266,19 +275,23 @@ define(['md5', 'notify'], function (SparkMD5, Notify, allowMime) {
         return new File([u8arr], filename + '.' + suffix, {type: mime});
     }
 
-    /*! File 对象转 Base64 内容 */
+    /**
+     * File 对象转 Base64
+     * @param {File} file 文件对象
+     * @return {Promise}
+     */
     function FileToBase64(file) {
         var defer = jQuery.Deferred(), reader = new FileReader();
-        reader.onload = function () {
+        return (reader.onload = function () {
             defer.resolve(this.result);
-        };
-        return reader.readAsDataURL(file), defer.promise();
+        }), reader.readAsDataURL(file), defer.promise();
     }
 
     /**
      * 图片压缩处理
-     * @param {String} url
-     * @param {Object} option
+     * @param {String} url 图片链接
+     * @param {Object} option 压缩参数
+     * @return {Promise}
      */
     function ImageToThumb(url, option) {
         var defer = jQuery.Deferred(), image = new Image();
@@ -303,7 +316,11 @@ define(['md5', 'notify'], function (SparkMD5, Notify, allowMime) {
         return defer.promise();
     }
 
-    /*! 上传状态提示扩展插件 */
+    /**
+     * 上传状态提示扩展插件
+     * @param {File} file 文件对象
+     * @constructor
+     */
     function NotifyExtend(file) {
         var that = this;
         this.notify = Notify.notify({width: 260, title: file.name, showProgress: true, description: '上传进度 <span data-upload-progress>0%</span>', type: 'default', position: 'top-right', closeTimeout: 0});
