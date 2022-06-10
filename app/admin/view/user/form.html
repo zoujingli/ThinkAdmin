@@ -11,7 +11,7 @@
                 </div>
                 <div class="layui-col-xs5">
                     <label class="block relative">
-                        <span class="help-label"><b>登录账号</b>Login Username</span>
+                        <span class="help-label"><b>登录账号</b>User Name</span>
                         {if isset($vo) and isset($vo.username)}
                         <input disabled value='{$vo.username|default=""}' required class="layui-input think-bg-gray">
                         {else}
@@ -22,7 +22,7 @@
                 </div>
                 <div class="layui-col-xs5">
                     <label class="block relative">
-                        <span class="help-label"><b>用户名称</b>User Nickname</span>
+                        <span class="help-label"><b>用户名称</b>Nick Name</span>
                         <input name="nickname" value='{$vo.nickname|default=""}' required placeholder="请输入用户名称" class="layui-input">
                         <span class="help-block">用于区分用户数据的用户名称，请尽量不要重复。</span>
                     </label>
