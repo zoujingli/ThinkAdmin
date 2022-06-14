@@ -70,7 +70,7 @@
     <!--{if auth("black")}-->
     <input type="checkbox" value="{{d.openid}}" lay-skin="switch" lay-text="已拉黑|未拉黑" lay-filter="StatusSwitch" {{d.is_black>0?'checked':''}}>
     <!--{else}-->
-    {{d.status ? '<b class="color-red">已拉黑</b>' : '<b class="color-green">未拉黑</b>'}}
+    {{-d.status ? '<b class="color-red">已拉黑</b>' : '<b class="color-green">未拉黑</b>'}}
     <!--{/if}-->
 </script>
 

@@ -76,9 +76,9 @@
 <!-- 数据状态切换模板 -->
 <script type="text/html" id="StatusSwitchTpl">
     <!--{if auth("state")}-->
-    <input type="checkbox" value="{{d.id}}" lay-skin="switch" lay-text="已激活|已禁用" lay-filter="StatusSwitch" {{d.status>0?'checked':''}}>
+    <input type="checkbox" value="{{d.id}}" lay-skin="switch" lay-text="已激活|已禁用" lay-filter="StatusSwitch" {{-d.status>0?'checked':''}}>
     <!--{else}-->
-    {{d.status ? '<b class="color-green">已启用</b>' : '<b class="color-red">已禁用</b>'}}
+    {{-d.status ? '<b class="color-green">已启用</b>' : '<b class="color-red">已禁用</b>'}}
     <!--{/if}-->
 </script>
 
