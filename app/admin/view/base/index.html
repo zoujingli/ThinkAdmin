@@ -14,7 +14,7 @@
 <div class="layui-tab layui-tab-card">
     <ul class="layui-tab-title">
         {foreach $types as $t}{if isset($type) and $type eq $t}
-        <li class="layui-this color-green" data-open="{:sysuri()}?type={$t}">{$t}</li>
+        <li class="layui-this" data-open="{:sysuri()}?type={$t}">{$t}</li>
         {else}
         <li data-open="{:sysuri()}?type={$t}">{$t}</li>
         {/if}{/foreach}

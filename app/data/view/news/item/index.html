@@ -18,7 +18,7 @@
 <div class="layui-tab layui-tab-card">
     <ul class="layui-tab-title">
         {foreach ['index'=>'文章管理','recycle'=>'回 收 站'] as $k=>$v}{if isset($type) and $type eq $k}
-        <li data-open="{:url('index')}?type={$k}" class="layui-this color-green">{$v}</li>
+        <li data-open="{:url('index')}?type={$k}" class="layui-this">{$v}</li>
         {else}
         <li data-open="{:url('index')}?type={$k}">{$v}</li>
         {/if}{/foreach}
