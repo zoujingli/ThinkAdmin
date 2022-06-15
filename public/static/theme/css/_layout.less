@@ -16,10 +16,10 @@
 
 .layui-layout {
   > .layui-header {
-    left: @LayoutDefaLeftSzie;
+    left: @LayoutLeftDefaSize;
     right: 0;
     color: @TopHeaderTextColor !important;
-    height: @TopHeaderHeight !important;
+    height: @LayoutHeadTopHeight !important;
     z-index: 222;
     position: absolute;
     box-sizing: content-box;
@@ -54,10 +54,10 @@
       }
 
       .layui-nav-item > a {
-        height: @TopHeaderHeight;
+        height: @LayoutHeadTopHeight;
         padding: 0 18px;
         overflow: hidden;
-        line-height: @TopHeaderHeight;
+        line-height: @LayoutHeadTopHeight;
 
         &:hover {
           color: @TopHeaderNavHoverTextColor
@@ -70,8 +70,8 @@
     }
 
     .layui-nav-item {
-      height: @TopHeaderHeight;
-      line-height: @TopHeaderHeight;
+      height: @LayoutHeadTopHeight;
+      line-height: @LayoutHeadTopHeight;
 
       > a {
         color: @TopHeaderNavNormalTextColor !important;
@@ -88,7 +88,7 @@
       }
 
       .layui-nav-child {
-        top: @TopHeaderHeight;
+        top: @LayoutHeadTopHeight;
         border: 0;
         padding: 0;
         line-height: 48px;
@@ -141,7 +141,7 @@
   > .layui-side {
     top: 0;
     bottom: 0;
-    width: @LayoutDefaLeftSzie;
+    width: @LayoutLeftDefaSize;
     z-index: 333;
     position: fixed;
     overflow: hidden;
@@ -152,13 +152,13 @@
     .layui-logo {
       color: #FFF;
       width: auto;
-      height: @TopHeaderHeight;
+      height: @LayoutHeadTopHeight;
       display: block;
       overflow: hidden;
       position: relative;
       text-align: center;
       box-shadow: none !important;
-      line-height: @TopHeaderHeight;
+      line-height: @LayoutHeadTopHeight;
       border-bottom: @BoxBottomLine;
 
       .headimg {
@@ -211,7 +211,7 @@
     }
 
     .layui-side-scroll {
-      top: @TopHeaderHeight;
+      top: @LayoutHeadTopHeight;
       bottom: 0;
       width: 100% !important;
       height: 100% !important;
@@ -228,13 +228,13 @@
 
       .layui-side-icon:after,
       .layui-side-tree:after {
-        height: @TopHeaderHeight;
+        height: @LayoutHeadTopHeight;
         content: '';
         display: block;
       }
 
       .layui-nav-tree {
-        width: @LayoutDefaLeftSzie;
+        width: @LayoutLeftDefaSize;
         background: none !important;
 
         > li.layui-this {
@@ -270,9 +270,9 @@
         }
 
         a {
-          height: 45px;
+          height: @LayoutLeftNavHeight;
           display: block;
-          line-height: 45px;
+          line-height: @LayoutLeftNavHeight;
           padding-top: 0;
           padding-bottom: 0;
           color: @LeftMainNavNormalTextColor;
@@ -294,14 +294,14 @@
   }
 
   > .layui-body {
-    top: @TopHeaderHeight;
-    left: @LayoutDefaLeftSzie;
+    top: @LayoutHeadTopHeight;
+    left: @LayoutLeftDefaSize;
     padding: 0;
     z-index: 111;
     background: @BodyMainBackColor;
 
     > .think-page-loader {
-      left: @LayoutDefaLeftSzie
+      left: @LayoutLeftDefaSize
     }
 
     > .think-page-body > .layui-card {
@@ -352,25 +352,26 @@
       }
 
       > .layui-card-header {
-        top: @TopHeaderHeight;
-        left: @LayoutDefaLeftSzie;
+        top: @LayoutHeadTopHeight;
+        left: @LayoutLeftDefaSize;
         border-top: @BoxBottomLine;
         border-bottom: 1px solid #fff !important;
         #NotSelect();
 
         right: 0;
-        height: 45px;
+        height: @LayoutBodyHeadHeight;
         z-index: 4;
         padding: 0 15px;
         position: fixed;
         background: #FFF;
-        line-height: 45px;
+        box-sizing: border-box;
+        line-height: @LayoutBodyHeadHeight;
 
         & + .layui-card-line {
-          top: 47px;
+          top: @LayoutBodyHeadHeight;
 
           & + .layui-card-body {
-            top: 47px;
+            top: @LayoutBodyHeadHeight;
           }
         }
       }
@@ -380,18 +381,18 @@
 
 .layui-layout-left-mini {
   .layui-header {
-    left: @LayoutMiniLeftSize !important;
+    left: @LayoutLeftMiniSize !important;
   }
 
   > .layui-body {
-    left: @LayoutMiniLeftSize !important;
+    left: @LayoutLeftMiniSize !important;
 
     > .think-page-loader {
-      left: @LayoutMiniLeftSize !important;
+      left: @LayoutLeftMiniSize !important;
     }
 
     > .think-page-body > .layui-card > .layui-card-header {
-      left: @LayoutMiniLeftSize !important;
+      left: @LayoutLeftMiniSize !important;
     }
   }
 
@@ -443,7 +444,7 @@
     .layui-nav-tree,
     .layui-side-scroll,
     .layui-side-scroll .layui-nav-tree {
-      width: @LayoutMiniLeftSize;
+      width: @LayoutLeftMiniSize;
       text-align: center;
     }
   }
