@@ -54,7 +54,7 @@ class Queue extends Controller
                 }
             }
         }, function (QueryHelper $query) {
-            $query->equal('status')->like('code,title,command');
+            $query->equal('status')->like('code|title#title,command');
             $query->timeBetween('enter_time,exec_time')->dateBetween('create_at');
         });
     }

@@ -59,7 +59,7 @@ class User extends Controller
 
             // 数据列表搜索过滤
             $query->equal('status,usertype')->dateBetween('login_at,create_at');
-            $query->like('username,nickname,contact_phone#phone,contact_mail#mail');
+            $query->like('username|nickname#username,contact_phone#phone,contact_mail#mail');
         });
     }
 

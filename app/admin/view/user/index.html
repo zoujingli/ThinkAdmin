@@ -47,13 +47,13 @@
                         return layui.laytpl('<div class="headimg headimg-xs margin-0" data-tips-image data-tips-hover data-lazy-src="{{d.headimg}}"></div>').render(d);
                     }
                 },
-                {field: 'username', title: '登录账号', minWidth: 100, templet: '<div>{{d.username||"-"}}</div>'},
-                {field: 'nickname', title: '用户名称', minWidth: 100, templet: '<div>{{d.nickname||"-"}}</div>'},
+                {field: 'username', title: '登录账号', minWidth: 100, align: 'center', templet: '<div>{{d.username||"-"}}</div>'},
+                {field: 'nickname', title: '用户名称', minWidth: 100, align: 'center', templet: '<div>{{d.nickname||"-"}}</div>'},
                 /* {notempty name='bases'} */
                 {
-                    field: 'usertype', title: '角色身份', minWidth: 140, sort: true, templet: function (d) {
+                    field: 'usertype', title: '角色身份', minWidth: 100, align: 'center', templet: function (d) {
                         d.userinfo = d.userinfo || {};
-                        return d.userinfo.code ? (d.userinfo.name + ' ( ' + d.userinfo.code + ' ) ') : '';
+                        return d.userinfo.code ? (d.userinfo.name + ' ( ' + d.userinfo.code + ' ) ') : '-';
                     }
                 },
                 /* {/notempty} */
@@ -63,7 +63,7 @@
                 {field: 'login_num', title: '登录次数', align: 'center', minWidth: 100, sort: true},
                 {field: 'login_at', title: '最后登录', align: 'center', minWidth: 170, sort: true},
                 {field: 'create_at', title: '创建时间', align: 'center', minWidth: 170, sort: true},
-                {toolbar: '#toolbar', title: '操作面板', align: 'center', minWidth: 160, fixed: 'right'}
+                {toolbar: '#toolbar', title: '操作面板', align: 'center', minWidth: 150, fixed: 'right'}
             ]]
         });
 
