@@ -354,6 +354,7 @@
       > .layui-card-header {
         top: @LayoutHeadTopHeight;
         left: @LayoutLeftDefaSize;
+        box-sizing: border-box;
         border-top: @BoxBottomLine;
         border-bottom: 1px solid #fff !important;
         #NotSelect();
@@ -364,8 +365,11 @@
         padding: 0 15px;
         position: fixed;
         background: #FFF;
-        box-sizing: border-box;
         line-height: @LayoutBodyHeadHeight;
+
+        > div {
+          margin-top: -1px
+        }
 
         & + .layui-card-line {
           top: @LayoutBodyHeadHeight;
