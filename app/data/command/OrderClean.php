@@ -50,7 +50,7 @@ class OrderClean extends Command
             $result->map(function (Model $item) use ($total, &$count) {
                 $this->queue->message($total, ++$count, "开始取消未支付的订单 {$item['order_no']}");
                 $item->save(['status' => 0, 'cancel_status' => 1, 'cancel_datetime' => date('Y-m-d H:i:s'), 'cancel_remark' => '自动取消30分钟未完成支付']);
-                OrderService::instance()->stock($item['order_no']);
+                OrderService::stock($item['order_no']);
                 $this->queue->message($total, $count, "完成取消未支付的订单 {$item['order_no']}", 1);
             });
         } catch (\Exception $exception) {

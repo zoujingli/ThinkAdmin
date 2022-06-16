@@ -72,7 +72,7 @@ class Goods extends Controller
     {
         $this->marks = ShopGoodsMark::items();
         $this->cates = ShopGoodsCate::treeTable();
-        GoodsService::instance()->bindData($data, false);
+        GoodsService::bindData($data, false);
     }
 
     /**
@@ -188,7 +188,7 @@ class Goods extends Controller
     protected function _form_result(bool $result)
     {
         if ($result && $this->request->isPost()) {
-            GoodsService::instance()->stock(input('code'));
+            GoodsService::stock(input('code'));
             $this->success('商品编辑成功！', 'javascript:history.back()');
         }
     }
@@ -206,7 +206,7 @@ class Goods extends Controller
         if ($this->request->isGet()) {
             $list = ShopGoods::mk()->where($map)->select()->toArray();
             if (empty($list)) $this->error('无效的商品数据，请稍候再试！');
-            [$this->vo] = GoodsService::instance()->bindData($list);
+            [$this->vo] = GoodsService::bindData($list);
             $this->fetch();
         } else {
             [$data, $post, $batch] = [[], $this->request->post(), CodeExtend::uniqidDate(12, 'B')];
@@ -221,7 +221,7 @@ class Goods extends Controller
                 }
                 if (!empty($data)) {
                     ShopGoodsStock::mk()->insertAll($data);
-                    GoodsService::instance()->stock($map['code']);
+                    GoodsService::stock($map['code']);
                     $this->success('商品数据入库成功！');
                 }
             }

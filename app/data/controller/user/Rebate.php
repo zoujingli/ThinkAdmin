@@ -8,7 +8,6 @@ use app\data\model\DataUserRebate;
 use app\data\model\ShopOrderItem;
 use app\data\service\RebateService;
 use app\data\service\UserRebateService;
-use app\data\service\UserUpgradeService;
 use think\admin\Controller;
 
 /**
@@ -31,7 +30,7 @@ class Rebate extends Controller
         $this->title = '用户返利管理';
         // 统计所有返利
         $this->types = RebateService::PRIZES;
-        $this->rebate = UserRebateService::instance()->amount(0);
+        $this->rebate = UserRebateService::amount(0);
         // 创建查询对象
         $query = DataUserRebate::mQuery()->equal('type')->like('name,order_no');
         // 会员条件查询

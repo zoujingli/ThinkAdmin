@@ -228,7 +228,7 @@ class UserTransfer extends Command
                     'change_desc' => '微信提现打款失败',
                 ]);
                 // 刷新用户可提现余额
-                UserRebateService::instance()->amount($item['uuid']);
+                UserRebateService::amount($item['uuid']);
             }
         }
     }

@@ -58,7 +58,7 @@ class BalancePyamentService extends PaymentService
         // 创建支付行为
         $this->createPaymentAction($orderNo, $payTitle, $payAmount);
         // 检查能否支付
-        [$total, $count] = UserBalanceService::instance()->amount($order['uuid'], [$orderNo]);
+        [$total, $count] = UserBalanceService::amount($order['uuid'], [$orderNo]);
         if ($payAmount > $total - $count) throw new Exception("可抵扣余额不足");
         try {
             // 扣减用户余额
@@ -68,7 +68,7 @@ class BalancePyamentService extends PaymentService
                     'payment_balance' => $payAmount,
                 ]);
                 // 扣除余额金额
-                data_save(DataUserBalance::mk(), [
+                DataUserBalance::mUpdate([
                     'uuid'   => $order['uuid'],
                     'code'   => "KC{$order['order_no']}",
                     'name'   => "账户余额支付",
@@ -79,7 +79,7 @@ class BalancePyamentService extends PaymentService
                 $this->updatePaymentAction($order['order_no'], CodeExtend::uniqidDate(20), $payAmount, '账户余额支付');
             });
             // 刷新用户余额
-            UserBalanceService::instance()->amount($order['uuid']);
+            UserBalanceService::amount($order['uuid']);
             return ['code' => 1, 'info' => '余额支付完成'];
         } catch (\Exception $exception) {
             return ['code' => 0, 'info' => $exception->getMessage()];

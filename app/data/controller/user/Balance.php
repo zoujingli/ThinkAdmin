@@ -32,7 +32,7 @@ class Balance extends Controller
     {
         $this->title = '余额充值记录';
         // 统计用户余额
-        $this->balance = UserBalanceService::instance()->amount(0);
+        $this->balance = UserBalanceService::amount(0);
         // 现有余额类型
         $this->names = DataUserBalance::mk()->group('name')->column('name');
         // 创建查询对象
@@ -50,7 +50,7 @@ class Balance extends Controller
      */
     protected function _index_page_filter(array &$data)
     {
-        UserAdminService::instance()->buildByUid($data);
+        UserAdminService::buildByUid($data);
         $uids = array_unique(array_column($data, 'create_by'));
         $users = SystemUser::mk()->whereIn('id', $uids)->column('username', 'id');
         $this->upgrades = BaseUserUpgrade::items();
@@ -104,7 +104,7 @@ class Balance extends Controller
     protected function _form_result(bool $state, array $data)
     {
         if ($state && isset($data['uuid'])) {
-            UserBalanceService::instance()->amount($data['uuid']);
+            UserBalanceService::amount($data['uuid']);
             UserUpgradeService::instance()->upgrade($data['uuid']);
         }
     }
@@ -128,7 +128,7 @@ class Balance extends Controller
         if ($state) {
             $map = [['id', 'in', str2arr(input('id', ''))]];
             foreach (DataUserBalance::mk()->where($map)->cursor() as $vo) {
-                UserBalanceService::instance()->amount($vo['uuid']);
+                UserBalanceService::amount($vo['uuid']);
                 UserUpgradeService::instance()->upgrade($vo['uuid']);
             }
         }

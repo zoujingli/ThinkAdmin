@@ -64,7 +64,7 @@ class Admin extends Controller
     protected function _page_filter(array &$data)
     {
         $this->upgrades = BaseUserUpgrade::items();
-        UserAdminService::instance()->buildByUid($data, 'pid1', 'from');
+        UserAdminService::buildByUid($data, 'pid1', 'from');
     }
 
     /**
@@ -120,8 +120,8 @@ class Admin extends Controller
     public function unbind()
     {
         $map = $this->_vali(['id.require' => '用户ID不能为空！']);
-        $user = DataUser::mk()->where($map)->find();
-        if (empty($user)) $this->error('用户不符合操作要求！');
+        $user = DataUser::mk()->where($map)->findOrEmpty();
+        if ($user->isEmpty()) $this->error('用户不符合操作要求！');
         // 修改指定用户代理数据
         $user->save(['pid0' => 0, 'pid1' => 0, 'pid2' => 0, 'pids' => 1, 'path' => '-', 'layer' => 1]);
         // 刷新用户等级及上级等级

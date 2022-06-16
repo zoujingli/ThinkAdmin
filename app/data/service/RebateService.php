@@ -76,15 +76,15 @@ class RebateService extends Service
     {
         // 获取订单数据
         $map = ['order_no' => $orderNo, 'payment_status' => 1];
-        $this->order = ShopOrder::mk()->where($map)->find();
-        if (empty($this->order)) throw new Exception('订单不存在');
+        $this->order = ShopOrder::mk()->where($map)->findOrEmpty();
+        if ($this->order->isEmpty()) throw new Exception('订单不存在');
         if ($this->order['payment_type'] === 'balance') return;
         if ($this->order['amount_total'] <= 0) throw new Exception('订单金额为零');
         if ($this->order['rebate_amount'] <= 0) throw new Exception('订单返利为零');
         // 获取用户数据
         $map = ['id' => $this->order['uuid'], 'deleted' => 0];
-        $this->user = DataUser::mk()->where($map)->find();
-        if (empty($this->user)) throw new Exception('用户不存在');
+        $this->user = DataUser::mk()->where($map)->findOrEmpty();
+        if ($this->user->isEmpty()) throw new Exception('用户不存在');
         // 获取直接代理数据
         if ($this->order['puid1'] > 0) {
             $this->from1 = DataUser::mk()->find($this->order['puid1']);
@@ -455,6 +455,6 @@ class RebateService extends Service
             'order_amount' => $this->order['amount_total'],
         ]));
         // 刷新用户返利统计
-        UserRebateService::instance()->amount($uuid);
+        UserRebateService::amount($uuid);
     }
 }

@@ -34,8 +34,7 @@ class UserAmount extends Command
         [$total, $count, $error] = [DataUser::mk()->count(), 0, 0];
         foreach (DataUser::mk()->field('id')->cursor() as $user) try {
             $this->queue->message($total, ++$count, "刷新用户 [{$user['id']}] 余额及返利开始");
-            UserRebateService::instance()->amount($user['id']);
-            UserBalanceService::instance()->amount($user['id']);
+            UserRebateService::amount($user['id']) && UserBalanceService::amount($user['id']);
             $this->queue->message($total, $count, "刷新用户 [{$user['id']}] 余额及返利完成", 1);
         } catch (\Exception $exception) {
             $error++;

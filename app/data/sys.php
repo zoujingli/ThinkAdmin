@@ -30,16 +30,16 @@ if ($app->request->isCli()) {
         RebateService::instance()->execute($orderNo);
 
         $app->log->notice("订单 {$orderNo} 支付事件，执行发放余额行为");
-        UserBalanceService::instance()->confirm($orderNo);
+        UserBalanceService::confirm($orderNo);
 
         $app->log->notice("订单 {$orderNo} 支付事件，执行用户升级行为");
-        OrderService::instance()->upgrade($orderNo);
+        OrderService::upgrade($orderNo);
     });
 
     // 注册订单确认支付事件
     $app->event->listen('ShopOrderConfirm', function ($orderNo) use ($app) {
         $app->log->notice("订单 {$orderNo} 确认事件，执行返利确认行为");
-        UserRebateService::instance()->confirm($orderNo);
+        UserRebateService::confirm($orderNo);
     });
 }
 

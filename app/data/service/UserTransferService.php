@@ -94,11 +94,21 @@ class UserTransferService extends Service
     }
 
     /**
+     * 获取转账类型
+     * @param string|null $name
+     * @return array|string
+     */
+    public function types(?string $name = null)
+    {
+        return is_null($name) ? $this->types : ($this->types[$name] ?? $name);
+    }
+
+    /**
      * 同步刷新用户返利
      * @param integer $uuid
      * @return array [total, count, audit, locks]
      */
-    public function amount(int $uuid): array
+    public static function amount(int $uuid): array
     {
         if ($uuid > 0) {
             $locks = abs(DataUserTransfer::mk()->whereRaw("uuid='{$uuid}' and status=3")->sum('amount'));
@@ -112,16 +122,6 @@ class UserTransferService extends Service
             $audit = abs(DataUserTransfer::mk()->whereRaw("status>=1 and status<3")->sum('amount'));
         }
         return [$total, $count, $audit, $locks];
-    }
-
-    /**
-     * 获取转账类型
-     * @param string|null $name
-     * @return array|string
-     */
-    public function types(?string $name = null)
-    {
-        return is_null($name) ? $this->types : ($this->types[$name] ?? $name);
     }
 
     /**
@@ -147,7 +147,7 @@ class UserTransferService extends Service
      * @throws \think\db\exception\DbException
      * @throws \think\db\exception\ModelNotFoundException
      */
-    public function payment(?string $name = null)
+    public static function payment(?string $name = null)
     {
         static $data = [];
         if (empty($data)) $data = sysdata('TransferWxpay');

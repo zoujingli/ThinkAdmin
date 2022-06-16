@@ -22,16 +22,13 @@ class ExpressService extends Service
      * @param string $cityName 城市名称
      * @param integer $truckCount 邮费基数
      * @return array [邮费金额, 计费基数, 模板编号, 计费描述]
-     * @throws \think\db\exception\DataNotFoundException
-     * @throws \think\db\exception\DbException
-     * @throws \think\db\exception\ModelNotFoundException
      */
     public static function amount(array $codes, string $provName, string $cityName, int $truckCount = 0): array
     {
         if (empty($codes)) return [0, $truckCount, '', '邮费模板编码为空！'];
         $map = [['status', '=', 1], ['deleted', '=', 0], ['code', 'in', $codes]];
-        $template = BasePostageTemplate::mk()->where($map)->order('sort desc,id desc')->find();
-        if (empty($template)) return [0, $truckCount, '', '邮费模板编码无效！'];
+        $template = BasePostageTemplate::mk()->where($map)->order('sort desc,id desc')->findOrEmpty();
+        if ($template->isEmpty()) return [0, $truckCount, '', '邮费模板编码无效！'];
         $rule = json_decode($template['normal'] ?: '[]', true) ?: [];
         foreach (json_decode($template['content'] ?: '[]', true) ?: [] as $item) {
             if (isset($item['city']) && is_array($item['city'])) foreach ($item['city'] as $city) {

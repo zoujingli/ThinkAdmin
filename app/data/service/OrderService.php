@@ -37,7 +37,7 @@ class OrderService extends Service
     {
         $map = ['order_no' => $orderNo];
         $codes = ShopOrderItem::mk()->where($map)->column('goods_code');
-        foreach (array_unique($codes) as $code) GoodsService::instance()->stock($code);
+        foreach (array_unique($codes) as $code) GoodsService::stock($code);
         return true;
     }
 
@@ -136,8 +136,8 @@ class OrderService extends Service
         $items = $query->withoutField('id,uuid,status,deleted,create_at')->whereIn('order_no', $nobs)->select()->toArray();
         // 关联用户数据
         $fields = 'phone,username,nickname,headimg,status,vip_code,vip_name';
-        UserAdminService::instance()->buildByUid($data, 'uuid', 'user', $fields);
-        if ($from) UserAdminService::instance()->buildByUid($data, 'puid1', 'from', $fields);
+        UserAdminService::buildByUid($data, 'uuid', 'user', $fields);
+        if ($from) UserAdminService::buildByUid($data, 'puid1', 'from', $fields);
         foreach ($data as &$vo) {
             [$vo['sales'], $vo['truck'], $vo['items']] = [0, $trucks[$vo['order_no']] ?? [], []];
             foreach ($items as $it) if ($vo['order_no'] === $it['order_no']) {

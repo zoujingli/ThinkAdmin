@@ -57,7 +57,7 @@ class Address extends Auth
             $map = [['uuid', '=', $this->uuid], ['code', '<>', $data['code']]];
             DataUserAddress::mk()->where($map)->update(['type' => 0]);
         }
-        $this->success('地址保存成功！', $this->_getAddress($data['code']));
+        $this->success('地址保存成功！', $this->getAddress($data['code']));
     }
 
     /**
@@ -98,14 +98,11 @@ class Address extends Auth
             $map = [['uuid', '=', $this->uuid], ['code', '<>', $data['code']]];
             DataUserAddress::mk()->where($map)->update(['type' => 0]);
         }
-        $this->success('默认设置成功！', $this->_getAddress($data['code']));
+        $this->success('默认设置成功！', $this->getAddress($data['code']));
     }
 
     /**
      * 删除收货地址
-     * @throws \think\db\exception\DataNotFoundException
-     * @throws \think\db\exception\DbException
-     * @throws \think\db\exception\ModelNotFoundException
      */
     public function remove()
     {
@@ -113,9 +110,9 @@ class Address extends Auth
             'uuid.value'   => $this->uuid,
             'code.require' => '地址不能为空！',
         ]);
-        $data = DataUserAddress::mk()->where($map)->find();
-        if (empty($data)) $this->error('需要删除的地址不存在！');
-        if ($data->save(['deleted' => 1]) !== false) {
+        $item = DataUserAddress::mk()->where($map)->findOrEmpty();
+        if ($item->isEmpty()) $this->error('需要删除的地址不存在！');
+        if ($item->save(['deleted' => 1]) !== false) {
             $this->success('删除地址成功！');
         } else {
             $this->error('删除地址失败！');
@@ -127,7 +124,7 @@ class Address extends Auth
      * @param string $code
      * @return null|array
      */
-    private function _getAddress(string $code): array
+    private function getAddress(string $code): array
     {
         $map = ['code' => $code, 'uuid' => $this->uuid, 'deleted' => 0];
         return DataUserAddress::mk()->withoutField('deleted')->where($map)->findOrEmpty()->toArray();

@@ -49,7 +49,7 @@ class Goods extends Controller
         // 商品数据处理
         $query = ShopGoods::mQuery()->like('name,marks,cateids,payment')->equal('code,vip_entry');
         $result = $query->where(['deleted' => 0, 'status' => 1])->order('sort desc,id desc')->page(true, false, false, 10);
-        if (count($result['list']) > 0) GoodsService::instance()->bindData($result['list']);
+        if (count($result['list']) > 0) GoodsService::bindData($result['list']);
         $this->success('获取商品数据', $result);
     }
 

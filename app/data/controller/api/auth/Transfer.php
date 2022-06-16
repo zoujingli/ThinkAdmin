@@ -54,7 +54,7 @@ class Transfer extends Auth
         $data['charge_rate'] = $chargeRate;
         $data['charge_amount'] = $chargeRate * $data['amount'] / 100;
         // 检查可提现余额
-        [$total, $count] = UserRebateService::instance()->amount($this->uuid);
+        [$total, $count] = UserRebateService::amount($this->uuid);
         if ($total - $count < $data['amount']) $this->error('可提现余额不足！');
         // 提现方式处理
         if ($data['type'] == 'alipay_account') {
@@ -90,7 +90,7 @@ class Transfer extends Auth
         }
         // 写入用户提现数据
         if (DataUserTransfer::mk()->insert($data) !== false) {
-            UserRebateService::instance()->amount($this->uuid);
+            UserRebateService::amount($this->uuid);
             $this->success('提现申请成功');
         } else {
             $this->error('提现申请失败');
@@ -109,7 +109,7 @@ class Transfer extends Auth
         $result = $query->like('date,code')->in('status')->order('id desc')->page(true, false, false, 10);
         // 统计历史数据
         $map = [['uuid', '=', $this->uuid], ['status', '>', 0]];
-        [$total, $count, $locks] = UserRebateService::instance()->amount($this->uuid);
+        [$total, $count, $locks] = UserRebateService::amount($this->uuid);
         $this->success('获取提现成功', array_merge($result, [
             'total' => [
                 '锁定' => $locks,

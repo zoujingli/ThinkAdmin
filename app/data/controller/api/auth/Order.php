@@ -179,7 +179,7 @@ class Order extends Auth
             });
             // 同步商品库存销量
             foreach (array_unique(array_column($items, 'goods_code')) as $code) {
-                GoodsService::instance()->stock($code);
+                GoodsService::stock($code);
             }
             // 触发订单创建事件
             $this->app->event->trigger('ShopOrderCreate', $order['order_no']);
@@ -382,7 +382,7 @@ class Order extends Auth
                 'cancel_remark'   => '用户主动取消订单',
                 'cancel_datetime' => date('Y-m-d H:i:s'),
             ]);
-            if ($result !== false && OrderService::instance()->stock($order['order_no'])) {
+            if ($result !== false && OrderService::stock($order['order_no'])) {
                 // 触发订单取消事件
                 $this->app->event->trigger('ShopOrderCancel', $order['order_no']);
                 // 返回处理成功数据

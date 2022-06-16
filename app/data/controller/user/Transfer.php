@@ -99,7 +99,7 @@ class Transfer extends Controller
      */
     protected function _page_filter(array &$data)
     {
-        UserAdminService::instance()->buildByUid($data);
+        UserAdminService::buildByUid($data);
         foreach ($data as &$vo) {
             $vo['type_name'] = UserTransferService::instance()->types($vo['type']);
         }
@@ -175,5 +175,4 @@ class Transfer extends Controller
     {
         $this->_queue('提现到微信余额定时处理', 'xdata:UserTransfer', 0, [], 0, 50);
     }
-
 }

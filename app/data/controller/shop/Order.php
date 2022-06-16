@@ -86,9 +86,9 @@ class Order extends Controller
      */
     protected function _index_page_filter(array &$data)
     {
-        UserAdminService::instance()->buildByUid($data);
-        UserAdminService::instance()->buildByUid($data, 'puid1', 'from');
-        OrderService::instance()->buildData($data);
+        UserAdminService::buildByUid($data);
+        UserAdminService::buildByUid($data, 'puid1', 'from');
+        OrderService::buildData($data);
         foreach ($data as &$vo) {
             if (!is_null($vo['payment_type']) and '' != $vo['payment_type']) {
                 $vo['payment_name'] = PaymentService::name($vo['payment_type']);
@@ -138,7 +138,7 @@ class Order extends Controller
                     $this->success('订单审核通过成功！');
                 } else {
                     $this->app->event->trigger('ShopOrderCancel');
-                    OrderService::instance()->stock($data['order_no']);
+                    OrderService::stock($data['order_no']);
                     $this->success('审核驳回并取消成功！');
                 }
             } else {
@@ -177,7 +177,7 @@ class Order extends Controller
                 'cancel_datetime' => date('Y-m-d H:i:s'),
             ]);
             if ($result !== false) {
-                OrderService::instance()->stock($order['order_no']);
+                OrderService::stock($order['order_no']);
                 $this->app->event->trigger('ShopOrderCancel', $order['order_no']);
                 $this->success('取消未支付的订单成功！');
             } else {

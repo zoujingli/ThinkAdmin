@@ -25,7 +25,7 @@ class UserBalanceService extends Service
      * @throws \think\db\exception\DbException
      * @throws \think\db\exception\ModelNotFoundException
      */
-    public function confirm(string $orderNo): array
+    public static function confirm(string $orderNo): array
     {
         $order = ShopOrder::mk()->where([['status', '>=', 4], ['order_no', '=', $orderNo]])->find();
         if (empty($order)) throw new Exception('需处理的订单状态异常');
@@ -38,7 +38,7 @@ class UserBalanceService extends Service
             'amount' => $order['reward_balance'],
         ], 'code');
 
-        return $this->amount($order['uuid']);
+        return static::amount($order['uuid']);
     }
 
     /**
@@ -47,7 +47,7 @@ class UserBalanceService extends Service
      * @param array $nots 排除的订单
      * @return array [total, count]
      */
-    public function amount(int $uuid, array $nots = []): array
+    public static function amount(int $uuid, array $nots = []): array
     {
         if ($uuid > 0) {
             $total = abs(DataUserBalance::mk()->whereRaw("uuid='{$uuid}' and amount>0 and deleted=0")->sum('amount'));

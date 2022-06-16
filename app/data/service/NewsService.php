@@ -19,7 +19,7 @@ class NewsService extends Service
      * @param string $code 文章编号
      * @param array $total 查询统计
      */
-    public function syncNewsTotal(string $code, array $total = []): void
+    public static function syncNewsTotal(string $code, array $total = []): void
     {
         $query = DataNewsXCollect::mk()->field('type,count(1) count');
         foreach ($query->where(['code' => $code, 'status' => 2])->group('type')->cursor() as $item) {
@@ -35,19 +35,18 @@ class NewsService extends Service
      * @param array $list 数据列表
      * @return array
      */
-    public function buildListByUidAndCode(array &$list = []): array
+    public static function buildListByUidAndCode(array &$list = []): array
     {
         if (count($list) > 0) {
             /*! 绑定文章内容 */
-            $codes = array_unique(array_column($list, 'code'));
             $colls = 'id,code,name,cover,mark,status,deleted,create_at,num_like,num_read,num_comment,num_collect';
-            $items = DataNewsItem::mk()->whereIn('code', $codes)->column($colls, 'code');
+            $items = DataNewsItem::mk()->whereIn('code', array_unique(array_column($list, 'code')))->column($colls, 'code');
             $marks = DataNewsMark::mk()->where(['status' => 1])->column('name');
             foreach ($items as &$vo) $vo['mark'] = str2arr($vo['mark'] ?: '', ',', $marks);
             foreach ($list as &$vo) $vo['record'] = $items[$vo['code']] ?? [];
             /*! 绑定用户数据 */
             $colls = 'id,phone,nickname,username,headimg,status';
-            UserAdminService::instance()->buildByUid($list, 'uuid', 'user', $colls);
+            UserAdminService::buildByUid($list, 'uuid', 'user', $colls);
         }
         return $list;
     }
