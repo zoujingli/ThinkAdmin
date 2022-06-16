@@ -57,7 +57,7 @@ class Transfer extends Auth
         [$total, $count] = UserRebateService::instance()->amount($this->uuid);
         if ($total - $count < $data['amount']) $this->error('可提现余额不足！');
         // 提现方式处理
-        if (in_array($data['type'], ['alipay_account'])) {
+        if ($data['type'] == 'alipay_account') {
             $data = array_merge($data, $this->_vali([
                 'alipay_user.require' => '开户姓名不能为空！',
                 'alipay_code.require' => '支付账号不能为空！',
@@ -74,7 +74,7 @@ class Transfer extends Auth
                 'bank_bran.require' => '银行分行不能为空！',
                 'bank_code.require' => '银行卡号不能为空！',
             ]));
-        } elseif (!in_array($data['type'], ['wechat_wallet'])) {
+        } elseif ($data['type'] != 'wechat_wallet') {
             $this->error('转账方式不存在！');
         }
         // 当日提现次数限制
@@ -130,7 +130,7 @@ class Transfer extends Auth
         DataUserTransfer::mk()->where($data)->whereIn('status', [1, 2, 3])->update([
             'status' => 0, 'change_time' => date("Y-m-d H:i:s"), 'change_desc' => '用户主动取消提现',
         ]);
-        UserRebateService::instance()->amount($this->uuid);
+        UserRebateService::amount($this->uuid);
         $this->success('取消提现成功');
     }
 
@@ -143,7 +143,7 @@ class Transfer extends Auth
         DataUserTransfer::mk()->where($data)->whereIn('status', [4])->update([
             'status' => 5, 'change_time' => date("Y-m-d H:i:s"), 'change_desc' => '用户主动确认收款',
         ]);
-        UserRebateService::instance()->amount($this->uuid);
+        UserRebateService::amount($this->uuid);
         $this->success('确认收款成功');
     }
 
@@ -155,7 +155,7 @@ class Transfer extends Auth
      */
     public function config()
     {
-        $data = UserTransferService::instance()->config();
+        $data = UserTransferService::config();
         $data['banks'] = UserTransferService::instance()->banks();
         $this->success('获取用户提现配置', $data);
     }

@@ -403,7 +403,7 @@ class Order extends Auth
     {
         [$map, $order] = $this->getOrderData();
         if (empty($order)) $this->error('读取订单失败');
-        if (in_array($order['status'], [0])) {
+        if ($order['status'] == 0) {
             $result = ShopOrder::mk()->where($map)->update([
                 'status'           => 0,
                 'deleted_status'   => 1,
@@ -430,7 +430,7 @@ class Order extends Auth
     public function confirm()
     {
         [$map, $order] = $this->getOrderData();
-        if (in_array($order['status'], [5])) {
+        if ($order['status'] == 5) {
             if (ShopOrder::mk()->where($map)->update(['status' => 6]) !== false) {
                 // 触发订单确认事件
                 $this->app->event->trigger('ShopOrderConfirm', $order['order_no']);
@@ -481,8 +481,11 @@ class Order extends Auth
     public function track()
     {
         try {
-            $data = $this->_vali(['code.require' => '快递不能为空', 'number.require' => '单号不能为空']);
-            $result = ExpressService::instance()->query($data['code'], $data['number']);
+            $data = $this->_vali([
+                'code.require'   => '快递不能为空',
+                'number.require' => '单号不能为空'
+            ]);
+            $result = ExpressService::query($data['code'], $data['number']);
             empty($result['code']) ? $this->error($result['info']) : $this->success('快递追踪信息', $result);
         } catch (HttpResponseException $exception) {
             throw $exception;

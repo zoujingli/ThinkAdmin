@@ -65,5 +65,4 @@ class News extends Controller
         NewsService::instance()->buildListByUidAndCode($result['list']);
         $this->success('获取评论成功', $result);
     }
-
 }

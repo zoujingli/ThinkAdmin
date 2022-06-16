@@ -118,8 +118,7 @@ class Center extends Auth
         $map[] = ['deleted', '=', 0];
         $map[] = ['path', 'like', "%-{$this->uuid}-%"];
         // 查询邀请的朋友
-        $query = DataUser::mQuery();
-        $query->like('nickname|username#nickname')->equal('vip_code,pids,pid1,id#uuid');
+        $query = DataUser::mQuery()->like('nickname|username#nickname')->equal('vip_code,pids,pid1,id#uuid');
         $query->field('id,pid0,pid1,pid2,pids,username,nickname,headimg,order_amount_total,teams_amount_total,teams_amount_direct,teams_amount_indirect,teams_users_total,teams_users_direct,teams_users_indirect,rebate_total,rebate_used,rebate_lock,create_at');
         $result = $query->where($map)->order('id desc')->page(true, false, false, 15);
         // 统计当前用户所有下属数
@@ -143,9 +142,9 @@ class Center extends Auth
         $data = $this->_vali(['from.require' => '邀请人不能为空']);
         [$state, $message] = UserUpgradeService::instance()->bindAgent($this->uuid, $data['from'], 0);
         if ($state) {
-            $this->success($message, UserAdminService::instance()->total($this->uuid));
+            $this->success($message, UserAdminService::total($this->uuid));
         } else {
-            $this->error($message, UserAdminService::instance()->total($this->uuid));
+            $this->error($message, UserAdminService::total($this->uuid));
         }
     }
 }

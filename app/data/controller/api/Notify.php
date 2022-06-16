@@ -19,11 +19,7 @@ class Notify extends Controller
      * @param string $scene 支付场景
      * @param string $param 支付参数
      * @return string
-     * @throws \WeChat\Exceptions\InvalidResponseException
      * @throws \think\admin\Exception
-     * @throws \think\db\exception\DataNotFoundException
-     * @throws \think\db\exception\DbException
-     * @throws \think\db\exception\ModelNotFoundException
      */
     public function wxpay(string $scene = 'order', string $param = ''): string
     {
@@ -39,11 +35,7 @@ class Notify extends Controller
      * @param string $scene 支付场景
      * @param string $param 支付参数
      * @return string
-     * @throws \WeChat\Exceptions\InvalidResponseException
      * @throws \think\admin\Exception
-     * @throws \think\db\exception\DataNotFoundException
-     * @throws \think\db\exception\DbException
-     * @throws \think\db\exception\ModelNotFoundException
      */
     public function alipay(string $scene = 'order', string $param = ''): string
     {
@@ -59,11 +51,7 @@ class Notify extends Controller
      * @param string $scene 支付场景
      * @param string $param 支付参数
      * @return string
-     * @throws \WeChat\Exceptions\InvalidResponseException
      * @throws \think\admin\Exception
-     * @throws \think\db\exception\DataNotFoundException
-     * @throws \think\db\exception\DbException
-     * @throws \think\db\exception\ModelNotFoundException
      */
     public function joinpay(string $scene = 'order', string $param = ''): string
     {

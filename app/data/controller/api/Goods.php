@@ -58,6 +58,6 @@ class Goods extends Controller
      */
     public function getRegion()
     {
-        $this->success('获取区域成功', ExpressService::instance()->region(3, 1));
+        $this->success('获取区域成功', ExpressService::region(3, 1));
     }
 }

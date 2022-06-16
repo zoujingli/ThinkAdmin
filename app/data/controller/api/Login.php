@@ -50,8 +50,8 @@ class Login extends Controller
             'password.require' => '登录密码不能为空！',
         ]);
         $map = ['deleted' => 0, 'phone' => $data['phone']];
-        $user = DataUser::mk()->where($map)->find();
-        if (empty($user)) $this->error('该手机号还没有注册哦！');
+        $user = DataUser::mk()->where($map)->findOrEmpty();
+        if ($user->isEmpty()) $this->error('该手机号还没有注册哦！');
         if (empty($user['status'])) $this->error('该用户账号状态异常！');
         if (md5($data['password']) === $user['password']) {
             $this->success('手机登录成功！', UserAdminService::set($map, [], $this->type, true));

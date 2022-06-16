@@ -132,7 +132,7 @@ class UserTransferService extends Service
      * @throws \think\db\exception\DbException
      * @throws \think\db\exception\ModelNotFoundException
      */
-    public function config(?string $name = null)
+    public static function config(?string $name = null)
     {
         static $data = [];
         if (empty($data)) $data = sysdata('TransferRule');
