@@ -709,7 +709,7 @@ $(function () {
             option.done = function () {
                 typeof option.success === 'function' && option.success.call(this);
                 layui.sessionData('pages', {key: table.id, value: this.page.curr || 1});
-                $.form.reInit($table.next()).find('[data-load],[data-queue],[data-action],[data-iframe]').not('[data-table-id]').attr('data-table-id', table.id);
+                $.form.reInit($table.next()).find('[data-load][data-time!="false"],[data-action][data-time!="false"],[data-queue],[data-iframe]').not('[data-table-id]').attr('data-table-id', table.id);
                 (option.loading = this.loading = true) && $table.data('next', this).next().find(cls.join(',')).animate({opacity: 1});
             }, option.parseData = function (res) {
                 if (typeof params.filter === 'function') {
