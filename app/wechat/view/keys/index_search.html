@@ -1,18 +1,20 @@
 <fieldset>
     <legend>条件搜索</legend>
     <form class="layui-form layui-form-pane form-search" action="{:request()->url()}" onsubmit="return false" method="get" autocomplete="off">
+
         <div class="layui-form-item layui-inline">
-            <label class="layui-form-label">匹配规则</label>
+            <label class="layui-form-label">匹配内容</label>
             <div class="layui-input-inline">
-                <input name="keys" value="{$get.keys|default=''}" placeholder="请输入匹配规则" class="layui-input">
+                <input name="keys" value="{$get.keys|default=''}" placeholder="请输入匹配内容" class="layui-input">
             </div>
         </div>
+
         <div class="layui-form-item layui-inline">
             <label class="layui-form-label">规则类型</label>
             <div class="layui-input-inline">
-                <select class="layui-select" name="type">
+                <select class="layui-select" name="mtype">
                     <option value="">-- 全部 --</option>
-                    {foreach $types as $k => $v}{if $k.'' eq input('type')}
+                    {foreach $types as $k => $v}{if $k.'' eq input('mtype')}
                     <option selected value="{$k}">{$v}</option>
                     {else}
                     <option value="{$k}">{$v}</option>
@@ -20,6 +22,7 @@
                 </select>
             </div>
         </div>
+
         <div class="layui-form-item layui-inline">
             <label class="layui-form-label">使用状态</label>
             <div class="layui-input-inline">
@@ -34,12 +37,14 @@
                 </select>
             </div>
         </div>
+
         <div class="layui-form-item layui-inline">
             <label class="layui-form-label">创建时间</label>
             <div class="layui-input-inline">
                 <input data-date-range name="create_at" value="{$get.create_at|default=''}" placeholder="请选择创建时间" class="layui-input">
             </div>
         </div>
+
         <div class="layui-form-item layui-inline">
             <button class="layui-btn layui-btn-primary"><i class="layui-icon">&#xe615;</i> 搜 索</button>
         </div>

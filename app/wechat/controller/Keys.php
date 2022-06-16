@@ -42,6 +42,9 @@ class Keys extends Controller
      * 回复规则管理
      * @auth true
      * @menu true
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\DbException
+     * @throws \think\db\exception\ModelNotFoundException
      */
     public function index()
     {
@@ -56,10 +59,13 @@ class Keys extends Controller
             $this->error("生成二维码失败，请稍候再试！<br> {$exception->getMessage()}");
         }
         // 数据列表分页处理
-        $this->title = '回复规则管理';
-        WechatKeys::mQuery(null, function (QueryHelper $query) {
-            $query->equal('status')->like('keys,type')->dateBetween('create_at');
-            $query->whereNotIn('keys', ['subscribe', 'default'])->order('sort desc,id desc')->page();
+        $this->type = input('get.type', 'index');
+        WechatKeys::mQuery()->layTable(function () {
+            $this->title = '回复规则管理';
+        }, function (QueryHelper $query) {
+            $query->whereNotIn('keys', ['subscribe', 'default']);
+            $query->like('keys,type#mtype')->dateBetween('create_at');
+            $query->where(['status' => intval($this->type === 'index')]);
         });
     }
 
