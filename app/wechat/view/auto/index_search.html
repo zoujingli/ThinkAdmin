@@ -12,9 +12,9 @@
         <div class="layui-form-item layui-inline">
             <label class="layui-form-label">消息类型</label>
             <div class="layui-input-inline">
-                <select class="layui-select" name="type">
+                <select class="layui-select" name="mtype">
                     <option value="">-- 全部 --</option>
-                    {foreach $types as $k => $v}{if $k.'' eq input('type')}
+                    {foreach $types as $k => $v}{if $k.'' eq input('mtype')}
                     <option selected value="{$k}">{$v}</option>
                     {else}
                     <option value="{$k}">{$v}</option>

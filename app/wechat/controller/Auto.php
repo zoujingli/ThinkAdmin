@@ -42,13 +42,18 @@ class Auto extends Controller
      * 关注自动回复
      * @auth true
      * @menu true
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\DbException
+     * @throws \think\db\exception\ModelNotFoundException
      */
     public function index()
     {
-        $this->title = '关注自动回复';
-        WechatAuto::mQuery(null, function (QueryHelper $query) {
-            $query->like('code,type')->equal('status');
-            $query->dateBetween('create_at')->order('time asc')->page();
+        $this->type = input('get.type', 'index');
+        WechatAuto::mQuery()->layTable(function () {
+            $this->title = '关注自动回复';
+        }, function (QueryHelper $query) {
+            $query->like('code,type#mtype')->dateBetween('create_at');
+            $query->where(['status' => intval($this->type === 'index')]);
         });
     }
 
