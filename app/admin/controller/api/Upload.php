@@ -81,7 +81,7 @@ class Upload extends Controller
             'status.value' => 1
         ]));
         if ($info = Storage::instance($data['uptype'])->info($data['key'], $safe, $name)) {
-            $file->save(['xurl' => $info['url'], 'is_fast' => 1, 'is_safe' => $data['safe']]);
+            $file->save(['xurl' => $info['url'], 'isfast' => 1, 'issafe' => $data['safe']]);
             $extr = ['id' => $file->id ?? 0, 'url' => $info['url'], 'key' => $info['key']];
             $this->success('文件已经上传', array_merge($data, $extr), 200);
         } elseif ('local' === $data['uptype']) {
@@ -114,7 +114,7 @@ class Upload extends Controller
             $data['authorization'] = $token['authorization'];
             $data['server'] = UpyunStorage::instance()->upload();
         }
-        $file->save(['xurl' => $data['url'], 'is_fast' => 0, 'is_safe' => $data['safe']]);
+        $file->save(['xurl' => $data['url'], 'isfast' => 0, 'issafe' => $data['safe']]);
         $this->success('获取上传授权参数', array_merge($data, ['id' => $file->id ?? 0]), 404);
     }
 
