@@ -95,10 +95,11 @@ define(['md5', 'notify'], function (SparkMD5, Notify, allowMime) {
     // 文件上传
     Adapter.prototype.request = function (file, done) {
         var that = this, data = {key: file.xkey, safe: that.option.safe, uptype: that.option.type};
-        data.size = file.size, data.name = file.name, data.hash = file.xmd5;
+        data.size = file.size, data.name = file.name, data.hash = file.xmd5, data.mime = file.type, data.xext = file.xext;
         jQuery.ajax("{:url('admin/api.upload/state')}", {
             data: data, method: 'post', success: function (ret) {
-                file.xurl = ret.data.url, file.xsafe = ret.data.safe, file.xpath = ret.data.key, file.xtype = ret.data.uptype;
+                file.id = ret.data.id || 0, file.xurl = ret.data.url;
+                file.xsafe = ret.data.safe, file.xpath = ret.data.key, file.xtype = ret.data.uptype;
                 if (parseInt(ret.code) === 404) {
                     var uploader = {};
                     uploader.url = ret.data.server;
@@ -179,6 +180,7 @@ define(['md5', 'notify'], function (SparkMD5, Notify, allowMime) {
         /*! 检查单个文件上传返回的结果 */
         if (ret.code < 1) return $.msg.tips(ret.info || '文件上传失败！');
         if (typeof file.xurl !== 'string') return $.msg.tips('无效的文件上传对象！');
+        jQuery.post("{:url('admin/api.upload/done')}", {id: file.id, hash: file.xmd5});
         /*! 单个文件上传成功结果处理 */
         if (typeof done === 'function') {
             done.call(this.option.elem, file.xurl, this.files['id']);

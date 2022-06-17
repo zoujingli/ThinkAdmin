@@ -17,6 +17,8 @@
 namespace app\admin\controller\api;
 
 use think\admin\Controller;
+use think\admin\model\SystemFile;
+use think\admin\service\AdminService;
 use think\admin\Storage;
 use think\admin\storage\AliossStorage;
 use think\admin\storage\LocalStorage;
@@ -66,10 +68,21 @@ class Upload extends Controller
     {
         [$name, $safe] = [input('name'), $this->getSafe()];
         $data = ['uptype' => $this->getType(), 'safe' => intval($safe), 'key' => input('key')];
+        $file = SystemFile::mk()->data($this->_vali([
+            'path.value'   => $data['key'],
+            'type.value'   => $this->getType(),
+            'uuid.value'   => AdminService::instance()->getUserId(),
+            'name.require' => '名称不能为空！',
+            'hash.require' => '哈希不能为空！',
+            'xext.require' => '后缀不能为空！',
+            'size.require' => '大小不能为空！',
+            'mime.require' => "类型不能为空！",
+            'status.value' => 1
+        ]));
         if ($info = Storage::instance($data['uptype'])->info($data['key'], $safe, $name)) {
-            $data['url'] = $info['url'];
-            $data['key'] = $info['key'];
-            $this->success('文件已经上传', $data, 200);
+            $file->save(['xurl' => $info['url'], 'is_fast' => 1, 'is_safe' => $data['safe']]);
+            $extr = ['id' => $file->id ?? 0, 'url' => $info['url'], 'key' => $info['key']];
+            $this->success('文件已经上传', array_merge($data, $extr), 200);
         } elseif ('local' === $data['uptype']) {
             $data['url'] = LocalStorage::instance()->url($data['key'], $safe, $name);
             $data['server'] = LocalStorage::instance()->upload();
@@ -100,7 +113,25 @@ class Upload extends Controller
             $data['authorization'] = $token['authorization'];
             $data['server'] = UpyunStorage::instance()->upload();
         }
-        $this->success('获取上传授权参数', $data, 404);
+        $file->save(['xurl' => $data['url'], 'is_fast' => 0, 'is_safe' => $data['safe']]);
+        $this->success('获取上传授权参数', array_merge($data, ['id' => $file->id ?? 0]), 404);
+    }
+
+    /**
+     * 更新文件状态
+     * @login true
+     * @return void
+     */
+    public function done()
+    {
+        $data = $this->_vali(['id.require' => '编号不能为空！']);
+        $file = SystemFile::mk()->where($data)->findOrEmpty();
+        if ($file->isEmpty()) $this->error('文件不存在！');
+        if ($file->save(['status' => 2])) {
+            $this->success('更新成功！');
+        } else {
+            $this->error('更新失败！');
+        }
     }
 
     /**
