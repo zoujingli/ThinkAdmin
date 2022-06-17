@@ -70,7 +70,7 @@ class Upload extends Controller
         [$name, $safe] = [input('name'), $this->getSafe()];
         $data = ['uptype' => $this->getType(), 'safe' => intval($safe), 'key' => input('key')];
         $file = SystemFile::mk()->data($this->_vali([
-            'path.value'   => $data['key'],
+            'xkey.value'   => $data['key'],
             'type.value'   => $this->getType(),
             'uuid.value'   => AdminService::instance()->getUserId(),
             'name.require' => '名称不能为空！',
