@@ -17,6 +17,7 @@
 namespace app\admin\controller\api;
 
 use think\admin\Controller;
+use think\admin\helper\QueryHelper;
 use think\admin\model\SystemFile;
 use think\admin\service\AdminService;
 use think\admin\Storage;
@@ -136,6 +137,24 @@ class Upload extends Controller
         } else {
             $this->error('更新失败！');
         }
+    }
+
+    /**
+     * 文件选择器
+     * @login true
+     * @return void
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\DbException
+     * @throws \think\db\exception\ModelNotFoundException
+     */
+    public function modal()
+    {
+        SystemFile::mQuery()->layTable(function () {
+            $this->title = '文件选择器';
+        }, function (QueryHelper $query) {
+            $query->where(['status' => 2])->order('id desc');
+            $query->like('name,hash')->dateBetween('create_at');
+        });
     }
 
     /**
