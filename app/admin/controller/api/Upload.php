@@ -124,7 +124,11 @@ class Upload extends Controller
      */
     public function done()
     {
-        $data = $this->_vali(['id.require' => '编号不能为空！']);
+        $data = $this->_vali([
+            'id.require'   => '编号不能为空！',
+            'hash.require' => '哈希不能为空！',
+        ]);
+        $data['uuid'] = AdminService::instance()->getUserId();
         $file = SystemFile::mk()->where($data)->findOrEmpty();
         if ($file->isEmpty()) $this->error('文件不存在！');
         if ($file->save(['status' => 2])) {
