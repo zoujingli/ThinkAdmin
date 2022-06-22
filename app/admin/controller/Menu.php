@@ -108,7 +108,7 @@ class Menu extends Controller
             /* 读取系统功能节点 */
             $this->auths = [];
             $this->nodes = MenuService::instance()->getList();
-            foreach (NodeService::instance()->getMethods() as $node => $item) {
+            foreach (NodeService::instance()->getMethods($this->app->isDebug()) as $node => $item) {
                 if ($item['isauth'] && substr_count($node, '/') >= 2) {
                     $this->auths[] = ['node' => $node, 'title' => $item['title']];
                 }
