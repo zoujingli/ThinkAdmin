@@ -100,15 +100,15 @@ class Menu extends Controller
     {
         if ($this->request->isGet()) {
             /* 清理权限节点 */
-            if ($this->app->isDebug()) {
+            if ($isDebug = $this->app->isDebug()) {
                 AdminService::instance()->clearCache();
             }
-            /* 选择自己的上级菜单 */
+            /* 选择自己上级菜单 */
             $vo['pid'] = $vo['pid'] ?? input('pid', '0');
             /* 读取系统功能节点 */
             $this->auths = [];
-            $this->nodes = MenuService::instance()->getList();
-            foreach (NodeService::instance()->getMethods($this->app->isDebug()) as $node => $item) {
+            $this->nodes = MenuService::instance()->getList($isDebug);
+            foreach (NodeService::instance()->getMethods($isDebug) as $node => $item) {
                 if ($item['isauth'] && substr_count($node, '/') >= 2) {
                     $this->auths[] = ['node' => $node, 'title' => $item['title']];
                 }
