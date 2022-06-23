@@ -66,10 +66,8 @@ define(['md5', 'notify'], function (SparkMD5, Notify, allowMime) {
         layui.each(files, function (index, file) {
             that.count.total++, file.index = index, that.files[index] = file;
             if (that.option.size && file.size > that.option.size) {
-                that.count.error++, file.xstate = -1, file.xstats = '大小超限';
-                return $.msg.tips('文件大小超出限制！');
-            }
-            if (!that.option.hide) {
+                that.event('upload.error', {file: file}, file, '大小超限');
+            } else if (!that.option.hide) {
                 file.notify = new NotifyExtend(file);
             }
         }), layui.each(files, function (index, file) {
