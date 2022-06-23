@@ -73,6 +73,8 @@ define(['md5', 'notify'], function (SparkMD5, Notify, allowMime) {
                 file.notify = new NotifyExtend(file);
             }
         }), layui.each(files, function (index, file) {
+            // 禁传异常状态图片
+            if (typeof file.xstate === 'number' && file.xstate === -1) return;
             // 图片限宽限高压缩
             if (/^image\/*$/.test(file.type) && file.maxWidth > 0 || file.maxHeight > 0 || file.quality !== 1) {
                 FileToBase64(file).then(function (base64) {
