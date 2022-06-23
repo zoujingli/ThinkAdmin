@@ -66,13 +66,13 @@ define(['md5', 'notify'], function (SparkMD5, Notify, allowMime) {
         layui.each(files, function (index, file) {
             that.count.total++, file.index = index, that.files[index] = file;
             if (that.option.size && file.size > that.option.size) {
-                that.count.error++, file.xstate = -1, file.xstats = '大小超限';
-                return $.msg.tips('文件大小超出限制！');
-            }
-            if (!that.option.hide) {
+                that.event('upload.error', {file: file}, file, '大小超限');
+            } else if (!that.option.hide) {
                 file.notify = new NotifyExtend(file);
             }
         }), layui.each(files, function (index, file) {
+            // 禁传异常状态文件
+            if (typeof file.xstate === 'number' && file.xstate === -1) return;
             // 图片限宽限高压缩
             if (/^image\/*$/.test(file.type) && file.maxWidth > 0 || file.maxHeight > 0 || file.quality !== 1) {
                 FileToBase64(file).then(function (base64) {

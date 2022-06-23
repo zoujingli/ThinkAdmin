@@ -50,40 +50,10 @@ window.jQuery = window.$ = window.jQuery || window.$ || layui.$;
 
 /*! 配置 require 参数  */
 require.config({
-    baseUrl: baseRoot,
-    waitSeconds: 60,
-    map: {'*': {css: baseRoot + 'plugs/require/css.js'}},
-    paths: {
-        'vue': ['plugs/vue/vue.min'],
-        'md5': ['plugs/jquery/md5.min'],
-        'json': ['plugs/jquery/json.min'],
-        'xlsx': ['plugs/jquery/xlsx.min'],
-        'excel': ['plugs/jquery/excel.xlsx'],
-        'base64': ['plugs/jquery/base64.min'],
-        'upload': [tapiRoot + '/api.upload/index?'],
-        'notify': ['plugs/notify/notify.min'],
-        'angular': ['plugs/angular/angular.min'],
-        'cropper': ['plugs/cropper/cropper.min'],
-        'echarts': ['plugs/echarts/echarts.min'],
-        'ckeditor4': ['plugs/ckeditor4/ckeditor'],
-        'ckeditor5': ['plugs/ckeditor5/ckeditor'],
-        'websocket': ['plugs/socket/websocket'],
-        'pcasunzips': ['plugs/jquery/pcasunzips'],
-        'sortablejs': ['plugs/sortable/sortable.min'],
-        'vue.sortable': ['plugs/sortable/vue.draggable.min'],
-        'jquery.ztree': ['plugs/ztree/ztree.all.min'],
-        'jquery.masonry': ['plugs/jquery/masonry.min'],
-        'jquery.cropper': ['plugs/cropper/cropper.min'],
-        'jquery.autocompleter': ['plugs/jquery/autocompleter.min'],
+    baseUrl: baseRoot, waitSeconds: 60, map: {'*': {css: baseRoot + 'plugs/require/css.js'}}, paths: {
+        'vue': ['plugs/vue/vue.min'], 'md5': ['plugs/jquery/md5.min'], 'json': ['plugs/jquery/json.min'], 'xlsx': ['plugs/jquery/xlsx.min'], 'excel': ['plugs/jquery/excel.xlsx'], 'base64': ['plugs/jquery/base64.min'], 'upload': [tapiRoot + '/api.upload/index?'], 'notify': ['plugs/notify/notify.min'], 'angular': ['plugs/angular/angular.min'], 'cropper': ['plugs/cropper/cropper.min'], 'echarts': ['plugs/echarts/echarts.min'], 'ckeditor4': ['plugs/ckeditor4/ckeditor'], 'ckeditor5': ['plugs/ckeditor5/ckeditor'], 'websocket': ['plugs/socket/websocket'], 'pcasunzips': ['plugs/jquery/pcasunzips'], 'sortablejs': ['plugs/sortable/sortable.min'], 'vue.sortable': ['plugs/sortable/vue.draggable.min'], 'jquery.ztree': ['plugs/ztree/ztree.all.min'], 'jquery.masonry': ['plugs/jquery/masonry.min'], 'jquery.cropper': ['plugs/cropper/cropper.min'], 'jquery.autocompleter': ['plugs/jquery/autocompleter.min'],
     }, shim: {
-        'excel': {deps: [baseRoot + 'plugs/layui_exts/excel.js']},
-        'notify': {deps: ['css!' + baseRoot + 'plugs/notify/light.css']},
-        'cropper': {deps: ['css!' + baseRoot + 'plugs/cropper/cropper.min.css']},
-        'websocket': {deps: [baseRoot + 'plugs/socket/swfobject.min.js']},
-        'ckeditor5': {deps: ['jquery', 'upload', 'css!' + baseRoot + 'plugs/ckeditor5/ckeditor.css']},
-        'vue.sortable': {deps: ['vue', 'sortablejs']},
-        'jquery.ztree': {deps: ['jquery', 'css!' + baseRoot + 'plugs/ztree/zTreeStyle/zTreeStyle.css']},
-        'jquery.autocompleter': {deps: ['jquery', 'css!' + baseRoot + 'plugs/jquery/autocompleter.css']},
+        'excel': {deps: [baseRoot + 'plugs/layui_exts/excel.js']}, 'notify': {deps: ['css!' + baseRoot + 'plugs/notify/light.css']}, 'cropper': {deps: ['css!' + baseRoot + 'plugs/cropper/cropper.min.css']}, 'websocket': {deps: [baseRoot + 'plugs/socket/swfobject.min.js']}, 'ckeditor5': {deps: ['jquery', 'upload', 'css!' + baseRoot + 'plugs/ckeditor5/ckeditor.css']}, 'vue.sortable': {deps: ['vue', 'sortablejs']}, 'jquery.ztree': {deps: ['jquery', 'css!' + baseRoot + 'plugs/ztree/zTreeStyle/zTreeStyle.css']}, 'jquery.autocompleter': {deps: ['jquery', 'css!' + baseRoot + 'plugs/jquery/autocompleter.css']},
     }
 });
 
@@ -706,9 +676,9 @@ $(function () {
                 option.height = $(window).height() - $table.removeClass('layui-hide').offset().top - 35;
             }
             // 动态计算最大页数
-            option.done = function () {
-                typeof option.success === 'function' && option.success.call(this);
+            option.done = function (res, curr, count) {
                 layui.sessionData('pages', {key: table.id, value: this.page.curr || 1});
+                typeof option.success === 'function' && option.success.call(this, res, curr, count);
                 $.form.reInit($table.next()).find('[data-load][data-time!="false"],[data-action][data-time!="false"],[data-queue],[data-iframe]').not('[data-table-id]').attr('data-table-id', table.id);
                 (option.loading = this.loading = true) && $table.data('next', this).next().find(cls.join(',')).animate({opacity: 1});
             }, option.parseData = function (res) {
