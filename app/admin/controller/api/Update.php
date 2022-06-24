@@ -44,7 +44,7 @@ class Update extends Controller
     public function get()
     {
         $filename = decode(input('encode', '0'));
-        if (!ModuleService::instance()->checkAllowDownload($filename)) {
+        if (!ModuleService::checkAllowDownload($filename)) {
             $this->error('下载的文件不在认证规则中！');
         }
         if (file_exists($realname = $this->app->getRootPath() . $filename)) {
@@ -61,7 +61,7 @@ class Update extends Controller
      */
     public function node()
     {
-        $this->success('获取文件列表成功！', ModuleService::instance()->getChanges(
+        $this->success('获取文件列表成功！', ModuleService::getChanges(
             json_decode($this->request->post('rules', '[]', ''), true),
             json_decode($this->request->post('ignore', '[]', ''), true)
         ));
@@ -72,6 +72,6 @@ class Update extends Controller
      */
     public function version()
     {
-        $this->success('获取模块信息成功！', ModuleService::instance()->getModules());
+        $this->success('获取模块信息成功！', ModuleService::getModules());
     }
 }

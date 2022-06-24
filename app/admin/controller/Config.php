@@ -53,7 +53,7 @@ class Config extends Controller
     {
         $this->title = '系统参数配置';
         $this->super = AdminService::isSuper();
-        $this->version = ModuleService::instance()->getVersion();
+        $this->version = ModuleService::getVersion();
         $this->fetch();
     }
 

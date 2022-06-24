@@ -34,7 +34,7 @@ class Module extends Controller
     public function index()
     {
         $this->title = '系统模块管理';
-        $this->modules = ModuleService::instance()->change();
+        $this->modules = ModuleService::change();
         $this->fetch();
     }
 
@@ -45,7 +45,7 @@ class Module extends Controller
     public function install()
     {
         $data = $this->_vali(['name.require' => '模块名称不能为空！']);
-        [$state, $message] = ModuleService::instance()->install($data['name']);
+        [$state, $message] = ModuleService::install($data['name']);
         $state ? $this->success($message) : $this->error($message);
     }
 
@@ -56,8 +56,8 @@ class Module extends Controller
     public function change()
     {
         $data = $this->_vali(['name.require' => '模块名称不能为空！']);
-        $online = ModuleService::instance()->online();
-        $locals = ModuleService::instance()->getModules();
+        $online = ModuleService::online();
+        $locals = ModuleService::getModules();
         if (isset($online[$data['name']])) {
             $this->module = $online[$data['name']];
             $this->current = $locals[$data['name']] ?? [];
