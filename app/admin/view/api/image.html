@@ -1,11 +1,13 @@
 <div class="image-dialog" id="ImageDialog">
     <div class="image-dialog-head">
         <div class="pull-right">
-            <a class="layui-btn layui-btn-sm">上传图片</a>
+            <a data-file="one" data-type="jpg,png" class="layui-btn layui-btn-sm">上传图片</a>
         </div>
     </div>
-    <div class="image-dialog-body">
-
+    <div class="image-dialog-body upload-image-mdbox flex flex-wrap flex-align-start">
+        <div class="image-dialog-item" v-for="x in items">
+            <div class="uploadimage" :style="x.style"></div>
+        </div>
     </div>
 </div>
 
@@ -19,6 +21,17 @@
     .image-dialog-body {
         height: 500px;
         background: #efefef;
+        padding-top: 15px;
+        padding-left: 15px;
+    }
+
+    .image-dialog-item {
+        margin-right: 15px;
+        margin-bottom: 15px;
+    }
+
+    .image-dialog-item .uploadimage {
+        margin: 0
     }
 </style>
 
@@ -30,7 +43,23 @@
                 page: 1,
                 items: []
             },
-            methods: {}
+            created: function () {
+                this.loadPage();
+            },
+            methods: {
+                loadPage: function () {
+                    var that = this;
+                    this.params = {page: this.page, output: 'layui.table'};
+                    $.form.load('{:url("image")}', this.params, 'get', function (ret) {
+                        that.items = that.items.concat(ret.data);
+                        that.items.forEach(function (item) {
+                            item.style = 'background-image:url(' + item.xurl + ')';
+                        });
+                        console.log(that.items)
+                        return false;
+                    });
+                }
+            }
         });
     });
 </script>
