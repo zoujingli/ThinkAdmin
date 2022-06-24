@@ -1,0 +1,36 @@
+<div class="image-dialog" id="ImageDialog">
+    <div class="image-dialog-head">
+        <div class="pull-right">
+            <a class="layui-btn layui-btn-sm">上传图片</a>
+        </div>
+    </div>
+    <div class="image-dialog-body">
+
+    </div>
+</div>
+
+<style>
+    .image-dialog-head {
+        clear: both;
+        height: 30px;
+        padding: 10px 15px;
+    }
+
+    .image-dialog-body {
+        height: 500px;
+        background: #efefef;
+    }
+</style>
+
+<script>
+    require(['vue'], function (vue) {
+        new vue({
+            el: '#ImageDialog',
+            data: {
+                page: 1,
+                items: []
+            },
+            methods: {}
+        });
+    });
+</script>

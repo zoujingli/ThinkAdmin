@@ -550,7 +550,7 @@ $(function () {
     $.fn.uploadOneImage = function () {
         return this.each(function () {
             if ($(this).data('inited')) return true; else $(this).data('inited', true);
-            var $in = $(this), $bt = $('<a data-file class="uploadimage transition"><span class="layui-icon">&#x1006;</span><span class="layui-icon">&#xe615;</span></a>').data('input', this);
+            var $in = $(this), $bt = $('<a data-file="image" class="uploadimage transition"><span class="layui-icon">&#x1006;</span><span class="layui-icon">&#xe615;</span></a>').data('input', this);
             $bt.attr('data-size', $in.data('size') || 0).attr('data-type', $in.data('type') || 'png,jpg,gif,jpeg').find('span').on('click', function (event) {
                 event.stopPropagation();
                 if ($(this).index() === 0) $bt.attr('style', ''), $in.val(''); else $in.val() && $.previewImage(encodeURI($in.val()));
@@ -835,7 +835,10 @@ $(function () {
 
     /*! 注册 data-file 事件行为 */
     onEvent('click', '[data-file]', function () {
-        if ($(this).data('inited') !== true) (function (that) {
+        // 上传图片，支持单图或多图选择，分别是 images|images
+        if (typeof this.dataset.file === 'string' && /^images?$/.test(this.dataset.file)) {
+            $.form.modal(tapiRoot + '/api.upload/image', this.dataset, '图片管理器')
+        } else if ($(this).data('inited') !== true) (function (that) {
             that.uploadFile(undefined, function () {
                 that.trigger('upload.start');
             });
