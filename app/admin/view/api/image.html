@@ -4,10 +4,13 @@
             <a data-file="one" data-type="jpg,png" class="layui-btn layui-btn-sm">上传图片</a>
         </div>
     </div>
-    <div class="image-dialog-body upload-image-mdbox flex flex-wrap flex-align-start">
+    <div class="image-dialog-body">
         <div class="image-dialog-item" v-for="x in items">
             <div class="uploadimage" :style="x.style"></div>
         </div>
+    </div>
+    <div class="image-dialog-foot">
+        <div id="ImageDialogPage" class="image-dialog-page"></div>
     </div>
 </div>
 
@@ -15,47 +18,72 @@
     .image-dialog-head {
         clear: both;
         height: 30px;
-        padding: 10px 15px;
+        padding: 10px 12px;
     }
 
     .image-dialog-body {
-        height: 500px;
+        height: 470px;
         background: #efefef;
-        padding-top: 15px;
-        padding-left: 15px;
+        padding-top: 12px;
+        padding-left: 12px;
+        display: flex;
+        flex-wrap: wrap;
+        align-content: flex-start;
     }
 
     .image-dialog-item {
-        margin-right: 15px;
-        margin-bottom: 15px;
+        margin-right: 12px;
+        margin-bottom: 12px;
     }
 
     .image-dialog-item .uploadimage {
-        margin: 0
+        margin: 0;
+        width: 145px;
+        height: 145px;
+    }
+
+    .image-dialog-foot {
+        padding: 0 12px;
+    }
+
+    .image-dialog-page .layui-laypage a,
+    .image-dialog-page .layui-laypage span {
+        margin-bottom: 0;
     }
 </style>
 
 <script>
+
     require(['vue'], function (vue) {
         new vue({
             el: '#ImageDialog',
             data: {
                 page: 1,
+                limit: 15,
                 items: []
             },
             created: function () {
                 this.loadPage();
             },
             methods: {
+                addPage: function (count) {
+                    var that = this;
+                    layui.laypage.render({
+                        curr: this.page, count: count, limit: that.limit,
+                        elem: 'ImageDialogPage', jump: function (obj, first) {
+                            if (!first) that.loadPage(that.page = obj.curr);
+                        },
+                    });
+                },
                 loadPage: function () {
                     var that = this;
-                    this.params = {page: this.page, output: 'layui.table'};
+                    this.params = {page: this.page, limit: this.limit, output: 'layui.table'};
                     $.form.load('{:url("image")}', this.params, 'get', function (ret) {
-                        that.items = that.items.concat(ret.data);
+                        that.addPage(ret.count);
+                        that.items = ret.data;
                         that.items.forEach(function (item) {
                             item.style = 'background-image:url(' + item.xurl + ')';
                         });
-                        console.log(that.items)
                         return false;
                     });
                 }
