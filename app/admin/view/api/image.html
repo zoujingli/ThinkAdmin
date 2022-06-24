@@ -46,6 +46,10 @@
         padding: 0 12px;
     }
 
+    .image-dialog-page {
+        text-align: center;
+    }
+
     .image-dialog-page .layui-laypage a,
     .image-dialog-page .layui-laypage span {
         margin-bottom: 0;
@@ -53,7 +57,6 @@
 </style>
 
 <script>
-
     require(['vue'], function (vue) {
         new vue({
             el: '#ImageDialog',
@@ -70,6 +73,7 @@
                     var that = this;
                     layui.laypage.render({
                         curr: this.page, count: count, limit: that.limit,
+                        layout: ['count', 'prev', 'page', 'next', 'refresh'],
                         elem: 'ImageDialogPage', jump: function (obj, first) {
                             if (!first) that.loadPage(that.page = obj.curr);
                         },
