@@ -33,7 +33,7 @@ class Update extends Controller
      */
     protected function initialize()
     {
-        if (!SystemService::instance()->checkRunMode()) {
+        if (!SystemService::checkRunMode()) {
             $this->error('只允许访问本地或官方代码！');
         }
     }

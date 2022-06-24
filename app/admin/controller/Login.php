@@ -40,15 +40,14 @@ class Login extends Controller
     public function index()
     {
         if ($this->app->request->isGet()) {
-            if (AdminService::instance()->isLogin()) {
+            if (AdminService::isLogin()) {
                 $this->redirect(sysuri('admin/index/index'));
             } else {
                 // 当前运行模式
-                $system = SystemService::instance();
-                $this->developMode = $system->checkRunMode();
+                $this->developMode = SystemService::checkRunMode();
                 // 后台背景处理
                 $images = str2arr(sysconf('login_image') ?: '', '|') ?: [
-                    $system->uri('/static/theme/img/login/bg1.jpg'), $system->uri('/static/theme/img/login/bg2.jpg'),
+                    SystemService::uri('/static/theme/img/login/bg1.jpg'), SystemService::uri('/static/theme/img/login/bg2.jpg'),
                 ];
                 $this->loginStyle = sprintf('style="background-image:url(%s)" data-bg-transition="%s"', $images[0], join(',', $images));
                 // 登录验证令牌

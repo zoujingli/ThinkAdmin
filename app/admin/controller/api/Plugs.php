@@ -44,7 +44,7 @@ class Plugs extends Controller
      */
     public function optimize()
     {
-        if (AdminService::instance()->isSuper()) {
+        if (AdminService::isSuper()) {
             sysoplog('系统运维管理', '创建数据库优化任务');
             $this->_queue('优化数据库所有数据表', 'xadmin:database optimize');
         } else {

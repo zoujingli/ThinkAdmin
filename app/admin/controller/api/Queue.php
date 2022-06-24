@@ -96,7 +96,7 @@ class Queue extends Controller
      */
     public function status()
     {
-        if (AdminService::instance()->isSuper()) try {
+        if (AdminService::isSuper()) try {
             $message = $this->app->console->call('xadmin:queue', ['status'])->fetch();
             if (preg_match('/process.*?\d+.*?running/', $message)) {
                 echo "<span class='color-green pointer' data-tips-text='{$message}'>已启动</span>";

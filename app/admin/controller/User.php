@@ -143,7 +143,7 @@ class User extends Controller
             // 用户身份数据
             $this->bases = SystemBase::items('身份权限');
             // 用户权限管理
-            $this->superName = AdminService::instance()->getSuperName();
+            $this->superName = AdminService::getSuperName();
             $this->authorizes = SystemAuth::items();
         }
     }

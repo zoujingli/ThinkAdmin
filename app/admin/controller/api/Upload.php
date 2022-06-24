@@ -72,7 +72,7 @@ class Upload extends Controller
         $file = SystemFile::mk()->data($this->_vali([
             'xkey.value'   => $data['key'],
             'type.value'   => $this->getType(),
-            'uuid.value'   => AdminService::instance()->getUserId(),
+            'uuid.value'   => AdminService::getUserId(),
             'name.require' => '名称不能为空！',
             'hash.require' => '哈希不能为空！',
             'xext.require' => '后缀不能为空！',
@@ -129,7 +129,7 @@ class Upload extends Controller
             'id.require'   => '编号不能为空！',
             'hash.require' => '哈希不能为空！',
         ]);
-        $data['uuid'] = AdminService::instance()->getUserId();
+        $data['uuid'] = AdminService::getUserId();
         $file = SystemFile::mk()->where($data)->findOrEmpty();
         if ($file->isEmpty()) $this->error('文件不存在！');
         if ($file->save(['status' => 2])) {

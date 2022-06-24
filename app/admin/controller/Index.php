@@ -38,19 +38,18 @@ class Index extends Controller
     public function index()
     {
         /*! 根据运行模式刷新权限 */
-        $debug = $this->app->isDebug();
-        AdminService::instance()->apply($debug);
+        AdminService::apply($this->app->isDebug());
         /*! 读取当前用户权限菜单树 */
-        $this->menus = MenuService::instance()->getTree();
+        $this->menus = MenuService::getTree();
         /*! 判断当前用户的登录状态 */
-        $this->login = AdminService::instance()->isLogin();
+        $this->login = AdminService::isLogin();
         /*! 菜单为空且未登录跳转到登录页 */
         if (empty($this->menus) && empty($this->login)) {
             $this->redirect(sysuri('admin/login/index'));
         } else {
             $this->title = '系统管理后台';
-            $this->super = AdminService::instance()->isSuper();
-            $this->theme = AdminService::instance()->getUserTheme();
+            $this->super = AdminService::isSuper();
+            $this->theme = AdminService::getUserTheme();
             $this->fetch();
         }
     }
@@ -66,12 +65,12 @@ class Index extends Controller
     public function theme()
     {
         if ($this->request->isGet()) {
-            $this->theme = AdminService::instance()->getUserTheme();
+            $this->theme = AdminService::getUserTheme();
             $this->themes = Config::themes;
             $this->fetch();
         } else {
             $data = $this->_vali(['site_theme.require' => '主题名称不能为空！']);
-            if (AdminService::instance()->setUserTheme($data['site_theme'])) {
+            if (AdminService::setUserTheme($data['site_theme'])) {
                 $this->success('主题配置保存成功！');
             } else {
                 $this->error('主题配置保存失败！');
@@ -87,7 +86,7 @@ class Index extends Controller
     public function info($id = 0)
     {
         $this->_applyFormToken();
-        if (AdminService::instance()->getUserId() === intval($id)) {
+        if (AdminService::getUserId() === intval($id)) {
             SystemUser::mForm('admin@user/form', 'id', [], ['id' => $id]);
         } else {
             $this->error('只能修改自己的资料！');
@@ -116,7 +115,7 @@ class Index extends Controller
     public function pass($id = 0)
     {
         $this->_applyFormToken();
-        if (AdminService::instance()->getUserId() !== intval($id)) {
+        if (AdminService::getUserId() !== intval($id)) {
             $this->error('只能修改当前用户的密码！');
         }
         if ($this->app->request->isGet()) {

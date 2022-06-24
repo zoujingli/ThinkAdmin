@@ -94,10 +94,9 @@ class Auth extends Controller
     {
         $map = $this->_vali(['auth.require#id' => '权限ID不能为空！']);
         if (input('action') === 'get') {
-            $admin = AdminService::instance();
-            if ($this->app->isDebug()) $admin->clearCache();
+            if ($this->app->isDebug()) AdminService::clearCache();
             $nodes = SystemNode::mk()->where($map)->column('node');
-            $this->success('获取权限节点成功！', $admin->getTree($nodes));
+            $this->success('获取权限节点成功！', AdminService::getTree($nodes));
         } elseif (input('action') === 'save') {
             [$post, $data] = [$this->request->post(), []];
             foreach ($post['nodes'] ?? [] as $node) {

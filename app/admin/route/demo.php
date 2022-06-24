@@ -19,14 +19,14 @@ use think\App;
 
 invoke(function (App $app) {
     /*! 非开发环境，清理限制文件 */
-    if ($app->request->isGet() && !SystemService::instance()->checkRunMode()) {
+    if ($app->request->isGet() && !SystemService::checkRunMode()) {
         @unlink("{$app->getBasePath()}admin/controller/api/Update.php");
         @unlink("{$app->getBasePath()}admin/route/demo.php");
         @rmdir("{$app->getBasePath()}admin/route");
         return;
     }
     /*! 演示环境禁止操作路由绑定 */
-    if (SystemService::instance()->checkRunMode('demo')) {
+    if (SystemService::checkRunMode('demo')) {
         $app->route->post('index/pass', function () {
             return json(['code' => 0, 'info' => '演示环境禁止修改用户密码！']);
         });
@@ -58,5 +58,4 @@ invoke(function (App $app) {
             return json(['code' => 0, 'info' => '演示环境禁止修改用户密码！']);
         });
     }
-
 });

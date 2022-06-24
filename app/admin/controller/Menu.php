@@ -101,18 +101,18 @@ class Menu extends Controller
         if ($this->request->isGet()) {
             /* 清理权限节点 */
             if ($isDebug = $this->app->isDebug()) {
-                AdminService::instance()->clearCache();
+                AdminService::clearCache();
             }
-            /* 选择自己上级菜单 */
-            $vo['pid'] = $vo['pid'] ?? input('pid', '0');
             /* 读取系统功能节点 */
             $this->auths = [];
-            $this->nodes = MenuService::instance()->getList($isDebug);
-            foreach (NodeService::instance()->getMethods($isDebug) as $node => $item) {
+            $this->nodes = MenuService::getList($isDebug);
+            foreach (NodeService::getMethods($isDebug) as $node => $item) {
                 if ($item['isauth'] && substr_count($node, '/') >= 2) {
                     $this->auths[] = ['node' => $node, 'title' => $item['title']];
                 }
             }
+            /* 选择自己上级菜单 */
+            $vo['pid'] = $vo['pid'] ?? input('pid', '0');
             /* 列出可选上级菜单 */
             $menus = SystemMenu::mk()->order('sort desc,id asc')->column('id,pid,icon,url,node,title,params', 'id');
             $this->menus = DataExtend::arr2table(array_merge($menus, [['id' => '0', 'pid' => '-1', 'url' => '#', 'title' => '顶部菜单']]));

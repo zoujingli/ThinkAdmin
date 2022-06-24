@@ -52,7 +52,7 @@ class Config extends Controller
     public function index()
     {
         $this->title = '系统参数配置';
-        $this->super = AdminService::instance()->isSuper();
+        $this->super = AdminService::isSuper();
         $this->version = ModuleService::instance()->getVersion();
         $this->fetch();
     }
@@ -81,11 +81,11 @@ class Config extends Controller
                 if ($post['xpath'] !== 'admin' && file_exists($this->app->getBasePath() . $post['xpath'])) {
                     $this->error("后台入口名称{$post['xpath']}已经存在应用！");
                 }
-                SystemService::instance()->setRuntime(null, [$post['xpath'] => 'admin']);
+                SystemService::setRuntime(null, [$post['xpath'] => 'admin']);
             }
             // 修改网站 ICON 图标文件，替换 public/favicon.ico 文件
             if (preg_match('#^https?://#', $icon = $post['site_icon'] ?? '')) try {
-                SystemService::instance()->setFavicon($icon);
+                SystemService::setFavicon($icon);
             } catch (\Exception $exception) {
                 trace_file($exception);
                 $this->error($exception->getMessage());

@@ -36,9 +36,9 @@ class Runtime extends Controller
      */
     public function push()
     {
-        if (AdminService::instance()->isSuper()) try {
-            AdminService::instance()->clearCache();
-            SystemService::instance()->pushRuntime();
+        if (AdminService::isSuper()) try {
+            AdminService::clearCache();
+            SystemService::pushRuntime();
             sysoplog('系统运维管理', '刷新创建路由缓存');
             $this->success('网站缓存加速成功！', 'javascript:location.reload()');
         } catch (HttpResponseException $exception) {
@@ -56,9 +56,9 @@ class Runtime extends Controller
      */
     public function clear()
     {
-        if (AdminService::instance()->isSuper()) try {
-            AdminService::instance()->clearCache();
-            SystemService::instance()->clearRuntime();
+        if (AdminService::isSuper()) try {
+            AdminService::clearCache();
+            SystemService::clearRuntime();
             sysoplog('系统运维管理', '清理网站日志缓存');
             $this->success('清空日志缓存成功！', 'javascript:location.reload()');
         } catch (HttpResponseException $exception) {
@@ -76,12 +76,12 @@ class Runtime extends Controller
      */
     public function debug()
     {
-        if (AdminService::instance()->isSuper()) if (input('state')) {
-            SystemService::instance()->setRuntime('product');
+        if (AdminService::isSuper()) if (input('state')) {
+            SystemService::setRuntime('product');
             sysoplog('系统运维管理', '开发模式切换为生产模式');
             $this->success('已切换为生产模式！', 'javascript:location.reload()');
         } else {
-            SystemService::instance()->setRuntime('debug');
+            SystemService::setRuntime('debug');
             sysoplog('系统运维管理', '生产模式切换为开发模式');
             $this->success('已切换为开发模式！', 'javascript:location.reload()');
         } else {
@@ -98,7 +98,7 @@ class Runtime extends Controller
      */
     public function editor()
     {
-        if (AdminService::instance()->isSuper()) {
+        if (AdminService::isSuper()) {
             $editor = input('editor', 'auto');
             sysconf('base.editor', $editor);
             sysoplog('系统运维管理', "切换编辑器为{$editor}");
@@ -114,7 +114,7 @@ class Runtime extends Controller
      */
     public function config()
     {
-        if (AdminService::instance()->isSuper()) try {
+        if (AdminService::isSuper()) try {
             [$tmpdata, $newdata] = [[], []];
             foreach (SystemConfig::mk()->order('type,name asc')->cursor() as $item) {
                 $tmpdata[$item['type']][$item['name']] = $item['value'];
