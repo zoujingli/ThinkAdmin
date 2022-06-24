@@ -1,5 +1,9 @@
 <div class="image-dialog" id="ImageDialog">
     <div class="image-dialog-head">
+        <div class="pull-left flex">
+            <input class="layui-input margin-right-5" style="height:30px;line-height:30px" placeholder="请输入搜索关键词">
+            <a class="layui-btn layui-btn-sm layui-btn-normal">搜 索</a>
+        </div>
         <div class="pull-right">
             <a data-file="one" data-type="jpg,png" class="layui-btn layui-btn-sm">上传图片</a>
         </div>
@@ -7,6 +11,7 @@
     <div class="image-dialog-body">
         <div class="image-dialog-item" v-for="x in items">
             <div class="uploadimage" :style="x.style"></div>
+            <p class="image-dialog-item-name layui-elip" v-text="x.name"></p>
         </div>
     </div>
     <div class="image-dialog-foot">
@@ -32,8 +37,21 @@
     }
 
     .image-dialog-item {
+        position: relative;
         margin-right: 12px;
         margin-bottom: 12px;
+    }
+
+    .image-dialog-item-name {
+        left: 0;
+        right: 0;
+        bottom: 0;
+        position: absolute;
+        text-align: center;
+        color: #fff;
+        line-height: 1.5em;
+        white-space: nowrap;
+        background: rgba(0, 0, 0, 0.6);
     }
 
     .image-dialog-item .uploadimage {
@@ -47,6 +65,7 @@
     }
 
     .image-dialog-page {
+        height: 50px;
         text-align: center;
     }
 
