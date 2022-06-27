@@ -48,7 +48,7 @@ class Order extends Auth
         $map = ['uuid' => $this->uuid, 'deleted_status' => 0];
         $query = ShopOrder::mQuery()->in('status')->equal('order_no');
         $result = $query->where($map)->order('id desc')->page(true, false, false, 20);
-        if (count($result['list']) > 0) OrderService::instance()->buildData($result['list']);
+        if (count($result['list']) > 0) OrderService::buildData($result['list']);
         $this->success('获取订单数据成功！', $result);
     }
 
@@ -108,7 +108,7 @@ class Order extends Auth
                 $allowPayments = $_allowPayments;
             }
             // 商品折扣处理
-            [$discountId, $discountRate] = OrderService::instance()->discount($goodsInfo['discount_id'], $this->user['vip_code']);
+            [$discountId, $discountRate] = OrderService::discount($goodsInfo['discount_id'], $this->user['vip_code']);
             // 订单详情处理
             $items[] = [
                 'uuid'            => $order['uuid'],
@@ -165,7 +165,7 @@ class Order extends Auth
             // 优惠后的金额
             $order['amount_discount'] = array_sum(array_column($items, 'discount_amount'));
             // 订单随机免减
-            $order['amount_reduct'] = OrderService::instance()->getReduct();
+            $order['amount_reduct'] = OrderService::getReduct();
             if ($order['amount_reduct'] > $order['amount_goods']) {
                 $order['amount_reduct'] = $order['amount_goods'];
             }
@@ -200,7 +200,7 @@ class Order extends Auth
     public function discount()
     {
         $data = $this->_vali(['discount.require' => '折扣编号不能为空！']);
-        [, $rate] = OrderService::instance()->discount(intval($data['discount']), $this->user['vip_code']);
+        [, $rate] = OrderService::discount(intval($data['discount']), $this->user['vip_code']);
         $this->success('获取用户折扣', ['rate' => $rate]);
     }
 
@@ -230,7 +230,7 @@ class Order extends Auth
         // 根据地址计算运费
         $map = ['status' => 1, 'deleted' => 0, 'order_no' => $data['order_no']];
         $tCode = ShopOrderItem::mk()->where($map)->column('truck_code');
-        [$amount, , , $remark] = ExpressService::instance()->amount($tCode, $addr['province'], $addr['city'], $tCount);
+        [$amount, , , $remark] = ExpressService::amount($tCode, $addr['province'], $addr['city'], $tCount);
         $this->success('计算运费成功', ['amount' => $amount, 'remark' => $remark]);
     }
 
@@ -263,7 +263,7 @@ class Order extends Auth
         $map2 = ['status' => 1, 'deleted' => 0, 'order_no' => $data['order_no']];
         $tCount = ShopOrderItem::mk()->where($map1)->sum('truck_number');
         $tCodes = ShopOrderItem::mk()->where($map2)->column('truck_code');
-        [$amount, $tCount, $tCode, $remark] = ExpressService::instance()->amount($tCodes, $addr['province'], $addr['city'], $tCount);
+        [$amount, $tCount, $tCode, $remark] = ExpressService::amount($tCodes, $addr['province'], $addr['city'], $tCount);
 
         // 创建订单发货信息
         $express = [

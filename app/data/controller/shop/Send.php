@@ -71,7 +71,7 @@ class Send extends Controller
      */
     protected function _index_page_filter(array &$data)
     {
-        OrderService::instance()->buildData($data, false);
+        OrderService::buildData($data, false);
         $orders = array_unique(array_column($data, 'order_no'));
         $orderList = ShopOrder::mk()->whereIn('order_no', $orders)->column('*', 'order_no');
         foreach ($data as &$vo) $vo['order'] = $orderList[$vo['order_no']] ?? [];
@@ -149,7 +149,7 @@ class Send extends Controller
     {
         try {
             $data = $this->_vali(['code.require' => '快递不能为空！', 'number.require' => '单号不能为空！']);
-            $this->result = ExpressService::instance()->query($data['code'], $data['number']);
+            $this->result = ExpressService::query($data['code'], $data['number']);
             if (empty($this->result['code'])) $this->error($this->result['info']);
             $this->fetch('truck_query');
         } catch (HttpResponseException $exception) {

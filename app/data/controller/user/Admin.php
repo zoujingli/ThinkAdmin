@@ -105,7 +105,7 @@ class Admin extends Controller
         $map = $this->_vali(['id.require' => '用户ID不能为空！']);
         $user = DataUser::mk()->where($map)->find();
         if (empty($user) || empty($user['pid0'])) $this->error('用户不符合操作要求！');
-        [$status, $message] = UserUpgradeService::instance()->bindAgent($user['id'], $user['pid0']);
+        [$status, $message] = UserUpgradeService::bindAgent($user['id'], $user['pid0']);
         $status && sysoplog('前端用户管理', "修改用户[{$map['id']}]的代理为永久状态");
         empty($status) ? $this->error($message) : $this->success($message);
     }
@@ -125,7 +125,7 @@ class Admin extends Controller
         // 修改指定用户代理数据
         $user->save(['pid0' => 0, 'pid1' => 0, 'pid2' => 0, 'pids' => 1, 'path' => '-', 'layer' => 1]);
         // 刷新用户等级及上级等级
-        UserUpgradeService::instance()->upgrade($user['id'], true);
+        UserUpgradeService::upgrade($user['id'], true);
         sysoplog('前端用户管理', "设置用户[{$map['id']}]为总部用户");
         $this->success('设为总部用户成功！');
     }
@@ -156,7 +156,7 @@ class Admin extends Controller
             $query->like('phone,username|nickname#username')->whereRaw('vip_code>0')->equal('status,vip_code')->dateBetween('create_at')->page();
         } else {
             $data = $this->_vali(['pid.require' => '待绑定代理不能为空！', 'uuid.require' => '待操作用户不能为空！']);
-            [$status, $message] = UserUpgradeService::instance()->bindAgent($data['uuid'], $data['pid'], 2);
+            [$status, $message] = UserUpgradeService::bindAgent($data['uuid'], $data['pid'], 2);
             $status && sysoplog('前端用户管理', "修改用户[{$data['uuid']}]的代理为用户[{$data['pid']}]");
             empty($status) ? $this->error($message) : $this->success($message);
         }

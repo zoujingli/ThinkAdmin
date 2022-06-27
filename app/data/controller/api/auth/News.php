@@ -27,7 +27,7 @@ class News extends Auth
             'reply.require' => '评论不能为空！',
         ]);
         if (DataNewsXCollect::mk()->insert($data) !== false) {
-            NewsService::instance()->syncNewsTotal($data['code']);
+            NewsService::syncNewsTotal($data['code']);
             $this->success('添加评论成功！');
         } else {
             $this->error('添加评论失败！');
@@ -44,7 +44,7 @@ class News extends Auth
     {
         $query = DataNewsXCollect::mQuery()->where(['uuid' => $this->uuid, 'type' => 4]);
         $result = $query->whereIn('status', [1, 2])->order('id desc')->page(true, false);
-        NewsService::instance()->buildListByUidAndCode($result);
+        NewsService::buildListByUidAndCode($result);
         $this->success('获取评论列表成功', $result);
     }
 
@@ -81,7 +81,7 @@ class News extends Auth
             $this->success('您已收藏！');
         }
         if (DataNewsXCollect::mk()->insert($data) !== false) {
-            NewsService::instance()->syncNewsTotal($data['code']);
+            NewsService::syncNewsTotal($data['code']);
             $this->success('收藏成功！');
         } else {
             $this->error('收藏失败！');
@@ -99,7 +99,7 @@ class News extends Auth
             'code.require' => '文章编号不能为空！',
         ]);
         if (DataNewsXCollect::mk()->where($data)->delete() !== false) {
-            NewsService::instance()->syncNewsTotal($data['code']);
+            NewsService::syncNewsTotal($data['code']);
             $this->success('取消收藏成功！');
         } else {
             $this->error('取消收藏失败！');
@@ -117,7 +117,7 @@ class News extends Auth
         $map = ['uuid' => $this->uuid, 'type' => 1];
         $query = DataNewsXCollect::mQuery()->where($map);
         $result = $query->order('id desc')->page(true, false, false, 15);
-        NewsService::instance()->buildListByUidAndCode($result['list']);
+        NewsService::buildListByUidAndCode($result['list']);
         $this->success('获取收藏记录成功！', $result);
     }
 
@@ -136,7 +136,7 @@ class News extends Auth
             $this->success('您已点赞！');
         }
         if (DataNewsXCollect::mk()->insert($data) !== false) {
-            NewsService::instance()->syncNewsTotal($data['code']);
+            NewsService::syncNewsTotal($data['code']);
             $this->success('点赞成功！');
         } else {
             $this->error('点赞失败！');
@@ -154,7 +154,7 @@ class News extends Auth
             'code.require' => '文章编号不能为空！',
         ]);
         if (DataNewsXCollect::mk()->where($data)->delete() !== false) {
-            NewsService::instance()->syncNewsTotal($data['code']);
+            NewsService::syncNewsTotal($data['code']);
             $this->success('取消点赞成功！');
         } else {
             $this->error('取消点赞失败！');
@@ -172,7 +172,7 @@ class News extends Auth
         $query = DataNewsXCollect::mQuery();
         $query->where(['uuid' => $this->uuid, 'type' => 2, 'status' => 2]);
         $result = $query->order('id desc')->page(true, false, false, 15);
-        NewsService::instance()->buildListByUidAndCode($result['list']);
+        NewsService::buildListByUidAndCode($result['list']);
         $this->success('获取点赞记录成功！', $result);
     }
 
@@ -203,7 +203,7 @@ class News extends Auth
         $query = DataNewsXCollect::mQuery();
         $query->where(['uuid' => $this->uuid, 'type' => 3, 'status' => 2]);
         $result = $query->order('id desc')->page(true, false, false, 15);
-        NewsService::instance()->buildListByUidAndCode($result['list']);
+        NewsService::buildListByUidAndCode($result['list']);
         $this->success('获取浏览历史成功！', $result);
     }
 }

@@ -56,7 +56,7 @@ class Rebate extends Controller
         $userItem = DataUser::mk()->whereIn('id', array_unique($uids))->select();
         $goodsItem = ShopOrderItem::mk()->whereIn('order_no', array_unique(array_column($data, 'order_no')))->select();
         foreach ($data as &$vo) {
-            $vo['type'] = RebateService::instance()->name($vo['type']);
+            $vo['type'] = RebateService::name($vo['type']);
             [$vo['user'], $vo['agent'], $vo['list']] = [[], [], []];
             foreach ($userItem as $user) {
                 if ($user['id'] === $vo['uuid']) $vo['agent'] = $user;

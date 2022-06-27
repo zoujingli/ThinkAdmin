@@ -18,6 +18,7 @@ namespace app\wechat\service;
 
 use think\admin\Exception;
 use think\admin\extend\JsonRpcClient;
+use think\admin\Library;
 use think\admin\Service;
 use think\admin\storage\LocalStorage;
 use think\exception\HttpResponseException;
@@ -104,7 +105,7 @@ class WechatService extends Service
         }
         if (sysconf('wechat.type') === 'api' || $type === 'WePay') {
             if (class_exists($class)) {
-                return new $class(static::instance()->getConfig());
+                return new $class(static::getConfig());
             } else {
                 throw new Exception("抱歉，接口模式无法实例 {$class} 对象！");
             }
@@ -142,9 +143,9 @@ class WechatService extends Service
      * @throws \think\db\exception\DbException
      * @throws \think\db\exception\ModelNotFoundException
      */
-    public function getAppid(): string
+    public static function getAppid(): string
     {
-        if ($this->getType() === 'api') {
+        if (static::getType() === 'api') {
             return sysconf('wechat.appid');
         } else {
             return sysconf('wechat.thr_appid');
@@ -159,7 +160,7 @@ class WechatService extends Service
      * @throws \think\db\exception\DbException
      * @throws \think\db\exception\ModelNotFoundException
      */
-    public function getType(): string
+    public static function getType(): string
     {
         $type = strtolower(sysconf('wechat.type'));
         if (in_array($type, ['api', 'thr'])) return $type;
@@ -174,16 +175,16 @@ class WechatService extends Service
      * @throws \think\db\exception\DbException
      * @throws \think\db\exception\ModelNotFoundException
      */
-    public function getConfig(): array
+    public static function getConfig(): array
     {
         $options = [
-            'appid'          => $this->getAppid(),
+            'appid'          => static::getAppid(),
             'token'          => sysconf('wechat.token'),
             'appsecret'      => sysconf('wechat.appsecret'),
             'encodingaeskey' => sysconf('wechat.encodingaeskey'),
             'mch_id'         => sysconf('wechat.mch_id'),
             'mch_key'        => sysconf('wechat.mch_key'),
-            'cache_path'     => $this->app->getRuntimePath() . 'wechat',
+            'cache_path'     => Library::$sapp->getRuntimePath() . 'wechat',
         ];
         $local = LocalStorage::instance();
         switch (strtolower(sysconf('wechat.mch_ssl_type'))) {
@@ -211,16 +212,16 @@ class WechatService extends Service
      * @throws \think\db\exception\DbException
      * @throws \think\db\exception\ModelNotFoundException
      */
-    public function getWebOauthInfo(string $source, int $isfull = 0, bool $redirect = true): array
+    public static function getWebOauthInfo(string $source, int $isfull = 0, bool $redirect = true): array
     {
-        $appid = $this->getAppid();
-        $openid = $this->app->session->get("{$appid}_openid");
-        $userinfo = $this->app->session->get("{$appid}_fansinfo");
+        $appid = static::getAppid();
+        $openid = Library::$sapp->session->get("{$appid}_openid");
+        $userinfo = Library::$sapp->session->get("{$appid}_fansinfo");
         if ((empty($isfull) && !empty($openid)) || (!empty($isfull) && !empty($openid) && !empty($userinfo))) {
-            empty($userinfo) || FansService::instance()->set($userinfo, $appid);
+            empty($userinfo) || FansService::set($userinfo, $appid);
             return ['openid' => $openid, 'fansinfo' => $userinfo];
         }
-        if ($this->getType() === 'api') {
+        if (static::getType() === 'api') {
             // 解析 GET 参数
             parse_str(parse_url($source, PHP_URL_QUERY), $params);
             $getVars = [
@@ -235,11 +236,11 @@ class WechatService extends Service
                 $oauthurl = $wechat->getOauthRedirect($location, $appid, $isfull ? 'snsapi_userinfo' : 'snsapi_base');
                 throw new HttpResponseException($redirect ? redirect($oauthurl, 301) : response("location.href='{$oauthurl}'"));
             } elseif (($token = $wechat->getOauthAccessToken($getVars['code'])) && isset($token['openid'])) {
-                $this->app->session->set("{$appid}_openid", $openid = $token['openid']);
+                Library::$sapp->session->set("{$appid}_openid", $openid = $token['openid']);
                 if ($isfull && isset($token['access_token'])) {
                     $userinfo = $wechat->getUserInfo($token['access_token'], $openid);
-                    $this->app->session->set("{$appid}_fansinfo", $userinfo);
-                    empty($userinfo) || FansService::instance()->set($userinfo, $appid);
+                    Library::$sapp->session->set("{$appid}_fansinfo", $userinfo);
+                    empty($userinfo) || FansService::set($userinfo, $appid);
                 }
             }
             if ($getVars['rcode']) {
@@ -251,11 +252,11 @@ class WechatService extends Service
                 throw new Exception('Query params [rcode] not find.');
             }
         } else {
-            $result = static::ThinkServiceConfig()->oauth($this->app->session->getId(), $source, $isfull);
-            $this->app->session->set("{$appid}_openid", $openid = $result['openid']);
-            $this->app->session->set("{$appid}_fansinfo", $userinfo = $result['fans']);
+            $result = static::ThinkServiceConfig()->oauth(Library::$sapp->session->getId(), $source, $isfull);
+            Library::$sapp->session->set("{$appid}_openid", $openid = $result['openid']);
+            Library::$sapp->session->set("{$appid}_fansinfo", $userinfo = $result['fans']);
             if ((empty($isfull) && !empty($openid)) || (!empty($isfull) && !empty($openid) && !empty($userinfo))) {
-                empty($userinfo) || FansService::instance()->set($userinfo, $appid);
+                empty($userinfo) || FansService::set($userinfo, $appid);
                 return ['openid' => $openid, 'fansinfo' => $userinfo];
             }
             if ($redirect) {
@@ -277,10 +278,10 @@ class WechatService extends Service
      * @throws \think\db\exception\DbException
      * @throws \think\db\exception\ModelNotFoundException
      */
-    public function getWebJssdkSign(?string $location = null): array
+    public static function getWebJssdkSign(?string $location = null): array
     {
-        $location = $location ?: $this->app->request->url(true);
-        if ($this->getType() === 'api') {
+        $location = $location ?: Library::$sapp->request->url(true);
+        if (static::getType() === 'api') {
             return static::WeChatScript()->getJsSign($location);
         } else {
             return static::ThinkServiceConfig()->jsSign($location);

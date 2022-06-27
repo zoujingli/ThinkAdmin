@@ -35,11 +35,11 @@ class AutoService extends Service
      * @throws \think\db\exception\DbException
      * @throws \think\db\exception\ModelNotFoundException
      */
-    public function register(string $openid)
+    public static function register(string $openid)
     {
         foreach (WechatAuto::mk()->where(['status' => 1])->order('time asc')->cursor() as $vo) {
-            [$name, $time] = ["推送客服消息 {$vo['code']}#{$openid}", $this->parseTimeString($vo['time'])];
-            QueueService::instance()->register($name, "xadmin:fansmsg {$openid} {$vo['code']}", $time, []);
+            [$name, $time] = ["推送客服消息 {$vo['code']}#{$openid}", static::parseTimeString($vo['time'])];
+            QueueService::register($name, "xadmin:fansmsg {$openid} {$vo['code']}", $time, []);
         }
     }
 
@@ -48,7 +48,7 @@ class AutoService extends Service
      * @param string $time
      * @return int
      */
-    private function parseTimeString(string $time): int
+    private static function parseTimeString(string $time): int
     {
         if (preg_match('|^.*?(\d{2}).*?(\d{2}).*?(\d{2}).*?$|', $time, $vars)) {
             return intval($vars[1]) * 3600 * intval($vars[2]) * 60 + intval($vars[3]);

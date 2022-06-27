@@ -39,7 +39,7 @@ class MediaService extends Service
      * @throws \think\db\exception\DbException
      * @throws \think\db\exception\ModelNotFoundException
      */
-    public function news($id, array $map = []): array
+    public static function news($id, array $map = []): array
     {
         // 文章主体数据
         $map1 = ['id' => $id, 'is_deleted' => 0];
@@ -68,12 +68,12 @@ class MediaService extends Service
      * @throws \think\db\exception\DbException
      * @throws \think\db\exception\ModelNotFoundException
      */
-    public function upload(string $url, string $type = 'image', array $video = []): string
+    public static function upload(string $url, string $type = 'image', array $video = []): string
     {
-        $map = ['md5' => md5($url), 'appid' => WechatService::instance()->getAppid()];
+        $map = ['md5' => md5($url), 'appid' => WechatService::getAppid()];
         if (($mediaId = WechatMedia::mk()->where($map)->value('media_id'))) return $mediaId;
         $result = WechatService::WeChatMedia()->addMaterial(self::buildCurlFile($url), $type, $video);
-        data_save(WechatMedia::class, [
+        WechatMedia::mUpdate([
             'local_url' => $url, 'md5' => $map['md5'], 'type' => $type, 'appid' => $map['appid'],
             'media_url' => $result['url'] ?? '', 'media_id' => $result['media_id'],
         ], 'type', $map);
@@ -86,7 +86,7 @@ class MediaService extends Service
      * @return MyCurlFile
      * @throws \WeChat\Exceptions\LocalCacheException
      */
-    private function buildCurlFile(string $local): MyCurlFile
+    private static function buildCurlFile(string $local): MyCurlFile
     {
         if (file_exists($local)) {
             return new MyCurlFile($local);

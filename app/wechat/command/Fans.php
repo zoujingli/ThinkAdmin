@@ -66,7 +66,7 @@ class Fans extends Command
      */
     protected function _list(string $next = '', int $done = 0): string
     {
-        $appid = WechatService::instance()->getAppid();
+        $appid = WechatService::getAppid();
         $this->output->comment('开始获取微信用户数据');
         while (is_string($next)) {
             $result = WechatService::WeChatUser()->getUserList($next);
@@ -76,7 +76,7 @@ class Fans extends Command
                     if (is_array($info) && !empty($info['user_info_list'])) {
                         foreach ($info['user_info_list'] as $user) if (isset($user['nickname'])) {
                             $this->queue->message($result['total'], ++$done, "-> {$user['openid']} {$user['nickname']}");
-                            FansService::instance()->set($user, $appid);
+                            FansService::set($user, $appid);
                         }
                     }
                 }
@@ -137,7 +137,7 @@ class Fans extends Command
      */
     public function _tags(int $done = 0): string
     {
-        $appid = WechatService::instance()->getAppid();
+        $appid = WechatService::getAppid();
         $this->output->comment('开始获取微信用户标签数据');
         if (is_array($list = WechatService::WeChatTags()->getTags()) && !empty($list['tags'])) {
             $count = count($list['tags']);

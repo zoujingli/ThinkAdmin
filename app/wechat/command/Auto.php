@@ -89,17 +89,17 @@ class Auto extends Command
             $result = $this->sendMessage('text', ['content' => $data['content']]);
         }
         if ($type === 'voice' && !empty($data['voice_url'])) {
-            if ($mediaId = MediaService::instance()->upload($data['voice_url'], 'voice')) {
+            if ($mediaId = MediaService::upload($data['voice_url'], 'voice')) {
                 $result = $this->sendMessage('voice', ['media_id' => $mediaId]);
             }
         }
         if ($type === 'image' && !empty($data['image_url'])) {
-            if ($mediaId = MediaService::instance()->upload($data['image_url'], 'image')) {
+            if ($mediaId = MediaService::upload($data['image_url'], 'image')) {
                 $result = $this->sendMessage('image', ['media_id' => $mediaId]);
             }
         }
         if ($type === 'news') {
-            [$item, $news] = [MediaService::instance()->news($data['news_id']), []];
+            [$item, $news] = [MediaService::news($data['news_id']), []];
             if (isset($item['articles']) && is_array($item['articles'])) {
                 $host = sysconf('base.site_host') ?: true;
                 foreach ($item['articles'] as $vo) if (empty($news)) $news[] = [
@@ -110,7 +110,7 @@ class Auto extends Command
             }
         }
         if ($type === 'music' && !empty($data['music_url']) && !empty($data['music_title']) && !empty($data['music_desc'])) {
-            $mediaId = $data['music_image'] ? MediaService::instance()->upload($data['music_image'], 'image') : '';
+            $mediaId = $data['music_image'] ? MediaService::upload($data['music_image'], 'image') : '';
             $result = $this->sendMessage('music', [
                 'hqmusicurl'  => $data['music_url'], 'musicurl' => $data['music_url'],
                 'description' => $data['music_desc'], 'title' => $data['music_title'], 'thumb_media_id' => $mediaId,
@@ -118,7 +118,7 @@ class Auto extends Command
         }
         if ($type === 'video' && !empty($data['video_url']) && !empty($data['video_desc']) && !empty($data['video_title'])) {
             $video = ['title' => $data['video_title'], 'introduction' => $data['video_desc']];
-            if ($mediaId = MediaService::instance()->upload($data['video_url'], 'video', $video)) {
+            if ($mediaId = MediaService::upload($data['video_url'], 'video', $video)) {
                 $result = $this->sendMessage('video', ['media_id' => $mediaId, 'title' => $data['video_title'], 'description' => $data['video_desc']]);
             }
         }

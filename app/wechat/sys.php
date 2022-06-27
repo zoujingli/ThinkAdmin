@@ -25,6 +25,6 @@ if (app()->request->isCli()) {
     });
 } else {
     app()->event->listen('WechatFansSubscribe', function ($openid) {
-        AutoService::instance()->register($openid);
+        AutoService::register($openid);
     });
 }

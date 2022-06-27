@@ -17,6 +17,7 @@
 namespace app\wechat\service;
 
 use app\wechat\model\WechatFans;
+use think\admin\Library;
 use think\admin\Service;
 
 /**
@@ -33,7 +34,7 @@ class FansService extends Service
      * @param string $appid 微信APPID
      * @return boolean
      */
-    public function set(array $user, string $appid = ''): bool
+    public static function set(array $user, string $appid = ''): bool
     {
         if (isset($user['subscribe_time'])) {
             $user['subscribe_at'] = date('Y-m-d H:i:s', $user['subscribe_time']);
@@ -44,7 +45,7 @@ class FansService extends Service
         if ($appid !== '') $user['appid'] = $appid;
         unset($user['privilege'], $user['groupid']);
         foreach ($user as $k => $v) if ($v === '') unset($user[$k]);
-        $this->app->event->trigger('WechatFansUpdate', $user);
+        Library::$sapp->event->trigger('WechatFansUpdate', $user);
         return !!WechatFans::mUpdate($user, 'openid');
     }
 
@@ -53,7 +54,7 @@ class FansService extends Service
      * @param string $openid
      * @return array
      */
-    public function get(string $openid): array
+    public static function get(string $openid): array
     {
         return WechatFans::mk()->where(['openid' => $openid])->findOrEmpty()->toArray();
     }

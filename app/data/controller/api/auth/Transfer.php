@@ -31,9 +31,9 @@ class Transfer extends Auth
             'amount.require' => '提现金额不能为空！',
             'remark.default' => '用户提交提现申请！',
         ]);
-        $state = UserTransferService::instance()->config('status');
+        $state = UserTransferService::config('status');
         if (empty($state)) $this->error('提现还没有开启！');
-        $transfers = UserTransferService::instance()->config('transfer');
+        $transfers = UserTransferService::config('transfer');
         if (empty($transfers[$data['type']]['state'])) $this->error('提现方式已停用！');
         // 提现数据补充
         $data['uuid'] = $this->uuid;
@@ -50,7 +50,7 @@ class Transfer extends Auth
             $data['audit_datetime'] = date('Y-m-d H:i:s');
         }
         // 扣除手续费
-        $chargeRate = floatval(UserTransferService::instance()->config('charge'));
+        $chargeRate = floatval(UserTransferService::config('charge'));
         $data['charge_rate'] = $chargeRate;
         $data['charge_amount'] = $chargeRate * $data['amount'] / 100;
         // 检查可提现余额

@@ -50,12 +50,12 @@ class Js extends Controller
     {
         $mode = $this->request->get('mode', 1);
         $source = $this->request->server('http_referer') ?: $this->request->url(true);
-        $userinfo = WechatService::instance()->getWebOauthInfo($source, $mode, false);
+        $userinfo = WechatService::getWebOauthInfo($source, $mode, false);
         if (empty($userinfo['openid'])) {
             $content = 'alert("Wechat webOauth failed.")';
         } else {
             $this->openid = $userinfo['openid'];
-            $this->params = json_encode(WechatService::instance()->getWebJssdkSign($source));
+            $this->params = json_encode(WechatService::getWebJssdkSign($source));
             $this->fansinfo = json_encode($userinfo['fansinfo'] ?? [], JSON_UNESCAPED_UNICODE);
             // 生成数据授权令牌
             $this->token = uniqid('oauth') . rand(10000, 99999);
@@ -78,7 +78,7 @@ class Js extends Controller
     public function sdk()
     {
         $data = $this->_vali(['url.require' => '签名地址不能为空！']);
-        $this->success('获取签名参数', WechatService::instance()->getWebJssdkSign($data['url']));
+        $this->success('获取签名参数', WechatService::getWebJssdkSign($data['url']));
     }
 
     /**

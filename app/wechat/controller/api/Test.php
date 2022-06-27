@@ -115,7 +115,7 @@ class Test extends Controller
     public function oauth()
     {
         $this->url = $this->request->url(true);
-        $this->fans = WechatService::instance()->getWebOauthInfo($this->url, 1);
+        $this->fans = WechatService::getWebOauthInfo($this->url, 1);
         $this->fetch();
     }
 
@@ -130,7 +130,7 @@ class Test extends Controller
      */
     public function jssdk()
     {
-        $this->options = WechatService::instance()->getWebJssdkSign();
+        $this->options = WechatService::getWebJssdkSign();
         $this->fetch();
     }
 
@@ -188,7 +188,7 @@ class Test extends Controller
     {
         $this->url = $this->request->url(true);
         $this->pay = WechatService::WePayOrder();
-        $user = WechatService::instance()->getWebOauthInfo($this->url);
+        $user = WechatService::getWebOauthInfo($this->url);
         if (empty($user['openid'])) return '<h3>网页授权获取OPENID失败！</h3>';
         // 生成预支付码
         $result = $this->pay->create([
@@ -203,7 +203,7 @@ class Test extends Controller
         // 数据参数格式化
         $resultJson = var_export($result, true);
         $optionJson = json_encode($this->pay->jsapiParams($result['prepay_id']), JSON_UNESCAPED_UNICODE);
-        $configJson = json_encode(WechatService::instance()->getWebJssdkSign(), JSON_UNESCAPED_UNICODE);
+        $configJson = json_encode(WechatService::getWebJssdkSign(), JSON_UNESCAPED_UNICODE);
         return <<<HTML
 <pre>
     当前用户OPENID: {$user['openid']}

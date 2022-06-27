@@ -83,7 +83,7 @@ class Transfer extends Controller
     public function index()
     {
         $this->title = '用户提现管理';
-        $this->transfer = UserTransferService::instance()->amount(0);
+        $this->transfer = UserTransferService::amount(0);
         // 创建查询对象
         $query = DataUserTransfer::mQuery()->order('id desc');
         // 用户条件搜索
@@ -157,7 +157,7 @@ class Transfer extends Controller
                 $data['trade_no'] = CodeExtend::uniqidDate(20);
                 $data['trade_time'] = date('Y-m-d H:i:s');
                 $data['change_time'] = date('Y-m-d H:i:s');
-                $data['change_desc'] = ($data['remark'] ?: '线下打款成功') . ' By ' . AdminService::instance()->getUserName();
+                $data['change_desc'] = ($data['remark'] ?: '线下打款成功') . ' By ' . AdminService::getUserName();
             }
             if (DataUserTransfer::mk()->strict(false)->where($map)->update($data) !== false) {
                 $this->success('操作成功');

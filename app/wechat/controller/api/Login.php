@@ -72,7 +72,7 @@ class Login extends Controller
         $this->mode = input('mode', '0');
         if (stripos($this->code, $this->prefix) === 0) {
             $this->url = $this->request->url(true);
-            $this->fans = WechatService::instance()->getWebOauthInfo($this->url, $this->mode);
+            $this->fans = WechatService::getWebOauthInfo($this->url, $this->mode);
             if (is_array($this->fans) && isset($this->fans['openid'])) {
                 $this->fans['token'] = md5(uniqid('t', true) . rand(10000, 99999));
                 $this->app->cache->set("wxlogin{$this->code}", $this->fans, $this->expire);

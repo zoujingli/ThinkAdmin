@@ -138,7 +138,7 @@ class Goods extends Controller
             // 其他表单数据
             $this->marks = ShopGoodsMark::items();
             $this->cates = ShopGoodsCate::treeTable(true);
-            $this->trucks = ExpressService::instance()->templates();
+            $this->trucks = ExpressService::templates();
             $this->upgrades = BaseUserUpgrade::items();
             $this->payments = BaseUserPayment::mk()->where(['status' => 1, 'deleted' => 0])->order('sort desc,id desc')->column('type,code,name', 'code');
             $this->discounts = BaseUserDiscount::mk()->where(['status' => 1, 'deleted' => 0])->order('sort desc,id desc')->column('id,name,items', 'id');

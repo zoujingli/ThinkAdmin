@@ -88,7 +88,7 @@ class Balance extends Controller
             $this->upgrades = BaseUserUpgrade::items();
         }
         if ($this->request->isPost()) {
-            $data['create_by'] = AdminService::instance()->getUserId();
+            $data['create_by'] = AdminService::getUserId();
             if (empty(floatval($data['amount'])) && empty($data['upgrade'])) {
                 $this->error('金额为零并且没有升级行为！');
             }
@@ -105,7 +105,7 @@ class Balance extends Controller
     {
         if ($state && isset($data['uuid'])) {
             UserBalanceService::amount($data['uuid']);
-            UserUpgradeService::instance()->upgrade($data['uuid']);
+            UserUpgradeService::upgrade($data['uuid']);
         }
     }
 
@@ -129,7 +129,7 @@ class Balance extends Controller
             $map = [['id', 'in', str2arr(input('id', ''))]];
             foreach (DataUserBalance::mk()->where($map)->cursor() as $vo) {
                 UserBalanceService::amount($vo['uuid']);
-                UserUpgradeService::instance()->upgrade($vo['uuid']);
+                UserUpgradeService::upgrade($vo['uuid']);
             }
         }
     }

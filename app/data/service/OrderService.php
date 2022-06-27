@@ -63,7 +63,7 @@ class OrderService extends Service
         // 尝试绑定代理用户
         if (empty($user['pids']) && ($order['puid1'] > 0 || $user['pid1'] > 0)) {
             $puid1 = $order['puid1'] > 0 ? $order['puid1'] : $user['pid0'];
-            UserUpgradeService::instance()->bindAgent($user['id'], $puid1);
+            UserUpgradeService::bindAgent($user['id'], $puid1);
         }
         // 重置用户信息并绑定订单
         $user = DataUser::mk()->where(['id' => $order['uuid']])->find();
@@ -73,7 +73,7 @@ class OrderService extends Service
             ]);
         }
         // 重新计算用户等级
-        UserUpgradeService::instance()->upgrade($user['id'], true, $orderNo);
+        UserUpgradeService::upgrade($user['id'], true, $orderNo);
         return [$user, $order, $entry];
     }
 

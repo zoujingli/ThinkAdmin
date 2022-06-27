@@ -53,7 +53,7 @@ class News extends Controller
     protected function _page_filter(array &$data)
     {
         foreach ($data as &$vo) {
-            $vo = MediaService::instance()->news($vo['id']);
+            $vo = MediaService::news($vo['id']);
         }
     }
 
@@ -77,7 +77,7 @@ class News extends Controller
             $this->fetch('form');
         } else {
             $update = [
-                'create_by'  => AdminService::instance()->getUserId(),
+                'create_by'  => AdminService::getUserId(),
                 'article_id' => $this->_buildArticle($this->request->post('data', [])),
             ];
             if (WechatNews::mk()->insert($update) !== false) {
@@ -101,7 +101,7 @@ class News extends Controller
         if (empty($this->id)) $this->error('参数错误，请稍候再试！');
         if ($this->request->isGet()) {
             if ($this->request->get('output') === 'json') {
-                $this->success('获取数据成功！', MediaService::instance()->news($this->id));
+                $this->success('获取数据成功！', MediaService::news($this->id));
             } else {
                 $this->title = '编辑图文';
                 $this->fetch('form');

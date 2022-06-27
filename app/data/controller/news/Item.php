@@ -42,7 +42,7 @@ class Item extends Controller
      */
     protected function _page_filter(array &$data)
     {
-        NewsService::instance()->buildData($data);
+        NewsService::buildData($data);
     }
 
     /**

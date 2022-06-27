@@ -38,7 +38,7 @@ class View extends Controller
     public function news($id = 0)
     {
         $this->id = $id ?: input('id', 0);
-        $this->news = MediaService::instance()->news($this->id);
+        $this->news = MediaService::news($this->id);
         $this->fetch();
     }
 
