@@ -52,8 +52,8 @@ class File extends Controller
         SystemFile::mQuery()->layTable(function () {
             $this->title = '系统文件管理';
         }, function (QueryHelper $query) {
-            $query->where(['issafe' => 0, 'status' => 2]);
             $query->like('name,hash,xext')->dateBetween('create_at');
+            $query->where(['issafe' => 0, 'status' => 2])->equal('type');
         });
     }
 
