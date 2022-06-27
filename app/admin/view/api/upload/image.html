@@ -9,7 +9,7 @@
         </div>
     </div>
     <div class="image-dialog-body">
-        <div class="image-dialog-item" v-for="x in items">
+        <div class="image-dialog-item" v-for="x in items" v-if="show">
             <div class="uploadimage" :style="x.style" @click="setValue(x.xurl)"></div>
             <p class="image-dialog-item-name layui-elip" v-text="x.name"></p>
         </div>
@@ -82,19 +82,21 @@
             el: '#ImageDialog',
             data: {
                 page: 1,
-                keys: '',
                 limit: 15,
-                items: [],
+                show: false,
                 $btn: null,
+                keys: '',
+                items: [],
             },
             created: function () {
-                this.$btn = $('#{$get.id}');
+                this.$btn = $('#{$get.id|default=""}');
                 this.loadPage();
             },
             methods: {
                 // 创建分页工具条
                 addPage: function (count) {
                     var that = this;
+                    this.show = true;
                     layui.laypage.render({
                         curr: this.page, count: count, limit: that.limit,
                         layout: ['count', 'prev', 'page', 'next', 'refresh'],
