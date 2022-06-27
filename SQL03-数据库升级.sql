@@ -66,4 +66,31 @@ CREATE TABLE IF NOT EXISTS `system_base`
 ALTER TABLE `system_user`
     ADD COLUMN `usertype` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT '' COMMENT '用户类型' AFTER `id`;
 
+-- 尝试创建系统文件数据表
+CREATE TABLE IF NOT EXISTS `system_file`  (
+    `id` bigint(20) NOT NULL AUTO_INCREMENT,
+    `type` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT '' COMMENT '上传类型',
+    `hash` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT '' COMMENT '文件哈希',
+    `name` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT '' COMMENT '文件名称',
+    `xext` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT '' COMMENT '文件后缀',
+    `xurl` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT '' COMMENT '访问链接',
+    `xkey` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT '' COMMENT '文件路径',
+    `mime` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT '' COMMENT '文件类型',
+    `size` bigint(20) NULL DEFAULT 0 COMMENT '文件大小',
+    `uuid` bigint(20) NULL DEFAULT 0 COMMENT '用户编号',
+    `isfast` tinyint(1) NULL DEFAULT 0 COMMENT '是否秒传',
+    `issafe` tinyint(1) NULL DEFAULT 0 COMMENT '安全模式',
+    `status` tinyint(1) NULL DEFAULT 1 COMMENT '上传状态(1悬空,2落地)',
+    `create_at` datetime NULL DEFAULT NULL COMMENT '创建时间',
+    `update_at` datetime NULL DEFAULT NULL COMMENT '更新时间',
+    PRIMARY KEY (`id`) USING BTREE,
+    INDEX `idx_system_file_type`(`type`) USING BTREE,
+    INDEX `idx_system_file_hash`(`hash`) USING BTREE,
+    INDEX `idx_system_file_uuid`(`uuid`) USING BTREE,
+    INDEX `idx_system_file_xext`(`xext`) USING BTREE,
+    INDEX `idx_system_file_status`(`status`) USING BTREE,
+    INDEX `idx_system_file_issafe`(`issafe`) USING BTREE,
+    INDEX `idx_system_file_isfast`(`isfast`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci COMMENT = '系统-文件' ROW_FORMAT = COMPACT;
+
 SET FOREIGN_KEY_CHECKS = 1;
