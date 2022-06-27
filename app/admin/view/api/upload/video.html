@@ -5,12 +5,12 @@
             <a class="layui-btn layui-btn-sm layui-btn-normal" @click="search">搜 索</a>
         </div>
         <div class="pull-right">
-            <a data-file="one" data-type="jpg,png" class="layui-btn layui-btn-sm">上传图片</a>
+            <a class="layui-btn layui-btn-sm" @click="uploadImage">上传图片</a>
         </div>
     </div>
     <div class="image-dialog-body">
         <div class="image-dialog-item" v-for="x in items">
-            <div class="uploadimage" :style="x.style" @click="select(x)"></div>
+            <div class="uploadimage" :style="x.style" @click="setValue(x.xurl)"></div>
             <p class="image-dialog-item-name layui-elip" v-text="x.name"></p>
         </div>
     </div>
@@ -78,18 +78,21 @@
 
 <script>
     require(['vue'], function (vue) {
-        new vue({
+        var app = new vue({
             el: '#ImageDialog',
             data: {
                 page: 1,
                 keys: '',
                 limit: 15,
                 items: [],
+                $btn: null,
             },
             created: function () {
+                this.$btn = $('#{$get.id}');
                 this.loadPage();
             },
             methods: {
+                // 创建分页工具条
                 addPage: function (count) {
                     var that = this;
                     layui.laypage.render({
@@ -100,15 +103,18 @@
                         },
                     });
                 },
+                // 搜索刷新数据
                 search: function () {
                     this.page = 1;
                     this.loadPage();
                 },
-                select: function (x) {
-                    this.$btn = $('#{$get.id}').trigger('change', x);
-                    if (this.$btn.data('input')) $(this.$btn.data('input')).val(x.xurl).trigger('change', x);
+                // 设置选择数据
+                setValue: function (url) {
+                    this.$btn = $('#{$get.id}').trigger('change', url);
+                    if (this.$btn.data('input')) $(this.$btn.data('input')).val(url).trigger('change', url);
                     $('#ImageDialog').parents('.layui-layer-content').next().find('.layui-layer-close').trigger('click');
                 },
+                // 加载页面数据
                 loadPage: function () {
                     var that = this;
                     this.params = {page: this.page, limit: this.limit, output: 'layui.table', name: this.keys || ''};
@@ -120,8 +126,25 @@
                         });
                         return false;
                     });
-                }
+                },
+                // 上传图片文件
+                uploadImage: function () {
+                    $('[data-field="image-dialog-upload-input"]').click();
+                    $('[name="image-dialog-upload-input"]').one('change', function (e) {
+                        app.setValue(e.currentTarget.value);
+                        // e.currentTarget.value 取上传后的值
+                        // app.page = 1;
+                        // app.loadPage();
+                    });
+                },
             }
         });
     });
 </script>
+
+<label class="layui-hide">
+    <!-- 视频上传组件 开始 -->
+    <input class="layui-input" name="video-dialog-upload-input">
+    <button class="layui-btn" data-file data-type="mp4" data-field="video-dialog-input">上传视频文件</button>
+    <!-- 视频上传组件 结束 -->
+</label>
