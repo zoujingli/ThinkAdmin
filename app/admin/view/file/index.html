@@ -1,0 +1,44 @@
+{extend name='table'}
+
+{block name="button"}
+<!--{if auth("remove")}-->
+<a data-confirm="确定永久删除这些账号吗？" data-table-id="FileTable" data-action='{:url("remove")}' data-rule="id#{id}" class='layui-btn layui-btn-sm layui-btn-primary'>批量删除</a>
+<!--{/if}-->
+{/block}
+
+{block name="content"}
+<div class="think-box-shadow">
+    {include file='file/index_search'}
+    <table id="FileTable" data-url="{:sysuri('index')}" data-target-search="form.form-search"></table>
+</div>
+<script>
+    $(function () {
+        $('#FileTable').layTable({
+            even: true, height: 'full',
+            sort: {field: 'id', type: 'desc'},
+            where: {type: '{$type|default="index"}'},
+            cols: [[
+                {checkbox: true, fixed: true},
+                {field: 'name', title: '文件名称', minWidth: 120, align: 'center'},
+                {field: 'hash', title: '文件哈希', minWidth: 180, align: 'center'},
+                {field: 'size', title: '文件大小', align: 'center', minWidth: 100, sort: true},
+                {field: 'xext', title: '文件后缀', align: 'center', minWidth: 100, sort: true},
+                {
+                    field: 'isfast', title: '上传方式', align: 'center', minWidth: 100, templet: function (d) {
+                        return d.isfast ? '<b class="color-green">秒传</b>' : '<b class="color-blue">普通</b>';
+                    }
+                },
+                {field: 'ctype', title: '存储方式', align: 'center', minWidth: 80},
+                {field: 'create_at', title: '上传时间', align: 'center', minWidth: 170, sort: true},
+                {toolbar: '#toolbar', title: '操作面板', align: 'center', minWidth: 80, fixed: 'right'}
+            ]]
+        });
+    });
+</script>
+
+<script type="text/html" id="toolbar">
+    <!--{if auth("remove")}-->
+    <a class="layui-btn layui-btn-sm layui-btn-danger" data-action="{:url('remove')}" data-value="id#{{d.id}}">删 除</a>
+    <!--{/if}-->
+</script>
+{/block}

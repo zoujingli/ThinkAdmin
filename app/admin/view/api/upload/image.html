@@ -9,7 +9,7 @@
         </div>
     </div>
     <div class="image-dialog-body">
-        <div class="image-dialog-item" v-for="x in items" v-if="show">
+        <div class="image-dialog-item" v-for="x in list" v-if="show">
             <div class="uploadimage" :style="x.style" @click="setValue(x.xurl)"></div>
             <p class="image-dialog-item-name layui-elip" v-text="x.name"></p>
         </div>
@@ -84,15 +84,25 @@
                 page: 1,
                 limit: 15,
                 show: false,
-                $btn: null,
                 keys: '',
-                items: [],
+                list: [],
             },
             created: function () {
                 this.$btn = $('#{$get.id|default=""}');
                 this.loadPage();
             },
             methods: {
+                // 搜索刷新数据
+                search: function () {
+                    this.page = 1;
+                    this.loadPage();
+                },
+                // 设置选择数据
+                setValue: function (url) {
+                    this.$btn.trigger('choose', url);
+                    if (this.$btn.data('input')) $(this.$btn.data('input')).val(url).trigger('change', url);
+                    $('#ImageDialog').parents('.layui-layer-content').next().find('.layui-layer-close').trigger('click');
+                },
                 // 创建分页工具条
                 addPage: function (count) {
                     var that = this;
@@ -105,27 +115,16 @@
                         },
                     });
                 },
-                // 搜索刷新数据
-                search: function () {
-                    this.page = 1;
-                    this.loadPage();
-                },
-                // 设置选择数据
-                setValue: function (url) {
-                    this.$btn.trigger('choose', url);
-                    if (this.$btn.data('input')) $(this.$btn.data('input')).val(url).trigger('change', url);
-                    $('#ImageDialog').parents('.layui-layer-content').next().find('.layui-layer-close').trigger('click');
-                },
                 // 加载页面数据
                 loadPage: function () {
                     var that = this;
                     this.params = {page: this.page, limit: this.limit, output: 'layui.table', name: this.keys || ''};
                     $.form.load('{:url("image")}', this.params, 'get', function (ret) {
-                        that.addPage(ret.count);
-                        that.items = ret.data;
-                        that.items.forEach(function (item) {
+                        that.list = ret.data;
+                        that.list.forEach(function (item) {
                             item.style = 'background-image:url(' + item.xurl + ')';
                         });
+                        that.addPage(ret.count);
                         return false;
                     });
                 },
