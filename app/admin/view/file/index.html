@@ -19,16 +19,16 @@
             cols: [[
                 {checkbox: true, fixed: true},
                 {field: 'id', title: 'ID', width: 80, align: 'center', sort: true},
-                {field: 'name', title: '名 称', width: '15%', align: 'center'},
-                {field: 'hash', title: '哈 希', width: '15%', align: 'center', templet: '<div><code>{{d.hash}}</code></div>'},
+                {field: 'name', title: '文件名称', width: '15%', align: 'center'},
+                {field: 'hash', title: '文件哈希', width: '15%', align: 'center', templet: '<div><code>{{d.hash}}</code></div>'},
                 {
-                    field: 'size', title: '大 小', align: 'center', width: '8%', sort: true, templet: function (d) {
+                    field: 'size', title: '文件大小', align: 'center', width: '8%', sort: true, templet: function (d) {
                         return formatSize(d.size)
                     }
                 },
-                {field: 'xext', title: '后 缀', align: 'center', width: '8%', sort: true},
+                {field: 'xext', title: '文件后缀', align: 'center', width: '8%', sort: true},
                 {
-                    field: 'xurl', title: '查 看', width: '8%', align: 'center', templet: function (d) {
+                    field: 'xurl', title: '查看文件', width: '8%', align: 'center', templet: function (d) {
                         if (typeof d.mime === 'string' && /^image\//.test(d.mime)) {
                             return laytpl('<div class="headimg headimg-no headimg-ss margin-0" data-tips-hover data-tips-image="{{d.xurl}}" style="background-image:url({{d.xurl}})"></div>').render(d)
                         } else {
