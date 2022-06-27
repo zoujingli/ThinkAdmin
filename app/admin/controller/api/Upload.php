@@ -154,7 +154,43 @@ class Upload extends Controller
         }, function (QueryHelper $query) {
             $query->where(['status' => 2])->order('id desc');
             $query->like('name,hash')->dateBetween('create_at');
-        }, realpath(__DIR__ . '/../../view/api/image.html'));
+        });
+    }
+
+    /**
+     * 视频选择器
+     * @login true
+     * @return void
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\DbException
+     * @throws \think\db\exception\ModelNotFoundException
+     */
+    public function video()
+    {
+        SystemFile::mQuery()->layTable(function () {
+            $this->title = '文件选择器';
+        }, function (QueryHelper $query) {
+            $query->where(['status' => 2])->order('id desc');
+            $query->like('name,hash')->dateBetween('create_at');
+        });
+    }
+
+    /**
+     * 文档选择器
+     * @login true
+     * @return void
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\DbException
+     * @throws \think\db\exception\ModelNotFoundException
+     */
+    public function document()
+    {
+        SystemFile::mQuery()->layTable(function () {
+            $this->title = '文件选择器';
+        }, function (QueryHelper $query) {
+            $query->where(['status' => 2])->order('id desc');
+            $query->like('name,hash')->dateBetween('create_at');
+        });
     }
 
     /**

@@ -1,0 +1,127 @@
+<div class="image-dialog" id="ImageDialog">
+    <div class="image-dialog-head">
+        <div class="pull-left flex">
+            <input class="layui-input margin-right-5" v-model="keys" style="height:30px;line-height:30px" placeholder="请输入搜索关键词">
+            <a class="layui-btn layui-btn-sm layui-btn-normal" @click="search">搜 索</a>
+        </div>
+        <div class="pull-right">
+            <a data-file="one" data-type="jpg,png" class="layui-btn layui-btn-sm">上传图片</a>
+        </div>
+    </div>
+    <div class="image-dialog-body">
+        <div class="image-dialog-item" v-for="x in items">
+            <div class="uploadimage" :style="x.style" @click="select(x)"></div>
+            <p class="image-dialog-item-name layui-elip" v-text="x.name"></p>
+        </div>
+    </div>
+    <div class="image-dialog-foot">
+        <div id="ImageDialogPage" class="image-dialog-page"></div>
+    </div>
+</div>
+
+<style>
+    .image-dialog-head {
+        clear: both;
+        height: 30px;
+        padding: 10px 12px;
+    }
+
+    .image-dialog-body {
+        height: 470px;
+        background: #efefef;
+        padding-top: 12px;
+        padding-left: 12px;
+        display: flex;
+        flex-wrap: wrap;
+        align-content: flex-start;
+    }
+
+    .image-dialog-item {
+        position: relative;
+        margin-right: 12px;
+        margin-bottom: 12px;
+    }
+
+    .image-dialog-item-name {
+        left: 0;
+        right: 0;
+        bottom: 0;
+        color: #fff;
+        padding: 3px 10px;
+        position: absolute;
+        text-align: center;
+        line-height: 1.5em;
+        white-space: nowrap;
+        background: rgba(0, 0, 0, 0.6);
+    }
+
+    .image-dialog-item .uploadimage {
+        margin: 0;
+        width: 145px;
+        height: 145px;
+    }
+
+    .image-dialog-foot {
+        padding: 0 12px;
+    }
+
+    .image-dialog-page {
+        height: 50px;
+        text-align: center;
+    }
+
+    .image-dialog-page .layui-laypage a,
+    .image-dialog-page .layui-laypage span {
+        margin-bottom: 0;
+    }
+</style>
+
+<script>
+    require(['vue'], function (vue) {
+        new vue({
+            el: '#ImageDialog',
+            data: {
+                page: 1,
+                keys: '',
+                limit: 15,
+                items: [],
+            },
+            created: function () {
+                this.loadPage();
+            },
+            methods: {
+                addPage: function (count) {
+                    var that = this;
+                    layui.laypage.render({
+                        curr: this.page, count: count, limit: that.limit,
+                        layout: ['count', 'prev', 'page', 'next', 'refresh'],
+                        elem: 'ImageDialogPage', jump: function (obj, first) {
+                            if (!first) that.loadPage(that.page = obj.curr);
+                        },
+                    });
+                },
+                search: function () {
+                    this.page = 1;
+                    this.loadPage();
+                },
+                select: function (x) {
+                    this.$btn = $('#{$get.id}').trigger('change', x);
+                    if (this.$btn.data('input')) $(this.$btn.data('input')).val(x.xurl).trigger('change', x);
+                    $('#ImageDialog').parents('.layui-layer-content').next().find('.layui-layer-close').trigger('click');
+                },
+                loadPage: function () {
+                    var that = this;
+                    this.params = {page: this.page, limit: this.limit, output: 'layui.table', name: this.keys || ''};
+                    $.form.load('{:url("image")}', this.params, 'get', function (ret) {
+                        that.addPage(ret.count);
+                        that.items = ret.data;
+                        that.items.forEach(function (item) {
+                            item.style = 'background-image:url(' + item.xurl + ')';
+                        });
+                        return false;
+                    });
+                }
+            }
+        });
+    });
+</script>
