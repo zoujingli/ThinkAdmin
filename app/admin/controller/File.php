@@ -38,14 +38,30 @@ class File extends Controller
         SystemFile::mQuery()->layTable(function () {
             $this->title = '系统文件管理';
         }, function (QueryHelper $query) {
+            $query->where(['issafe' => 0, 'status' => 2]);
             $query->like('name,hash,xext')->dateBetween('create_at');
         });
     }
 
-    protected function _page_filter(&$data)
+    /**
+     * 数据列表处理
+     * @param array $data
+     * @return void
+     */
+    protected function _page_filter(array &$data)
     {
         foreach ($data as &$vo) {
             $vo['ctype'] = $this->types[$vo['type']] ?? $vo['type'];
         }
+    }
+
+    /**
+     * 删除系统文件
+     * @auth true
+     * @return void
+     */
+    public function remove()
+    {
+        SystemFile::mDelete();
     }
 }
