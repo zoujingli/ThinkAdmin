@@ -9,7 +9,7 @@
         </div>
     </div>
     <div class="image-dialog-body">
-        <div class="image-dialog-item" v-for="x in items">
+        <div class="image-dialog-item" v-for="x in items" v-if="show">
             <div class="uploadimage" :style="x.style" @click="setValue(x.xurl)"></div>
             <p class="image-dialog-item-name layui-elip" v-text="x.name"></p>
         </div>
@@ -82,19 +82,21 @@
             el: '#ImageDialog',
             data: {
                 page: 1,
-                keys: '',
                 limit: 15,
-                items: [],
+                show: false,
                 $btn: null,
+                keys: '',
+                items: [],
             },
             created: function () {
-                this.$btn = $('#{$get.id}');
+                this.$btn = $('#{$get.id|default=""}');
                 this.loadPage();
             },
             methods: {
                 // 创建分页工具条
                 addPage: function (count) {
                     var that = this;
+                    this.show = true;
                     layui.laypage.render({
                         curr: this.page, count: count, limit: that.limit,
                         layout: ['count', 'prev', 'page', 'next', 'refresh'],
@@ -110,7 +112,7 @@
                 },
                 // 设置选择数据
                 setValue: function (url) {
-                    this.$btn = $('#{$get.id}').trigger('change', url);
+                    this.$btn.trigger('choose', url);
                     if (this.$btn.data('input')) $(this.$btn.data('input')).val(url).trigger('change', url);
                     $('#ImageDialog').parents('.layui-layer-content').next().find('.layui-layer-close').trigger('click');
                 },
@@ -143,8 +145,8 @@
 </script>
 
 <label class="layui-hide">
-    <!-- 视频上传组件 开始 -->
-    <input class="layui-input" name="video-dialog-upload-input">
-    <button class="layui-btn" data-file data-type="mp4" data-field="video-dialog-input">上传视频文件</button>
-    <!-- 视频上传组件 结束 -->
+    <!-- 图片上传组件 开始 -->
+    <input class="layui-input" name="image-dialog-upload-input">
+    <button class="layui-btn" data-file data-type="png,jpg,jpeg,gif" data-field="image-dialog-upload-input"></button>
+    <!-- 图片上传组件 结束 -->
 </label>

@@ -112,7 +112,7 @@
                 },
                 // 设置选择数据
                 setValue: function (url) {
-                    this.$btn = $('#{$get.id}').trigger('change', url);
+                    this.$btn.trigger('choose', url);
                     if (this.$btn.data('input')) $(this.$btn.data('input')).val(url).trigger('change', url);
                     $('#ImageDialog').parents('.layui-layer-content').next().find('.layui-layer-close').trigger('click');
                 },
