@@ -19,6 +19,7 @@ namespace app\admin\controller;
 use think\admin\Controller;
 use think\admin\helper\QueryHelper;
 use think\admin\model\SystemFile;
+use think\admin\service\AdminService;
 
 /**
  * 系统文件管理
@@ -53,8 +54,8 @@ class File extends Controller
             $this->title = '系统文件管理';
             $this->xexts = SystemFile::mk()->distinct()->column('xext');
         }, function (QueryHelper $query) {
-            $query->like('name,hash,xext')->dateBetween('create_at');
-            $query->where(['issafe' => 0, 'status' => 2])->equal('type');
+            $query->like('name,hash,xext')->equal('type')->dateBetween('create_at');
+            $query->where(['issafe' => 0, 'status' => 2, 'uuid' => AdminService::getUserId()]);
         });
     }
 
