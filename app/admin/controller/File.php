@@ -21,7 +21,7 @@ use think\admin\helper\QueryHelper;
 use think\admin\model\SystemFile;
 
 /**
- * 系统文件管理
+ * 媒体文件管理
  * Class File
  * @package app\admin\controller
  */
@@ -40,7 +40,7 @@ class File extends Controller
     ];
 
     /**
-     * 系统文件管理
+     * 媒体文件管理
      * @auth true
      * @menu true
      * @throws \think\db\exception\DataNotFoundException
@@ -50,7 +50,7 @@ class File extends Controller
     public function index()
     {
         SystemFile::mQuery()->layTable(function () {
-            $this->title = '系统文件管理';
+            $this->title = '媒体文件管理';
         }, function (QueryHelper $query) {
             $query->like('name,hash,xext')->dateBetween('create_at');
             $query->where(['issafe' => 0, 'status' => 2])->equal('type');
@@ -70,7 +70,7 @@ class File extends Controller
     }
 
     /**
-     * 删除系统文件
+     * 删除媒体文件
      * @auth true
      * @return void
      */
