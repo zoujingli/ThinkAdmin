@@ -44,13 +44,11 @@ class Queue extends Controller
     {
         SystemQueue::mQuery()->layTable(function () {
             $this->title = '系统任务管理';
-            $this->iswin = ProcessService::instance()->iswin();
+            $this->iswin = ProcessService::iswin();
             if ($this->super = AdminService::isSuper()) {
-                $process = ProcessService::instance();
-                if ($process->iswin() || empty($_SERVER['USER'])) {
-                    $this->command = $process->think('xadmin:queue start');
-                } else {
-                    $this->command = "sudo -u {$_SERVER['USER']} {$process->think('xadmin:queue start')}";
+                $this->command = ProcessService::think('xadmin:queue start');
+                if (!ProcessService::iswin() && !empty($_SERVER['USER'])) {
+                    $this->command = "sudo -u {$_SERVER['USER']} {$this->command}";
                 }
             }
         }, function (QueryHelper $query) {
