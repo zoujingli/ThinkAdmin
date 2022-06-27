@@ -50,10 +50,38 @@ window.jQuery = window.$ = window.jQuery || window.$ || layui.$;
 
 /*! 配置 require 参数  */
 require.config({
-    baseUrl: baseRoot, waitSeconds: 60, map: {'*': {css: baseRoot + 'plugs/require/css.js'}}, paths: {
-        'vue': ['plugs/vue/vue.min'], 'md5': ['plugs/jquery/md5.min'], 'json': ['plugs/jquery/json.min'], 'xlsx': ['plugs/jquery/xlsx.min'], 'excel': ['plugs/jquery/excel.xlsx'], 'base64': ['plugs/jquery/base64.min'], 'upload': [tapiRoot + '/api.upload/index?'], 'notify': ['plugs/notify/notify.min'], 'angular': ['plugs/angular/angular.min'], 'cropper': ['plugs/cropper/cropper.min'], 'echarts': ['plugs/echarts/echarts.min'], 'ckeditor4': ['plugs/ckeditor4/ckeditor'], 'ckeditor5': ['plugs/ckeditor5/ckeditor'], 'websocket': ['plugs/socket/websocket'], 'pcasunzips': ['plugs/jquery/pcasunzips'], 'sortablejs': ['plugs/sortable/sortable.min'], 'vue.sortable': ['plugs/sortable/vue.draggable.min'], 'jquery.ztree': ['plugs/ztree/ztree.all.min'], 'jquery.masonry': ['plugs/jquery/masonry.min'], 'jquery.cropper': ['plugs/cropper/cropper.min'], 'jquery.autocompleter': ['plugs/jquery/autocompleter.min'],
+    baseUrl: baseRoot, waitSeconds: 60,
+    map: {'*': {css: baseRoot + 'plugs/require/css.js'}}, paths: {
+        'vue': ['plugs/vue/vue.min'],
+        'md5': ['plugs/jquery/md5.min'],
+        'json': ['plugs/jquery/json.min'],
+        'xlsx': ['plugs/jquery/xlsx.min'],
+        'excel': ['plugs/jquery/excel.xlsx'],
+        'base64': ['plugs/jquery/base64.min'],
+        'upload': [tapiRoot + '/api.upload/index?'],
+        'notify': ['plugs/notify/notify.min'],
+        'angular': ['plugs/angular/angular.min'],
+        'cropper': ['plugs/cropper/cropper.min'],
+        'echarts': ['plugs/echarts/echarts.min'],
+        'ckeditor4': ['plugs/ckeditor4/ckeditor'],
+        'ckeditor5': ['plugs/ckeditor5/ckeditor'],
+        'websocket': ['plugs/socket/websocket'],
+        'pcasunzips': ['plugs/jquery/pcasunzips'],
+        'sortablejs': ['plugs/sortable/sortable.min'],
+        'vue.sortable': ['plugs/sortable/vue.draggable.min'],
+        'jquery.ztree': ['plugs/ztree/ztree.all.min'],
+        'jquery.masonry': ['plugs/jquery/masonry.min'],
+        'jquery.cropper': ['plugs/cropper/cropper.min'],
+        'jquery.autocompleter': ['plugs/jquery/autocompleter.min'],
     }, shim: {
-        'excel': {deps: [baseRoot + 'plugs/layui_exts/excel.js']}, 'notify': {deps: ['css!' + baseRoot + 'plugs/notify/light.css']}, 'cropper': {deps: ['css!' + baseRoot + 'plugs/cropper/cropper.min.css']}, 'websocket': {deps: [baseRoot + 'plugs/socket/swfobject.min.js']}, 'ckeditor5': {deps: ['jquery', 'upload', 'css!' + baseRoot + 'plugs/ckeditor5/ckeditor.css']}, 'vue.sortable': {deps: ['vue', 'sortablejs']}, 'jquery.ztree': {deps: ['jquery', 'css!' + baseRoot + 'plugs/ztree/zTreeStyle/zTreeStyle.css']}, 'jquery.autocompleter': {deps: ['jquery', 'css!' + baseRoot + 'plugs/jquery/autocompleter.css']},
+        'excel': {deps: [baseRoot + 'plugs/layui_exts/excel.js']},
+        'notify': {deps: ['css!' + baseRoot + 'plugs/notify/light.css']},
+        'cropper': {deps: ['css!' + baseRoot + 'plugs/cropper/cropper.min.css']},
+        'websocket': {deps: [baseRoot + 'plugs/socket/swfobject.min.js']},
+        'ckeditor5': {deps: ['jquery', 'upload', 'css!' + baseRoot + 'plugs/ckeditor5/ckeditor.css']},
+        'vue.sortable': {deps: ['vue', 'sortablejs']},
+        'jquery.ztree': {deps: ['jquery', 'css!' + baseRoot + 'plugs/ztree/zTreeStyle/zTreeStyle.css']},
+        'jquery.autocompleter': {deps: ['jquery', 'css!' + baseRoot + 'plugs/jquery/autocompleter.css']},
     }
 });
 
@@ -546,6 +574,20 @@ $(function () {
         });
     };
 
+    /*! 上传单个视频 */
+    $.fn.uploadOneVideo = function () {
+        return this.each(function () {
+            if ($(this).data('inited')) return true; else $(this).data('inited', true);
+            var $in = $(this), $bt = $('<a data-file class="uploadimage uploadvideo transition"><span class="layui-icon">&#x1006;</span><span class="layui-icon">&#xe615;</span></a>').data('input', this);
+            $bt.attr('data-size', $in.data('size') || 0).attr('data-type', $in.data('type') || 'mp4').find('span').on('click', function (event) {
+                event.stopPropagation();
+                if ($(this).index() === 0) $bt.attr('style', ''), $in.val(''); else $in.val() && $.previewImage(encodeURI($in.val()));
+            }), $in.on('change', function () {
+                if (this.value) $bt.html('<video width="76" height="76" controls><source src="' + encodeURI(this.value) + '" type="video/mp4"></video>');
+            }).after($bt).trigger('change');
+        });
+    };
+
     /*! 上传单张图片 */
     $.fn.uploadOneImage = function () {
         return this.each(function () {
@@ -582,20 +624,6 @@ $(function () {
                     }), $bt.before($image);
                 });
             }
-        });
-    };
-
-    /*! 上传单个视频 */
-    $.fn.uploadOneVideo = function () {
-        return this.each(function () {
-            if ($(this).data('inited')) return true; else $(this).data('inited', true);
-            var $in = $(this), $bt = $('<a data-file class="uploadimage uploadvideo transition"><span class="layui-icon">&#x1006;</span><span class="layui-icon">&#xe615;</span></a>').data('input', this);
-            $bt.attr('data-size', $in.data('size') || 0).attr('data-type', $in.data('type') || 'mp4').find('span').on('click', function (event) {
-                event.stopPropagation();
-                if ($(this).index() === 0) $bt.attr('style', ''), $in.val(''); else $in.val() && $.previewImage(encodeURI($in.val()));
-            }), $in.on('change', function () {
-                if (this.value) $bt.html('<video width="76" height="76" controls><source src="' + encodeURI(this.value) + '" type="video/mp4"></video>');
-            }).after($bt).trigger('change');
         });
     };
 

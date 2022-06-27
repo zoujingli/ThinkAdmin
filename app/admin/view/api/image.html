@@ -10,7 +10,7 @@
     </div>
     <div class="image-dialog-body">
         <div class="image-dialog-item" v-for="x in items">
-            <div class="uploadimage" :style="x.style"></div>
+            <div class="uploadimage" :style="x.style" @click="select(x)"></div>
             <p class="image-dialog-item-name layui-elip" v-text="x.name"></p>
         </div>
     </div>
@@ -103,6 +103,9 @@
                 search: function () {
                     this.page = 1;
                     this.loadPage();
+                },
+                select: function (x) {
+                    $(this.option.elem.data('input')).val(x.xurl).trigger('change', x);
                 },
                 loadPage: function () {
                     var that = this;
