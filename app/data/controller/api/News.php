@@ -47,7 +47,7 @@ class News extends Controller
         $query = DataNewsItem::mQuery()->like('name,mark')->equal('id,code');
         $query->where(['deleted' => 0, 'status' => 1])->withoutField('sort,status,deleted');
         $result = $query->order('sort desc,id desc')->page(true, false, false, 15);
-        NewsService::instance()->buildData($result['list'], input('uuid', 0));
+        NewsService::buildData($result['list'], input('uuid', 0));
         $this->success('获取文章内容', $result);
     }
 
@@ -62,7 +62,7 @@ class News extends Controller
         $map = $this->_vali(['code.require' => '文章不能为空！']);
         $query = DataNewsXCollect::mQuery()->where(['type' => 4, 'status' => 2]);
         $result = $query->where($map)->order('id desc')->page(true, false, false, 15);
-        NewsService::instance()->buildListByUidAndCode($result['list']);
+        NewsService::buildListByUidAndCode($result['list']);
         $this->success('获取评论成功', $result);
     }
 }

@@ -34,7 +34,7 @@ class UserUpgrade extends Command
             [$total, $count] = [DataUser::mk()->count(), 0];
             foreach (DataUser::mk()->field('id')->cursor() as $user) {
                 $this->queue->message($total, ++$count, "正在计算用户 [{$user['id']}] 的等级");
-                UserUpgradeService::instance()->upgrade($user['id']);
+                UserUpgradeService::upgrade($user['id']);
                 $this->queue->message($total, $count, "完成计算用户 [{$user['id']}] 的等级", 1);
             }
             $this->setQueueSuccess("此次共重新计算 {$total} 个用户等级。");

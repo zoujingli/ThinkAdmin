@@ -57,7 +57,7 @@ class NewsService extends Service
      * @param integer $uuid 用户UID
      * @return array
      */
-    public function buildData(array &$list, int $uuid = 0): array
+    public static function buildData(array &$list, int $uuid = 0): array
     {
         if (count($list) > 0) {
             [$code2, $code1] = [[], []];

@@ -43,7 +43,7 @@ class Template extends Controller
     {
         if ($this->request->isGet()) {
             $this->title = '配送区域管理';
-            $this->citys = ExpressService::instance()->region(3, null);
+            $this->citys = ExpressService::region(3, null);
             $this->fetch('form_region');
         } else {
             $data = $this->_vali(['nos.default' => '', 'oks.default' => '']);
@@ -83,7 +83,7 @@ class Template extends Controller
             $data['code'] = CodeExtend::uniqidDate(12, 'T');
         }
         if ($this->request->isGet()) {
-            $this->citys = ExpressService::instance()->region(2, 1);
+            $this->citys = ExpressService::region(2, 1);
         }
     }
 

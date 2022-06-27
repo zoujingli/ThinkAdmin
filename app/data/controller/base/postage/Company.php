@@ -96,7 +96,7 @@ class Company extends Controller
     public function sync()
     {
         try {
-            $result = ExpressService::instance()->company();
+            $result = ExpressService::company();
             if (empty($result['code'])) $this->error($result['info']);
             foreach ($result['data'] as $vo) BasePostageCompany::mUpdate([
                 'name'    => $vo['title'],

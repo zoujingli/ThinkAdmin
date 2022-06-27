@@ -58,7 +58,7 @@ class UserAgent extends Command
             'path' => $path1, 'layer' => substr_count($path1, '-'),
             'pid0' => $parant['id'], 'pid1' => $parant['id'], 'pid2' => $parant['pid1'],
         ]);
-        UserUpgradeService::instance()->upgrade($user['id'], true);
+        UserUpgradeService::upgrade($user['id'], true);
         $this->setQueueMessage(1, 1, "更新指定用户[{$user['id']}]代理绑定成功!");
 
         // 更新下级的代理关系

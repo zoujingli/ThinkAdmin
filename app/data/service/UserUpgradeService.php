@@ -7,6 +7,7 @@ use app\data\model\DataUser;
 use app\data\model\DataUserBalance;
 use app\data\model\ShopOrder;
 use app\data\model\ShopOrderItem;
+use think\admin\Library;
 use think\admin\Service;
 
 /**
@@ -27,7 +28,7 @@ class UserUpgradeService extends Service
      * @throws \think\db\exception\DbException
      * @throws \think\db\exception\ModelNotFoundException
      */
-    public function bindAgent(int $uuid, int $pid0 = 0, int $mode = 1): array
+    public static function bindAgent(int $uuid, int $pid0 = 0, int $mode = 1): array
     {
         $user = DataUser::mk()->where(['id' => $uuid])->find();
         if (empty($user)) return [0, '查询用户资料失败'];
@@ -41,7 +42,7 @@ class UserUpgradeService extends Service
         if (empty($agent['vip_code'])) return [0, '代理无推荐资格'];
         if (strpos($agent['path'], "-{$uuid}-") !== false) return [0, '不能绑定下属'];
         try {
-            $this->app->db->transaction(function () use ($user, $agent, $mode) {
+            Library::$sapp->db->transaction(function () use ($user, $agent, $mode) {
                 // 更新用户代理
                 $path1 = rtrim($agent['path'] ?: '-', '-') . "-{$agent['id']}-";
                 $user->save(['pid0' => $agent['id'], 'pid1' => $agent['id'], 'pid2' => $agent['pid1'], 'pids' => $mode > 0 ? 1 : 0, 'path' => $path1, 'layer' => substr_count($path1, '-')]);
@@ -54,7 +55,7 @@ class UserUpgradeService extends Service
                     }
                 }
             });
-            $this->upgrade($user['id']);
+            static::upgrade($user['id']);
             return [1, '绑定代理成功'];
         } catch (\Exception $exception) {
             return [0, "绑定代理失败, {$exception->getMessage()}"];
@@ -71,7 +72,7 @@ class UserUpgradeService extends Service
      * @throws \think\db\exception\DbException
      * @throws \think\db\exception\ModelNotFoundException
      */
-    public function upgrade(int $uuid, bool $parent = true, ?string $orderNo = null): bool
+    public static function upgrade(int $uuid, bool $parent = true, ?string $orderNo = null): bool
     {
         $user = DataUser::mk()->where(['id' => $uuid])->find();
         if (empty($user)) return true;
@@ -133,9 +134,9 @@ class UserUpgradeService extends Service
         if ($data['vip_code'] !== $user['vip_code']) $data['vip_datetime'] = date('Y-m-d H:i:s');
         DataUser::mk()->where(['id' => $uuid])->update($data);
         // 用户升级事件
-        if ($user['vip_code'] < $vipCode) $this->app->event->trigger('UserUpgradeLevel', [
+        if ($user['vip_code'] < $vipCode) Library::$sapp->event->trigger('UserUpgradeLevel', [
             'uuid' => $user['id'], 'order_no' => $orderNo, 'vip_code_old' => $user['vip_code'], 'vip_code_new' => $vipCode,
         ]);
-        return !($parent && $user['pid1'] > 0) || $this->upgrade($user['pid1'], false);
+        return !($parent && $user['pid1'] > 0) || static::upgrade($user['pid1'], false);
     }
 }
