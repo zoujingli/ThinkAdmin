@@ -47,7 +47,7 @@ class Queue extends Controller
             $this->iswin = ProcessService::iswin();
             if ($this->super = AdminService::isSuper()) {
                 $this->command = ProcessService::think('xadmin:queue start');
-                if (!ProcessService::iswin() && !empty($_SERVER['USER'])) {
+                if (!$this->iswin && !empty($_SERVER['USER'])) {
                     $this->command = "sudo -u {$_SERVER['USER']} {$this->command}";
                 }
             }
