@@ -18,16 +18,23 @@
 
         <div class="layui-form-item layui-inline">
             <label class="layui-form-label">文件后缀</label>
-            <label class="layui-input-inline">
-                <input name="xext" value="{$get.xext|default=''}" placeholder="请输入文件后缀" class="layui-input">
-            </label>
+            <div class="layui-input-inline">
+                <select name="xext" lay-search class="layui-select">
+                    <option value=''>-- 全部后缀 --</option>
+                    {foreach $xexts as $v}{if isset($get.xext) and $k eq $get.xext}
+                    <option selected value="{$v}">{$v}</option>
+                    {else}
+                    <option value="{$v}">{$v}</option>
+                    {/if}{/foreach}
+                </select>
+            </div>
         </div>
 
         <div class="layui-form-item layui-inline">
             <label class="layui-form-label">存储方式</label>
             <div class="layui-input-inline">
-                <select name="action" lay-search class="layui-select">
-                    <option value=''>-- 全部行为 --</option>
+                <select name="type" lay-search class="layui-select">
+                    <option value=''>-- 全部方式 --</option>
                     {foreach $types as $k=>$v}{if isset($get.type) and $k eq $get.type}
                     <option selected value="{$k}">{$v}</option>
                     {else}

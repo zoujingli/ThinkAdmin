@@ -51,6 +51,7 @@ class File extends Controller
     {
         SystemFile::mQuery()->layTable(function () {
             $this->title = '媒体文件管理';
+            $this->xexts = SystemFile::mk()->distinct()->column('xext');
         }, function (QueryHelper $query) {
             $query->like('name,hash,xext')->dateBetween('create_at');
             $query->where(['issafe' => 0, 'status' => 2])->equal('type');
