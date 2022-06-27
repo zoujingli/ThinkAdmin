@@ -19,10 +19,18 @@
             where: {type: '{$type|default="index"}'},
             cols: [[
                 {checkbox: true, fixed: true},
-                {field: 'id', title: 'ID', width: 80, align: 'center'},
-                {field: 'name', title: '文件名称', minWidth: 120, align: 'center'},
+                {field: 'id', title: 'ID', width: 80, align: 'center', sort: true},
+                {
+                    field: 'name', title: '文件名称', minWidth: 200, align: 'center', templet: function (d) {
+                        return d.name + '<a class="pull-right font-s10" target="_blank" href="' + d.xurl + '">查看</a>'
+                    }
+                },
                 {field: 'hash', title: '文件哈希', minWidth: 200, align: 'center'},
-                {field: 'size', title: '文件大小', align: 'center', minWidth: 100, sort: true},
+                {
+                    field: 'size', title: '文件大小', align: 'center', minWidth: 100, sort: true, templet: function (d) {
+                        return formatSize(d.size)
+                    }
+                },
                 {field: 'xext', title: '文件后缀', align: 'center', minWidth: 100, sort: true},
                 {
                     field: 'isfast', title: '上传方式', align: 'center', minWidth: 100, templet: function (d) {
@@ -35,6 +43,13 @@
             ]]
         });
     });
+
+    function formatSize(size, fixed, units) {
+        var unit;
+        units = units || ['B', 'K', 'M', 'G', 'TB'];
+        while ((unit = units.shift()) && size > 1024) size = size / 1024;
+        return (unit === 'B' ? size : size.toFixed(fixed === undefined ? 2 : fixed)) + unit;
+    }
 </script>
 
 <script type="text/html" id="toolbar">
