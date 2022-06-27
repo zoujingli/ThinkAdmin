@@ -30,7 +30,7 @@
                 {
                     field: 'xurl', title: '查 看', width: '8%', align: 'center', templet: function (d) {
                         if (typeof d.mime === 'string' && /^image\//.test(d.mime)) {
-                            return laytpl('<div class="headimg headimg-no headimg-ss" data-tips-hover data-tips-image="{{d.xurl}}" style="background-image:url({{d.xurl}})"></div>').render(d)
+                            return laytpl('<div class="headimg headimg-no headimg-ss margin-0" data-tips-hover data-tips-image="{{d.xurl}}" style="background-image:url({{d.xurl}})"></div>').render(d)
                         } else {
                             return laytpl('<div><a target="_blank" href="{{d.xurl}}">查看</a></div>').render(d);
                         }
