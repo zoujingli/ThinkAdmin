@@ -105,7 +105,9 @@
                     this.loadPage();
                 },
                 select: function (x) {
-                    $(this.option.elem.data('input')).val(x.xurl).trigger('change', x);
+                    this.$btn = $('#{$get.id}').trigger('change', x);
+                    if (this.$btn.data('input')) $(this.$btn.data('input')).val(x.xurl).trigger('change', x);
+                    $('#ImageDialog').parents('.layui-layer-content').next().find('.layui-layer-close').trigger('click');
                 },
                 loadPage: function () {
                     var that = this;

@@ -50,38 +50,10 @@ window.jQuery = window.$ = window.jQuery || window.$ || layui.$;
 
 /*! 配置 require 参数  */
 require.config({
-    baseUrl: baseRoot, waitSeconds: 60,
-    map: {'*': {css: baseRoot + 'plugs/require/css.js'}}, paths: {
-        'vue': ['plugs/vue/vue.min'],
-        'md5': ['plugs/jquery/md5.min'],
-        'json': ['plugs/jquery/json.min'],
-        'xlsx': ['plugs/jquery/xlsx.min'],
-        'excel': ['plugs/jquery/excel.xlsx'],
-        'base64': ['plugs/jquery/base64.min'],
-        'upload': [tapiRoot + '/api.upload/index?'],
-        'notify': ['plugs/notify/notify.min'],
-        'angular': ['plugs/angular/angular.min'],
-        'cropper': ['plugs/cropper/cropper.min'],
-        'echarts': ['plugs/echarts/echarts.min'],
-        'ckeditor4': ['plugs/ckeditor4/ckeditor'],
-        'ckeditor5': ['plugs/ckeditor5/ckeditor'],
-        'websocket': ['plugs/socket/websocket'],
-        'pcasunzips': ['plugs/jquery/pcasunzips'],
-        'sortablejs': ['plugs/sortable/sortable.min'],
-        'vue.sortable': ['plugs/sortable/vue.draggable.min'],
-        'jquery.ztree': ['plugs/ztree/ztree.all.min'],
-        'jquery.masonry': ['plugs/jquery/masonry.min'],
-        'jquery.cropper': ['plugs/cropper/cropper.min'],
-        'jquery.autocompleter': ['plugs/jquery/autocompleter.min'],
+    baseUrl: baseRoot, waitSeconds: 60, map: {'*': {css: baseRoot + 'plugs/require/css.js'}}, paths: {
+        'vue': ['plugs/vue/vue.min'], 'md5': ['plugs/jquery/md5.min'], 'json': ['plugs/jquery/json.min'], 'xlsx': ['plugs/jquery/xlsx.min'], 'excel': ['plugs/jquery/excel.xlsx'], 'base64': ['plugs/jquery/base64.min'], 'upload': [tapiRoot + '/api.upload/index?'], 'notify': ['plugs/notify/notify.min'], 'angular': ['plugs/angular/angular.min'], 'cropper': ['plugs/cropper/cropper.min'], 'echarts': ['plugs/echarts/echarts.min'], 'ckeditor4': ['plugs/ckeditor4/ckeditor'], 'ckeditor5': ['plugs/ckeditor5/ckeditor'], 'websocket': ['plugs/socket/websocket'], 'pcasunzips': ['plugs/jquery/pcasunzips'], 'sortablejs': ['plugs/sortable/sortable.min'], 'vue.sortable': ['plugs/sortable/vue.draggable.min'], 'jquery.ztree': ['plugs/ztree/ztree.all.min'], 'jquery.masonry': ['plugs/jquery/masonry.min'], 'jquery.cropper': ['plugs/cropper/cropper.min'], 'jquery.autocompleter': ['plugs/jquery/autocompleter.min'],
     }, shim: {
-        'excel': {deps: [baseRoot + 'plugs/layui_exts/excel.js']},
-        'notify': {deps: ['css!' + baseRoot + 'plugs/notify/light.css']},
-        'cropper': {deps: ['css!' + baseRoot + 'plugs/cropper/cropper.min.css']},
-        'websocket': {deps: [baseRoot + 'plugs/socket/swfobject.min.js']},
-        'ckeditor5': {deps: ['jquery', 'upload', 'css!' + baseRoot + 'plugs/ckeditor5/ckeditor.css']},
-        'vue.sortable': {deps: ['vue', 'sortablejs']},
-        'jquery.ztree': {deps: ['jquery', 'css!' + baseRoot + 'plugs/ztree/zTreeStyle/zTreeStyle.css']},
-        'jquery.autocompleter': {deps: ['jquery', 'css!' + baseRoot + 'plugs/jquery/autocompleter.css']},
+        'excel': {deps: [baseRoot + 'plugs/layui_exts/excel.js']}, 'notify': {deps: ['css!' + baseRoot + 'plugs/notify/light.css']}, 'cropper': {deps: ['css!' + baseRoot + 'plugs/cropper/cropper.min.css']}, 'websocket': {deps: [baseRoot + 'plugs/socket/swfobject.min.js']}, 'ckeditor5': {deps: ['jquery', 'upload', 'css!' + baseRoot + 'plugs/ckeditor5/ckeditor.css']}, 'vue.sortable': {deps: ['vue', 'sortablejs']}, 'jquery.ztree': {deps: ['jquery', 'css!' + baseRoot + 'plugs/ztree/zTreeStyle/zTreeStyle.css']}, 'jquery.autocompleter': {deps: ['jquery', 'css!' + baseRoot + 'plugs/jquery/autocompleter.css']},
     }
 });
 
@@ -863,6 +835,9 @@ $(function () {
 
     /*! 注册 data-file 事件行为 */
     onEvent('click', '[data-file]', function () {
+        this.id = this.dataset.id = this.id || (function (date) {
+            return (date + Math.random()).replace('0.', '');
+        })(layui.util.toDateString(Date.now(), 'yyyyMMddHHmmss-'));
         // 上传图片，支持单图或多图选择，分别是 images|images
         if (typeof this.dataset.file === 'string' && /^images?$/.test(this.dataset.file)) {
             $.form.modal(tapiRoot + '/api.upload/image', this.dataset, '图片管理器')
