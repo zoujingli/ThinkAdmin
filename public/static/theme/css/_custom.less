@@ -343,6 +343,23 @@
   }
 }
 
+/* 自定义表格2行高 */
+table[data-line-2] + div tbody {
+  .layui-table-cell {
+    height: 62px;
+    padding-top: 10px;
+    line-height: 22px;
+
+    &.laytable-cell-checkbox {
+      line-height: 44px;
+    }
+
+    .layui-btn {
+      margin-top: 8px;
+    }
+  }
+}
+
 /* 表单验证异常提示 */
 .label-required {
   &-prev:before {

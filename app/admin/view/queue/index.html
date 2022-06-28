@@ -30,26 +30,11 @@
 </div>
 <div class="think-box-shadow">
     {include file='queue/index_search'}
-    <table id="QueueTable" data-url="{:sysuri()}" data-target-search="form.form-search"></table>
+    <table id="QueueTable" data-line-2 data-url="{:sysuri()}" data-target-search="form.form-search"></table>
 </div>
 {/block}
 
 {block name='script'}
-<style>
-    #QueueTable + div tbody .layui-table-cell {
-        height: 56px;
-        line-height: 22px;
-    }
-
-    #QueueTable + div tbody .layui-table-cell .layui-btn {
-        margin-top: 8px;
-    }
-
-    #QueueTable + div tbody .layui-table-cell.laytable-cell-checkbox {
-        line-height: 44px;
-    }
-</style>
-
 <script>
     $(function () {
         $('#QueueTable').layTable({
