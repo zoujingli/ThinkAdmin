@@ -343,10 +343,9 @@
   }
 }
 
-/* 自定义表格2行高 */
-table[data-line-2] + div tbody {
+/* 自定义表格行高 */
+table[data-line] + div tbody {
   .layui-table-cell {
-    height: 62px;
     padding-top: 10px;
     line-height: 22px;
 
@@ -358,6 +357,14 @@ table[data-line-2] + div tbody {
       margin-top: 8px;
     }
   }
+}
+
+table[data-line='2'] + div tbody .layui-table-cell {
+  height: 62px;
+}
+
+table[data-line='3'] + div tbody .layui-table-cell {
+  height: 82px;
 }
 
 /* 表单验证异常提示 */
