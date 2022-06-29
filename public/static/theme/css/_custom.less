@@ -347,7 +347,11 @@
 table[data-line] + div tbody {
   .layui-table-cell {
     padding-top: 10px;
-    line-height: 22px;
+    line-height: 20px;
+
+    .headimg.pull-left {
+      margin-top: 4px;
+    }
 
     &.laytable-cell-checkbox {
       line-height: 44px;
@@ -360,11 +364,19 @@ table[data-line] + div tbody {
 }
 
 table[data-line='2'] + div tbody .layui-table-cell {
-  height: 62px;
+  height: 60px;
+
+  &.laytable-cell-checkbox {
+    line-height: 40px;
+  }
 }
 
 table[data-line='3'] + div tbody .layui-table-cell {
-  height: 82px;
+  height: 80px;
+
+  &.laytable-cell-checkbox {
+    line-height: 60px;
+  }
 }
 
 /* 表单验证异常提示 */
