@@ -42,7 +42,7 @@ return [
     // 显示错误的消息，仅产品模式有效
     'error_message'           => '页面错误！请稍后再试～',
     // 异常模板路径配置，仅开发模式有效
-    'exception_tmpl'          => app()->getAppPath() . 'admin/view/error.php',
+    'exception_tmpl'          => app()->getRootPath() . 'app/admin/view/error.php',
     // 异常状态模板配置，仅生产模式有效
     'http_exception_template' => [
         404 => app()->getRootPath() . 'public/static/theme/err/404.html',
