@@ -25,7 +25,7 @@ CKEDITOR.plugins.add("uimage", {
         editor.ui.addButton("UploadImage", {label: "上传本地图片", command: 'uimage', icon: 'image', toolbar: 'insert,10'});
         setTimeout(function () {
             $('#cke_' + editor.name).find('.cke_button__uploadimage_label').parent().map(function () {
-                $(this).attr('data-type', 'png,jpg,gif,jpeg').attr('data-file', 'mul').uploadFile(function (url) {
+                $(this).attr('data-type', 'png,jpg,gif,jpeg').attr('data-file', 'images').on('push', function (e, url) {
                     editor.insertElement(CKEDITOR.dom.element.createFromHtml('<div><img style="border:0;max-width:100%;" alt="" src="' + url + '"></div>'));
                 });
             });

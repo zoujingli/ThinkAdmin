@@ -188,7 +188,7 @@ define(['md5', 'notify'], function (SparkMD5, Notify, allowMime) {
             $(this.option.elem.data('input')).val(file.xurl).trigger('change', file);
         }
         // 文件上传成功事件
-        this.event('choose', file.xurl).event('upload.done', {file: file, data: ret}, file, message);
+        this.event('push', file.xurl).event('upload.done', {file: file, data: ret}, file, message);
         /*! 所有文件上传完成后结果处理 */
         if (this.count.success + this.count.error >= this.count.total) {
             this.option.hide || $.msg.close(this.loader);
