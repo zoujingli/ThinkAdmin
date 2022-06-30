@@ -188,7 +188,7 @@ define(['md5', 'notify'], function (SparkMD5, Notify, allowMime) {
             $(this.option.elem.data('input')).val(file.xurl).trigger('change', file);
         }
         // 文件上传成功事件
-        this.event('upload.done', {file: file, data: ret}, file, message);
+        this.event('choose', file.xurl).event('upload.done', {file: file, data: ret}, file, message);
         /*! 所有文件上传完成后结果处理 */
         if (this.count.success + this.count.error >= this.count.total) {
             this.option.hide || $.msg.close(this.loader);
@@ -196,7 +196,7 @@ define(['md5', 'notify'], function (SparkMD5, Notify, allowMime) {
                 var urls = this.option.elem.data('input').value || [];
                 if (typeof urls === 'string') urls = urls.split('|');
                 for (var i in this.files) urls.push(this.files[i].xurl);
-                $(this.option.elem.data('input')).val(urls.join('|')).trigger('change', files);
+                $(this.option.elem.data('input')).val(urls.join('|')).trigger('change', this.files);
             }
             this.event('upload.complete', {file: this.files}, file).init().uploader && this.uploader.reload();
         }

@@ -564,7 +564,7 @@ $(function () {
         return data;
     };
 
-    /*! 全局文件上传插件 */
+    /*! 全局文件上传 */
     $.fn.uploadFile = function (callable, initialize) {
         return this.each(function () {
             if ($(this).data('inited')) return false;
@@ -593,13 +593,15 @@ $(function () {
     $.fn.uploadOneImage = function () {
         return this.each(function () {
             if ($(this).data('inited')) return true; else $(this).data('inited', true);
-            var $in = $(this), $bt = $('<a data-file="image" class="uploadimage transition"><span class="layui-icon">&#x1006;</span><span class="layui-icon">&#xe615;</span></a>').data('input', this);
-            $bt.attr('data-size', $in.data('size') || 0).attr('data-type', $in.data('type') || 'png,jpg,gif,jpeg').find('span').on('click', function (event) {
-                event.stopPropagation();
-                if ($(this).index() === 0) $bt.attr('style', ''), $in.val(''); else $in.val() && $.previewImage(encodeURI($in.val()));
-            }), $in.on('change', function () {
+            var $bt = $('<div class="uploadimage transition"><span><a data-file class="layui-icon layui-icon-upload-drag"></a><i class="layui-icon layui-icon-search"></i><i class="layui-icon layui-icon-close"></i></span><span data-file="image"></span></div>');
+            var $in = $(this).on('change', function () {
                 if (this.value) $bt.css('backgroundImage', 'url(' + encodeURI(this.value) + ')');
             }).after($bt).trigger('change');
+            $bt.on('click', 'i.layui-icon-search', function (event) {
+                event.stopPropagation(), $in.val() && $.previewImage(encodeURI($in.val()));
+            }).on('click', 'i.layui-icon-close', function (event) {
+                event.stopPropagation(), $bt.attr('style', ''), $in.val('');
+            }).find('[data-file]').data('input', this).attr('data-size', $in.data('size') || 0).attr('data-type', $in.data('type') || 'png,jpg,gif,jpeg');
         });
     };
 
@@ -607,10 +609,11 @@ $(function () {
     $.fn.uploadMultipleImage = function () {
         return this.each(function () {
             if ($(this).data('inited')) return true; else $(this).data('inited', true);
-            var $in = $(this), $bt = $('<a data-file="mul" class="uploadimage"></a>'), imgs = this.value ? this.value.split('|') : []
-            $in.after($bt.attr('data-size', $in.data('size') || 0).attr('data-type', $in.data('type') || 'gif,png,jpg,jpeg').uploadFile(function (src) {
-                imgs.push(src), $in.val(imgs.join('|')), showImageContainer([src]);
-            })), (imgs.length > 0 && showImageContainer(imgs));
+            var $bt = $('<div class="uploadimage"><span><a data-file="mul" class="layui-icon layui-icon-upload-drag"></a></span><span data-file="images"></span></div>');
+            var ims = this.value ? this.value.split('|') : [], $in = $(this).after($bt);
+            $bt.find('[data-file]').attr('data-size', $in.data('size') || 0).attr('data-type', $in.data('type') || 'gif,png,jpg,jpeg').data('input', this).on('choose', function (evt, src) {
+                ims.push(src), $in.val(ims.join('|')), showImageContainer([src]);
+            }) && (ims.length > 0 && showImageContainer(ims))
 
             function showImageContainer(srcs) {
                 $(srcs).each(function (idx, src, $image) {
@@ -618,10 +621,10 @@ $(function () {
                     $image.attr('data-tips-image', encodeURI(src)).css('backgroundImage', 'url(' + encodeURI(src) + ')').on('click', 'a', function (event, index, prevs, $item) {
                         event.stopPropagation(), $item = $(this).parent().parent(), index = $(this).index();
                         if (index === 2 && $item.index() !== $bt.prevAll('div.uploadimage').length) $item.next().after($item); else if (index === 0 && $item.index() > 1) $item.prev().before($item); else if (index === 1) $item.remove();
-                        imgs = [], $bt.prevAll('.uploadimage').map(function () {
-                            imgs.push($(this).attr('data-tips-image'));
+                        ims = [], $bt.prevAll('.uploadimage').map(function () {
+                            ims.push($(this).attr('data-tips-image'));
                         });
-                        imgs.reverse(), $in.val(imgs.join('|'));
+                        ims.reverse(), $in.val(ims.join('|'));
                     }), $bt.before($image);
                 });
             }
