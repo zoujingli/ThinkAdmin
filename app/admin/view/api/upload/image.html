@@ -9,72 +9,18 @@
         </div>
     </div>
     <div class="image-dialog-body">
-        <div class="image-dialog-item" v-for="x in list" v-if="show">
-            <div class="uploadimage" :style="x.style" @click="setValue(x.xurl)"></div>
+        <div class="image-dialog-item transition" v-for="x in list" @click="setItem(x)" style="display:none" v-show="show" :class="{'image-dialog-checked':x.checked}">
+            <div class="uploadimage" :style="x.style"></div>
             <p class="image-dialog-item-name layui-elip" v-text="x.name"></p>
         </div>
     </div>
     <div class="image-dialog-foot">
         <div id="ImageDialogPage" class="image-dialog-page"></div>
+        <a id="ImageDialogButton" class="image-dialog-button notselect" @click="confirm">
+            <span v-text="data.length"></span>
+        </a>
     </div>
 </div>
-
-<style>
-    .image-dialog-head {
-        clear: both;
-        height: 30px;
-        padding: 10px 12px;
-    }
-
-    .image-dialog-body {
-        height: 470px;
-        background: #efefef;
-        padding-top: 12px;
-        padding-left: 12px;
-        display: flex;
-        flex-wrap: wrap;
-        align-content: flex-start;
-    }
-
-    .image-dialog-item {
-        position: relative;
-        margin-right: 12px;
-        margin-bottom: 12px;
-    }
-
-    .image-dialog-item-name {
-        left: 0;
-        right: 0;
-        bottom: 0;
-        color: #fff;
-        padding: 3px 10px;
-        position: absolute;
-        text-align: center;
-        line-height: 1.5em;
-        white-space: nowrap;
-        background: rgba(0, 0, 0, 0.6);
-    }
-
-    .image-dialog-item .uploadimage {
-        margin: 0;
-        width: 145px;
-        height: 145px;
-    }
-
-    .image-dialog-foot {
-        padding: 0 12px;
-    }
-
-    .image-dialog-page {
-        height: 50px;
-        text-align: center;
-    }
-
-    .image-dialog-page .layui-laypage a,
-    .image-dialog-page .layui-laypage span {
-        margin-bottom: 0;
-    }
-</style>
 
 <script>
     require(['vue'], function (vue) {
@@ -84,11 +30,16 @@
                 page: 1,
                 limit: 15,
                 show: false,
+                mult: false,
                 keys: '',
                 list: [],
+                data: [],
+                idxs: {},
             },
             created: function () {
                 this.$btn = $('#{$get.id|default=""}');
+                this.$ups = $('#ImageDialogUploadLayout [data-file]');
+                this.mult = "{$get.file|default='image'}" === 'images';
                 this.loadPage();
             },
             methods: {
@@ -96,6 +47,33 @@
                 search: function () {
                     this.page = 1;
                     this.loadPage();
+                },
+                // 设置单项数据
+                setItem: function (item) {
+                    if (!this.mult) return this.setValue(item.xurl);
+                    if ((item.checked = !this.idxs[item.id])) {
+                        (this.idxs[item.id] = item) && this.data.push(item);
+                    } else {
+                        delete this.idxs[item.id];
+                        layui.each(this.data, function (idx, _ite) {
+                            _ite.id === item.id && app.data.splice(idx, 1);
+                        });
+                    }
+                },
+                // 更新列表数据
+                setList: function (items, count) {
+                    this.list = items;
+                    this.list.forEach(function (item) {
+                        item.checked = !!app.idxs[item.id]
+                        item.style = 'background-image:url(' + item.xurl + ')';
+                    });
+                    this.addPage(count);
+                },
+                // 确认选择数据
+                confirm: function () {
+                    layui.each(this.data, function (idx, file) {
+                        app.setValue(file.xurl);
+                    });
                 },
                 // 设置选择数据
                 setValue: function (url) {
@@ -105,47 +83,39 @@
                 },
                 // 创建分页工具条
                 addPage: function (count) {
-                    var that = this;
                     this.show = true;
                     layui.laypage.render({
-                        curr: this.page, count: count, limit: that.limit,
+                        curr: this.page, count: count, limit: app.limit,
                         layout: ['count', 'prev', 'page', 'next', 'refresh'],
                         elem: 'ImageDialogPage', jump: function (obj, first) {
-                            if (!first) that.loadPage(that.page = obj.curr);
+                            if (!first) app.loadPage(app.page = obj.curr);
                         },
                     });
                 },
                 // 加载页面数据
                 loadPage: function () {
-                    var that = this;
                     this.params = {page: this.page, limit: this.limit, output: 'layui.table', name: this.keys || ''};
                     $.form.load('{:url("image")}', this.params, 'get', function (ret) {
-                        that.list = ret.data;
-                        that.list.forEach(function (item) {
-                            item.style = 'background-image:url(' + item.xurl + ')';
-                        });
-                        that.addPage(ret.count);
-                        return false;
+                        return app.setList(ret.data, ret.count), false;
                     });
                 },
                 // 上传图片文件
                 uploadImage: function () {
-                    $('[data-field="image-dialog-upload-input"]').click();
-                    $('[name="image-dialog-upload-input"]').one('change', function (e) {
-                        app.setValue(e.currentTarget.value);
-                        // e.currentTarget.value 取上传后的值
-                        // app.page = 1;
-                        // app.loadPage();
-                    });
+                    this.$ups.off('choose').on('choose', function (e, xurl) {
+                        app.setValue(xurl);
+                    }).click();
                 },
             }
         });
     });
 </script>
 
-<label class="layui-hide">
+<label class="layui-hide" id="ImageDialogUploadLayout">
     <!-- 图片上传组件 开始 -->
-    <input class="layui-input" name="image-dialog-upload-input">
-    <button class="layui-btn" data-file data-type="png,jpg,jpeg,gif" data-field="image-dialog-upload-input"></button>
+    {if isset($get.file) && $get.file eq 'image'}
+    <button class="layui-btn" data-file data-type="png,jpg,jpeg,gif"></button>
+    {else}
+    <button class="layui-btn" data-file="mul" data-type="png,jpg,jpeg,gif"></button>
+    {/if}
     <!-- 图片上传组件 结束 -->
 </label>

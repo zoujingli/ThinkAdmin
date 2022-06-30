@@ -945,6 +945,113 @@ input:not(.layui-hide,[type=hidden]) {
   }
 }
 
+/* 图片选择器样式 */
+.image-dialog {
+  &-head {
+    clear: both;
+    height: 30px;
+    padding: 10px 12px;
+  }
+
+  &-body {
+    height: 470px;
+    display: flex;
+    flex-wrap: wrap;
+    background: #EFEFEF;
+    padding-top: 12px;
+    padding-left: 12px;
+    align-content: flex-start;
+
+    .image-dialog-checked {
+      &:after, &:before {
+        z-index: 2;
+        cursor: pointer;
+        content: '';
+        display: block;
+        position: absolute;
+      }
+
+      &:after {
+        top: -25px;
+        right: -25px;
+        width: 50px;
+        height: 50px;
+        transform: rotate(135deg);
+        -moz-transform: rotate(135deg);
+        -webkit-transform: rotate(135deg);
+        background-color: rgba(56, 169, 225, 0.8);
+      }
+
+      &:before {
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        border: 4px solid rgba(56, 169, 225, 0.8);
+      }
+    }
+  }
+
+  &-item {
+    z-index: 1;
+    overflow: hidden;
+    position: relative;
+    margin-right: 12px;
+    margin-bottom: 12px;
+    border-radius: @BoxBorderRadius;
+
+    .uploadimage {
+      margin: 0;
+      width: 145px;
+      height: 145px;
+    }
+
+    &-name {
+      left: 0;
+      right: 0;
+      bottom: 0;
+      color: #fff;
+      padding: 3px 10px;
+      position: absolute;
+      text-align: center;
+      line-height: 1.5em;
+      white-space: nowrap;
+      background: rgba(0, 0, 0, 0.6);
+    }
+  }
+
+  &-foot {
+    padding: 0 12px;
+
+    .image-dialog-page {
+      height: 50px;
+      text-align: center;
+
+      .layui-laypage {
+        a, span {
+          margin-bottom: 0;
+        }
+      }
+    }
+
+    .image-dialog-button {
+      color: #fff;
+      width: 42px;
+      height: 42px;
+      display: inline-block;
+      position: absolute;
+      text-align: center;
+      background: #0e7fe1;
+      line-height: 42px;
+      border-radius: 50%;
+      right: 10px;
+      bottom: 4px;
+      z-index: 2;
+      font-size: 16px
+    }
+  }
+}
+
 .portal-block-container {
   font-size: 14px;
   margin-bottom: 10px;
