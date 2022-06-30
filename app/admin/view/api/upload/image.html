@@ -99,7 +99,7 @@
                 },
                 // 上传图片文件
                 uploadImage: function () {
-                    this.$ups.off('choose').on('choose', function (e, xurl) {
+                    this.$ups.one('push', function (e, xurl) {
                         app.setValue(xurl);
                     }).click();
                 },
