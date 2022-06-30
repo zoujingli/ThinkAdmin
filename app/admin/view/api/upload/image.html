@@ -5,20 +5,18 @@
             <a class="layui-btn layui-btn-sm layui-btn-normal" @click="search">搜 索</a>
         </div>
         <div class="pull-right">
-            <a class="layui-btn layui-btn-sm" @click="uploadImage">上传图片</a>
+            <a class="layui-btn layui-btn-sm layui-btn-normal" @click="uploadImage">上传图片</a>
         </div>
     </div>
     <div class="image-dialog-body">
-        <div class="image-dialog-item transition" v-for="x in list" @click="setItem(x)" style="display:none" v-show="show" :class="{'image-dialog-checked':x.checked}">
+        <div class="image-dialog-item" v-for="x in list" @click="setItem(x)" style="display:none" v-show="show" :class="{'image-dialog-checked':x.checked}">
             <div class="uploadimage" :style="x.style"></div>
             <p class="image-dialog-item-name layui-elip" v-text="x.name"></p>
         </div>
     </div>
     <div class="image-dialog-foot">
         <div id="ImageDialogPage" class="image-dialog-page"></div>
-        <a id="ImageDialogButton" class="image-dialog-button notselect" @click="confirm">
-            <span v-text="data.length"></span>
-        </a>
+        <div id="ImageDialogButton" class="image-dialog-button" v-if="data.length>0" @click="confirm">{{data.length}}</div>
     </div>
 </div>
 
