@@ -579,7 +579,7 @@ $(function () {
     $.fn.uploadOneVideo = function () {
         return this.each(function () {
             if ($(this).data('inited')) return true; else $(this).data('inited', true);
-            var $in = $(this), $bt = $('<a data-file class="uploadimage uploadvideo transition"><span class="layui-icon">&#x1006;</span><span class="layui-icon">&#xe615;</span></a>').data('input', this);
+            var $in = $(this), $bt = $('<a data-file class="uploadimage uploadvideo"><span class="layui-icon">&#x1006;</span><span class="layui-icon">&#xe615;</span></a>').data('input', this);
             $bt.attr('data-size', $in.data('size') || 0).attr('data-type', $in.data('type') || 'mp4').find('span').on('click', function (event) {
                 event.stopPropagation();
                 if ($(this).index() === 0) $bt.attr('style', ''), $in.val(''); else $in.val() && $.previewImage(encodeURI($in.val()));
@@ -593,7 +593,7 @@ $(function () {
     $.fn.uploadOneImage = function () {
         return this.each(function () {
             if ($(this).data('inited')) return true; else $(this).data('inited', true);
-            var $bt = $('<div class="uploadimage transition"><span><a data-file class="layui-icon layui-icon-upload-drag"></a><i class="layui-icon layui-icon-search"></i><i class="layui-icon layui-icon-close"></i></span><span data-file="image"></span></div>');
+            var $bt = $('<div class="uploadimage"><span><a data-file class="layui-icon layui-icon-upload-drag"></a><i class="layui-icon layui-icon-search"></i><i class="layui-icon layui-icon-close"></i></span><span data-file="image"></span></div>');
             var $in = $(this).on('change', function () {
                 if (this.value) $bt.css('backgroundImage', 'url(' + encodeURI(this.value) + ')');
             }).after($bt).trigger('change');
@@ -617,10 +617,12 @@ $(function () {
 
             function showImageContainer(srcs) {
                 $(srcs).each(function (idx, src, $image) {
-                    $image = $('<div class="uploadimage uploadimagemtl transition"><div><a class="layui-icon">&#xe603;</a><a class="layui-icon">&#x1006;</a><a class="layui-icon">&#xe602;</a></div></div>');
+                    $image = $('<div class="uploadimage uploadimagemtl"><div><a class="layui-icon">&#xe603;</a><a class="layui-icon">&#x1006;</a><a class="layui-icon">&#xe602;</a></div></div>');
                     $image.attr('data-tips-image', encodeURI(src)).css('backgroundImage', 'url(' + encodeURI(src) + ')').on('click', 'a', function (event, index, prevs, $item) {
                         event.stopPropagation(), $item = $(this).parent().parent(), index = $(this).index();
-                        if (index === 2 && $item.index() !== $bt.prevAll('div.uploadimage').length) $item.next().after($item); else if (index === 0 && $item.index() > 1) $item.prev().before($item); else if (index === 1) $item.remove();
+                        if (index === 2 && $item.index() !== $bt.prevAll('div.uploadimage').length) $item.next().after($item);
+                        else if (index === 0 && $item.index() > 1) $item.prev().before($item);
+                        else if (index === 1) $item.remove();
                         ims = [], $bt.prevAll('.uploadimage').map(function () {
                             ims.push($(this).attr('data-tips-image'));
                         });
