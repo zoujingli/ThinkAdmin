@@ -78,7 +78,7 @@ require.config({
         'excel': {deps: [baseRoot + 'plugs/layui_exts/excel.js']},
         'notify': {deps: ['css!' + baseRoot + 'plugs/notify/light.css']},
         'cropper': {deps: ['css!' + baseRoot + 'plugs/cropper/cropper.min.css']},
-        'websocket': {deps: [baseRoot + 'plugs/socket/swfobject.min.js']},
+        'websocket': {deps: [baseRoot + 'plugs/socket/swfobject.js']},
         'ckeditor5': {deps: ['jquery', 'upload', 'css!' + baseRoot + 'plugs/ckeditor5/ckeditor.css']},
         'vue.sortable': {deps: ['vue', 'sortablejs']},
         'jquery.ztree': {deps: ['jquery', 'css!' + baseRoot + 'plugs/ztree/zTreeStyle/zTreeStyle.css']},
