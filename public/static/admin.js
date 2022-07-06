@@ -611,14 +611,14 @@ $(function () {
             if ($(this).data('inited')) return true; else $(this).data('inited', true);
             var $bt = $('<div class="uploadimage"><span><a data-file="mul" class="layui-icon layui-icon-upload-drag"></a></span><span data-file="images"></span></div>');
             var ims = this.value ? this.value.split('|') : [], $in = $(this).after($bt);
-            $bt.find('[data-file]').attr('data-size', $in.data('size') || 0).attr('data-type', $in.data('type') || 'gif,png,jpg,jpeg').data('input', this).on('push', function (evt, src) {
+            $bt.find('[data-file]').attr('data-size', $in.data('size') || 0).attr('data-type', $in.data('type') || 'gif,png,jpg,jpeg').on('push', function (evt, src) {
                 ims.push(src), $in.val(ims.join('|')), showImageContainer([src]);
-            }) && (ims.length > 0 && showImageContainer(ims))
+            }) && (ims.length > 0 && showImageContainer(ims));
 
             function showImageContainer(srcs) {
-                $(srcs).each(function (idx, src, $image) {
-                    $image = $('<div class="uploadimage uploadimagemtl"><div><a class="layui-icon">&#xe603;</a><a class="layui-icon">&#x1006;</a><a class="layui-icon">&#xe602;</a></div></div>');
-                    $image.attr('data-tips-image', encodeURI(src)).css('backgroundImage', 'url(' + encodeURI(src) + ')').on('click', 'a', function (event, index, prevs, $item) {
+                $(srcs).each(function (idx, src, $img) {
+                    $img = $('<div class="uploadimage uploadimagemtl"><div><a class="layui-icon">&#xe603;</a><a class="layui-icon">&#x1006;</a><a class="layui-icon">&#xe602;</a></div></div>');
+                    $img.attr('data-tips-image', encodeURI(src)).css('backgroundImage', 'url(' + encodeURI(src) + ')').on('click', 'a', function (event, index, prevs, $item) {
                         event.stopPropagation(), $item = $(this).parent().parent(), index = $(this).index();
                         if (index === 2 && $item.index() !== $bt.prevAll('div.uploadimage').length) $item.next().after($item);
                         else if (index === 0 && $item.index() > 1) $item.prev().before($item);
@@ -627,7 +627,7 @@ $(function () {
                             ims.push($(this).attr('data-tips-image'));
                         });
                         ims.reverse(), $in.val(ims.join('|'));
-                    }), $bt.before($image);
+                    }), $bt.before($img);
                 });
             }
         });
