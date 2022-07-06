@@ -33,6 +33,7 @@
                 list: [],
                 data: [],
                 idxs: {},
+                urls: [],
             },
             created: function () {
                 this.$btn = $('#{$get.id|default=""}');
@@ -46,15 +47,24 @@
                     this.page = 1;
                     this.loadPage();
                 },
+                // 确认选择数据
+                confirm: function () {
+                    this.urls = [];
+                    this.data.forEach(function (file) {
+                        app.setValue(file.xurl);
+                    });
+                    this.setInput();
+                },
                 // 设置单项数据
                 setItem: function (item) {
-                    if (!this.mult) return this.setValue(item.xurl);
-                    if ((item.checked = !this.idxs[item.id])) {
+                    if (!this.mult) {
+                        this.setValue(item.xurl).setInput();
+                    } else if ((item.checked = !this.idxs[item.id])) {
                         (this.idxs[item.id] = item) && this.data.push(item);
                     } else {
                         delete this.idxs[item.id];
-                        layui.each(this.data, function (idx, _ite) {
-                            _ite.id === item.id && app.data.splice(idx, 1);
+                        this.data.forEach(function (temp, idx) {
+                            temp.id === item.id && app.data.splice(idx, 1);
                         });
                     }
                 },
@@ -64,20 +74,19 @@
                     this.list.forEach(function (item) {
                         item.checked = !!app.idxs[item.id]
                         item.style = 'background-image:url(' + item.xurl + ')';
-                    });
-                    this.addPage(count);
-                },
-                // 确认选择数据
-                confirm: function () {
-                    layui.each(this.data, function (idx, file) {
-                        app.setValue(file.xurl);
-                    });
+                    }), this.addPage(count);
                 },
                 // 设置选择数据
-                setValue: function (url) {
-                    this.$btn.triggerHandler('push', url);
-                    if (this.$btn.data('input')) $(this.$btn.data('input')).val(url).trigger('change', url);
+                setValue: function (xurl) {
+                    this.urls.push(xurl) && this.$btn.triggerHandler('push', xurl);
                     $('#ImageDialog').parents('.layui-layer-content').next().find('.layui-layer-close').trigger('click');
+                    return this;
+                },
+                // 设置输入表单
+                setInput: function () {
+                    if (this.$btn.data('input')) {
+                        $(this.$btn.data('input')).val(this.urls.join('|')).trigger('change');
+                    }
                 },
                 // 创建分页工具条
                 addPage: function (count) {
@@ -99,8 +108,11 @@
                 },
                 // 上传图片文件
                 uploadImage: function () {
+                    this.urls = [];
                     this.$ups.off('push').on('push', function (e, xurl) {
                         app.setValue(xurl);
+                    }).off('upload.complete').on('upload.complete', function () {
+                        app.setInput();
                     }).click();
                 },
             }
