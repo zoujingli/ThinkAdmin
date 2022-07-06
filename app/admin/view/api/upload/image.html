@@ -25,15 +25,8 @@
         var app = new vue({
             el: '#ImageDialog',
             data: {
-                page: 1,
-                limit: 15,
-                show: false,
-                mult: false,
-                keys: '',
-                list: [],
-                data: [],
-                idxs: {},
-                urls: [],
+                page: 1, limit: 15, show: false, mult: false,
+                keys: '', list: [], data: [], idxs: {}, urls: [],
             },
             created: function () {
                 this.$btn = $('#{$get.id|default=""}');
@@ -52,8 +45,7 @@
                     this.urls = [];
                     this.data.forEach(function (file) {
                         app.setValue(file.xurl);
-                    });
-                    this.setInput();
+                    }), this.setInput();
                 },
                 // 设置单项数据
                 setItem: function (item) {
