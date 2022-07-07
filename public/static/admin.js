@@ -57,6 +57,7 @@ require.config({
         'md5': ['plugs/jquery/md5.min'],
         'json': ['plugs/jquery/json.min'],
         'xlsx': ['plugs/jquery/xlsx.min'],
+        'jszip': ['plugs/jquery/jszip.min'],
         'excel': ['plugs/jquery/excel.xlsx'],
         'base64': ['plugs/jquery/base64.min'],
         'upload': [tapiRoot + '/api.upload/index?'],
