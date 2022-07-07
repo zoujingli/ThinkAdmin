@@ -67,6 +67,7 @@ require.config({
         'echarts': ['plugs/echarts/echarts.min'],
         'ckeditor4': ['plugs/ckeditor4/ckeditor'],
         'ckeditor5': ['plugs/ckeditor5/ckeditor'],
+        'filesaver': ['plugs/jquery/filesaver.min'],
         'websocket': ['plugs/socket/websocket'],
         'pcasunzips': ['plugs/jquery/pcasunzips'],
         'sortablejs': ['plugs/sortable/sortable.min'],
@@ -76,6 +77,7 @@ require.config({
         'jquery.cropper': ['plugs/cropper/cropper.min'],
         'jquery.autocompleter': ['plugs/jquery/autocompleter.min'],
     }, shim: {
+        'jszip': {deps: ['filesaver']},
         'excel': {deps: [baseRoot + 'plugs/layui_exts/excel.js']},
         'notify': {deps: ['css!' + baseRoot + 'plugs/notify/light.css']},
         'cropper': {deps: ['css!' + baseRoot + 'plugs/cropper/cropper.min.css']},
