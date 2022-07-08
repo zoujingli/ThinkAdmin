@@ -16,7 +16,7 @@
     </div>
     <div class="image-dialog-foot">
         <div id="ImageDialogPage" class="image-dialog-page"></div>
-        <div id="ImageDialogButton" class="image-dialog-button" v-if="data.length>0" @click="confirm">{{data.length}}</div>
+        <div id="ImageDialogButton" class="image-dialog-button" v-if="data.length>0" @click="confirm">{{ data.length }}</div>
     </div>
 </div>
 
@@ -25,10 +25,12 @@
         var app = new vue({
             el: '#ImageDialog',
             data: {
+                didx: 0,
                 page: 1, limit: 15, show: false, mult: false,
                 keys: '', list: [], data: [], idxs: {}, urls: [],
             },
             created: function () {
+                this.didx = $.msg.mdx.pop();
                 this.$btn = $('#{$get.id|default=""}');
                 this.$ups = $('#ImageDialogUploadLayout [data-file]');
                 this.mult = "{$get.file|default='image'}" === 'images';
@@ -70,8 +72,8 @@
                 },
                 // 设置选择数据
                 setValue: function (xurl) {
+                    $.msg.close(this.didx);
                     this.urls.push(xurl) && this.$btn.triggerHandler('push', xurl);
-                    $('#ImageDialog').parents('.layui-layer-content').next().find('.layui-layer-close').trigger('click');
                     return this;
                 },
                 // 设置输入表单
