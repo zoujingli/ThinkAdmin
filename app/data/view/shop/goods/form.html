@@ -82,13 +82,13 @@
                 <tr>
                     <td class="text-center text-top padding-0">
                         <div class="help-images">
-                            <input name="cover" type="hidden" value="{$vo.cover|default=''}">
+                            <input name="cover" data-max-width="500" data-max-height="500" type="hidden" value="{$vo.cover|default=''}">
                             <script>$('[name="cover"]').uploadOneImage();</script>
                         </div>
                     </td>
                     <td class="text-left padding-0">
                         <div class="help-images">
-                            <input name="slider" type="hidden" value="{$vo.slider|default=''}">
+                            <input name="slider" data-max-width="2048" data-max-height="1024" type="hidden" value="{$vo.slider|default=''}">
                             <script>$('[name="slider"]').uploadMultipleImage();</script>
                         </div>
                     </td>
