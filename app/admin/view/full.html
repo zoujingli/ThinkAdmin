@@ -15,11 +15,7 @@
     <link rel="stylesheet" href="__ROOT__/static/extra/style.css?at={:date('md')}">
     {block name="style"}{/block}
     <script src="__ROOT__/static/plugs/jquery/pace.min.js"></script>
-    <script>
-        window.taDebug = '{:intval($app->isDebug())}' > 0;
-        window.taEditor = '{:sysconf("base.editor")?:"ckeditor4"}';
-        window.tapiRoot = '{:sysuri("admin/index/index",[],false)}';
-    </script>
+    <script src="{:url('admin/api.plugs/script',[],false,false)}"></script>
 </head>
 <body class="layui-layout-body">
 {block name='body'}
