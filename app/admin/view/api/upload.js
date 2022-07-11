@@ -15,7 +15,7 @@ define(['md5', 'notify'], function (SparkMD5, Notify, allowMime) {
             this.option.quality = parseFloat(this.option.elem.data('quality') || '1.0');
             this.option.maxWidth = parseInt(this.option.elem.data('max-width') || '0');
             this.option.maxHeight = parseInt(this.option.elem.data('max-height') || '0');
-            this.option.cutHeight = parseInt(this.option.elem.data('cut-height') || '0');
+            this.option.cutWidth = parseInt(this.option.elem.data('cut-width') || '0');
             this.option.cutHeight = parseInt(this.option.elem.data('cut-height') || '0');
 
             /*! 查找表单元素, 如果没有找到将不会自动写值 */
