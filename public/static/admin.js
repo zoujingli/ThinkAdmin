@@ -888,14 +888,6 @@ $(function () {
         if (typeof this.dataset.file === 'string' && /^images?$/.test(this.dataset.file)) {
             return $.form.modal(tapiRoot + '/api.upload/image', this.dataset, '图片选择器')
         }
-        // 上传视频，支持单视频或多视频选择，分别是 video|videos
-        if (typeof this.dataset.file === 'string' && /^videos?$/.test(this.dataset.file)) {
-            return $.form.modal(tapiRoot + '/api.upload/video', this.dataset, '视频选择器')
-        }
-        // 上传文档，支持单视频或多视频选择，分别是 document|documents
-        if (typeof this.dataset.file === 'string' && /^videos?$/.test(this.dataset.file)) {
-            return $.form.modal(tapiRoot + '/api.upload/document', this.dataset, '文档选择器')
-        }
         // 其他文件上传
         if ($(this).data('inited') !== true) (function (that) {
             that.uploadFile(undefined, function () {
