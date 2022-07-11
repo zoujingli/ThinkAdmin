@@ -87,6 +87,8 @@ define(['md5', 'notify'], function (SparkMD5, Notify, allowMime) {
                             that.hash(files[index]).then(function (file) {
                                 that.event('upload.hash', file).request(file, done);
                             });
+                        }, error: function () {
+                            that.event('upload.error', {file: file}, file, '压缩失败');
                         }
                     });
                 });
