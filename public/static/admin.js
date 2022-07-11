@@ -70,6 +70,7 @@ require.config({
         'filesaver': ['plugs/jquery/filesaver.min'],
         'websocket': ['plugs/socket/websocket'],
         'pcasunzips': ['plugs/jquery/pcasunzips'],
+        'compressor': ['plugs/jquery/compressor.min'],
         'sortablejs': ['plugs/sortable/sortable.min'],
         'vue.sortable': ['plugs/sortable/vue.draggable.min'],
         'jquery.ztree': ['plugs/ztree/ztree.all.min'],
@@ -583,7 +584,11 @@ $(function () {
         return this.each(function () {
             if ($(this).data('inited')) return true; else $(this).data('inited', true);
             var $in = $(this), $bt = $('<a data-file class="uploadimage uploadvideo"><span class="layui-icon">&#x1006;</span><span class="layui-icon">&#xe615;</span></a>').data('input', this);
-            $bt.attr('data-size', $in.data('size') || 0).attr('data-type', $in.data('type') || 'mp4').find('span').on('click', function (event) {
+            $bt.attr('data-size', $in.data('size') || 0).attr('data-type', $in.data('type') || 'mp4')
+                .attr('data-max-width', $in.data('max-width'))
+                .attr('data-max-height', $in.data('max-height'))
+
+                .find('span').on('click', function (event) {
                 event.stopPropagation();
                 if ($(this).index() === 0) $bt.attr('style', ''), $in.val(''); else $in.val() && $.previewImage(encodeURI($in.val()));
             }), $in.on('change', function () {
@@ -604,7 +609,10 @@ $(function () {
                 event.stopPropagation(), $in.val() && $.previewImage(encodeURI($in.val()));
             }).on('click', 'i.layui-icon-close', function (event) {
                 event.stopPropagation(), $bt.attr('style', ''), $in.val('');
-            }).find('[data-file]').data('input', this).attr('data-size', $in.data('size') || 0).attr('data-type', $in.data('type') || 'png,jpg,gif,jpeg');
+            }).find('[data-file]').data('input', this).attr({
+                'data-size': $in.data('size') || 0, 'data-type': $in.data('type') || 'gif,png,jpg,jpeg',
+                'data-max-width': $in.data('max-width') || 0, 'data-max-height': $in.data('max-height') || 0
+            });
         });
     };
 
@@ -614,7 +622,10 @@ $(function () {
             if ($(this).data('inited')) return true; else $(this).data('inited', true);
             var $bt = $('<div class="uploadimage"><span><a data-file="mul" class="layui-icon layui-icon-upload-drag"></a></span><span data-file="images"></span></div>');
             var ims = this.value ? this.value.split('|') : [], $in = $(this).after($bt);
-            $bt.find('[data-file]').attr('data-size', $in.data('size') || 0).attr('data-type', $in.data('type') || 'gif,png,jpg,jpeg').on('push', function (evt, src) {
+            $bt.find('[data-file]').attr({
+                'data-size': $in.data('size') || 0, 'data-type': $in.data('type') || 'gif,png,jpg,jpeg',
+                'data-max-width': $in.data('max-width') || 0, 'data-max-height': $in.data('max-height') || 0
+            }).on('push', function (evt, src) {
                 ims.push(src), $in.val(ims.join('|')), showImageContainer([src]);
             }) && (ims.length > 0 && showImageContainer(ims));
 

@@ -29,17 +29,18 @@ define(['md5', 'notify'], function (SparkMD5, Notify, allowMime) {
 
             /*! 初始化上传组件 */
             this.adapter = new Adapter(this.option, layui.upload.render({
-                url: '{:url("admin/api.upload/file")}', auto: false, elem: elem, accept: 'file', multiple: this.option.mult, exts: this.option.exts.join('|'), acceptMime: this.option.mimes.join(','), choose: function (object) {
-                    object.files = object.pushFile();
-                    layui.each(object.files, function (idx, file) {
+                url: '{:url("admin/api.upload/file")}', auto: false, elem: elem, accept: 'file', multiple: this.option.mult, exts: this.option.exts.join('|'), acceptMime: this.option.mimes.join(','), choose: function (obj) {
+                    obj.items = [], obj.files = obj.pushFile();
+                    layui.each(obj.files, function (idx, file) {
+                        obj.items.push(file);
                         file.quality = that.option.quality;
                         file.maxWidth = that.option.maxWidth;
                         file.maxHeight = that.option.maxHeight;
                     });
-                    that.adapter.event('upload.choose', object.files);
-                    that.adapter.upload(object.files, done);
-                    layui.each(object.files, function (idx) {
-                        delete object.files[idx];
+                    that.adapter.event('upload.choose', obj.items);
+                    that.adapter.upload(obj.items, done);
+                    layui.each(obj.files, function (idx) {
+                        delete obj.files[idx];
                     });
                 }
             }));
@@ -74,14 +75,15 @@ define(['md5', 'notify'], function (SparkMD5, Notify, allowMime) {
             // 禁传异常状态文件
             if (typeof file.xstate === 'number' && file.xstate === -1) return;
             // 图片限宽限高压缩
-            if (/^image\/*$/.test(file.type) && file.maxWidth > 0 || file.maxHeight > 0 || file.quality !== 1) {
-                FileToBase64(file).then(function (base64) {
-                    ImageToThumb(base64, file).then(function (base64) {
-                        files[index] = Base64ToFile(base64, file.name);
-                        files[index].notify = file.notify;
-                        that.hash(files[index]).then(function (file) {
-                            that.event('upload.hash', file).request(file, done);
-                        });
+            if (/^image\//.test(file.type) && (file.maxWidth > 0 || file.maxHeight > 0 || file.quality !== 1)) {
+                require(['compressor'], function (Compressor) {
+                    new Compressor(file, {
+                        quality: file.quality, maxWidth: file.maxWidth, maxHeight: file.maxHeight, success(blob) {
+                            files[index] = blob, blob.index = file.index, files[index].notify = file.notify;
+                            that.hash(files[index]).then(function (file) {
+                                that.event('upload.hash', file).request(file, done);
+                            });
+                        }
                     });
                 });
             } else {
@@ -132,7 +134,7 @@ define(['md5', 'notify'], function (SparkMD5, Notify, allowMime) {
                         uploader.form.append('authorization', ret.data['authorization']);
                         uploader.form.append('Content-Disposition', 'inline;filename=' + encodeURIComponent(file.name));
                     }
-                    uploader.form.append('file', file), jQuery.ajax({
+                    uploader.form.append('file', file, file.name), jQuery.ajax({
                         url: uploader.url, data: uploader.form, type: 'post', xhr: function (xhr) {
                             xhr = new XMLHttpRequest();
                             return xhr.upload.addEventListener('progress', function (event) {
@@ -262,61 +264,6 @@ define(['md5', 'notify'], function (SparkMD5, Notify, allowMime) {
     };
 
     return UploadAdapter;
-
-    /**
-     * Base64 转 File 对象
-     * @param {String} base64 Base64内容
-     * @param {String} filename 新文件名称
-     * @return {File}
-     */
-    function Base64ToFile(base64, filename) {
-        var arr = base64.split(',');
-        var mime = arr[0].match(/:(.*?);/)[1], suffix = mime.split('/')[1];
-        var bstr = atob(arr[1]), n = bstr.length, u8arr = new Uint8Array(n);
-        while (n--) u8arr[n] = bstr.charCodeAt(n);
-        return new File([u8arr], filename + '.' + suffix, {type: mime});
-    }
-
-    /**
-     * File 对象转 Base64
-     * @param {File} file 文件对象
-     * @return {Promise}
-     */
-    function FileToBase64(file) {
-        var defer = jQuery.Deferred(), reader = new FileReader();
-        return (reader.onload = function () {
-            defer.resolve(this.result);
-        }), reader.readAsDataURL(file), defer.promise();
-    }
-
-    /**
-     * 图片压缩处理
-     * @param {String} url 图片链接
-     * @param {Object} option 压缩参数
-     * @return {Promise}
-     */
-    function ImageToThumb(url, option) {
-        var defer = jQuery.Deferred(), image = new Image();
-        image.src = url, image.onload = function () {
-            var canvas = document.createElement('canvas'), context = canvas.getContext('2d');
-            option.maxWidth = option.maxWidth || this.width, option.maxHeight = option.maxHeight || this.height;
-            var originWidth = this.width, originHeight = this.height, targetWidth = originWidth, targetHeight = originHeight;
-            if (originWidth > option.maxWidth || originHeight > option.maxHeight) {
-                if (originWidth / option.maxWidth > option.maxWidth / option.maxHeight) {
-                    targetWidth = option.maxWidth;
-                    targetHeight = Math.round(option.maxWidth * (originHeight / originWidth));
-                } else {
-                    targetHeight = option.maxHeight;
-                    targetWidth = Math.round(option.maxHeight * (originWidth / originHeight));
-                }
-            }
-            canvas.width = targetWidth, canvas.height = targetHeight;
-            context.clearRect(0, 0, targetWidth, targetHeight);
-            context.drawImage(this, 0, 0, targetWidth, targetHeight);
-            defer.resolve(canvas.toDataURL('image/jpeg', option.quality || 0.9));
-        };
-        return defer.promise();
-    }
 
     /**
      * 上传状态提示扩展插件
