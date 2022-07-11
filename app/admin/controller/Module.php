@@ -64,7 +64,7 @@ class Module extends Controller
             $pattern = "|^(\d{4})\.(\d{2})\.(\d{2})\.(\d+)$|";
             $this->module['change'] = array_reverse($this->module['change']);
             foreach ($this->module['change'] as $version => &$change) {
-                $change = ['content' => $change, 'version' => preg_replace($pattern, '$1年$2月$3日 第 $4 次更新', $version)];
+                $change = ['content' => $change, 'version' => preg_replace($pattern, '$1年$2月$3日 更新', $version)];
             }
             $this->fetch();
         } else {
