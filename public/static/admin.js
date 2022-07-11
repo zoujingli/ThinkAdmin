@@ -584,11 +584,7 @@ $(function () {
         return this.each(function () {
             if ($(this).data('inited')) return true; else $(this).data('inited', true);
             var $in = $(this), $bt = $('<a data-file class="uploadimage uploadvideo"><span class="layui-icon">&#x1006;</span><span class="layui-icon">&#xe615;</span></a>').data('input', this);
-            $bt.attr('data-size', $in.data('size') || 0).attr('data-type', $in.data('type') || 'mp4')
-                .attr('data-max-width', $in.data('max-width'))
-                .attr('data-max-height', $in.data('max-height'))
-
-                .find('span').on('click', function (event) {
+            $bt.attr('data-size', $in.data('size') || 0).attr('data-type', $in.data('type') || 'mp4').find('span').on('click', function (event) {
                 event.stopPropagation();
                 if ($(this).index() === 0) $bt.attr('style', ''), $in.val(''); else $in.val() && $.previewImage(encodeURI($in.val()));
             }), $in.on('change', function () {
@@ -611,7 +607,8 @@ $(function () {
                 event.stopPropagation(), $bt.attr('style', ''), $in.val('');
             }).find('[data-file]').data('input', this).attr({
                 'data-size': $in.data('size') || 0, 'data-type': $in.data('type') || 'gif,png,jpg,jpeg',
-                'data-max-width': $in.data('max-width') || 0, 'data-max-height': $in.data('max-height') || 0
+                'data-max-width': $in.data('max-width') || 0, 'data-max-height': $in.data('max-height') || 0,
+                'data-cut-width': $in.data('cut-width') || 0, 'data-cut-height': $in.data('cut-height') || 0,
             });
         });
     };
@@ -624,7 +621,8 @@ $(function () {
             var ims = this.value ? this.value.split('|') : [], $in = $(this).after($bt);
             $bt.find('[data-file]').attr({
                 'data-size': $in.data('size') || 0, 'data-type': $in.data('type') || 'gif,png,jpg,jpeg',
-                'data-max-width': $in.data('max-width') || 0, 'data-max-height': $in.data('max-height') || 0
+                'data-max-width': $in.data('max-width') || 0, 'data-max-height': $in.data('max-height') || 0,
+                'data-cut-width': $in.data('cut-width') || 0, 'data-cut-height': $in.data('cut-height') || 0,
             }).on('push', function (evt, src) {
                 ims.push(src), $in.val(ims.join('|')), showImageContainer([src]);
             }) && (ims.length > 0 && showImageContainer(ims));

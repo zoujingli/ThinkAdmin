@@ -15,6 +15,8 @@ define(['md5', 'notify'], function (SparkMD5, Notify, allowMime) {
             this.option.quality = parseFloat(this.option.elem.data('quality') || '1.0');
             this.option.maxWidth = parseInt(this.option.elem.data('max-width') || '0');
             this.option.maxHeight = parseInt(this.option.elem.data('max-height') || '0');
+            this.option.cutHeight = parseInt(this.option.elem.data('cut-height') || '0');
+            this.option.cutHeight = parseInt(this.option.elem.data('cut-height') || '0');
 
             /*! 查找表单元素, 如果没有找到将不会自动写值 */
             if (!this.option.elem.data('input') && this.option.elem.data('field')) {
@@ -36,6 +38,8 @@ define(['md5', 'notify'], function (SparkMD5, Notify, allowMime) {
                         file.quality = that.option.quality;
                         file.maxWidth = that.option.maxWidth;
                         file.maxHeight = that.option.maxHeight;
+                        file.cutWidth = that.option.cutWidth;
+                        file.cutHeight = that.option.cutHeight;
                     });
                     that.adapter.event('upload.choose', obj.items);
                     that.adapter.upload(obj.items, done);
@@ -75,10 +79,10 @@ define(['md5', 'notify'], function (SparkMD5, Notify, allowMime) {
             // 禁传异常状态文件
             if (typeof file.xstate === 'number' && file.xstate === -1) return;
             // 图片限宽限高压缩
-            if (/^image\//.test(file.type) && (file.maxWidth > 0 || file.maxHeight > 0 || file.quality !== 1)) {
+            if (/^image\//.test(file.type) && (file.maxWidth + file.maxHeight + file.cutWidth + file.cutHeight > 0 || file.quality !== 1)) {
                 require(['compressor'], function (Compressor) {
                     new Compressor(file, {
-                        quality: file.quality, maxWidth: file.maxWidth, maxHeight: file.maxHeight, success(blob) {
+                        quality: file.quality, resize: 'cover', width: file.cutWidth || 0, height: file.cutHeight || 0, maxWidth: file.maxWidth, maxHeight: file.maxHeight, success(blob) {
                             files[index] = blob, blob.index = file.index, files[index].notify = file.notify;
                             that.hash(files[index]).then(function (file) {
                                 that.event('upload.hash', file).request(file, done);
