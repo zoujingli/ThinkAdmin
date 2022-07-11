@@ -40,7 +40,7 @@ if (typeof Array.prototype.forEach !== 'function') {
 var srcs = document.scripts[document.scripts.length - 1].src.split('/');
 window.appRoot = srcs.slice(0, -2).join('/') + '/';
 window.baseRoot = srcs.slice(0, -1).join('/') + '/';
-window.tapiRoot = window.tapiRoot || window.appRoot + "admin";
+window.tapiRoot = window.taAdmin || window.appRoot + "admin";
 
 /*! 挂载 layui & jquery 对象 */
 layui.config({base: baseRoot + 'plugs/layui_exts/'});

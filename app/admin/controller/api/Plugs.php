@@ -49,11 +49,11 @@ class Plugs extends Controller
     {
         $debug = $this->app->isDebug() ? 'true' : 'false';
         $editor = sysconf("base.editor") ?: "ckeditor4";
-        $taroot = sysuri("admin/index/index", [], false);
+        $taRoot = sysuri("admin/index/index", [], false);
         return response(join("\n", [
             "window.taDebug = {$debug};",
+            "window.taAdmin = '{$taRoot}';",
             "window.taEditor = '{$editor}';",
-            "window.tapiRoot = '{$taroot}';",
         ]))->header([
             'Content-Type' => 'application/x-javascript'
         ]);
