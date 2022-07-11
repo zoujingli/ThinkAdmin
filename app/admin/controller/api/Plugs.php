@@ -35,7 +35,7 @@ class Plugs extends Controller
     {
         $this->title = '图标选择器';
         $this->field = $this->app->request->get('field', 'icon');
-        $this->fetch('api/icon');
+        $this->fetch(realpath(__DIR__ . '/../../view/api/icon.html'));
     }
 
     /**
