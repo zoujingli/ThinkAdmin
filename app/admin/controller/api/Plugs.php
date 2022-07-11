@@ -47,16 +47,14 @@ class Plugs extends Controller
      */
     public function script(): \think\Response
     {
-        $debug = $this->app->isDebug() ? 'true' : 'false';
-        $editor = sysconf("base.editor") ?: "ckeditor4";
-        $taRoot = sysuri("admin/index/index", [], false);
+        $taDebug = $this->app->isDebug() ? 'true' : 'false';
+        $taAdmin = sysuri('admin/index/index', [], false);
+        $taEditor = sysconf('base.editor') ?: 'ckeditor4';
         return response(join("\n", [
-            "window.taDebug = {$debug};",
-            "window.taAdmin = '{$taRoot}';",
-            "window.taEditor = '{$editor}';",
-        ]))->header([
-            'Content-Type' => 'application/x-javascript'
-        ]);
+            "window.taDebug = {$taDebug};",
+            "window.taAdmin = '{$taAdmin}';",
+            "window.taEditor = '{$taEditor}';",
+        ]))->contentType('application/x-javascript');
     }
 
     /**
