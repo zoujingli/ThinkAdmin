@@ -35,7 +35,28 @@ class Plugs extends Controller
     {
         $this->title = '图标选择器';
         $this->field = $this->app->request->get('field', 'icon');
-        $this->fetch(realpath(__DIR__ . '/../../view/api/icon.html'));
+        $this->fetch('api/icon');
+    }
+
+    /**
+     * 前端脚本变量
+     * @return \think\Response
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\DbException
+     * @throws \think\db\exception\ModelNotFoundException
+     */
+    public function script(): \think\Response
+    {
+        $debug = $this->app->isDebug() ? 'true' : 'false';
+        $editor = sysconf("base.editor") ?: "ckeditor4";
+        $taroot = sysuri("admin/index/index", [], false);
+        return response(join("\n", [
+            "window.taDebug = {$debug};",
+            "window.taEditor = '{$editor}';",
+            "window.tapiRoot = '{$taroot}';",
+        ]))->header([
+            'Content-Type' => 'application/x-javascript'
+        ]);
     }
 
     /**
