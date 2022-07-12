@@ -983,9 +983,22 @@ input:not(.layui-hide,[type=hidden]) {
     border-radius: @BoxBorderRadius;
 
     .uploadimage {
-      margin: 0;
       width: 145px;
       height: 145px;
+      margin: 0;
+    }
+
+    &-size {
+      top: 2px;
+      right: 1px;
+      color: #FFF;
+      padding: 0 6px;
+      position: absolute;
+      font-size: 12px;
+      transform: scale(0.9);
+      background: rgba(0, 0, 0, 0.6);
+      line-height: 20px;
+      border-radius: 20px;
     }
 
     &-name {

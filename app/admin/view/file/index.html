@@ -23,7 +23,7 @@
                 {field: 'hash', title: '文件哈希', width: '15%', align: 'center', templet: '<div><code>{{d.hash}}</code></div>'},
                 {
                     field: 'size', title: '文件大小', align: 'center', width: '8%', sort: true, templet: function (d) {
-                        return formatSize(d.size)
+                        return $.formatFileSize(d.size)
                     }
                 },
                 {field: 'xext', title: '文件后缀', align: 'center', width: '8%', sort: true},
@@ -47,13 +47,6 @@
             ]]
         });
     });
-
-    function formatSize(size, fixed, units) {
-        var unit;
-        units = units || ['B', 'K', 'M', 'G', 'TB'];
-        while ((unit = units.shift()) && size > 1024) size = size / 1024;
-        return (unit === 'B' ? size : size.toFixed(fixed === undefined ? 2 : fixed)) + unit;
-    }
 </script>
 
 <script type="text/html" id="toolbar">

@@ -12,6 +12,7 @@
         <div class="image-dialog-item" v-for="x in list" @click="setItem(x)" style="display:none" v-show="show" :class="{'image-dialog-checked':x.checked}">
             <div class="uploadimage" :style="x.style"></div>
             <p class="image-dialog-item-name layui-elip" v-text="x.name"></p>
+            <span class="image-dialog-item-size">{{formatSize(x.size)}}</span>
         </div>
     </div>
     <div class="image-dialog-foot">
@@ -48,6 +49,10 @@
                     this.data.forEach(function (file) {
                         app.setValue(file.xurl);
                     }), this.setInput();
+                },
+                // 格式文件大小
+                formatSize: function (size) {
+                    return $.formatFileSize(size);
                 },
                 // 设置单项数据
                 setItem: function (item) {

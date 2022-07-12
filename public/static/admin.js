@@ -785,6 +785,14 @@ $(function () {
         };
     };
 
+    /*！格式化文件大小 */
+    $.formatFileSize = function (size, fixed, units) {
+        var unit;
+        units = units || ['B', 'K', 'M', 'G', 'TB'];
+        while ((unit = units.shift()) && size > 1024) size = size / 1024;
+        return (unit === 'B' ? size : size.toFixed(fixed === undefined ? 2 : fixed)) + unit;
+    }
+
     /*! 弹出图片层 */
     $.previewImage = function (src, area) {
         var img = new Image(), defer = $.Deferred(), loaded = $.msg.loading();
