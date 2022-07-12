@@ -23,11 +23,22 @@
                     <h3 class="layui-timeline-title">
                         版本号 {$version} <span class="margin-left-10 font-s13 color-desc">{$change.version|default=''}</span>
                     </h3>
-                    {$change.content|default=''|raw}
+                    <div data-marked>
+                        {$change.content|default=''|raw}
+                    </div>
                 </div>
             </li>
             {/foreach}
             <li class="layui-timeline-item"></li>
         </ul>
     </div>
+
+    <script>
+        require(['marked'], function (marked) {
+            $('[data-marked]').map(function () {
+                if (this.marked) return; else this.marked = true;
+                this.innerHTML = marked.parse(this.innerHTML);
+            });
+        });
+    </script>
 </form>
