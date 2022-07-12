@@ -80,4 +80,18 @@ class File extends Controller
     {
         SystemFile::mDelete();
     }
+
+    /**
+     * 清理重复文件
+     * @auth true
+     * @return void
+     */
+    public function distinct()
+    {
+        $map = ['uuid' => AdminService::getUserId()];
+        $db1 = SystemFile::mk()->fieldRaw('max(id) id')->where($map)->group('hash');
+        $db2 = $this->app->db->table($db1->buildSql())->alias('dt')->field('id');
+        SystemFile::mk()->whereRaw("id not in {$db2->buildSql()}")->delete();
+        $this->success('清理重复文件记录');
+    }
 }
