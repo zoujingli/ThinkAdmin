@@ -153,7 +153,8 @@ class Upload extends Controller
         SystemFile::mQuery()->layTable(function () {
             $this->title = '文件选择器';
         }, function (QueryHelper $query) {
-            $query->like('name,hash')->dateBetween('create_at')->order('id desc');
+            $query->like('name,hash')->dateBetween('create_at');
+            $query->whereLike('mime', 'image/%')->order('id desc');
             $query->where(['status' => 2, 'issafe' => 0, 'uuid' => AdminService::getUserId()]);
         });
     }
