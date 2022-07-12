@@ -13,11 +13,12 @@
             <div class="uploadimage" :style="x.style"></div>
             <p class="image-dialog-item-name layui-elip" v-text="x.name"></p>
             <span class="image-dialog-item-size">{{formatSize(x.size)}}</span>
+            <span class="image-dialog-item-type">{{x.xext.toUpperCase()}}</span>
         </div>
     </div>
     <div class="image-dialog-foot">
         <div id="ImageDialogPage" class="image-dialog-page"></div>
-        <div id="ImageDialogButton" class="image-dialog-button" v-if="data.length>0" @click="confirm">{{ data.length }}</div>
+        <div id="ImageDialogButton layui-hide" class="image-dialog-button" v-if="data.length>0" @click="confirm">{{ data.length }}</div>
     </div>
 </div>
 
@@ -35,7 +36,9 @@
                 this.$btn = $('#{$get.id|default=""}');
                 this.$ups = $('#ImageDialogUploadLayout [data-file]');
                 this.mult = "{$get.file|default='image'}" === 'images';
-                this.loadPage();
+                this.loadPage(), setTimeout(function () {
+                    $('#ImageDialogButton').removeClass('layui-hide');
+                }, 1000);
             },
             methods: {
                 // 搜索刷新数据
@@ -101,6 +104,7 @@
                 // 加载页面数据
                 loadPage: function () {
                     this.params = {page: this.page, limit: this.limit, output: 'layui.table', name: this.keys || ''};
+                    this.params.type = '{$get.type|default="png,jpg,jpeg"}';
                     $.form.load('{:url("image")}', this.params, 'get', function (ret) {
                         return app.setList(ret.data, ret.count), false;
                     });
