@@ -12,6 +12,7 @@ use app\data\service\payment\JoinpayPaymentService;
 use app\data\service\payment\VoucherPaymentService;
 use app\data\service\payment\WechatPaymentService;
 use think\admin\Exception;
+use think\admin\Library;
 use think\App;
 
 /**
@@ -174,22 +175,22 @@ abstract class PaymentService
     {
         if ($code === 'empty') {
             $vars = ['code' => 'empty', 'type' => 'empty', 'params' => []];
-            return static::$driver[$code] = app()->make(EmptyPaymentService::class, $vars);
+            return static::$driver[$code] = Library::$sapp->make(EmptyPaymentService::class, $vars);
         }
         [, $type, $params] = self::config($code);
         if (isset(static::$driver[$code])) return static::$driver[$code];
         $vars = ['code' => $code, 'type' => $type, 'params' => $params];
         // 实例化具体支付参数类型
         if (stripos($type, 'balance') === 0) {
-            return static::$driver[$code] = app()->make(BalancePyamentService::class, $vars);
+            return static::$driver[$code] = Library::$sapp->make(BalancePyamentService::class, $vars);
         } elseif (stripos($type, 'voucher') === 0) {
-            return static::$driver[$code] = app()->make(VoucherPaymentService::class, $vars);
+            return static::$driver[$code] = Library::$sapp->make(VoucherPaymentService::class, $vars);
         } elseif (stripos($type, 'alipay_') === 0) {
-            return static::$driver[$code] = app()->make(AlipayPaymentService::class, $vars);
+            return static::$driver[$code] = Library::$sapp->make(AlipayPaymentService::class, $vars);
         } elseif (stripos($type, 'wechat_') === 0) {
-            return static::$driver[$code] = app()->make(WechatPaymentService::class, $vars);
+            return static::$driver[$code] = Library::$sapp->make(WechatPaymentService::class, $vars);
         } elseif (stripos($type, 'joinpay_') === 0) {
-            return static::$driver[$code] = app()->make(JoinpayPaymentService::class, $vars);
+            return static::$driver[$code] = Library::$sapp->make(JoinpayPaymentService::class, $vars);
         } else {
             throw new Exception(sprintf('支付驱动[%s]未定义', $type));
         }

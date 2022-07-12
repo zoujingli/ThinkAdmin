@@ -54,7 +54,7 @@ class UserTokenService extends Service
     private static function buildVerify(): string
     {
         return md5('-');
-        // return md5(app()->request->server('HTTP_USER_AGENT', '-'));
+        //return md5(Library::$sapp->request->server('HTTP_USER_AGENT', '-'));
     }
 
     /**
