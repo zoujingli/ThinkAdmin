@@ -17,14 +17,15 @@
 use app\wechat\command\Auto;
 use app\wechat\command\Fans;
 use app\wechat\service\AutoService;
+use think\admin\Library;
 use think\Console;
 
-if (app()->request->isCli()) {
+if (Library::$sapp->request->isCli()) {
     Console::starting(function (Console $console) {
         $console->addCommands([Fans::class, Auto::class]);
     });
 } else {
-    app()->event->listen('WechatFansSubscribe', function ($openid) {
+    Library::$sapp->event->listen('WechatFansSubscribe', function ($openid) {
         AutoService::register($openid);
     });
 }

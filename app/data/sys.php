@@ -9,11 +9,10 @@ use app\data\service\OrderService;
 use app\data\service\RebateService;
 use app\data\service\UserBalanceService;
 use app\data\service\UserRebateService;
+use think\admin\Library;
 use think\Console;
 
-$app = app();
-
-if ($app->request->isCli()) {
+if (Library::$sapp->request->isCli()) {
     // 动态注册操作指令
     Console::starting(function (Console $console) {
         $console->addCommand(OrderClean::class);
@@ -24,21 +23,21 @@ if ($app->request->isCli()) {
     });
 } else {
     // 注册订单支付处理事件
-    $app->event->listen('ShopOrderPayment', function ($orderNo) use ($app) {
+    Library::$sapp->event->listen('ShopOrderPayment', function ($orderNo) {
 
-        $app->log->notice("订单 {$orderNo} 支付事件，执行用户返利行为");
+        Library::$sapp->log->notice("订单 {$orderNo} 支付事件，执行用户返利行为");
         RebateService::instance()->execute($orderNo);
 
-        $app->log->notice("订单 {$orderNo} 支付事件，执行发放余额行为");
+        Library::$sapp->log->notice("订单 {$orderNo} 支付事件，执行发放余额行为");
         UserBalanceService::confirm($orderNo);
 
-        $app->log->notice("订单 {$orderNo} 支付事件，执行用户升级行为");
+        Library::$sapp->log->notice("订单 {$orderNo} 支付事件，执行用户升级行为");
         OrderService::upgrade($orderNo);
     });
 
     // 注册订单确认支付事件
-    $app->event->listen('ShopOrderConfirm', function ($orderNo) use ($app) {
-        $app->log->notice("订单 {$orderNo} 确认事件，执行返利确认行为");
+    Library::$sapp->event->listen('ShopOrderConfirm', function ($orderNo) {
+        Library::$sapp->log->notice("订单 {$orderNo} 确认事件，执行返利确认行为");
         UserRebateService::confirm($orderNo);
     });
 }
