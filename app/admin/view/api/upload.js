@@ -11,6 +11,7 @@ define(['md5', 'notify'], function (SparkMD5, Notify, allowMime) {
             this.option.safe = this.option.elem.data('safe') ? 1 : 0;
             this.option.hide = this.option.elem.data('hload') ? 1 : 0;
             this.option.mult = this.option.elem.data('multiple') > 0;
+            this.option.path = (this.option.elem.data('path') || '').replace(/\W/g, '');
             this.option.type = this.option.safe ? 'local' : this.option.elem.attr('data-uptype') || '';
             this.option.quality = parseFloat(this.option.elem.data('quality') || '1.0');
             this.option.maxWidth = parseInt(this.option.elem.data('max-width') || '0');
@@ -35,6 +36,7 @@ define(['md5', 'notify'], function (SparkMD5, Notify, allowMime) {
                     obj.items = [], obj.files = obj.pushFile();
                     layui.each(obj.files, function (idx, file) {
                         obj.items.push(file);
+                        file.path = that.option.path;
                         file.quality = that.option.quality;
                         file.maxWidth = that.option.maxWidth;
                         file.maxHeight = that.option.maxHeight;
@@ -83,7 +85,7 @@ define(['md5', 'notify'], function (SparkMD5, Notify, allowMime) {
                 require(['compressor'], function (Compressor) {
                     new Compressor(file, {
                         quality: file.quality, resize: 'cover', width: file.cutWidth || 0, height: file.cutHeight || 0, maxWidth: file.maxWidth, maxHeight: file.maxHeight, success(blob) {
-                            files[index] = blob, blob.index = file.index, files[index].notify = file.notify;
+                            blob.index = file.index, blob.notify = file.notify, blob.path = file.path, files[index] = blob;
                             that.hash(files[index]).then(function (file) {
                                 that.event('upload.hash', file).request(file, done);
                             });
@@ -247,6 +249,7 @@ define(['md5', 'notify'], function (SparkMD5, Notify, allowMime) {
         function SetFileXdata(file, xmd5, slice) {
             file.xmd5 = xmd5, file.xstate = 0, file.xstats = '';
             file.xkey = file.xmd5.substring(0, slice || 2) + '/' + file.xmd5.substring(slice || 2) + '.' + file.xext;
+            if (file.path) file.xkey = file.path + '/' + file.xkey;
             return defer.resolve(file, file.xmd5, file.xkey), file;
         }
 
