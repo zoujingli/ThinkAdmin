@@ -607,6 +607,7 @@ $(function () {
             }).on('click', 'i.layui-icon-close', function (event) {
                 event.stopPropagation(), $bt.attr('style', ''), $in.val('');
             }).find('[data-file]').data('input', this).attr({
+                'data-path': $in.data('path') || '',
                 'data-size': $in.data('size') || 0, 'data-type': $in.data('type') || 'gif,png,jpg,jpeg',
                 'data-max-width': $in.data('max-width') || 0, 'data-max-height': $in.data('max-height') || 0,
                 'data-cut-width': $in.data('cut-width') || 0, 'data-cut-height': $in.data('cut-height') || 0,
@@ -621,6 +622,7 @@ $(function () {
             var $bt = $('<div class="uploadimage"><span><a data-file="mul" class="layui-icon layui-icon-upload-drag"></a></span><span data-file="images"></span></div>');
             var ims = this.value ? this.value.split('|') : [], $in = $(this).after($bt);
             $bt.find('[data-file]').attr({
+                'data-path': $in.data('path') || '',
                 'data-size': $in.data('size') || 0, 'data-type': $in.data('type') || 'gif,png,jpg,jpeg',
                 'data-max-width': $in.data('max-width') || 0, 'data-max-height': $in.data('max-height') || 0,
                 'data-cut-width': $in.data('cut-width') || 0, 'data-cut-height': $in.data('cut-height') || 0,
