@@ -774,7 +774,7 @@ $(function () {
                 if (sort.field && sort.type) {
                     data['_order_'] = sort.type, data['_field_'] = sort.field;
                     options.initSort = {type: sort.type.split(',')[0].split(' ')[0], field: sort.field.split(',')[0].split(' ')[0]};
-                    if (sform) $(sform).find('[data-form-export]').attr('data-sort-field', sort.field).attr('data-sort-type', sort.type);
+                    if (sform) $(sform).find('[data-form-export]').attr({'data-sort-type': sort.type, 'data-sort-field': sort.field});
                 }
                 if (options.page === false) options.limit = '';
                 return (options['where'] = data), options;
