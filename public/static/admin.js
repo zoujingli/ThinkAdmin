@@ -241,7 +241,12 @@ $(function () {
                 return url ? location.href = url : $.form.reload();
             } else return (parseInt(ret.code) === 1) ? this.success(msg, time, function () {
                 url ? location.href = url : $.form.reload();
-                that.close($.msg.mdx.length > 0 ? $.msg.mdx.pop() : null);
+                that.close(function (idx) {
+                    while ($.msg.mdx.length > 0 && (idx = $.msg.mdx.pop())) {
+                        if ($('#layui-layer' + idx).size()) return idx;
+                    }
+                    return null;
+                }());
             }) : this.error(msg, 3, function () {
                 url ? location.href = url : '';
             });
