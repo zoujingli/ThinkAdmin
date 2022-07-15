@@ -459,7 +459,7 @@ $(function () {
             this.form = $(form);
             /* 绑定元素事件, 筛选表单元素 */
             this.evts = 'blur change';
-            this.tags = 'input,select,textarea';
+            this.tags = 'input,textarea';
             /* 预设检测规则 */
             this.patterns = {
                 phone: '^1[3-9][0-9]{9}$', email: '^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$'
