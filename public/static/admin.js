@@ -114,11 +114,11 @@ $(function () {
 
     /*! 注册确认回调 */
     function onConfirm(confirm, callable) {
-        confirm ? $.msg.confirm(confirm, callable) : callable();
+        return confirm ? $.msg.confirm(confirm, callable) : callable();
     }
 
     /*! 获取加载回调 */
-    onConfirm.getLoadcallable = function (tabldId, callable) {
+    onConfirm.getLoadCallable = function (tabldId, callable) {
         typeof callable === 'function' && callable();
         return tabldId ? function (ret, time) {
             if (ret.code < 1) return true;
@@ -129,8 +129,8 @@ $(function () {
         } : false;
     }
 
-    /*! 读取 data-rule 绑定 table 值 */
-    function applyRuleValue(elem, data) {
+    /*! 读取 data-value & data-rule 并应用到 callable */
+    function applyRuleValue(elem, data, callabel) {
         // 新 tableId 规则兼容处理
         if (elem.dataset.tableId && elem.dataset.rule) {
             var idx1, idx2, temp, regx, field, rule = {};
@@ -148,8 +148,10 @@ $(function () {
                     data[idx1] = rule[idx1];
                 }
             }
-            return data;
-        } else {
+            return onConfirm(elem.dataset.confirm, function () {
+                return callabel.call(elem, data);
+            });
+        } else if (elem.dataset.value || elem.dataset.rule) {
             var value = elem.dataset.value || (function (rule, array) {
                 $(elem.dataset.target || 'input[type=checkbox].list-check-box').map(function () {
                     this.checked && array.push(this.value);
@@ -157,9 +159,16 @@ $(function () {
                 return array.length > 0 ? rule.replace('{key}', array.join(',')) : '';
             })(elem.dataset.rule || '', []) || '';
             if (value.length < 1) return $.msg.tips('请选择需要更改的数据！'), false;
-            return value.split(';').forEach(function (item) {
+            value.split(';').forEach(function (item) {
                 data[item.split('#')[0]] = item.split('#')[1];
-            }), data;
+            });
+            return onConfirm(elem.dataset.confirm, function () {
+                return callabel.call(elem, data);
+            });
+        } else {
+            return onConfirm(elem.dataset.confirm, function () {
+                return callabel.call(elem, data);
+            });
         }
     }
 
@@ -898,8 +907,8 @@ $(function () {
     /*! 注册 data-load 事件行为 */
     onEvent('click', '[data-load]', function () {
         var emap = this.dataset, data = {};
-        (!emap.rule || applyRuleValue(this, data) !== false) && onConfirm(emap.confirm, function () {
-            $.form.load(emap.load, data, 'get', onConfirm.getLoadcallable(emap.tableId), true, emap.tips, emap.time);
+        return applyRuleValue(this, data, function () {
+            $.form.load(emap.load, data, 'get', onConfirm.getLoadCallable(emap.tableId), true, emap.tips, emap.time);
         });
     });
 
@@ -962,28 +971,30 @@ $(function () {
     onEvent('click', '[data-action]', function () {
         var emap = this.dataset, data = {'_token_': emap.token || emap.csrf || '--'};
         var load = emap.loading !== 'false', tips = typeof load === 'string' ? load : undefined;
-        (!emap.rule || applyRuleValue(this, data) !== false) && onConfirm(emap.confirm, function () {
-            $.form.load(emap.action, data, emap.method || 'post', onConfirm.getLoadcallable(emap.tableId), load, tips, emap.time)
+        return applyRuleValue(this, data, function () {
+            $.form.load(emap.action, data, emap.method || 'post', onConfirm.getLoadCallable(emap.tableId), load, tips, emap.time)
         });
     });
 
     /*! 注册 data-modal 事件行为 */
     onEvent('click', '[data-modal]', function () {
         var un = undefined, emap = this.dataset, data = {open_type: 'modal'};
-        if (emap.rule && applyRuleValue(this, data) === false) return false;
-        return $.form.modal(emap.modal, data, emap.title || this.innerText || '编辑', un, un, un, emap.area || emap.width || '800px', emap.offset || 'auto', emap.full !== un);
+        return applyRuleValue(this, data, function () {
+            return $.form.modal(emap.modal, data, emap.title || this.innerText || '编辑', un, un, un, emap.area || emap.width || '800px', emap.offset || 'auto', emap.full !== un);
+        })
     });
 
     /*! 注册 data-iframe 事件行为 */
     onEvent('click', '[data-iframe]', function () {
         var emap = this.dataset, data = {open_type: 'iframe'};
-        if (emap.rule && applyRuleValue(this, data) === false) return;
         var name = emap.title || this.innerText || 'IFRAME 窗口';
         var area = emap.area || [emap.width || '800px', emap.height || '580px'];
         var frame = emap.iframe + (emap.iframe.indexOf('?') > -1 ? '&' : '?') + $.param(data);
-        $(this).attr('data-index', $.form.iframe(frame, name, area, emap.offset || 'auto', function () {
-            typeof emap.refresh !== 'undefined' && $.layTable.reload(emap.tableId || true);
-        }, undefined, emap.full !== undefined));
+        return applyRuleValue(this, data, function () {
+            $(this).attr('data-index', $.form.iframe(frame, name, area, emap.offset || 'auto', function () {
+                typeof emap.refresh !== 'undefined' && $.layTable.reload(emap.tableId || true);
+            }, undefined, emap.full !== undefined));
+        })
     });
 
     /*! 注册 data-icon 事件行为 */
