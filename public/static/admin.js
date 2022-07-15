@@ -562,7 +562,9 @@ $(function () {
             var key, keys = this.name.match(rules.key), merge = this.value, name = this.name;
             while ((key = keys.pop()) !== undefined) {
                 name = name.replace(new RegExp("\\[" + key + "\\]$"), '');
-                if (key.match(rules.push)) merge = self.build([], self.pushCounter(name), merge); else if (key.match(rules.fixed)) merge = self.build([], key, merge); else if (key.match(rules.named)) merge = self.build({}, key, merge);
+                if (key.match(rules.push)) merge = self.build([], self.pushCounter(name), merge);
+                else if (key.match(rules.fixed)) merge = self.build([], key, merge);
+                else if (key.match(rules.named)) merge = self.build({}, key, merge);
             }
             data = $.extend(true, data, merge);
         });
@@ -571,11 +573,13 @@ $(function () {
 
     /*! 全局文件上传 */
     $.fn.uploadFile = function (callable, initialize) {
-        return this.each(function () {
-            if ($(this).data('inited')) return false;
-            var that = $(this), mult = '|one|btn|'.indexOf(that.data('file') || 'one') > -1 ? 0 : 1;
-            that.data('inited', true).data('multiple', mult), require(['upload'], function (apply) {
-                apply(that, callable), (typeof initialize === 'function' && setTimeout(initialize, 100));
+        return this.each(function (idx, elem) {
+            if (elem.dataset.inited) return false; else elem.dataset.inited = 'true';
+            elem.dataset.multiple = '|one|btn|'.indexOf(elem.dataset.file || 'one') > -1 ? '0' : '1';
+            require(['upload'], function (apply) {
+                apply(elem, callable), setTimeout(function () {
+                    typeof initialize === 'function' && initialize.call(elem, elem);
+                }, 100);
             });
         });
     };
@@ -597,7 +601,7 @@ $(function () {
     /*! 上传单张图片 */
     $.fn.uploadOneImage = function () {
         return this.each(function () {
-            if ($(this).data('inited')) return true; else $(this).data('inited', true);
+            if (this.dataset.inited) return; else this.dataset.inited = 'true';
             var $bt = $('<div class="uploadimage"><span><a data-file class="layui-icon layui-icon-upload-drag"></a><i class="layui-icon layui-icon-search"></i><i class="layui-icon layui-icon-close"></i></span><span data-file="image"></span></div>');
             var $in = $(this).on('change', function () {
                 if (this.value) $bt.css('backgroundImage', 'url(' + encodeURI(this.value) + ')');
@@ -607,10 +611,7 @@ $(function () {
             }).on('click', 'i.layui-icon-close', function (event) {
                 event.stopPropagation(), $bt.attr('style', ''), $in.val('');
             }).find('[data-file]').data('input', this).attr({
-                'data-path': $in.data('path') || '',
-                'data-size': $in.data('size') || 0, 'data-type': $in.data('type') || 'gif,png,jpg,jpeg',
-                'data-max-width': $in.data('max-width') || 0, 'data-max-height': $in.data('max-height') || 0,
-                'data-cut-width': $in.data('cut-width') || 0, 'data-cut-height': $in.data('cut-height') || 0,
+                'data-path': $in.data('path') || '', 'data-size': $in.data('size') || 0, 'data-type': $in.data('type') || 'gif,png,jpg,jpeg', 'data-max-width': $in.data('max-width') || 0, 'data-max-height': $in.data('max-height') || 0, 'data-cut-width': $in.data('cut-width') || 0, 'data-cut-height': $in.data('cut-height') || 0,
             });
         });
     };
@@ -618,14 +619,11 @@ $(function () {
     /*! 上传多张图片 */
     $.fn.uploadMultipleImage = function () {
         return this.each(function () {
-            if ($(this).data('inited')) return true; else $(this).data('inited', true);
+            if (this.dataset.inited) return; else this.dataset.inited = 'true';
             var $bt = $('<div class="uploadimage"><span><a data-file="mul" class="layui-icon layui-icon-upload-drag"></a></span><span data-file="images"></span></div>');
             var ims = this.value ? this.value.split('|') : [], $in = $(this).after($bt);
             $bt.find('[data-file]').attr({
-                'data-path': $in.data('path') || '',
-                'data-size': $in.data('size') || 0, 'data-type': $in.data('type') || 'gif,png,jpg,jpeg',
-                'data-max-width': $in.data('max-width') || 0, 'data-max-height': $in.data('max-height') || 0,
-                'data-cut-width': $in.data('cut-width') || 0, 'data-cut-height': $in.data('cut-height') || 0,
+                'data-path': $in.data('path') || '', 'data-size': $in.data('size') || 0, 'data-type': $in.data('type') || 'gif,png,jpg,jpeg', 'data-max-width': $in.data('max-width') || 0, 'data-max-height': $in.data('max-height') || 0, 'data-cut-width': $in.data('cut-width') || 0, 'data-cut-height': $in.data('cut-height') || 0,
             }).on('push', function (evt, src) {
                 ims.push(src), $in.val(ims.join('|')), showImageContainer([src]);
             }) && (ims.length > 0 && showImageContainer(ims));
@@ -635,9 +633,7 @@ $(function () {
                     $img = $('<div class="uploadimage uploadimagemtl"><div><a class="layui-icon">&#xe603;</a><a class="layui-icon">&#x1006;</a><a class="layui-icon">&#xe602;</a></div></div>');
                     $img.attr('data-tips-image', encodeURI(src)).css('backgroundImage', 'url(' + encodeURI(src) + ')').on('click', 'a', function (event, index, prevs, $item) {
                         event.stopPropagation(), $item = $(this).parent().parent(), index = $(this).index();
-                        if (index === 2 && $item.index() !== $bt.prevAll('div.uploadimage').length) $item.next().after($item);
-                        else if (index === 0 && $item.index() > 1) $item.prev().before($item);
-                        else if (index === 1) $item.remove();
+                        if (index === 2 && $item.index() !== $bt.prevAll('div.uploadimage').length) $item.next().after($item); else if (index === 0 && $item.index() > 1) $item.prev().before($item); else if (index === 1) $item.remove();
                         ims = [], $bt.prevAll('.uploadimage').map(function () {
                             ims.push($(this).attr('data-tips-image'));
                         });
@@ -894,17 +890,15 @@ $(function () {
             return $.form.modal(tapiRoot + '/api.upload/image', this.dataset, '图片选择器')
         }
         // 其他文件上传
-        if ($(this).data('inited') !== true) (function (that) {
-            that.uploadFile(undefined, function () {
-                that.trigger('upload.start');
-            });
-        })($(this));
+        if (!this.dataset.inited) $(this).uploadFile(undefined, function () {
+            $(this).trigger('upload.start');
+        });
     });
 
     /*! 注册 data-load 事件行为 */
     onEvent('click', '[data-load]', function () {
         var emap = this.dataset, data = {};
-        if (emap.rule && (applyRuleValue(this, data)) === false) return false; else onConfirm(emap.confirm, function () {
+        (!emap.rule || applyRuleValue(this, data) !== false) && onConfirm(emap.confirm, function () {
             $.form.load(emap.load, data, 'get', onConfirm.getLoadcallable(emap.tableId), true, emap.tips, emap.time);
         });
     });
@@ -968,7 +962,7 @@ $(function () {
     onEvent('click', '[data-action]', function () {
         var emap = this.dataset, data = {'_token_': emap.token || emap.csrf || '--'};
         var load = emap.loading !== 'false', tips = typeof load === 'string' ? load : undefined;
-        if ((applyRuleValue(this, data)) === false) return false; else onConfirm(emap.confirm, function () {
+        (!emap.rule || applyRuleValue(this, data) !== false) && onConfirm(emap.confirm, function () {
             $.form.load(emap.action, data, emap.method || 'post', onConfirm.getLoadcallable(emap.tableId), load, tips, emap.time)
         });
     });
@@ -976,14 +970,14 @@ $(function () {
     /*! 注册 data-modal 事件行为 */
     onEvent('click', '[data-modal]', function () {
         var un = undefined, emap = this.dataset, data = {open_type: 'modal'};
-        if (emap.rule && (applyRuleValue(this, data)) === false) return false;
+        if (emap.rule && applyRuleValue(this, data) === false) return false;
         return $.form.modal(emap.modal, data, emap.title || this.innerText || '编辑', un, un, un, emap.area || emap.width || '800px', emap.offset || 'auto', emap.full !== un);
     });
 
     /*! 注册 data-iframe 事件行为 */
     onEvent('click', '[data-iframe]', function () {
         var emap = this.dataset, data = {open_type: 'iframe'};
-        if (emap.rule && (applyRuleValue(this, data)) === false) return false;
+        if (emap.rule && applyRuleValue(this, data) === false) return;
         var name = emap.title || this.innerText || 'IFRAME 窗口';
         var area = emap.area || [emap.width || '800px', emap.height || '580px'];
         var frame = emap.iframe + (emap.iframe.indexOf('?') > -1 ? '&' : '?') + $.param(data);
