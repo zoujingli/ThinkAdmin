@@ -253,7 +253,6 @@ $(function () {
 
     /*! 表单自动化组件 */
     $.form = new function () {
-        var that = this;
         /*! 内容区选择器 */
         this.selecter = '.layui-layout-admin>.layui-body>.think-page-body';
         /*! 刷新当前页面 */
@@ -288,7 +287,7 @@ $(function () {
         };
         /*! 在内容区显示视图 */
         this.show = function (html) {
-            that.reInit($(this.selecter).html(html));
+            $.form.reInit($(this.selecter).html(html));
         };
         /*! 异步加载的数据 */
         this.load = function (url, data, method, callable, loading, tips, time, headers) {
@@ -320,8 +319,8 @@ $(function () {
                     }
                 }, success: function (ret) {
                     time = time || ret.wait || undefined;
-                    if (typeof callable === 'function' && callable.call(that, ret, time) === false) return false;
-                    return typeof ret === 'object' ? $.msg.auto(ret, time) : that.show(ret);
+                    if (typeof callable === 'function' && callable.call($.form, ret, time) === false) return false;
+                    return typeof ret === 'object' ? $.msg.auto(ret, time) : $.form.show(ret);
                 }, complete: function () {
                     $.msg.page.done();
                     $.msg.close(loadidx);
@@ -338,7 +337,7 @@ $(function () {
         /*! 加载 HTML 到 BODY 位置 */
         this.open = function (url, data, call, load, tips) {
             this.load(url, data, 'get', function (ret) {
-                return (typeof ret === 'object' ? $.msg.auto(ret) : that.show(ret)), false;
+                return (typeof ret === 'object' ? $.msg.auto(ret) : $.form.show(ret)), false;
             }, load, tips);
         };
         /*! 打开 IFRAME 窗口 */
@@ -352,7 +351,7 @@ $(function () {
                 if (typeof res === 'object') return $.msg.auto(res), false;
                 return $.msg.mdx.push(this.idx = layer.open({
                     type: 1, btn: false, area: area || "800px", resize: false, content: res, title: name || '', offset: offset || 'auto', success: function ($dom, idx) {
-                        typeof call === 'function' && call.call(that, $dom);
+                        typeof call === 'function' && call.call($.form, $dom);
                         $.form.reInit($dom.off('click', '[data-close]').on('click', '[data-close]', function () {
                             onConfirm(this.dataset.confirm, function () {
                                 layer.close(idx);
@@ -366,7 +365,6 @@ $(function () {
 
     /*! 后台菜单辅助插件 */
     $.menu = new function () {
-        var that = this;
         /*! 计算 URL 地址中有效的 URI */
         this.getUri = function (uri) {
             uri = uri || location.href;
@@ -415,7 +413,7 @@ $(function () {
                 (layui.data('AdminMenuType')['mini'] || $body.width() < 1000) ? layout.addClass(mclass) : layout.removeClass(mclass);
             }).trigger('resize').on('hashchange', function () {
                 if (/^#(https?:)?(\/\/|\\\\)/.test(location.hash)) return $.msg.tips('禁止访问外部链接！');
-                if (location.hash.length < 1) return $body.find('[data-menu-node]:first').trigger('click'); else return that.href(location.hash);
+                if (location.hash.length < 1) return $body.find('[data-menu-node]:first').trigger('click'); else return $.menu.href(location.hash);
             }).trigger('hashchange');
         };
         /*! 同步二级菜单展示状态 */
@@ -428,10 +426,10 @@ $(function () {
         /*! 页面 LOCATION-HASH 跳转 */
         this.href = function (hash, node) {
             if ((hash || '').length < 1) return $('[data-menu-node]:first').trigger('click');
-            // $.msg.page.show(),$.form.load(hash, {}, 'get', $.msg.page.hide, true),that.sync(2);
-            $.form.load(hash, {}, 'get', false, !$.msg.page.stat()), that.sync(2);
+            // $.msg.page.show(),$.form.load(hash, {}, 'get', $.msg.page.hide, true),$.menu.sync(2);
+            $.form.load(hash, {}, 'get', false, !$.msg.page.stat()), $.menu.sync(2);
             /*! 菜单选择切换 */
-            if (/^m-/.test(node = node || that.queryNode(that.getUri()))) {
+            if (/^m-/.test(node = node || $.menu.queryNode($.menu.getUri()))) {
                 var arr = node.split('-'), tmp = arr.shift(), $all = $('a[data-menu-node]').parent('.layui-this');
                 while (arr.length > 0) {
                     tmp = tmp + '-' + arr.shift();
@@ -542,8 +540,8 @@ $(function () {
                 var call = window[emap.callable || '_default_callable'] || (taid ? function (ret) {
                     if (typeof ret === 'object' && ret.code > 0 && $('#' + taid).size() > 0) {
                         return $.msg.success(ret.info, 3, function () {
-                            (typeof ret.data === 'string' && ret.data) ? location.href = ret.data : $.layTable.reload(taid);
                             $.msg.closeLastModal();
+                            (typeof ret.data === 'string' && ret.data) ? location.href = ret.data : $.layTable.reload(taid);
                         }) && false;
                     }
                 } : undefined);
