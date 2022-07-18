@@ -174,39 +174,43 @@ $(function () {
 
     /*! 消息组件实例 */
     $.msg = new function () {
-        var that = this;
-        this.idx = [], this.mdx = [];
-        this.shade = [0.02, '#000000'];
+        this.idx = [], this.mdx = [], this.shade = [0.02, '#000000'];
+        /*! 关闭最新窗口 */
+        this.closeLastModal = function () {
+            while ($.msg.mdx.length > 0 && (this.tdx = $.msg.mdx.pop()) > 0) {
+                if ($('#layui-layer' + this.tdx).size()) return layer.close(this.tdx);
+            }
+        };
         /*! 关闭消息框 */
         this.close = function (idx) {
             if (idx !== null) return layer.close(idx);
-            for (var i in this.idx) that.close(this.idx[i]);
+            for (var i in this.idx) $.msg.close(this.idx[i]);
             this.idx = [];
         };
         /*! 弹出警告框 */
         this.alert = function (msg, call) {
             var idx = layer.alert(msg, {end: call, scrollbar: false});
-            return that.idx.push(idx), idx;
+            return $.msg.idx.push(idx), idx;
         };
         /*! 显示成功类型的消息 */
         this.success = function (msg, time, call) {
             var idx = layer.msg(msg, {icon: 1, shade: this.shade, scrollbar: false, end: call, time: (time || 2) * 1000, shadeClose: true});
-            return that.idx.push(idx), idx;
+            return $.msg.idx.push(idx), idx;
         };
         /*! 显示失败类型的消息 */
         this.error = function (msg, time, call) {
             var idx = layer.msg(msg, {icon: 2, shade: this.shade, scrollbar: false, time: (time || 3) * 1000, end: call, shadeClose: true});
-            return that.idx.push(idx), idx;
+            return $.msg.idx.push(idx), idx;
         };
         /*! 状态消息提示 */
         this.tips = function (msg, time, call) {
             var idx = layer.msg(msg, {time: (time || 3) * 1000, shade: this.shade, end: call, shadeClose: true});
-            return that.idx.push(idx), idx;
+            return $.msg.idx.push(idx), idx;
         };
         /*! 显示加载提示 */
         this.loading = function (msg, call) {
             var idx = msg ? layer.msg(msg, {icon: 16, scrollbar: false, shade: this.shade, time: 0, end: call}) : layer.load(2, {time: 0, scrollbar: false, shade: this.shade, end: call});
-            return that.idx.push(idx), idx;
+            return $.msg.idx.push(idx), idx;
         };
         /*! 页面加载层 */
         this.page = new function () {
@@ -215,22 +219,22 @@ $(function () {
             this.stat = function () {
                 return this.$body.is(':visible');
             }, this.done = function () {
-                that.page.$body.fadeOut();
+                $.msg.page.$body.fadeOut();
             }, this.show = function () {
                 this.stat() || this.$main.removeClass('layui-hide').show();
             }, this.hide = function () {
                 if (this.time) clearTimeout(this.time);
                 this.time = setTimeout(function () {
-                    (that.page.time = 0) || that.page.$main.fadeOut();
+                    ($.msg.page.time = 0) || $.msg.page.$main.fadeOut();
                 }, 200);
             };
         };
         /*! 确认对话框 */
         this.confirm = function (msg, ok, no) {
             return layer.confirm(msg, {title: '操作确认', btn: ['确认', '取消']}, function (idx) {
-                (typeof ok === 'function' && ok.call(this, idx)), that.close(idx);
+                (typeof ok === 'function' && ok.call(this, idx)), $.msg.close(idx);
             }, function (idx) {
-                (typeof no === 'function' && no.call(this, idx)), that.close(idx);
+                (typeof no === 'function' && no.call(this, idx)), $.msg.close(idx);
             });
         };
         /*! 自动处理JSON数据 */
@@ -240,13 +244,7 @@ $(function () {
             if (parseInt(ret.code) === 1 && time === 'false') {
                 return url ? location.href = url : $.form.reload();
             } else return (parseInt(ret.code) === 1) ? this.success(msg, time, function () {
-                url ? location.href = url : $.form.reload();
-                that.close(function (idx) {
-                    while ($.msg.mdx.length > 0 && (idx = $.msg.mdx.pop())) {
-                        if ($('#layui-layer' + idx).size()) return idx;
-                    }
-                    return null;
-                }());
+                $.msg.closeLastModal(url ? location.href = url : $.form.reload());
             }) : this.error(msg, 3, function () {
                 url ? location.href = url : '';
             });
@@ -545,7 +543,7 @@ $(function () {
                     if (typeof ret === 'object' && ret.code > 0 && $('#' + taid).size() > 0) {
                         return $.msg.success(ret.info, 3, function () {
                             (typeof ret.data === 'string' && ret.data) ? location.href = ret.data : $.layTable.reload(taid);
-                            $.msg.close($.msg.mdx.length > 0 ? $.msg.mdx.pop() : null);
+                            $.msg.closeLastModal();
                         }) && false;
                     }
                 } : undefined);
@@ -576,9 +574,7 @@ $(function () {
             var key, keys = this.name.match(rules.key), merge = this.value, name = this.name;
             while ((key = keys.pop()) !== undefined) {
                 name = name.replace(new RegExp("\\[" + key + "\\]$"), '');
-                if (key.match(rules.push)) merge = self.build([], self.pushCounter(name), merge);
-                else if (key.match(rules.fixed)) merge = self.build([], key, merge);
-                else if (key.match(rules.named)) merge = self.build({}, key, merge);
+                if (key.match(rules.push)) merge = self.build([], self.pushCounter(name), merge); else if (key.match(rules.fixed)) merge = self.build([], key, merge); else if (key.match(rules.named)) merge = self.build({}, key, merge);
             }
             data = $.extend(true, data, merge);
         });
@@ -625,10 +621,7 @@ $(function () {
             }).on('click', 'i.layui-icon-close', function (event) {
                 event.stopPropagation(), $bt.attr('style', ''), $in.val('');
             }).find('[data-file]').data('input', this).attr({
-                'data-path': $in.data('path') || '',
-                'data-size': $in.data('size') || 0, 'data-type': $in.data('type') || 'gif,png,jpg,jpeg',
-                'data-max-width': $in.data('max-width') || 0, 'data-max-height': $in.data('max-height') || 0,
-                'data-cut-width': $in.data('cut-width') || 0, 'data-cut-height': $in.data('cut-height') || 0,
+                'data-path': $in.data('path') || '', 'data-size': $in.data('size') || 0, 'data-type': $in.data('type') || 'gif,png,jpg,jpeg', 'data-max-width': $in.data('max-width') || 0, 'data-max-height': $in.data('max-height') || 0, 'data-cut-width': $in.data('cut-width') || 0, 'data-cut-height': $in.data('cut-height') || 0,
             });
         });
     };
@@ -640,10 +633,7 @@ $(function () {
             var $bt = $('<div class="uploadimage"><span><a data-file="mul" class="layui-icon layui-icon-upload-drag"></a></span><span data-file="images"></span></div>');
             var ims = this.value ? this.value.split('|') : [], $in = $(this).after($bt);
             $bt.find('[data-file]').attr({
-                'data-path': $in.data('path') || '',
-                'data-size': $in.data('size') || 0, 'data-type': $in.data('type') || 'gif,png,jpg,jpeg',
-                'data-max-width': $in.data('max-width') || 0, 'data-max-height': $in.data('max-height') || 0,
-                'data-cut-width': $in.data('cut-width') || 0, 'data-cut-height': $in.data('cut-height') || 0,
+                'data-path': $in.data('path') || '', 'data-size': $in.data('size') || 0, 'data-type': $in.data('type') || 'gif,png,jpg,jpeg', 'data-max-width': $in.data('max-width') || 0, 'data-max-height': $in.data('max-height') || 0, 'data-cut-width': $in.data('cut-width') || 0, 'data-cut-height': $in.data('cut-height') || 0,
             }).on('push', function (evt, src) {
                 ims.push(src), $in.val(ims.join('|')), showImageContainer([src]);
             }) && (ims.length > 0 && showImageContainer(ims));
