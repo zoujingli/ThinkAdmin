@@ -20,6 +20,7 @@ use think\admin\Controller;
 use think\admin\helper\QueryHelper;
 use think\admin\model\SystemFile;
 use think\admin\service\AdminService;
+use think\admin\Storage;
 
 /**
  * 系统文件管理
@@ -28,18 +29,6 @@ use think\admin\service\AdminService;
  */
 class File extends Controller
 {
-    /**
-     * 存储方式处理
-     * @var string[]
-     */
-    protected $types = [
-        'local'  => '本地服务器存储',
-        'qiniu'  => '七牛云对象存储',
-        'upyun'  => '又拍云USS存储',
-        'alioss' => '阿里云OSS存储',
-        'txcos'  => '腾讯云COS存储'
-    ];
-
     /**
      * 系统文件管理
      * @auth true
@@ -50,6 +39,7 @@ class File extends Controller
      */
     public function index()
     {
+        $this->types = Storage::types();
         SystemFile::mQuery()->layTable(function () {
             $this->title = '系统文件管理';
             $this->xexts = SystemFile::mk()->distinct()->column('xext');
