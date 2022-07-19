@@ -82,6 +82,7 @@ class File extends Controller
         $db1 = SystemFile::mk()->fieldRaw('max(id) id')->where($map)->group('type,xkey');
         $db2 = $this->app->db->table($db1->buildSql())->alias('dt')->field('id');
         SystemFile::mk()->whereRaw("id not in {$db2->buildSql()}")->delete();
+        SystemFile::mk()->where($map)->where(['status' => 1])->delete();
         $this->success('清理重复文件成功！');
     }
 }
