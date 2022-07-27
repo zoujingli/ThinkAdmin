@@ -88,10 +88,10 @@ class Order extends Auth
             if ($truckType < 0) $truckType = $goodsInfo['truck_type'];
             if ($truckType !== $goodsInfo['truck_type']) $this->error('不能混合下单');
             // 限制购买数量
-            if (isset($goods['limit_max_num']) && $goods['limit_max_num'] > 0) {
-                $map = [['a.uuid', '=', $this->uuid], ['a.status', 'in', [2, 3, 4, 5]], ['b.goods_code', '=', $goods['code']]];
+            if (isset($goodsInfo['limit_max_num']) && $goodsInfo['limit_max_num'] > 0) {
+                $map = [['a.uuid', '=', $this->uuid], ['a.status', 'in', [2, 3, 4, 5]], ['b.goods_code', '=', $goodsInfo['code']]];
                 $buys = ShopOrder::mk()->alias('a')->join('store_order_item b', 'a.order_no=b.order_no')->where($map)->sum('b.stock_sales');
-                if ($buys + $count > $goods['limit_max_num']) $this->error('超过限购数量');
+                if ($buys + $count > $goodsInfo['limit_max_num']) $this->error('超过限购数量');
             }
             // 限制购买身份
             if ($goodsInfo['limit_low_vip'] > $this->user['vip_code']) $this->error('用户等级不够');
