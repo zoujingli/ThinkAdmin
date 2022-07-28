@@ -6,7 +6,7 @@
         <div class="layui-input-inline">
             <select name="mark" lay-search class="layui-select">
                 <option value=''>-- 文章标签 --</option>
-                {foreach $marks as $mark}{if isset($get.mark) and $mark eq $get.mark}
+                {foreach $marks as $mark}{if isset($get.mark) and $mark.name eq $get.mark}
                 <option selected value="{$mark.name}">{$mark.name}</option>
                 {else}
                 <option value="{$mark.name}">{$mark.name}</option>
