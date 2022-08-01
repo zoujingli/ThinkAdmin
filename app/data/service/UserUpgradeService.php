@@ -86,7 +86,7 @@ class UserUpgradeService extends Service
         $teamsIndirect = DataUser::mk()->where(['pid2' => $uuid])->whereIn('vip_code', $vipTeam)->count();
         $teamsUsers = $teamsDirect + $teamsIndirect;
         // 动态计算用户等级
-        foreach ($levels as $item) {
+        foreach (array_reverse($levels) as $item) {
             $l1 = empty($item['goods_vip_status']) || $user['buy_vip_entry'] > 0;
             $l2 = empty($item['teams_users_status']) || $item['teams_users_number'] <= $teamsUsers;
             $l3 = empty($item['order_amount_status']) || $item['order_amount_number'] <= $orderAmount;
