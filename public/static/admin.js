@@ -769,6 +769,10 @@ $(function () {
                 $table.trigger('render', {height: $(window).height() - $table.next().offset().top - 35})
             }).trigger('sort', function (rets) {
                 (sort = rets), $table.trigger('reload')
+            }).trigger('rowDouble', function (event) {
+                $(event.tr[0]).find('[data-event-dbclick]').map(function () {
+                    $(this).trigger(this.dataset.eventDbclick || 'click', event);
+                });
             });
             return $table;
 

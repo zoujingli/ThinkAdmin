@@ -107,7 +107,7 @@
     {{# } }}
     <!-- {/if} -->
     {if auth('edit')}
-    <a class="layui-btn layui-btn-sm" data-title="编辑系统菜单" data-modal='{:url("edit")}?id={{d.id}}'>编 辑</a>
+    <a class="layui-btn layui-btn-sm" data-event-dbclick data-title="编辑系统菜单" data-modal='{:url("edit")}?id={{d.id}}'>编 辑</a>
     {/if}
     <!-- {else} -->
     {if auth('remove')}
