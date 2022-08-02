@@ -76,7 +76,7 @@
 <!-- 数据操作工具条模板 -->
 <script type="text/html" id="toolbar">
     <!--{if auth('edit')}-->
-    <a class="layui-btn layui-btn-primary layui-btn-sm" data-title="编辑数据" data-modal='{:url("edit")}?id={{d.id}}'>编 辑</a>
+    <a class="layui-btn layui-btn-primary layui-btn-sm" data-event-dbclick data-title="编辑数据" data-modal='{:url("edit")}?id={{d.id}}'>编 辑</a>
     <!--{/if}-->
 
     <!--{if auth("remove")}-->

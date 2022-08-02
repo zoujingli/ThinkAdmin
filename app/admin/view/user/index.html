@@ -99,14 +99,14 @@
 <script type="text/html" id="toolbar">
     {if isset($type) and $type eq 'index'}
     <!--{if auth("edit")}-->
-    <a class="layui-btn layui-btn-sm" data-title="编辑用户" data-modal='{:url("edit")}?id={{d.id}}'>编 辑</a>
+    <a class="layui-btn layui-btn-sm" data-event-dbclick data-title="编辑用户" data-modal='{:url("edit")}?id={{d.id}}'>编 辑</a>
     <!--{/if}-->
     <!--{if auth("pass")}-->
     <a class="layui-btn layui-btn-sm layui-btn-normal" data-title="设置密码" data-modal='{:url("pass")}?id={{d.id}}'>密 码</a>
     <!--{/if}-->
     {else}
     <!--{if auth("edit")}-->
-    <a class="layui-btn layui-btn-sm" data-title="编辑用户" data-modal='{:url("edit")}?id={{d.id}}'>编 辑</a>
+    <a class="layui-btn layui-btn-sm" data-event-dbclick data-title="编辑用户" data-modal='{:url("edit")}?id={{d.id}}'>编 辑</a>
     <!--{/if}-->
     <!--{if auth("remove")}-->
     <a class="layui-btn layui-btn-sm layui-btn-danger" data-confirm="确定要永久删除此账号吗？" data-action="{:url('remove')}" data-value="id#{{d.id}}">删 除</a>
