@@ -73,7 +73,7 @@ class Config extends Controller
             $this->fetch();
         } else {
             $post = $this->request->post();
-            // 修改网站后台入口路径，配置运行环境变量
+            // 修改网站后台入口路径
             if (!empty($post['xpath'])) {
                 if (!preg_match('/^[a-zA-Z_][a-zA-Z0-9_]*$/', $post['xpath'])) {
                     $this->error('后台入口名称需要是由英文字母开头！');
@@ -83,17 +83,16 @@ class Config extends Controller
                 }
                 SystemService::setRuntime(null, [$post['xpath'] => 'admin']);
             }
-            // 修改网站 ICON 图标文件，替换 public/favicon.ico 文件
+            // 修改网站 ICON 图标，替换 public/favicon.ico
             if (preg_match('#^https?://#', $icon = $post['site_icon'] ?? '')) try {
                 SystemService::setFavicon($icon);
             } catch (\Exception $exception) {
                 trace_file($exception);
-                $this->error($exception->getMessage());
             }
             // 数据数据到系统配置表
             foreach ($post as $k => $v) sysconf($k, $v);
             sysoplog('系统配置管理', "修改系统参数成功");
-            $this->success('修改系统参数成功！', 'javascript:location.reload()');
+            $this->success('修改系统参数成功！', sysuri('admin/index/index') . '#' . sysuri('admin/config/index'));
         }
     }
 
