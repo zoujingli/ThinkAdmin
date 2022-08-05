@@ -87,7 +87,6 @@ class Keys extends Controller
      */
     public function add()
     {
-        $this->_applyFormToken();
         $this->title = '添加回复规则';
         WechatKeys::mForm('form');
     }
@@ -98,7 +97,6 @@ class Keys extends Controller
      */
     public function edit()
     {
-        $this->_applyFormToken();
         $this->title = '编辑回复规则';
         WechatKeys::mForm('form');
     }
@@ -109,7 +107,6 @@ class Keys extends Controller
      */
     public function state()
     {
-        $this->_applyFormToken();
         WechatKeys::mSave($this->_vali([
             'status.in:0,1'  => '状态值范围异常！',
             'status.require' => '状态值不能为空！',
@@ -122,7 +119,6 @@ class Keys extends Controller
      */
     public function remove()
     {
-        $this->_applyFormToken();
         WechatKeys::mDelete();
     }
 
@@ -133,7 +129,6 @@ class Keys extends Controller
      */
     public function subscribe()
     {
-        $this->_applyFormToken();
         $this->title = '编辑订阅回复规则';
         WechatKeys::mForm('form', 'keys', [], ['keys' => 'subscribe']);
     }
@@ -145,7 +140,6 @@ class Keys extends Controller
      */
     public function defaults()
     {
-        $this->_applyFormToken();
         $this->title = '编辑默认回复规则';
         WechatKeys::mForm('form', 'keys', [], ['keys' => 'default']);
     }
@@ -153,6 +147,7 @@ class Keys extends Controller
     /**
      * 添加数据处理
      * @param array $data
+     * @throws \think\db\exception\DbException
      */
     protected function _form_filter(array &$data)
     {
