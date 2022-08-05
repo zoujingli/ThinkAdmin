@@ -16,6 +16,10 @@
                 <input class='layui-input layui-disabled layui-bg-gray' disabled value='{$vo.charge_amount|default="0.00"}'>
             </label>
             <label class="layui-col-xs3">
+                <span class="help-label"><b>应打款金额</b></span>
+                <input class='layui-input layui-disabled layui-bg-gray' disabled value='{$vo.amount - $vo.charge_amount}'>
+            </label>
+            <label class="layui-col-xs3">
                 <span class="help-label"><b>提现方式</b></span>
                 <input class='layui-input layui-disabled layui-bg-gray' disabled value='{$vo.type|default="-"}'>
             </label>
