@@ -16,6 +16,10 @@
                 <input class='layui-input layui-disabled layui-bg-gray' disabled value='{$vo.charge_amount|default="0.00"}'>
             </label>
             <label class="layui-col-xs3">
+                <span class="help-label"><b>应打款金额</b></span>
+                <input class='layui-input layui-disabled layui-bg-gray' disabled value='{$vo.amount - $vo.charge_amount}'>
+            </label>
+            <label class="layui-col-xs3">
                 <span class="help-label"><b>提现方式</b></span>
                 <input class='layui-input layui-disabled layui-bg-gray' disabled value='{$vo.type|default="-"}'>
             </label>
@@ -118,7 +122,7 @@
     </div>
 
     <div class="hr-line-dashed"></div>
-    {notempty name='vo.id'}<input name='id' type='hidden' value='{$vo.id}'>{/notempty}
+    {notempty name='vo.code'}<input name='code' type='hidden' value='{$vo.code}'>{/notempty}
 
     <div class="layui-form-item text-center">
         <button class="layui-btn" type='submit'>保存数据</button>
