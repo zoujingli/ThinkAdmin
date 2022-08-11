@@ -2,7 +2,7 @@
 
 {block name="button"}
 <!--{if auth("add") and $type eq 'index'}-->
-<button class='layui-btn layui-btn-sm layui-btn-primary' data-open='{:url("add")}'>添加规则</button>
+<button class='layui-btn layui-btn-sm layui-btn-primary' data-table-id="AutoTable" data-width="950px" data-modal='{:url("add")}'>添加规则</button>
 <!--{/if}-->
 
 <!--{if auth("state") and $type eq 'index'}-->
@@ -34,7 +34,7 @@
     </ul>
     <div class="layui-tab-content">
         {include file='auto/index_search'}
-        <table id="AutoTable" data-url="{:sysuri()}" data-target-search="form.form-search"></table>
+        <table id="AutoTable" data-url="{$request->url()}" data-target-search="form.form-search"></table>
     </div>
 </div>
 {/block}
@@ -103,7 +103,7 @@
 <!-- 操作面板模板 -->
 <script type="text/html" id="toolbar">
     <!--{if auth("edit") and isset($type) and $type eq 'index'}-->
-    <a class="layui-btn layui-btn-sm" data-open="{:url('edit')}?id={{d.id}}" data-title="编辑回复规则">编 辑</a>
+    <a class="layui-btn layui-btn-sm" data-width="950px" data-modal="{:url('edit')}?id={{d.id}}" data-title="编辑回复规则">编 辑</a>
     <!--{/if}-->
     <!--{if auth("remove") and isset($type) and $type neq 'index'}-->
     <a class="layui-btn layui-btn-sm layui-btn-danger" data-action="{:url('remove')}" data-value="id#{{d.id}}" data-confirm="确定要删除该用户吗？">删 除</a>

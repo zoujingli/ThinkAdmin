@@ -106,19 +106,6 @@ class Auto extends Controller
     }
 
     /**
-     * 表单结果处理
-     * @param boolean $result
-     */
-    protected function _form_result(bool $result)
-    {
-        if ($result !== false) {
-            $this->success('恭喜, 关键字保存成功！', 'javascript:history.back()');
-        } else {
-            $this->error('关键字保存失败, 请稍候再试！');
-        }
-    }
-
-    /**
      * 修改规则状态
      * @auth true
      */
