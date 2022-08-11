@@ -20,6 +20,7 @@ use app\wechat\model\WechatAuto;
 use think\admin\Controller;
 use think\admin\extend\CodeExtend;
 use think\admin\helper\QueryHelper;
+use think\admin\service\SystemService;
 
 /**
  * 关注自动回复
@@ -98,8 +99,7 @@ class Auto extends Controller
             $data['code'] = CodeExtend::uniqidNumber(18, 'AM');
         }
         if ($this->request->isGet()) {
-            $public = dirname($this->request->basefile(true));
-            $this->defaultImage = "{$public}/static/theme/img/image.png";
+            $this->defaultImage = SystemService::uri('/static/theme/img/image.png', '__FULL__');
         } else {
             $data['content'] = strip_tags($data['content'] ?? '', '<a>');
         }

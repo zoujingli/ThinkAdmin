@@ -1,6 +1,3 @@
-{extend name="../../admin/view/main"}
-
-{block name="style"}
 <style>
     .keys-container .layui-card {
         width: 580px;
@@ -26,9 +23,7 @@
         margin-left: 100px;
     }
 </style>
-{/block}
 
-{block name="content"}
 <div class="nowrap think-box-shadow" style="width:910px">
     <div class='mobile-preview inline-block'>
         <div class='mobile-header'>公众号</div>
@@ -41,7 +36,7 @@
                 <div class="layui-card-body">
                     <!--{if !isset($vo.keys) or ($vo.keys neq 'default' and $vo.keys neq 'subscribe')}-->
                     <div class="layui-form-item margin-top-10">
-                        <label class="layui-form-label">关 键 字</label>
+                        <label class="layui-form-label">关&ensp;键&ensp;字</label>
                         <div class="layui-input-block">
                             <input required placeholder='请输入关键字' maxlength='20' name='keys' class="layui-input" value='{$vo.keys|default=""}'>
                         </div>
@@ -166,25 +161,21 @@
                             <input value="{$vo.video_desc|default='视频描述'}" name="video_desc" maxlength="50" class="layui-input">
                         </div>
                     </div>
-
-                    <div class="text-center absolute full-width" style="bottom:0">
-                        <div class="hr-line-dashed margin-top-10 margin-bottom-15"></div>
-                        <button class="layui-btn menu-submit">保存数据</button>
-                        <!--{if !isset($vo.keys) || !in_array($vo.keys,['default','subscribe'])}-->
-                        <button data-history-back class="layui-btn layui-btn-danger" type='button'>取消编辑</button>
-                        <!--{/if}-->
-                        {if isset($vo['id'])}<input type='hidden' value='{$vo.id}' name='id'>{/if}
-                    </div>
                 </div>
+            </div>
+            <div class="text-center absolute full-width" style="bottom:0">
+                <div class="hr-line-dashed margin-bottom-10"></div>
+                {if isset($vo['id'])}<input type='hidden' value='{$vo.id}' name='id'>{/if}
+                {if isset($vo['code'])}<input type='hidden' value='{$vo.code}' name='code'>{/if}
+                <button class="layui-btn menu-submit">保存数据</button>
+                <button data-history-back class="layui-btn layui-btn-danger" type='button'>取消编辑</button>
             </div>
         </form>
     </div>
 </div>
-{/block}
 
-{block name="script"}
 <script>
-    (function ($body) {
+    $(function () {
 
         /*! 刷新预览显示 */
         function showReview(params, location) {
@@ -197,7 +188,7 @@
             $('[data-iframe-box]').empty().append($(iframe).attr('src', location));
         }
 
-        $body.off('change', '[name="news_id"]').on('change', '[name="news_id"]', function () {
+        $('body').off('change', '[name="news_id"]').on('change', '[name="news_id"]', function () {
             /*! 图文显示预览 */
             showReview({type: 'news', content: this.value});
         }).off('change', '[name="content"]').on('change', '[name="content"]', function () {
@@ -213,7 +204,7 @@
 
         /*! 音乐显示预览 */
         var musicSelector = '[name="music_url"],[name="music_title"],[name="music_desc"],[name="music_image"]';
-        $body.off('change', musicSelector).on('change', musicSelector, function () {
+        $('body').off('change', musicSelector).on('change', musicSelector, function () {
             var params = {type: 'music'}, $parent = $(this).parents('form');
             params.url = $parent.find('[name="music_url"]').val();
             params.desc = $parent.find('[name="music_desc"]').val();
@@ -224,7 +215,7 @@
 
         /*! 视频显示预览 */
         var videoSelector = '[name="video_title"],[name="video_url"],[name="video_desc"]';
-        $body.off('change', videoSelector).on('change', videoSelector, function () {
+        $('body').off('change', videoSelector).on('change', videoSelector, function () {
             var params = {type: 'video'}, $parent = $(this).parents('form');
             params.url = $parent.find('[name="video_url"]').val();
             params.desc = $parent.find('[name="video_desc"]').val();
@@ -233,7 +224,7 @@
         });
 
         /*! 默认类型事件 */
-        $body.off('click', 'input[name=type]').on('click', 'input[name=type]', function () {
+        $('body').off('click', 'input[name=type]').on('click', 'input[name=type]', function () {
             var value = $(this).val(), $form = $(this).parents('form');
             if (value === 'customservice') value = 'text';
             var $current = $form.find('[data-keys-type="' + value + '"]').removeClass('layui-hide');
@@ -259,7 +250,5 @@
         $('input[name=type]:checked').map(function () {
             $(this).trigger('click');
         });
-
-    })($('body'));
+    });
 </script>
-{/block}

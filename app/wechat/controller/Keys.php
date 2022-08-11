@@ -20,6 +20,7 @@ use app\wechat\model\WechatKeys;
 use app\wechat\service\WechatService;
 use think\admin\Controller;
 use think\admin\helper\QueryHelper;
+use think\admin\service\SystemService;
 use think\exception\HttpResponseException;
 
 /**
@@ -125,7 +126,6 @@ class Keys extends Controller
     /**
      * 配置订阅回复
      * @auth true
-     * @menu true
      */
     public function subscribe()
     {
@@ -136,7 +136,6 @@ class Keys extends Controller
     /**
      * 配置默认回复
      * @auth true
-     * @menu true
      */
     public function defaults()
     {
@@ -153,28 +152,10 @@ class Keys extends Controller
     {
         if ($this->request->isPost()) {
             $map = [['keys', '=', $data['keys']], ['id', '<>', $data['id'] ?? 0]];
-            if (WechatKeys::mk()->where($map)->count() > 0) {
-                $this->error('该关键字已经存在！');
-            }
+            if (WechatKeys::mk()->where($map)->count() > 0) $this->error('关键字已经存在！');
             $data['content'] = strip_tags($data['content'] ?? '', '<a>');
         } elseif ($this->request->isGet()) {
-            $public = dirname($this->request->basefile(true));
-            $this->defaultImage = "{$public}/static/theme/img/image.png";
-        }
-    }
-
-    /**
-     * 表单结果处理
-     * @param boolean $result
-     */
-    protected function _form_result(bool $result)
-    {
-        if ($result !== false) {
-            $iskeys = in_array(input('keys'), ['subscribe', 'default']);
-            $location = $iskeys ? 'javascript:$.form.reload()' : 'javascript:history.back()';
-            $this->success('恭喜, 关键字保存成功！', $location);
-        } else {
-            $this->error('关键字保存失败, 请稍候再试！');
+            $this->defaultImage = SystemService::uri('/static/theme/img/image.png', '__FULL__');
         }
     }
 }
