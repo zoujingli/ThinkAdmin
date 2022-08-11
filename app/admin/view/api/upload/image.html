@@ -18,7 +18,9 @@
     </div>
     <div class="image-dialog-foot">
         <div id="ImageDialogPage" class="image-dialog-page"></div>
-        <div id="ImageDialogButton layui-hide" class="image-dialog-button" v-if="data.length>0" @click="confirm">{{ data.length }}</div>
+        <div id="ImageDialogButton layui-hide" class="image-dialog-button layui-btn layui-btn-normal" v-if="data.length>0" @click="confirm">
+            已选 {{ data.length }} 张，确认
+        </div>
     </div>
 </div>
 
