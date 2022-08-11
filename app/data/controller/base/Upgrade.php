@@ -30,6 +30,8 @@ class Upgrade extends Controller
     /**
      * 添加用户等级
      * @auth true
+     * @return void
+     * @throws \think\db\exception\DbException
      */
     public function add()
     {
@@ -40,6 +42,8 @@ class Upgrade extends Controller
     /**
      * 编辑用户等级
      * @auth true
+     * @return void
+     * @throws \think\db\exception\DbException
      */
     public function edit()
     {
@@ -50,6 +54,7 @@ class Upgrade extends Controller
     /**
      * 表单数据处理
      * @param array $vo
+     * @throws \think\db\exception\DbException
      */
     protected function _form_filter(array &$vo)
     {
@@ -91,11 +96,8 @@ class Upgrade extends Controller
     public function _form_result(bool $state)
     {
         if ($state) {
-            if (input('old_number', 100) <= input('number', 0)) {
-                $order = 'number asc,utime asc';
-            } else {
-                $order = 'number asc,utime desc';
-            }
+            $isasc = input('old_number', 0) <= input('number', 0);
+            $order = $isasc ? 'number asc,utime asc' : 'number asc,utime desc';
             foreach (BaseUserUpgrade::mk()->order($order)->select() as $number => $upgrade) {
                 $upgrade->save(['number' => $number]);
             }

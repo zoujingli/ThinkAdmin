@@ -25,11 +25,13 @@ class BaseUserUpgrade extends Model
 
     /**
      * 获取最大级别数
-     * @return int
+     * @return integer
+     * @throws \think\db\exception\DbException
      */
     public static function maxNumber(): int
     {
-        return static::mk()->max('number', 0) + 1;
+        if (static::mk()->count() < 1) return 0;
+        return static::mk()->max('number') + 1;
     }
 
     /**

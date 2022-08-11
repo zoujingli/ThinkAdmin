@@ -27,7 +27,7 @@
 <form action="{:sysuri()}" class="layui-form layui-card" data-auto="true" method="post">
     <div class="layui-card-body padding-left-40">
 
-        <fieldset class="layui-form-item">
+        <fieldset class="layui-form-item layui-bg-gray">
             <legend><span class="layui-badge layui-bg-cyan">用户等级</span></legend>
             <div class="layui-form-item layui-row layui-col-space15">
                 <div class="layui-col-xs3 block relative">
@@ -49,7 +49,7 @@
 
         <div class="layui-row layui-col-space15">
             <div class="layui-col-xs6">
-                <fieldset class="layui-form-item">
+                <fieldset class="layui-form-item layui-bg-gray">
                     <legend><span class="layui-badge layui-bg-cyan">升级规则</span></legend>
                     <div class="layui-form-item notselect">
                         {php}$vo['upgrade_type'] = $vo['upgrade_type'] ?? 1;{/php}
@@ -63,7 +63,7 @@
                 </fieldset>
             </div>
             <div class="layui-col-xs6">
-                <fieldset class="layui-form-item">
+                <fieldset class="layui-form-item layui-bg-gray">
                     <legend><span class="layui-badge layui-bg-cyan">团队计数</span></legend>
                     <div class="layui-form-item notselect">
                         {php}$vo['upgrade_team'] = $vo['upgrade_team'] ?? 1;{/php}
@@ -78,7 +78,7 @@
             </div>
         </div>
 
-        <fieldset class="layui-form-item">
+        <fieldset class="layui-form-item layui-bg-gray">
             <legend><span class="layui-badge layui-bg-cyan">升级条件</span></legend>
             <div class="font-s13 relative">
                 <div>
@@ -143,7 +143,7 @@
             </div>
         </fieldset>
 
-        <fieldset class="layui-form-item">
+        <fieldset class="layui-form-item layui-bg-gray">
             <legend><span class="layui-badge layui-bg-cyan">奖利规则</span></legend>
             <div class="notselect relative">
                 {foreach $prizes as $prize}{if isset($vo.rebate_rule) && is_array($vo.rebate_rule) && isset($vo.rebate_rule[$prize.code])}
