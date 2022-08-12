@@ -78,10 +78,11 @@ class Upload extends Controller
             'xext.require' => '后缀不能为空！',
             'size.require' => '大小不能为空！',
             'mime.default' => '',
-            'status.value' => 1
+            'status.value' => 1,
         ]));
         if (empty($file['mime'])) $file['mime'] = Storage::mime($file['xext']);
-        if ($info = Storage::instance($data['uptype'])->info($data['key'], $safe, $name)) {
+        $info = Storage::instance($data['uptype'])->info($data['key'], $safe, $name);
+        if (is_array($info) && isset($info['url']) && isset($info['key'])) {
             $file->save(['xurl' => $info['url'], 'isfast' => 1, 'issafe' => $data['safe']]);
             $extr = ['id' => $file->id ?? 0, 'url' => $info['url'], 'key' => $info['key']];
             $this->success('文件已经上传', array_merge($data, $extr), 200);
@@ -129,7 +130,7 @@ class Upload extends Controller
         $data = $this->_vali([
             'id.require'   => '编号不能为空！',
             'hash.require' => '哈希不能为空！',
-            'uuid.value'   => AdminService::getUserId()
+            'uuid.value'   => AdminService::getUserId(),
         ]);
         $file = SystemFile::mk()->where($data)->findOrEmpty();
         if ($file->isEmpty()) $this->error('文件不存在！');
