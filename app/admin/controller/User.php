@@ -84,9 +84,6 @@ class User extends Controller
     /**
      * 修改用户密码
      * @auth true
-     * @throws \think\db\exception\DataNotFoundException
-     * @throws \think\db\exception\DbException
-     * @throws \think\db\exception\ModelNotFoundException
      */
     public function pass()
     {
@@ -101,8 +98,8 @@ class User extends Controller
                 'repassword.require'          => '重复密码不能为空！',
                 'repassword.confirm:password' => '两次输入的密码不一致！',
             ]);
-            $user = SystemUser::mk()->find($data['id']);
-            if (!empty($user) && $user->save(['password' => md5($data['password'])])) {
+            $user = SystemUser::mk()->findOrEmpty($data['id']);
+            if ($user->isExists() && $user->save(['password' => md5($data['password'])])) {
                 sysoplog('系统用户管理', "修改用户[{$data['id']}]密码成功");
                 $this->success('密码修改成功，请使用新密码登录！', '');
             } else {
