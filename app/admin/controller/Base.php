@@ -40,7 +40,7 @@ class Base extends Controller
         SystemBase::mQuery()->layTable(function () {
             $this->title = '数据字典管理';
             $this->types = SystemBase::types();
-            $this->type = input('get.type', $this->types[0] ?? '-');
+            $this->type = $this->get['type'] ?? ($this->types[0] ?? '-');
         }, function (QueryHelper $query) {
             $query->where(['deleted' => 0])->equal('type');
             $query->like('code,name,status')->dateBetween('create_at');
@@ -68,6 +68,7 @@ class Base extends Controller
     /**
      * 表单数据处理
      * @param array $data
+     * @throws \think\db\exception\DbException
      */
     protected function _form_filter(array &$data)
     {
