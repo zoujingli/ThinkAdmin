@@ -92,7 +92,7 @@ class Config extends Controller
             // 数据数据到系统配置表
             foreach ($post as $k => $v) sysconf($k, $v);
             sysoplog('系统配置管理', "修改系统参数成功");
-            $this->success('修改系统参数成功！', sysuri('admin/index/index') . '#' . sysuri('admin/config/index'));
+            $this->success('修改系统参数成功！', admuri('admin/config/index'));
         }
     }
 
