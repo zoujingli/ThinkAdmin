@@ -81,8 +81,7 @@
     const app = Vue.createApp({});
 
     // 定义全局缓存，加载字体组件
-    app.cache = {loadOpt: options, loadVue: loadVue};
-    app.cache.icons = await loadVue("/static/plugs/core/vue.element.icons.js");
+    app.cache = {loadOpt: options, loadVue: loadVue, icons: ElementPlusIconsVue};
     for (let i in app.cache.icons) app.component(i, app.cache.icons[i]);
 
     // 注册 getApp 获取应用
