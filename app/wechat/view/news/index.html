@@ -14,9 +14,9 @@
         {foreach $list as $vo}
         <div class="news-item">
             <div class='news-tools layui-hide'>
-                <a data-phone-view="{:url('wechat/api.view/news')}?id={$vo.id}" href='javascript:void(0)'>预览</a>
-                <a data-open='{:url("edit")}?id={$vo.id}' href='javascript:void(0)'>编辑</a>
-                <a data-news-del="{$vo.id}" href='javascript:void(0)'>删除</a>
+                <a data-phone-view="{:url('wechat/api.view/news')}?id={$vo.id}" style="cursor:pointer">预览</a>
+                <a data-open='{:url("edit")}?id={$vo.id}' style="cursor:pointer">编辑</a>
+                <a data-news-del="{$vo.id}" style="cursor:pointer">删除</a>
             </div>
             {foreach $vo.articles as $k => $v}
             {if $k < 1}

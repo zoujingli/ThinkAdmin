@@ -242,11 +242,11 @@ $(function () {
             var url = ret.url || (typeof ret.data === 'string' ? ret.data : '');
             var msg = ret.msg || (typeof ret.info === 'string' ? ret.info : '');
             if (parseInt(ret.code) === 1 && time === 'false') {
-                return url ? location.href = url : $.form.reload();
+                return url ? $.form.goto(url) : $.form.reload();
             } else return (parseInt(ret.code) === 1) ? this.success(msg, time, function () {
-                $.msg.closeLastModal(url ? location.href = url : $.form.reload());
+                $.msg.closeLastModal(url ? $.form.goto(url) : $.form.reload());
             }) : this.error(msg, 3, function () {
-                url ? location.href = url : '';
+                $.form.goto(url);
             });
         };
     };
@@ -326,6 +326,15 @@ $(function () {
                     $.msg.close(loadidx);
                 }
             });
+        };
+        /*! 兼容跳转与执行 */
+        this.goto = function (url) {
+            if (typeof url !== 'string' || url.length < 1) return;
+            if (url.toLocaleString().indexOf('javascript:') === 0) {
+                return eval(url.split('javascript:', 2)[1]);
+            } else {
+                return location.href = url;
+            }
         };
         /*! 以 HASH 打开新网页 */
         this.href = function (url, elem) {
@@ -541,7 +550,7 @@ $(function () {
                     if (typeof ret === 'object' && ret.code > 0 && $('#' + taid).size() > 0) {
                         return $.msg.success(ret.info, 3, function () {
                             $.msg.closeLastModal();
-                            (typeof ret.data === 'string' && ret.data) ? location.href = ret.data : $.layTable.reload(taid);
+                            (typeof ret.data === 'string' && ret.data) ? $.form.goto(ret.data) : $.layTable.reload(taid);
                         }) && false;
                     }
                 } : undefined);
@@ -572,7 +581,9 @@ $(function () {
             var key, keys = this.name.match(rules.key), merge = this.value, name = this.name;
             while ((key = keys.pop()) !== undefined) {
                 name = name.replace(new RegExp("\\[" + key + "\\]$"), '');
-                if (key.match(rules.push)) merge = self.build([], self.pushCounter(name), merge); else if (key.match(rules.fixed)) merge = self.build([], key, merge); else if (key.match(rules.named)) merge = self.build({}, key, merge);
+                if (key.match(rules.push)) merge = self.build([], self.pushCounter(name), merge);
+                else if (key.match(rules.fixed)) merge = self.build([], key, merge);
+                else if (key.match(rules.named)) merge = self.build({}, key, merge);
             }
             data = $.extend(true, data, merge);
         });
@@ -863,14 +874,20 @@ $(function () {
                                 var lines = [];
                                 for (var idx in ret.data.history) {
                                     var line = ret.data.history[idx], percent = '[ ' + line.progress + '% ] ';
-                                    if (line.message.indexOf('javascript:') === -1) lines.push(line.message.indexOf('>>>') > -1 ? line.message : percent + line.message); else if (!that.SetCache(code, idx) && doScript !== false) that.SetCache(code, idx, 1), location.href = line.message;
+                                    if (line.message.indexOf('javascript:') === -1) {
+                                        lines.push(line.message.indexOf('>>>') > -1 ? line.message : percent + line.message);
+                                    } else if (!that.SetCache(code, idx) && doScript !== false) {
+                                        that.SetCache(code, idx, 1), $.form.goto(line.message);
+                                    }
                                 }
                                 if (ret.data.status > 0) {
                                     that.SetState(parseInt(ret.data.status), ret.data.message);
                                     that.$percent.attr('lay-percent', (parseFloat(ret.data.progress || '0.00').toFixed(2)) + '%'), layui.element.render();
                                     that.$coder.html('<p class="layui-elip">' + lines.join('</p><p class="layui-elip">') + '</p>').animate({scrollTop: that.$coder[0].scrollHeight + 'px'}, 200);
                                     return parseInt(ret.data.status) === 3 || parseInt(ret.data.status) === 4 || setTimeout(that.LoadProgress, Math.floor(Math.random() * 200)), false;
-                                } else return setTimeout(that.LoadProgress, Math.floor(Math.random() * 500) + 200), false;
+                                } else {
+                                    return setTimeout(that.LoadProgress, Math.floor(Math.random() * 500) + 200), false;
+                                }
                             }
                         }, false);
                     })();
@@ -887,7 +904,7 @@ $(function () {
         var url = $(this).attr('action').replace(/&?page=\d+/g, '');
         if ((this.method || 'get').toLowerCase() === 'get') {
             var split = url.indexOf('?') > -1 ? '&' : '?', stype = location.href.indexOf('spm=') > -1 ? '#' : '';
-            return location.href = stype + $.menu.parseUri(url + split + $(this).serialize().replace(/\+/g, ' '));
+            return $.form.goto(stype + $.menu.parseUri(url + split + $(this).serialize().replace(/\+/g, ' ')));
         }
         return $.form.load(url, this, 'post');
     });
@@ -957,14 +974,14 @@ $(function () {
     /*! 注册 data-href 事件行为 */
     onEvent('click', '[data-href]', function () {
         if (this.dataset.href && this.dataset.href.indexOf('#') !== 0) {
-            location.href = this.dataset.href;
+            $.form.goto(this.dataset.href);
         }
     });
 
     /*! 注册 data-open 事件行为 */
     onEvent('click', '[data-open]', function () {
         if (this.dataset.open.match(/^https?:/)) {
-            location.href = this.dataset.open;
+            $.form.goto(this.dataset.open);
         } else {
             $.form.href(this.dataset.open, this);
         }
