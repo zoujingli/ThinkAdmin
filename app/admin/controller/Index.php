@@ -77,20 +77,7 @@ class Index extends Controller
             }
         }
     }
-        /**
-     * 表单数据处理
-     * @param array $data
-     * @throws \think\db\exception\DataNotFoundException
-     * @throws \think\db\exception\DbException
-     * @throws \think\db\exception\ModelNotFoundException
-     */
-    protected function _form_filter(array &$data)
-    {
-        if ($this->request->isPost()) {
-            unset($data['username']);
-            unset($data['authorize']);
-        }
-    }
+
     /**
      * 修改用户资料
      * @login true
@@ -107,7 +94,18 @@ class Index extends Controller
     }
 
     /**
-     * 资料修改后处理
+     * 资料修改表单处理
+     * @param array $data
+     */
+    protected function _info_form_filter(array &$data)
+    {
+        if ($this->request->isPost()) {
+            unset($data['username'], $data['authorize']);
+        }
+    }
+
+    /**
+     * 资料修改结果处理
      * @param bool $status
      */
     protected function _info_form_result(bool $status)
