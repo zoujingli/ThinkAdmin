@@ -77,7 +77,20 @@ class Index extends Controller
             }
         }
     }
-
+        /**
+     * 表单数据处理
+     * @param array $data
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\DbException
+     * @throws \think\db\exception\ModelNotFoundException
+     */
+    protected function _form_filter(array &$data)
+    {
+        if ($this->request->isPost()) {
+            unset($data['username']);
+            unset($data['authorize']);
+        }
+    }
     /**
      * 修改用户资料
      * @login true
