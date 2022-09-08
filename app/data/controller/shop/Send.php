@@ -133,10 +133,10 @@ class Send extends Controller
             $vo['status'] = 2;
             $vo['company_name'] = $company['name'];
             $vo['send_datetime'] = $vo['send_datetime'] ?? date('Y-m-d H:i:s');
-            if ($order['status'] === 3) {
-                $map = ['order_no' => $vo['order_no']];
+            if ($order['status'] === 4) {
                 // 更新订单发货状态
-                ShopOrder::mk()->where($map)->update(['status' => 4]);
+                $map = ['order_no' => $vo['order_no']];
+                ShopOrder::mk()->where($map)->update(['status' => 5]);
             }
         }
     }
