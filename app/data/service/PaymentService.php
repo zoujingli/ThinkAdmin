@@ -6,7 +6,7 @@ use app\data\model\BaseUserPayment;
 use app\data\model\DataUserPayment;
 use app\data\model\ShopOrder;
 use app\data\service\payment\AlipayPaymentService;
-use app\data\service\payment\BalancePyamentService;
+use app\data\service\payment\BalancePaymentService;
 use app\data\service\payment\EmptyPaymentService;
 use app\data\service\payment\JoinpayPaymentService;
 use app\data\service\payment\VoucherPaymentService;
@@ -182,7 +182,7 @@ abstract class PaymentService
         $vars = ['code' => $code, 'type' => $type, 'params' => $params];
         // 实例化具体支付参数类型
         if (stripos($type, 'balance') === 0) {
-            return static::$driver[$code] = Library::$sapp->make(BalancePyamentService::class, $vars);
+            return static::$driver[$code] = Library::$sapp->make(BalancePaymentService::class, $vars);
         } elseif (stripos($type, 'voucher') === 0) {
             return static::$driver[$code] = Library::$sapp->make(VoucherPaymentService::class, $vars);
         } elseif (stripos($type, 'alipay_') === 0) {
@@ -325,7 +325,7 @@ abstract class PaymentService
             'payment_trade'    => $payTrade,
             'payment_amount'   => $payAmount,
             'payment_status'   => 1,
-            'payment_datatime' => date('Y-m-d H:i:s'),
+            'payment_datetime' => date('Y-m-d H:i:s'),
         ], 'order_no', [
             'payment_code' => $this->code,
             'payment_type' => $this->type,

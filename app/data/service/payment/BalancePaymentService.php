@@ -11,10 +11,10 @@ use think\admin\extend\CodeExtend;
 
 /**
  * 账号余额支付参数处理
- * Class BalancePyamentService
+ * Class BalancePaymentService
  * @package app\data\service\payment
  */
-class BalancePyamentService extends PaymentService
+class BalancePaymentService extends PaymentService
 {
     /**
      * 订单信息查询
