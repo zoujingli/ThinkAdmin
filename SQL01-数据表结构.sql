@@ -378,7 +378,7 @@ CREATE TABLE `data_user_payment`  (
   `payment_trade` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '支付单号',
   `payment_status` tinyint(1) NULL DEFAULT 0 COMMENT '支付状态',
   `payment_amount` decimal(20, 2) NULL DEFAULT 0.00 COMMENT '支付金额',
-  `payment_datatime` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '支付时间',
+  `payment_datetime` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '支付时间',
   `create_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `idx_data_user_payment_order_no`(`order_no`) USING BTREE,
