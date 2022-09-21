@@ -29,7 +29,7 @@
     "topthink/framework": "^6.0",
     "topthink/think-view": "^1.0",
     "zoujingli/ip2region": "^2.0",
-    "zoujingli/think-library": "^6.0.33",
+    "zoujingli/think-library": "^6.0.37",
     "zoujingli/wechat-developer": "^1.2"
   },
   "autoload": {
