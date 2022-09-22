@@ -1,59 +1,112 @@
 <?php
 
 // 禁止 HTTP 访问脚本文件
-PHP_SAPI === 'cli' or die('Can only run in CLI mode.');
+// PHP_SAPI === 'cli' or die('Can only run in CLI mode.');
 
-// 从腾讯地址接口获取数据
-$url = 'https://apis.map.qq.com/ws/district/v1/list?key=AVDBZ-VXMC6-VD2SU-M7DX2-TGSV7-WVF3U';
-$result = json_decode(file_get_contents($url), true)['result'];
+new class() {
 
-// 生成数据字典(方便查询)
-$maps = [];
-foreach ($result as $items) foreach ($items as $item) {
-    $id = preg_replace('#(0000$|00$)#', '', $item['id']);
-    $item['list'] = [];
-    $item['location'] = join(',', $item['location'] ?? []);
-    unset($item['cidx'], $item['pinyin']);
-    $maps[$id] = $item;
-}
-ksort($maps);
+    private $tree = [];
 
-// 根据名称生成数据树
-$items = [];
-foreach ($maps as $key => $map) {
-    [$c1, $c2, $c3] = str_split("{$key}0000", 2);
-    $pname = $maps[$c1]['fullname'] ?? '';
-    $cname = $maps[$c1 . $c2]['fullname'] ?? $pname;
-    if ($c2 . $c3 === '0000') {
-        $items[$pname] = $map;
-    } elseif ($c3 === '00') {
-        $items[$pname]['list'][$cname] = $map;
-    } else {
-        if (empty($items[$pname]['list'][$cname])) {
-            $items[$pname]['list'][$cname] = $items[$pname];
+    public function __construct()
+    {
+        $this->debug($this->initBd())->write();
+    }
+
+    /**
+     * 初始化百度地址行政数据
+     * @return void
+     */
+    protected function initBd(): array
+    {
+        $url = 'https://api.map.baidu.com/api_region_search/v1/?keyword=%E5%85%A8%E5%9B%BD&sub_admin=3&ak=S7I1ewwAVr8r2MI3rnSKeF3R6GTCZiOo&extensions_code=1';
+        $provs = json_decode(file_get_contents($url), true)['districts'][0]['districts'];
+        foreach ($provs as &$prov) {
+            $prov['list'] = $prov['districts'];
+            foreach ($prov['list'] as &$city) {
+                $city['list'] = $city['districts'];
+                foreach ($city['list'] as &$area) {
+                    unset($area['level'], $area['list'], $area['districts']);
+                }
+                unset($city['level'], $city['districts']);
+            }
+            unset($prov['level'], $prov['districts']);
         }
-        $items[$pname]['list'][$cname]['list'][] = $map;
+        ksort($provs);
+        return $this->tree = $provs;
     }
-}
 
-// 生成插件数据(去除索引值)
-$data = [];
-$items = array_values($items);
-foreach ($items as &$prov) {
-    $lines = [];
-    $prov['list'] = array_values($prov['list']);
-    foreach ($prov['list'] as &$city) {
-        $city['list'] = array_values($city['list']);
-        $lines[] = $city['fullname'] . ',' . join(',', array_column($city['list'], 'fullname'));
+    /**
+     * 初始化腾讯地址行政
+     * @param array $data
+     * @return array
+     */
+    protected function initQq(array $data = []): array
+    {
+        $url = 'https://apis.map.qq.com/ws/district/v1/list?key=AVDBZ-VXMC6-VD2SU-M7DX2-TGSV7-WVF3U';
+        foreach (json_decode(file_get_contents($url), true)['result'] as $items) foreach ($items as $item) {
+            $data[$item['id']] = ['code' => $item['id'], 'name' => $item['fullname'], 'list' => []];
+        }
+        ksort($data);
+        foreach ($data as $item) {
+            [$k1, $k2, $k3] = str_split($item['code'], 2);
+            // 整合省份数据
+            if ($k2 + $k3 == 0) {
+                $this->tree[$k1] = $item;
+            }
+            // 整合城市
+            if ($k2 > 0 && $k3 == 0) {
+                $this->tree[$k1]['list'][$k1 . $k2] = $item;
+                ksort($this->tree[$k1]['list']);
+            }
+            // 整合区域
+            if ($k2 > 0 && $k3 > 0) {
+                unset($item['list']);
+                if (!isset($this->tree[$k1]['list'][$k1 . $k2])) {
+                    $this->tree[$k1]['list'][$k1 . $k2] = array_merge($this->tree[$k1], ['list' => []]);
+                }
+                $this->tree[$k1]['list'][$k1 . $k2]['list'][$k1 . $k2 . $k3] = $item;
+                ksort($this->tree[$k1]['list'][$k1 . $k2]['list']);
+            }
+        }
+        return $this->tree;
     }
-    $data[] = $prov['fullname'] . '$' . join('|', $lines);
-}
 
-// 数据写入文件
-$jsonFile = __DIR__ . '/data.json';
-$scriptFile = dirname(__DIR__) . '/pcasunzips.js';
-$jsonContent = json_encode($items, JSON_UNESCAPED_UNICODE);
-$scriptContent = str_replace('__STRING__', join('#', $data), <<<EOL
+    /**
+     * 打印输出日志
+     * @param array $data
+     * @return $this
+     */
+    private function debug(array $data)
+    {
+        ob_clean();
+        header('Content-type:application/json');
+        echo json_encode($data, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT);
+        return $this;
+    }
+
+    /**
+     * 写入更新文件
+     * @return bool
+     */
+    private function write(): bool
+    {
+        $data = [];
+        $items = array_values($this->tree);
+        foreach ($items as &$prov) {
+            $line = [];
+            $prov['list'] = array_values($prov['list']);
+            foreach ($prov['list'] as &$city) {
+                $city['list'] = array_values($city['list']);
+                $line[] = $city['name'] . ',' . join(',', array_column($city['list'], 'name'));
+            }
+            $data[] = $prov['name'] . '$' . join('|', $line);
+        }
+
+        // 数据写入文件
+        $jsonFile = __DIR__ . '/data.json';
+        $scriptFile = dirname(__DIR__) . ' /pcasunzips.js';
+        $jsonContent = json_encode($items, JSON_UNESCAPED_UNICODE);
+        $scriptContent = str_replace('__STRING__', join('#', $data), <<<EOL
 /********************************************************
  *** 加载脚本文件 ***
  <script src="pcasunzip.js"></script>
@@ -140,11 +193,9 @@ PCAS.SetA = function (PCA) {
     }), $(PCA.SelA).trigger('change')
 };
 EOL
-);
+        );
 
-// 写入区域文件
-if (file_put_contents($scriptFile, $scriptContent) && file_put_contents($jsonFile, $jsonContent)) {
-    echo 'success';
-} else {
-    echo 'error';
-}
+        // 写入区域文件
+        return file_put_contents($scriptFile, $scriptContent) && file_put_contents($jsonFile, $jsonContent);
+    }
+};
