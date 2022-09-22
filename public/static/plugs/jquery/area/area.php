@@ -1,7 +1,7 @@
 <?php
 
 // 禁止 HTTP 访问脚本文件
-// PHP_SAPI === 'cli' or die('Can only run in CLI mode.');
+PHP_SAPI === 'cli' or die('Can only run in CLI mode.');
 
 new class() {
 
