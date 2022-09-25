@@ -12,30 +12,6 @@
 // | github 代码仓库：https://github.com/zoujingli/ThinkAdmin
 // +----------------------------------------------------------------------
 
-/*! 数组兼容处理 */
-if (typeof Array.prototype.some !== 'function') {
-    Array.prototype.some = function (callable) {
-        for (var i in this) if (callable(this[i], i, this) === true) {
-            return true;
-        }
-        return false;
-    };
-}
-if (typeof Array.prototype.every !== 'function') {
-    Array.prototype.every = function (callable) {
-        for (var i in this) if (callable(this[i], i, this) === false) {
-            return false;
-        }
-        return true;
-    };
-}
-if (typeof Array.prototype.forEach !== 'function') {
-    Array.prototype.forEach = function (callable, context) {
-        typeof context === "undefined" ? context = window : null;
-        for (var i in this) callable.call(context, this[i], i, this)
-    };
-}
-
 /*! 应用根路径，静态插件库路径，动态插件库路径 */
 var srcs = document.scripts[document.scripts.length - 1].src.split('/');
 window.appRoot = srcs.slice(0, -2).join('/') + '/';
