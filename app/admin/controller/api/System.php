@@ -24,10 +24,10 @@ use think\exception\HttpResponseException;
 
 /**
  * 系统运行控制管理
- * Class Runtime
+ * Class System
  * @package app\admin\controller\api
  */
-class Runtime extends Controller
+class System extends Controller
 {
 
     /**
