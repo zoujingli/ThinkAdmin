@@ -80,10 +80,7 @@
             data.unshift(['ID', '操作账号', '访问节点', '访问IP地址', '访问地理区域', '访问操作', '操作内容', '操作时间']);
 
             // 自动计算列序号
-            var lastCol = layui.excel.numToTitle((function (count, idx) {
-                for (idx in data[0]) count++;
-                return count;
-            })(0));
+            var lastCol = layui.excel.numToTitle(data[0].length || 0);
 
             // 设置表头样式
             layui.excel.setExportCellStyle(data, 'A1:' + lastCol + '1', {
