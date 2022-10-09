@@ -104,11 +104,15 @@
                 fill: {bgColor: {indexed: 64}, fgColor: {rgb: "FFFFFF"}},
                 alignment: {vertical: 'center', horizontal: 'center'}
             };
-            layui.excel.setExportCellStyle(data, 'A2:' + lastCol + data.length, {s: style1}, function (rawCell, newCell, row, config, curRow) {
-                /* 判断并转换单元格数据为对象，以便初始化样式 */
-                typeof rawCell !== 'object' && (rawCell = {v: rawCell});
-                rawCell.s = Object.assign({}, style2, rawCell.s || {});
-                return (curRow % 2 === 0) ? newCell : rawCell;
+            // 动态应用样式
+            layui.excel.setExportCellStyle(data, 'A2:' + lastCol + data.length, {s: style1}, function (raw, cell, list, conf, rows, cols) {
+                // @var raw  原有单元格数据
+                // @var cell 新的单元格数据
+                // @var list 所在行数据列表
+                // @var conf 当前样式配置
+                // @var rows 当前行的标号
+                // @var cols 当前列的标号
+                return (rows % 2 === 0) ? cell : (Object.assign({}, cell, {s: style2}));
             });
 
             // 设置表格行宽高，需要设置最后的行或列宽高，否则部分不生效 ？？？
@@ -123,6 +127,6 @@
             // 在线文档：http://excel.wj2015.com/_book/docs/%E5%87%BD%E6%95%B0%E5%88%97%E8%A1%A8/%E6%A0%B7%E5%BC%8F%E8%AE%BE%E7%BD%AE%E7%9B%B8%E5%85%B3%E5%87%BD%E6%95%B0.html
 
             return data;
-        }, '操作日志');
+        }, '操作日志' + layui.util.toDateString(Date.now(), '_yyyyMMdd_HHmmss'));
     });
 </script>
