@@ -572,7 +572,7 @@ $(function () {
             if (elem.dataset.inited) return false; else elem.dataset.inited = 'true';
             elem.dataset.multiple = '|one|btn|'.indexOf(elem.dataset.file || 'one') > -1 ? '0' : '1';
             require(['upload'], function (apply) {
-                apply(elem, callable), setTimeout(function () {
+                apply(elem, callable) && setTimeout(function () {
                     typeof initialize === 'function' && initialize.call(elem, elem);
                 }, 100);
             });
@@ -890,12 +890,17 @@ $(function () {
         this.id = this.dataset.id = this.id || (function (date) {
             return (date + Math.random()).replace('0.', '');
         })(layui.util.toDateString(Date.now(), 'yyyyMMddHHmmss-'));
-        // 上传图片，支持单图或多图选择，分别是 image|images
+        /*! 查找表单元素, 如果没有找到将不会自动写值 */
+        if (!(this.$elem = $(this)).data('input') && this.$elem.data('field')) {
+            var $input = $('input[name="' + this.$elem.data('field') + '"]:not([type=file])');
+            this.$elem.data('input', $input.size() > 0 ? $input.get(0) : null);
+        }
+        // 单图或多图选择器 ( image|images )
         if (typeof this.dataset.file === 'string' && /^images?$/.test(this.dataset.file)) {
             return $.form.modal(tapiRoot + '/api.upload/image', this.dataset, '图片选择器')
         }
-        // 其他文件上传
-        if (!this.dataset.inited) $(this).uploadFile(undefined, function () {
+        // 其他文件上传处理
+        this.dataset.inited || $(this).uploadFile(undefined, function () {
             $(this).trigger('upload.start');
         });
     });
