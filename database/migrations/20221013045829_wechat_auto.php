@@ -12,10 +12,9 @@ class WechatAuto extends Migrator
     public function change()
     {
         // 创建数据表
-        $table = $this->table($this->name, [
+        $this->table($this->name, [
             'engine' => 'InnoDB', 'collation' => 'utf8mb4_general_ci', 'comment' => '微信-回复',
-        ]);
-        $table
+        ])
             ->addColumn('type', 'string', ['limit' => 20, 'default' => '', 'comment' => '类型(text,image,news)'])
             ->addColumn('time', 'string', ['limit' => 50, 'default' => '', 'comment' => '延迟时间'])
             ->addColumn('code', 'string', ['limit' => 20, 'default' => '', 'comment' => '消息编号'])

@@ -12,10 +12,9 @@ class WechatFansTags extends Migrator
     public function change()
     {
         // 创建数据表
-        $table = $this->table($this->name, [
+        $this->table($this->name, [
             'engine' => 'InnoDB', 'collation' => 'utf8mb4_general_ci', 'comment' => '微信-标签',
-        ]);
-        $table
+        ])
             ->addColumn('appid', 'string', ['limit' => 50, 'default' => '', 'comment' => '公众号编号'])
             ->addColumn('name', 'string', ['limit' => 50, 'default' => '', 'comment' => '标签名称'])
             ->addColumn('openid', 'string', ['limit' => 100, 'default' => '', 'comment' => 'OPENID'])

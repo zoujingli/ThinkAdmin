@@ -12,10 +12,9 @@ class WechatNews extends Migrator
     public function change()
     {
         // 创建数据表
-        $table = $this->table($this->name, [
+        $this->table($this->name, [
             'engine' => 'InnoDB', 'collation' => 'utf8mb4_general_ci', 'comment' => '微信-图文',
-        ]);
-        $table
+        ])
             ->addColumn('media_id', 'string', ['limit' => 100, 'default' => '', 'comment' => '永久素材编号'])
             ->addColumn('local_url', 'string', ['limit' => 500, 'default' => '', 'comment' => '本地文件链接'])
             ->addColumn('article_id', 'string', ['limit' => 100, 'default' => '', 'comment' => '关联文章编号(用英文逗号做分割)'])

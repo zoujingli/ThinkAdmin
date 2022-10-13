@@ -12,10 +12,9 @@ class WechatMedia extends Migrator
     public function change()
     {
         // 创建数据表
-        $table = $this->table($this->name, [
+        $this->table($this->name, [
             'engine' => 'InnoDB', 'collation' => 'utf8mb4_general_ci', 'comment' => '微信-素材',
-        ]);
-        $table
+        ])
             ->addColumn('md5', 'string', ['limit' => 32, 'default' => '', 'comment' => '文件哈希'])
             ->addColumn('type', 'string', ['limit' => 20, 'default' => '', 'comment' => '媒体类型'])
             ->addColumn('appid', 'string', ['limit' => 50, 'default' => '', 'comment' => '公众号编号'])

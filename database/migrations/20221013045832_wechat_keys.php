@@ -12,10 +12,9 @@ class WechatKeys extends Migrator
     public function change()
     {
         // 创建数据表
-        $table = $this->table($this->name, [
+        $this->table($this->name, [
             'engine' => 'InnoDB', 'collation' => 'utf8mb4_general_ci', 'comment' => '微信-规则',
-        ]);
-        $table
+        ])
             ->addColumn('type', 'string', ['limit' => 20, 'default' => '', 'comment' => '类型(text,image,news)'])
             ->addColumn('keys', 'string', ['limit' => 100, 'default' => '', 'comment' => '关键字'])
             ->addColumn('appid', 'string', ['limit' => 50, 'default' => '', 'comment' => '公众号编号'])
