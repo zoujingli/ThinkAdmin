@@ -7,16 +7,18 @@ use think\migration\Migrator;
  */
 class WechatKeys extends Migrator
 {
-    private $name = 'wechat_keys';
-
     public function change()
     {
+        // 当前操作
+        $table = 'wechat_keys';
+
         // 存在则跳过
-        if ($this->hasTable($this->name)) {
+        if ($this->hasTable($table)) {
             return;
         }
+
         // 创建数据表
-        $this->table($this->name, [
+        $this->table($table, [
             'engine' => 'InnoDB', 'collation' => 'utf8mb4_general_ci', 'comment' => '微信-规则',
         ])
             ->addColumn('type', 'string', ['limit' => 20, 'default' => '', 'comment' => '类型(text,image,news)'])
