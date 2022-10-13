@@ -5,7 +5,7 @@ use think\migration\Migrator;
 /**
  * 微信素材数据
  */
-class WechatMeida extends Migrator
+class WechatMedia extends Migrator
 {
     private $name = 'wechat_media';
 
