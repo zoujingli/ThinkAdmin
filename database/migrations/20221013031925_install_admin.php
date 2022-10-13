@@ -143,7 +143,7 @@ SQL
         ])
             ->addColumn('name', 'string', ['limit' => 100, 'default' => '', 'comment' => '配置名'])
             ->addColumn('value', 'text', ['default' => '', 'comment' => '配置值'])
-            ->addIndex('type', ['name' => 'idx_system_data_name'])
+            ->addIndex('name', ['name' => 'idx_system_data_name'])
             ->save();
     }
 

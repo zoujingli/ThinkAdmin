@@ -10,12 +10,12 @@ class InstallWechat extends Migrator
     public function change()
     {
         $this->_auto();
-        $this->_article();
         $this->_fans();
-        $this->_media();
-        $this->_news();
         $this->_tags();
         $this->_keys();
+        $this->_news();
+        $this->_media();
+        $this->_article();
     }
 
     private function _auto()
