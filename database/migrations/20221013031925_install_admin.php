@@ -285,11 +285,12 @@ SQL
             'engine' => 'InnoDB', 'collation' => 'utf8mb4_general_ci', 'comment' => '系统-任务',
         ])
             ->addColumn('code', 'string', ['limit' => 20, 'default' => '', 'comment' => '任务编号'])
-            ->addColumn('title', 'string', ['limit' => 80, 'default' => '', 'comment' => '任务名称'])
+            ->addColumn('title', 'string', ['limit' => 100, 'default' => '', 'comment' => '任务名称'])
             ->addColumn('command', 'string', ['limit' => 500, 'default' => '', 'comment' => '执行指令'])
             ->addColumn('exec_pid', 'integer', ['limit' => 20, 'default' => 0, 'comment' => '执行进程'])
             ->addColumn('exec_data', 'text', ['default' => '', 'comment' => '执行参数'])
             ->addColumn('exec_time', 'integer', ['limit' => 20, 'default' => 0, 'comment' => '执行时间'])
+            ->addColumn('exec_desc', 'string', ['limit' => 500, 'default' => '', 'comment' => '执行描述'])
             ->addColumn('enter_time', 'decimal', ['precision' => 20, 'scale' => 4, 'default' => 0, 'comment' => '开始时间'])
             ->addColumn('outer_time', 'decimal', ['precision' => 20, 'scale' => 4, 'default' => 0, 'comment' => '结束时间'])
             ->addColumn('loops_time', 'integer', ['limit' => 20, 'default' => 0, 'comment' => '循环时间'])

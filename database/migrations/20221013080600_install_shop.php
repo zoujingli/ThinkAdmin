@@ -26,7 +26,7 @@ class InstallShop extends Migrator
 
         // 创建数据表，存在则跳过
         $this->hasTable($table) || $this->table($table, [
-            'engine' => 'InnoDB', 'collation' => 'utf8mb4_general_ci', 'comment' => '',
+            'engine' => 'InnoDB', 'collation' => 'utf8mb4_general_ci', 'comment' => '商城-商品-主体',
         ])
             ->addColumn('code', 'string', ['limit' => 20, 'default' => '', 'comment' => '商品编号'])
             ->addColumn('name', 'string', ['limit' => 500, 'default' => '', 'comment' => '商品名称'])
