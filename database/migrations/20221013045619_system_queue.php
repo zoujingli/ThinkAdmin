@@ -7,16 +7,17 @@ use think\migration\Migrator;
  */
 class SystemQueue extends Migrator
 {
-    private $name = 'system_queue';
-
     public function change()
     {
+        // 当前操作
+        $table = 'system_queue';
+
         // 存在则跳过
-        if ($this->hasTable($this->name)) {
+        if ($this->hasTable($table)) {
             return;
         }
         // 创建数据表
-        $this->table($this->name, [
+        $this->table($table, [
             'engine' => 'InnoDB', 'collation' => 'utf8mb4_general_ci', 'comment' => '系统-任务',
         ])
             ->addColumn('code', 'string', ['limit' => 20, 'default' => '', 'comment' => '任务编号'])

@@ -7,16 +7,18 @@ use think\migration\Migrator;
  */
 class SystemOplog extends Migrator
 {
-    private $name = 'system_oplog';
-
     public function change()
     {
+        // 当前操作
+        $table = 'system_oplog';
+
         // 存在则跳过
-        if ($this->hasTable($this->name)) {
+        if ($this->hasTable($table)) {
             return;
         }
+
         // 创建数据表
-        $this->table($this->name, [
+        $this->table($table, [
             'engine' => 'InnoDB', 'collation' => 'utf8mb4_general_ci', 'comment' => '系统-日志',
         ])
             ->addColumn('node', 'string', ['limit' => 200, 'default' => '', 'comment' => '当前操作节点'])

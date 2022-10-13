@@ -15,6 +15,7 @@ class SystemUser extends Migrator
         if ($this->hasTable($this->name)) {
             return;
         }
+
         // 创建数据表
         $table = $this->table($this->name, [
             'engine' => 'InnoDB', 'collation' => 'utf8mb4_general_ci', 'comment' => '系统-用户',
