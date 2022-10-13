@@ -21,9 +21,10 @@ ThinkAdmin v6 基于`v1-v5`版本的积累，结合`ThinkPHP 6.0`的思维重新
 
 ### 数据管理
 
-> * 系统使用`phinx`管理数据库，在未配置数据库时默认使用`Sqlite`数据库作为测试与体验；
+> * 系统使用`Phinx`管理数据库，在未配置数据库时默认使用`Sqlite`数据库作为测试与体验；
 > * 使用`Sqlite`存储数据时仅限用于体验测试，不得用于生产环境，生产环境建议使用免费开源的`MySQL`数据库；
 > * 在使用`MySql`,`SqlServer`,`Postgres`等服务型数据库时，需要先创建空的数据库并将参数配置到`config/database.php`，然后再执行`composer install`进行初始化安装；
+> * 开发系统时，如果要对数据库添加数据表或修改数据表，建议创建`Phinx`脚本后执行`composer update`进行数据库升级。
 
 ### 体验环境
 
