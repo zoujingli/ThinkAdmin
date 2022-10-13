@@ -16,7 +16,7 @@
 
 return [
     // 默认使用的数据库连接配置
-    'default'         => 'mysql',
+    'default'         => 'sqlite',
     // 自定义时间查询规则
     'time_query_rule' => [],
     // 自动写入时间戳字段
@@ -25,7 +25,7 @@ return [
     'datetime_format' => 'Y-m-d H:i:s',
     // 数据库连接配置信息
     'connections'     => [
-        'mysql' => [
+        'mysql'  => [
             // 数据库类型
             'type'            => 'mysql',
             // 服务器地址
@@ -60,6 +60,22 @@ return [
             'trigger_sql'     => true,
             // 开启字段类型缓存
             'fields_cache'    => !app()->isDebug(),
+        ],
+        'sqlite' => [
+            'charset'     => 'utf8',
+            // 数据库类型
+            'type'        => 'sqlite',
+            // 数据库文件
+            'database'    => app()->getRootPath() . 'database/sqlite.db',
+            // 监听执行日志
+            'trigger_sql' => true,
+            // 其他参数字段
+            'deploy'      => 0,
+            'prefix'      => '',
+            'hostname'    => '',
+            'hostport'    => '',
+            'username'    => '',
+            'password'    => '',
         ],
     ],
 ];

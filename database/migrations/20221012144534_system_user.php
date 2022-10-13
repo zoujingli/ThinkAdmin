@@ -7,7 +7,7 @@ use think\migration\Migrator;
  */
 class SystemUser extends Migrator
 {
-    protected $name = 'system_user1';
+    protected $name = 'system_user';
 
     public function change()
     {

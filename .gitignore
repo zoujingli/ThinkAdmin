@@ -10,6 +10,7 @@ runtime
 safefile
 nbproject
 composer.lock
+database/sqlite.db
 public/upload
 public/.user.ini
 public/favicon.ico
