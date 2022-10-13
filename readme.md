@@ -16,27 +16,27 @@ ThinkAdmin v6 基于`v1-v5`版本的积累，结合`ThinkPHP 6.0`的思维重新
 
 > * `ThinkAdmin`基于`ThinkPHP 6.0.x`开发，对`PHP`版本标注不低于`PHP 7.1`，请阅读`ThinkPHP`官方文档；
 > * 运行环境需开启`PATHINFO`，不再支持`ThinkPHP`的`URL`兼容模式运行（源于如何优雅地展示）；
-> * `ThinkAdmin`不带`composer`组件`vendor`目录，下载后需要自行执行`composer install`安装；
-> * 若操作提示 “演示系统禁止操作” 等字样，需要删除演示路由配置( `app/admin/route/demo.php` )或清空路由文件；
+> * `ThinkAdmin`默认不带`composer`组件`vendor`目录，下载后需要自行执行`composer install`安装；
+> * 若操作提示 “演示系统禁止操作” 等字样，需要删除演示路由配置`app/admin/route/demo.php`或清空路由文件；
 
 ### 数据管理
 
-> * 使用`phinx`管理数据库，在未配置数据库时默认使用`Sqlite`数据库作为测试与体验。
-> * 在使用`Sqlite`存储数据时，仅可以用于测试与体验，不得用于线上生产环境，建议使用免费开源的`MySQL`数据库。
-> * 使用`MySql`,`SqlServer`,`Postgres`等服务型数据库，需要先创建空数据库并配置到项目，再执行`composer install`即可自动安装。
+> * 使用`phinx`管理数据库，在未配置数据库时默认使用`Sqlite`数据库作为测试与体验；
+> * 在使用`Sqlite`存储数据时，仅可以用于测试与体验，不得用于线上生产环境，建议使用免费开源的`MySQL`数据库；
+> * 使用`MySql`,`SqlServer`,`Postgres`等服务型数据库，需要先创建空数据库并配置到项目，再执行`composer install`即可自动安装；
 
-### 体验测试
+### 体验环境
 
-> * 无需配置数据库，默认使用`Sqlite`数据库
-> * 执行`composer install`安装项目所需依赖组件以及自动安装数据库
-> * 启动项目内置的`WEB`服务，执行`php think run`并浏览器访问`http://127.0.0.1:8000`
-> * 使用系统默认的账号和密码登录后台，默认的账号和密码都是`admin`
+> * 无需配置数据库，默认使用`Sqlite`数据库；
+> * 执行`composer install`安装项目所需依赖组件以及自动安装数据库；
+> * 启动项目内置的`WEB`服务，执行`php think run`并浏览器访问`http://127.0.0.1:8000`；
+> * 使用系统默认的账号和密码登录后台，默认的账号和密码都是`admin`；
 
 ### 开发环境
 
-> * 安装数据库程序并创建数据库，将参数配置到`config/database.php`
-> * 执行`composer install`安装项目所需依赖组件以及自动安装数据库
-> * 安装`Nginx`或`Apache`服务，并按照`ThinkPHP`官方要求配置网站
+> * 安装数据库程序并创建数据库，将参数配置到`config/database.php`；
+> * 执行`composer install`安装项目所需依赖组件以及自动安装数据库；
+> * 安装`Nginx`或`Apache`服务，并按照`ThinkPHP`官方要求配置网站；
 
 ## 技术支持
 
