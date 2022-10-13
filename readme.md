@@ -36,13 +36,11 @@ ThinkAdmin v6 基于`v1-v5`版本的积累，结合`ThinkPHP 6.0`的思维重新
 
 > * 安装数据库程序并创建数据库，将参数配置到`config/database.php`；
 > * 执行`composer install`安装项目所需依赖组件以及自动安装数据库；
-> * 安装`Nginx`或`Apache`服务，并按照`ThinkPHP`官方要求配置网站；
+> * 安装`Nginx`或`Apache`等`Web`服务，并按照`ThinkPHP`官方要求配置网站；
 
 ## 技术支持
 
 开发前请认真阅读 ThinkPHP 官方文档会对您有帮助哦！
-
-本地开发请使用`php think run`运行服务，访问`http://127.0.0.1:8000`即可进入项目。
 
 官方地址及开发指南：https://thinkadmin.top ，如果实在无法解决问题可以加入官方群免费交流。
 
