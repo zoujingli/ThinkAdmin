@@ -11,6 +11,10 @@ class SystemAuth extends Migrator
 
     public function change()
     {
+        // 存在则跳过
+        if ($this->hasTable($this->name)) {
+            return;
+        }
         // 创建数据表
         $this->table($this->name, [
             'engine' => 'InnoDB', 'collation' => 'utf8mb4_general_ci', 'comment' => '系统-权限',
