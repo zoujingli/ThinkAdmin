@@ -14,10 +14,12 @@ ThinkAdmin v6 基于`v1-v5`版本的积累，结合`ThinkPHP 6.0`的思维重新
 
 #### 注意事项
 
-* 项目测试需要自行搭建环境导入数据库 SQL 文件并修改配置( config/database.php )；
-* 若操作提示“演示系统禁止操作”等字样，需要删除演示路由配置( app/admin/route/demo.php )或清空路由文件；
-* 当前版本使用 ThinkPHP 6.0.x，对 PHP 版本标注不低于 PHP 7.1，具体请阅读 ThinkPHP 官方文档；
-* 环境需开启 PATHINFO，不再支持 ThinkPHP 的 URL 兼容模式运行（源于如何优雅地展示）；
+* 项目使用`phinx`管理数据库，在未配置数据库时默认使用`sqlite`存储，方便测试与体验。
+* 使用`sqlite`存储数据时，仅可以用于测试与体验，不得用于线上生产环境，建议使用`MySQL`数据库。
+* 使用`MySql`，`SqlServer`等服务型数据库，需要创建数据库并配置到项目，执行`composer`插入或更新即可自动安装。
+* 若操作提示 “演示系统禁止操作” 等字样，需要删除演示路由配置( `app/admin/route/demo.php` )或清空路由文件；
+* 当前版本使用 `ThinkPHP 6.0.x`，对 `PHP` 版本标注不低于 `PHP 7.1`，具体请阅读 `ThinkPHP` 官方文档；
+* 环境需开启`PATHINFO`，不再支持`ThinkPHP`的`URL`兼容模式运行（源于如何优雅地展示）；
 * 项目默认不带`composer`模块`vendor`目录，下载后需要自行`composer install`安装；
 
 ## 技术支持
