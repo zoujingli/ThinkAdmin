@@ -13,9 +13,8 @@ class SystemQueue extends Migrator
         $table = 'system_queue';
 
         // 存在则跳过
-        if ($this->hasTable($table)) {
-            return;
-        }
+        if ($this->hasTable($table)) return;
+
         // 创建数据表
         $this->table($table, [
             'engine' => 'InnoDB', 'collation' => 'utf8mb4_general_ci', 'comment' => '系统-任务',

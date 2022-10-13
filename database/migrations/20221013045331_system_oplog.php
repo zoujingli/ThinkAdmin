@@ -13,9 +13,7 @@ class SystemOplog extends Migrator
         $table = 'system_oplog';
 
         // 存在则跳过
-        if ($this->hasTable($table)) {
-            return;
-        }
+        if ($this->hasTable($table)) return;
 
         // 创建数据表
         $this->table($table, [

@@ -7,16 +7,12 @@ use think\migration\Migrator;
  */
 class SystemFile extends Migrator
 {
-    private $name = 'system_file';
-
     public function change()
     {
-        // 存在则跳过
-        if ($this->hasTable($this->name)) {
-            return;
-        }
-        // 创建数据表
-        $this->table($this->name, [
+        // 当前操作
+        $table = 'system_file';
+        // 创建数据表，存在则跳过
+        $this->hasTable($table) || $this->table($table, [
             'engine' => 'InnoDB', 'collation' => 'utf8mb4_general_ci', 'comment' => '系统-文件',
         ])
             ->addColumn('type', 'string', ['limit' => 20, 'default' => '', 'comment' => '上传类型'])
@@ -41,5 +37,4 @@ class SystemFile extends Migrator
             ->addIndex('isfast', ['name' => 'idx_system_file_isfast'])
             ->save();
     }
-
 }

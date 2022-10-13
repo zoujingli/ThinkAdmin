@@ -7,16 +7,12 @@ use think\migration\Migrator;
  */
 class SystemBase extends Migrator
 {
-    private $name = 'system_base';
-
     public function change()
     {
-        // 存在则跳过
-        if ($this->hasTable($this->name)) {
-            return;
-        }
-        // 创建数据表
-        $this->table($this->name, [
+        // 当前操作
+        $table = 'system_base';
+        // 创建数据表，存在则跳过
+        $this->hasTable($table) || $this->table($table, [
             'engine' => 'InnoDB', 'collation' => 'utf8mb4_general_ci', 'comment' => '系统-字典',
         ])
             ->addColumn('type', 'string', ['limit' => 20, 'default' => '', 'comment' => '数据类型'])

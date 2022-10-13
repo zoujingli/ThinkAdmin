@@ -7,16 +7,12 @@ use think\migration\Migrator;
  */
 class SystemData extends Migrator
 {
-    private $name = 'system_data';
-
     public function change()
     {
-        // 存在则跳过
-        if ($this->hasTable($this->name)) {
-            return;
-        }
-        // 创建数据表
-        $this->table($this->name, [
+        // 当前操作
+        $table = 'system_data';
+        // 创建数据表，存在则跳过
+        $this->hasTable($table) || $this->table($table, [
             'engine' => 'InnoDB', 'collation' => 'utf8mb4_general_ci', 'comment' => '系统-数据',
         ])
             ->addColumn('name', 'string', ['limit' => 100, 'default' => '', 'comment' => '配置名'])

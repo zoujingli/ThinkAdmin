@@ -7,21 +7,18 @@ use think\migration\Migrator;
  */
 class SystemUser extends Migrator
 {
-    private $name = 'system_user';
-
     public function change()
     {
+        // 当前操作
+        $table = 'system_user';
+
         // 存在则跳过
-        if ($this->hasTable($this->name)) {
-            return;
-        }
+        if ($this->hasTable($table)) return;
 
         // 创建数据表
-        $table = $this->table($this->name, [
+        $this->table($table, [
             'engine' => 'InnoDB', 'collation' => 'utf8mb4_general_ci', 'comment' => '系统-用户',
-        ]);
-        $table
-            ->addColumn('usertype', 'string', ['limit' => 20, 'default' => '', 'comment' => '用户类型'])
+        ])->addColumn('usertype', 'string', ['limit' => 20, 'default' => '', 'comment' => '用户类型'])
             ->addColumn('username', 'string', ['limit' => 50, 'default' => '', 'comment' => '用户账号'])
             ->addColumn('password', 'string', ['limit' => 32, 'default' => '', 'comment' => '用户密码'])
             ->addColumn('nickname', 'string', ['limit' => 50, 'default' => '', 'comment' => '用户昵称'])
@@ -51,6 +48,6 @@ class SystemUser extends Migrator
             'password' => '21232f297a57a5a743894a0e4a801fc3',
             'headimg'  => 'https://thinkadmin.top/static/img/icon.png',
         ];
-        $table->insert($data)->saveData();
+        $this->table($table)->insert($data)->saveData();
     }
 }

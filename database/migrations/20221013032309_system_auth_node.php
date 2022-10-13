@@ -7,16 +7,12 @@ use think\migration\Migrator;
  */
 class SystemAuthNode extends Migrator
 {
-    private $name = 'system_auth_node';
-
     public function change()
     {
-        // 存在则跳过
-        if ($this->hasTable($this->name)) {
-            return;
-        }
-        // 创建数据表
-        $this->table($this->name, [
+        // 当前操作
+        $table = 'system_auth_node';
+        // 创建数据表，存在则跳过
+        $this->hasTable($table) || $this->table($table, [
             'engine' => 'InnoDB', 'collation' => 'utf8mb4_general_ci', 'comment' => '系统-授权',
         ])
             ->addColumn('auth', 'integer', ['limit' => 20, 'default' => 0, 'comment' => '角色编号'])
