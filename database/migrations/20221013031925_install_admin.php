@@ -166,6 +166,7 @@ SQL
             ->addColumn('size', 'integer', ['limit' => 20, 'default' => 0, 'comment' => '文件大小'])
             ->addColumn('uuid', 'integer', ['limit' => 20, 'default' => 0, 'comment' => '用户编号'])
             ->addColumn('isfast', 'integer', ['limit' => 1, 'default' => 0, 'comment' => '是否秒传'])
+            ->addColumn('issafe', 'integer', ['limit' => 1, 'default' => 0, 'comment' => '是否安全模式'])
             ->addColumn('status', 'integer', ['limit' => 1, 'default' => 1, 'comment' => '状态(0禁用,1启用)'])
             ->addColumn('create_at', 'datetime', ['limit' => 20, 'default' => '', 'comment' => '创建时间'])
             ->addColumn('update_at', 'datetime', ['limit' => 20, 'default' => 0, 'comment' => '更新时间'])
