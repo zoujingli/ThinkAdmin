@@ -23,7 +23,7 @@ class SystemQueue extends Migrator
             ->addColumn('exec_time', 'decimal', ['precision' => 20, 'scale' => 4, 'default' => 0, 'comment' => '执行时间'])
             ->addColumn('outer_time', 'decimal', ['precision' => 20, 'scale' => 4, 'default' => 0, 'comment' => '结束时间'])
             ->addColumn('loops_time', 'integer', ['limit' => 20, 'default' => 0, 'comment' => '循环时间'])
-            ->addColumn('attempts', 'string', ['limit' => 500, 'default' => '', 'comment' => '执行次数'])
+            ->addColumn('attempts', 'integer', ['limit' => 20, 'default' => 0, 'comment' => '执行次数'])
             ->addColumn('rscript', 'integer', ['limit' => 20, 'default' => 0, 'comment' => '任务类型(0单例,1多例)'])
             ->addColumn('status', 'integer', ['limit' => 20, 'default' => 1, 'comment' => '任务状态(1新任务,2处理中,3成功,4失败)'])
             ->addColumn('create_at', 'timestamp', ['default' => 'CURRENT_TIMESTAMP', 'comment' => '创建时间'])
