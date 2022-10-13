@@ -2,6 +2,9 @@
 
 use think\migration\Migrator;
 
+/**
+ * 商品库存
+ */
 class ShopGoodsStock extends Migrator
 {
     public function change()
@@ -16,7 +19,7 @@ class ShopGoodsStock extends Migrator
 
         // 创建数据表
         $this->table($table, [
-            'engine' => 'InnoDB', 'collation' => 'utf8mb4_general_ci', 'comment' => '',
+            'engine' => 'InnoDB', 'collation' => 'utf8mb4_general_ci', 'comment' => '商城-商品-库存',
         ])
             ->addColumn('batch_no', 'string', ['limit' => 20, 'default' => '', 'comment' => '操作批量'])
             ->addColumn('goods_code', 'string', ['limit' => 20, 'default' => '', 'comment' => '商品编号'])

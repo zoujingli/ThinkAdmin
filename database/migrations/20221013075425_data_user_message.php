@@ -2,6 +2,9 @@
 
 use think\migration\Migrator;
 
+/**
+ * 前端用户短信数据
+ */
 class DataUserMessage extends Migrator
 {
     public function change()
@@ -16,7 +19,7 @@ class DataUserMessage extends Migrator
 
         // 创建数据表
         $this->table($table, [
-            'engine' => 'InnoDB', 'collation' => 'utf8mb4_general_ci', 'comment' => '',
+            'engine' => 'InnoDB', 'collation' => 'utf8mb4_general_ci', 'comment' => '数据-用户-短信',
         ])
             ->addColumn('type', 'integer', ['limit' => 1, 'default' => 1, 'comment' => '短信类型'])
             ->addColumn('msgid', 'string', ['limit' => 50, 'default' => '', 'comment' => '消息编号'])

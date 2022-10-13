@@ -2,6 +2,9 @@
 
 use think\migration\Migrator;
 
+/**
+ * 商品标签数据
+ */
 class ShopGoodsMark extends Migrator
 {
     public function change()
@@ -16,7 +19,7 @@ class ShopGoodsMark extends Migrator
 
         // 创建数据表
         $this->table($table, [
-            'engine' => 'InnoDB', 'collation' => 'utf8mb4_general_ci', 'comment' => '',
+            'engine' => 'InnoDB', 'collation' => 'utf8mb4_general_ci', 'comment' => '商城-商品-标签',
         ])
             ->addColumn('name', 'string', ['limit' => 100, 'default' => '', 'comment' => '标签名称'])
             ->addColumn('remark', 'string', ['limit' => 200, 'default' => '', 'comment' => '标签描述'])

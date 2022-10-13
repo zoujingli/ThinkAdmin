@@ -2,6 +2,9 @@
 
 use think\migration\Migrator;
 
+/**
+ * 前端用户提现数据
+ */
 class DataUserTransfer extends Migrator
 {
     public function change()
@@ -15,7 +18,7 @@ class DataUserTransfer extends Migrator
 
         // 创建数据表
         $this->table($table, [
-            'engine' => 'InnoDB', 'collation' => 'utf8mb4_general_ci', 'comment' => '',
+            'engine' => 'InnoDB', 'collation' => 'utf8mb4_general_ci', 'comment' => '数据-用户-提现',
         ])
             ->addColumn('uuid', 'integer', ['limit' => 20, 'default' => 0, 'comment' => '用户UID'])
             ->addColumn('type', 'string', ['limit' => 30, 'default' => '', 'comment' => '提现方式'])

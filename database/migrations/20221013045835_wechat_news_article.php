@@ -7,16 +7,17 @@ use think\migration\Migrator;
  */
 class WechatNewsArticle extends Migrator
 {
-    private $name = 'wechat_news_article';
-
     public function change()
     {
+        // 当前操作
+        $table = 'wechat_news_article';
+
         // 存在则跳过
-        if ($this->hasTable($this->name)) {
+        if ($this->hasTable($table)) {
             return;
         }
         // 创建数据表
-        $this->table($this->name, [
+        $this->table($table, [
             'engine' => 'InnoDB', 'collation' => 'utf8mb4_general_ci', 'comment' => '微信-文章',
         ])
             ->addColumn('title', 'string', ['limit' => 100, 'default' => '', 'comment' => '素材标题'])

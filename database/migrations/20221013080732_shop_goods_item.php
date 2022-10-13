@@ -2,6 +2,9 @@
 
 use think\migration\Migrator;
 
+/**
+ * 商品规格数据
+ */
 class ShopGoodsItem extends Migrator
 {
     public function change()
@@ -16,7 +19,7 @@ class ShopGoodsItem extends Migrator
 
         // 创建数据表
         $this->table($table, [
-            'engine' => 'InnoDB', 'collation' => 'utf8mb4_general_ci', 'comment' => '',
+            'engine' => 'InnoDB', 'collation' => 'utf8mb4_general_ci', 'comment' => '商城-商品-规格',
         ])
             ->addColumn('goods_sku', 'string', ['limit' => 20, 'default' => '', 'comment' => '商品SKU'])
             ->addColumn('goods_code', 'string', ['limit' => 20, 'default' => '', 'comment' => '商品编号'])

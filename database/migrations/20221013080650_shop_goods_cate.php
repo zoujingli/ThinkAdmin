@@ -2,6 +2,9 @@
 
 use think\migration\Migrator;
 
+/**
+ * 商品分类数据
+ */
 class ShopGoodsCate extends Migrator
 {
     public function change()
@@ -16,7 +19,7 @@ class ShopGoodsCate extends Migrator
 
         // 创建数据表
         $this->table($table, [
-            'engine' => 'InnoDB', 'collation' => 'utf8mb4_general_ci', 'comment' => '',
+            'engine' => 'InnoDB', 'collation' => 'utf8mb4_general_ci', 'comment' => '商城-商品-分类',
         ])
             ->addColumn('pid', 'integer', ['limit' => 20, 'default' => 0, 'comment' => '上级分类'])
             ->addColumn('name', 'string', ['limit' => 255, 'default' => '', 'comment' => '分类名称'])

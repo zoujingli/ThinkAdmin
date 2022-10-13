@@ -2,6 +2,9 @@
 
 use think\migration\Migrator;
 
+/**
+ * 文章用户数据
+ */
 class DataNewsxCollect extends Migrator
 {
     public function change()
@@ -16,7 +19,7 @@ class DataNewsxCollect extends Migrator
 
         // 创建数据表
         $this->table($table, [
-            'engine' => 'InnoDB', 'collation' => 'utf8mb4_general_ci', 'comment' => '',
+            'engine' => 'InnoDB', 'collation' => 'utf8mb4_general_ci', 'comment' => '数据-文章-交互',
         ])
             ->addColumn('uuid', 'integer', ['limit' => 20, 'default' => 0, 'comment' => '用户UID'])
             ->addColumn('type', 'integer', ['limit' => 1, 'default' => 1, 'comment' => '记录类型(1收藏,2点赞,3历史,4评论)'])

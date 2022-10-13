@@ -2,6 +2,9 @@
 
 use think\migration\Migrator;
 
+/**
+ * 文章标签数据
+ */
 class DataNewsMark extends Migrator
 {
     public function change()
@@ -16,7 +19,7 @@ class DataNewsMark extends Migrator
 
         // 创建数据表
         $this->table($table, [
-            'engine' => 'InnoDB', 'collation' => 'utf8mb4_general_ci', 'comment' => '',
+            'engine' => 'InnoDB', 'collation' => 'utf8mb4_general_ci', 'comment' => '数据-文章-标签',
         ])
             ->addColumn('name', 'string', ['limit' => 100, 'default' => '', 'comment' => '标签名称'])
             ->addColumn('remark', 'string', ['limit' => 500, 'default' => '', 'comment' => '标签说明'])

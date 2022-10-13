@@ -2,6 +2,9 @@
 
 use think\migration\Migrator;
 
+/**
+ * 前端用户收货地址数据
+ */
 class DataUserAddress extends Migrator
 {
     public function change()
@@ -16,7 +19,7 @@ class DataUserAddress extends Migrator
 
         // 创建数据表
         $this->table($table, [
-            'engine' => 'InnoDB', 'collation' => 'utf8mb4_general_ci', 'comment' => '',
+            'engine' => 'InnoDB', 'collation' => 'utf8mb4_general_ci', 'comment' => '数据-用户-收货地址',
         ])
             ->addColumn('uuid', 'integer', ['limit' => 20, 'default' => 0, 'comment' => '用户UID'])
             ->addColumn('type', 'integer', ['limit' => 1, 'default' => 0, 'comment' => '地址类型(0普通,1默认)'])

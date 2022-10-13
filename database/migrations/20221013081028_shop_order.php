@@ -2,6 +2,9 @@
 
 use think\migration\Migrator;
 
+/**
+ * 订单主体数据
+ */
 class ShopOrder extends Migrator
 {
     public function change()
@@ -16,7 +19,7 @@ class ShopOrder extends Migrator
 
         // 创建数据表
         $this->table($table, [
-            'engine' => 'InnoDB', 'collation' => 'utf8mb4_general_ci', 'comment' => '',
+            'engine' => 'InnoDB', 'collation' => 'utf8mb4_general_ci', 'comment' => '商城-订单',
         ])
             ->addColumn('uuid', 'integer', ['limit' => 20, 'default' => 0, 'comment' => '下单用户编号'])
             ->addColumn('puid1', 'integer', ['limit' => 20, 'default' => 0, 'comment' => '推荐一层用户'])

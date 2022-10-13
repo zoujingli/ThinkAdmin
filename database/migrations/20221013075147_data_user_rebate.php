@@ -2,6 +2,9 @@
 
 use think\migration\Migrator;
 
+/**
+ * 前端用户返利数据
+ */
 class DataUserRebate extends Migrator
 {
     public function change()
@@ -16,7 +19,7 @@ class DataUserRebate extends Migrator
 
         // 创建数据表
         $this->table($table, [
-            'engine' => 'InnoDB', 'collation' => 'utf8mb4_general_ci', 'comment' => '',
+            'engine' => 'InnoDB', 'collation' => 'utf8mb4_general_ci', 'comment' => '数据-用户-返利',
         ])
             ->addColumn('uuid', 'integer', ['limit' => 20, 'default' => 0, 'comment' => '用户UID'])
             ->addColumn('date', 'string', ['limit' => 20, 'default' => '', 'comment' => '奖励日期'])

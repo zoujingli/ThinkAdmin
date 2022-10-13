@@ -2,6 +2,9 @@
 
 use think\migration\Migrator;
 
+/**
+ * 前端用户数据
+ */
 class DataUser extends Migrator
 {
     public function change()
@@ -16,7 +19,7 @@ class DataUser extends Migrator
 
         // 创建数据表
         $this->table($table, [
-            'engine' => 'InnoDB', 'collation' => 'utf8mb4_general_ci', 'comment' => '',
+            'engine' => 'InnoDB', 'collation' => 'utf8mb4_general_ci', 'comment' => '数据-用户',
         ])
             ->addColumn('pid0', 'integer', ['limit' => 20, 'default' => 0, 'comment' => '临时推荐人UID'])
             ->addColumn('pid1', 'integer', ['limit' => 20, 'default' => 0, 'comment' => '推荐人一级UID'])

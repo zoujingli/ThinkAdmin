@@ -19,7 +19,7 @@ class BasePostageCompany extends Migrator
 
         // 创建数据表
         $this->table($table, [
-            'engine' => 'InnoDB', 'collation' => 'utf8mb4_general_ci', 'comment' => '',
+            'engine' => 'InnoDB', 'collation' => 'utf8mb4_general_ci', 'comment' => '数据-快递-公司',
         ])
             ->addColumn('name', 'string', ['limit' => 50, 'default' => '', 'comment' => '快递公司名称'])
             ->addColumn('code_1', 'string', ['limit' => 50, 'default' => '', 'comment' => '快递公司代码'])

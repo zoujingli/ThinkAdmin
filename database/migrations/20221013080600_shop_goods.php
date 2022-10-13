@@ -2,6 +2,9 @@
 
 use think\migration\Migrator;
 
+/**
+ * 商品主体数据
+ */
 class ShopGoods extends Migrator
 {
     public function change()

@@ -19,7 +19,7 @@ class BasePostageRegion extends Migrator
 
         // 创建数据表
         $this->table($table, [
-            'engine' => 'InnoDB', 'collation' => 'utf8mb4_general_ci', 'comment' => '',
+            'engine' => 'InnoDB', 'collation' => 'utf8mb4_general_ci', 'comment' => '数据-快递-区域',
         ])
             ->addColumn('pid', 'integer', ['limit' => 20, 'default' => 0, 'comment' => '上级PID'])
             ->addColumn('first', 'string', ['limit' => 50, 'default' => '', 'comment' => '首字母'])

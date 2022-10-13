@@ -2,6 +2,9 @@
 
 use think\migration\Migrator;
 
+/**
+ * 文章主体数据
+ */
 class DataNewsItem extends Migrator
 {
     public function change()
@@ -16,7 +19,7 @@ class DataNewsItem extends Migrator
 
         // 创建数据表
         $this->table($table, [
-            'engine' => 'InnoDB', 'collation' => 'utf8mb4_general_ci', 'comment' => '',
+            'engine' => 'InnoDB', 'collation' => 'utf8mb4_general_ci', 'comment' => '数据-文章',
         ])
             ->addColumn('code', 'string', ['limit' => 20, 'default' => '', 'comment' => '文章编号'])
             ->addColumn('name', 'string', ['limit' => 100, 'default' => '', 'comment' => '文章标题'])

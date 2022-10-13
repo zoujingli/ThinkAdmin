@@ -2,6 +2,9 @@
 
 use think\migration\Migrator;
 
+/**
+ * 用户支付行为数据
+ */
 class DataUserPayment extends Migrator
 {
     public function change()
@@ -16,7 +19,7 @@ class DataUserPayment extends Migrator
 
         // 创建数据表
         $this->table($table, [
-            'engine' => 'InnoDB', 'collation' => 'utf8mb4_general_ci', 'comment' => '',
+            'engine' => 'InnoDB', 'collation' => 'utf8mb4_general_ci', 'comment' => '数据-用户-支付',
         ])
             ->addColumn('order_no', 'string', ['limit' => 20, 'default' => '', 'comment' => '订单单号'])
             ->addColumn('order_name', 'string', ['limit' => 255, 'default' => '', 'comment' => '订单描述'])

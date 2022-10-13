@@ -2,6 +2,9 @@
 
 use think\migration\Migrator;
 
+/**
+ * 前端用户授权数据
+ */
 class DataUserToken extends Migrator
 {
     public function change()
@@ -16,7 +19,7 @@ class DataUserToken extends Migrator
 
         // 创建数据表
         $this->table($table, [
-            'engine' => 'InnoDB', 'collation' => 'utf8mb4_general_ci', 'comment' => '',
+            'engine' => 'InnoDB', 'collation' => 'utf8mb4_general_ci', 'comment' => '数据-用户-认证',
         ])
             ->addColumn('uuid', 'integer', ['limit' => 20, 'default' => 0, 'comment' => '用户UID'])
             ->addColumn('type', 'string', ['limit' => 20, 'default' => '', 'comment' => '授权类型'])

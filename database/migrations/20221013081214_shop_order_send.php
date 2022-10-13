@@ -2,6 +2,9 @@
 
 use think\migration\Migrator;
 
+/**
+ * 订单发货数据
+ */
 class ShopOrderSend extends Migrator
 {
     public function change()
@@ -17,7 +20,7 @@ class ShopOrderSend extends Migrator
 
         // 创建数据表
         $this->table($table, [
-            'engine' => 'InnoDB', 'collation' => 'utf8mb4_general_ci', 'comment' => '',
+            'engine' => 'InnoDB', 'collation' => 'utf8mb4_general_ci', 'comment' => '商城-订单-发货',
         ])
             ->addColumn('uuid', 'integer', ['limit' => 20, 'default' => 0, 'comment' => '商城用户编号'])
             ->addColumn('order_no', 'string', ['limit' => 20, 'default' => '', 'comment' => '商城订单单号'])
