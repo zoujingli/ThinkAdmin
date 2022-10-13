@@ -22,7 +22,7 @@ class SystemBase extends Migrator
             ->addColumn('type', 'string', ['limit' => 20, 'default' => '', 'comment' => '数据类型'])
             ->addColumn('code', 'string', ['limit' => 100, 'default' => '', 'comment' => '数据代码'])
             ->addColumn('name', 'string', ['limit' => 500, 'default' => '', 'comment' => '数据名称'])
-            ->addColumn('content', 'text', ['limit' => 500, 'default' => '', 'comment' => '数据内容'])
+            ->addColumn('content', 'text', ['default' => '', 'comment' => '数据内容'])
             ->addColumn('sort', 'integer', ['limit' => 20, 'default' => 0, 'comment' => '排序权重'])
             ->addColumn('status', 'integer', ['limit' => 1, 'default' => 1, 'comment' => '状态(0禁用,1启用)'])
             ->addColumn('deleted', 'integer', ['limit' => 1, 'default' => 0, 'comment' => '删除(0正常,1已删)'])

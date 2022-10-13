@@ -20,7 +20,7 @@ class SystemData extends Migrator
             'engine' => 'InnoDB', 'collation' => 'utf8mb4_general_ci', 'comment' => '系统-数据',
         ])
             ->addColumn('name', 'string', ['limit' => 100, 'default' => '', 'comment' => '配置名'])
-            ->addColumn('value', 'text', ['limit' => 2048, 'default' => '', 'comment' => '配置值'])
+            ->addColumn('value', 'text', ['default' => '', 'comment' => '配置值'])
             ->addIndex('type', ['name' => 'idx_system_data_name'])
             ->save();
     }
