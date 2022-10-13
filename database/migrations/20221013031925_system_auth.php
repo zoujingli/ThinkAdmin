@@ -7,16 +7,17 @@ use think\migration\Migrator;
  */
 class SystemAuth extends Migrator
 {
-    private $name = 'system_auth';
-
     public function change()
     {
+        // 当前操作
+        $table = 'system_auth';
+
         // 存在则跳过
-        if ($this->hasTable($this->name)) {
+        if ($this->hasTable($table)) {
             return;
         }
         // 创建数据表
-        $this->table($this->name, [
+        $this->table($table, [
             'engine' => 'InnoDB', 'collation' => 'utf8mb4_general_ci', 'comment' => '系统-权限',
         ])
             ->addColumn('title', 'string', ['limit' => 80, 'default' => '', 'comment' => '权限名称'])
