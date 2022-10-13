@@ -7,7 +7,7 @@ use think\migration\Migrator;
  */
 class SystemData extends Migrator
 {
-    protected $name = 'system_data';
+    private $name = 'system_data';
 
     public function change()
     {

@@ -25,7 +25,7 @@ class SystemQueue extends Migrator
             ->addColumn('loops_time', 'integer', ['limit' => 20, 'default' => 0, 'comment' => '循环时间'])
             ->addColumn('attempts', 'integer', ['limit' => 20, 'default' => 0, 'comment' => '执行次数'])
             ->addColumn('rscript', 'integer', ['limit' => 20, 'default' => 0, 'comment' => '任务类型(0单例,1多例)'])
-            ->addColumn('status', 'integer', ['limit' => 20, 'default' => 1, 'comment' => '任务状态(1新任务,2处理中,3成功,4失败)'])
+            ->addColumn('status', 'integer', ['limit' => 1, 'default' => 1, 'comment' => '任务状态(1新任务,2处理中,3成功,4失败)'])
             ->addColumn('create_at', 'timestamp', ['default' => 'CURRENT_TIMESTAMP', 'comment' => '创建时间'])
             ->addIndex('code', ['name' => 'idx_system_queue_code'])
             ->addIndex('title', ['name' => 'idx_system_queue_title'])

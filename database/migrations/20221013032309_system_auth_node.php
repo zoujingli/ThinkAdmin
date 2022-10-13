@@ -7,7 +7,7 @@ use think\migration\Migrator;
  */
 class SystemAuthNode extends Migrator
 {
-    protected $name = 'system_auth_node';
+    private $name = 'system_auth_node';
 
     public function change()
     {

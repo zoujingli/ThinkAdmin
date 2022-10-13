@@ -7,7 +7,7 @@ use think\migration\Migrator;
  */
 class SystemUser extends Migrator
 {
-    protected $name = 'system_user';
+    private $name = 'system_user';
 
     public function change()
     {
@@ -29,9 +29,9 @@ class SystemUser extends Migrator
             ->addColumn('login_at', 'string', ['limit' => 20, 'default' => '', 'comment' => '登录时间'])
             ->addColumn('login_num', 'integer', ['limit' => 20, 'default' => 0, 'comment' => '登录次数'])
             ->addColumn('describe', 'string', ['limit' => 500, 'default' => '', 'comment' => '备注说明'])
-            ->addColumn('status', 'integer', ['limit' => 20, 'default' => 1, 'comment' => '状态(0禁用,1启用)'])
+            ->addColumn('status', 'integer', ['limit' => 1, 'default' => 1, 'comment' => '状态(0禁用,1启用)'])
             ->addColumn('sort', 'integer', ['limit' => 20, 'default' => 0, 'comment' => '排序权重'])
-            ->addColumn('is_deleted', 'integer', ['limit' => 20, 'default' => 0, 'comment' => '删除(1删除,0未删)'])
+            ->addColumn('is_deleted', 'integer', ['limit' => 1, 'default' => 0, 'comment' => '删除(1删除,0未删)'])
             ->addColumn('create_at', 'timestamp', ['default' => 'CURRENT_TIMESTAMP', 'comment' => '创建时间'])
             ->addIndex('status', ['name' => 'idx_system_user_status'])
             ->addIndex('username', ['name' => 'idx_system_user_username'])
