@@ -22,7 +22,7 @@ class SystemMenu extends Migrator
             ->addColumn('url', 'string', ['limit' => 500, 'default' => '', 'comment' => '链接节点'])
             ->addColumn('params', 'string', ['limit' => 500, 'default' => '', 'comment' => '链接参数'])
             ->addColumn('target', 'string', ['limit' => 20, 'default' => '_self', 'comment' => '打开方式'])
-            ->addColumn('sort', 'biginteger', ['limit' => 20, 'default' => 0, 'comment' => '排序权重'])
+            ->addColumn('sort', 'integer', ['limit' => 20, 'default' => 0, 'comment' => '排序权重'])
             ->addColumn('status', 'integer', ['limit' => 20, 'default' => 1, 'comment' => '状态(0禁用,1启用)'])
             ->addColumn('create_at', 'timestamp', ['default' => 'CURRENT_TIMESTAMP', 'comment' => '创建时间'])
             ->addIndex('pid', ['name' => 'idx_system_menu_pid'])
