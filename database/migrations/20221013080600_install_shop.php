@@ -59,6 +59,11 @@ class InstallShop extends Migrator
             ->addColumn('status', 'integer', ['limit' => 1, 'default' => 1, 'comment' => '商品状态(1使用,0禁用)'])
             ->addColumn('deleted', 'integer', ['limit' => 1, 'default' => 0, 'comment' => '删除状态(0未删,1已删)'])
             ->addColumn('create_at', 'timestamp', ['default' => 'CURRENT_TIMESTAMP', 'comment' => '创建时间'])
+            ->addIndex('code', ['name' => 'idx_shop_goods_code'])
+            ->addIndex('name', ['name' => 'idx_shop_goods_name'])
+            ->addIndex('sort', ['name' => 'idx_shop_goods_sort'])
+            ->addIndex('status', ['name' => 'idx_shop_goods_status'])
+            ->addIndex('deleted', ['name' => 'idx_shop_goods_deleted'])
             ->save();
     }
 
@@ -79,6 +84,10 @@ class InstallShop extends Migrator
             ->addColumn('status', 'integer', ['limit' => 1, 'default' => 1, 'comment' => '使用状态'])
             ->addColumn('deleted', 'integer', ['limit' => 1, 'default' => 0, 'comment' => '删除状态'])
             ->addColumn('create_at', 'timestamp', ['default' => 'CURRENT_TIMESTAMP', 'comment' => '创建时间'])
+            ->addIndex('pid', ['name' => 'idx_shop_goods_cate_pid'])
+            ->addIndex('sort', ['name' => 'idx_shop_goods_cate_sort'])
+            ->addIndex('status', ['name' => 'idx_shop_goods_cate_status'])
+            ->addIndex('deleted', ['name' => 'idx_shop_goods_cate_deleted'])
             ->save();
     }
 
@@ -104,6 +113,9 @@ class InstallShop extends Migrator
             ->addColumn('reward_integral', 'decimal', ['precision' => 20, 'scale' => 2, 'default' => '0.00', 'comment' => '奖励积分'])
             ->addColumn('status', 'integer', ['limit' => 1, 'default' => 1, 'comment' => '商品状态'])
             ->addColumn('create_at', 'timestamp', ['default' => 'CURRENT_TIMESTAMP', 'comment' => '创建时间'])
+            ->addIndex('status', ['name' => 'idx_shop_goods_item_status'])
+            ->addIndex('goods_code', ['name' => 'idx_shop_goods_item_gcode'])
+            ->addIndex('goods_spec', ['name' => 'idx_shop_goods_item_gspec'])
             ->save();
     }
 
@@ -121,6 +133,9 @@ class InstallShop extends Migrator
             ->addColumn('sort', 'integer', ['limit' => 20, 'default' => 0, 'comment' => '排序权重'])
             ->addColumn('status', 'integer', ['limit' => 1, 'default' => 1, 'comment' => '标签状态(1使用,0禁用)'])
             ->addColumn('create_at', 'timestamp', ['default' => 'CURRENT_TIMESTAMP', 'comment' => '创建时间'])
+            ->addIndex('name', ['name' => 'idx_shop_goods_mark_name'])
+            ->addIndex('sort', ['name' => 'idx_shop_goods_mark_sort'])
+            ->addIndex('status', ['name' => 'idx_shop_goods_mark_status'])
             ->save();
     }
 
@@ -140,6 +155,11 @@ class InstallShop extends Migrator
             ->addColumn('status', 'integer', ['limit' => 1, 'default' => 1, 'comment' => '数据状态(1使用,0禁用)'])
             ->addColumn('deleted', 'integer', ['limit' => 1, 'default' => 0, 'comment' => '删除状态(0未删,1已删)'])
             ->addColumn('create_at', 'timestamp', ['default' => 'CURRENT_TIMESTAMP', 'comment' => '创建时间'])
+            ->addIndex('status', ['name' => 'idx_shop_goods_stock_status'])
+            ->addIndex('deleted', ['name' => 'idx_shop_goods_stock_deleted'])
+            ->addIndex('batch_no', ['name' => 'idx_shop_goods_stock_batch_no'])
+            ->addIndex('goods_code', ['name' => 'idx_shop_goods_stock_goods_code'])
+            ->addIndex('goods_spec', ['name' => 'idx_shop_goods_stock_goods_spec'])
             ->save();
     }
 
