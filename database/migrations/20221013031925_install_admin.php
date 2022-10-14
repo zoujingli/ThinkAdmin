@@ -208,9 +208,9 @@ SQL
             ->addColumn('sort', 'integer', ['limit' => 11, 'default' => 0, 'comment' => '排序权重'])
             ->addColumn('status', 'integer', ['limit' => 1, 'default' => 1, 'comment' => '状态(0:禁用,1:启用)'])
             ->addColumn('create_at', 'timestamp', ['default' => 'CURRENT_TIMESTAMP', 'comment' => '创建时间'])
-            ->addIndex('status', ['name' => 'idx_system_menu_status'])
-            ->addIndex('sort', ['name' => 'idx_system_menu_sort'])
             ->addIndex('pid', ['name' => 'idx_system_menu_pid'])
+            ->addIndex('sort', ['name' => 'idx_system_menu_sort'])
+            ->addIndex('status', ['name' => 'idx_system_menu_status'])
             ->save();
 
         // 初始化菜单数据
