@@ -33,7 +33,7 @@ class InstallWechat extends Migrator
             ->addColumn('type', 'string', ['limit' => 20, 'default' => '', 'comment' => '类型(text,image,news)'])
             ->addColumn('time', 'string', ['limit' => 100, 'default' => '', 'comment' => '延迟时间'])
             ->addColumn('code', 'string', ['limit' => 20, 'default' => '', 'comment' => '消息编号'])
-            ->addColumn('appid', 'char(100)', ['default' => '', 'comment' => '公众号APPID'])
+            ->addColumn('appid', 'string', ['limit' => 100, 'default' => '', 'comment' => '公众号APPID'])
             ->addColumn('content', 'text', ['default' => null, 'comment' => '文本内容'])
             ->addColumn('image_url', 'string', ['limit' => 255, 'default' => '', 'comment' => '图片链接'])
             ->addColumn('voice_url', 'string', ['limit' => 255, 'default' => '', 'comment' => '语音链接'])
@@ -127,7 +127,7 @@ class InstallWechat extends Migrator
         $this->table($table, [
             'engine' => 'InnoDB', 'collation' => 'utf8mb4_general_ci', 'comment' => '微信-规则',
         ])
-            ->addColumn('appid', 'char(100)', ['default' => '', 'comment' => '公众号APPID'])
+            ->addColumn('appid', 'string', ['limit' => 100, 'default' => '', 'comment' => '公众号APPID'])
             ->addColumn('type', 'string', ['limit' => 20, 'default' => '', 'comment' => '类型(text,image,news)'])
             ->addColumn('keys', 'string', ['limit' => 100, 'default' => null, 'comment' => '关键字'])
             ->addColumn('content', 'text', ['default' => null, 'comment' => '文本内容'])
