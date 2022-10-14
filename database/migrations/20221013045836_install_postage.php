@@ -15,11 +15,14 @@ class InstallPostage extends Migrator
 
     private function _company()
     {
-        // 当前操作
-        $table = "base_postage_company";
+        // 当前数据表
+        $table = 'base_postage_company';
 
-        // 创建数据表，存在则跳过
-        $this->hasTable($table) || $this->table($table, [
+        // 存在则跳过
+        if ($this->hasTable($table)) return;
+
+        // 创建数据表
+        $this->table($table, [
             'engine' => 'InnoDB', 'collation' => 'utf8mb4_general_ci', 'comment' => '数据-快递-公司',
         ])
             ->addColumn('name', 'string', ['limit' => 50, 'default' => '', 'comment' => '快递公司名称'])
@@ -28,11 +31,9 @@ class InstallPostage extends Migrator
             ->addColumn('code_3', 'string', ['limit' => 50, 'default' => '', 'comment' => '官方快递100代码'])
             ->addColumn('remark', 'string', ['limit' => 512, 'default' => '', 'comment' => '快递公司描述'])
             ->addColumn('sort', 'integer', ['limit' => 20, 'default' => 0, 'comment' => '排序权重'])
-            ->addColumn('status', 'integer', ['limit' => 1, 'default' => 1, 'comment' => '激活状态(0无效,1有效)'])
-            ->addColumn('deleted', 'integer', ['limit' => 1, 'default' => 0, 'comment' => '删除状态(0未删,1已删)'])
+            ->addColumn('status', 'integer', ['limit' => 1, 'default' => 1, 'comment' => '状态(0.无效,1.有效)'])
+            ->addColumn('deleted', 'integer', ['limit' => 1, 'default' => 0, 'comment' => '删除状态(1已删除,0未删除)'])
             ->addColumn('create_at', 'timestamp', ['default' => 'CURRENT_TIMESTAMP', 'comment' => '创建时间'])
-            ->addIndex('name', ['name' => 'idx_base_postage_company_name'])
-            ->addIndex('sort', ['name' => 'idx_base_postage_company_sort'])
             ->addIndex('code_1', ['name' => 'idx_base_postage_company_code_1'])
             ->addIndex('code_2', ['name' => 'idx_base_postage_company_code_2'])
             ->addIndex('code_3', ['name' => 'idx_base_postage_company_code_3'])
@@ -43,8 +44,8 @@ class InstallPostage extends Migrator
 
     private function _region()
     {
-        // 当前操作
-        $table = "base_postage_region";
+        // 当前数据表
+        $table = 'base_postage_region';
 
         // 存在则跳过
         if ($this->hasTable($table)) return;
@@ -54,17 +55,17 @@ class InstallPostage extends Migrator
             'engine' => 'InnoDB', 'collation' => 'utf8mb4_general_ci', 'comment' => '数据-快递-区域',
         ])
             ->addColumn('pid', 'integer', ['limit' => 20, 'default' => 0, 'comment' => '上级PID'])
-            ->addColumn('lng', 'string', ['limit' => 100, 'default' => '', 'comment' => '所在经度'])
-            ->addColumn('lat', 'string', ['limit' => 100, 'default' => '', 'comment' => '所在纬度'])
-            ->addColumn('code', 'string', ['limit' => 100, 'default' => '', 'comment' => '区域邮编'])
             ->addColumn('first', 'string', ['limit' => 50, 'default' => '', 'comment' => '首字母'])
-            ->addColumn('name', 'string', ['limit' => 100, 'default' => '', 'comment' => '区域名称'])
             ->addColumn('short', 'string', ['limit' => 100, 'default' => '', 'comment' => '区域简称'])
+            ->addColumn('name', 'string', ['limit' => 100, 'default' => '', 'comment' => '区域名称'])
             ->addColumn('level', 'integer', ['limit' => 4, 'default' => 0, 'comment' => '区域层级'])
             ->addColumn('pinyin', 'string', ['limit' => 100, 'default' => '', 'comment' => '区域拼音'])
+            ->addColumn('code', 'string', ['limit' => 100, 'default' => '', 'comment' => '区域邮编'])
             ->addColumn('status', 'integer', ['limit' => 1, 'default' => 1, 'comment' => '使用状态'])
+            ->addColumn('lng', 'string', ['limit' => 100, 'default' => '', 'comment' => '所在经度'])
+            ->addColumn('lat', 'string', ['limit' => 100, 'default' => '', 'comment' => '所在纬度'])
             ->addIndex('pid', ['name' => 'idx_base_postage_region_pid'])
-            ->addIndex('status', ['name' => 'idx_base_postage_region_status'])
+            ->addIndex('name', ['name' => 'idx_base_postage_region_name'])
             ->save();
 
         // 写入默认区域数据

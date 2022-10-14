@@ -21,12 +21,15 @@ class InstallShop extends Migrator
 
     private function _goods()
     {
-        // 当前操作
-        $table = "shop_goods";
+        // 当前数据表
+        $table = 'shop_goods';
 
-        // 创建数据表，存在则跳过
-        $this->hasTable($table) || $this->table($table, [
-            'engine' => 'InnoDB', 'collation' => 'utf8mb4_general_ci', 'comment' => '商城-商品-主体',
+        // 存在则跳过
+        if ($this->hasTable($table)) return;
+
+        // 创建数据表
+        $this->table($table, [
+            'engine' => 'InnoDB', 'collation' => 'utf8mb4_general_ci', 'comment' => '商城-商品-内容',
         ])
             ->addColumn('code', 'string', ['limit' => 20, 'default' => '', 'comment' => '商品编号'])
             ->addColumn('name', 'string', ['limit' => 500, 'default' => '', 'comment' => '商品名称'])
@@ -60,8 +63,6 @@ class InstallShop extends Migrator
             ->addColumn('deleted', 'integer', ['limit' => 1, 'default' => 0, 'comment' => '删除状态(0未删,1已删)'])
             ->addColumn('create_at', 'timestamp', ['default' => 'CURRENT_TIMESTAMP', 'comment' => '创建时间'])
             ->addIndex('code', ['name' => 'idx_shop_goods_code'])
-            ->addIndex('name', ['name' => 'idx_shop_goods_name'])
-            ->addIndex('sort', ['name' => 'idx_shop_goods_sort'])
             ->addIndex('status', ['name' => 'idx_shop_goods_status'])
             ->addIndex('deleted', ['name' => 'idx_shop_goods_deleted'])
             ->save();
@@ -69,11 +70,14 @@ class InstallShop extends Migrator
 
     private function _goodsCate()
     {
-        // 当前操作
-        $table = "shop_goods_cate";
+        // 当前数据表
+        $table = 'shop_goods_cate';
 
-        // 创建数据表，存在则跳过
-        $this->hasTable($table) || $this->table($table, [
+        // 存在则跳过
+        if ($this->hasTable($table)) return;
+
+        // 创建数据表
+        $this->table($table, [
             'engine' => 'InnoDB', 'collation' => 'utf8mb4_general_ci', 'comment' => '商城-商品-分类',
         ])
             ->addColumn('pid', 'integer', ['limit' => 20, 'default' => 0, 'comment' => '上级分类'])
@@ -84,7 +88,6 @@ class InstallShop extends Migrator
             ->addColumn('status', 'integer', ['limit' => 1, 'default' => 1, 'comment' => '使用状态'])
             ->addColumn('deleted', 'integer', ['limit' => 1, 'default' => 0, 'comment' => '删除状态'])
             ->addColumn('create_at', 'timestamp', ['default' => 'CURRENT_TIMESTAMP', 'comment' => '创建时间'])
-            ->addIndex('pid', ['name' => 'idx_shop_goods_cate_pid'])
             ->addIndex('sort', ['name' => 'idx_shop_goods_cate_sort'])
             ->addIndex('status', ['name' => 'idx_shop_goods_cate_status'])
             ->addIndex('deleted', ['name' => 'idx_shop_goods_cate_deleted'])
@@ -93,11 +96,14 @@ class InstallShop extends Migrator
 
     private function _goodsItems()
     {
-        // 当前操作
-        $table = "shop_goods_item";
+        // 当前数据表
+        $table = 'shop_goods_item';
 
-        // 创建数据表，存在则跳过
-        $this->hasTable($table) || $this->table($table, [
+        // 存在则跳过
+        if ($this->hasTable($table)) return;
+
+        // 创建数据表
+        $this->table($table, [
             'engine' => 'InnoDB', 'collation' => 'utf8mb4_general_ci', 'comment' => '商城-商品-规格',
         ])
             ->addColumn('goods_sku', 'string', ['limit' => 20, 'default' => '', 'comment' => '商品SKU'])
@@ -113,19 +119,22 @@ class InstallShop extends Migrator
             ->addColumn('reward_integral', 'decimal', ['precision' => 20, 'scale' => 2, 'default' => '0.00', 'comment' => '奖励积分'])
             ->addColumn('status', 'integer', ['limit' => 1, 'default' => 1, 'comment' => '商品状态'])
             ->addColumn('create_at', 'timestamp', ['default' => 'CURRENT_TIMESTAMP', 'comment' => '创建时间'])
+            ->addIndex('goods_code', ['name' => 'idx_shop_goods_item_goods_code'])
+            ->addIndex('goods_spec', ['name' => 'idx_shop_goods_item_goods_spec'])
             ->addIndex('status', ['name' => 'idx_shop_goods_item_status'])
-            ->addIndex('goods_code', ['name' => 'idx_shop_goods_item_gcode'])
-            ->addIndex('goods_spec', ['name' => 'idx_shop_goods_item_gspec'])
             ->save();
     }
 
     private function _goodsMark()
     {
-        // 当前操作
-        $table = "shop_goods_mark";
+        // 当前数据表
+        $table = 'shop_goods_mark';
 
-        // 创建数据表，存在则跳过
-        $this->hasTable($table) || $this->table($table, [
+        // 存在则跳过
+        if ($this->hasTable($table)) return;
+
+        // 创建数据表
+        $this->table($table, [
             'engine' => 'InnoDB', 'collation' => 'utf8mb4_general_ci', 'comment' => '商城-商品-标签',
         ])
             ->addColumn('name', 'string', ['limit' => 100, 'default' => '', 'comment' => '标签名称'])
@@ -133,7 +142,6 @@ class InstallShop extends Migrator
             ->addColumn('sort', 'integer', ['limit' => 20, 'default' => 0, 'comment' => '排序权重'])
             ->addColumn('status', 'integer', ['limit' => 1, 'default' => 1, 'comment' => '标签状态(1使用,0禁用)'])
             ->addColumn('create_at', 'timestamp', ['default' => 'CURRENT_TIMESTAMP', 'comment' => '创建时间'])
-            ->addIndex('name', ['name' => 'idx_shop_goods_mark_name'])
             ->addIndex('sort', ['name' => 'idx_shop_goods_mark_sort'])
             ->addIndex('status', ['name' => 'idx_shop_goods_mark_status'])
             ->save();
@@ -141,11 +149,14 @@ class InstallShop extends Migrator
 
     private function _goodsStock()
     {
-        // 当前操作
-        $table = "shop_goods_stock";
+        // 当前数据表
+        $table = 'shop_goods_stock';
 
-        // 创建数据表，存在则跳过
-        $this->hasTable($table) || $this->table($table, [
+        // 存在则跳过
+        if ($this->hasTable($table)) return;
+
+        // 创建数据表
+        $this->table($table, [
             'engine' => 'InnoDB', 'collation' => 'utf8mb4_general_ci', 'comment' => '商城-商品-库存',
         ])
             ->addColumn('batch_no', 'string', ['limit' => 20, 'default' => '', 'comment' => '操作批量'])
@@ -157,20 +168,20 @@ class InstallShop extends Migrator
             ->addColumn('create_at', 'timestamp', ['default' => 'CURRENT_TIMESTAMP', 'comment' => '创建时间'])
             ->addIndex('status', ['name' => 'idx_shop_goods_stock_status'])
             ->addIndex('deleted', ['name' => 'idx_shop_goods_stock_deleted'])
-            ->addIndex('batch_no', ['name' => 'idx_shop_goods_stock_batch_no'])
-            ->addIndex('goods_code', ['name' => 'idx_shop_goods_stock_goods_code'])
-            ->addIndex('goods_spec', ['name' => 'idx_shop_goods_stock_goods_spec'])
             ->save();
     }
 
     private function _order()
     {
-        // 当前操作
-        $table = "shop_order";
+        // 当前数据表
+        $table = 'shop_order';
 
-        // 创建数据表，存在则跳过
-        $this->hasTable($table) || $this->table($table, [
-            'engine' => 'InnoDB', 'collation' => 'utf8mb4_general_ci', 'comment' => '商城-订单',
+        // 存在则跳过
+        if ($this->hasTable($table)) return;
+
+        // 创建数据表
+        $this->table($table, [
+            'engine' => 'InnoDB', 'collation' => 'utf8mb4_general_ci', 'comment' => '商城-订单-内容',
         ])
             ->addColumn('uuid', 'integer', ['limit' => 20, 'default' => 0, 'comment' => '下单用户编号'])
             ->addColumn('puid1', 'integer', ['limit' => 20, 'default' => 0, 'comment' => '推荐一层用户'])
@@ -206,16 +217,27 @@ class InstallShop extends Migrator
             ->addColumn('deleted_datetime', 'string', ['limit' => 20, 'default' => '', 'comment' => '订单删除时间'])
             ->addColumn('status', 'integer', ['limit' => 1, 'default' => 1, 'comment' => '订单流程状态(0已取消,1预订单,2待支付,3支付中,4已支付,5已发货,6已完成)'])
             ->addColumn('create_at', 'timestamp', ['default' => 'CURRENT_TIMESTAMP', 'comment' => '订单创建时间'])
+            ->addIndex('uuid', ['name' => 'idx_shop_order_uuid'])
+            ->addIndex('puid1', ['name' => 'idx_shop_order_puid1'])
+            ->addIndex('status', ['name' => 'idx_shop_order_status'])
+            ->addIndex('order_no', ['name' => 'idx_shop_order_order_no'])
+            ->addIndex('cancel_status', ['name' => 'idx_shop_order_cancel_status'])
+            ->addIndex('payment_status', ['name' => 'idx_shop_order_payment_status'])
+            ->addIndex('deleted_status', ['name' => 'idx_shop_order_deleted_status'])
             ->save();
+
     }
 
     private function _orderItem()
     {
-        // 当前操作
-        $table = "shop_order_item";
+        // 当前数据表
+        $table = 'shop_order_item';
 
-        // 创建数据表，存在则跳过
-        $this->hasTable($table) || $this->table($table, [
+        // 存在则跳过
+        if ($this->hasTable($table)) return;
+
+        // 创建数据表
+        $this->table($table, [
             'engine' => 'InnoDB', 'collation' => 'utf8mb4_general_ci', 'comment' => '商城-订单-商品',
         ])
             ->addColumn('uuid', 'integer', ['limit' => 20, 'default' => 0, 'comment' => '商城用户编号'])
@@ -248,17 +270,27 @@ class InstallShop extends Migrator
             ->addColumn('status', 'integer', ['limit' => 1, 'default' => 1, 'comment' => '商品状态(1使用,0禁用)'])
             ->addColumn('deleted', 'integer', ['limit' => 1, 'default' => 0, 'comment' => '删除状态(0未删,1已删)'])
             ->addColumn('create_at', 'timestamp', ['default' => 'CURRENT_TIMESTAMP', 'comment' => '订单创建时间'])
+            ->addIndex('status', ['name' => 'idx_shop_order_item_status'])
+            ->addIndex('deleted', ['name' => 'idx_shop_order_item_deleted'])
+            ->addIndex('order_no', ['name' => 'idx_shop_order_item_order_no'])
+            ->addIndex('goods_sku', ['name' => 'idx_shop_order_item_goods_sku'])
+            ->addIndex('goods_code', ['name' => 'idx_shop_order_item_goods_code'])
+            ->addIndex('goods_spec', ['name' => 'idx_shop_order_item_goods_spec'])
+            ->addIndex('rebate_type', ['name' => 'idx_shop_order_item_rebate_type'])
             ->save();
     }
 
     private function _orderSend()
     {
-        // 当前操作
-        $table = "shop_order_send";
+        // 当前数据表
+        $table = 'shop_order_send';
 
-        // 创建数据表，存在则跳过
-        $this->hasTable($table) || $this->table($table, [
-            'engine' => 'InnoDB', 'collation' => 'utf8mb4_general_ci', 'comment' => '商城-订单-发货',
+        // 存在则跳过
+        if ($this->hasTable($table)) return;
+
+        // 创建数据表
+        $this->table($table, [
+            'engine' => 'InnoDB', 'collation' => 'utf8mb4_general_ci', 'comment' => '商城-订单-配送',
         ])
             ->addColumn('uuid', 'integer', ['limit' => 20, 'default' => 0, 'comment' => '商城用户编号'])
             ->addColumn('order_no', 'string', ['limit' => 20, 'default' => '', 'comment' => '商城订单单号'])
@@ -285,6 +317,10 @@ class InstallShop extends Migrator
             ->addColumn('status', 'integer', ['limit' => 1, 'default' => 1, 'comment' => '发货商品状态(1使用,0禁用)'])
             ->addColumn('deleted', 'integer', ['limit' => 1, 'default' => 0, 'comment' => '发货删除状态(0未删,1已删)'])
             ->addColumn('create_at', 'timestamp', ['default' => 'CURRENT_TIMESTAMP', 'comment' => '创建时间'])
+            ->addIndex('uuid', ['name' => 'idx_shop_order_send_uuid'])
+            ->addIndex('status', ['name' => 'idx_shop_order_send_status'])
+            ->addIndex('deleted', ['name' => 'idx_shop_order_send_deleted'])
+            ->addIndex('order_no', ['name' => 'idx_shop_order_send_order_no'])
             ->save();
     }
 }

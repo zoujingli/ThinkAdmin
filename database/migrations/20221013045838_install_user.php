@@ -188,11 +188,14 @@ class InstallUser extends Migrator
 
     private function _payment()
     {
-        // 当前操作
-        $table = "data_user_payment";
+        // 当前数据表
+        $table = 'data_user_payment';
 
-        // 创建数据表，存在则跳过
-        $this->hasTable($table) || $this->table($table, [
+        // 存在则跳过
+        if ($this->hasTable($table)) return;
+
+        // 创建数据表
+        $this->table($table, [
             'engine' => 'InnoDB', 'collation' => 'utf8mb4_general_ci', 'comment' => '数据-用户-支付',
         ])
             ->addColumn('order_no', 'string', ['limit' => 20, 'default' => '', 'comment' => '订单单号'])
@@ -205,16 +208,24 @@ class InstallUser extends Migrator
             ->addColumn('payment_amount', 'decimal', ['precision' => 20, 'scale' => 2, 'default' => '0.00', 'comment' => '支付金额'])
             ->addColumn('payment_datatime', 'string', ['limit' => 20, 'default' => '', 'comment' => '支付时间'])
             ->addColumn('create_at', 'timestamp', ['default' => 'CURRENT_TIMESTAMP', 'comment' => '创建时间'])
+            ->addIndex('order_no', ['name' => 'idx_data_user_payment_order_no'])
+            ->addIndex('payment_code', ['name' => 'idx_data_user_payment_payment_code'])
+            ->addIndex('payment_type', ['name' => 'idx_data_user_payment_payment_type'])
+            ->addIndex('payment_trade', ['name' => 'idx_data_user_payment_payment_trade'])
+            ->addIndex('payment_status', ['name' => 'idx_data_user_payment_payment_status'])
             ->save();
     }
 
     private function _message()
     {
-        // 当前操作
-        $table = "data_user_message";
+        // 当前数据表
+        $table = 'data_user_message';
 
-        // 创建数据表，存在则跳过
-        $this->hasTable($table) || $this->table($table, [
+        // 存在则跳过
+        if ($this->hasTable($table)) return;
+
+        // 创建数据表
+        $this->table($table, [
             'engine' => 'InnoDB', 'collation' => 'utf8mb4_general_ci', 'comment' => '数据-用户-短信',
         ])
             ->addColumn('type', 'integer', ['limit' => 1, 'default' => 1, 'comment' => '短信类型'])
@@ -225,16 +236,24 @@ class InstallUser extends Migrator
             ->addColumn('content', 'string', ['limit' => 512, 'default' => '', 'comment' => '短信内容'])
             ->addColumn('status', 'integer', ['limit' => 1, 'default' => 0, 'comment' => '短信状态(0失败,1成功)'])
             ->addColumn('create_at', 'timestamp', ['default' => 'CURRENT_TIMESTAMP', 'comment' => '创建时间'])
+            ->addIndex('type', ['name' => 'idx_data_user_message_type'])
+            ->addIndex('status', ['name' => 'idx_data_user_message_status'])
+            ->addIndex('phone', ['name' => 'idx_data_user_message_phone'])
+            ->addIndex('msgid', ['name' => 'idx_data_user_message_msgid'])
             ->save();
+
     }
 
     private function _balance()
     {
-        // 当前操作
-        $table = "data_user_balance";
+        // 当前数据表
+        $table = 'data_user_balance';
 
-        // 创建数据表，存在则跳过
-        $this->hasTable($table) || $this->table($table, [
+        // 存在则跳过
+        if ($this->hasTable($table)) return;
+
+        // 创建数据表
+        $this->table($table, [
             'engine' => 'InnoDB', 'collation' => 'utf8mb4_general_ci', 'comment' => '数据-用户-余额',
         ])
             ->addColumn('uuid', 'integer', ['limit' => 20, 'default' => 0, 'comment' => '用户UID'])
@@ -246,17 +265,23 @@ class InstallUser extends Migrator
             ->addColumn('deleted', 'integer', ['limit' => 1, 'default' => 0, 'comment' => '删除状态'])
             ->addColumn('create_by', 'integer', ['limit' => 20, 'default' => 0, 'comment' => '系统用户'])
             ->addColumn('create_at', 'timestamp', ['default' => 'CURRENT_TIMESTAMP', 'comment' => '创建时间'])
+            ->addIndex('code', ['name' => 'idx_data_user_balance_code'])
+            ->addIndex('deleted', ['name' => 'idx_data_user_balance_deleted'])
+            ->addIndex('uuid', ['name' => 'idx_data_user_balance_uuid'])
             ->save();
     }
 
     private function _address()
     {
-        // 当前操作
-        $table = "data_user_address";
+        // 当前数据表
+        $table = 'data_user_address';
 
-        // 创建数据表，存在则跳过
-        $this->hasTable($table) || $this->table($table, [
-            'engine' => 'InnoDB', 'collation' => 'utf8mb4_general_ci', 'comment' => '数据-用户-收货地址',
+        // 存在则跳过
+        if ($this->hasTable($table)) return;
+
+        // 创建数据表
+        $this->table($table, [
+            'engine' => 'InnoDB', 'collation' => 'utf8mb4_general_ci', 'comment' => '数据-用户-地址',
         ])
             ->addColumn('uuid', 'integer', ['limit' => 20, 'default' => 0, 'comment' => '用户UID'])
             ->addColumn('type', 'integer', ['limit' => 1, 'default' => 0, 'comment' => '地址类型(0普通,1默认)'])
@@ -272,6 +297,10 @@ class InstallUser extends Migrator
             ->addColumn('address', 'string', ['limit' => 255, 'default' => '', 'comment' => '地址-详情'])
             ->addColumn('deleted', 'integer', ['limit' => 1, 'default' => 0, 'comment' => '删除状态'])
             ->addColumn('create_at', 'timestamp', ['default' => 'CURRENT_TIMESTAMP', 'comment' => '创建时间'])
+            ->addIndex('code', ['name' => 'idx_data_user_address_code'])
+            ->addIndex('type', ['name' => 'idx_data_user_address_type'])
+            ->addIndex('uuid', ['name' => 'idx_data_user_address_uuid'])
+            ->addIndex('deleted', ['name' => 'idx_data_user_address_deleted'])
             ->save();
     }
 }

@@ -16,12 +16,16 @@ class InstallNews extends Migrator
 
     private function _collect()
     {
-        // 当前操作
-        $table = "data_news_x_collect";
 
-        // 创建数据表，存在则跳过
-        $this->hasTable($table) || $this->table($table, [
-            'engine' => 'InnoDB', 'collation' => 'utf8mb4_general_ci', 'comment' => '数据-文章-交互',
+        // 当前数据表
+        $table = 'data_news_x_collect';
+
+        // 存在则跳过
+        if ($this->hasTable($table)) return;
+
+        // 创建数据表
+        $this->table($table, [
+            'engine' => 'InnoDB', 'collation' => 'utf8mb4_general_ci', 'comment' => '数据-文章-标记',
         ])
             ->addColumn('uuid', 'integer', ['limit' => 20, 'default' => 0, 'comment' => '用户UID'])
             ->addColumn('type', 'integer', ['limit' => 1, 'default' => 1, 'comment' => '记录类型(1收藏,2点赞,3历史,4评论)'])
@@ -29,16 +33,24 @@ class InstallNews extends Migrator
             ->addColumn('reply', 'text', ['default' => null, 'comment' => '评论内容'])
             ->addColumn('status', 'integer', ['limit' => 1, 'default' => 1, 'comment' => '记录状态(0无效,1待审核,2已审核)'])
             ->addColumn('create_at', 'timestamp', ['default' => 'CURRENT_TIMESTAMP', 'comment' => '创建时间'])
+            ->addIndex('type', ['name' => 'idx_data_news_x_collect_type'])
+            ->addIndex('code', ['name' => 'idx_data_news_x_collect_code'])
+            ->addIndex('status', ['name' => 'idx_data_news_x_collect_status'])
+            ->addIndex('uuid', ['name' => 'idx_data_news_x_collect_uuid'])
             ->save();
+
     }
 
     private function _mark()
     {
-        // 当前操作
-        $table = "data_news_mark";
+        // 当前数据表
+        $table = 'data_news_mark';
 
-        // 创建数据表，存在则跳过
-        $this->hasTable($table) || $this->table($table, [
+        // 存在则跳过
+        if ($this->hasTable($table)) return;
+
+        // 创建数据表
+        $this->table($table, [
             'engine' => 'InnoDB', 'collation' => 'utf8mb4_general_ci', 'comment' => '数据-文章-标签',
         ])
             ->addColumn('name', 'string', ['limit' => 100, 'default' => '', 'comment' => '标签名称'])
@@ -47,17 +59,22 @@ class InstallNews extends Migrator
             ->addColumn('status', 'integer', ['limit' => 1, 'default' => 1, 'comment' => '标签状态(1使用,0禁用)'])
             ->addColumn('deleted', 'integer', ['limit' => 1, 'default' => 0, 'comment' => '删除状态'])
             ->addColumn('create_at', 'timestamp', ['default' => 'CURRENT_TIMESTAMP', 'comment' => '创建时间'])
+            ->addIndex('status', ['name' => 'idx_data_news_mark_status'])
+            ->addIndex('deleted', ['name' => 'idx_data_news_mark_deleted'])
             ->save();
     }
 
     private function _news()
     {
-        // 当前操作
-        $table = "data_news_item";
+        // 当前数据表
+        $table = 'data_news_item';
 
-        // 创建数据表，存在则跳过
-        $this->hasTable($table) || $this->table($table, [
-            'engine' => 'InnoDB', 'collation' => 'utf8mb4_general_ci', 'comment' => '数据-文章',
+        // 存在则跳过
+        if ($this->hasTable($table)) return;
+
+        // 创建数据表
+        $this->table($table, [
+            'engine' => 'InnoDB', 'collation' => 'utf8mb4_general_ci', 'comment' => '数据-文章-内容',
         ])
             ->addColumn('code', 'string', ['limit' => 20, 'default' => '', 'comment' => '文章编号'])
             ->addColumn('name', 'string', ['limit' => 100, 'default' => '', 'comment' => '文章标题'])
@@ -73,6 +90,9 @@ class InstallNews extends Migrator
             ->addColumn('status', 'integer', ['limit' => 1, 'default' => 1, 'comment' => '文章状态(1使用,0禁用)'])
             ->addColumn('deleted', 'integer', ['limit' => 1, 'default' => 0, 'comment' => '删除状态(0未删,1已删)'])
             ->addColumn('create_at', 'timestamp', ['default' => 'CURRENT_TIMESTAMP', 'comment' => '创建时间'])
+            ->addIndex('status', ['name' => 'idx_data_news_item_status'])
+            ->addIndex('deleted', ['name' => 'idx_data_news_item_deleted'])
+            ->addIndex('code', ['name' => 'idx_data_news_item_code'])
             ->save();
     }
 }
