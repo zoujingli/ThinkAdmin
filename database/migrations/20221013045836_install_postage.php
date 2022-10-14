@@ -54,16 +54,30 @@ class InstallPostage extends Migrator
             'engine' => 'InnoDB', 'collation' => 'utf8mb4_general_ci', 'comment' => '数据-快递-区域',
         ])
             ->addColumn('pid', 'integer', ['limit' => 20, 'default' => 0, 'comment' => '上级PID'])
-            ->addColumn('first', 'string', ['limit' => 50, 'default' => '', 'comment' => '首字母'])
-            ->addColumn('short', 'string', ['limit' => 100, 'default' => '', 'comment' => '区域简称'])
-            ->addColumn('name', 'string', ['limit' => 100, 'default' => '', 'comment' => '区域名称'])
-            ->addColumn('level', 'integer', ['limit' => 4, 'default' => 0, 'comment' => '区域层级'])
-            ->addColumn('pinyin', 'string', ['limit' => 100, 'default' => '', 'comment' => '区域拼音'])
-            ->addColumn('code', 'string', ['limit' => 100, 'default' => '', 'comment' => '区域邮编'])
-            ->addColumn('status', 'integer', ['limit' => 1, 'default' => 1, 'comment' => '使用状态'])
             ->addColumn('lng', 'string', ['limit' => 100, 'default' => '', 'comment' => '所在经度'])
             ->addColumn('lat', 'string', ['limit' => 100, 'default' => '', 'comment' => '所在纬度'])
+            ->addColumn('code', 'string', ['limit' => 100, 'default' => '', 'comment' => '区域邮编'])
+            ->addColumn('first', 'string', ['limit' => 50, 'default' => '', 'comment' => '首字母'])
+            ->addColumn('name', 'string', ['limit' => 100, 'default' => '', 'comment' => '区域名称'])
+            ->addColumn('short', 'string', ['limit' => 100, 'default' => '', 'comment' => '区域简称'])
+            ->addColumn('level', 'integer', ['limit' => 4, 'default' => 0, 'comment' => '区域层级'])
+            ->addColumn('pinyin', 'string', ['limit' => 100, 'default' => '', 'comment' => '区域拼音'])
+            ->addColumn('status', 'integer', ['limit' => 1, 'default' => 1, 'comment' => '使用状态'])
+            ->addIndex('pid', ['name' => 'idx_base_postage_region_pid'])
+            ->addIndex('status', ['name' => 'idx_base_postage_region_status'])
             ->save();
+
+        // 写入默认区域数据
+        $this->_insert_region($table);
+    }
+
+    /**
+     * 写入默认区域数据
+     * @param string $table
+     * @return void
+     */
+    private function _insert_region(string $table)
+    {
         $this->execute(<<<SQL
 INSERT INTO {$table} VALUES (1, 0, 'B', '北京', '北京市', 1, 'beijing', '', 0, '116.405285', '39.904989');
 INSERT INTO {$table} VALUES (2, 1, 'B', '北京', '北京市', 2, 'beijing', '100000', 0, '116.405285', '39.904989');
