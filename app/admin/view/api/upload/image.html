@@ -130,22 +130,14 @@
 <label class="layui-hide" id="ImageDialogUploadLayout">
     <!-- 图片上传组件 开始 -->
     {if isset($get.file) && $get.file eq 'image'}
-    <button data-file="one"
-            data-type="png,jpg,jpeg,gif"
-            data-path="{$get.path|default=''}"
-            data-cut-width="{$get.cutWidth|default=0}"
-            data-cut-height="{$get.cutHeight|default=0}"
-            data-max-width="{$get.maxWidth|default=0}"
-            data-max-height="{$get.maxHeight|default=0}"
+    <button data-file="one" data-type="png,jpg,jpeg,gif" data-path="{$get.path|default=''}"
+            data-cut-width="{$get.cutWidth|default=0}" data-max-width="{$get.maxWidth|default=0}"
+            data-cut-height="{$get.cutHeight|default=0}" data-max-height="{$get.maxHeight|default=0}"
     ></button>
     {else}
-    <button data-file="mul"
-            data-type="png,jpg,jpeg,gif"
-            data-path="{$get.path|default=''}"
-            data-cut-width="{$get.cutWidth|default=0}"
-            data-cut-height="{$get.cutHeight|default=0}"
-            data-max-width="{$get.maxWidth|default=0}"
-            data-max-height="{$get.maxHeight|default=0}"
+    <button data-file="mul" data-type="png,jpg,jpeg,gif" data-path="{$get.path|default=''}"
+            data-cut-width="{$get.cutWidth|default=0}" data-cut-height="{$get.cutHeight|default=0}"
+            data-max-width="{$get.maxWidth|default=0}" data-max-height="{$get.maxHeight|default=0}"
     ></button>
     {/if}
     <!-- 图片上传组件 结束 -->
