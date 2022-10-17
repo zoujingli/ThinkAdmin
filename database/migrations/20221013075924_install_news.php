@@ -57,7 +57,7 @@ class InstallNews extends Migrator
             ->addColumn('remark', 'string', ['limit' => 500, 'default' => '', 'comment' => '标签说明'])
             ->addColumn('sort', 'integer', ['limit' => 20, 'default' => 0, 'comment' => '排序权重'])
             ->addColumn('status', 'integer', ['limit' => 1, 'default' => 1, 'comment' => '标签状态(0禁用,1启用)'])
-            ->addColumn('deleted', 'integer', ['limit' => 1, 'default' => 0, 'comment' => '删除状态'])
+            ->addColumn('deleted', 'integer', ['limit' => 1, 'default' => 0, 'comment' => '删除状态(0未删,1已删)'])
             ->addColumn('create_at', 'timestamp', ['default' => 'CURRENT_TIMESTAMP', 'comment' => '创建时间'])
             ->addIndex('status', ['name' => 'idx_data_news_mark_status'])
             ->addIndex('deleted', ['name' => 'idx_data_news_mark_deleted'])
