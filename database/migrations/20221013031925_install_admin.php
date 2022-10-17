@@ -315,8 +315,8 @@ SQL
             ->addIndex('title', ['name' => 'idx_system_queue_title'])
             ->addIndex('status', ['name' => 'idx_system_queue_status'])
             ->addIndex('rscript', ['name' => 'idx_system_queue_rscript'])
-            ->addIndex('create_at', ['name' => 'idx_system_queue_create_at'])
             ->addIndex('exec_time', ['name' => 'idx_system_queue_exec_time'])
+            ->addIndex('create_at', ['name' => 'idx_system_queue_create_at'])
             ->save();
     }
 

@@ -90,9 +90,9 @@ class InstallNews extends Migrator
             ->addColumn('status', 'integer', ['limit' => 1, 'default' => 1, 'comment' => '文章状态(1使用,0禁用)'])
             ->addColumn('deleted', 'integer', ['limit' => 1, 'default' => 0, 'comment' => '删除状态(0未删,1已删)'])
             ->addColumn('create_at', 'timestamp', ['default' => 'CURRENT_TIMESTAMP', 'comment' => '创建时间'])
+            ->addIndex('code', ['name' => 'idx_data_news_item_code'])
             ->addIndex('status', ['name' => 'idx_data_news_item_status'])
             ->addIndex('deleted', ['name' => 'idx_data_news_item_deleted'])
-            ->addIndex('code', ['name' => 'idx_data_news_item_code'])
             ->save();
     }
 }

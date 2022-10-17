@@ -145,9 +145,9 @@ class InstallWechat extends Migrator
             ->addColumn('status', 'integer', ['limit' => 1, 'default' => 1, 'comment' => '状态(0禁用,1启用)'])
             ->addColumn('create_by', 'integer', ['limit' => 20, 'default' => 0, 'comment' => '创建人'])
             ->addColumn('create_at', 'timestamp', ['default' => 'CURRENT_TIMESTAMP', 'comment' => '创建时间'])
-            ->addIndex('appid', ['name' => 'idx_wechat_keys_appid'])
-            ->addIndex('type', ['name' => 'idx_wechat_keys_type'])
             ->addIndex('keys', ['name' => 'idx_wechat_keys_keys'])
+            ->addIndex('type', ['name' => 'idx_wechat_keys_type'])
+            ->addIndex('appid', ['name' => 'idx_wechat_keys_appid'])
             ->save();
     }
 
@@ -170,9 +170,9 @@ class InstallWechat extends Migrator
             ->addColumn('local_url', 'string', ['limit' => 300, 'default' => '', 'comment' => '本地文件链接'])
             ->addColumn('media_url', 'string', ['limit' => 300, 'default' => '', 'comment' => '远程图片链接'])
             ->addColumn('create_at', 'timestamp', ['default' => 'CURRENT_TIMESTAMP', 'comment' => '创建时间'])
-            ->addIndex('appid', ['name' => 'idx_wechat_media_appid'])
             ->addIndex('md5', ['name' => 'idx_wechat_media_md5'])
             ->addIndex('type', ['name' => 'idx_wechat_media_type'])
+            ->addIndex('appid', ['name' => 'idx_wechat_media_appid'])
             ->addIndex('media_id', ['name' => 'idx_wechat_media_media_id'])
             ->save();
     }
@@ -195,8 +195,8 @@ class InstallWechat extends Migrator
             ->addColumn('is_deleted', 'integer', ['limit' => 1, 'default' => 0, 'comment' => '删除状态(0未删除,1已删除)'])
             ->addColumn('create_at', 'timestamp', ['default' => 'CURRENT_TIMESTAMP', 'comment' => '创建时间'])
             ->addColumn('create_by', 'integer', ['limit' => 20, 'default' => 0, 'comment' => '创建人'])
-            ->addIndex('article_id', ['name' => 'idx_wechat_news_article_id'])
             ->addIndex('media_id', ['name' => 'idx_wechat_news_media_id'])
+            ->addIndex('article_id', ['name' => 'idx_wechat_news_article_id'])
             ->save();
     }
 

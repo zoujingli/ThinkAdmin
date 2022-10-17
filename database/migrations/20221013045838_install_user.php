@@ -298,8 +298,8 @@ class InstallUser extends Migrator
             ->addColumn('deleted', 'integer', ['limit' => 1, 'default' => 0, 'comment' => '删除状态'])
             ->addColumn('create_at', 'timestamp', ['default' => 'CURRENT_TIMESTAMP', 'comment' => '创建时间'])
             ->addIndex('code', ['name' => 'idx_data_user_address_code'])
-            ->addIndex('type', ['name' => 'idx_data_user_address_type'])
             ->addIndex('uuid', ['name' => 'idx_data_user_address_uuid'])
+            ->addIndex('type', ['name' => 'idx_data_user_address_type'])
             ->addIndex('deleted', ['name' => 'idx_data_user_address_deleted'])
             ->save();
     }
