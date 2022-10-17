@@ -101,7 +101,7 @@ class InstallUser extends Migrator
             ->addColumn('teams_indirect_number', 'integer', ['limit' => 20, 'default' => 0, 'comment' => '间推人数累计'])
             ->addColumn('remark', 'string', ['limit' => 500, 'default' => '', 'comment' => '用户级别描述'])
             ->addColumn('utime', 'integer', ['limit' => 20, 'default' => 0, 'comment' => '等级更新时间'])
-            ->addColumn('status', 'integer', ['limit' => 1, 'default' => 1, 'comment' => '用户等级状态(1使用,0禁用)'])
+            ->addColumn('status', 'integer', ['limit' => 1, 'default' => 1, 'comment' => '用户等级状态(0禁用,1启用)'])
             ->addColumn('create_at', 'timestamp', ['default' => 'CURRENT_TIMESTAMP', 'comment' => '等级创建时间'])
             ->save();
     }

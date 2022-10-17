@@ -206,7 +206,7 @@ SQL
             ->addColumn('params', 'string', ['limit' => 500, 'default' => '', 'comment' => '链接参数'])
             ->addColumn('target', 'string', ['limit' => 20, 'default' => '_self', 'comment' => '打开方式'])
             ->addColumn('sort', 'integer', ['limit' => 11, 'default' => 0, 'comment' => '排序权重'])
-            ->addColumn('status', 'integer', ['limit' => 1, 'default' => 1, 'comment' => '状态(0:禁用,1:启用)'])
+            ->addColumn('status', 'integer', ['limit' => 1, 'default' => 1, 'comment' => '状态(0禁用,1启用)'])
             ->addColumn('create_at', 'timestamp', ['default' => 'CURRENT_TIMESTAMP', 'comment' => '创建时间'])
             ->addIndex('pid', ['name' => 'idx_system_menu_pid'])
             ->addIndex('sort', ['name' => 'idx_system_menu_sort'])
