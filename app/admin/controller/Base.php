@@ -75,13 +75,13 @@ class Base extends Controller
         if ($this->request->isGet()) {
             $this->types = SystemBase::types();
             $this->types[] = '--- 新增类型 ---';
-            $this->type = input('get.type') ?: ($this->types[0] ?? '-');
+            $this->type = $this->get['type'] ?? ($this->types[0] ?? '-');
         } else {
             $map = [];
             $map[] = ['deleted', '=', 0];
             $map[] = ['code', '=', $data['code']];
             $map[] = ['type', '=', $data['type']];
-            if (isset($data['id'])) $map[] = ['id', '<>', $data['id']];
+            $map[] = ['id', '<>', $data['id'] ?? 0];
             if (SystemBase::mk()->where($map)->count() > 0) {
                 $this->error("同类型的数据编码已经存在！");
             }
