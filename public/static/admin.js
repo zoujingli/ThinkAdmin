@@ -278,12 +278,17 @@ $(function () {
                     if (typeof Pace === 'object' && loading !== false) Pace.restart();
                     if (typeof headers === 'object') for (i in headers) xhr.setRequestHeader(i, headers[i]);
                 }, error: function (XMLHttpRequest, $dialog, layIdx, iframe) {
+                    // 异常消息显示处理
                     if (parseInt(XMLHttpRequest.status) !== 200 && XMLHttpRequest.responseText.indexOf('Call Stack') > -1) try {
                         layIdx = layer.open({title: XMLHttpRequest.status + ' - ' + XMLHttpRequest.statusText, type: 2, move: false, content: 'javascript:;'});
                         layer.full(layIdx), $dialog = $('#layui-layer' + layIdx), iframe = $dialog.find('iframe').get(0);
                         (iframe.contentDocument || iframe.contentWindow.document).write(XMLHttpRequest.responseText);
-                        $dialog.find('.layui-layer-setwin').css({right: '35px', top: '28px'}).find('a').css({marginLeft: 0});
-                        $dialog.find('.layui-layer-title').css({color: 'red', height: '70px', lineHeight: '70px', fontSize: '22px', textAlign: 'center', fontWeight: 700});
+                        iframe.winClose = {width: '30px', height: '30px', lineHeight: '30px', fontSize: '30px', marginLeft: 0};
+                        iframe.winTitle = {color: 'red', height: '60px', lineHeight: '60px', fontSize: '20px', textAlign: 'center', fontWeight: 700};
+                        $dialog.find('.layui-layer-title').css(iframe.winTitle) && $dialog.find('.layui-layer-setwin').css(iframe.winClose).find('span').css(iframe.winClose);
+                        setTimeout(function () {
+                            $(iframe).height($dialog.height() - 60);
+                        }, 100);
                     } catch (e) {
                         layer.close(layIdx);
                     }
