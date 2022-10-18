@@ -3,6 +3,7 @@
 namespace app\data\model;
 
 use think\admin\Model;
+use think\model\relation\HasOne;
 
 /**
  * 商城订单详情模型
@@ -11,5 +12,12 @@ use think\admin\Model;
  */
 class ShopOrderItem extends Model
 {
-
+    /**
+     * 关联商品数据
+     * @return \think\model\relation\HasOne
+     */
+    public function goods(): HasOne
+    {
+        return $this->hasOne(ShopGoods::class, 'code', 'goods_code');
+    }
 }
