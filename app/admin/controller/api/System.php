@@ -44,6 +44,7 @@ class System extends Controller
         } catch (HttpResponseException $exception) {
             throw $exception;
         } catch (\Exception $exception) {
+            trace_file($exception);
             $this->error($exception->getMessage());
         } else {
             $this->error('只有超级管理员才能操作！');
@@ -64,6 +65,7 @@ class System extends Controller
         } catch (HttpResponseException $exception) {
             throw $exception;
         } catch (\Exception $exception) {
+            trace_file($exception);
             $this->error($exception->getMessage());
         } else {
             $this->error('只有超级管理员才能操作！');
@@ -131,6 +133,7 @@ class System extends Controller
         } catch (HttpResponseException $exception) {
             throw $exception;
         } catch (\Exception $exception) {
+            trace_file($exception);
             $this->error($exception->getMessage());
         } else {
             $this->error('只有超级管理员才能操作！');

@@ -78,6 +78,7 @@ class Oplog extends Controller
         } catch (HttpResponseException $exception) {
             throw $exception;
         } catch (Exception $exception) {
+            trace_file($exception);
             $this->error("日志清理失败，{$exception->getMessage()}");
         }
     }

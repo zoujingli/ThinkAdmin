@@ -56,8 +56,7 @@ class Module extends Controller
     public function change()
     {
         $data = $this->_vali(['name.require' => '模块名称不能为空！']);
-        $online = ModuleService::online();
-        $locals = ModuleService::getModules();
+        [$online, $locals] = [ModuleService::online(), ModuleService::getModules()];
         if (isset($online[$data['name']])) {
             $this->module = $online[$data['name']];
             $this->current = $locals[$data['name']] ?? [];

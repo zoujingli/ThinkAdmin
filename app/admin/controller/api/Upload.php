@@ -252,6 +252,7 @@ class Upload extends Controller
         } catch (HttpResponseException $exception) {
             throw $exception;
         } catch (\Exception $exception) {
+            trace_file($exception);
             $this->error($exception->getMessage());
         }
     }
@@ -298,6 +299,7 @@ class Upload extends Controller
         } catch (HttpResponseException $exception) {
             throw $exception;
         } catch (\Exception $exception) {
+            trace_file($exception);
             $this->error(lang($exception->getMessage()));
         }
     }

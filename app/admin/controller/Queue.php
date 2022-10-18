@@ -91,6 +91,7 @@ class Queue extends Controller
         } catch (HttpResponseException $exception) {
             throw $exception;
         } catch (Exception $exception) {
+            trace_file($exception);
             $this->error($exception->getMessage());
         }
     }
