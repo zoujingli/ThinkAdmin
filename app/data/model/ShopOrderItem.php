@@ -20,4 +20,16 @@ class ShopOrderItem extends Model
     {
         return $this->hasOne(ShopGoods::class, 'code', 'goods_code');
     }
+
+    /**
+     * 绑定商品数据
+     * @return void
+     */
+    public function bindGoods()
+    {
+        $this->goods()->bind([
+            'goods_name'  => 'name',
+            'goods_cover' => 'cover',
+        ]);
+    }
 }
