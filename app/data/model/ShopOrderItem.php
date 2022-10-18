@@ -23,11 +23,11 @@ class ShopOrderItem extends Model
 
     /**
      * 绑定商品数据
-     * @return void
+     * @return \think\model\relation\HasOne
      */
-    public function bindGoods()
+    public function bindGoods(): HasOne
     {
-        $this->goods()->bind([
+        return $this->goods()->bind([
             'goods_name'  => 'name',
             'goods_cover' => 'cover',
         ]);
