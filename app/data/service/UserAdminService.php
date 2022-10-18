@@ -99,6 +99,7 @@ class UserAdminService extends Service
      * 获取用户数据统计
      * @param int $uuid 用户UID
      * @return array
+     * @throws \think\db\exception\DbException
      */
     public static function total(int $uuid): array
     {

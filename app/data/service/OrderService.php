@@ -81,6 +81,7 @@ class OrderService extends Service
      * 刷新用户入会礼包
      * @param integer $uuid 用户UID
      * @return integer
+     * @throws \think\db\exception\DbException
      */
     private static function vipEntry(int $uuid): int
     {

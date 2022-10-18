@@ -427,6 +427,7 @@ class RebateService extends Service
      * @param string $prize 奖励规则
      * @param integer $level 用户等级
      * @return boolean
+     * @throws \think\db\exception\DbException
      */
     private function checkPrizeStatus(string $prize, int $level): bool
     {
