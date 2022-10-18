@@ -25,8 +25,8 @@ class UserAgent extends Command
     }
 
     /**
-     * @param Input $input
-     * @param Output $output
+     * @param \think\console\Input $input
+     * @param \think\console\Output $output
      * @return void
      * @throws \think\admin\Exception
      * @throws \think\db\exception\DataNotFoundException

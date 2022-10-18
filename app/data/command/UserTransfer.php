@@ -28,10 +28,11 @@ class UserTransfer extends Command
 
     /**
      * 执行微信提现操作
-     * @param Input $input
-     * @param Output $output
+     * @param \think\console\Input $input
+     * @param \think\console\Output $output
      * @return void
      * @throws \think\admin\Exception
+     * @throws \think\db\exception\DbException
      */
     protected function execute(Input $input, Output $output)
     {

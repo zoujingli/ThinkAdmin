@@ -6,7 +6,6 @@ use app\data\model\DataUser;
 use app\data\service\UserBalanceService;
 use app\data\service\UserRebateService;
 use think\admin\Command;
-use think\admin\Exception;
 use think\console\Input;
 use think\console\Output;
 
@@ -24,10 +23,11 @@ class UserAmount extends Command
     }
 
     /**
-     * @param Input $input
-     * @param Output $output
+     * @param \think\console\Input $input
+     * @param \think\console\Output $output
      * @return void
-     * @throws Exception
+     * @throws \think\admin\Exception
+     * @throws \think\db\exception\DbException
      */
     protected function execute(Input $input, Output $output)
     {

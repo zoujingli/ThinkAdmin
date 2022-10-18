@@ -6,7 +6,6 @@ use app\data\model\ShopOrder;
 use app\data\model\ShopOrderItem;
 use app\data\service\OrderService;
 use think\admin\Command;
-use think\admin\Exception;
 use think\console\Input;
 use think\console\Output;
 use think\Model;
@@ -26,10 +25,10 @@ class OrderClean extends Command
 
     /**
      * 业务指令执行
-     * @param Input $input
-     * @param Output $output
+     * @param \think\console\Input $input
+     * @param \think\console\Output $output
      * @return void
-     * @throws Exception
+     * @throws \think\admin\Exception
      */
     protected function execute(Input $input, Output $output)
     {
@@ -39,7 +38,8 @@ class OrderClean extends Command
 
     /**
      * 自动取消30分钟未支付的订单
-     * @throws Exception
+     * @return void
+     * @throws \think\admin\Exception
      */
     private function _autoCancelOrder()
     {
@@ -60,7 +60,8 @@ class OrderClean extends Command
 
     /**
      * 自动清理已经取消的订单
-     * @throws Exception
+     * @return void
+     * @throws \think\admin\Exception
      */
     private function _autoRemoveOrder()
     {

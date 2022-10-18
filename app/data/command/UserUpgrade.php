@@ -23,10 +23,10 @@ class UserUpgrade extends Command
     }
 
     /**
-     * @param Input $input
-     * @param Output $output
+     * @param \think\console\Input $input
+     * @param \think\console\Output $output
      * @return void
-     * @throws Exception
+     * @throws \think\admin\Exception
      */
     protected function execute(Input $input, Output $output)
     {
