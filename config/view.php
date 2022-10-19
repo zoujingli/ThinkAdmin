@@ -26,7 +26,7 @@ return [
     // 模板文件名分隔符
     'view_depr'      => DIRECTORY_SEPARATOR,
     // 模板缓存配置
-    'tpl_cache'      => is_online(),
+    'tpl_cache'      => isOnline(),
     // 模板引擎标签开始标记
     'tpl_begin'      => '{',
     // 模板引擎标签结束标记
