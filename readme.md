@@ -51,7 +51,7 @@ ThinkAdmin 的开发文档 ，如果实在无法解决问题可以加入官方�
 
 **3.官方微信交流群**
 
-<img src="https://thinkadmin.top/static/img/wx.png"  width="250">
+<img src="https://thinkadmin.top/static/img/wx.png" width="250">
 
 ## 注解权限
 
