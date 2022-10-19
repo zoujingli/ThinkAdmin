@@ -26,7 +26,7 @@ return [
     // 是否使用 setcookie
     'setcookie' => true,
     // cookie 安全传输，只支持 https 协议
-    'secure'    => app()->request->isSsl(),
+    'secure'    => request()->isSsl(),
     // samesite 安全设置，支持 'strict' 'lax' 'none'
-    'samesite'  => app()->request->isSsl() ? 'none' : 'lax',
+    'samesite'  => request()->isSsl() ? 'none' : 'lax',
 ];

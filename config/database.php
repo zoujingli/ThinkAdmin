@@ -59,14 +59,14 @@ return [
             // 监听SQL执行日志
             'trigger_sql'     => true,
             // 开启字段类型缓存
-            'fields_cache'    => !app()->isDebug(),
+            'fields_cache'    => is_online(),
         ],
         'sqlite' => [
             'charset'     => 'utf8',
             // 数据库类型
             'type'        => 'sqlite',
             // 数据库文件
-            'database'    => app()->getRootPath() . 'database/sqlite.db',
+            'database'    => with_path('database/sqlite.db'),
             // 监听执行日志
             'trigger_sql' => true,
             // 其他参数字段
