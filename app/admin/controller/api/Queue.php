@@ -101,9 +101,6 @@ class Queue extends Controller
      * 任务进度查询
      * @login true
      * @throws \think\admin\Exception
-     * @throws \think\db\exception\DataNotFoundException
-     * @throws \think\db\exception\DbException
-     * @throws \think\db\exception\ModelNotFoundException
      */
     public function progress()
     {
@@ -111,5 +108,4 @@ class Queue extends Controller
         $queue = QueueService::instance()->initialize($input['code']);
         $this->success('获取任务进度成功！', $queue->progress());
     }
-
 }
