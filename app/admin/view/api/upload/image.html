@@ -130,12 +130,14 @@
 <label class="layui-hide" id="ImageDialogUploadLayout">
     <!-- 图片上传组件 开始 -->
     {if isset($get.file) && $get.file eq 'image'}
-    <button data-file="one" data-type="gif,png,jpg,jpeg" data-path="{$get.path|default=''}"
+    <button data-file="one" data-type="gif,png,jpg,jpeg"
+            data-path="{$get.path|default=''}" data-size="{$get.size|default=0}"
             data-cut-width="{$get.cutWidth|default=0}" data-cut-height="{$get.cutHeight|default=0}"
             data-max-width="{$get.maxWidth|default=0}" data-max-height="{$get.maxHeight|default=0}"
     ></button>
     {else}
-    <button data-file="mul" data-type="gif,png,jpg,jpeg" data-path="{$get.path|default=''}"
+    <button data-file="mul" data-type="gif,png,jpg,jpeg"
+            data-path="{$get.path|default=''}" data-size="{$get.size|default=0}"
             data-cut-width="{$get.cutWidth|default=0}" data-cut-height="{$get.cutHeight|default=0}"
             data-max-width="{$get.maxWidth|default=0}" data-max-height="{$get.maxHeight|default=0}"
     ></button>
