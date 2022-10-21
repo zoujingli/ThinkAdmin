@@ -72,10 +72,11 @@ define(['md5', 'notify'], function (SparkMD5, Notify, allowMime) {
         var that = this.init();
         layui.each(files, function (index, file) {
             that.count.total++, file.index = index, that.files[index] = file;
-            if (that.option.size && file.size > that.option.size) {
-                that.event('upload.error', {file: file}, file, '大小超限');
-            } else if (!that.option.hide) {
+            if (!that.option.hide && !file.notify) {
                 file.notify = new NotifyExtend(file);
+            }
+            if (that.option.size && file.size > that.option.size) {
+                that.event('upload.error', {file: file}, file, '大小超出限制');
             }
         }), layui.each(files, function (index, file) {
             // 禁传异常状态文件
