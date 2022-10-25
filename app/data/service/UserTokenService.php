@@ -24,7 +24,7 @@ class UserTokenService extends Service
      * @param string $type 接口类型
      * @param string $token 认证令牌
      * @param array $data 认证数据
-     * @return array [ 检查状态，状态描述，用户UID, 有效时间 ]
+     * @return array [ 检查状态，状态描述，用户UUID, 有效时间 ]
      * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\DbException
      * @throws \think\db\exception\ModelNotFoundException
