@@ -10,9 +10,9 @@ vendor
 runtime
 safefile
 nbproject
-composer.lock
 404.html
 index.html
+composer.lock
 database/sqlite.db
 public/upload
 public/favicon.ico
