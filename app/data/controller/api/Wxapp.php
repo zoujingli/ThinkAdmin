@@ -33,7 +33,7 @@ class Wxapp extends Controller
      * 小程序配置参数
      * @var array
      */
-    private $cfg;
+    private $config;
 
     /**
      * 接口服务初始化
@@ -43,10 +43,10 @@ class Wxapp extends Controller
      */
     protected function initialize()
     {
-        $opt = sysdata('wxapp');
-        $this->cfg = [
-            'appid'      => $opt['appid'] ?? '',
-            'appsecret'  => $opt['appkey'] ?? '',
+        $option = sysdata('wxapp');
+        $this->config = [
+            'appid'      => $option['appid'] ?? '',
+            'appsecret'  => $option['appkey'] ?? '',
             'cache_path' => $this->app->getRootPath() . 'runtime' . DIRECTORY_SEPARATOR . 'wechat',
         ];
         if (empty(UserAdminService::TYPES[$this->type]['auth'])) {
@@ -83,7 +83,7 @@ class Wxapp extends Controller
                 'encrypted.require' => '加密内容不能为空！',
             ]);
             [$openid, $unionid, $input['session_key']] = $this->applySessionKey($input['code']);
-            $result = Crypt::instance($this->cfg)->decode($input['iv'], $input['session_key'], $input['encrypted']);
+            $result = Crypt::instance($this->config)->decode($input['iv'], $input['session_key'], $input['encrypted']);
             if (is_array($result) && isset($result['avatarUrl']) && isset($result['nickName'])) {
                 $data = [$this->field => $openid, 'nickname' => $result['nickName'], 'headimg' => $result['avatarUrl']];
                 $data['base_sex'] = ['-', '男', '女'][$result['gender']] ?? '-';
@@ -115,7 +115,7 @@ class Wxapp extends Controller
             if (isset($cache['openid']) && isset($cache['session_key'])) {
                 return [$cache['openid'], $cache['unionid'] ?? '', $cache['session_key']];
             }
-            $result = Crypt::instance($this->cfg)->session($code);
+            $result = Crypt::instance($this->config)->session($code);
             if (isset($result['openid']) && isset($result['session_key'])) {
                 $this->app->cache->set($code, $result, 60);
                 return [$result['openid'], $result['unionid'] ?? '', $result['session_key']];
@@ -143,7 +143,7 @@ class Wxapp extends Controller
                 'type.default' => 'base64',
                 'path.require' => '跳转路径不能为空!',
             ]);
-            $result = Qrcode::instance($this->cfg)->createMiniPath($data['path'], $data['size']);
+            $result = Qrcode::instance($this->config)->createMiniPath($data['path'], $data['size']);
             if ($data['type'] === 'base64') {
                 $this->success('生成小程序码成功！', [
                     'base64' => 'data:image/png;base64,' . base64_encode($result),
@@ -166,7 +166,7 @@ class Wxapp extends Controller
     {
         try {
             $data = $this->_vali(['start.default' => 0, 'limit.default' => 10]);
-            $list = Live::instance($this->cfg)->getLiveList($data['start'], $data['limit']);
+            $list = Live::instance($this->config)->getLiveList($data['start'], $data['limit']);
             $this->success('获取直播列表成功！', $list);
         } catch (HttpResponseException $exception) {
             throw $exception;
@@ -188,7 +188,7 @@ class Wxapp extends Controller
                 'action.default'  => 'get_replay',
                 'room_id.require' => '直播间不能为空',
             ]);
-            $result = Live::instance($this->cfg)->getLiveInfo($data);
+            $result = Live::instance($this->config)->getLiveInfo($data);
             $this->success('获取回放视频成功！', $result);
         } catch (HttpResponseException $exception) {
             throw $exception;
