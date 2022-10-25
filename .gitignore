@@ -3,8 +3,8 @@
 .svn
 .idea
 .vscode
-.DS_Store
 .user.ini
+.DS_Store
 *.log
 vendor
 runtime
