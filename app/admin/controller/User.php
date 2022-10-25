@@ -41,8 +41,7 @@ class User extends Controller
      */
     public function index()
     {
-        $this->type = input('get.type', 'index');
-
+        $this->type = $this->get['type'] ?? 'index';
         // 创建快捷查询工具
         SystemUser::mQuery()->layTable(function () {
             $this->title = '系统用户管理';

@@ -49,7 +49,7 @@ class Auto extends Controller
      */
     public function index()
     {
-        $this->type = input('get.type', 'index');
+        $this->type = $this->get['type'] ?? 'index';
         WechatAuto::mQuery()->layTable(function () {
             $this->title = '关注自动回复';
         }, function (QueryHelper $query) {

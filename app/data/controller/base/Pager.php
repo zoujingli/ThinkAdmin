@@ -53,7 +53,7 @@ class Pager extends Controller
      */
     public function edit()
     {
-        $this->skey = input('get.type', '');
+        $this->skey = $this->get['type'] ?? '';
         $this->base = $this->types[$this->skey] ?? [];
         if (empty($this->base)) $this->error('未配置基础数据！');
         $this->title = "编辑{$this->base['name']}";

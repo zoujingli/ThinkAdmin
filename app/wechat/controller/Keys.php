@@ -60,7 +60,7 @@ class Keys extends Controller
             $this->error("生成二维码失败，请稍候再试！<br> {$exception->getMessage()}");
         }
         // 数据列表分页处理
-        $this->type = input('get.type', 'index');
+        $this->type = $this->get['type'] ?? 'index';
         WechatKeys::mQuery()->layTable(function () {
             $this->title = '回复规则管理';
         }, function (QueryHelper $query) {

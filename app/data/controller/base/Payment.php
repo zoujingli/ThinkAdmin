@@ -32,7 +32,7 @@ class Payment extends Controller
      */
     public function index()
     {
-        $this->type = input('get.type', 'index');
+        $this->type = $this->get['type'] ?? 'index';
         BaseUserPayment::mQuery()->layTable(function () {
             $this->title = '支付通道管理';
         }, function (QueryHelper $query) {

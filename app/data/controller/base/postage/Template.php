@@ -26,7 +26,7 @@ class Template extends Controller
      */
     public function index()
     {
-        $this->type = input('get.type', 'index');
+        $this->type = $this->get['type'] ?? 'index';
         BasePostageTemplate::mQuery()->layTable(function () {
             $this->title = '快递邮费模板';
         }, function (QueryHelper $query) {

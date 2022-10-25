@@ -26,7 +26,7 @@ class Item extends Controller
      */
     public function index()
     {
-        $this->type = input('get.type', 'index');
+        $this->type = $this->get['type'] ?? 'index';
         DataNewsItem::mQuery($this->get)->layTable(function () {
             $this->title = '文章内容管理';
             $this->marks = DataNewsMark::items();

@@ -41,7 +41,7 @@ class Menu extends Controller
     public function index()
     {
         $this->title = '系统菜单管理';
-        $this->type = input('get.type', 'index');
+        $this->type = $this->get['type'] ?? 'index';
         SystemMenu::mQuery()->layTable();
     }
 

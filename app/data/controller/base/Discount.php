@@ -25,7 +25,7 @@ class Discount extends Controller
      */
     public function index()
     {
-        $this->type = input('get.type', 'index');
+        $this->type = $this->get['type'] ?? 'index';
         BaseUserDiscount::mQuery()->layTable(function () {
             $this->title = '折扣方案管理';
         }, function (QueryHelper $query) {

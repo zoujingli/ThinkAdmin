@@ -25,7 +25,7 @@ class Company extends Controller
      */
     public function index()
     {
-        $this->type = input('get.type', 'index');
+        $this->type = $this->get['type'] ?? 'index';
         BasePostageCompany::mQuery()->layTable(function () {
             $this->title = '快递公司管理';
         }, function (QueryHelper $query) {
