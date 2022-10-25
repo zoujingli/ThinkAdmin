@@ -84,8 +84,8 @@ class Config extends Controller
                 SystemService::setRuntime(null, [$post['xpath'] => 'admin']);
             }
             // 修改网站 ICON 图标，替换 public/favicon.ico
-            if (preg_match('#^https?://#', $icon = $post['site_icon'] ?? '')) try {
-                SystemService::setFavicon($icon);
+            if (preg_match('#^https?://#', $post['site_icon'] ?? '')) try {
+                SystemService::setFavicon($post['site_icon'] ?? '');
             } catch (\Exception $exception) {
                 trace_file($exception);
             }
