@@ -29,6 +29,10 @@ use think\admin\Storage;
  */
 class File extends Controller
 {
+    /**
+     * 存储类型
+     * @var array
+     */
     protected $types;
 
     /**
