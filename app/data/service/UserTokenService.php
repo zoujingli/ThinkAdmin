@@ -75,6 +75,7 @@ class UserTokenService extends Service
      * @param int $uuid 授权用户
      * @param string $type 接口类型
      * @return array [创建状态, 状态描述, 令牌数据]
+     * @throws \think\db\exception\DbException
      */
     public static function token(int $uuid, string $type): array
     {
