@@ -46,8 +46,10 @@ class Login extends Controller
                 // 当前运行模式
                 $this->developMode = SystemService::checkRunMode();
                 // 后台背景处理
-                $images = str2arr(sysconf('login_image') ?: '', '|') ?: [
-                    SystemService::uri('/static/theme/img/login/bg1.jpg'), SystemService::uri('/static/theme/img/login/bg2.jpg'),
+                $images = str2arr(sysconf('login_image') ?: '', '|');
+                if (empty($images)) $images = [
+                    SystemService::uri('/static/theme/img/login/bg1.jpg'),
+                    SystemService::uri('/static/theme/img/login/bg2.jpg'),
                 ];
                 $this->loginStyle = sprintf('style="background-image:url(%s)" data-bg-transition="%s"', $images[0], join(',', $images));
                 // 登录验证令牌
