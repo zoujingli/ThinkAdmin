@@ -32,7 +32,7 @@
                 <b class="color-green">存储区域</b><br><span class="nowrap color-desc label-required">Region</span>
             </label>
             <div class="layui-input-block">
-                <select class="layui-select" name="storage.txcos_point" lay-search>
+                <select class="layui-select" name="storage.qiniu_region" lay-search>
                     {foreach $points as $point => $title}
                     {if sysconf('storage.qiniu_region') eq $point}
                     <option selected value="{$point}">{$title}（ {$point} ）</option>

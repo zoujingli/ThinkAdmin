@@ -67,7 +67,7 @@ class Fans extends Command
     protected function _list(string $next = '', int $done = 0): string
     {
         $appid = WechatService::getAppid();
-        $this->output->comment('开始获取微信用户数据');
+        $this->process->message(0, 0, '开始获取微信用户数据');
         while (is_string($next)) {
             $result = WechatService::WeChatUser()->getUserList($next);
             if (is_array($result) && !empty($result['data']['openid'])) {
@@ -75,8 +75,9 @@ class Fans extends Command
                     $info = WechatService::WeChatUser()->getBatchUserInfo($openids);
                     if (is_array($info) && !empty($info['user_info_list'])) {
                         foreach ($info['user_info_list'] as $user) if (isset($user['nickname'])) {
-                            $this->queue->message($result['total'], ++$done, "-> {$user['openid']} {$user['nickname']}");
+                            $this->queue->message($result['total'], ++$done, "-> 开始获取 {$user['openid']} {$user['nickname']}");
                             FansService::set($user, $appid);
+                            $this->queue->message($result['total'], $done, "-> 完成更新 {$user['openid']} {$user['nickname']}", 1);
                         }
                     }
                 }
@@ -85,8 +86,8 @@ class Fans extends Command
                 $next = null;
             }
         }
-        $this->output->comment($done > 0 ? '微信用户数据获取完成' : '未获取到微信用户数据');
-        $this->output->newLine();
+        $this->process->message($done > 0 ? '微信用户数据获取完成' : '未获取到微信用户数据');
+        $this->process->message('');
         return "共获取 {$done} 个用户数据";
     }
 
