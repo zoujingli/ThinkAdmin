@@ -64,7 +64,7 @@ class Wechat extends Controller
 
     /**
      * 加载网页授权数据
-     * @return Response
+     * @return \think\Response
      * @throws \WeChat\Exceptions\InvalidResponseException
      * @throws \WeChat\Exceptions\LocalCacheException
      * @throws \think\admin\Exception
