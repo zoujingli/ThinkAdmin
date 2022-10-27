@@ -67,7 +67,7 @@ class Fans extends Command
     protected function _list(string $next = '', int $done = 0): string
     {
         $appid = WechatService::getAppid();
-        $this->process->message(0, 0, '开始获取微信用户数据');
+        $this->process->message('开始获取微信用户数据');
         while (is_string($next)) {
             $result = WechatService::WeChatUser()->getUserList($next);
             if (is_array($result) && !empty($result['data']['openid'])) {
