@@ -151,6 +151,29 @@ class InstallWechat extends Migrator
             ->save();
     }
 
+    private function _news()
+    {
+        // 当前数据表
+        $table = 'wechat_news';
+
+        // 存在则跳过
+        if ($this->hasTable($table)) return;
+
+        // 创建数据表
+        $this->table($table, [
+            'engine' => 'InnoDB', 'collation' => 'utf8mb4_general_ci', 'comment' => '微信-图文',
+        ])
+            ->addColumn('media_id', 'string', ['limit' => 100, 'default' => '', 'comment' => '永久素材MediaID'])
+            ->addColumn('local_url', 'string', ['limit' => 300, 'default' => '', 'comment' => '永久素材外网URL'])
+            ->addColumn('article_id', 'string', ['limit' => 60, 'default' => '', 'comment' => '关联图文ID(用英文逗号做分割)'])
+            ->addColumn('is_deleted', 'integer', ['limit' => 1, 'default' => 0, 'comment' => '删除状态(0未删除,1已删除)'])
+            ->addColumn('create_at', 'timestamp', ['default' => 'CURRENT_TIMESTAMP', 'comment' => '创建时间'])
+            ->addColumn('create_by', 'integer', ['limit' => 20, 'default' => 0, 'comment' => '创建人'])
+            ->addIndex('media_id', ['name' => 'idx_wechat_news_media_id'])
+            ->addIndex('article_id', ['name' => 'idx_wechat_news_article_id'])
+            ->save();
+    }
+
     private function _media()
     {
         // 当前数据表
@@ -174,29 +197,6 @@ class InstallWechat extends Migrator
             ->addIndex('type', ['name' => 'idx_wechat_media_type'])
             ->addIndex('appid', ['name' => 'idx_wechat_media_appid'])
             ->addIndex('media_id', ['name' => 'idx_wechat_media_media_id'])
-            ->save();
-    }
-
-    private function _news()
-    {
-        // 当前数据表
-        $table = 'wechat_news';
-
-        // 存在则跳过
-        if ($this->hasTable($table)) return;
-
-        // 创建数据表
-        $this->table($table, [
-            'engine' => 'InnoDB', 'collation' => 'utf8mb4_general_ci', 'comment' => '微信-图文',
-        ])
-            ->addColumn('media_id', 'string', ['limit' => 100, 'default' => '', 'comment' => '永久素材MediaID'])
-            ->addColumn('local_url', 'string', ['limit' => 300, 'default' => '', 'comment' => '永久素材外网URL'])
-            ->addColumn('article_id', 'string', ['limit' => 60, 'default' => '', 'comment' => '关联图文ID(用英文逗号做分割)'])
-            ->addColumn('is_deleted', 'integer', ['limit' => 1, 'default' => 0, 'comment' => '删除状态(0未删除,1已删除)'])
-            ->addColumn('create_at', 'timestamp', ['default' => 'CURRENT_TIMESTAMP', 'comment' => '创建时间'])
-            ->addColumn('create_by', 'integer', ['limit' => 20, 'default' => 0, 'comment' => '创建人'])
-            ->addIndex('media_id', ['name' => 'idx_wechat_news_media_id'])
-            ->addIndex('article_id', ['name' => 'idx_wechat_news_article_id'])
             ->save();
     }
 

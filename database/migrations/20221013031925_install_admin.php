@@ -42,22 +42,6 @@ class InstallAdmin extends Migrator
             ->save();
     }
 
-    private function _node()
-    {
-        // 当前操作
-        $table = 'system_auth_node';
-
-        // 创建数据表，存在则跳过
-        $this->hasTable($table) || $this->table($table, [
-            'engine' => 'InnoDB', 'collation' => 'utf8mb4_general_ci', 'comment' => '系统-授权',
-        ])
-            ->addColumn('auth', 'integer', ['limit' => 20, 'default' => 0, 'comment' => '角色编号'])
-            ->addColumn('node', 'string', ['limit' => 200, 'default' => '', 'comment' => '节点路径'])
-            ->addIndex('auth', ['name' => 'idx_system_auth_node_auth'])
-            ->addIndex('node', ['name' => 'idx_system_auth_node_node'])
-            ->save();
-    }
-
     private function _base()
     {
         // 当前操作
@@ -184,6 +168,22 @@ class InstallAdmin extends Migrator
             ->addIndex('pid', ['name' => 'idx_system_menu_pid'])
             ->addIndex('sort', ['name' => 'idx_system_menu_sort'])
             ->addIndex('status', ['name' => 'idx_system_menu_status'])
+            ->save();
+    }
+
+    private function _node()
+    {
+        // 当前操作
+        $table = 'system_auth_node';
+
+        // 创建数据表，存在则跳过
+        $this->hasTable($table) || $this->table($table, [
+            'engine' => 'InnoDB', 'collation' => 'utf8mb4_general_ci', 'comment' => '系统-授权',
+        ])
+            ->addColumn('auth', 'integer', ['limit' => 20, 'default' => 0, 'comment' => '角色编号'])
+            ->addColumn('node', 'string', ['limit' => 200, 'default' => '', 'comment' => '节点路径'])
+            ->addIndex('auth', ['name' => 'idx_system_auth_node_auth'])
+            ->addIndex('node', ['name' => 'idx_system_auth_node_node'])
             ->save();
     }
 

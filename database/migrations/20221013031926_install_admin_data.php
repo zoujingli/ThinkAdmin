@@ -23,31 +23,6 @@ class InstallAdminData extends Migrator
     }
 
     /**
-     * 初始化配置参数
-     * @return void
-     * @throws \think\db\exception\DbException
-     */
-    private function _createConf()
-    {
-        if (SystemConfig::mk()->count()) {
-            return;
-        }
-        SystemConfig::mk()->insertAll([
-            ['type' => 'base', 'name' => 'app_name', 'value' => 'ThinkAdmin'],
-            ['type' => 'base', 'name' => 'app_version', 'value' => 'v6'],
-            ['type' => 'base', 'name' => 'editor', 'value' => 'ckeditor5'],
-            ['type' => 'base', 'name' => 'login_name', 'value' => '系统管理'],
-            ['type' => 'base', 'name' => 'site_copy', 'value' => '©版权所有 2014-' . date('Y') . ' 楚才科技'],
-            ['type' => 'base', 'name' => 'site_icon', 'value' => 'https://v6.thinkadmin.top/upload/4b/5a423974e447d5502023f553ed370f.png'],
-            ['type' => 'base', 'name' => 'site_name', 'value' => 'ThinkAdmin'],
-            ['type' => 'base', 'name' => 'site_theme', 'value' => 'default'],
-            ['type' => 'storage', 'name' => 'allow_exts', 'value' => 'doc,gif,ico,jpg,mp3,mp4,p12,pem,png,zip,rar,xls,xlsx'],
-            ['type' => 'storage', 'name' => 'type', 'value' => 'local'],
-            ['type' => 'wechat', 'name' => 'type', 'value' => 'api'],
-        ]);
-    }
-
-    /**
      * 初始化用户数据
      * @return void
      * @throws \think\db\exception\DbException
@@ -70,7 +45,6 @@ class InstallAdminData extends Migrator
         ]);
     }
 
-    // 创建系统菜单
     private function _createMenu()
     {
         // 初始化菜单数据
@@ -100,6 +74,33 @@ class InstallAdminData extends Migrator
             ],
         ], [
             'node' => 'admin/config/index',
+        ]);
+    }
+
+    // 创建系统菜单
+
+    /**
+     * 初始化配置参数
+     * @return void
+     * @throws \think\db\exception\DbException
+     */
+    private function _createConf()
+    {
+        if (SystemConfig::mk()->count()) {
+            return;
+        }
+        SystemConfig::mk()->insertAll([
+            ['type' => 'base', 'name' => 'app_name', 'value' => 'ThinkAdmin'],
+            ['type' => 'base', 'name' => 'app_version', 'value' => 'v6'],
+            ['type' => 'base', 'name' => 'editor', 'value' => 'ckeditor5'],
+            ['type' => 'base', 'name' => 'login_name', 'value' => '系统管理'],
+            ['type' => 'base', 'name' => 'site_copy', 'value' => '©版权所有 2014-' . date('Y') . ' 楚才科技'],
+            ['type' => 'base', 'name' => 'site_icon', 'value' => 'https://v6.thinkadmin.top/upload/4b/5a423974e447d5502023f553ed370f.png'],
+            ['type' => 'base', 'name' => 'site_name', 'value' => 'ThinkAdmin'],
+            ['type' => 'base', 'name' => 'site_theme', 'value' => 'default'],
+            ['type' => 'storage', 'name' => 'allow_exts', 'value' => 'doc,gif,ico,jpg,mp3,mp4,p12,pem,png,zip,rar,xls,xlsx'],
+            ['type' => 'storage', 'name' => 'type', 'value' => 'local'],
+            ['type' => 'wechat', 'name' => 'type', 'value' => 'api'],
         ]);
     }
 }
