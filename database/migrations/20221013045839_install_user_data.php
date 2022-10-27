@@ -9,9 +9,14 @@ use think\migration\Migrator;
  */
 class InstallUserData extends Migrator
 {
+    /**
+     * @return void
+     * @throws \think\db\exception\DbException
+     */
     public function change()
     {
-        $this->createMenu() && $this->createRegion();
+        $this->createMenu();
+        $this->createRegion();
     }
 
     /**

@@ -26,10 +26,11 @@ class InstallWechatData extends Migrator
      */
     private function createMenu()
     {
+        // 检查菜单数据
         $map = ['node' => 'wechat/config/options'];
-        if (SystemMenu::mk()->where($map)->count() > 0) {
-            return;
-        }
+        if (SystemMenu::mk()->where($map)->count() > 0) return;
+
+        // 写入微信菜单
         ToolsExtend::write2menu([
             [
                 'name' => '微信管理',
