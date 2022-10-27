@@ -18,6 +18,149 @@ class InstallUser extends Migrator
         $this->_message();
         $this->_upgrade();
         $this->_transfer();
+        $this->_company();
+        $this->_region();
+        $this->_collect();
+        $this->_news();
+        $this->_mark();
+    }
+
+    private function _collect()
+    {
+
+        // 当前数据表
+        $table = 'data_news_x_collect';
+
+        // 存在则跳过
+        if ($this->hasTable($table)) return;
+
+        // 创建数据表
+        $this->table($table, [
+            'engine' => 'InnoDB', 'collation' => 'utf8mb4_general_ci', 'comment' => '数据-文章-标记',
+        ])
+            ->addColumn('uuid', 'integer', ['limit' => 20, 'default' => 0, 'comment' => '用户UID'])
+            ->addColumn('type', 'integer', ['limit' => 1, 'default' => 1, 'comment' => '记录类型(1收藏,2点赞,3历史,4评论)'])
+            ->addColumn('code', 'string', ['limit' => 20, 'default' => '', 'comment' => '文章编号'])
+            ->addColumn('reply', 'text', ['default' => null, 'comment' => '评论内容'])
+            ->addColumn('status', 'integer', ['limit' => 1, 'default' => 1, 'comment' => '记录状态(0无效,1待审核,2已审核)'])
+            ->addColumn('create_at', 'timestamp', ['default' => 'CURRENT_TIMESTAMP', 'comment' => '创建时间'])
+            ->addIndex('type', ['name' => 'idx_data_news_x_collect_type'])
+            ->addIndex('code', ['name' => 'idx_data_news_x_collect_code'])
+            ->addIndex('status', ['name' => 'idx_data_news_x_collect_status'])
+            ->addIndex('uuid', ['name' => 'idx_data_news_x_collect_uuid'])
+            ->save();
+
+    }
+
+    private function _mark()
+    {
+        // 当前数据表
+        $table = 'data_news_mark';
+
+        // 存在则跳过
+        if ($this->hasTable($table)) return;
+
+        // 创建数据表
+        $this->table($table, [
+            'engine' => 'InnoDB', 'collation' => 'utf8mb4_general_ci', 'comment' => '数据-文章-标签',
+        ])
+            ->addColumn('name', 'string', ['limit' => 100, 'default' => '', 'comment' => '标签名称'])
+            ->addColumn('remark', 'string', ['limit' => 500, 'default' => '', 'comment' => '标签说明'])
+            ->addColumn('sort', 'integer', ['limit' => 20, 'default' => 0, 'comment' => '排序权重'])
+            ->addColumn('status', 'integer', ['limit' => 1, 'default' => 1, 'comment' => '标签状态(0禁用,1启用)'])
+            ->addColumn('deleted', 'integer', ['limit' => 1, 'default' => 0, 'comment' => '删除状态(0未删,1已删)'])
+            ->addColumn('create_at', 'timestamp', ['default' => 'CURRENT_TIMESTAMP', 'comment' => '创建时间'])
+            ->addIndex('status', ['name' => 'idx_data_news_mark_status'])
+            ->addIndex('deleted', ['name' => 'idx_data_news_mark_deleted'])
+            ->save();
+    }
+
+    private function _news()
+    {
+        // 当前数据表
+        $table = 'data_news_item';
+
+        // 存在则跳过
+        if ($this->hasTable($table)) return;
+
+        // 创建数据表
+        $this->table($table, [
+            'engine' => 'InnoDB', 'collation' => 'utf8mb4_general_ci', 'comment' => '数据-文章-内容',
+        ])
+            ->addColumn('code', 'string', ['limit' => 20, 'default' => '', 'comment' => '文章编号'])
+            ->addColumn('name', 'string', ['limit' => 100, 'default' => '', 'comment' => '文章标题'])
+            ->addColumn('mark', 'string', ['limit' => 200, 'default' => '', 'comment' => '文章标签'])
+            ->addColumn('cover', 'string', ['limit' => 500, 'default' => '', 'comment' => '文章封面'])
+            ->addColumn('remark', 'string', ['limit' => 500, 'default' => '', 'comment' => '备注说明'])
+            ->addColumn('content', 'text', ['default' => null, 'comment' => '文章内容'])
+            ->addColumn('num_like', 'integer', ['limit' => 20, 'default' => 0, 'comment' => '文章点赞数'])
+            ->addColumn('num_read', 'integer', ['limit' => 20, 'default' => 0, 'comment' => '文章阅读数'])
+            ->addColumn('num_collect', 'integer', ['limit' => 20, 'default' => 0, 'comment' => '文章收藏数'])
+            ->addColumn('num_comment', 'integer', ['limit' => 20, 'default' => 0, 'comment' => '文章评论数'])
+            ->addColumn('sort', 'integer', ['limit' => 20, 'default' => 0, 'comment' => '排序权重'])
+            ->addColumn('status', 'integer', ['limit' => 1, 'default' => 1, 'comment' => '文章状态(0禁用,1启用)'])
+            ->addColumn('deleted', 'integer', ['limit' => 1, 'default' => 0, 'comment' => '删除状态(0未删,1已删)'])
+            ->addColumn('create_at', 'timestamp', ['default' => 'CURRENT_TIMESTAMP', 'comment' => '创建时间'])
+            ->addIndex('code', ['name' => 'idx_data_news_item_code'])
+            ->addIndex('status', ['name' => 'idx_data_news_item_status'])
+            ->addIndex('deleted', ['name' => 'idx_data_news_item_deleted'])
+            ->save();
+    }
+
+    private function _region()
+    {
+        // 当前数据表
+        $table = 'base_postage_region';
+
+        // 存在则跳过
+        if ($this->hasTable($table)) return;
+
+        // 创建数据表
+        $this->table($table, [
+            'engine' => 'InnoDB', 'collation' => 'utf8mb4_general_ci', 'comment' => '数据-快递-区域',
+        ])
+            ->addColumn('pid', 'integer', ['limit' => 20, 'default' => 0, 'comment' => '上级PID'])
+            ->addColumn('first', 'string', ['limit' => 50, 'default' => '', 'comment' => '首字母'])
+            ->addColumn('short', 'string', ['limit' => 100, 'default' => '', 'comment' => '区域简称'])
+            ->addColumn('name', 'string', ['limit' => 100, 'default' => '', 'comment' => '区域名称'])
+            ->addColumn('level', 'integer', ['limit' => 4, 'default' => 0, 'comment' => '区域层级'])
+            ->addColumn('pinyin', 'string', ['limit' => 100, 'default' => '', 'comment' => '区域拼音'])
+            ->addColumn('code', 'string', ['limit' => 100, 'default' => '', 'comment' => '区域邮编'])
+            ->addColumn('status', 'integer', ['limit' => 1, 'default' => 1, 'comment' => '使用状态'])
+            ->addColumn('lng', 'string', ['limit' => 100, 'default' => '', 'comment' => '所在经度'])
+            ->addColumn('lat', 'string', ['limit' => 100, 'default' => '', 'comment' => '所在纬度'])
+            ->addIndex('pid', ['name' => 'idx_base_postage_region_pid'])
+            ->addIndex('name', ['name' => 'idx_base_postage_region_name'])
+            ->save();
+    }
+
+    private function _company()
+    {
+        // 当前数据表
+        $table = 'base_postage_company';
+
+        // 存在则跳过
+        if ($this->hasTable($table)) return;
+
+        // 创建数据表
+        $this->table($table, [
+            'engine' => 'InnoDB', 'collation' => 'utf8mb4_general_ci', 'comment' => '数据-快递-公司',
+        ])
+            ->addColumn('name', 'string', ['limit' => 50, 'default' => '', 'comment' => '快递公司名称'])
+            ->addColumn('code_1', 'string', ['limit' => 50, 'default' => '', 'comment' => '快递公司代码'])
+            ->addColumn('code_2', 'string', ['limit' => 50, 'default' => '', 'comment' => '百度快递100代码'])
+            ->addColumn('code_3', 'string', ['limit' => 50, 'default' => '', 'comment' => '官方快递100代码'])
+            ->addColumn('remark', 'string', ['limit' => 512, 'default' => '', 'comment' => '快递公司描述'])
+            ->addColumn('sort', 'integer', ['limit' => 20, 'default' => 0, 'comment' => '排序权重'])
+            ->addColumn('status', 'integer', ['limit' => 1, 'default' => 1, 'comment' => '状态(0.无效,1.有效)'])
+            ->addColumn('deleted', 'integer', ['limit' => 1, 'default' => 0, 'comment' => '删除状态(1已删除,0未删除)'])
+            ->addColumn('create_at', 'timestamp', ['default' => 'CURRENT_TIMESTAMP', 'comment' => '创建时间'])
+            ->addIndex('code_1', ['name' => 'idx_base_postage_company_code_1'])
+            ->addIndex('code_2', ['name' => 'idx_base_postage_company_code_2'])
+            ->addIndex('code_3', ['name' => 'idx_base_postage_company_code_3'])
+            ->addIndex('status', ['name' => 'idx_base_postage_company_status'])
+            ->addIndex('deleted', ['name' => 'idx_base_postage_company_deleted'])
+            ->save();
     }
 
     private function _user()
