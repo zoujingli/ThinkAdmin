@@ -67,9 +67,7 @@ class InstallUserData extends Migrator
                     ],
                 ],
             ],
-        ], [
-            'node' => 'data/user.admin/index',
-        ]);
+        ], ['node' => 'data/user.admin/index']);
     }
 
     /**
