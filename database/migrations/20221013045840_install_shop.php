@@ -14,6 +14,7 @@ class InstallShop extends Migrator
         $this->_goodsMark();
         $this->_goodsItems();
         $this->_goodsStock();
+        // 订单管理
         $this->_order();
         $this->_orderItem();
         $this->_orderSend();
