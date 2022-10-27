@@ -11,17 +11,16 @@ class InstallUserData extends Migrator
 {
     public function change()
     {
-        $this->createMenu();
-        $this->createRegion();
+        $this->createMenu() && $this->createRegion();
     }
 
     /**
      * 创建菜单
-     * @return void
+     * @return boolean
      */
-    private function createMenu()
+    private function createMenu(): bool
     {
-        ToolsExtend::write2menu([
+        return ToolsExtend::write2menu([
             [
                 'name' => '总控台',
                 'subs' => [
@@ -69,7 +68,7 @@ class InstallUserData extends Migrator
 
     /**
      * 写入默认区域数据
-     * @return void
+     * @return mixed
      * @throws \think\db\exception\DbException
      */
     private function createRegion()
