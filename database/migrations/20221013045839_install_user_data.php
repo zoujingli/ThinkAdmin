@@ -73,7 +73,7 @@ class InstallUserData extends Migrator
 
     /**
      * 写入默认区域数据
-     * @return mixed
+     * @return void
      * @throws \think\db\exception\DbException
      */
     private function createRegion()

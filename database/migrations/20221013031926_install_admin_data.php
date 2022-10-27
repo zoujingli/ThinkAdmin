@@ -45,6 +45,10 @@ class InstallAdminData extends Migrator
         ]);
     }
 
+    /**
+     * 初始化系统菜单
+     * @return void
+     */
     private function createMenu()
     {
         // 初始化菜单数据
@@ -76,8 +80,6 @@ class InstallAdminData extends Migrator
             'node' => 'admin/config/index',
         ]);
     }
-
-    // 创建系统菜单
 
     /**
      * 初始化配置参数
