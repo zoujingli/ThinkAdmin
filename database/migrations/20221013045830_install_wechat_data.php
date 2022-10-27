@@ -55,6 +55,6 @@ class InstallWechatData extends Migrator
                     ],
                 ],
             ],
-        ]);
+        ], ['node' => 'wechat/config/options']);
     }
 }

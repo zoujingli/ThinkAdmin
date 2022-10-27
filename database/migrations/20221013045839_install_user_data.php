@@ -27,7 +27,7 @@ class InstallUserData extends Migrator
     {
         return ToolsExtend::write2menu([
             [
-                'name' => '总控台',
+                'name' => '控制台',
                 'sort' => '300',
                 'subs' => [
                     [
@@ -67,9 +67,7 @@ class InstallUserData extends Migrator
                     ],
                 ],
             ],
-        ], [
-            'node' => 'data/user.admin/index',
-        ]);
+        ], ['node' => 'data/user.admin/index']);
     }
 
     /**
