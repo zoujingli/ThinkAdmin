@@ -28,6 +28,7 @@ class InstallUserData extends Migrator
         return ToolsExtend::write2menu([
             [
                 'name' => '总控台',
+                'sort' => '300',
                 'subs' => [
                     [
                         'name' => '数据管理',

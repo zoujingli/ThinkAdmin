@@ -55,6 +55,7 @@ class InstallAdminData extends Migrator
         ToolsExtend::write2menu([
             [
                 'name' => '系统管理',
+                'sort' => '100',
                 'subs' => [
                     [
                         'name' => '系统配置',

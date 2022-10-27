@@ -34,6 +34,7 @@ class InstallWechatData extends Migrator
         ToolsExtend::write2menu([
             [
                 'name' => '微信管理',
+                'sort' => '200',
                 'subs' => [
                     [
                         'name' => '微信管理',
