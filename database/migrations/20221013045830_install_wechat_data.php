@@ -10,7 +10,7 @@ use think\migration\Migrator;
 class InstallWechatData extends Migrator
 {
     /**
-     * 改变数据库
+     * 初始化数据
      * @return void
      * @throws \think\db\exception\DbException
      */
@@ -20,7 +20,7 @@ class InstallWechatData extends Migrator
     }
 
     /**
-     * 初始化数据库
+     * 初始化菜单
      * @return void
      * @throws \think\db\exception\DbException
      */
