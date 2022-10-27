@@ -1,0 +1,58 @@
+<?php
+
+use think\admin\extend\ToolsExtend;
+use think\admin\model\SystemMenu;
+use think\migration\Migrator;
+
+/**
+ * 微信初始化
+ */
+class InstallWechatData extends Migrator
+{
+    /**
+     * 改变数据库
+     * @return void
+     * @throws \think\db\exception\DbException
+     */
+    public function change()
+    {
+        $this->createMenu();
+    }
+
+    /**
+     * 初始化数据库
+     * @return void
+     * @throws \think\db\exception\DbException
+     */
+    private function createMenu()
+    {
+        $map = ['node' => 'wechat/config/options'];
+        if (SystemMenu::mk()->where($map)->count() > 0) {
+            return;
+        }
+        ToolsExtend::write2menu([
+            [
+                'name' => '微信管理',
+                'subs' => [
+                    [
+                        'name' => '微信管理',
+                        'subs' => [
+                            ['name' => '微信接口配置', 'icon' => 'layui-icon layui-icon-set', 'node' => 'wechat/config/options'],
+                            ['name' => '微信支付配置', 'icon' => 'layui-icon layui-icon-rmb', 'node' => 'wechat/config/payment'],
+                        ],
+                    ],
+                    [
+                        'name' => '微信定制',
+                        'subs' => [
+                            ['name' => '微信粉丝管理', 'icon' => 'layui-icon layui-icon-username', 'node' => 'wechat/fans/index'],
+                            ['name' => '微信图文管理', 'icon' => 'layui-icon layui-icon-template-1', 'node' => 'wechat/news/index'],
+                            ['name' => '微信菜单配置', 'icon' => 'layui-icon layui-icon-cellphone', 'node' => 'wechat/menu/index'],
+                            ['name' => '回复规则管理', 'icon' => 'layui-icon layui-icon-engine', 'node' => 'wechat/keys/index'],
+                            ['name' => '关注自动回复', 'icon' => 'layui-icon layui-icon-release', 'node' => 'wechat/auto/index'],
+                        ],
+                    ],
+                ],
+            ],
+        ]);
+    }
+}
