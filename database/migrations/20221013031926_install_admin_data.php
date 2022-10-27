@@ -19,7 +19,7 @@ class InstallAdminData extends Migrator
     {
         $this->createUser();
         $this->createMenu();
-        $this->_createConf();
+        $this->createConf();
     }
 
     /**
@@ -84,7 +84,7 @@ class InstallAdminData extends Migrator
      * @return void
      * @throws \think\db\exception\DbException
      */
-    private function _createConf()
+    private function createConf()
     {
         if (SystemConfig::mk()->count()) {
             return;
