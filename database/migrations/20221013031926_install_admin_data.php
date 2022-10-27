@@ -17,8 +17,8 @@ class InstallAdminData extends Migrator
      */
     public function change()
     {
-        $this->_createUser();
-        $this->_createMenu();
+        $this->createUser();
+        $this->createMenu();
         $this->_createConf();
     }
 
@@ -27,7 +27,7 @@ class InstallAdminData extends Migrator
      * @return void
      * @throws \think\db\exception\DbException
      */
-    private function _createUser()
+    private function createUser()
     {
         // 检查是否存在
         $map = ['username' => 'admin'];
@@ -45,7 +45,7 @@ class InstallAdminData extends Migrator
         ]);
     }
 
-    private function _createMenu()
+    private function createMenu()
     {
         // 初始化菜单数据
         ToolsExtend::write2menu([
