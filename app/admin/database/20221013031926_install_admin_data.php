@@ -17,9 +17,9 @@ class InstallAdminData extends Migrator
      */
     public function change()
     {
-        $this->createUser();
-        $this->createMenu();
-        $this->createConf();
+        $this->insertUser();
+        $this->insertMenu();
+        $this->insertConf();
     }
 
     /**
@@ -27,7 +27,7 @@ class InstallAdminData extends Migrator
      * @return void
      * @throws \think\db\exception\DbException
      */
-    private function createUser()
+    private function insertUser()
     {
         // 检查是否存在
         $map = ['username' => 'admin'];
@@ -37,7 +37,7 @@ class InstallAdminData extends Migrator
 
         // 初始化默认数据
         SystemUser::mk()->save([
-            'id'       => 10000,
+            'id'       => '10000',
             'username' => 'admin',
             'nickname' => '超级管理员',
             'password' => '21232f297a57a5a743894a0e4a801fc3',
@@ -49,7 +49,7 @@ class InstallAdminData extends Migrator
      * 初始化系统菜单
      * @return void
      */
-    private function createMenu()
+    private function insertMenu()
     {
         // 初始化菜单数据
         ToolsExtend::write2menu([
@@ -85,11 +85,12 @@ class InstallAdminData extends Migrator
      * @return void
      * @throws \think\db\exception\DbException
      */
-    private function createConf()
+    private function insertConf()
     {
-        if (SystemConfig::mk()->count()) {
-            return;
-        }
+        // 检查数据
+        if (SystemConfig::mk()->count()) return;
+
+        // 写入数据
         SystemConfig::mk()->insertAll([
             ['type' => 'base', 'name' => 'app_name', 'value' => 'ThinkAdmin'],
             ['type' => 'base', 'name' => 'app_version', 'value' => 'v6'],
