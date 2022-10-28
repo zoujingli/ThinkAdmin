@@ -588,9 +588,9 @@ $(function () {
     $.fn.uploadOneVideo = function () {
         return this.each(function () {
             if (this.dataset.inited) return; else this.dataset.inited = 'true';
-            var $bt = $('<div class="uploadimage uploadvideo"><span><a data-file class="layui-icon layui-icon-upload-drag"></a><i class="layui-icon layui-icon-search"></i><i class="layui-icon layui-icon-close"></i></span><span data-file="video"></span></div>');
+            var $bt = $('<div class="uploadimage uploadvideo"><span><a data-file class="layui-icon layui-icon-upload-drag"></a><i class="layui-icon layui-icon-search"></i><i class="layui-icon layui-icon-close"></i></span><span data-file></span></div>');
             var $in = $(this).on('change', function () {
-                if (this.value) $bt.find('span[data-file]').html('<video width="76" height="76" controls><source src="' + encodeURI(this.value) + '" type="video/mp4"></video>');
+                if (this.value) $bt.find('span[data-file]').html('<video width="100%" height="100%" controls><source src="' + encodeURI(this.value) + '" type="video/mp4"></video>');
             }).after($bt).trigger('change');
             $bt.on('click', 'i.layui-icon-search', function (event) {
                 event.stopPropagation(), $in.val() && $.form.iframe(encodeURI($in.val()), '视频预览');
@@ -606,7 +606,7 @@ $(function () {
     $.fn.uploadOneImage = function () {
         return this.each(function () {
             if (this.dataset.inited) return; else this.dataset.inited = 'true';
-            var $bt = $('<div class="uploadimage"><span><a data-file class="layui-icon layui-icon-upload-drag"></a><i class="layui-icon layui-icon-search"></i><i class="layui-icon layui-icon-close"></i></span><span data-file="image"></span></div>');
+            var $bt = $('<div class="uploadimage"><span><a data-file class="layui-icon layui-icon-upload-drag"></a><i class="layui-icon layui-icon-search"></i><i class="layui-icon layui-icon-close"></i></span><span data-file></span></div>');
             var $in = $(this).on('change', function () {
                 if (this.value) $bt.css('backgroundImage', 'url(' + encodeURI(this.value) + ')');
             }).after($bt).trigger('change');
@@ -615,7 +615,9 @@ $(function () {
             }).on('click', 'i.layui-icon-close', function (event) {
                 event.stopPropagation(), $bt.attr('style', '') && $in.val('');
             }).find('[data-file]').data('input', this).attr({
-                'data-path': $in.data('path') || '', 'data-size': $in.data('size') || 0, 'data-type': $in.data('type') || 'gif,png,jpg,jpeg', 'data-max-width': $in.data('max-width') || 0, 'data-max-height': $in.data('max-height') || 0, 'data-cut-width': $in.data('cut-width') || 0, 'data-cut-height': $in.data('cut-height') || 0,
+                'data-path': $in.data('path') || '', 'data-size': $in.data('size') || 0, 'data-type': $in.data('type') || 'gif,png,jpg,jpeg',
+                'data-max-width': $in.data('max-width') || 0, 'data-max-height': $in.data('max-height') || 0,
+                'data-cut-width': $in.data('cut-width') || 0, 'data-cut-height': $in.data('cut-height') || 0,
             });
         });
     };
@@ -627,7 +629,9 @@ $(function () {
             var $bt = $('<div class="uploadimage"><span><a data-file="mul" class="layui-icon layui-icon-upload-drag"></a></span><span data-file="images"></span></div>');
             var ims = this.value ? this.value.split('|') : [], $in = $(this).after($bt);
             $bt.find('[data-file]').attr({
-                'data-path': $in.data('path') || '', 'data-size': $in.data('size') || 0, 'data-type': $in.data('type') || 'gif,png,jpg,jpeg', 'data-max-width': $in.data('max-width') || 0, 'data-max-height': $in.data('max-height') || 0, 'data-cut-width': $in.data('cut-width') || 0, 'data-cut-height': $in.data('cut-height') || 0,
+                'data-path': $in.data('path') || '', 'data-size': $in.data('size') || 0, 'data-type': $in.data('type') || 'gif,png,jpg,jpeg',
+                'data-max-width': $in.data('max-width') || 0, 'data-max-height': $in.data('max-height') || 0,
+                'data-cut-width': $in.data('cut-width') || 0, 'data-cut-height': $in.data('cut-height') || 0,
             }).on('push', function (evt, src) {
                 ims.push(src), $in.val(ims.join('|')), showImageContainer([src]);
             }) && (ims.length > 0 && showImageContainer(ims));

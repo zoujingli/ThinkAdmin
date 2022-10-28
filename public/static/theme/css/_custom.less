@@ -861,17 +861,16 @@ input:not(.layui-hide,[type=hidden]) {
     }
   }
 
+  &:hover > span:first-child {
+    display: block;
+  }
 
-  > span:last-child {
+  > span[data-file] {
     width: 100%;
     height: 100%;
     display: block;
     position: absolute;
     z-index: 2;
-  }
-
-  &:hover > span:first-child {
-    display: block;
   }
 }
 
