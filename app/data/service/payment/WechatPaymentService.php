@@ -55,6 +55,10 @@ class WechatPaymentService extends PaymentService
             if ($info['return_code'] === 'SUCCESS' && $info['result_code'] === 'SUCCESS') {
                 // 创建支付记录
                 $this->createPaymentAction($orderNo, $payTitle, $payAmount);
+                // 微信二维码支付
+                if ($this->type === static::PAYMENT_WECHAT_QRC) {
+                    return $info;
+                }
                 // 返回支付参数
                 return $this->payment->jsapiParams($info['prepay_id']);
             }
