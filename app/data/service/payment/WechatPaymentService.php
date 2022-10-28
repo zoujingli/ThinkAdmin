@@ -34,9 +34,7 @@ class WechatPaymentService extends PaymentService
     public function create(string $openid, string $orderNo, string $payAmount, string $payTitle, string $payRemark, string $payReturn = '', string $payImage = ''): array
     {
         try {
-            if (isset(static::TYPES[$this->type])) {
-                $tradeType = static::TYPES[$this->type]['type'];
-            } else {
+            if (empty(static::TYPES[$this->type])) {
                 throw new Exception(sprintf('支付类型[%s]未配置定义！', $this->type));
             }
             $body = empty($payRemark) ? $payTitle : ($payTitle . '-' . $payRemark);
@@ -45,8 +43,8 @@ class WechatPaymentService extends PaymentService
                 'openid'           => $openid,
                 'attach'           => $this->code,
                 'out_trade_no'     => $orderNo,
-                'trade_type'       => $tradeType ?: '',
                 'total_fee'        => $payAmount * 100,
+                'trade_type'       => static::TYPES[$this->type]['type'] ?? '',
                 'notify_url'       => sysuri("@data/api.notify/wxpay/scene/order/param/{$this->code}", [], false, true),
                 'spbill_create_ip' => $this->app->request->ip(),
             ];
@@ -59,7 +57,7 @@ class WechatPaymentService extends PaymentService
                 if ($this->type === static::PAYMENT_WECHAT_QRC) {
                     return $info;
                 }
-                // 返回支付参数
+                // 返回JSAPI参数
                 return $this->payment->jsapiParams($info['prepay_id']);
             }
             throw new Exception($info['err_code_des'] ?? '获取预支付码失败！');
