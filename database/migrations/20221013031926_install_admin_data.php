@@ -47,12 +47,12 @@ class InstallAdminData extends Migrator
 
     /**
      * 初始化系统菜单
-     * @return void
+     * @return bool
      */
-    private function createMenu()
+    private function createMenu(): bool
     {
         // 初始化菜单数据
-        ToolsExtend::write2menu([
+        return ToolsExtend::write2menu([
             [
                 'name' => '系统管理',
                 'sort' => '100',
@@ -87,9 +87,10 @@ class InstallAdminData extends Migrator
      */
     private function createConf()
     {
-        if (SystemConfig::mk()->count()) {
-            return;
-        }
+        // 检查数据
+        if (SystemConfig::mk()->count()) return;
+
+        // 写入数据
         SystemConfig::mk()->insertAll([
             ['type' => 'base', 'name' => 'app_name', 'value' => 'ThinkAdmin'],
             ['type' => 'base', 'name' => 'app_version', 'value' => 'v6'],

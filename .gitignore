@@ -22,4 +22,4 @@
 /public/static/theme/css/package-lock.json
 /public/static/theme/css/console.*.css
 /public/static/theme/css/console.*.css.map
-/database/sqlite.db
+/database/sqlite.*

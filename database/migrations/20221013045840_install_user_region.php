@@ -1,6 +1,5 @@
 <?php
 
-use think\admin\Library;
 use think\migration\Migrator;
 
 /**
@@ -9,12 +8,13 @@ use think\migration\Migrator;
 class InstallUserRegion extends Migrator
 {
     /**
+     * 写入默认区域数据
      * @return void
      * @throws \think\db\exception\DbException
      */
     public function change()
     {
-        $this->createRegion();
+        $this->installRegion();
     }
 
     /**
@@ -22,11 +22,11 @@ class InstallUserRegion extends Migrator
      * @return void
      * @throws \think\db\exception\DbException
      */
-    private function createRegion()
+    private function installRegion()
     {
         // 检查数据
         $table = 'base_postage_region';
-        if (Library::$sapp->db->table($table)->count() > 0) return;
+        if (app()->db->table($table)->count() > 0) return;
 
         // 写入数据
         $this->execute(<<<SQL

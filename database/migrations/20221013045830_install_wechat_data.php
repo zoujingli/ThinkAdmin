@@ -1,7 +1,6 @@
 <?php
 
 use think\admin\extend\ToolsExtend;
-use think\admin\model\SystemMenu;
 use think\migration\Migrator;
 
 /**
@@ -21,17 +20,12 @@ class InstallWechatData extends Migrator
 
     /**
      * 初始化菜单
-     * @return void
-     * @throws \think\db\exception\DbException
+     * @return bool
      */
-    private function createMenu()
+    private function createMenu(): bool
     {
-        // 检查菜单数据
-        $map = ['node' => 'wechat/config/options'];
-        if (SystemMenu::mk()->where($map)->count() > 0) return;
-
         // 写入微信菜单
-        ToolsExtend::write2menu([
+        return ToolsExtend::write2menu([
             [
                 'name' => '微信管理',
                 'sort' => '200',
