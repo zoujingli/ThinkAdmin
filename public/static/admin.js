@@ -587,14 +587,18 @@ $(function () {
     /*! 上传单个视频 */
     $.fn.uploadOneVideo = function () {
         return this.each(function () {
-            if ($(this).data('inited')) return true; else $(this).data('inited', true);
-            var $in = $(this), $bt = $('<a data-file class="uploadimage uploadvideo"><span class="layui-icon">&#x1006;</span><span class="layui-icon">&#xe615;</span></a>').data('input', this);
-            $bt.attr('data-size', $in.data('size') || 0).attr('data-type', $in.data('type') || 'mp4').find('span').on('click', function (event) {
-                event.stopPropagation();
-                if ($(this).index() === 0) $bt.attr('style', ''), $in.val(''); else $in.val() && $.previewImage(encodeURI($in.val()));
-            }), $in.on('change', function () {
-                if (this.value) $bt.html('<video width="76" height="76" controls><source src="' + encodeURI(this.value) + '" type="video/mp4"></video>');
+            if (this.dataset.inited) return; else this.dataset.inited = 'true';
+            var $bt = $('<div class="uploadimage uploadvideo"><span><a data-file class="layui-icon layui-icon-upload-drag"></a><i class="layui-icon layui-icon-search"></i><i class="layui-icon layui-icon-close"></i></span><span data-file="video"></span></div>');
+            var $in = $(this).on('change', function () {
+                if (this.value) $bt.find('span[data-file]').html('<video width="76" height="76" controls><source src="' + encodeURI(this.value) + '" type="video/mp4"></video>');
             }).after($bt).trigger('change');
+            $bt.on('click', 'i.layui-icon-search', function (event) {
+                event.stopPropagation(), $in.val() && $.form.iframe(encodeURI($in.val()), '视频预览');
+            }).on('click', 'i.layui-icon-close', function (event) {
+                event.stopPropagation(), $bt.attr('style', '').find('span[data-file]').html('') && $in.val('');
+            }).find('[data-file]').data('input', this).attr({
+                'data-path': $in.data('path') || '', 'data-size': $in.data('size') || 0, 'data-type': $in.data('type') || 'mp4',
+            });
         });
     };
 
@@ -609,7 +613,7 @@ $(function () {
             $bt.on('click', 'i.layui-icon-search', function (event) {
                 event.stopPropagation(), $in.val() && $.previewImage(encodeURI($in.val()));
             }).on('click', 'i.layui-icon-close', function (event) {
-                event.stopPropagation(), $bt.attr('style', ''), $in.val('');
+                event.stopPropagation(), $bt.attr('style', '') && $in.val('');
             }).find('[data-file]').data('input', this).attr({
                 'data-path': $in.data('path') || '', 'data-size': $in.data('size') || 0, 'data-type': $in.data('type') || 'gif,png,jpg,jpeg', 'data-max-width': $in.data('max-width') || 0, 'data-max-height': $in.data('max-height') || 0, 'data-cut-width': $in.data('cut-width') || 0, 'data-cut-height': $in.data('cut-height') || 0,
             });
@@ -892,6 +896,7 @@ $(function () {
 
     /*! 注册 data-file 事件行为 */
     onEvent('click', '[data-file]', function () {
+        console.log('data-file')
         this.id = this.dataset.id = this.id || (function (date) {
             return (date + Math.random()).replace('0.', '');
         })(layui.util.toDateString(Date.now(), 'yyyyMMddHHmmss-'));
