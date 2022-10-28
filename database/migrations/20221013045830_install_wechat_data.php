@@ -11,21 +11,19 @@ class InstallWechatData extends Migrator
     /**
      * 初始化数据
      * @return void
-     * @throws \think\db\exception\DbException
      */
     public function change()
     {
-        $this->createMenu();
+        $this->insertMenu();
     }
 
     /**
      * 初始化菜单
-     * @return bool
      */
-    private function createMenu(): bool
+    private function insertMenu()
     {
         // 写入微信菜单
-        return ToolsExtend::write2menu([
+        ToolsExtend::write2menu([
             [
                 'name' => '微信管理',
                 'sort' => '200',

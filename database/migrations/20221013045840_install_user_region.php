@@ -26,7 +26,8 @@ class InstallUserRegion extends Migrator
     {
         // 检查数据
         $table = 'base_postage_region';
-        if (app()->db->table($table)->count() > 0) return;
+        $result = $this->fetchRow("select count(1) _count from $table");
+        if (isset($result['_count']) && $result['_count'] > 0) return;
 
         // 写入数据
         $this->execute(<<<SQL

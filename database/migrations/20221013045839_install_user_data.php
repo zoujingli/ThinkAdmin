@@ -13,16 +13,16 @@ class InstallUserData extends Migrator
      */
     public function change()
     {
-        $this->createMenu();
+        $this->insertMenu();
     }
 
     /**
      * 创建菜单
-     * @return boolean
+     * @return void
      */
-    protected function createMenu(): bool
+    protected function insertMenu()
     {
-        return ToolsExtend::write2menu([
+        ToolsExtend::write2menu([
             [
                 'name' => '控制台',
                 'sort' => '300',
