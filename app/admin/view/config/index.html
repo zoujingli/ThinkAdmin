@@ -161,7 +161,7 @@
             </tr>
             <tr>
                 <th class="nowrap text-center">运行环境</th>
-                <td>{:ucfirst($request->server('SERVER_SOFTWARE',php_sapi_name()))} & PHP {$Think.const.PHP_VERSION}</td>
+                <td>{:ucfirst($request->server('SERVER_SOFTWARE',php_sapi_name()))} & PHP {$Think.const.PHP_VERSION} & {:ucfirst(app()->db->connect()->getConfig('type'))}</td>
             </tr>
             </tbody>
         </table>
