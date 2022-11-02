@@ -10,11 +10,11 @@ ThinkAdmin v6 基于`v1-v5`版本的积累，结合`ThinkPHP6`的思维重新构
 
 我们致力于二次开发底层框架，提供完整的组件及`API`，基于此框架可以快速开发应用。`ThinkAdmin v6`依赖自制组件`ThinkLibrary v6`，封装了大量常用操作，简化编码成本；默认集成`WechatDeveloper`组件，支持微信公众号、微信小程序、微信企业号、微信商户支付、支付宝支付接口等。`ThinkLibrary`组件实现`ThinkPHP v6`多应用模式及路由支持，另外还支持本地服务文件存储、七牛云对象存储（支持CDN加速）、又拍云USS存储（支持CDN加速）、阿里云OSS存储（支持CDN加速）、腾讯云COS存储（支持CDN加速）。
 
-另外项目安装及二次开发可以先阅读`ThinkPHP`官方文档，数据库 SQL 文件位于项目根目录下，若实在无法解决当下问题可以加入官方微信群获得帮助。
+另外项目安装及二次开发可以先阅读`ThinkPHP`官方文档，若实在无法解决当下问题可以加入官方微信群获得帮助。
 
 ### 注意事项
 
-> * [`ThinkAdmin`](https://thinkadmin.top)基于`ThinkPHP6`开发，`PHP`不得低于`PHP 7.1`，请阅读`ThinkPHP`文档；
+> * [`ThinkAdmin`](https://thinkadmin.top)基于`ThinkPHP6`开发，`PHP`不得低于`PHP 7.2.5`，请阅读`ThinkPHP`文档；
 > * 运行环境必需开启`PATHINFO`支持，不再支持`ThinkPHP`的`URL`兼容模式运行（源于如何优雅地展示）；
 > * [`ThinkAdmin`](https://thinkadmin.top)默认不带`composer`组件包(`vendor`)，下载后需要执行`composer install`安装依赖组件；
 > * 若操作提示 “演示系统禁止操作” 等字样，需要删除演示路由的配置文件(`app/admin/route/demo.php`)；
