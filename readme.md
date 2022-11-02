@@ -127,6 +127,8 @@ public function index(){
 * 修改`location.hash`访问机制，禁止直接访问外部`URL`资源链接，防止外部`XSS`攻击读取本地缓存数据。
 * 增加后台主题样式配置，支持全局默认+用户个性配置，需要更新`ThinkLibrary`,`static`,`admin`组件及模块。
 * 后台行政区域数据更新，由原来的腾讯地图数据切换为百度地图最新数据，需要更新`static`，数据库版需另行更新。
+* 增加`Phinx`数据库迁移脚本支持，可根据自己的需求安装对应模块，其中`admin`为改选模块！
+* 从分离`SystemService`分离出`RuntimeService`服务，精减服务启动入口，优化性能！
 
 ## 项目版本
 
