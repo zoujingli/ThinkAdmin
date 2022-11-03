@@ -151,8 +151,8 @@ class UserTransfer extends Command
      */
     private function getWechatInfo(int $uuid, string $type): ?array
     {
-        $user = DataUser::mk()->where(['id' => $uuid])->find();
-        if (empty($user)) return null;
+        $user = DataUser::mk()->where(['id' => $uuid])->findOrEmpty();
+        if ($user->isEmpty()) return null;
         $appid1 = sysconf('data.wxapp_appid');
         if (strtolower(sysconf('wechat.type')) === 'api') {
             $appid2 = sysconf('wechat.appid');
@@ -198,7 +198,7 @@ class UserTransfer extends Command
 
     /**
      * 查询更新提现打款状态
-     * @param array $item
+     * @param \think\Model|array $item
      * @throws \WeChat\Exceptions\InvalidResponseException
      * @throws \WeChat\Exceptions\LocalCacheException
      * @throws \think\admin\Exception
@@ -206,7 +206,7 @@ class UserTransfer extends Command
      * @throws \think\db\exception\DbException
      * @throws \think\db\exception\ModelNotFoundException
      */
-    private function queryTransferBank(array $item)
+    private function queryTransferBank($item)
     {
         $config = $this->getConfig($item['uuid']);
         [$config['appid'], $config['openid']] = [$item['appid'], $item['openid']];
@@ -236,7 +236,7 @@ class UserTransfer extends Command
 
     /**
      * 查询更新提现打款状态
-     * @param array $item
+     * @param \think\Model|array $item
      * @throws \WeChat\Exceptions\InvalidResponseException
      * @throws \WeChat\Exceptions\LocalCacheException
      * @throws \think\admin\Exception
@@ -244,7 +244,7 @@ class UserTransfer extends Command
      * @throws \think\db\exception\DbException
      * @throws \think\db\exception\ModelNotFoundException
      */
-    private function queryTransferWallet(array $item)
+    private function queryTransferWallet($item)
     {
         $config = $this->getConfig($item['uuid']);
         [$config['appid'], $config['openid']] = [$item['appid'], $item['openid']];
