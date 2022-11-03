@@ -26,7 +26,7 @@
     "ext-mbstring": "*",
     "ext-simplexml": "*",
     "endroid/qr-code": "^1.9",
-    "topthink/framework": "^6.0",
+    "topthink/framework": "^6.1",
     "topthink/think-view": "^1.0",
     "zoujingli/ip2region": "^2.0",
     "zoujingli/think-library": "6.0.x-dev",
