@@ -188,6 +188,13 @@ $(function () {
             var idx = msg ? layer.msg(msg, {icon: 16, scrollbar: false, shade: this.shade, time: 0, end: call}) : layer.load(2, {time: 0, scrollbar: false, shade: this.shade, end: call});
             return $.msg.idx.push(idx), idx;
         };
+        /*! Notify 调用入口 */
+        // https://www.jq22.com/demo/jquerygrowl-notification202104021049
+        this.notify = function (title, msg, time, option) {
+            require(['notify'], function (Notify) {
+                Notify.notify(Object.assign({title: title || '', description: msg || '', position: 'top-right', closeTimeout: time || 3000}, (option || {})));
+            });
+        };
         /*! 页面加载层 */
         this.page = new function () {
             this.$body = $('body>.think-page-loader');
