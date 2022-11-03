@@ -47,7 +47,7 @@ class Update extends Controller
         if (!ModuleService::checkAllowDownload($filename)) {
             $this->error('下载的文件不在认证规则中！');
         }
-        if (file_exists($realname = $this->app->getRootPath() . $filename)) {
+        if (file_exists($realname = with_path($filename))) {
             $this->success('读取文件内容成功！', [
                 'content' => base64_encode(file_get_contents($realname)),
             ]);

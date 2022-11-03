@@ -47,7 +47,7 @@ class Wxapp extends Controller
         $this->config = [
             'appid'      => $option['appid'] ?? '',
             'appsecret'  => $option['appkey'] ?? '',
-            'cache_path' => $this->app->getRootPath() . 'runtime' . DIRECTORY_SEPARATOR . 'wechat',
+            'cache_path' => with_path('runtime/wechat'),
         ];
         if (empty(UserAdminService::TYPES[$this->type]['auth'])) {
             $this->error("接口类型[{$this->type}]没有定义规则");

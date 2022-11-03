@@ -136,7 +136,7 @@ class UserTransfer extends Command
             'mch_key'    => $data['wechat_mch_key'],
             'ssl_key'    => $local->path($file1, true),
             'ssl_cer'    => $local->path($file2, true),
-            'cache_path' => $this->app->getRootPath() . 'runtime' . DIRECTORY_SEPARATOR . 'wechat',
+            'cache_path' => with_path('runtime/wechat'),
         ];
     }
 

@@ -115,7 +115,7 @@ class WechatPaymentService extends PaymentService
             'appid'      => $this->params['wechat_appid'],
             'mch_id'     => $this->params['wechat_mch_id'],
             'mch_key'    => $this->params['wechat_mch_key'],
-            'cache_path' => $this->app->getRootPath() . 'runtime' . DIRECTORY_SEPARATOR . 'wechat',
+            'cache_path' => with_path('runtime/wechat'),
         ]);
         return $this;
     }
