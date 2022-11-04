@@ -9,17 +9,24 @@ class InstallWechat extends Migrator
 {
     public function change()
     {
-        $this->_auto();
-        $this->_fans();
-        $this->_tags();
-        $this->_keys();
-        $this->_news();
-        $this->_media();
-        $this->_article();
+        $this->_create_wechat_auto();
+        $this->_create_wechat_fans();
+        $this->_create_wechat_fans_tags();
+        $this->_create_wechat_keys();
+        $this->_create_wechat_media();
+        $this->_create_wechat_news();
+        $this->_create_wechat_news_article();
     }
 
-    private function _auto()
+    /**
+     * 创建数据对象
+     * @class WechatAuto
+     * @table wechat_auto
+     * @return void
+     */
+    private function _create_wechat_auto()
     {
+
         // 当前数据表
         $table = 'wechat_auto';
 
@@ -44,19 +51,29 @@ class InstallWechat extends Migrator
             ->addColumn('video_title', 'string', ['limit' => 100, 'default' => '', 'comment' => '视频标题'])
             ->addColumn('video_url', 'string', ['limit' => 255, 'default' => '', 'comment' => '视频URL'])
             ->addColumn('video_desc', 'string', ['limit' => 255, 'default' => '', 'comment' => '视频描述'])
-            ->addColumn('news_id', 'integer', ['limit' => 20, 'default' => 0, 'comment' => '图文ID'])
+            ->addColumn('news_id', 'biginteger', ['limit' => 20, 'default' => 0, 'comment' => '图文ID'])
             ->addColumn('status', 'integer', ['limit' => 1, 'default' => 1, 'comment' => '状态(0禁用,1启用)'])
-            ->addColumn('create_by', 'integer', ['limit' => 20, 'default' => 0, 'comment' => '创建人'])
+            ->addColumn('create_by', 'biginteger', ['limit' => 20, 'default' => 0, 'comment' => '创建人'])
             ->addColumn('create_at', 'timestamp', ['default' => 'CURRENT_TIMESTAMP', 'comment' => '创建时间'])
             ->addIndex('type', ['name' => 'idx_wechat_auto_type'])
             ->addIndex('time', ['name' => 'idx_wechat_auto_time'])
             ->addIndex('code', ['name' => 'idx_wechat_auto_code'])
             ->addIndex('appid', ['name' => 'idx_wechat_auto_appid'])
             ->save();
+
+        // 修改主键长度
+        $this->table($table)->changeColumn('id', 'biginteger', ['limit' => 20]);
     }
 
-    private function _fans()
+    /**
+     * 创建数据对象
+     * @class WechatFans
+     * @table wechat_fans
+     * @return void
+     */
+    private function _create_wechat_fans()
     {
+
         // 当前数据表
         $table = 'wechat_fans';
 
@@ -80,7 +97,7 @@ class InstallWechat extends Migrator
             ->addColumn('city', 'string', ['limit' => 50, 'default' => '', 'comment' => '用户所在城市'])
             ->addColumn('language', 'string', ['limit' => 50, 'default' => '', 'comment' => '用户的语言(zh_CN)'])
             ->addColumn('headimgurl', 'string', ['limit' => 500, 'default' => '', 'comment' => '用户头像'])
-            ->addColumn('subscribe_time', 'integer', ['limit' => 20, 'default' => 0, 'comment' => '关注时间'])
+            ->addColumn('subscribe_time', 'biginteger', ['limit' => 20, 'default' => 0, 'comment' => '关注时间'])
             ->addColumn('subscribe_at', 'datetime', ['default' => null, 'comment' => '关注时间'])
             ->addColumn('remark', 'string', ['limit' => 50, 'default' => '', 'comment' => '备注'])
             ->addColumn('subscribe_scene', 'string', ['limit' => 200, 'default' => '', 'comment' => '扫码关注场景'])
@@ -92,10 +109,20 @@ class InstallWechat extends Migrator
             ->addIndex('is_black', ['name' => 'idx_wechat_fans_is_black'])
             ->addIndex('subscribe', ['name' => 'idx_wechat_fans_subscribe'])
             ->save();
+
+        // 修改主键长度
+        $this->table($table)->changeColumn('id', 'biginteger', ['limit' => 20]);
     }
 
-    private function _tags()
+    /**
+     * 创建数据对象
+     * @class WechatFansTags
+     * @table wechat_fans_tags
+     * @return void
+     */
+    private function _create_wechat_fans_tags()
     {
+
         // 当前数据表
         $table = 'wechat_fans_tags';
 
@@ -107,16 +134,26 @@ class InstallWechat extends Migrator
             'engine' => 'InnoDB', 'collation' => 'utf8mb4_general_ci', 'comment' => '微信-标签',
         ])
             ->addColumn('appid', 'string', ['limit' => 50, 'default' => '', 'comment' => '公众号APPID'])
-            ->addColumn('name', 'string', ['limit' => 35, 'default' => null, 'comment' => '标签名称'])
-            ->addColumn('count', 'integer', ['limit' => 20, 'default' => 0, 'comment' => '总数'])
+            ->addColumn('name', 'string', ['limit' => 35, 'default' => '', 'comment' => '标签名称'])
+            ->addColumn('count', 'biginteger', ['limit' => 20, 'default' => 0, 'comment' => '总数'])
             ->addColumn('create_at', 'timestamp', ['default' => 'CURRENT_TIMESTAMP', 'comment' => '创建日期'])
             ->addIndex('id', ['name' => 'idx_wechat_fans_tags_id'])
             ->addIndex('appid', ['name' => 'idx_wechat_fans_tags_appid'])
             ->save();
+
+        // 修改主键长度
+        $this->table($table)->changeColumn('id', 'biginteger', ['limit' => 20]);
     }
 
-    private function _keys()
+    /**
+     * 创建数据对象
+     * @class WechatKeys
+     * @table wechat_keys
+     * @return void
+     */
+    private function _create_wechat_keys()
     {
+
         // 当前数据表
         $table = 'wechat_keys';
 
@@ -129,7 +166,7 @@ class InstallWechat extends Migrator
         ])
             ->addColumn('appid', 'string', ['limit' => 100, 'default' => '', 'comment' => '公众号APPID'])
             ->addColumn('type', 'string', ['limit' => 20, 'default' => '', 'comment' => '类型(text,image,news)'])
-            ->addColumn('keys', 'string', ['limit' => 100, 'default' => null, 'comment' => '关键字'])
+            ->addColumn('keys', 'string', ['limit' => 100, 'default' => '', 'comment' => '关键字'])
             ->addColumn('content', 'text', ['default' => null, 'comment' => '文本内容'])
             ->addColumn('image_url', 'string', ['limit' => 255, 'default' => '', 'comment' => '图片链接'])
             ->addColumn('voice_url', 'string', ['limit' => 255, 'default' => '', 'comment' => '语音链接'])
@@ -140,42 +177,29 @@ class InstallWechat extends Migrator
             ->addColumn('video_title', 'string', ['limit' => 100, 'default' => '', 'comment' => '视频标题'])
             ->addColumn('video_url', 'string', ['limit' => 255, 'default' => '', 'comment' => '视频URL'])
             ->addColumn('video_desc', 'string', ['limit' => 255, 'default' => '', 'comment' => '视频描述'])
-            ->addColumn('news_id', 'integer', ['limit' => 20, 'default' => 0, 'comment' => '图文ID'])
-            ->addColumn('sort', 'integer', ['limit' => 20, 'default' => 0, 'comment' => '排序字段'])
+            ->addColumn('news_id', 'biginteger', ['limit' => 20, 'default' => 0, 'comment' => '图文ID'])
+            ->addColumn('sort', 'biginteger', ['limit' => 20, 'default' => 0, 'comment' => '排序字段'])
             ->addColumn('status', 'integer', ['limit' => 1, 'default' => 1, 'comment' => '状态(0禁用,1启用)'])
-            ->addColumn('create_by', 'integer', ['limit' => 20, 'default' => 0, 'comment' => '创建人'])
+            ->addColumn('create_by', 'biginteger', ['limit' => 20, 'default' => 0, 'comment' => '创建人'])
             ->addColumn('create_at', 'timestamp', ['default' => 'CURRENT_TIMESTAMP', 'comment' => '创建时间'])
-            ->addIndex('keys', ['name' => 'idx_wechat_keys_keys'])
-            ->addIndex('type', ['name' => 'idx_wechat_keys_type'])
             ->addIndex('appid', ['name' => 'idx_wechat_keys_appid'])
+            ->addIndex('type', ['name' => 'idx_wechat_keys_type'])
+            ->addIndex('keys', ['name' => 'idx_wechat_keys_keys'])
             ->save();
+
+        // 修改主键长度
+        $this->table($table)->changeColumn('id', 'biginteger', ['limit' => 20]);
     }
 
-    private function _news()
+    /**
+     * 创建数据对象
+     * @class WechatMedia
+     * @table wechat_media
+     * @return void
+     */
+    private function _create_wechat_media()
     {
-        // 当前数据表
-        $table = 'wechat_news';
 
-        // 存在则跳过
-        if ($this->hasTable($table)) return;
-
-        // 创建数据表
-        $this->table($table, [
-            'engine' => 'InnoDB', 'collation' => 'utf8mb4_general_ci', 'comment' => '微信-图文',
-        ])
-            ->addColumn('media_id', 'string', ['limit' => 100, 'default' => '', 'comment' => '永久素材MediaID'])
-            ->addColumn('local_url', 'string', ['limit' => 300, 'default' => '', 'comment' => '永久素材外网URL'])
-            ->addColumn('article_id', 'string', ['limit' => 60, 'default' => '', 'comment' => '关联图文ID(用英文逗号做分割)'])
-            ->addColumn('is_deleted', 'integer', ['limit' => 1, 'default' => 0, 'comment' => '删除状态(0未删除,1已删除)'])
-            ->addColumn('create_at', 'timestamp', ['default' => 'CURRENT_TIMESTAMP', 'comment' => '创建时间'])
-            ->addColumn('create_by', 'integer', ['limit' => 20, 'default' => 0, 'comment' => '创建人'])
-            ->addIndex('media_id', ['name' => 'idx_wechat_news_media_id'])
-            ->addIndex('article_id', ['name' => 'idx_wechat_news_article_id'])
-            ->save();
-    }
-
-    private function _media()
-    {
         // 当前数据表
         $table = 'wechat_media';
 
@@ -193,15 +217,58 @@ class InstallWechat extends Migrator
             ->addColumn('local_url', 'string', ['limit' => 300, 'default' => '', 'comment' => '本地文件链接'])
             ->addColumn('media_url', 'string', ['limit' => 300, 'default' => '', 'comment' => '远程图片链接'])
             ->addColumn('create_at', 'timestamp', ['default' => 'CURRENT_TIMESTAMP', 'comment' => '创建时间'])
+            ->addIndex('appid', ['name' => 'idx_wechat_media_appid'])
             ->addIndex('md5', ['name' => 'idx_wechat_media_md5'])
             ->addIndex('type', ['name' => 'idx_wechat_media_type'])
-            ->addIndex('appid', ['name' => 'idx_wechat_media_appid'])
             ->addIndex('media_id', ['name' => 'idx_wechat_media_media_id'])
             ->save();
+
+        // 修改主键长度
+        $this->table($table)->changeColumn('id', 'biginteger', ['limit' => 20]);
     }
 
-    private function _article()
+    /**
+     * 创建数据对象
+     * @class WechatNews
+     * @table wechat_news
+     * @return void
+     */
+    private function _create_wechat_news()
     {
+
+        // 当前数据表
+        $table = 'wechat_news';
+
+        // 存在则跳过
+        if ($this->hasTable($table)) return;
+
+        // 创建数据表
+        $this->table($table, [
+            'engine' => 'InnoDB', 'collation' => 'utf8mb4_general_ci', 'comment' => '微信-图文',
+        ])
+            ->addColumn('media_id', 'string', ['limit' => 100, 'default' => '', 'comment' => '永久素材MediaID'])
+            ->addColumn('local_url', 'string', ['limit' => 300, 'default' => '', 'comment' => '永久素材外网URL'])
+            ->addColumn('article_id', 'string', ['limit' => 60, 'default' => '', 'comment' => '关联图文ID(用英文逗号做分割)'])
+            ->addColumn('is_deleted', 'integer', ['limit' => 1, 'default' => 0, 'comment' => '删除状态(0未删除,1已删除)'])
+            ->addColumn('create_at', 'timestamp', ['default' => 'CURRENT_TIMESTAMP', 'comment' => '创建时间'])
+            ->addColumn('create_by', 'biginteger', ['limit' => 20, 'default' => 0, 'comment' => '创建人'])
+            ->addIndex('article_id', ['name' => 'idx_wechat_news_article_id'])
+            ->addIndex('media_id', ['name' => 'idx_wechat_news_media_id'])
+            ->save();
+
+        // 修改主键长度
+        $this->table($table)->changeColumn('id', 'biginteger', ['limit' => 20]);
+    }
+
+    /**
+     * 创建数据对象
+     * @class WechatNewsArticle
+     * @table wechat_news_article
+     * @return void
+     */
+    private function _create_wechat_news_article()
+    {
+
         // 当前数据表
         $table = 'wechat_news_article';
 
@@ -219,8 +286,11 @@ class InstallWechat extends Migrator
             ->addColumn('digest', 'string', ['limit' => 300, 'default' => '', 'comment' => '摘要内容'])
             ->addColumn('content', 'text', ['default' => null, 'comment' => '图文内容'])
             ->addColumn('content_source_url', 'string', ['limit' => 200, 'default' => '', 'comment' => '原文地址'])
-            ->addColumn('read_num', 'integer', ['limit' => 20, 'default' => 0, 'comment' => '阅读数量'])
+            ->addColumn('read_num', 'biginteger', ['limit' => 20, 'default' => 0, 'comment' => '阅读数量'])
             ->addColumn('create_at', 'timestamp', ['default' => 'CURRENT_TIMESTAMP', 'comment' => '创建时间'])
             ->save();
+
+        // 修改主键长度
+        $this->table($table)->changeColumn('id', 'biginteger', ['limit' => 20]);
     }
 }

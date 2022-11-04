@@ -18,7 +18,6 @@ class InstallWechat extends Migrator
         $this->_create_wechat_news_article();
     }
 
-
     /**
      * 创建数据对象
      * @class WechatAuto
@@ -61,6 +60,9 @@ class InstallWechat extends Migrator
             ->addIndex('code', ['name' => 'idx_wechat_auto_code'])
             ->addIndex('appid', ['name' => 'idx_wechat_auto_appid'])
             ->save();
+
+        // 修改主键长度
+        $this->table($table)->changeColumn('id', 'biginteger', ['limit' => 20]);
     }
 
     /**
@@ -107,6 +109,9 @@ class InstallWechat extends Migrator
             ->addIndex('is_black', ['name' => 'idx_wechat_fans_is_black'])
             ->addIndex('subscribe', ['name' => 'idx_wechat_fans_subscribe'])
             ->save();
+
+        // 修改主键长度
+        $this->table($table)->changeColumn('id', 'biginteger', ['limit' => 20]);
     }
 
     /**
@@ -135,6 +140,9 @@ class InstallWechat extends Migrator
             ->addIndex('id', ['name' => 'idx_wechat_fans_tags_id'])
             ->addIndex('appid', ['name' => 'idx_wechat_fans_tags_appid'])
             ->save();
+
+        // 修改主键长度
+        $this->table($table)->changeColumn('id', 'biginteger', ['limit' => 20]);
     }
 
     /**
@@ -178,6 +186,9 @@ class InstallWechat extends Migrator
             ->addIndex('type', ['name' => 'idx_wechat_keys_type'])
             ->addIndex('keys', ['name' => 'idx_wechat_keys_keys'])
             ->save();
+
+        // 修改主键长度
+        $this->table($table)->changeColumn('id', 'biginteger', ['limit' => 20]);
     }
 
     /**
@@ -211,6 +222,9 @@ class InstallWechat extends Migrator
             ->addIndex('type', ['name' => 'idx_wechat_media_type'])
             ->addIndex('media_id', ['name' => 'idx_wechat_media_media_id'])
             ->save();
+
+        // 修改主键长度
+        $this->table($table)->changeColumn('id', 'biginteger', ['limit' => 20]);
     }
 
     /**
@@ -241,6 +255,9 @@ class InstallWechat extends Migrator
             ->addIndex('article_id', ['name' => 'idx_wechat_news_article_id'])
             ->addIndex('media_id', ['name' => 'idx_wechat_news_media_id'])
             ->save();
+
+        // 修改主键长度
+        $this->table($table)->changeColumn('id', 'biginteger', ['limit' => 20]);
     }
 
     /**
@@ -272,5 +289,8 @@ class InstallWechat extends Migrator
             ->addColumn('read_num', 'biginteger', ['limit' => 20, 'default' => 0, 'comment' => '阅读数量'])
             ->addColumn('create_at', 'timestamp', ['default' => 'CURRENT_TIMESTAMP', 'comment' => '创建时间'])
             ->save();
+
+        // 修改主键长度
+        $this->table($table)->changeColumn('id', 'biginteger', ['limit' => 20]);
     }
 }

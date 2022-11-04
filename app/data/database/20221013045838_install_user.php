@@ -72,6 +72,9 @@ class InstallUser extends Migrator
             ->addIndex('status', ['name' => 'idx_base_postage_company_status'])
             ->addIndex('deleted', ['name' => 'idx_base_postage_company_deleted'])
             ->save();
+
+        // 修改主键长度
+        $this->table($table)->changeColumn('id', 'biginteger', ['limit' => 20]);
     }
 
     /**
@@ -106,6 +109,9 @@ class InstallUser extends Migrator
             ->addIndex('pid', ['name' => 'idx_base_postage_region_pid'])
             ->addIndex('name', ['name' => 'idx_base_postage_region_name'])
             ->save();
+
+        // 修改主键长度
+        $this->table($table)->changeColumn('id', 'biginteger', ['limit' => 20]);
     }
 
     /**
@@ -139,6 +145,9 @@ class InstallUser extends Migrator
             ->addIndex('status', ['name' => 'idx_base_postage_template_status'])
             ->addIndex('deleted', ['name' => 'idx_base_postage_template_deleted'])
             ->save();
+
+        // 修改主键长度
+        $this->table($table)->changeColumn('id', 'biginteger', ['limit' => 20]);
     }
 
     /**
@@ -170,6 +179,9 @@ class InstallUser extends Migrator
             ->addIndex('status', ['name' => 'idx_base_user_discount_status'])
             ->addIndex('deleted', ['name' => 'idx_base_user_discount_deleted'])
             ->save();
+
+        // 修改主键长度
+        $this->table($table)->changeColumn('id', 'biginteger', ['limit' => 20]);
     }
 
     /**
@@ -203,6 +215,9 @@ class InstallUser extends Migrator
             ->addIndex('status', ['name' => 'idx_base_user_message_status'])
             ->addIndex('deleted', ['name' => 'idx_base_user_message_deleted'])
             ->save();
+
+        // 修改主键长度
+        $this->table($table)->changeColumn('id', 'biginteger', ['limit' => 20]);
     }
 
     /**
@@ -239,6 +254,9 @@ class InstallUser extends Migrator
             ->addIndex('status', ['name' => 'idx_base_user_payment_status'])
             ->addIndex('deleted', ['name' => 'idx_base_user_payment_deleted'])
             ->save();
+
+        // 修改主键长度
+        $this->table($table)->changeColumn('id', 'biginteger', ['limit' => 20]);
     }
 
     /**
@@ -281,6 +299,9 @@ class InstallUser extends Migrator
             ->addIndex('status', ['name' => 'idx_base_user_upgrade_status'])
             ->addIndex('number', ['name' => 'idx_base_user_upgrade_number'])
             ->save();
+
+        // 修改主键长度
+        $this->table($table)->changeColumn('id', 'biginteger', ['limit' => 20]);
     }
 
     /**
@@ -320,6 +341,9 @@ class InstallUser extends Migrator
             ->addIndex('status', ['name' => 'idx_data_news_item_status'])
             ->addIndex('deleted', ['name' => 'idx_data_news_item_deleted'])
             ->save();
+
+        // 修改主键长度
+        $this->table($table)->changeColumn('id', 'biginteger', ['limit' => 20]);
     }
 
     /**
@@ -350,6 +374,9 @@ class InstallUser extends Migrator
             ->addIndex('status', ['name' => 'idx_data_news_mark_status'])
             ->addIndex('deleted', ['name' => 'idx_data_news_mark_deleted'])
             ->save();
+
+        // 修改主键长度
+        $this->table($table)->changeColumn('id', 'biginteger', ['limit' => 20]);
     }
 
     /**
@@ -382,6 +409,9 @@ class InstallUser extends Migrator
             ->addIndex('status', ['name' => 'idx_data_news_x_collect_status'])
             ->addIndex('uuid', ['name' => 'idx_data_news_x_collect_uuid'])
             ->save();
+
+        // 修改主键长度
+        $this->table($table)->changeColumn('id', 'biginteger', ['limit' => 20]);
     }
 
     /**
@@ -457,6 +487,9 @@ class InstallUser extends Migrator
             ->addIndex('pid0', ['name' => 'idx_data_user_pid0'])
             ->addIndex('pids', ['name' => 'idx_data_user_pids'])
             ->save();
+
+        // 修改主键长度
+        $this->table($table)->changeColumn('id', 'biginteger', ['limit' => 20]);
     }
 
     /**
@@ -497,6 +530,9 @@ class InstallUser extends Migrator
             ->addIndex('deleted', ['name' => 'idx_data_user_address_deleted'])
             ->addIndex('uuid', ['name' => 'idx_data_user_address_uuid'])
             ->save();
+
+        // 修改主键长度
+        $this->table($table)->changeColumn('id', 'biginteger', ['limit' => 20]);
     }
 
     /**
@@ -531,6 +567,9 @@ class InstallUser extends Migrator
             ->addIndex('deleted', ['name' => 'idx_data_user_balance_deleted'])
             ->addIndex('uuid', ['name' => 'idx_data_user_balance_uuid'])
             ->save();
+
+        // 修改主键长度
+        $this->table($table)->changeColumn('id', 'biginteger', ['limit' => 20]);
     }
 
     /**
@@ -561,6 +600,9 @@ class InstallUser extends Migrator
             ->addColumn('create_at', 'timestamp', ['default' => 'CURRENT_TIMESTAMP', 'comment' => '注册时间'])
             ->addIndex('uuid', ['name' => 'idx_data_user_logger_uuid'])
             ->save();
+
+        // 修改主键长度
+        $this->table($table)->changeColumn('id', 'biginteger', ['limit' => 20]);
     }
 
     /**
@@ -595,6 +637,9 @@ class InstallUser extends Migrator
             ->addIndex('phone', ['name' => 'idx_data_user_message_phone'])
             ->addIndex('msgid', ['name' => 'idx_data_user_message_msgid'])
             ->save();
+
+        // 修改主键长度
+        $this->table($table)->changeColumn('id', 'biginteger', ['limit' => 20]);
     }
 
     /**
@@ -632,6 +677,9 @@ class InstallUser extends Migrator
             ->addIndex('payment_trade', ['name' => 'idx_data_user_payment_payment_trade'])
             ->addIndex('payment_status', ['name' => 'idx_data_user_payment_payment_status'])
             ->save();
+
+        // 修改主键长度
+        $this->table($table)->changeColumn('id', 'biginteger', ['limit' => 20]);
     }
 
     /**
@@ -672,6 +720,9 @@ class InstallUser extends Migrator
             ->addIndex('status', ['name' => 'idx_data_user_rebate_status'])
             ->addIndex('uuid', ['name' => 'idx_data_user_rebate_uuid'])
             ->save();
+
+        // 修改主键长度
+        $this->table($table)->changeColumn('id', 'biginteger', ['limit' => 20]);
     }
 
     /**
@@ -704,6 +755,9 @@ class InstallUser extends Migrator
             ->addIndex('time', ['name' => 'idx_data_user_token_time'])
             ->addIndex('token', ['name' => 'idx_data_user_token_token'])
             ->save();
+
+        // 修改主键长度
+        $this->table($table)->changeColumn('id', 'biginteger', ['limit' => 20]);
     }
 
     /**
@@ -761,6 +815,9 @@ class InstallUser extends Migrator
             ->addIndex('openid', ['name' => 'idx_data_user_transfer_openid'])
             ->addIndex('uuid', ['name' => 'idx_data_user_transfer_uuid'])
             ->save();
+
+        // 修改主键长度
+        $this->table($table)->changeColumn('id', 'biginteger', ['limit' => 20]);
     }
 
     /**
@@ -817,6 +874,9 @@ class InstallUser extends Migrator
             ->addIndex('status', ['name' => 'idx_shop_goods_status'])
             ->addIndex('deleted', ['name' => 'idx_shop_goods_deleted'])
             ->save();
+
+        // 修改主键长度
+        $this->table($table)->changeColumn('id', 'biginteger', ['limit' => 20]);
     }
 
     /**
@@ -850,6 +910,9 @@ class InstallUser extends Migrator
             ->addIndex('status', ['name' => 'idx_shop_goods_cate_status'])
             ->addIndex('deleted', ['name' => 'idx_shop_goods_cate_deleted'])
             ->save();
+
+        // 修改主键长度
+        $this->table($table)->changeColumn('id', 'biginteger', ['limit' => 20]);
     }
 
     /**
@@ -888,6 +951,9 @@ class InstallUser extends Migrator
             ->addIndex('goods_spec', ['name' => 'idx_shop_goods_item_goods_spec'])
             ->addIndex('status', ['name' => 'idx_shop_goods_item_status'])
             ->save();
+
+        // 修改主键长度
+        $this->table($table)->changeColumn('id', 'biginteger', ['limit' => 20]);
     }
 
     /**
@@ -917,6 +983,9 @@ class InstallUser extends Migrator
             ->addIndex('sort', ['name' => 'idx_shop_goods_mark_sort'])
             ->addIndex('status', ['name' => 'idx_shop_goods_mark_status'])
             ->save();
+
+        // 修改主键长度
+        $this->table($table)->changeColumn('id', 'biginteger', ['limit' => 20]);
     }
 
     /**
@@ -948,6 +1017,9 @@ class InstallUser extends Migrator
             ->addIndex('status', ['name' => 'idx_shop_goods_stock_status'])
             ->addIndex('deleted', ['name' => 'idx_shop_goods_stock_deleted'])
             ->save();
+
+        // 修改主键长度
+        $this->table($table)->changeColumn('id', 'biginteger', ['limit' => 20]);
     }
 
     /**
@@ -1011,6 +1083,9 @@ class InstallUser extends Migrator
             ->addIndex('deleted_status', ['name' => 'idx_shop_order_deleted_status'])
             ->addIndex('uuid', ['name' => 'idx_shop_order_uuid'])
             ->save();
+
+        // 修改主键长度
+        $this->table($table)->changeColumn('id', 'biginteger', ['limit' => 20]);
     }
 
     /**
@@ -1070,6 +1145,9 @@ class InstallUser extends Migrator
             ->addIndex('goods_spec', ['name' => 'idx_shop_order_item_goods_spec'])
             ->addIndex('rebate_type', ['name' => 'idx_shop_order_item_rebate_type'])
             ->save();
+
+        // 修改主键长度
+        $this->table($table)->changeColumn('id', 'biginteger', ['limit' => 20]);
     }
 
     /**
@@ -1121,5 +1199,8 @@ class InstallUser extends Migrator
             ->addIndex('deleted', ['name' => 'idx_shop_order_send_deleted'])
             ->addIndex('order_no', ['name' => 'idx_shop_order_send_order_no'])
             ->save();
+
+        // 修改主键长度
+        $this->table($table)->changeColumn('id', 'biginteger', ['limit' => 20]);
     }
 }

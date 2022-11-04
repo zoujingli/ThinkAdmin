@@ -49,6 +49,9 @@ class InstallAdmin extends Migrator
             ->addIndex('status', ['name' => 'idx_system_auth_status'])
             ->addIndex('title', ['name' => 'idx_system_auth_title'])
             ->save();
+
+        // 修改主键长度
+        $this->table($table)->changeColumn('id', 'biginteger', ['limit' => 20]);
     }
 
     /**
@@ -75,6 +78,9 @@ class InstallAdmin extends Migrator
             ->addIndex('auth', ['name' => 'idx_system_auth_node_auth'])
             ->addIndex('node', ['name' => 'idx_system_auth_node_node'])
             ->save();
+
+        // 修改主键长度
+        $this->table($table)->changeColumn('id', 'biginteger', ['limit' => 20]);
     }
 
     /**
@@ -110,6 +116,9 @@ class InstallAdmin extends Migrator
             ->addIndex('code', ['name' => 'idx_system_base_code'])
             ->addIndex('name', ['name' => 'idx_system_base_name'])
             ->save();
+
+        // 修改主键长度
+        $this->table($table)->changeColumn('id', 'biginteger', ['limit' => 20]);
     }
 
     /**
@@ -137,6 +146,9 @@ class InstallAdmin extends Migrator
             ->addIndex('type', ['name' => 'idx_system_config_type'])
             ->addIndex('name', ['name' => 'idx_system_config_name'])
             ->save();
+
+        // 修改主键长度
+        $this->table($table)->changeColumn('id', 'biginteger', ['limit' => 20]);
     }
 
     /**
@@ -162,6 +174,9 @@ class InstallAdmin extends Migrator
             ->addColumn('value', 'text', ['default' => null, 'comment' => '配置值'])
             ->addIndex('name', ['name' => 'idx_system_data_name'])
             ->save();
+
+        // 修改主键长度
+        $this->table($table)->changeColumn('id', 'biginteger', ['limit' => 20]);
     }
 
     /**
@@ -205,6 +220,9 @@ class InstallAdmin extends Migrator
             ->addIndex('issafe', ['name' => 'idx_system_file_issafe'])
             ->addIndex('isfast', ['name' => 'idx_system_file_isfast'])
             ->save();
+
+        // 修改主键长度
+        $this->table($table)->changeColumn('id', 'biginteger', ['limit' => 20]);
     }
 
     /**
@@ -238,6 +256,9 @@ class InstallAdmin extends Migrator
             ->addColumn('create_at', 'timestamp', ['default' => 'CURRENT_TIMESTAMP', 'comment' => '创建时间'])
             ->addIndex('status', ['name' => 'idx_system_menu_status'])
             ->save();
+
+        // 修改主键长度
+        $this->table($table)->changeColumn('id', 'biginteger', ['limit' => 20]);
     }
 
     /**
@@ -266,6 +287,9 @@ class InstallAdmin extends Migrator
             ->addColumn('username', 'string', ['limit' => 50, 'default' => '', 'comment' => '操作人用户名'])
             ->addColumn('create_at', 'timestamp', ['default' => 'CURRENT_TIMESTAMP', 'comment' => '创建时间'])
             ->save();
+
+        // 修改主键长度
+        $this->table($table)->changeColumn('id', 'biginteger', ['limit' => 20]);
     }
 
     /**
@@ -308,6 +332,9 @@ class InstallAdmin extends Migrator
             ->addIndex('create_at', ['name' => 'idx_system_queue_create_at'])
             ->addIndex('exec_time', ['name' => 'idx_system_queue_exec_time'])
             ->save();
+
+        // 修改主键长度
+        $this->table($table)->changeColumn('id', 'biginteger', ['limit' => 20]);
     }
 
     /**
@@ -350,5 +377,8 @@ class InstallAdmin extends Migrator
             ->addIndex('username', ['name' => 'idx_system_user_username'])
             ->addIndex('is_deleted', ['name' => 'idx_system_user_is_deleted'])
             ->save();
+
+        // 修改主键长度
+        $this->table($table)->changeColumn('id', 'biginteger', ['limit' => 20]);
     }
 }
