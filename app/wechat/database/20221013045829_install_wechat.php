@@ -62,7 +62,7 @@ class InstallWechat extends Migrator
             ->save();
 
         // 修改主键长度
-        $this->table($table)->changeColumn('id', 'biginteger', ['limit' => 20]);
+        $this->table($table)->changeColumn('id', 'biginteger', ['limit' => 20, 'identity' => true]);
     }
 
     /**
@@ -111,7 +111,7 @@ class InstallWechat extends Migrator
             ->save();
 
         // 修改主键长度
-        $this->table($table)->changeColumn('id', 'biginteger', ['limit' => 20]);
+        $this->table($table)->changeColumn('id', 'biginteger', ['limit' => 20, 'identity' => true]);
     }
 
     /**
@@ -142,7 +142,7 @@ class InstallWechat extends Migrator
             ->save();
 
         // 修改主键长度
-        $this->table($table)->changeColumn('id', 'biginteger', ['limit' => 20]);
+        $this->table($table)->changeColumn('id', 'biginteger', ['limit' => 20, 'identity' => true]);
     }
 
     /**
@@ -188,7 +188,7 @@ class InstallWechat extends Migrator
             ->save();
 
         // 修改主键长度
-        $this->table($table)->changeColumn('id', 'biginteger', ['limit' => 20]);
+        $this->table($table)->changeColumn('id', 'biginteger', ['limit' => 20, 'identity' => true]);
     }
 
     /**
@@ -224,7 +224,7 @@ class InstallWechat extends Migrator
             ->save();
 
         // 修改主键长度
-        $this->table($table)->changeColumn('id', 'biginteger', ['limit' => 20]);
+        $this->table($table)->changeColumn('id', 'biginteger', ['limit' => 20, 'identity' => true]);
     }
 
     /**
@@ -257,7 +257,7 @@ class InstallWechat extends Migrator
             ->save();
 
         // 修改主键长度
-        $this->table($table)->changeColumn('id', 'biginteger', ['limit' => 20]);
+        $this->table($table)->changeColumn('id', 'biginteger', ['limit' => 20, 'identity' => true]);
     }
 
     /**
@@ -291,6 +291,6 @@ class InstallWechat extends Migrator
             ->save();
 
         // 修改主键长度
-        $this->table($table)->changeColumn('id', 'biginteger', ['limit' => 20]);
+        $this->table($table)->changeColumn('id', 'biginteger', ['limit' => 20, 'identity' => true]);
     }
 }
