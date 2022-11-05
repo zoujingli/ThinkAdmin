@@ -3,8 +3,8 @@
 .svn
 .idea
 .vscode
-*.log
 .DS_Store
+*.log
 /vendor
 /runtime
 /safefile
