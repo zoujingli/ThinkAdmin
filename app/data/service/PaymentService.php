@@ -100,17 +100,17 @@ abstract class PaymentService
         ],
         // 支付宝支持配置（不需要的直接注释）
         self::PAYMENT_ALIPAY_WAP  => [
-            'type' => '',
+            'type' => self::PAYMENT_ALIPAY_WAP,
             'name' => '支付宝WAP支付',
             'bind' => [UserAdminService::API_TYPE_WAP],
         ],
         self::PAYMENT_ALIPAY_WEB  => [
-            'type' => '',
+            'type' => self::PAYMENT_ALIPAY_WEB,
             'name' => '支付宝WEB支付',
             'bind' => [UserAdminService::API_TYPE_WEB],
         ],
         self::PAYMENT_ALIAPY_APP  => [
-            'type' => '',
+            'type' => self::PAYMENT_ALIAPY_APP,
             'name' => '支付宝APP支付',
             'bind' => [UserAdminService::API_TYPE_ANDROID, UserAdminService::API_TYPE_IOSAPP],
         ],
