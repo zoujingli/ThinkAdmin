@@ -52,7 +52,7 @@ class AlipayPaymentService extends PaymentService
                     $this->config['return_url'] = $payReturn;
                 }
             }
-            if ($tradeType === static::PAYMENT_WECHAT_APP) {
+            if ($tradeType === static::PAYMENT_ALIAPY_APP) {
                 $payment = App::instance($this->config);
             } elseif ($tradeType === static::PAYMENT_ALIPAY_WAP) {
                 $payment = Wap::instance($this->config);
