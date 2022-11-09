@@ -27,4 +27,14 @@ $(function () {
     // });
 
     /*! 其他 javascript 脚本代码 */
+
+    // 显示表格图片
+    window.showTableImage = function (image, circle, size, title) {
+        if (typeof image !== 'string' || image.length < 5) {
+            return '<span class="color-desc">-</span>' + (title ? laytpl('<span class="margin-left-5">{{d.title}}</span>').render({title: title}) : '');
+        }
+        return laytpl('<div class="headimg {{d.class}} headimg-{{d.size}}" data-tips-image data-tips-hover data-lazy-src="{{d.image}}" style="{{d.style}}"></div>').render({
+            size: size || 'ss', class: circle ? 'shadow-inset' : 'headimg-no', image: image, style: 'background-image:url(' + image + ');margin-right:0'
+        }) + (title ? laytpl('<span class="margin-left-5">{{d.title}}</span>').render({title: title}) : '');
+    };
 });

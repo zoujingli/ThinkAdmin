@@ -597,7 +597,7 @@ $(function () {
             if (this.dataset.inited) return; else this.dataset.inited = 'true';
             var $bt = $('<div class="uploadimage uploadvideo"><span><a data-file class="layui-icon layui-icon-upload-drag"></a><i class="layui-icon layui-icon-search"></i><i class="layui-icon layui-icon-close"></i></span><span data-file></span></div>');
             var $in = $(this).on('change', function () {
-                if (this.value) $bt.find('span[data-file]').html('<video width="100%" height="100%" autoplay loop muted><source src="' + encodeURI(this.value) + '" type="video/mp4"></video>');
+                if (this.value) $bt.css('backgroundImage', 'url("")').find('span[data-file]').html('<video width="100%" height="100%" autoplay loop muted><source src="' + encodeURI(this.value) + '" type="video/mp4"></video>');
             }).after($bt).trigger('change');
             $bt.on('click', 'i.layui-icon-search', function (event) {
                 event.stopPropagation(), $in.val() && $.form.iframe(encodeURI($in.val()), '视频预览');
@@ -907,7 +907,6 @@ $(function () {
 
     /*! 注册 data-file 事件行为 */
     onEvent('click', '[data-file]', function () {
-        console.log('data-file')
         this.id = this.dataset.id = this.id || (function (date) {
             return (date + Math.random()).replace('0.', '');
         })(layui.util.toDateString(Date.now(), 'yyyyMMddHHmmss-'));
