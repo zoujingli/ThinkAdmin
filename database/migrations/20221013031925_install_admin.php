@@ -43,7 +43,7 @@ class InstallAdmin extends Migrator
             ->addColumn('title', 'string', ['limit' => 100, 'default' => '', 'comment' => '权限名称'])
             ->addColumn('utype', 'string', ['limit' => 50, 'default' => '', 'comment' => '身份权限'])
             ->addColumn('desc', 'string', ['limit' => 500, 'default' => '', 'comment' => '备注说明'])
-            ->addColumn('sort', 'biginteger', ['limit' => 20, 'default' => 0, 'comment' => '排序权重'])
+            ->addColumn('sort', 'integer', ['limit' => 20, 'default' => 0, 'comment' => '排序权重'])
             ->addColumn('status', 'integer', ['limit' => 1, 'default' => 1, 'comment' => '权限状态(1使用,0禁用)'])
             ->addColumn('create_at', 'timestamp', ['default' => 'CURRENT_TIMESTAMP', 'comment' => '创建时间'])
             ->addIndex('status', ['name' => 'idx_system_auth_status'])
@@ -51,7 +51,7 @@ class InstallAdmin extends Migrator
             ->save();
 
         // 修改主键长度
-        $this->table($table)->changeColumn('id', 'biginteger', ['limit' => 20, 'identity' => true]);
+        $this->table($table)->changeColumn('id', 'integer', ['limit' => 20, 'identity' => true]);
     }
 
     /**
@@ -73,14 +73,14 @@ class InstallAdmin extends Migrator
         $this->table($table, [
             'engine' => 'InnoDB', 'collation' => 'utf8mb4_general_ci', 'comment' => '系统-授权',
         ])
-            ->addColumn('auth', 'biginteger', ['limit' => 20, 'default' => 0, 'comment' => '角色'])
+            ->addColumn('auth', 'integer', ['limit' => 20, 'default' => 0, 'comment' => '角色'])
             ->addColumn('node', 'string', ['limit' => 200, 'default' => '', 'comment' => '节点'])
             ->addIndex('auth', ['name' => 'idx_system_auth_node_auth'])
             ->addIndex('node', ['name' => 'idx_system_auth_node_node'])
             ->save();
 
         // 修改主键长度
-        $this->table($table)->changeColumn('id', 'biginteger', ['limit' => 20, 'identity' => true]);
+        $this->table($table)->changeColumn('id', 'integer', ['limit' => 20, 'identity' => true]);
     }
 
     /**
@@ -106,11 +106,11 @@ class InstallAdmin extends Migrator
             ->addColumn('code', 'string', ['limit' => 100, 'default' => '', 'comment' => '数据代码'])
             ->addColumn('name', 'string', ['limit' => 500, 'default' => '', 'comment' => '数据名称'])
             ->addColumn('content', 'text', ['default' => null, 'comment' => '数据内容'])
-            ->addColumn('sort', 'biginteger', ['limit' => 20, 'default' => 0, 'comment' => '排序权重'])
+            ->addColumn('sort', 'integer', ['limit' => 20, 'default' => 0, 'comment' => '排序权重'])
             ->addColumn('status', 'integer', ['limit' => 1, 'default' => 1, 'comment' => '数据状态(0禁用,1启动)'])
             ->addColumn('deleted', 'integer', ['limit' => 1, 'default' => 0, 'comment' => '删除状态(0正常,1已删)'])
             ->addColumn('deleted_at', 'string', ['limit' => 20, 'default' => '', 'comment' => '删除时间'])
-            ->addColumn('deleted_by', 'biginteger', ['limit' => 20, 'default' => 0, 'comment' => '删除用户'])
+            ->addColumn('deleted_by', 'integer', ['limit' => 20, 'default' => 0, 'comment' => '删除用户'])
             ->addColumn('create_at', 'timestamp', ['default' => 'CURRENT_TIMESTAMP', 'comment' => '创建时间'])
             ->addIndex('type', ['name' => 'idx_system_base_type'])
             ->addIndex('code', ['name' => 'idx_system_base_code'])
@@ -118,7 +118,7 @@ class InstallAdmin extends Migrator
             ->save();
 
         // 修改主键长度
-        $this->table($table)->changeColumn('id', 'biginteger', ['limit' => 20, 'identity' => true]);
+        $this->table($table)->changeColumn('id', 'integer', ['limit' => 20, 'identity' => true]);
     }
 
     /**
@@ -148,7 +148,7 @@ class InstallAdmin extends Migrator
             ->save();
 
         // 修改主键长度
-        $this->table($table)->changeColumn('id', 'biginteger', ['limit' => 20, 'identity' => true]);
+        $this->table($table)->changeColumn('id', 'integer', ['limit' => 20, 'identity' => true]);
     }
 
     /**
@@ -176,7 +176,7 @@ class InstallAdmin extends Migrator
             ->save();
 
         // 修改主键长度
-        $this->table($table)->changeColumn('id', 'biginteger', ['limit' => 20, 'identity' => true]);
+        $this->table($table)->changeColumn('id', 'integer', ['limit' => 20, 'identity' => true]);
     }
 
     /**
@@ -205,8 +205,8 @@ class InstallAdmin extends Migrator
             ->addColumn('xurl', 'string', ['limit' => 500, 'default' => '', 'comment' => '访问链接'])
             ->addColumn('xkey', 'string', ['limit' => 500, 'default' => '', 'comment' => '文件路径'])
             ->addColumn('mime', 'string', ['limit' => 100, 'default' => '', 'comment' => '文件类型'])
-            ->addColumn('size', 'biginteger', ['limit' => 20, 'default' => 0, 'comment' => '文件大小'])
-            ->addColumn('uuid', 'biginteger', ['limit' => 20, 'default' => 0, 'comment' => '用户编号'])
+            ->addColumn('size', 'integer', ['limit' => 20, 'default' => 0, 'comment' => '文件大小'])
+            ->addColumn('uuid', 'integer', ['limit' => 20, 'default' => 0, 'comment' => '用户编号'])
             ->addColumn('isfast', 'integer', ['limit' => 1, 'default' => 0, 'comment' => '是否秒传'])
             ->addColumn('issafe', 'integer', ['limit' => 1, 'default' => 0, 'comment' => '安全模式'])
             ->addColumn('status', 'integer', ['limit' => 1, 'default' => 1, 'comment' => '上传状态(1悬空,2落地)'])
@@ -222,7 +222,7 @@ class InstallAdmin extends Migrator
             ->save();
 
         // 修改主键长度
-        $this->table($table)->changeColumn('id', 'biginteger', ['limit' => 20, 'identity' => true]);
+        $this->table($table)->changeColumn('id', 'integer', ['limit' => 20, 'identity' => true]);
     }
 
     /**
@@ -244,7 +244,7 @@ class InstallAdmin extends Migrator
         $this->table($table, [
             'engine' => 'InnoDB', 'collation' => 'utf8mb4_general_ci', 'comment' => '系统-菜单',
         ])
-            ->addColumn('pid', 'biginteger', ['limit' => 20, 'default' => 0, 'comment' => '上级ID'])
+            ->addColumn('pid', 'integer', ['limit' => 20, 'default' => 0, 'comment' => '上级ID'])
             ->addColumn('title', 'string', ['limit' => 100, 'default' => '', 'comment' => '菜单名称'])
             ->addColumn('icon', 'string', ['limit' => 100, 'default' => '', 'comment' => '菜单图标'])
             ->addColumn('node', 'string', ['limit' => 100, 'default' => '', 'comment' => '节点代码'])
@@ -258,7 +258,7 @@ class InstallAdmin extends Migrator
             ->save();
 
         // 修改主键长度
-        $this->table($table)->changeColumn('id', 'biginteger', ['limit' => 20, 'identity' => true]);
+        $this->table($table)->changeColumn('id', 'integer', ['limit' => 20, 'identity' => true]);
     }
 
     /**
@@ -289,7 +289,7 @@ class InstallAdmin extends Migrator
             ->save();
 
         // 修改主键长度
-        $this->table($table)->changeColumn('id', 'biginteger', ['limit' => 20, 'identity' => true]);
+        $this->table($table)->changeColumn('id', 'integer', ['limit' => 20, 'identity' => true]);
     }
 
     /**
@@ -314,14 +314,14 @@ class InstallAdmin extends Migrator
             ->addColumn('code', 'string', ['limit' => 20, 'default' => '', 'comment' => '任务编号'])
             ->addColumn('title', 'string', ['limit' => 100, 'default' => '', 'comment' => '任务名称'])
             ->addColumn('command', 'string', ['limit' => 500, 'default' => '', 'comment' => '执行指令'])
-            ->addColumn('exec_pid', 'biginteger', ['limit' => 20, 'default' => 0, 'comment' => '执行进程'])
+            ->addColumn('exec_pid', 'integer', ['limit' => 20, 'default' => 0, 'comment' => '执行进程'])
             ->addColumn('exec_data', 'text', ['default' => null, 'comment' => '执行参数'])
-            ->addColumn('exec_time', 'biginteger', ['limit' => 20, 'default' => 0, 'comment' => '执行时间'])
+            ->addColumn('exec_time', 'integer', ['limit' => 20, 'default' => 0, 'comment' => '执行时间'])
             ->addColumn('exec_desc', 'string', ['limit' => 500, 'default' => '', 'comment' => '执行描述'])
             ->addColumn('enter_time', 'decimal', ['precision' => 20, 'scale' => 4, 'default' => '0.0000', 'comment' => '开始时间'])
             ->addColumn('outer_time', 'decimal', ['precision' => 20, 'scale' => 4, 'default' => '0.0000', 'comment' => '结束时间'])
-            ->addColumn('loops_time', 'biginteger', ['limit' => 20, 'default' => 0, 'comment' => '循环时间'])
-            ->addColumn('attempts', 'biginteger', ['limit' => 20, 'default' => 0, 'comment' => '执行次数'])
+            ->addColumn('loops_time', 'integer', ['limit' => 20, 'default' => 0, 'comment' => '循环时间'])
+            ->addColumn('attempts', 'integer', ['limit' => 20, 'default' => 0, 'comment' => '执行次数'])
             ->addColumn('rscript', 'integer', ['limit' => 1, 'default' => 1, 'comment' => '任务类型(0单例,1多例)'])
             ->addColumn('status', 'integer', ['limit' => 1, 'default' => 1, 'comment' => '任务状态(1新任务,2处理中,3成功,4失败)'])
             ->addColumn('create_at', 'timestamp', ['default' => 'CURRENT_TIMESTAMP', 'comment' => '创建时间'])
@@ -334,7 +334,7 @@ class InstallAdmin extends Migrator
             ->save();
 
         // 修改主键长度
-        $this->table($table)->changeColumn('id', 'biginteger', ['limit' => 20, 'identity' => true]);
+        $this->table($table)->changeColumn('id', 'integer', ['limit' => 20, 'identity' => true]);
     }
 
     /**
@@ -367,10 +367,10 @@ class InstallAdmin extends Migrator
             ->addColumn('contact_phone', 'string', ['limit' => 20, 'default' => '', 'comment' => '联系手机'])
             ->addColumn('login_ip', 'string', ['limit' => 255, 'default' => '', 'comment' => '登录地址'])
             ->addColumn('login_at', 'string', ['limit' => 20, 'default' => '', 'comment' => '登录时间'])
-            ->addColumn('login_num', 'biginteger', ['limit' => 20, 'default' => 0, 'comment' => '登录次数'])
+            ->addColumn('login_num', 'integer', ['limit' => 20, 'default' => 0, 'comment' => '登录次数'])
             ->addColumn('describe', 'string', ['limit' => 255, 'default' => '', 'comment' => '备注说明'])
             ->addColumn('status', 'integer', ['limit' => 1, 'default' => 1, 'comment' => '状态(0禁用,1启用)'])
-            ->addColumn('sort', 'biginteger', ['limit' => 20, 'default' => 0, 'comment' => '排序权重'])
+            ->addColumn('sort', 'integer', ['limit' => 20, 'default' => 0, 'comment' => '排序权重'])
             ->addColumn('is_deleted', 'integer', ['limit' => 1, 'default' => 0, 'comment' => '删除(1删除,0未删)'])
             ->addColumn('create_at', 'timestamp', ['default' => 'CURRENT_TIMESTAMP', 'comment' => '创建时间'])
             ->addIndex('status', ['name' => 'idx_system_user_status'])
@@ -379,6 +379,6 @@ class InstallAdmin extends Migrator
             ->save();
 
         // 修改主键长度
-        $this->table($table)->changeColumn('id', 'biginteger', ['limit' => 20, 'identity' => true]);
+        $this->table($table)->changeColumn('id', 'integer', ['limit' => 20, 'identity' => true]);
     }
 }
