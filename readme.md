@@ -93,7 +93,10 @@ public function index(){
 * 执行 `php think run` 启用本地开发环境，访问 `http://127.0.0.1:8000`
 * 执行 `php think xadmin:fansall` 同步微信粉丝数据（依赖于 `wechat` 模块）
 * 执行 `php think xadmin:sysmenu` 重写系统菜单并生成新编号并清理已禁用的菜单
+* 执行 `php think xadmin:package` 将现有`MySQL`数据库打包为`Phinx`数据库迁移脚本【新增】
+* 执行 `php think xadmin:replace` 可以批量替换数据库指定字符字段内容，通常用于文档地址替换
 * 执行 `php think xadmin:version` 查看当前版本号，显示 `ThinkPHP` 版本及 `ThinkLibrary` 版本
+* 执行 `php think xadmin:database` 对数据库的所有表`repair|optimize`操作，优化并整理数据库碎片
 
 #### 1. 线上代码更新
 
