@@ -61,8 +61,12 @@ class UserAdminService extends Service
      */
     public static function set($map, array $data, string $type, bool $force = false): array
     {
-        unset($data['id'], $data['deleted'], $data['create_at']);
         $user = DataUser::mk()->where($map)->where(['deleted' => 0])->findOrEmpty();
+        unset($data['id'], $data['deleted'], $data['create_at']);
+        // 不更新无效的用户字段
+        if (!empty($user['nickname']) && $data['nickname'] === '微信用户') {
+            unset($data['nickname'], $data['headimg']);
+        }
         if (!$user->save($data)) throw new Exception("更新用户资料失败！");
         // 刷新用户认证令牌
         if ($force) UserTokenService::token($user['id'], $type);
