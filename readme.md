@@ -1,49 +1,49 @@
 大道至简 · 原生框架
 ---
-> 主仓库地址：https://gitee.com/zoujingli/ThinkAdmin
+> 代码主仓库：https://gitee.com/zoujingli/ThinkAdmin
 
-非常感谢大家一直以来对[`ThinkAdmin`](https://thinkadmin.top)的支持，[`ThinkAdmin`](https://thinkadmin.top)从`v1`到`v6`经历了几次大的调整，但总体都是基于`ThinkPHP`最新版本为核心在开发，以微信领域及最简后台为目标而设计。
+非常感谢大家一直以来对[`ThinkAdmin`](https://thinkadmin.top)的支持，[`ThinkAdmin`](https://thinkadmin.top)从`v1`到`v6`经历了几次大的调整，但总体都是基于`ThinkPHP`最新版本为核心在开发，以最简后台为目标而设计。
 
-由于现有功能并不能满足所有项目的需求，[`ThinkAdmin`](https://thinkadmin.top)只做基础底层的开发，这里包括系统权限管理，系统存储配置，微信授权管理，以及常用功能集成等…… 因此[`ThinkAdmin`](https://thinkadmin.top)也被大家定性为外包二开基线项目，目前已经有许多公司及个人在使用。
+任何一个系统都不能完全满足所有的业务场景，[`ThinkAdmin`](https://thinkadmin.top)只做最基础底层的功能，这里包括系统权限管理，系统存储配置，微信授权管理，以及其他常用功能集成等…… 因此[`ThinkAdmin`](https://thinkadmin.top)也被大家定性为外包二开基线系统，目前已经有许多公司及个人在使用（通过数据聚集搜索已有3万多在线运行的项目）。
 
-ThinkAdmin v6 基于`v1-v5`版本的积累，结合`ThinkPHP6`的思维重新构建，减少大量原非必需的组件，自建存储层、服务层及任务机制，增加了许多友好指令！`ThinkAdmin v6`经历了数个项目实践与测试，不停调整，目前系统模块及微信模块已经趋于稳定，现将【系统管理(admin)】及【微信管理(wechat)】定为`v6`内核两大模块并使用`MIT`协议发布，其中【微商商城(data)】仅为参考案例不做技术支持可直接删除，后续可能还有其他模块及相关辅助模块更新发布，敬请期待……
+ThinkAdmin v6 基于`v1-v5`大版本的积累，结合`ThinkPHP6`的思维重新构建，减少大量原非必需的组件，自建存储层、服务层及队列任务机制，另外还增加了许多友好指令！`ThinkAdmin v6`经历了数个系统实践与测试，不停的调整与优化，目前系统模块及微信模块已经趋于稳定，现将`系统管理[admin]`及`微信管理[wechat]`定为`v6`内核两大模块并以`MIT`协议发布，其中`微商商城[data]`仅为参考案例不提供技术支持可直接删除，后续可能还有其他模块及相关辅助模块更新发布，敬请期待……
 
 我们致力于二次开发底层框架，提供完整的组件及`API`，基于此框架可以快速开发应用。`ThinkAdmin v6`依赖自制组件`ThinkLibrary v6`，封装了大量常用操作，简化编码成本；默认集成`WechatDeveloper`组件，支持微信公众号、微信小程序、微信企业号、微信商户支付、支付宝支付接口等。`ThinkLibrary`组件实现`ThinkPHP v6`多应用模式及路由支持，另外还支持本地服务文件存储、七牛云对象存储（支持CDN加速）、又拍云USS存储（支持CDN加速）、阿里云OSS存储（支持CDN加速）、腾讯云COS存储（支持CDN加速）。
 
-另外项目安装及二次开发可以先阅读`ThinkPHP`官方文档，若实在无法解决当下问题可以加入官方微信群获得帮助。
+另外系统安装及二次开发可以先阅读`ThinkPHP`官方文档和`ThinkAdmin`官方文档，若实在无法解决当下问题可以加入官方微信群获得帮助。
 
 ### 注意事项
 
-> * [`ThinkAdmin`](https://thinkadmin.top)基于`ThinkPHP6`开发，`PHP`不得低于`PHP 7.2.5`，请阅读`ThinkPHP`文档；
-> * 运行环境必需开启`PATHINFO`支持，不再支持`ThinkPHP`的`URL`兼容模式运行（源于如何优雅地展示）；
-> * [`ThinkAdmin`](https://thinkadmin.top)默认不带`composer`组件包(`vendor`)，下载后需要执行`composer install`安装依赖组件；
+> * [`ThinkAdmin`](https://thinkadmin.top)是基于`ThinkPHP6`开发，`PHP`不得低于`PHP 7.2.5`，具体请阅读`ThinkPHP`相关文档；
+> * 运行环境必需开启`PATHINFO`支持并配置对应`rewrite`规则才能访问，不再支持`ThinkPHP`的`URL`兼容模式运行（源于如何优雅地展示）；
+> * [`ThinkAdmin`](https://thinkadmin.top)代码不包含`composer`组件包的`vendor`目录，下载后需要执行`composer install`安装依赖组件；
 > * 若操作提示 “演示系统禁止操作” 等字样，需要删除演示路由的配置文件(`app/admin/route/demo.php`)；
 
 ### 数据管理
 
 > * 系统使用`Phinx`管理数据库，在未配置数据库时默认使用`Sqlite`数据库作为测试与体验；
 > * 使用`Sqlite`数据库时仅限用于体验测试，不得用于生产环境，生产环境建议使用免费开源的`MySQL`数据库；
-> * 在使用`MySql`,`SqlServer`,`Postgres`等服务型数据库时，需要先创建空的数据库并将参数配置到`config/database.php`，然后再执行`composer install`进行初始化安装；
-> * 开发系统时，如果要对数据库添加数据表或修改数据表，建议创建`Phinx`脚本后执行`composer update`进行数据库升级。
+> * 在使用`MySql`,`SqlServer`,`Postgres`等服务型数据库时，需要先创建空的数据库并将参数配置到`config/database.php`，然后执行`composer install`或`composer update`或`php think migrate:run`进行初始化安装；
+> * 开发系统时，如果要对数据库添加数据表或修改数据表，建议创建`Phinx`脚本后执行`composer update`进行数据库更新升级。
 
 ### 体验环境
 
-> * 系统默认使用`Sqlite`数据库，无需配置数据库参数；
-> * 执行`composer install`安装项目所需依赖组件以及自动安装并初始化数据库；
-> * 执行`php think run`启动项目内置的`WEB`服务并用浏览器访问`http://127.0.0.1:8000`；
+> * 系统默认使用`Sqlite`数据库，不需要配置数据库参数；
+> * 执行`composer install`安装系统所需依赖组件以及自动安装并初始化数据库；
+> * 执行`php think run`启动系统内置的`WEB`服务并用浏览器访问`http://127.0.0.1:8000`；
 > * 进入后台登录界面后，请使用系统默认的账号(`admin`)和密码(`admin`)登录管理后台；
 
 ### 开发环境
 
-> * 安装数据库软件并创建空的数据库，将参数配置到`config/database.php`；
-> * 执行`composer install`安装项目所需依赖组件以及自动安装并初始化数据库；
-> * 安装`Nginx`或`Apache`等`Web`服务，并按照`ThinkPHP6`项目要求配置网站参数；
+> * 安装数据库并创建空的数据库，将参数配置到`config/database.php`；
+> * 执行`composer install`安装系统所需依赖组件以及自动安装并初始化数据库；
+> * 安装`Nginx`或`Apache`等`Web`服务，并按照`ThinkPHP6`系统要求配置网站参数；
 
 ## 技术支持
 
-开发前请认真阅读 ThinkPHP 官方文档，相信会对您有所帮助哦！
+开发前请认真阅读 ThinkPHP 官方文档和 ThinkAdmin 开发文档，相信会对您有所帮助哦！
 
-ThinkAdmin 的开发文档 ，如果实在无法解决问题可以加入官方群免费交流。
+如果实在无法解决您所遇到的问题，可以加入官方群免费交流（需要提交认证信息）。
 
 **1.官方QQ交流群：** 513350915
 
@@ -79,7 +79,7 @@ public function index(){
 
 ## 代码仓库
 
-[`ThinkAdmin`](https://thinkadmin.top) 为 MIT 协议开源项目，安装使用或二次开发不受约束，欢迎 fork 项目。
+[`ThinkAdmin`](https://thinkadmin.top) 为 MIT 协议开源系统，安装使用或二次开发不受约束，欢迎 fork 系统。
 
 部分代码来自互联网，若有异议可以联系作者进行删除。
 
@@ -133,7 +133,7 @@ public function index(){
 * 增加`Phinx`数据库迁移脚本支持，可根据自己的需求安装对应模块，其中`admin`为改选模块！
 * 从分离`SystemService`分离出`RuntimeService`服务，精减服务启动入口，优化性能！
 
-## 项目版本
+## 系统版本
 
 体验账号及密码都是 admin
 
