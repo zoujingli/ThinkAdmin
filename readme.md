@@ -14,11 +14,11 @@ ThinkAdmin v6 基于`v1-v5`大版本的积累，结合`ThinkPHP6`的思维重新
 
 ### 注意事项
 
-> * [`ThinkAdmin`](https://thinkadmin.top)是基于`ThinkPHP6`开发，`PHP`不得低于`PHP 7.2.5`，具体请阅读`ThinkPHP`相关文档；
-> * 运行环境必需开启`PATHINFO`支持并配置对应`rewrite`规则才能访问，不再支持`ThinkPHP`的`URL`兼容模式运行 ( 源于如何优雅地展示 )；
-> * 代码仓库下载的文件不包含`composer`组件包的`vendor`目录，下载后需要执行`composer install`或`composer update`安装依赖组件，同时会触发执行数据库`Phinx`安装脚本；
-> * 为保持系统可在线升级的功能，开发时建议不要在`admin`,`wechat`,`public/static`这三个目录创建或修改文件，可以自行创建其他模块再编写自己的业务代码，自定义样式及脚本可以放放置在目录`public/static/extra`里面。
-> * 若后台操作提示 “演示系统禁止操作” 等字样，需要删除演示路由的配置文件(`app/admin/route/demo.php`)；
+* [`ThinkAdmin`](https://thinkadmin.top)是基于`ThinkPHP6`开发，`PHP`不得低于`PHP 7.2.5`，具体请阅读`ThinkPHP`相关文档；
+* 运行环境必需开启`PATHINFO`支持并配置对应`rewrite`规则才能访问，不再支持`ThinkPHP`的`URL`兼容模式运行 ( 源于如何优雅地展示 )；
+* 代码仓库下载的文件不包含`composer`组件包的`vendor`目录，下载后需要执行`composer install`或`composer update`安装依赖组件，同时会触发执行数据库`Phinx`安装脚本；
+* 为保持系统可在线升级的功能，开发时建议不要在`admin`,`wechat`,`public/static`这三个目录创建或修改文件，可以自行创建其他模块再编写自己的业务代码，自定义样式及脚本可以放放置在目录`public/static/extra`里面。
+* 若后台操作提示 “演示系统禁止操作” 等字样，需要删除演示路由的配置文件(`app/admin/route/demo.php`)；
 
 ### 数据管理
 
