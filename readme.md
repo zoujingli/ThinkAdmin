@@ -14,7 +14,7 @@ ThinkAdmin v6 基于`v1-v5`大版本的积累，结合`ThinkPHP6`的思维重新
 
 ### 注意事项
 
-* [`ThinkAdmin`](https://thinkadmin.top)是基于国内最流行的`ThinkPHP6`框架开发，目前对`PHP`版本要求不得低于`PHP 7.2.5`，如果低版本的`PHP`可能会影响`composer`依赖组件的安装，存在一定的安全隐患，具体请阅读`ThinkPHP`更新日志及相关文档；
+* [`ThinkAdmin`](https://thinkadmin.top)是基于国内最流行的`ThinkPHP6`框架开发，目前对`PHP`版本要求不得低于`PHP 7.2.5`，如果使用低版本的`PHP`可能会影响`composer`依赖组件的安装，存在一定的安全隐患，具体请阅读`ThinkPHP`更新日志及相关文档；
 * 系统的运行环境必需开启`PATHINFO`支持并配置对应的`rewrite`规则才能访问，不再支持`ThinkPHP`的`URL`兼容模式运行 ( 源于如何优雅地展示 )，可以阅读文档部署章节；
 * 代码仓库下载的文件不包含`composer`组件包的`vendor`目录，下载后需要执行`composer install`或`composer update`安装依赖组件，同时会触发执行数据库`Phinx`安装脚本；
 * 为保持系统可持续在线升级功能，开发时建议不要在`admin`,`wechat`,`public/static`这三个目录创建或修改文件，可以自行创建其他模块再编写自己的业务代码，自定义样式及脚本可以放放置在目录`public/static/extra`里面。系统是基于严格类型`PHP`新特性开发，务必使用专业的`IDE` ( 如：`PhpStorm`,`NetBeans`,`VsCode`,`Eclipse for PHP`等 ) 进行项目开发以达到更好的体验与更高的效率！
