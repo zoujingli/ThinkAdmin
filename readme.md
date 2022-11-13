@@ -40,10 +40,8 @@ ThinkAdmin v6 基于`v1-v5`大版本的积累，结合`ThinkPHP6`的思维重新
 
 > **B. 开发或线上环境**
 >
-> 下载`ThinkAdmin`系统源码，安装数据库并创建空的数据库，将数据库参数配置到`config/database.php`；
-> 执行`composer install`或`composer update`安装系统依赖组件，会自动安装数据库并初始化所需参数；
-> 安装`Nginx`或`Apache`等`Web`服务 ( 推荐使用[宝塔](https://www.bt.cn/?invite_code=MV90a3Z6dmI=)集成环境 )，并按照`ThinkPHP6`系统要求配置网站参数；
-> 当然开发环境也可以使用`php think run`启动`PHP`内置的`Web`服务。
+> * 下载`ThinkAdmin`系统源码，安装数据库并创建空的数据库，将数据库参数配置到`config/database.php`；执行`composer install`或`composer update`安装系统依赖组件，会自动安装数据库并初始化所需参数；
+> * 安装`Nginx`或`Apache`等`Web`服务 ( 推荐使用[宝塔](https://www.bt.cn/?invite_code=MV90a3Z6dmI=)集成环境 )，并按照`ThinkPHP6`系统要求配置网站参数；当然开发环境也可以使用`php think run`启动`PHP`内置的`Web`服务。
 
 ## 技术支持
 
