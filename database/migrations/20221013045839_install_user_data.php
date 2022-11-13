@@ -1,6 +1,6 @@
 <?php
 
-use think\admin\extend\ToolsExtend;
+use think\admin\extend\PhinxExtend;
 use think\migration\Migrator;
 
 /**
@@ -22,7 +22,7 @@ class InstallUserData extends Migrator
      */
     protected function insertMenu()
     {
-        ToolsExtend::write2menu([
+        PhinxExtend::write2menu([
             [
                 'name' => '控制台',
                 'sort' => '300',

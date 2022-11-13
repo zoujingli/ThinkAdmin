@@ -2,6 +2,7 @@
 .git
 .svn
 .idea
+.fleet
 .vscode
 .DS_Store
 *.log
@@ -18,8 +19,8 @@
 /public/.user.ini
 /public/index.html
 /public/favicon.ico
+/public/static/theme/css/_*.css
+/public/static/theme/css/_*.css.map
 /public/static/theme/css/node_modules
 /public/static/theme/css/package-lock.json
-/public/static/theme/css/console.*.css
-/public/static/theme/css/console.*.css.map
 /database/sqlite.*

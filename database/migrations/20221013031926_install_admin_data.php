@@ -1,6 +1,6 @@
 <?php
 
-use think\admin\extend\ToolsExtend;
+use think\admin\extend\PhinxExtend;
 use think\admin\model\SystemConfig;
 use think\admin\model\SystemUser;
 use think\migration\Migrator;
@@ -52,7 +52,7 @@ class InstallAdminData extends Migrator
     private function insertMenu()
     {
         // 初始化菜单数据
-        ToolsExtend::write2menu([
+        PhinxExtend::write2menu([
             [
                 'name' => '系统管理',
                 'sort' => '100',

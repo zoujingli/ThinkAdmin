@@ -1,6 +1,6 @@
 <?php
 
-use think\admin\extend\ToolsExtend;
+use think\admin\extend\PhinxExtend;
 use think\migration\Migrator;
 
 /**
@@ -23,7 +23,7 @@ class InstallWechatData extends Migrator
     private function insertMenu()
     {
         // 写入微信菜单
-        ToolsExtend::write2menu([
+        PhinxExtend::write2menu([
             [
                 'name' => '微信管理',
                 'sort' => '200',
