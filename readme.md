@@ -15,29 +15,35 @@ ThinkAdmin v6 基于`v1-v5`大版本的积累，结合`ThinkPHP6`的思维重新
 ### 注意事项
 
 > * [`ThinkAdmin`](https://thinkadmin.top)是基于`ThinkPHP6`开发，`PHP`不得低于`PHP 7.2.5`，具体请阅读`ThinkPHP`相关文档；
-> * 运行环境必需开启`PATHINFO`支持并配置对应`rewrite`规则才能访问，不再支持`ThinkPHP`的`URL`兼容模式运行（源于如何优雅地展示）；
-> * [`ThinkAdmin`](https://thinkadmin.top)代码不包含`composer`组件包的`vendor`目录，下载后需要执行`composer install`安装依赖组件；
-> * 若操作提示 “演示系统禁止操作” 等字样，需要删除演示路由的配置文件(`app/admin/route/demo.php`)；
+> * 运行环境必需开启`PATHINFO`支持并配置对应`rewrite`规则才能访问，不再支持`ThinkPHP`的`URL`兼容模式运行 ( 源于如何优雅地展示 )；
+> * 代码仓库下载的文件不包含`composer`组件包的`vendor`目录，下载后需要执行`composer install`或`composer update`安装依赖组件，同时会触发执行数据库`Phinx`安装脚本；
+> * 为保持系统可在线升级的功能，开发时建议不要在`admin`,`wechat`,`public/static`这三个目录创建或修改文件，可以自行创建其他模块再编写自己的业务代码，自定义样式及脚本可以放放置在目录`public/static/extra`里面。
+> * 若后台操作提示 “演示系统禁止操作” 等字样，需要删除演示路由的配置文件(`app/admin/route/demo.php`)；
 
 ### 数据管理
 
-> * 系统使用`Phinx`管理数据库，在未配置数据库时默认使用`Sqlite`数据库作为测试与体验；
-> * 使用`Sqlite`数据库时仅限用于体验测试，不得用于生产环境，生产环境建议使用免费开源的`MySQL`数据库；
-> * 在使用`MySql`,`SqlServer`,`Postgres`等服务型数据库时，需要先创建空的数据库并将参数配置到`config/database.php`，然后执行`composer install`或`composer update`或`php think migrate:run`进行初始化安装；
-> * 开发系统时，如果要对数据库添加数据表或修改数据表，建议创建`Phinx`脚本后执行`composer update`进行数据库更新升级。
+> **A. 注意事项**
+>
+> 系统是基于`Phinx`工具管理数据库，在未配置数据库时默认使用`Sqlite`数据库`database/sqlite.db`，可以作为系统测试与体验；使用`Sqlite`数据库时仅限用于体验与测试，不得用于生产环境，生产环境建议使用免费开源的`MySQL`数据库；
 
-### 体验环境
+> **B. 数据库初始化安装**
+>
+> 使用`MySql`,`SqlServer`,`Postgres`等服务型数据库时，需要先创建空的数据库并将参数配置到`config/database.php`，然后执行`composer install`,`composer update`或`php think migrate:run`安装并初始化数据库；
+> 开发部署系统时，如果要对数据库添加数据表或修改数据表，建议创建`Phinx`脚本后执行`composer update`进行数据库更新升级。另外系统也提供`php think xadmin:package`指令可以把现有`MySQl`数据库打包为`Phinx`安装脚本，迁移系统时只需要执行前面的安装步骤即可。
 
-> * 系统默认使用`Sqlite`数据库，不需要配置数据库参数；
-> * 执行`composer install`安装系统所需依赖组件以及自动安装并初始化数据库；
-> * 执行`php think run`启动系统内置的`WEB`服务并用浏览器访问`http://127.0.0.1:8000`；
-> * 进入后台登录界面后，请使用系统默认的账号[admin]和密码[admin]登录管理后台；
+### 系统安装
 
-### 开发环境
+> **A. 测试或体验环境**
+> * 系统默认使用`Sqlite`数据库，不需要配置数据库参数，注意使用`Sqlite`数据库时是没有密码的。
+> * 下载`ThinkAdmin`系统源码，执行`composer install`或`composer update`安装系统依赖组件，会自动安装数据库并初始化所需参数；
+> * 执行`php think run`启动系统内置的`WEB`服务，用浏览器访问`http://127.0.0.1:8000`进入后台登录界面后，请使用系统默认的账号[admin]和密码[admin]登录管理后台；也可以使用其他`Web`服务软件方案实现。
 
-> * 安装数据库并创建空的数据库，将参数配置到`config/database.php`；
-> * 执行`composer install`安装系统所需依赖组件以及自动安装并初始化数据库；
-> * 安装`Nginx`或`Apache`等`Web`服务，并按照`ThinkPHP6`系统要求配置网站参数；
+> **B. 开发或线上环境**
+>
+> 下载`ThinkAdmin`系统源码，安装数据库并创建空的数据库，将数据库参数配置到`config/database.php`；
+> 执行`composer install`或`composer update`安装系统依赖组件，会自动安装数据库并初始化所需参数；
+> 安装`Nginx`或`Apache`等`Web`服务 ( 推荐使用[宝塔](https://www.bt.cn/?invite_code=MV90a3Z6dmI=)集成环境 )，并按照`ThinkPHP6`系统要求配置网站参数；
+> 当然开发环境也可以使用`php think run`启动`PHP`内置的`Web`服务。
 
 ## 技术支持
 
