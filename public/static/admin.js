@@ -185,7 +185,7 @@ $(function () {
         };
         /*! 显示加载提示 */
         this.loading = function (msg, call) {
-            var idx = msg ? layer.msg(msg, {icon: 16, scrollbar: false, shade: this.shade, time: 0, end: call}) : layer.load(2, {time: 0, scrollbar: false, shade: this.shade, end: call});
+            var idx = msg ? layer.msg(msg, {icon: 16, scrollbar: false, shade: this.shade, time: 0, end: call}) : layer.load(0, {time: 0, scrollbar: false, shade: this.shade, end: call});
             return $.msg.idx.push(idx), idx;
         };
         /*! Notify 调用入口 */
