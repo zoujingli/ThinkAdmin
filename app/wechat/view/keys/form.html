@@ -168,7 +168,7 @@
                 {if isset($vo['id'])}<input type='hidden' value='{$vo.id}' name='id'>{/if}
                 {if isset($vo['code'])}<input type='hidden' value='{$vo.code}' name='code'>{/if}
                 <button class="layui-btn menu-submit">保存数据</button>
-                <button data-history-back class="layui-btn layui-btn-danger" type='button'>取消编辑</button>
+                <button data-close data-confirm="确定要取消编辑吗？" class="layui-btn layui-btn-danger" type='button'>取消编辑</button>
             </div>
         </form>
     </div>
