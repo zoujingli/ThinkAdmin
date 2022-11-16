@@ -21,6 +21,7 @@ return [
     'allow_lang_list' => ['zh-cn'],
     // 转义为对应语言包名称
     'accept_language' => [
+        'en'         => 'en-us',
         'zh-hans-cn' => 'zh-cn',
     ],
     // 多语言自动侦测变量名
