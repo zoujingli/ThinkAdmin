@@ -1087,6 +1087,11 @@ $(function () {
         $.previewPhonePage(this.dataset.phoneView || this.href);
     });
 
+    /*! 注册 data-event-submit 事件行为 */
+    onEvent('click', '[data-event-submit]', function () {
+        $(this.dataset.eventSubmit || this).submit();
+    });
+
     /*! 表单编辑返回操作 */
     onEvent('click', '[data-history-back]', function () {
         $.msg.confirm(this.dataset.historyBack || '确定要返回吗？', function () {
