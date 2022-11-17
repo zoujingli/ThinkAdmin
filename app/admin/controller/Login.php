@@ -99,6 +99,8 @@ class Login extends Controller
                 'login_at' => date('Y-m-d H:i:s'),
                 'login_ip' => $this->app->request->ip(),
             ]);
+            // 刷新用户权限
+            AdminService::apply(true);
             sysoplog('系统用户登录', '登录系统后台成功');
             $this->success('登录成功', sysuri('admin/index/index'));
         }
