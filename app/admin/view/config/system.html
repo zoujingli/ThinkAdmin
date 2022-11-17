@@ -40,7 +40,7 @@
         <div class="layui-form-item margin-bottom-5">
             <div class="help-label label-required-prev"><b>JWT 接口密钥</b>Jwt Key</div>
             <label class="relative block label-required-null">
-                <input class="layui-input" pattern=".{32}" required placeholder="请输入JWT接口密钥" value="{:sysconf('data.jwtkey')?:md5(uniqid(strval(rand(1000, 9999)), true))}" name="data.jwtkey">
+                <input class="layui-input" pattern=".{32}" maxlength="32" required placeholder="请输入32位JWT接口密钥" name="data.jwtkey" value="{:sysconf('data.jwtkey')?:md5(uniqid(strval(rand(1000,9999)),true))}">
                 <a class="input-right-icon layui-icon layui-icon-refresh" id="RefreshJwtKey"></a>
             </label>
             <div class="help-block sub-span-blue">
