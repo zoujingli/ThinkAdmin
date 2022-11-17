@@ -38,6 +38,24 @@
         </div>
 
         <div class="layui-form-item margin-bottom-5">
+            <div class="help-label label-required-prev"><b>JWT 接口密钥</b>Jwt Key</div>
+            <label class="relative block label-required-null">
+                <input class="layui-input" pattern=".{32}" required placeholder="请输入JWT接口密钥" value="{:sysconf('data.jwtkey')?:md5(uniqid(strval(rand(1000, 9999)), true))}" name="data.jwtkey">
+                <a class="input-right-icon layui-icon layui-icon-refresh" id="RefreshJwtKey"></a>
+                <script>
+                    require(['md5'], function (md5) {
+                        $('body').off('click', '#RefreshJwtKey').on('click', '#RefreshJwtKey', function () {
+                            $(this).parent().find('input').val(md5.hash(Date.toString() + Math.random()));
+                        });
+                    })
+                </script>
+            </label>
+            <div class="help-block sub-span-blue">
+                请输入 <span>32</span> 位 <span>JWT</span> 接口密钥，在使用 <span>JWT</span> 接口时需要使用其密钥进行加密及签名！
+            </div>
+        </div>
+
+        <div class="layui-form-item margin-bottom-5">
             <div class="help-label label-required-prev"><b>浏览器小图标</b>Browser Icon</div>
             <label class="relative block label-required-null">
                 <input class="layui-input" required pattern="^(http|/)" placeholder="请上传浏览器图标" value="{:sysconf('site_icon')}" name="site_icon">
