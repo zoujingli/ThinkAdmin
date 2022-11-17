@@ -38,7 +38,7 @@ return [
     // CORS 授权请求方法
     'cors_methods'            => 'GET,PUT,POST,PATCH,DELETE',
     // CORS 跨域头部字段
-    'cors_headers'            => 'Api-Type,Api-Name,Api-Uuid,Api-Token,User-Form-Token,User-Token,Token',
+    'cors_headers'            => 'Api-Type,Api-Name,Api-Uuid,Jwt-Token,Api-Token,User-Form-Token,User-Token,Token',
     // 显示错误消息内容，仅生产模式有效
     'error_message'           => '页面错误！请稍后再试～',
     // 异常模板路径配置，仅开发模式有效
