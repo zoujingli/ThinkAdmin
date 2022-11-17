@@ -42,13 +42,6 @@
             <label class="relative block label-required-null">
                 <input class="layui-input" pattern=".{32}" required placeholder="请输入JWT接口密钥" value="{:sysconf('data.jwtkey')?:md5(uniqid(strval(rand(1000, 9999)), true))}" name="data.jwtkey">
                 <a class="input-right-icon layui-icon layui-icon-refresh" id="RefreshJwtKey"></a>
-                <script>
-                    require(['md5'], function (md5) {
-                        $('body').off('click', '#RefreshJwtKey').on('click', '#RefreshJwtKey', function () {
-                            $(this).parent().find('input').val(md5.hash(Date.toString() + Math.random()));
-                        });
-                    })
-                </script>
             </label>
             <div class="help-block sub-span-blue">
                 请输入 <span>32</span> 位 <span>JWT</span> 接口密钥，在使用 <span>JWT</span> 接口时需要使用其密钥进行加密及签名！
@@ -121,6 +114,11 @@
 
 <script>
     $('[name=login_image]').uploadMultipleImage();
+    require(['md5'], function (md5) {
+        $('body').off('click', '#RefreshJwtKey').on('click', '#RefreshJwtKey', function () {
+            $(this).parent().find('input').val(md5.hash(Date.toString() + Math.random()));
+        });
+    });
     layui.form.on('select(SiteTheme)', function (data) {
         var alls = '', prox = 'layui-layout-theme-', curt = prox + data.value;
         $(data.elem.options).map(function () {
