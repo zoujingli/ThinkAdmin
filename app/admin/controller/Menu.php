@@ -99,14 +99,13 @@ class Menu extends Controller
     protected function _form_filter(array &$vo)
     {
         if ($this->request->isGet()) {
+            $debug = $this->app->isDebug();
             /* 清理权限节点 */
-            if ($isDebug = $this->app->isDebug()) {
-                AdminService::clearCache();
-            }
+            $debug && AdminService::clear();
             /* 读取系统功能节点 */
             $this->auths = [];
-            $this->nodes = MenuService::getList($isDebug);
-            foreach (NodeService::getMethods($isDebug) as $node => $item) {
+            $this->nodes = MenuService::getList($debug);
+            foreach (NodeService::getMethods($debug) as $node => $item) {
                 if ($item['isauth'] && substr_count($node, '/') >= 2) {
                     $this->auths[] = ['node' => $node, 'title' => $item['title']];
                 }

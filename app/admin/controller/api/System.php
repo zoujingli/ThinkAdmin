@@ -37,8 +37,7 @@ class System extends Controller
     public function push()
     {
         if (AdminService::isSuper()) try {
-            AdminService::clearCache() && RuntimeService::push();
-            sysoplog('系统运维管理', '刷新创建路由缓存');
+            RuntimeService::push() && sysoplog('系统运维管理', '刷新发布运行缓存');
             $this->success('网站缓存加速成功！', 'javascript:location.reload()');
         } catch (HttpResponseException $exception) {
             throw $exception;
@@ -57,8 +56,7 @@ class System extends Controller
     public function clear()
     {
         if (AdminService::isSuper()) try {
-            AdminService::clearCache() && RuntimeService::clear();
-            sysoplog('系统运维管理', '清理网站日志缓存');
+            RuntimeService::clear() && sysoplog('系统运维管理', '清理网站日志缓存');
             $this->success('清空日志缓存成功！', 'javascript:location.reload()');
         } catch (HttpResponseException $exception) {
             throw $exception;
