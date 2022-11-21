@@ -21,6 +21,7 @@ use think\admin\extend\CodeExtend;
 use think\admin\model\SystemUser;
 use think\admin\service\AdminService;
 use think\admin\service\CaptchaService;
+use think\admin\service\RuntimeService;
 use think\admin\service\SystemService;
 
 /**
@@ -44,7 +45,7 @@ class Login extends Controller
                 $this->redirect(sysuri('admin/index/index'));
             } else {
                 // 当前运行模式
-                $this->developMode = SystemService::checkRunMode();
+                $this->developMode = RuntimeService::check();
                 // 后台背景处理
                 $images = str2arr(sysconf('login_image') ?: '', '|');
                 if (empty($images)) $images = [

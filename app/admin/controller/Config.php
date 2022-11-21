@@ -19,6 +19,7 @@ namespace app\admin\controller;
 use think\admin\Controller;
 use think\admin\service\AdminService;
 use think\admin\service\ModuleService;
+use think\admin\service\RuntimeService;
 use think\admin\service\SystemService;
 use think\admin\storage\AliossStorage;
 use think\admin\storage\QiniuStorage;
@@ -81,7 +82,7 @@ class Config extends Controller
                 if ($post['xpath'] !== 'admin' && file_exists($this->app->getBasePath() . $post['xpath'])) {
                     $this->error("后台入口名称{$post['xpath']}已经存在应用！");
                 }
-                SystemService::setRuntime(null, [$post['xpath'] => 'admin']);
+                RuntimeService::set(null, [$post['xpath'] => 'admin']);
             }
             // 修改网站 ICON 图标，替换 public/favicon.ico
             if (preg_match('#^https?://#', $post['site_icon'] ?? '')) try {

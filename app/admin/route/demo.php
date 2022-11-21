@@ -15,17 +15,17 @@
 // +----------------------------------------------------------------------
 
 use think\admin\Library;
-use think\admin\service\SystemService;
+use think\admin\service\RuntimeService;
 
 /*! 非开发环境，清理限制文件 */
-if (Library::$sapp->request->isGet() && !SystemService::checkRunMode()) {
+if (Library::$sapp->request->isGet() && !RuntimeService::check()) {
     @unlink(Library::$sapp->getBasePath() . 'admin/controller/api/Update.php');
     @unlink(Library::$sapp->getBasePath() . 'admin/route/demo.php');
     @rmdir(Library::$sapp->getBasePath() . 'admin/route');
 }
 
 /*! 演示环境禁止操作路由绑定 */
-if (SystemService::checkRunMode('demo')) {
+if (RuntimeService::check('demo')) {
     Library::$sapp->route->post('index/pass', function () {
         return json(['code' => 0, 'info' => '演示环境禁止修改用户密码！']);
     });

@@ -18,7 +18,7 @@ namespace app\admin\controller\api;
 
 use think\admin\Controller;
 use think\admin\service\ModuleService;
-use think\admin\service\SystemService;
+use think\admin\service\RuntimeService;
 
 /**
  * 安装服务端支持
@@ -33,7 +33,7 @@ class Update extends Controller
      */
     protected function initialize()
     {
-        if (!SystemService::checkRunMode()) {
+        if (!RuntimeService::check()) {
             $this->error('只允许访问本地或官方代码！');
         }
     }
