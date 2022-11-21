@@ -129,7 +129,6 @@ class Login extends Controller
      */
     public function out()
     {
-        $this->app->session->clear();
         $this->app->session->destroy();
         $this->success('退出登录成功!', sysuri('admin/login/index'));
     }
