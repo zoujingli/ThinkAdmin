@@ -12,6 +12,9 @@ class InstallUser extends Migrator
      */
     public function change()
     {
+        set_time_limit(0);
+        @ini_set('memory_limit', -1);
+
         $this->_create_base_postage_company();
         $this->_create_base_postage_region();
         $this->_create_base_postage_template();
