@@ -142,60 +142,6 @@ class Upload extends Controller
     }
 
     /**
-     * 文件选择器
-     * @login true
-     * @return void
-     * @throws \think\db\exception\DataNotFoundException
-     * @throws \think\db\exception\DbException
-     * @throws \think\db\exception\ModelNotFoundException
-     */
-    public function image()
-    {
-        SystemFile::mQuery()->layTable(function () {
-            $this->title = '文件选择器';
-        }, function (QueryHelper $query) {
-            $query->where(['status' => 2, 'issafe' => 0, 'uuid' => AdminService::getUserId()]);
-            $query->like('name,hash')->in('xext#type')->dateBetween('create_at')->order('id desc');
-        });
-    }
-
-    /**
-     * 视频选择器
-     * @login true
-     * @return void
-     * @throws \think\db\exception\DataNotFoundException
-     * @throws \think\db\exception\DbException
-     * @throws \think\db\exception\ModelNotFoundException
-     */
-    public function video()
-    {
-        SystemFile::mQuery()->layTable(function () {
-            $this->title = '文件选择器';
-        }, function (QueryHelper $query) {
-            $query->like('name,hash')->dateBetween('create_at')->order('id desc');
-            $query->where(['status' => 2, 'issafe' => 0, 'uuid' => AdminService::getUserId()]);
-        });
-    }
-
-    /**
-     * 文档选择器
-     * @login true
-     * @return void
-     * @throws \think\db\exception\DataNotFoundException
-     * @throws \think\db\exception\DbException
-     * @throws \think\db\exception\ModelNotFoundException
-     */
-    public function document()
-    {
-        SystemFile::mQuery()->layTable(function () {
-            $this->title = '文件选择器';
-        }, function (QueryHelper $query) {
-            $query->like('name,hash')->dateBetween('create_at')->order('id desc');
-            $query->where(['status' => 2, 'issafe' => 0, 'uuid' => AdminService::getUserId()]);
-        });
-    }
-
-    /**
      * 文件上传入口
      * @login true
      * @throws \think\db\exception\DataNotFoundException
@@ -254,6 +200,24 @@ class Upload extends Controller
         } catch (\Exception $exception) {
             $this->error($exception->getMessage());
         }
+    }
+    
+    /**
+     * 文件选择器
+     * @login true
+     * @return void
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\DbException
+     * @throws \think\db\exception\ModelNotFoundException
+     */
+    public function image()
+    {
+        SystemFile::mQuery()->layTable(function () {
+            $this->title = '文件选择器';
+        }, function (QueryHelper $query) {
+            $query->where(['status' => 2, 'issafe' => 0, 'uuid' => AdminService::getUserId()]);
+            $query->like('name,hash')->in('xext#type')->dateBetween('create_at')->order('id desc');
+        });
     }
 
     /**
