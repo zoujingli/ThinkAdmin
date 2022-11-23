@@ -121,27 +121,6 @@ class Upload extends Controller
     }
 
     /**
-     * 更新文件状态
-     * @login true
-     * @return void
-     */
-    public function done()
-    {
-        $data = $this->_vali([
-            'id.require'   => '编号不能为空！',
-            'hash.require' => '哈希不能为空！',
-            'uuid.value'   => AdminService::getUserId(),
-        ]);
-        $file = SystemFile::mk()->where($data)->findOrEmpty();
-        if ($file->isEmpty()) $this->error('文件不存在！');
-        if ($file->save(['status' => 2])) {
-            $this->success('更新成功！');
-        } else {
-            $this->error('更新失败！');
-        }
-    }
-
-    /**
      * 文件上传入口
      * @login true
      * @throws \think\db\exception\DataNotFoundException
@@ -199,6 +178,27 @@ class Upload extends Controller
             throw $exception;
         } catch (\Exception $exception) {
             $this->error($exception->getMessage());
+        }
+    }
+    
+    /**
+     * 更新文件状态
+     * @login true
+     * @return void
+     */
+    public function done()
+    {
+        $data = $this->_vali([
+            'id.require'   => '编号不能为空！',
+            'hash.require' => '哈希不能为空！',
+            'uuid.value'   => AdminService::getUserId(),
+        ]);
+        $file = SystemFile::mk()->where($data)->findOrEmpty();
+        if ($file->isEmpty()) $this->error('文件不存在！');
+        if ($file->save(['status' => 2])) {
+            $this->success('更新成功！');
+        } else {
+            $this->error('更新失败！');
         }
     }
     
