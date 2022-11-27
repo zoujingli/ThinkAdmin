@@ -43,8 +43,7 @@
   "scripts": {
     "post-autoload-dump": [
       "@php think service:discover",
-      "@php think vendor:publish",
-      "@php think migrate:run"
+      "@php think vendor:publish"
     ]
   }
 }
