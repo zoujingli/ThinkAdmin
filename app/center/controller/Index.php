@@ -21,4 +21,14 @@ class Index extends Controller
     {
         $this->fetch();
     }
+
+    /**
+     * 显示我的插件
+     * @auth true
+     * @return void
+     */
+    public function plugin()
+    {
+        $this->fetch();
+    }
 }
