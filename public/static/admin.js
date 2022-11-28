@@ -602,7 +602,7 @@ $(function () {
             $bt.on('click', 'i.layui-icon-search', function (event) {
                 event.stopPropagation(), $in.val() && $.form.iframe(encodeURI($in.val()), '视频预览');
             }).on('click', 'i.layui-icon-close', function (event) {
-                event.stopPropagation(), $bt.attr('style', '').find('span[data-file]').html('') && $in.val('');
+                event.stopPropagation(), $bt.attr('style', '').find('span[data-file]').html('') && $in.val('').trigger('change');
             }).find('[data-file]').data('input', this).attr({
                 'data-path': $in.data('path') || '', 'data-size': $in.data('size') || 0, 'data-type': $in.data('type') || 'mp4',
             });
@@ -620,7 +620,7 @@ $(function () {
             $bt.on('click', 'i.layui-icon-search', function (event) {
                 event.stopPropagation(), $in.val() && $.previewImage(encodeURI($in.val()));
             }).on('click', 'i.layui-icon-close', function (event) {
-                event.stopPropagation(), $bt.attr('style', '') && $in.val('');
+                event.stopPropagation(), $bt.attr('style', '') && $in.val('').trigger('change');
             }).find('[data-file]').data('input', this).attr({
                 'data-path': $in.data('path') || '', 'data-size': $in.data('size') || 0, 'data-type': $in.data('type') || 'gif,png,jpg,jpeg',
                 'data-max-width': $in.data('max-width') || 0, 'data-max-height': $in.data('max-height') || 0,
@@ -648,7 +648,8 @@ $(function () {
                     $img = $('<div class="uploadimage uploadimagemtl"><div><a class="layui-icon">&#xe603;</a><a class="layui-icon">&#x1006;</a><a class="layui-icon">&#xe602;</a></div></div>');
                     $img.attr('data-tips-image', encodeURI(src)).css('backgroundImage', 'url(' + encodeURI(src) + ')').on('click', 'a', function (event, index, prevs, $item) {
                         event.stopPropagation(), $item = $(this).parent().parent(), index = $(this).index();
-                        if (index === 2 && $item.index() !== $bt.prevAll('div.uploadimage').length) $item.next().after($item); else if (index === 0 && $item.index() > 1) $item.prev().before($item); else if (index === 1) $item.remove();
+                        if (index === 2 && $item.index() !== $bt.prevAll('div.uploadimage').length) $item.next().after($item);
+                        else if (index === 0 && $item.index() > 1) $item.prev().before($item); else if (index === 1) $item.remove();
                         ims = [], $bt.prevAll('.uploadimage').map(function () {
                             ims.push($(this).attr('data-tips-image'));
                         });
