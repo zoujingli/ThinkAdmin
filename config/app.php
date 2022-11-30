@@ -41,8 +41,6 @@ return [
     'cors_headers'            => 'Api-Type,Api-Name,Api-Uuid,Jwt-Token,Api-Token,User-Form-Token,User-Token,Token',
     // 显示错误消息内容，仅生产模式有效
     'error_message'           => '页面错误！请稍后再试～',
-    // 异常模板路径配置，仅开发模式有效
-    'exception_tmpl'          => with_path('app/admin/view/error.php'),
     // 异常状态模板配置，仅生产模式有效
     'http_exception_template' => [
         404 => with_path('public/static/theme/err/404.html'),
