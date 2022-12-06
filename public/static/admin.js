@@ -1088,8 +1088,8 @@ $(function () {
         $.previewPhonePage(this.dataset.phoneView || this.href);
     });
 
-    /*! 注册 data-event-submit 事件行为 */
-    onEvent('click', '[data-event-submit]', function () {
+    /*! 注册 data-target-submit 事件行为 */
+    onEvent('click', '[data-target-submit]', function () {
         $(this.dataset.eventSubmit || this).submit();
     });
 
