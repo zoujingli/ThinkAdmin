@@ -29,20 +29,20 @@
     "topthink/think-view": "^1.0",
     "zoujingli/ip2region": "^2.0",
     "zoujingli/think-library": "6.0.x-dev",
-    "zoujingli/wechat-developer": "^1.2"
+    "zoujingli/wechat-developer": "^1.2",
+    "zoujingli/think-plugs-admin": "dev-master",
+    "zoujingli/think-plugs-static": "dev-master",
+    "zoujingli/think-plugs-wechat": "dev-master",
+    "zoujingli/think-plugs-center": "dev-master"
   },
   "autoload": {
-    "psr-0": {
-      "": "extend"
-    },
     "psr-4": {
       "app\\": "app"
     }
   },
-  "scripts": {
-    "post-autoload-dump": [
-      "@php think service:discover",
-      "@php think vendor:publish"
-    ]
+  "config": {
+    "allow-plugins": {
+      "zoujingli/think-plugs-installer": true
+    }
   }
 }

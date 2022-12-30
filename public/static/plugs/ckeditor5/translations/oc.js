@@ -1,1 +1,0 @@
-!function(o){const e=o.oc=o.oc||{};e.dictionary=Object.assign(e.dictionary||{},{"%0 of %1":"",Bold:"Gras",Cancel:"Anullar",Code:"",Italic:"Italica","Remove color":"","Restore default":"",Save:"Enregistrar","Show more items":"",Strikethrough:"",Underline:""}),e.getPluralForm=function(o){return o>1}}(window.CKEDITOR_TRANSLATIONS||(window.CKEDITOR_TRANSLATIONS={}));

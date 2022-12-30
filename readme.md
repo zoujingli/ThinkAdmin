@@ -2,46 +2,68 @@
 ---
 > 代码主仓库：https://gitee.com/zoujingli/ThinkAdmin
 
-非常感谢大家一直以来对[`ThinkAdmin`](https://thinkadmin.top)的支持，[`ThinkAdmin`](https://thinkadmin.top)从`v1`到`v6`经历了几次大的调整，但总体都是基于`ThinkPHP`最新版本为核心在开发，以最简后台为目标而设计。
+非常感谢大家一直以来对[`ThinkAdmin`](https://thinkadmin.top)的支持，[`ThinkAdmin`](https://thinkadmin.top)从`v1`到`v6`
+经历了几次大的调整，但总体都是基于`ThinkPHP`最新版本为核心在开发，以最简后台为目标而设计。
 
-任何一个系统都不能完全满足所有的业务场景，[`ThinkAdmin`](https://thinkadmin.top)只做最基础底层的功能，这里包括系统权限管理，系统存储配置，微信授权管理，以及其他常用功能集成等…… 因此[`ThinkAdmin`](https://thinkadmin.top)也被大家定性为外包二开基线系统，目前已经有许多公司及个人在使用（通过数据聚合搜索统计已有3万多在线运行的项目）。
+任何一个系统都不能完全满足所有的业务场景，[`ThinkAdmin`](https://thinkadmin.top)
+只做最基础底层的功能，这里包括系统权限管理，系统存储配置，微信授权管理，以及其他常用功能集成等……
+因此[`ThinkAdmin`](https://thinkadmin.top)也被大家定性为外包二开基线系统，目前已经有许多公司及个人在使用（通过数据聚合搜索统计已有3万多在线运行的项目）。
 
-ThinkAdmin v6 基于`v1-v5`大版本的积累，结合`ThinkPHP6`的思维重新构建，减少大量原非必需的组件，自建存储层、服务层及队列任务机制，另外还增加了许多友好指令！`ThinkAdmin v6`经历了数个系统实践与测试，不停的调整与优化，目前系统模块及微信模块已经趋于稳定，现将系统管理[admin]及微信管理[wechat]定为`v6`内核两大模块并以`MIT`协议发布，其中微商商城[data]仅作为参考案例不提供技术支持，下载后可直接删除代码和对应数据表，后续可能还有其他模块及相关辅助模块更新发布，敬请期待……
+ThinkAdmin v6 基于`v1-v5`大版本的积累，结合`ThinkPHP6`
+的思维重新构建，减少大量原非必需的组件，自建存储层、服务层及队列任务机制，另外还增加了许多友好指令！`ThinkAdmin v6`
+经历了数个系统实践与测试，不停的调整与优化，目前系统模块及微信模块已经趋于稳定，现将系统管理[admin]及微信管理[wechat]
+定为`v6`内核两大模块并以`MIT`协议发布，其中微商商城[data]仅作为参考案例不提供技术支持，下载后可直接删除代码和对应数据表，后续可能还有其他模块及相关辅助模块更新发布，敬请期待……
 
-我们致力于二次开发底层框架，提供完整的组件及`API`，基于此框架可以快速开发应用。`ThinkAdmin v6`依赖自制组件`ThinkLibrary v6`，封装了大量常用操作，简化编码成本；默认集成`WechatDeveloper`组件，支持微信公众号、微信小程序、微信企业号、微信商户支付、支付宝支付接口等。`ThinkLibrary`组件实现`ThinkPHP v6`多应用模式及路由支持，另外还支持本地服务文件存储、七牛云对象存储（支持CDN加速）、又拍云USS存储（支持CDN加速）、阿里云OSS存储（支持CDN加速）、腾讯云COS存储（支持CDN加速）。
+我们致力于二次开发底层框架，提供完整的组件及`API`，基于此框架可以快速开发应用。`ThinkAdmin v6`依赖自制组件`ThinkLibrary v6`
+，封装了大量常用操作，简化编码成本；默认集成`WechatDeveloper`
+组件，支持微信公众号、微信小程序、微信企业号、微信商户支付、支付宝支付接口等。`ThinkLibrary`组件实现`ThinkPHP v6`
+多应用模式及路由支持，另外还支持本地服务文件存储、七牛云对象存储（支持CDN加速）、又拍云USS存储（支持CDN加速）、阿里云OSS存储（支持CDN加速）、腾讯云COS存储（支持CDN加速）。
 
 另外系统安装及二次开发可以先阅读`ThinkPHP`官方文档和`ThinkAdmin`开发文档，若实在无法解决当下问题可以加入官方微信群获得帮助。
 
 ### 注意事项
 
-* [`ThinkAdmin`](https://thinkadmin.top)是基于国内最流行的`ThinkPHP6`框架开发，目前对`PHP`版本要求不得低于`PHP 7.2.5`，如果使用低版本的`PHP`可能会影响`composer`依赖组件的安装，存在一定的安全隐患，具体请阅读`ThinkPHP`更新日志及相关文档；
-* 系统的运行环境必需开启`PATHINFO`支持并配置对应的`rewrite`规则才能访问，不再支持`ThinkPHP`的`URL`兼容模式运行 ( 源于如何优雅地展示 )，可以阅读文档部署章节；
-* 代码仓库下载的文件不包含`composer`组件包的`vendor`目录，下载后需要执行`composer install`或`composer update`安装依赖组件，同时会触发执行数据库`Phinx`安装脚本；
-* 为保持系统可持续在线升级功能，开发时建议不要在`admin`,`wechat`,`public/static`这三个目录创建或修改文件，可以自行创建其他模块再编写自己的业务代码，自定义样式及脚本可以放置在目录`public/static/extra`里面。系统是基于严格类型`PHP`新特性开发，务必使用专业的`IDE` ( 如：`PhpStorm`,`NetBeans`,`VsCode`,`Eclipse for PHP`等 ) 进行项目开发以达到更好的体验与更高的效率！
+* [`ThinkAdmin`](https://thinkadmin.top)是基于国内最流行的`ThinkPHP6`框架开发，目前对`PHP`版本要求不得低于`PHP 7.2.5`
+  ，如果使用低版本的`PHP`可能会影响`composer`依赖组件的安装，存在一定的安全隐患，具体请阅读`ThinkPHP`更新日志及相关文档；
+* 系统的运行环境必需开启`PATHINFO`支持并配置对应的`rewrite`规则才能访问，不再支持`ThinkPHP`的`URL`兼容模式运行 (
+  源于如何优雅地展示 )，可以阅读文档部署章节；
+* 代码仓库下载的文件不包含`composer`组件包的`vendor`目录，下载后需要执行`composer install`或`composer update`
+  安装依赖组件，同时会触发执行数据库`Phinx`安装脚本；
+* 为保持系统可持续在线升级功能，开发时建议不要在`admin`,`wechat`,`public/static`
+  这三个目录创建或修改文件，可以自行创建其他模块再编写自己的业务代码，自定义样式及脚本可以放置在目录`public/static/extra`
+  里面。系统是基于严格类型`PHP`新特性开发，务必使用专业的`IDE` ( 如：`PhpStorm`,`NetBeans`,`VsCode`,`Eclipse for PHP`等 )
+  进行项目开发以达到更好的体验与更高的效率！
 * 若后台操作提示 “演示系统禁止操作” 等字样，需要删除演示路由的配置文件(`app/admin/route/demo.php`)；
 
 ### 数据管理
 
 > **A. 注意事项**
 >
-> 系统是基于`Phinx`工具管理数据库，在未配置数据库时默认使用`Sqlite`数据库`database/sqlite.db`，可以作为系统测试与体验；使用`Sqlite`数据库时仅限用于体验与测试，不得用于生产环境，生产环境建议使用免费开源的`MySQL`数据库；
+> 系统是基于`Phinx`工具管理数据库，在未配置数据库时默认使用`Sqlite`数据库`database/sqlite.db`
+> ，可以作为系统测试与体验；使用`Sqlite`数据库时仅限用于体验与测试，不得用于生产环境，生产环境建议使用免费开源的`MySQL`数据库；
 
 > **B. 数据库初始化安装**
 >
-> 使用`MySql`,`SqlServer`,`Postgres`等服务型数据库时，需要先创建空的数据库并将参数配置到`config/database.php`，然后执行`composer install`,`composer update`或`php think migrate:run`安装并初始化数据库；
-> 开发部署系统时，如果要对数据库添加数据表或修改数据表，建议创建`Phinx`脚本后执行`composer update`进行数据库更新升级。另外系统也提供`php think xadmin:package`指令可以把现有`MySQl`数据库打包为`Phinx`安装脚本，迁移系统时只需要执行前面的安装步骤即可。
+> 使用`MySql`,`SqlServer`,`Postgres`等服务型数据库时，需要先创建空的数据库并将参数配置到`config/database.php`
+> ，然后执行`composer install`,`composer update`或`php think migrate:run`安装并初始化数据库；
+> 开发部署系统时，如果要对数据库添加数据表或修改数据表，建议创建`Phinx`脚本后执行`composer update`
+> 进行数据库更新升级。另外系统也提供`php think xadmin:package`指令可以把现有`MySQl`数据库打包为`Phinx`
+> 安装脚本，迁移系统时只需要执行前面的安装步骤即可。
 
 ### 系统安装
 
 > **A. 测试或体验环境**
 > * 系统默认使用`Sqlite`数据库，不需要配置数据库参数，注意使用`Sqlite`数据库时是没有密码的。
 > * 下载`ThinkAdmin`系统源码，执行`composer install`或`composer update`安装系统依赖组件，会自动安装数据库并初始化所需参数；
-> * 执行`php think run`启动系统内置的`WEB`服务，用浏览器访问`http://127.0.0.1:8000`进入后台登录界面后，使用系统默认的账号[admin]和密码[admin]登录管理后台；也可以使用其他`Web`服务软件方案实现。
+> * 执行`php think run`启动系统内置的`WEB`服务，用浏览器访问`http://127.0.0.1:8000`
+    进入后台登录界面后，使用系统默认的账号[admin]和密码[admin]登录管理后台；也可以使用其他`Web`服务软件方案实现。
 
 > **B. 开发或线上环境**
 >
-> * 下载`ThinkAdmin`系统源码，安装数据库并创建空的数据库，将数据库参数配置到`config/database.php`；执行`composer install`或`composer update`安装系统依赖组件，会自动安装数据库并初始化所需参数；
-> * 安装`Nginx`或`Apache`等`Web`服务 ( 推荐使用[宝塔](https://www.bt.cn/?invite_code=MV90a3Z6dmI=)集成环境 )，并按照`ThinkPHP6`系统要求配置网站参数；当然开发环境也可以使用`php think run`启动`PHP`内置的`Web`服务。
+> * 下载`ThinkAdmin`系统源码，安装数据库并创建空的数据库，将数据库参数配置到`config/database.php`；执行`composer install`
+    或`composer update`安装系统依赖组件，会自动安装数据库并初始化所需参数；
+> * 安装`Nginx`或`Apache`等`Web`服务 ( 推荐使用[宝塔](https://www.bt.cn/?invite_code=MV90a3Z6dmI=)集成环境 )
+    ，并按照`ThinkPHP6`系统要求配置网站参数；当然开发环境也可以使用`php think run`启动`PHP`内置的`Web`服务。
 
 ## 技术支持
 

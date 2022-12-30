@@ -1,4 +1,0 @@
-User-agent: *
-Disallow: /data
-Disallow: /admin
-Disallow: /wechat
