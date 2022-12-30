@@ -3,7 +3,8 @@
 > 代码主仓库：https://gitee.com/zoujingli/ThinkAdmin
 
 非常感谢大家一直以来对[`ThinkAdmin`](https://thinkadmin.top)的支持，[`ThinkAdmin`](https://thinkadmin.top)从`v1`到`v6`
-经历了几次大的调整，但总体都是基于`ThinkPHP`最新版本为核心在开发，以最简后台为目标而设计。
+经历了几次大的调整，但总体都是基于`ThinkPHP`最新版本为核心在开发，以最简后台为目标而设计，目前 `ThinkAdmin`
+已通过`Composer`深度开发实现了插件自动安装机制，大大减少了项目初始化安装的成本。
 
 任何一个系统都不能完全满足所有的业务场景，[`ThinkAdmin`](https://thinkadmin.top)
 只做最基础底层的功能，这里包括系统权限管理，系统存储配置，微信授权管理，以及其他常用功能集成等……
