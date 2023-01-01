@@ -33,7 +33,7 @@
   },
   "config": {
     "allow-plugins": {
-      "zoujingli/think-installer": true
+      "zoujingli/think-install": true
     }
   }
 }
