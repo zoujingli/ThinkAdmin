@@ -25,20 +25,11 @@
     "ext-mbstring": "*",
     "ext-simplexml": "*",
     "endroid/qr-code": "^1.9",
-    "topthink/framework": "^6.1",
-    "topthink/think-view": "^1.0",
-    "zoujingli/ip2region": "^2.0",
-    "zoujingli/think-library": "6.0.x-dev",
-    "zoujingli/wechat-developer": "^1.2",
-    "zoujingli/think-plugs-admin": "dev-master",
-    "zoujingli/think-plugs-static": "dev-master",
-    "zoujingli/think-plugs-wechat": "dev-master",
-    "zoujingli/think-plugs-center": "dev-master"
-  },
-  "autoload": {
-    "psr-4": {
-      "app\\": "app"
-    }
+    "zoujingli/think-library": "^6.1",
+    "zoujingli/think-plugs-admin": "^1.0",
+    "zoujingli/think-plugs-static": "^1.0",
+    "zoujingli/think-plugs-wechat": "^1.0",
+    "zoujingli/think-plugs-center": "^1.0"
   },
   "config": {
     "allow-plugins": {
