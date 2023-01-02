@@ -24,7 +24,6 @@
     "ext-openssl": "*",
     "ext-mbstring": "*",
     "ext-simplexml": "*",
-    "endroid/qr-code": "^1.9",
     "zoujingli/think-library": "^6.1",
     "zoujingli/think-plugs-admin": "^1.0",
     "zoujingli/think-plugs-static": "^1.0",
