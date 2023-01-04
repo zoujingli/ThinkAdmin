@@ -2,34 +2,36 @@
 ---
 > 代码主仓库：https://gitee.com/zoujingli/ThinkAdmin
 
-欢迎使用`ThinkAdmin v6.1`, `v6.1`将正式进入插件时代，重要组件及插件统一使用`Composer`
-管理，因此在初始目录结构下面是没有代码的，只需要执行`composer install`安装后才会看目录和代码。安装后会出现 `app`
-目录，与传统`ThinkPHP`多应用模式无差别，可以自行开发自己的模块。我们建议不要占用`admin`和`wechat`两个目录名称。
+欢迎使用`ThinkAdmin v6.1`, 当前`v6.1`已经正式进入插件时代，其基础组件及扩展插件统一使用`Composer`
+管理，因此在项目的初始目录下面是没有代码的，只需要执行`composer install`安装后就会有目录和代码。`ThinkAdmin`
+与传统`ThinkPHP`多应用模式无差别，用户可以自行开发自己的模块，并且完美兼容`ThinkAdmin v6.0`
+应用。我们再强调一下不建议占用`admin`和`wechat`两个目录，增加或修改里面的代码，这些未来可以通过`Composer`进行功能增强或安全升级。
 
-非常感谢大家一直以来对[`ThinkAdmin`](https://thinkadmin.top)的支持，[`ThinkAdmin`](https://thinkadmin.top)从`v1`到`v6`
+我们非常感谢大家一直以来对[`ThinkAdmin`](https://thinkadmin.top)的支持，[`ThinkAdmin`](https://thinkadmin.top)从`v1`
+到`v6`
 经历了几次大的调整，但总体都是基于`ThinkPHP`最新版本为核心在开发，以最简后台为目标而设计，目前 `ThinkAdmin`
 已通过`Composer`深度开发实现了插件自动安装机制，大大减少了项目初始化安装的成本。
 
 任何一个系统都不能完全满足所有的业务场景，[`ThinkAdmin`](https://thinkadmin.top)
 只做最基础底层的功能，这里包括系统权限管理，系统存储配置，微信授权管理，以及其他常用功能集成等……
-因此[`ThinkAdmin`](https://thinkadmin.top)也被大家定性为外包二开基线系统，目前已经有许多公司及个人在使用（通过数据聚合搜索统计已有3万多在线运行的项目）。
+因此[`ThinkAdmin`](https://thinkadmin.top)也被大家定性为外包二开基线系统，目前已经有许多公司及个人在使用（通过数据聚合统计已有3万多在线运行的项目）。
 
-ThinkAdmin v6 基于`v1-v5`大版本的积累，结合`ThinkPHP6`
+ThinkAdmin v6 是基于`v1-v5`大版本的积累，结合`ThinkPHP6`
 的思维重新构建，减少大量原非必需的组件，自建存储层、服务层及队列任务机制，另外还增加了许多友好指令！`ThinkAdmin v6`
 经历了数个系统实践与测试，不停的调整与优化，目前系统模块及微信模块已经趋于稳定，现将系统管理[admin]及微信管理[wechat]
-定为`v6`内核两大模块并以`MIT`协议发布，其中微商商城[data]仅作为参考案例不提供技术支持，下载后可直接删除代码和对应数据表，后续可能还有其他模块及相关辅助模块更新发布，敬请期待……
+定为`v6`内核两大模块并以`MIT`协议发布，后续可能还有其他模块及相关辅助模块更新发布，敬请期待……
 
-我们致力于二次开发底层框架，提供完整的组件及`API`，基于此框架可以快速开发应用。`ThinkAdmin v6`依赖自制组件`ThinkLibrary v6`
-，封装了大量常用操作，简化编码成本；默认集成`WechatDeveloper`
-组件，支持微信公众号、微信小程序、微信企业号、微信商户支付、支付宝支付接口等。`ThinkLibrary`组件实现`ThinkPHP v6`
-多应用模式及路由支持，另外还支持本地服务文件存储、七牛云对象存储（支持CDN加速）、又拍云USS存储（支持CDN加速）、阿里云OSS存储（支持CDN加速）、腾讯云COS存储（支持CDN加速）。
+我们致力于二开底层框架，提供完善的基础组件及对应的`API`，基于此框架可以快速开发种`WEB`应用。`ThinkAdmin v6`
+依赖核心组件`ThinkLibrary v6`，其内封装了大量常用操作方法，简化编码成本；可自行选择集成`WechatDeveloper`
+组件 ( 支持微信公众号、微信小程序、微信企业号、微信商户支付、支付宝支付接口等 ) 及`QRcode`二维码生成工具。`ThinkLibrary`
+组件实现`ThinkPHP v6`多应用模式及路由支持，另外还支持本地服务文件存储、七牛云对象存储（支持CDN加速）、又拍云USS存储（支持CDN加速）、阿里云OSS存储（支持CDN加速）、腾讯云COS存储（支持CDN加速）。
 
-另外系统安装及二次开发可以先阅读`ThinkPHP`官方文档和`ThinkAdmin`开发文档，若实在无法解决当下问题可以加入官方微信群获得帮助。
+在使用`ThinkAdmin`开发应用时，我们建议先阅读`ThinkPHP`官方文档和`ThinkAdmin`开发文档，若实在无法解决当下问题可以加入官方微信群获得帮助。
 
 ### 注意事项
 
 * [`ThinkAdmin`](https://thinkadmin.top)是基于国内最流行的`ThinkPHP6`框架开发，目前对`PHP`版本要求不得低于`PHP 7.2.5`
-  ，如果使用低版本的`PHP`可能会影响`composer`依赖组件的安装，存在一定的安全隐患，具体请阅读`ThinkPHP`更新日志及相关文档；
+  ，如果使用低版本的`PHP`可能会影响`composer`依赖组件的安装，或将存在一定的安全隐患，具体请阅读`ThinkPHP`更新日志及相关文档；
 * 系统的运行环境必需开启`PATHINFO`支持并配置对应的`rewrite`规则才能访问，不再支持`ThinkPHP`的`URL`兼容模式运行 (
   源于如何优雅地展示 )，可以阅读文档部署章节；
 * 代码仓库下载的文件不包含`composer`组件包的`vendor`目录，下载后需要执行`composer install`或`composer update`
@@ -40,9 +42,11 @@ ThinkAdmin v6 基于`v1-v5`大版本的积累，结合`ThinkPHP6`
   进行项目开发以达到更好的体验与更高的效率！
 * 若后台操作提示 “演示系统禁止操作” 等字样，需要删除演示路由的配置文件(`app/admin/route/demo.php`)；
 
-### 内置插件
+### 插件生态
 
-**目前支持的插件有：**( 更多插件正在开发，敬请期待 )
+更多插件正在开发，敬请期待……
+
+**目前已有的插件如下：**
 
 > 后台基础 Admin 管理插件
 > * 插件标识：admin
