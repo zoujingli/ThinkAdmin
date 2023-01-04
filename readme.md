@@ -4,7 +4,7 @@
 
 欢迎使用`ThinkAdmin v6.1`, `v6.1`将正式进入插件时代，重要组件及插件统一使用`Composer`
 管理，因此在初始目录结构下面是没有代码的，只需要执行`composer install`安装后才会看目录和代码。安装后会出现 `app`
-目录，与传统`ThinkPHP`多应用模式无差别，可以自行开发自己的模块。我们建议不要占用`admin`和`wechat`目录名称。
+目录，与传统`ThinkPHP`多应用模式无差别，可以自行开发自己的模块。我们建议不要占用`admin`和`wechat`两个目录名称。
 
 非常感谢大家一直以来对[`ThinkAdmin`](https://thinkadmin.top)的支持，[`ThinkAdmin`](https://thinkadmin.top)从`v1`到`v6`
 经历了几次大的调整，但总体都是基于`ThinkPHP`最新版本为核心在开发，以最简后台为目标而设计，目前 `ThinkAdmin`
