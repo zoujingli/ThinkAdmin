@@ -2,6 +2,10 @@
 ---
 > 代码主仓库：https://gitee.com/zoujingli/ThinkAdmin
 
+欢迎使用`ThinkAdmin v6.1`, `v6.1`将正式进入插件时代，重要组件及插件统一使用`Composer`
+管理，因此在初始目录结构下面是没有代码的，只需要执行`composer install`安装后才会看目录和代码。安装后会出现 `app`
+目录，与传统`ThinkPHP`多应用模式无差别，可以自行开发自己的模块。我们建议不要占用`admin`和`wechat`目录名称。
+
 非常感谢大家一直以来对[`ThinkAdmin`](https://thinkadmin.top)的支持，[`ThinkAdmin`](https://thinkadmin.top)从`v1`到`v6`
 经历了几次大的调整，但总体都是基于`ThinkPHP`最新版本为核心在开发，以最简后台为目标而设计，目前 `ThinkAdmin`
 已通过`Composer`深度开发实现了插件自动安装机制，大大减少了项目初始化安装的成本。
@@ -21,6 +25,38 @@ ThinkAdmin v6 基于`v1-v5`大版本的积累，结合`ThinkPHP6`
 多应用模式及路由支持，另外还支持本地服务文件存储、七牛云对象存储（支持CDN加速）、又拍云USS存储（支持CDN加速）、阿里云OSS存储（支持CDN加速）、腾讯云COS存储（支持CDN加速）。
 
 另外系统安装及二次开发可以先阅读`ThinkPHP`官方文档和`ThinkAdmin`开发文档，若实在无法解决当下问题可以加入官方微信群获得帮助。
+
+### 内置插件
+
+**目前支持的插件有：**( 更多插件正在开发，敬请期待 )
+
+> 后台基础 Admin 管理插件
+> * 插件标识：admin
+> * 插件包名：zoujingli/think-plugs-admin
+> * 安装方式：composer require zoujingli/think-plugs-admin
+> * 插件仓库：https://gitee.com/zoujingli/think-plugs-admin
+> * 开源协议：MIT ( 免费开放 )
+
+> 后台基础 WeChat 微信插件
+> * 插件标识：wechat
+> * 插件包名：zoujingli/think-plugs-wechat
+> * 安装方式：composer require zoujingli/think-plugs-wechat
+> * 插件仓库：https://gitee.com/zoujingli/think-plugs-wechat
+> * 开源协议：MIT ( 免费开放 )
+
+> 后台静态资源初始化插件（通常不需要独立安装）
+> * 插件标识：static
+> * 插件包名：zoujingli/think-plugs-static
+> * 安装方式：composer require zoujingli/think-plugs-static
+> * 插件仓库：https://gitee.com/zoujingli/think-plugs-static
+> * 开源协议：MIT ( 免费开放，里面有部分其他开源协议，具体可以查看源文件 )
+
+> 基础在线插件市场 ( 开发中，未来会成为 ThinkAdmin 生态市场 )
+> * 插件标识：plugin-center
+> * 插件包名：zoujingli/think-plugs-center
+> * 安装方式：composer require zoujingli/think-plugs-center
+> * 插件仓库：https://gitee.com/zoujingli/think-plugs-center
+> * 开源协议：目前不开源，待定
 
 ### 注意事项
 
