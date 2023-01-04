@@ -6,7 +6,8 @@
   "description": "Application Development Framework",
   "keywords": [
     "ThinkAdmin",
-    "ThinkLibrary"
+    "ThinkLibrary",
+    "WeChatDeveloper"
   ],
   "authors": [
     {
@@ -14,8 +15,13 @@
       "email": "zoujingli@qq.com"
     }
   ],
+  "config": {
+    "allow-plugins": {
+      "zoujingli/think-install": true
+    }
+  },
   "require": {
-    "php": ">=7.1.0",
+    "php": ">=7.1",
     "ext-gd": "*",
     "ext-xml": "*",
     "ext-json": "*",
@@ -28,10 +34,5 @@
     "zoujingli/think-plugs-admin": "dev-master",
     "zoujingli/think-plugs-wechat": "dev-master",
     "zoujingli/think-plugs-center": "dev-master"
-  },
-  "config": {
-    "allow-plugins": {
-      "zoujingli/think-install": true
-    }
   }
 }
