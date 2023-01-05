@@ -88,30 +88,34 @@ ThinkAdmin v6 是基于`v1-v5`大版本的积累，结合`ThinkPHP6`
 
 > **A. 注意事项**
 >
-> 系统是基于`Phinx`工具管理数据库，在未配置数据库时默认使用`Sqlite`数据库`database/sqlite.db`
-> ，可以作为系统测试与体验；使用`Sqlite`数据库时仅限用于体验与测试，不得用于生产环境，生产环境建议使用免费开源的`MySQL`数据库；
+> 数据库是使用`Phinx`工具管理的，在未配置数据库时默认使用`Sqlite`，数据库文件位于`database/sqlite.db`，使用`Sqlite`
+> 数据库时仅限用于体验与测试，建议不要用于生产环境，生产环境建议使用免费开源的`MySQL`数据库；
 
 > **B. 数据库初始化安装**
 >
 > 使用`MySql`,`SqlServer`,`Postgres`等服务型数据库时，需要先创建空的数据库并将参数配置到`config/database.php`
-> ，然后执行`composer install`,`composer update`或`php think migrate:run`安装并初始化数据库；
-> 开发部署系统时，如果要对数据库添加数据表或修改数据表，建议创建`Phinx`脚本后执行`composer update`
-> 进行数据库更新升级。另外系统也提供`php think xadmin:package`指令可以把现有`MySQl`数据库打包为`Phinx`
-> 安装脚本，迁移系统时只需要执行前面的安装步骤即可。
+> ，然后执行`composer install`或`composer update`或`php think migrate:run`
+> 安装并初始化数据库；开发部署系统时，如果要对数据库添加数据表或修改数据表，可以直接修改数据库或创建`Phinx`
+> 脚本后执行`composer update`进行数据库更新升级。另外系统也提供`php think xadmin:package`指令可以把现有`MySQl`
+> 数据库打包为`Phinx`脚本，迁移系统时只需要执行前面的安装步骤即可。
 
 ### 系统安装
 
 > **A. 测试或体验环境**
-> * 系统默认使用`Sqlite`数据库，不需要配置数据库参数，注意使用`Sqlite`数据库时是没有密码的。
-> * 下载`ThinkAdmin`系统源码，执行`composer install`或`composer update`安装系统依赖组件，会自动安装数据库并初始化所需参数；
-> * 执行`php think run`启动系统内置的`WEB`服务，用浏览器访问`http://127.0.0.1:8000`
-    进入后台登录界面后，使用系统默认的账号[admin]和密码[admin]登录管理后台；也可以使用其他`Web`服务软件方案实现。
+>
+> 初始化时默认使用`Sqlite`数据库，不需要配置任何参数，特殊要注意使用`Sqlite`
+> 数据库时是没有密码的，容易造成数据丢失或泄露。下载`ThinkAdmin`系统源码后，执行`composer install`或`composer update`
+> 初始化并安装系统依赖组件，并自动安装数据库并初始化数据；执行`php think run`启动系统内置的`WEB`
+> 服务，用浏览器访问`http://127.0.0.1:8000`
+> 进入后台登录界面后，使用系统默认的账号`admin`和密码`admin`登录管理后台；也可以使用其他`Web`服务软件方案实现。
 
 > **B. 开发或线上环境**
-> * 下载`ThinkAdmin`系统源码，安装数据库并创建空的数据库，将数据库参数配置到`config/database.php`；执行`composer install`
-    或`composer update`安装系统依赖组件，会自动安装数据库并初始化所需参数；
-> * 安装`Nginx`或`Apache`等`Web`服务 ( 推荐使用[宝塔](https://www.bt.cn/?invite_code=MV90a3Z6dmI=)集成环境 )
-    ，并按照`ThinkPHP6`系统要求配置网站参数；当然开发环境也可以使用`php think run`启动`PHP`内置的`Web`服务。
+>
+> 下载`ThinkAdmin`系统源码后，执行`composer install`或`composer update`
+> 完成初始化安装，在数据管理工具里面创建空的数据库，将数据库参数配置到`config/database.php`；然后再执行`composer install`
+> 或`composer update`或`php think migrate:run`完成数据库初始化安装；安装`Nginx`或`Apache`等`Web`服务 (
+> 推荐使用[宝塔](https://www.bt.cn/?invite_code=MV90a3Z6dmI=)集成环境 )
+> ，并按照`ThinkPHP6`系统要求配置网站参数；当然开发环境也可以使用`php think run`启动`PHP`内置的`Web`服务。
 
 ## 技术支持
 
