@@ -50,32 +50,39 @@ ThinkAdmin v6 是基于`v1-v5`大版本的积累，结合`ThinkPHP6`
 **目前已有的插件如下：**
 
 > 后台基础 Admin 管理插件
-> * 插件标识：admin
-> * 插件包名：zoujingli/think-plugs-admin
-> * 安装方式：composer require zoujingli/think-plugs-admin
+> * 插件标识：`admin`
+> * 插件包名：`zoujingli/think-plugs-admin`
+> * 安装方式：`composer require zoujingli/think-plugs-admin`
 > * 插件仓库：https://gitee.com/zoujingli/think-plugs-admin
 > * 开源协议：MIT ( 免费开放 )
 
 > 后台基础 WeChat 微信插件
-> * 插件标识：wechat
-> * 插件包名：zoujingli/think-plugs-wechat
-> * 安装方式：composer require zoujingli/think-plugs-wechat
+> * 插件标识：`wechat`
+> * 插件包名：`zoujingli/think-plugs-wechat`
+> * 安装方式：`composer require zoujingli/think-plugs-wechat`
 > * 插件仓库：https://gitee.com/zoujingli/think-plugs-wechat
 > * 开源协议：MIT ( 免费开放 )
 
 > 后台静态资源初始化插件（通常不需要独立安装）
-> * 插件标识：static
-> * 插件包名：zoujingli/think-plugs-static
-> * 安装方式：composer require zoujingli/think-plugs-static
+> * 插件标识：`static`
+> * 插件包名：`zoujingli/think-plugs-static`
+> * 安装方式：`composer require zoujingli/think-plugs-static`
 > * 插件仓库：https://gitee.com/zoujingli/think-plugs-static
 > * 开源协议：MIT ( 免费开放，里面有部分其他开源协议，具体可以查看源文件 )
 
 > 基础在线插件市场 ( 开发中，未来会成为 ThinkAdmin 生态市场 )
-> * 插件标识：plugin-center
-> * 插件包名：zoujingli/think-plugs-center
-> * 安装方式：composer require zoujingli/think-plugs-center
+> * 插件标识：`plugin-center`
+> * 插件包名：`zoujingli/think-plugs-center`
+> * 安装方式：`composer require zoujingli/think-plugs-center`
 > * 插件仓库：https://gitee.com/zoujingli/think-plugs-center
 > * 开源协议：目前不开源，待定
+
+> 基础商品管理插件（目前处于重构中，可以安装体验用）
+> * 插件标识：`plugin-base-goods`
+> * 插件包名：`zoujingli/think-plugin-base-goods`
+> * 安装方式：`composer require zoujingli/think-plugin-base-goods dev-master`
+> * 插件仓库：https://gitee.com/zoujingli/think-plugin-base-goods
+> * 开源协议：MIT ( 免费开放 )
 
 ### 数据管理
 
@@ -101,7 +108,6 @@ ThinkAdmin v6 是基于`v1-v5`大版本的积累，结合`ThinkPHP6`
     进入后台登录界面后，使用系统默认的账号[admin]和密码[admin]登录管理后台；也可以使用其他`Web`服务软件方案实现。
 
 > **B. 开发或线上环境**
->
 > * 下载`ThinkAdmin`系统源码，安装数据库并创建空的数据库，将数据库参数配置到`config/database.php`；执行`composer install`
     或`composer update`安装系统依赖组件，会自动安装数据库并初始化所需参数；
 > * 安装`Nginx`或`Apache`等`Web`服务 ( 推荐使用[宝塔](https://www.bt.cn/?invite_code=MV90a3Z6dmI=)集成环境 )
