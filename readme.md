@@ -2,10 +2,11 @@
 ---
 > 代码主仓库：https://gitee.com/zoujingli/ThinkAdmin
 
-欢迎使用`ThinkAdmin v6.1`, 当前`v6.1`已经正式进入插件时代，其基础组件及扩展插件统一使用`Composer`
-管理，因此在项目的初始目录下面是没有代码的，只需要执行`composer install`安装后就会有目录和代码。`ThinkAdmin`
-与传统`ThinkPHP`多应用模式无差别，用户可以自行开发自己的模块，并且完美兼容`ThinkAdmin v6.0`
-应用。我们再强调一下不建议占用`admin`和`wechat`两个目录，增加或修改里面的代码，这些未来可以通过`Composer`进行功能增强或安全升级。
+欢迎使用`ThinkAdmin v6.1`, 当前`v6.1`已经正式进入插件时代，基础组件及扩展插件统一使用`Composer`
+组件方式管理，因此在项目的初始目录下面是没有代码的，只需要执行`composer install`
+安装后就会有生成目录并安装代码。`ThinkAdmin`
+与传统`ThinkPHP`多应用模式无差别，用户可以自行开发自己的模块，此次升级可完美兼容`ThinkAdmin v6.0`
+应用。我们强烈建议不要占用或增加及修改`admin`和`wechat`两个目录里面的代码，这些未来可以通过`Composer`进行功能及安全升级。
 
 我们非常感谢大家一直以来对[`ThinkAdmin`](https://thinkadmin.top)的支持，[`ThinkAdmin`](https://thinkadmin.top)从`v1`
 到`v6`
