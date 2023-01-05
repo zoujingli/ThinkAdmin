@@ -22,17 +22,8 @@
   },
   "require": {
     "php": ">=7.1",
-    "ext-gd": "*",
-    "ext-xml": "*",
-    "ext-json": "*",
-    "ext-curl": "*",
-    "ext-iconv": "*",
-    "ext-openssl": "*",
-    "ext-mbstring": "*",
-    "ext-simplexml": "*",
-    "zoujingli/think-library": "^6.1",
-    "zoujingli/think-plugs-admin": "^1.0",
-    "zoujingli/think-plugs-wechat": "^1.0",
-    "zoujingli/think-plugs-center": "^1.0"
+    "zoujingli/think-plugs-admin": "dev-master",
+    "zoujingli/think-plugs-wechat": "dev-master",
+    "zoujingli/think-plugs-center": "dev-master"
   }
 }
