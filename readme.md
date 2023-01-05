@@ -43,7 +43,7 @@ ThinkAdmin v6 是基于`v1-v5`大版本的积累，结合`ThinkPHP6`
   进行项目开发以达到更好的体验与更高的效率！
 * 若后台操作提示 “演示系统禁止操作” 等字样，需要删除演示路由的配置文件(`app/admin/route/demo.php`)；
 
-### 插件生态
+## 插件生态
 
 更多插件正在开发，敬请期待……
 
@@ -84,7 +84,7 @@ ThinkAdmin v6 是基于`v1-v5`大版本的积累，结合`ThinkPHP6`
 > * 插件仓库：https://gitee.com/zoujingli/think-plugin-base-goods
 > * 开源协议：MIT ( 免费开放 )
 
-### 数据管理
+## 数据管理
 
 > **A. 注意事项**
 >
@@ -99,7 +99,7 @@ ThinkAdmin v6 是基于`v1-v5`大版本的积累，结合`ThinkPHP6`
 > 脚本后执行`composer update`进行数据库更新升级。另外系统也提供`php think xadmin:package`指令可以把现有`MySQl`
 > 数据库打包为`Phinx`脚本，迁移系统时只需要执行前面的安装步骤即可。
 
-### 系统安装
+## 系统安装
 
 > **A. 测试或体验环境**
 >
