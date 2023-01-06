@@ -103,7 +103,7 @@ ThinkAdmin v6 是基于`v1-v5`大版本的积累，结合`ThinkPHP6`
 
 > **A. 测试或体验环境**
 >
-> 初始化时默认使用`Sqlite`数据库，不需要配置任何参数，特殊要注意使用`Sqlite`
+> 初始化时默认使用`Sqlite`数据库，不需要配置任何参数，特别要注意使用`Sqlite`
 > 数据库时是没有密码的，容易造成数据丢失或泄露。下载`ThinkAdmin`系统源码后，执行`composer install`或`composer update`
 > 初始化并安装系统依赖组件，并自动安装数据库并初始化数据；执行`php think run`启动系统内置的`WEB`
 > 服务，用浏览器访问`http://127.0.0.1:8000`
