@@ -8,6 +8,8 @@
 与传统`ThinkPHP`多应用模式无差别，用户可以自行开发自己的模块，此次升级可完美兼容`ThinkAdmin v6.0`
 应用。我们强烈建议不要占用或增加及修改`admin`和`wechat`两个目录里面的代码，这些未来可以通过`Composer`进行功能及安全升级。
 
+**注意：** 如果需要直接查看代码，可以先切换到`v6`分支，`v6.1`暂不直接提供源代码和数据库`SQL`文件，都由插件实现。
+
 我们非常感谢大家一直以来对[`ThinkAdmin`](https://thinkadmin.top)的支持，[`ThinkAdmin`](https://thinkadmin.top)从`v1`
 到`v6`
 经历了几次大的调整，但总体都是基于`ThinkPHP`最新版本为核心在开发，以最简后台为目标而设计，目前 `ThinkAdmin`
