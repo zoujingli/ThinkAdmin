@@ -157,13 +157,23 @@ public function index(){
 
 ## 代码仓库
 
-[`ThinkAdmin`](https://thinkadmin.top) 为 MIT 协议开源系统，安装使用或二次开发不受约束，欢迎 fork 系统。
+主仓库放置于`Gitee`, `Github`为镜像仓库。
 
 部分代码来自互联网，若有异议可以联系作者进行删除。
 
 * 在线体验地址：https://v6.thinkadmin.top （账号和密码都是 admin ）
 * Gitee仓库地址：https://gitee.com/zoujingli/ThinkAdmin/tree/v6
 * GitHub仓库地址：https://github.com/zoujingli/ThinkAdmin/tree/v6
+
+## 版权信息
+
+[`ThinkAdmin`](https://thinkadmin.top)循[`MIT`](license)开源协议发布，并免费提供使用。
+
+本项目包含的第三方源码和二进制文件的版权信息另行标注。
+
+版权所有 Copyright © 2014-2023 by ThinkAdmin (https://thinkadmin.top) All rights reserved。
+
+更多细节参阅[`lisense`](license)文件
 
 ## 框架指令
 
