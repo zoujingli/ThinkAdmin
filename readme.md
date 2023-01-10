@@ -1,16 +1,17 @@
 大道至简 · 原生框架
 ---
 > 代码主仓库：https://gitee.com/zoujingli/ThinkAdmin
+>
+> **特别提醒：**
+> 使用 Composer 时建议安装最版本版本并使用官方源，目前国内大部分镜像经常出现`404`导致安装不完整或下载失败等情况！
 
-欢迎使用`ThinkAdmin v6.1`, 当前`v6.1`已经正式进入插件时代，基础组件及扩展插件统一使用`Composer`
-管理，因此在项目的初始目录下面是没有代码的，只需要执行`composer install`
-安装后就会创建目录并初始化代码。`ThinkAdmin`
-与传统`ThinkPHP`多应用模式无差别，用户可以自行开发自己的模块，此次升级可完美兼容`ThinkAdmin v6.0`
-应用。我们强烈建议不要占用或增加及修改`admin`和`wechat`两个目录里面的代码，这些未来可以通过`Composer`进行功能及安全升级。
+### 项目介绍
 
-**注意：** 如果需要直接查看代码，可以先切换到`v6`分支查看，`v6.1`暂不直接提供源代码和数据库`SQL`文件，都由插件实现。
+当前`ThinkAdmin`的最新版本为`v6.1`，从这个版本开始正式进入插件时代，基础组件及扩展插件统一使用`Composer`管理，因此在项目的初始目录下面是没有代码的，只需要执行`composer install`或`composer update`安装后就会创建目录并初始化代码。`ThinkAdmin`与传统`ThinkPHP`多应用模式无差别，用户可以自行开发自己的模块，此次升级可完美兼容`ThinkAdmin v6.0`应用。我们强烈建议不要占用或增加及修改`admin`和`wechat`两个目录里面的代码，这些未来可以通过`Composer`进行功能及安全升级。
 
-我们非常感谢大家一直以来对[`ThinkAdmin`](https://thinkadmin.top)的支持，[`ThinkAdmin`](https://thinkadmin.top)从`v1`
+**温馨提示：** 如果需要直接查看代码，请切换到`v6`分支查看，`v6.1`暂不直接提供源代码和数据库`SQL`文件，初始化及安装都由插件实现。
+
+[`ThinkAdmin`](https://thinkadmin.top)从`v1`
 到`v6`
 经历了几次大的调整，但总体都是基于`ThinkPHP`最新版本为核心在开发，以最简后台为目标而设计，目前 `ThinkAdmin`
 已通过`Composer`深度开发实现了插件自动安装机制，大大减少了项目初始化安装的成本。
