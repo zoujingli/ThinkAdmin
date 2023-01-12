@@ -4,7 +4,7 @@
 
 ### 项目介绍
 
-当前`ThinkAdmin`的最新版本为[`v6.1`](https://gitee.com/zoujingli/ThinkAdmin/tree/v6.1)，从这个版本开始正式进入插件时代，基础组件及扩展插件统一使用`Composer`管理。`ThinkAdmin`与传统`ThinkPHP`多应用模式无差别，用户可以自行开发自己的模块，此次升级可完美兼容`ThinkAdmin v6.0`应用。
+当前`ThinkAdmin`的最新版本为[`v6.1`](https://gitee.com/zoujingli/ThinkAdmin/tree/v6.1)，从这个版本开始正式进入插件时代，基础组件及扩展插件统一使用`Composer`管理。`ThinkAdmin`与传统`ThinkPHP`多应用模式无差别，用户可以自行开发自己的模块，此次升级可完美兼容`ThinkAdmin v6.0`应用，原`ThinkAdmin v6.0`只需安装`think-plugs-admin`组件即可升级到`v6.1`的插模式。
 
 **查看[`ThinkAdmin v6.1`](https://gitee.com/zoujingli/ThinkAdmin/tree/v6.1)详细介绍请切换至`v6.1`分支！！**
 
