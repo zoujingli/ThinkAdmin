@@ -173,7 +173,7 @@ public function index(){
 
 ## 版权信息
 
-[`ThinkAdmin`](https://thinkadmin.top)循[`MIT`](license)开源协议发布，并免费提供使用。
+[`ThinkAdmin`](https://thinkadmin.top)遵循[`MIT`](license)开源协议发布，并免费提供使用。
 
 本项目包含的第三方源码和二进制文件的版权信息另行标注。
 
