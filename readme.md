@@ -101,6 +101,14 @@ ThinkAdmin v6 是基于`v1-v5`大版本的积累，结合`ThinkPHP6`
 
 ## 系统安装
 
+> **安装方式一：**
+> 1. 下载仓库源代码，关键需要包含`composer.json`文件；
+> 2. 执行`composer install`或`composer update`安装依赖组件；
+
+> **安装方式二：**
+> 1. 执行`composer create-project zoujingli/thinkadmin`安装项目；
+> 2. 执行`php think migrate:run`初始化数据库；
+
 > **A. 测试或体验环境**
 >
 > 初始化时默认使用`Sqlite`数据库，不需要配置任何参数，特别要注意使用`Sqlite`
