@@ -103,27 +103,25 @@ ThinkAdmin v6 是基于`v1-v5`大版本的积累，结合`ThinkPHP6`
 
 > **安装方式一：**
 > 1. 下载仓库源代码，关键需要包含`composer.json`文件；
-> 2. 执行`composer install`或`composer update`安装依赖组件；
+> 2. 执行`composer install`或`composer update`安装组件并初始化数据库；
 
 > **安装方式二：**
 > 1. 执行`composer create-project zoujingli/thinkadmin`安装项目；
-> 2. 执行`php think migrate:run`初始化数据库；
+> 2. 执行`cd thinkadmin`进入到已安装的`ThinkAdmin`的根目录；
+> 3. 执行`php think migrate:run`安装并初始化数据库；
 
 > **A. 测试或体验环境**
 >
-> 初始化时默认使用`Sqlite`数据库，不需要配置任何参数，特别要注意使用`Sqlite`
-> 数据库时是没有密码的，容易造成数据丢失或泄露。下载`ThinkAdmin`系统源码后，执行`composer install`或`composer update`
-> 初始化并安装系统依赖组件，并自动安装数据库并初始化数据；执行`php think run`启动系统内置的`WEB`
-> 服务，用浏览器访问`http://127.0.0.1:8000`
-> 进入后台登录界面后，使用系统默认的账号`admin`和密码`admin`登录管理后台；也可以使用其他`Web`服务软件方案实现。
+> 系统默认使用`Sqlite`数据库，不需要配置任何参数，特别要注意使用`Sqlite`
+> 数据库时是没有密码的，容易造成数据丢失或泄露。执行上面的安装操作初始化并安装系统依赖组件，
+> 并自动安装数据库并初始化数据；执行`php think run`启动系统内置的`WEB`服务，用浏览器访问
+> `http://127.0.0.1:8000`进入后台登录界面后，使用系统默认的账号`admin`和密码`admin`登录管理后台；也可以使用其他`Web`服务软件方案实现。
 
 > **B. 开发或线上环境**
 >
-> 下载`ThinkAdmin`系统源码后，执行`composer install`或`composer update`
-> 完成初始化安装，在数据管理工具里面创建空的数据库，将数据库参数配置到`config/database.php`；然后再执行`composer install`
-> 或`composer update`或`php think migrate:run`完成数据库初始化安装；安装`Nginx`或`Apache`等`Web`服务 (
-> 推荐使用[宝塔](https://www.bt.cn/?invite_code=MV90a3Z6dmI=)集成环境 )
-> ，并按照`ThinkPHP6`系统要求配置网站参数；当然开发环境也可以使用`php think run`启动`PHP`内置的`Web`服务。
+> 执行上面的安装操作初始化并安装系统依赖组件，通过数据库管理工具创建空数据库，并将数据库参数配置到`config/database.php`；
+> 然后执行`php think migrate:run`完成数据库初始化安装；线上环境还需要安装`Nginx`或`Apache`等`Web`服务 (
+> 推荐使用[宝塔](https://www.bt.cn/?invite_code=MV90a3Z6dmI=)集成环境 )，并按照`ThinkPHP6`系统要求配置网站参数。
 
 ## 技术支持
 
