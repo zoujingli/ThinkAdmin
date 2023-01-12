@@ -2,6 +2,12 @@
 ---
 > 主仓库地址：https://gitee.com/zoujingli/ThinkAdmin
 
+### 项目介绍
+
+当前`ThinkAdmin`的最新版本为[`v6.1`](https://gitee.com/zoujingli/ThinkAdmin/tree/v6.1)，从这个版本开始正式进入插件时代，基础组件及扩展插件统一使用`Composer`管理，因此在项目的初始目录下面是没有代码的，需要执行`composer install`或`composer update`安装后才会创建目录并初始化代码。`ThinkAdmin`与传统`ThinkPHP`多应用模式无差别，用户可以自行开发自己的模块，此次升级可完美兼容`ThinkAdmin v6.0`应用。我们强烈建议不要占用或修改`admin`和`wechat`两个目录里面的代码，这些未来可以通过`Composer`进行功能及安全升级。
+
+**查看`ThinkAdmin v6.1`详细介绍请切换至`v6.1`分支！！**
+
 非常感谢大家一直以来对`ThinkAdmin`的支持，`ThinkAdmin`从`v1`到`v6`经历了几次大的调整，但总体都是基于`ThinkPHP`最新版本为核心在开发，以微信领域及最简后台为目标而设计。
 
 由于现有功能并不能满足所有项目的需求，`ThinkAdmin`只做基础底层的开发，这里包括系统权限管理，系统存储配置，微信授权管理，以及常用功能集成等…… 因此`ThinkAdmin`也被大家定性为外包二开基线项目，目前已经有许多公司及个人在使用。
