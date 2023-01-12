@@ -107,7 +107,7 @@ ThinkAdmin v6 是基于`v1-v5`大版本的积累，结合`ThinkPHP6`
 
 > **安装方式二：**
 > 1. 执行`composer create-project zoujingli/thinkadmin`安装项目；
-> 2. 执行`cd thinkadmin`进入到已安装的`ThinkAdmin`的根目录；
+> 2. 执行`cd thinkadmin`进入到已安装的`ThinkAdmin`根目录；
 > 3. 执行`php think migrate:run`安装并初始化数据库；
 
 > **A. 测试或体验环境**
