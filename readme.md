@@ -4,9 +4,9 @@
 
 ### 项目介绍
 
-当前`ThinkAdmin`的最新版本为[`v6.1`](https://gitee.com/zoujingli/ThinkAdmin/tree/v6.1)，从这个版本开始正式进入插件时代，基础组件及扩展插件统一使用`Composer`管理，因此在项目的初始目录下面是没有代码的，需要执行`composer install`或`composer update`安装后才会创建目录并初始化代码。`ThinkAdmin`与传统`ThinkPHP`多应用模式无差别，用户可以自行开发自己的模块，此次升级可完美兼容`ThinkAdmin v6.0`应用。我们强烈建议不要占用或修改`admin`和`wechat`两个目录里面的代码，这些未来可以通过`Composer`进行功能及安全升级。
+当前`ThinkAdmin`的最新版本为[`v6.1`](https://gitee.com/zoujingli/ThinkAdmin/tree/v6.1)，从这个版本开始正式进入插件时代，基础组件及扩展插件统一使用`Composer`管理，`ThinkAdmin`与传统`ThinkPHP`多应用模式无差别，用户可以自行开发自己的模块，此次升级可完美兼容`ThinkAdmin v6.0`应用。我们强烈建议不要占用或修改`admin`和`wechat`两个目录里面的代码，这些未来可以通过`Composer`进行功能及安全升级。
 
-**查看`ThinkAdmin v6.1`详细介绍请切换至`v6.1`分支！！**
+**查看[`ThinkAdmin v6.1`](https://gitee.com/zoujingli/ThinkAdmin/tree/v6.1)详细介绍请切换至`v6.1`分支！！**
 
 非常感谢大家一直以来对`ThinkAdmin`的支持，`ThinkAdmin`从`v1`到`v6`经历了几次大的调整，但总体都是基于`ThinkPHP`最新版本为核心在开发，以微信领域及最简后台为目标而设计。
 
