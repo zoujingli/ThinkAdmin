@@ -520,7 +520,7 @@ $(function () {
         $dom && $($dom).filter('form[data-auto]') && $els.add($dom);
         $els.size() > 0 && $els.map(function (idx, form) {
             $(this).vali(function (data) {
-                var emap = form.dataset, type = form.method || 'POST', href = form.action || location.href;
+                var emap = form.dataset, type = form.method || 'POST', href = $(form).attr('action') || location.href;
                 var tips = emap.tips || undefined, time = emap.time || undefined, taid = emap.tableId || false;
                 var call = window[emap.callable || '_default_callable'] || (taid ? function (ret) {
                     if (typeof ret === 'object' && ret.code > 0 && $('#' + taid).size() > 0) {
