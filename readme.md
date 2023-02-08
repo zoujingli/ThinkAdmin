@@ -4,17 +4,28 @@
 
 ### 项目介绍
 
-当前`ThinkAdmin`的最新版本为[`v6.1`](https://gitee.com/zoujingli/ThinkAdmin/tree/v6.1)，从这个版本开始正式进入插件时代，基础组件及扩展插件统一使用`Composer`管理。`ThinkAdmin`与传统`ThinkPHP`多应用模式无差别，用户可以自行开发自己的模块，此次升级可完美兼容`ThinkAdmin v6.0`应用，原`ThinkAdmin v6.0`只需安装`think-plugs-admin`组件即可升级到`v6.1`的插模式。
+当前`ThinkAdmin`的最新版本为[`v6.1`](https://gitee.com/zoujingli/ThinkAdmin/tree/v6.1)
+，从这个版本开始正式进入插件时代，基础组件及扩展插件统一使用`Composer`管理。`ThinkAdmin`与传统`ThinkPHP`
+多应用模式无差别，用户可以自行开发自己的模块，此次升级可完美兼容`ThinkAdmin v6.0`应用，原`ThinkAdmin v6.0`
+只需安装`think-plugs-admin`组件即可升级到`v6.1`的插模式。
 
-**查看[`ThinkAdmin v6.1`](https://gitee.com/zoujingli/ThinkAdmin/tree/v6.1)详细介绍请切换至`v6.1`分支！！**
+**[查看`ThinkAdmin v6.1`详细介绍请切换至`v6.1`分支](https://gitee.com/zoujingli/ThinkAdmin/tree/v6.1)！！**
 
-非常感谢大家一直以来对`ThinkAdmin`的支持，`ThinkAdmin`从`v1`到`v6`经历了几次大的调整，但总体都是基于`ThinkPHP`最新版本为核心在开发，以微信领域及最简后台为目标而设计。
+非常感谢大家一直以来对`ThinkAdmin`的支持，`ThinkAdmin`从`v1`到`v6`经历了几次大的调整，但总体都是基于`ThinkPHP`
+最新版本为核心在开发，以微信领域及最简后台为目标而设计。
 
-由于现有功能并不能满足所有项目的需求，`ThinkAdmin`只做基础底层的开发，这里包括系统权限管理，系统存储配置，微信授权管理，以及常用功能集成等…… 因此`ThinkAdmin`也被大家定性为外包二开基线项目，目前已经有许多公司及个人在使用。
+由于现有功能并不能满足所有项目的需求，`ThinkAdmin`只做基础底层的开发，这里包括系统权限管理，系统存储配置，微信授权管理，以及常用功能集成等……
+因此`ThinkAdmin`也被大家定性为外包二开基线项目，目前已经有许多公司及个人在使用。
 
-ThinkAdmin v6 基于`v1-v5`版本的积累，结合`ThinkPHP 6.0`的思维重新构建，减少大量原非必需的组件，自建存储层、服务层及任务机制，增加了许多友好指令！`ThinkAdmin v6`经历了数个项目实践与测试，不停调整，目前系统模块及微信模块已经趋于稳定，现将【系统管理(admin)】及【微信管理(wechat)】定为`v6`内核两大模块并使用`MIT`协议发布，其中【微商商城(data)】仅为参考案例不做技术支持可直接删除，后续可能还有其他模块及相关辅助模块更新发布，敬请期待……
+ThinkAdmin v6 基于`v1-v5`版本的积累，结合`ThinkPHP 6.0`
+的思维重新构建，减少大量原非必需的组件，自建存储层、服务层及任务机制，增加了许多友好指令！`ThinkAdmin v6`
+经历了数个项目实践与测试，不停调整，目前系统模块及微信模块已经趋于稳定，现将【系统管理(admin)】及【微信管理(wechat)】定为`v6`
+内核两大模块并使用`MIT`协议发布，其中【微商商城(data)】仅为参考案例不做技术支持可直接删除，后续可能还有其他模块及相关辅助模块更新发布，敬请期待……
 
-我们致力于二次开发底层框架，提供完整的组件及`API`，基于此框架可以快速开发应用。`ThinkAdmin v6`依赖自制组件`ThinkLibrary v6`，封装了大量常用操作，简化编码成本；默认集成`WechatDeveloper`组件，支持微信公众号、微信小程序、微信企业号、微信商户支付、支付宝支付接口等。`ThinkLibrary`组件实现`ThinkPHP v6`多应用模式及路由支持，另外还支持本地服务文件存储、七牛云对象存储（支持CDN加速）、又拍云USS存储（支持CDN加速）、阿里云OSS存储（支持CDN加速）、腾讯云COS存储（支持CDN加速）。
+我们致力于二次开发底层框架，提供完整的组件及`API`，基于此框架可以快速开发应用。`ThinkAdmin v6`依赖自制组件`ThinkLibrary v6`
+，封装了大量常用操作，简化编码成本；默认集成`WechatDeveloper`
+组件，支持微信公众号、微信小程序、微信企业号、微信商户支付、支付宝支付接口等。`ThinkLibrary`组件实现`ThinkPHP v6`
+多应用模式及路由支持，另外还支持本地服务文件存储、七牛云对象存储（支持CDN加速）、又拍云USS存储（支持CDN加速）、阿里云OSS存储（支持CDN加速）、腾讯云COS存储（支持CDN加速）。
 
 另外项目安装及二次开发可以先阅读`ThinkPHP`官方文档，数据库 SQL 文件位于项目根目录下，若实在无法解决当下问题可以加入官方微信群获得帮助。
 

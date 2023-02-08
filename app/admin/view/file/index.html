@@ -25,13 +25,13 @@
                 {field: 'name', title: '文件名称', width: '12%', align: 'center'},
                 {field: 'hash', title: '文件哈希', width: '15%', align: 'center', templet: '<div><code>{{d.hash}}</code></div>'},
                 {
-                    field: 'size', title: '文件大小', align: 'center', width: '8%', sort: true, templet: function (d) {
+                    field: 'size', title: '文件大小', align: 'center', width: '7%', sort: true, templet: function (d) {
                         return $.formatFileSize(d.size)
                     }
                 },
-                {field: 'xext', title: '文件后缀', align: 'center', width: '8%', sort: true},
+                {field: 'xext', title: '文件后缀', align: 'center', width: '7%', sort: true},
                 {
-                    field: 'xurl', title: '查看文件', width: '8%', align: 'center', templet: function (d) {
+                    field: 'xurl', title: '查看文件', width: '7%', align: 'center', templet: function (d) {
                         if (typeof d.mime === 'string' && /^image\//.test(d.mime)) {
                             return laytpl('<div class="headimg headimg-no headimg-ss margin-0" data-tips-hover data-tips-image="{{d.xurl}}" style="background-image:url({{d.xurl}})"></div>').render(d)
                         } else if (typeof d.mime === 'string' && /^(video|audio)\//.test(d.mime)) {
@@ -48,13 +48,16 @@
                 },
                 {field: 'ctype', title: '存储方式', align: 'center', width: '10%'},
                 {field: 'create_at', title: '上传时间', align: 'center', width: '15%', sort: true},
-                {toolbar: '#toolbar', title: '操作面板', align: 'center', minWidth: 90, fixed: 'right'}
+                {toolbar: '#toolbar', title: '操作面板', align: 'center', minWidth: 140, fixed: 'right'}
             ]]
         });
     });
 </script>
 
 <script type="text/html" id="toolbar">
+    <!--{if auth("remove")}-->
+    <a class="layui-btn layui-btn-sm" data-modal="{:url('edit')}?id={{d.id}}" data-title="编辑文件信息">编 辑</a>
+    <!--{/if}-->
     <!--{if auth("remove")}-->
     <a class="layui-btn layui-btn-sm layui-btn-danger" data-action="{:url('remove')}" data-value="id#{{d.id}}">删 除</a>
     <!--{/if}-->

@@ -1,17 +1,16 @@
 <?php
 
 // +----------------------------------------------------------------------
-// | ThinkAdmin
+// | Wechat Plugin for ThinkAdmin
 // +----------------------------------------------------------------------
-// | 版权所有 2014~2022 广州楚才信息科技有限公司 [ http://www.cuci.cc ]
+// | 版权所有 2014~2023 Anyon <zoujingli@qq.com>
 // +----------------------------------------------------------------------
 // | 官方网站: https://thinkadmin.top
 // +----------------------------------------------------------------------
 // | 开源协议 ( https://mit-license.org )
 // | 免费声明 ( https://thinkadmin.top/disclaimer )
 // +----------------------------------------------------------------------
-// | gitee 代码仓库：https://gitee.com/zoujingli/ThinkAdmin
-// | github 代码仓库：https://github.com/zoujingli/ThinkAdmin
+// | gitee 代码仓库：https://gitee.com/zoujingli/think-plugs-wechat
 // +----------------------------------------------------------------------
 
 namespace app\wechat\command;
@@ -67,7 +66,7 @@ class Fans extends Command
     protected function _list(string $next = '', int $done = 0): string
     {
         $appid = WechatService::getAppid();
-        $this->output->comment('开始获取微信用户数据');
+        $this->process->message('开始获取微信用户数据');
         while (is_string($next)) {
             $result = WechatService::WeChatUser()->getUserList($next);
             if (is_array($result) && !empty($result['data']['openid'])) {
@@ -75,8 +74,9 @@ class Fans extends Command
                     $info = WechatService::WeChatUser()->getBatchUserInfo($openids);
                     if (is_array($info) && !empty($info['user_info_list'])) {
                         foreach ($info['user_info_list'] as $user) if (isset($user['nickname'])) {
-                            $this->queue->message($result['total'], ++$done, "-> {$user['openid']} {$user['nickname']}");
+                            $this->queue->message($result['total'], ++$done, "-> 开始获取 {$user['openid']} {$user['nickname']}");
                             FansService::set($user, $appid);
+                            $this->queue->message($result['total'], $done, "-> 完成更新 {$user['openid']} {$user['nickname']}", 1);
                         }
                     }
                 }
@@ -85,8 +85,8 @@ class Fans extends Command
                 $next = null;
             }
         }
-        $this->output->comment($done > 0 ? '微信用户数据获取完成' : '未获取到微信用户数据');
-        $this->output->newLine();
+        $this->process->message($done > 0 ? '微信用户数据获取完成' : '未获取到微信用户数据');
+        $this->process->message('');
         return "共获取 {$done} 个用户数据";
     }
 

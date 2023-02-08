@@ -4,12 +4,12 @@
 <div class="header"><span>{:date('H:i')}</span></div>
 <div class="container">
     {notempty name='news.articles'} {foreach $news.articles as $k => $v} {if $k < 1}
-    <a href="{:url('wechat/api.view/item')}?id={$v.id}" data-lazy-src="{$v.local_url}" class="item">
+    <a href="{:url('api.view/item')}?id={$v.id}" data-lazy-src="{$v.local_url}" class="item">
         {if $v.title}<span>{$v.title}</span>{/if}
     </a>
     {else}
     <div class="hr-line-dashed"></div>
-    <a href="{:url('wechat/api.view/item')}?id={$v.id}" class='other'>
+    <a href="{:url('api.view/item')}?id={$v.id}" class='other'>
         <span>{$v.title}</span><span data-lazy-src="{$v.local_url}"></span>
     </a>
     {/if} {/foreach} {else}

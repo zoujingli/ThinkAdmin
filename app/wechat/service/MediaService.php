@@ -1,17 +1,16 @@
 <?php
 
 // +----------------------------------------------------------------------
-// | ThinkAdmin
+// | Wechat Plugin for ThinkAdmin
 // +----------------------------------------------------------------------
-// | 版权所有 2014~2022 广州楚才信息科技有限公司 [ http://www.cuci.cc ]
+// | 版权所有 2014~2023 Anyon <zoujingli@qq.com>
 // +----------------------------------------------------------------------
 // | 官方网站: https://thinkadmin.top
 // +----------------------------------------------------------------------
 // | 开源协议 ( https://mit-license.org )
 // | 免费声明 ( https://thinkadmin.top/disclaimer )
 // +----------------------------------------------------------------------
-// | gitee 代码仓库：https://gitee.com/zoujingli/ThinkAdmin
-// | github 代码仓库：https://github.com/zoujingli/ThinkAdmin
+// | gitee 代码仓库：https://gitee.com/zoujingli/think-plugs-wechat
 // +----------------------------------------------------------------------
 
 namespace app\wechat\service;
@@ -19,6 +18,12 @@ namespace app\wechat\service;
 use app\wechat\model\WechatMedia;
 use app\wechat\model\WechatNews;
 use app\wechat\model\WechatNewsArticle;
+use Endroid\QrCode\Builder\Builder;
+use Endroid\QrCode\Encoding\Encoding;
+use Endroid\QrCode\ErrorCorrectionLevel\ErrorCorrectionLevelHigh;
+use Endroid\QrCode\RoundBlockSizeMode\RoundBlockSizeModeMargin;
+use Endroid\QrCode\Writer\PngWriter;
+use Endroid\QrCode\Writer\Result\ResultInterface;
 use think\admin\Service;
 use think\admin\Storage;
 use WeChat\Contracts\MyCurlFile;
@@ -42,17 +47,20 @@ class MediaService extends Service
     public static function news($id, array $map = []): array
     {
         // 文章主体数据
-        $map1 = ['id' => $id, 'is_deleted' => 0];
-        $data = WechatNews::mk()->where($map1)->where($map)->find();
+        $data = WechatNews::mk()->where(['id' => $id, 'is_deleted' => 0])->where($map)->findOrEmpty()->toArray();
         if (empty($data)) return [];
+
         // 文章内容编号
         $data['articles'] = [];
         $aids = $data['articleids'] = str2arr($data['article_id']);
-        if (empty($data['articleids'])) return $data->toArray();
-        // 文章内容集合
-        $query = WechatNewsArticle::mk()->whereIn('id', $aids)->orderField('id', $aids);
-        $data['articles'] = $query->withoutField('create_by,create_at')->select()->toArray();
-        return $data->toArray();
+        if (empty($aids)) return $data;
+
+        // 文章内容列表
+        $items = WechatNewsArticle::mk()->whereIn('id', $aids)->withoutField('create_by,create_at')->select()->toArray();
+        foreach ($aids as $aid) foreach ($items as $item) if (intval($item['id']) === intval($aid)) $data['articles'][] = $item;
+
+        // 返回文章内容
+        return $data;
     }
 
     /**
@@ -72,10 +80,14 @@ class MediaService extends Service
     {
         $map = ['md5' => md5($url), 'appid' => WechatService::getAppid()];
         if (($mediaId = WechatMedia::mk()->where($map)->value('media_id'))) return $mediaId;
-        $result = WechatService::WeChatMedia()->addMaterial(self::buildCurlFile($url), $type, $video);
+        $result = WechatService::WeChatMedia()->addMaterial(static::buildCurlFile($url), $type, $video);
         WechatMedia::mUpdate([
-            'local_url' => $url, 'md5' => $map['md5'], 'type' => $type, 'appid' => $map['appid'],
-            'media_url' => $result['url'] ?? '', 'media_id' => $result['media_id'],
+            'md5'       => $map['md5'],
+            'type'      => $type,
+            'appid'     => $map['appid'],
+            'media_id'  => $result['media_id'],
+            'media_url' => $result['url'] ?? '',
+            'local_url' => $url,
         ], 'type', $map);
         return $result['media_id'];
     }
@@ -93,5 +105,20 @@ class MediaService extends Service
         } else {
             return new MyCurlFile(Storage::down($local)['file']);
         }
+    }
+
+    /**
+     * 获取二维码内容接口
+     * @param string $text 二维码文本内容
+     * @return \Endroid\QrCode\Writer\Result\ResultInterface
+     */
+    public static function getQrcode(string $text): ResultInterface
+    {
+        return Builder::create()->data($text)->size(300)->margin(15)
+            ->writer(new PngWriter())->encoding(new Encoding('UTF-8'))
+            ->writerOptions([])->validateResult(false)
+            ->roundBlockSizeMode(new RoundBlockSizeModeMargin())
+            ->errorCorrectionLevel(new ErrorCorrectionLevelHigh())
+            ->build();
     }
 }

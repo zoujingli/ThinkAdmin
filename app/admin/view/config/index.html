@@ -152,24 +152,16 @@
                 <td><a target="_blank" href="https://www.thinkphp.cn">ThinkPHP Version {$app->version()}</a></td>
             </tr>
             <tr>
-                <th class="nowrap text-center">管理程序</th>
+                <th class="nowrap text-center">基础程序</th>
                 <td><a target="_blank" href="https://thinkadmin.top">ThinkAdmin Version {$version|default='6.0.0'}</a></td>
             </tr>
             <tr>
-                <th class="nowrap text-center">服务器信息</th>
+                <th class="nowrap text-center">操作系统</th>
                 <td>{:php_uname()}</td>
             </tr>
             <tr>
-                <th class="nowrap text-center">服务器软件</th>
-                <td>{$request->server('SERVER_SOFTWARE',php_sapi_name())}</td>
-            </tr>
-            <tr>
-                <th class="nowrap text-center">PHP 版本</th>
-                <td>PHP Version {$Think.const.PHP_VERSION}</td>
-            </tr>
-            <tr>
-                <th class="nowrap text-center">MySQL 版本</th>
-                <td>MySQL Version {$app->db->query('SELECT VERSION()')[0]['VERSION()']}</td>
+                <th class="nowrap text-center">运行环境</th>
+                <td>{:ucfirst($request->server('SERVER_SOFTWARE',php_sapi_name()))} & PHP {$Think.const.PHP_VERSION} & {:ucfirst(app()->db->connect()->getConfig('type'))}</td>
             </tr>
             </tbody>
         </table>

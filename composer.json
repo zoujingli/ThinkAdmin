@@ -16,21 +16,9 @@
   ],
   "minimum-stability": "stable",
   "require": {
-    "php": ">=7.1.0",
-    "ext-gd": "*",
-    "ext-xml": "*",
-    "ext-json": "*",
-    "ext-curl": "*",
-    "ext-iconv": "*",
-    "ext-openssl": "*",
-    "ext-mbstring": "*",
-    "ext-simplexml": "*",
-    "endroid/qr-code": "^1.9",
-    "topthink/framework": "^6.0",
-    "topthink/think-view": "^1.0",
-    "zoujingli/ip2region": "^2.0",
-    "zoujingli/think-library": "^6.0.37",
-    "zoujingli/wechat-developer": "^1.2"
+    "php": ">=7.1",
+    "zoujingli/think-plugs-admin": "^1.0",
+    "zoujingli/think-plugs-wechat": "^1.0"
   },
   "autoload": {
     "psr-0": {
@@ -45,5 +33,10 @@
       "@php think service:discover",
       "@php think vendor:publish"
     ]
+  },
+  "config": {
+    "allow-plugins": {
+      "zoujingli/think-install": true
+    }
   }
 }

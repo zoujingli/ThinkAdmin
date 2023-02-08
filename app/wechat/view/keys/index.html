@@ -1,4 +1,4 @@
-{extend name="../../admin/view/table"}
+{extend name="table"}
 
 {block name="button"}
 <!--{if auth("defaults") and $type eq 'index'}-->
@@ -84,17 +84,17 @@
 
 <script type="text/html" id="PreViewTpl">
     {{# if(d.type==='音乐'){ }}
-    <a data-phone-view='{:url("@wechat/api.view/music")}?title={{d.music_title}}&desc={{d.music_desc}}'>预览</a>
+    <a data-phone-view='{:url("api.view/music")}?title={{d.music_title}}&desc={{d.music_desc}}'>预览</a>
     {{# }else if(d.type==='图片'){ }}
-    <a data-phone-view='{:url("@wechat/api.view/image")}?content={{d.image_url}}'>预览</a>
+    <a data-phone-view='{:url("api.view/image")}?content={{d.image_url}}'>预览</a>
     {{# }else if(d.type==='图文'){ }}
-    <a data-phone-view='{:url("@wechat/api.view/news")}?id={{d.news_id}}'>预览</a>
+    <a data-phone-view='{:url("api.view/news")}?id={{d.news_id}}'>预览</a>
     {{# }else if(d.type==='视频'){ }}
-    <a data-phone-view='{:url("@wechat/api.view/video")}?title={{d.video_title}}&desc={{d.video_desc}}&url={{d.video_url}}'>预览</a>
+    <a data-phone-view='{:url("api.view/video")}?title={{d.video_title}}&desc={{d.video_desc}}&url={{d.video_url}}'>预览</a>
     {{# }else if(d.type==='语音'){ }}
-    <a data-phone-view='{:url("@wechat/api.view/voice")}?content={{d.voice_url}}'>预览</a>
+    <a data-phone-view='{:url("api.view/voice")}?content={{d.voice_url}}'>预览</a>
     {{# }else if(d.type==='文字'||d.type==='转客服'){ }}
-    <a data-phone-view='{:url("@wechat/api.view/text")}?content={{d.content}}'>预览</a>
+    <a data-phone-view='{:url("api.view/text")}?content={{d.content}}'>预览</a>
     {{# }else{ }}
     {{d.content}}
     {{# } }}

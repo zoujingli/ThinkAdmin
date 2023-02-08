@@ -1,17 +1,16 @@
 <?php
 
 // +----------------------------------------------------------------------
-// | ThinkAdmin
+// | Admin Plugin for ThinkAdmin
 // +----------------------------------------------------------------------
-// | 版权所有 2014~2022 广州楚才信息科技有限公司 [ http://www.cuci.cc ]
+// | 版权所有 2014~2023 Anyon<zoujingli@qq.com>
 // +----------------------------------------------------------------------
 // | 官方网站: https://thinkadmin.top
 // +----------------------------------------------------------------------
 // | 开源协议 ( https://mit-license.org )
 // | 免费声明 ( https://thinkadmin.top/disclaimer )
 // +----------------------------------------------------------------------
-// | gitee 代码仓库：https://gitee.com/zoujingli/ThinkAdmin
-// | github 代码仓库：https://github.com/zoujingli/ThinkAdmin
+// | gitee 代码仓库：https://gitee.com/zoujingli/think-plugs-admin
 // +----------------------------------------------------------------------
 
 namespace app\admin\controller\api;
@@ -47,13 +46,10 @@ class Plugs extends Controller
      */
     public function script(): \think\Response
     {
-        $taDebug = $this->app->isDebug() ? 'true' : 'false';
-        $taAdmin = sysuri('admin/index/index', [], false);
-        $taEditor = sysconf('base.editor') ?: 'ckeditor4';
-        return response(join("\n", [
-            "window.taDebug = {$taDebug};",
-            "window.taAdmin = '{$taAdmin}';",
-            "window.taEditor = '{$taEditor}';",
+        return response(join("\r\n", [
+            sprintf("window.taDebug = %s;", $this->app->isDebug() ? 'true' : 'false'),
+            sprintf("window.taAdmin = '%s';", sysuri('admin/index/index', [], false)),
+            sprintf("window.taEditor = '%s';", sysconf('base.editor') ?: 'ckeditor4'),
         ]))->contentType('application/x-javascript');
     }
 

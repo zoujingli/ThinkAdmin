@@ -1,17 +1,16 @@
 <?php
 
 // +----------------------------------------------------------------------
-// | ThinkAdmin
+// | Admin Plugin for ThinkAdmin
 // +----------------------------------------------------------------------
-// | 版权所有 2014~2022 广州楚才信息科技有限公司 [ http://www.cuci.cc ]
+// | 版权所有 2014~2023 Anyon<zoujingli@qq.com>
 // +----------------------------------------------------------------------
 // | 官方网站: https://thinkadmin.top
 // +----------------------------------------------------------------------
 // | 开源协议 ( https://mit-license.org )
 // | 免费声明 ( https://thinkadmin.top/disclaimer )
 // +----------------------------------------------------------------------
-// | gitee 代码仓库：https://gitee.com/zoujingli/ThinkAdmin
-// | github 代码仓库：https://github.com/zoujingli/ThinkAdmin
+// | gitee 代码仓库：https://gitee.com/zoujingli/think-plugs-admin
 // +----------------------------------------------------------------------
 
 namespace app\admin\controller;
@@ -19,6 +18,7 @@ namespace app\admin\controller;
 use think\admin\Controller;
 use think\admin\service\AdminService;
 use think\admin\service\ModuleService;
+use think\admin\service\RuntimeService;
 use think\admin\service\SystemService;
 use think\admin\storage\AliossStorage;
 use think\admin\storage\QiniuStorage;
@@ -81,11 +81,11 @@ class Config extends Controller
                 if ($post['xpath'] !== 'admin' && file_exists($this->app->getBasePath() . $post['xpath'])) {
                     $this->error("后台入口名称{$post['xpath']}已经存在应用！");
                 }
-                SystemService::setRuntime(null, [$post['xpath'] => 'admin']);
+                RuntimeService::set(null, [$post['xpath'] => 'admin']);
             }
             // 修改网站 ICON 图标，替换 public/favicon.ico
-            if (preg_match('#^https?://#', $icon = $post['site_icon'] ?? '')) try {
-                SystemService::setFavicon($icon);
+            if (preg_match('#^https?://#', $post['site_icon'] ?? '')) try {
+                SystemService::setFavicon($post['site_icon'] ?? '');
             } catch (\Exception $exception) {
                 trace_file($exception);
             }

@@ -11,21 +11,21 @@
             </div>
             <div class="margin-bottom-0">
                 <p class="font-w7 color-green">微信商户支付测试配置</p>
-                <p>JSAPI 支付测试需要在微信商户平台配置支付目录：<a data-copy="{:url('wechat/api.test/',[],'',true)}">{:sysuri('wechat/api.test/index',[],'',true)}</a></p>
-                <p>扫码支付①需要在微信商户平台配置支付通知地址：<a data-copy="{:url('wechat/api.test/scanOneNotify',[],'',true)}">{:url('wechat/api.test/scanOneNotify',[],'',true)}</a></p>
+                <p>JSAPI 支付测试需要在微信商户平台配置支付目录：<a data-copy="{:dirname(url('api.test/index',[],'',true))}/">{:dirname(url('api.test/index',[],'',true))}/</a></p>
+                <p>扫码支付①需要在微信商户平台配置支付通知地址：<a data-copy="{:url('api.test/scanOneNotify',[],'',true)}">{:url('api.test/scanOneNotify',[],'',true)}</a></p>
             </div>
         </div>
         <div class="text-center margin-top-20 test-qrcode-box">
             <div class="inline-block">
-                <img alt="img" onerror="this.src='__ROOT__/static/theme/img/wechat/qrc_pay_error.jpg'" class="notselect" data-tips-image src="{:url('wechat/api.test/jsapiQrc')}">
+                <img alt="img" onerror="this.src='__ROOT__/static/theme/img/wechat/qrc_pay_error.jpg'" class="notselect" data-tips-image src="{:url('api.test/jsapiQrc')}">
                 <p class="text-center">微信 JSAPI 支付</p>
             </div>
             <div class="inline-block margin-left-40 margin-right-40">
-                <img alt="img" onerror="this.src='__ROOT__/static/theme/img/wechat/qrc_pay_error.jpg'" class="notselect" data-tips-image src="{:url('wechat/api.test/scanOneQrc')}">
+                <img alt="img" onerror="this.src='__ROOT__/static/theme/img/wechat/qrc_pay_error.jpg'" class="notselect" data-tips-image src="{:url('api.test/scanOneQrc')}">
                 <p class="text-center">微信扫码支付①</p>
             </div>
             <div class="inline-block">
-                <img alt="img" onerror="this.src='__ROOT__/static/theme/img/wechat/qrc_pay_error.jpg'" class="notselect" data-tips-image src="{:url('wechat/api.test/scanTwoQrc')}">
+                <img alt="img" onerror="this.src='__ROOT__/static/theme/img/wechat/qrc_pay_error.jpg'" class="notselect" data-tips-image src="{:url('api.test/scanTwoQrc')}">
                 <p class="text-center">微信扫码支付②</p>
             </div>
         </div>

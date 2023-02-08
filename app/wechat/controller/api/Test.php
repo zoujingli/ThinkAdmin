@@ -1,21 +1,21 @@
 <?php
 
 // +----------------------------------------------------------------------
-// | ThinkAdmin
+// | Wechat Plugin for ThinkAdmin
 // +----------------------------------------------------------------------
-// | 版权所有 2014~2022 广州楚才信息科技有限公司 [ http://www.cuci.cc ]
+// | 版权所有 2014~2023 Anyon <zoujingli@qq.com>
 // +----------------------------------------------------------------------
 // | 官方网站: https://thinkadmin.top
 // +----------------------------------------------------------------------
 // | 开源协议 ( https://mit-license.org )
 // | 免费声明 ( https://thinkadmin.top/disclaimer )
 // +----------------------------------------------------------------------
-// | gitee 代码仓库：https://gitee.com/zoujingli/ThinkAdmin
-// | github 代码仓库：https://github.com/zoujingli/ThinkAdmin
+// | gitee 代码仓库：https://gitee.com/zoujingli/think-plugs-wechat
 // +----------------------------------------------------------------------
 
 namespace app\wechat\controller\api;
 
+use app\wechat\service\MediaService;
 use app\wechat\service\WechatService;
 use think\admin\Controller;
 use think\admin\extend\CodeExtend;
@@ -31,10 +31,7 @@ class Test extends Controller
 {
     /**
      * 微信JSAPI支付二维码
-     * @return Response
-     * @throws \Endroid\QrCode\Exceptions\ImageFunctionFailedException
-     * @throws \Endroid\QrCode\Exceptions\ImageFunctionUnknownException
-     * @throws \Endroid\QrCode\Exceptions\ImageTypeInvalidException
+     * @return \think\Response
      */
     public function jsapiQrc(): Response
     {
@@ -44,10 +41,7 @@ class Test extends Controller
 
     /**
      * 显示网页授权二维码
-     * @return Response
-     * @throws \Endroid\QrCode\Exceptions\ImageFunctionFailedException
-     * @throws \Endroid\QrCode\Exceptions\ImageFunctionUnknownException
-     * @throws \Endroid\QrCode\Exceptions\ImageTypeInvalidException
+     * @return \think\Response
      */
     public function oauthQrc(): Response
     {
@@ -57,10 +51,7 @@ class Test extends Controller
 
     /**
      * 显示网页授权二维码
-     * @return Response
-     * @throws \Endroid\QrCode\Exceptions\ImageFunctionFailedException
-     * @throws \Endroid\QrCode\Exceptions\ImageFunctionUnknownException
-     * @throws \Endroid\QrCode\Exceptions\ImageTypeInvalidException
+     * @return \think\Response
      */
     public function jssdkQrc(): Response
     {
@@ -70,10 +61,7 @@ class Test extends Controller
 
     /**
      * 微信扫码支付模式一二维码显示
-     * @return Response
-     * @throws \Endroid\QrCode\Exceptions\ImageFunctionFailedException
-     * @throws \Endroid\QrCode\Exceptions\ImageFunctionUnknownException
-     * @throws \Endroid\QrCode\Exceptions\ImageTypeInvalidException
+     * @return \think\Response
      */
     public function scanOneQrc(): Response
     {
@@ -83,10 +71,7 @@ class Test extends Controller
 
     /**
      * 扫码支付模式二测试二维码
-     * @return Response
-     * @throws \Endroid\QrCode\Exceptions\ImageFunctionFailedException
-     * @throws \Endroid\QrCode\Exceptions\ImageFunctionUnknownException
-     * @throws \Endroid\QrCode\Exceptions\ImageTypeInvalidException
+     * @return \think\Response
      * @throws \WeChat\Exceptions\InvalidResponseException
      * @throws \WeChat\Exceptions\LocalCacheException
      */
@@ -240,16 +225,11 @@ HTML;
     /**
      * 创建二维码响应对应
      * @param string $url 二维码内容
-     * @return Response
-     * @throws \Endroid\QrCode\Exceptions\ImageFunctionFailedException
-     * @throws \Endroid\QrCode\Exceptions\ImageFunctionUnknownException
-     * @throws \Endroid\QrCode\Exceptions\ImageTypeInvalidException
+     * @return \think\Response
      */
     private function _buildQrcResponse(string $url): Response
     {
-        $qrCode = new \Endroid\QrCode\QrCode();
-        $qrCode->setText($url)->setSize(300)->setPadding(20)->setImageType('png');
-        return response($qrCode->get(), 200, ['Content-Type' => 'image/png']);
+        $result = MediaService::getQrcode($url);
+        return response($result->getString(), 200, ['Content-Type' => $result->getMimeType()]);
     }
-
 }

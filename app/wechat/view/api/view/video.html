@@ -6,7 +6,7 @@
     <div class="content">
         <div>{$title|default=''}</div>
         <div class="date">{:date('m月d日')}</div>
-        <video src="{$url|default=''}" width="100%" controls preload></video>
+        <video src="{$url|default=''}" width="100%" autoplay loop muted></video>
     </div>
 </div>
 {/block}

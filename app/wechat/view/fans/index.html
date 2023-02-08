@@ -1,4 +1,4 @@
-{extend name="../../admin/view/table"}
+{extend name="table"}
 
 {block name="button"}
 <!--{if auth("black")}-->
@@ -33,11 +33,11 @@
                 {
                     field: 'headimg', title: '头像', width: 65, align: "center", templet: function (d) {
                         d.headimgurl = d.headimgurl || '';
-                        return d.headimgurl ? '<div class="headimg headimg-xs margin-0" data-tips-image data-tips-hover data-lazy-src="' + d.headimgurl + '" style="background-image:url(' + d.headimgurl + ')"></div>' : '';
+                        return d.headimgurl ? '<div class="headimg headimg-xs margin-0" data-tips-image data-tips-hover data-lazy-src="' + d.headimgurl + '" style="background-image:url(' + d.headimgurl + ')"></div>' : '-';
                     }
                 },
-                {field: 'nickname', title: '微信昵称', align: "center", minWidth: 100},
-                {field: 'province', title: '所在区域', align: "center", minWidth: 120, templet: '<div>{{d.country}} {{d.province}} {{d.city}}</div>'},
+                {field: 'nickname', title: '微信昵称', align: "center", minWidth: 100, templet: '<div>{{d.nickname||"-"}}</div>'},
+                {field: 'province', title: '所在区域', align: "center", minWidth: 120, templet: '<div>{{d.country||"-"}} {{d.province}} {{d.city}}</div>'},
                 {field: 'sex', title: '性别', align: 'center', minWidth: 80, templet: '<div>{{d.sex==1 ? "男" : (d.sex==2 ? "女" : "未知")}}</div>'},
                 {field: 'language', title: '使用语言', align: 'center', minWidth: 100, templet: '<div>{{d.language}}</div>'},
                 {

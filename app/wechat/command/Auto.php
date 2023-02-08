@@ -1,17 +1,16 @@
 <?php
 
 // +----------------------------------------------------------------------
-// | ThinkAdmin
+// | Wechat Plugin for ThinkAdmin
 // +----------------------------------------------------------------------
-// | 版权所有 2014~2022 广州楚才信息科技有限公司 [ http://www.cuci.cc ]
+// | 版权所有 2014~2023 Anyon <zoujingli@qq.com>
 // +----------------------------------------------------------------------
 // | 官方网站: https://thinkadmin.top
 // +----------------------------------------------------------------------
 // | 开源协议 ( https://mit-license.org )
 // | 免费声明 ( https://thinkadmin.top/disclaimer )
 // +----------------------------------------------------------------------
-// | gitee 代码仓库：https://gitee.com/zoujingli/ThinkAdmin
-// | github 代码仓库：https://github.com/zoujingli/ThinkAdmin
+// | gitee 代码仓库：https://gitee.com/zoujingli/think-plugs-wechat
 // +----------------------------------------------------------------------
 
 namespace app\wechat\command;
@@ -94,7 +93,7 @@ class Auto extends Command
             }
         }
         if ($type === 'image' && !empty($data['image_url'])) {
-            if ($mediaId = MediaService::upload($data['image_url'], 'image')) {
+            if ($mediaId = MediaService::upload($data['image_url'])) {
                 $result = $this->sendMessage('image', ['media_id' => $mediaId]);
             }
         }
@@ -110,7 +109,7 @@ class Auto extends Command
             }
         }
         if ($type === 'music' && !empty($data['music_url']) && !empty($data['music_title']) && !empty($data['music_desc'])) {
-            $mediaId = $data['music_image'] ? MediaService::upload($data['music_image'], 'image') : '';
+            $mediaId = $data['music_image'] ? MediaService::upload($data['music_image']) : '';
             $result = $this->sendMessage('music', [
                 'hqmusicurl'  => $data['music_url'], 'musicurl' => $data['music_url'],
                 'description' => $data['music_desc'], 'title' => $data['music_title'], 'thumb_media_id' => $mediaId,

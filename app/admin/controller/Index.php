@@ -1,17 +1,16 @@
 <?php
 
 // +----------------------------------------------------------------------
-// | ThinkAdmin
+// | Admin Plugin for ThinkAdmin
 // +----------------------------------------------------------------------
-// | 版权所有 2014~2022 广州楚才信息科技有限公司 [ http://www.cuci.cc ]
+// | 版权所有 2014~2023 Anyon<zoujingli@qq.com>
 // +----------------------------------------------------------------------
 // | 官方网站: https://thinkadmin.top
 // +----------------------------------------------------------------------
 // | 开源协议 ( https://mit-license.org )
 // | 免费声明 ( https://thinkadmin.top/disclaimer )
 // +----------------------------------------------------------------------
-// | gitee 代码仓库：https://gitee.com/zoujingli/ThinkAdmin
-// | github 代码仓库：https://github.com/zoujingli/ThinkAdmin
+// | gitee 代码仓库：https://gitee.com/zoujingli/think-plugs-admin
 // +----------------------------------------------------------------------
 
 namespace app\admin\controller;
@@ -87,7 +86,7 @@ class Index extends Controller
     {
         $this->_applyFormToken();
         if (AdminService::getUserId() === intval($id)) {
-            SystemUser::mForm('admin@user/form', 'id', [], ['id' => $id]);
+            SystemUser::mForm('user/form', 'id', [], ['id' => $id]);
         } else {
             $this->error('只能修改自己的资料！');
         }
@@ -131,7 +130,7 @@ class Index extends Controller
         }
         if ($this->app->request->isGet()) {
             $this->verify = true;
-            SystemUser::mForm('admin@user/pass', 'id', [], ['id' => $id]);
+            SystemUser::mForm('user/pass', 'id', [], ['id' => $id]);
         } else {
             $data = $this->_vali([
                 'password.require'            => '登录密码不能为空！',

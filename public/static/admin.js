@@ -1,15 +1,14 @@
 // +----------------------------------------------------------------------
-// | ThinkAdmin
+// | Static Plugin for ThinkAdmin
 // +----------------------------------------------------------------------
-// | 版权所有 2014~2022 广州楚才信息科技有限公司 [ http://www.cuci.cc ]
+// | 版权所有 2014~2023 Anyon<zoujingli@qq.com>
 // +----------------------------------------------------------------------
 // | 官方网站: https://thinkadmin.top
 // +----------------------------------------------------------------------
 // | 开源协议 ( https://mit-license.org )
 // | 免费声明 ( https://thinkadmin.top/disclaimer )
 // +----------------------------------------------------------------------
-// | gitee 代码仓库：https://gitee.com/zoujingli/ThinkAdmin
-// | github 代码仓库：https://github.com/zoujingli/ThinkAdmin
+// | gitee 代码仓库：https://gitee.com/zoujingli/think-plugs-static
 // +----------------------------------------------------------------------
 
 /*! 应用根路径，静态插件库路径，动态插件库路径 */
@@ -185,8 +184,15 @@ $(function () {
         };
         /*! 显示加载提示 */
         this.loading = function (msg, call) {
-            var idx = msg ? layer.msg(msg, {icon: 16, scrollbar: false, shade: this.shade, time: 0, end: call}) : layer.load(2, {time: 0, scrollbar: false, shade: this.shade, end: call});
+            var idx = msg ? layer.msg(msg, {icon: 16, scrollbar: false, shade: this.shade, time: 0, end: call}) : layer.load(0, {time: 0, scrollbar: false, shade: this.shade, end: call});
             return $.msg.idx.push(idx), idx;
+        };
+        /*! Notify 调用入口 */
+        // https://www.jq22.com/demo/jquerygrowl-notification202104021049
+        this.notify = function (title, msg, time, option) {
+            require(['notify'], function (Notify) {
+                Notify.notify(Object.assign({title: title || '', description: msg || '', position: 'top-right', closeTimeout: time || 3000}, (option || {})));
+            });
         };
         /*! 页面加载层 */
         this.page = new function () {
@@ -278,12 +284,17 @@ $(function () {
                     if (typeof Pace === 'object' && loading !== false) Pace.restart();
                     if (typeof headers === 'object') for (i in headers) xhr.setRequestHeader(i, headers[i]);
                 }, error: function (XMLHttpRequest, $dialog, layIdx, iframe) {
+                    // 异常消息显示处理
                     if (parseInt(XMLHttpRequest.status) !== 200 && XMLHttpRequest.responseText.indexOf('Call Stack') > -1) try {
                         layIdx = layer.open({title: XMLHttpRequest.status + ' - ' + XMLHttpRequest.statusText, type: 2, move: false, content: 'javascript:;'});
                         layer.full(layIdx), $dialog = $('#layui-layer' + layIdx), iframe = $dialog.find('iframe').get(0);
                         (iframe.contentDocument || iframe.contentWindow.document).write(XMLHttpRequest.responseText);
-                        $dialog.find('.layui-layer-setwin').css({right: '35px', top: '28px'}).find('a').css({marginLeft: 0});
-                        $dialog.find('.layui-layer-title').css({color: 'red', height: '70px', lineHeight: '70px', fontSize: '22px', textAlign: 'center', fontWeight: 700});
+                        iframe.winClose = {width: '30px', height: '30px', lineHeight: '30px', fontSize: '30px', marginLeft: 0};
+                        iframe.winTitle = {color: 'red', height: '60px', lineHeight: '60px', fontSize: '20px', textAlign: 'center', fontWeight: 700};
+                        $dialog.find('.layui-layer-title').css(iframe.winTitle) && $dialog.find('.layui-layer-setwin').css(iframe.winClose).find('span').css(iframe.winClose);
+                        setTimeout(function () {
+                            $(iframe).height($dialog.height() - 60);
+                        }, 100);
                     } catch (e) {
                         layer.close(layIdx);
                     }
@@ -313,11 +324,15 @@ $(function () {
             }
         };
         /*! 以 HASH 打开新网页 */
-        this.href = function (url, elem) {
-            this.isMenu = elem && elem.dataset.menuNode;
+        this.href = function (url, elem, hash) {
+            this.isMenu = !!(elem && elem.dataset.menuNode);
             if (this.isMenu) layui.sessionData('pages', null);
-            if (url !== '#') return location.hash = $.menu.parseUri(url, elem);
-            if (this.isMenu) return $('[data-menu-node^="' + elem.dataset.menuNode + '-"]:first').trigger('click');
+            if (typeof url !== 'string' || url === '#' || url === '') {
+                return this.isMenu && $('[data-menu-node^="' + elem.dataset.menuNode + '-"]:first').trigger('click');
+            }
+            hash = hash || $.menu.parseUri(url, elem);
+            this.isRedirect = url.indexOf('#') > -1 && url.split('#', 2)[0] !== location.pathname;
+            this.isRedirect ? location.href = url.split('#', 2)[0] + '#' + hash : location.hash = hash;
         };
         /*! 加载 HTML 到 BODY 位置 */
         this.open = function (url, data, call, load, tips) {
@@ -582,14 +597,18 @@ $(function () {
     /*! 上传单个视频 */
     $.fn.uploadOneVideo = function () {
         return this.each(function () {
-            if ($(this).data('inited')) return true; else $(this).data('inited', true);
-            var $in = $(this), $bt = $('<a data-file class="uploadimage uploadvideo"><span class="layui-icon">&#x1006;</span><span class="layui-icon">&#xe615;</span></a>').data('input', this);
-            $bt.attr('data-size', $in.data('size') || 0).attr('data-type', $in.data('type') || 'mp4').find('span').on('click', function (event) {
-                event.stopPropagation();
-                if ($(this).index() === 0) $bt.attr('style', ''), $in.val(''); else $in.val() && $.previewImage(encodeURI($in.val()));
-            }), $in.on('change', function () {
-                if (this.value) $bt.html('<video width="76" height="76" controls><source src="' + encodeURI(this.value) + '" type="video/mp4"></video>');
+            if (this.dataset.inited) return; else this.dataset.inited = 'true';
+            var $bt = $('<div class="uploadimage uploadvideo"><span><a data-file class="layui-icon layui-icon-upload-drag"></a><i class="layui-icon layui-icon-search"></i><i class="layui-icon layui-icon-close"></i></span><span data-file></span></div>');
+            var $in = $(this).on('change', function () {
+                if (this.value) $bt.css('backgroundImage', 'url("")').find('span[data-file]').html('<video width="100%" height="100%" autoplay loop muted><source src="' + encodeURI(this.value) + '" type="video/mp4"></video>');
             }).after($bt).trigger('change');
+            $bt.on('click', 'i.layui-icon-search', function (event) {
+                event.stopPropagation(), $in.val() && $.form.iframe(encodeURI($in.val()), '视频预览');
+            }).on('click', 'i.layui-icon-close', function (event) {
+                event.stopPropagation(), $bt.attr('style', '').find('span[data-file]').html('') && $in.val('').trigger('change');
+            }).find('[data-file]').data('input', this).attr({
+                'data-path': $in.data('path') || '', 'data-size': $in.data('size') || 0, 'data-type': $in.data('type') || 'mp4',
+            });
         });
     };
 
@@ -604,9 +623,11 @@ $(function () {
             $bt.on('click', 'i.layui-icon-search', function (event) {
                 event.stopPropagation(), $in.val() && $.previewImage(encodeURI($in.val()));
             }).on('click', 'i.layui-icon-close', function (event) {
-                event.stopPropagation(), $bt.attr('style', ''), $in.val('');
+                event.stopPropagation(), $bt.attr('style', '') && $in.val('').trigger('change');
             }).find('[data-file]').data('input', this).attr({
-                'data-path': $in.data('path') || '', 'data-size': $in.data('size') || 0, 'data-type': $in.data('type') || 'gif,png,jpg,jpeg', 'data-max-width': $in.data('max-width') || 0, 'data-max-height': $in.data('max-height') || 0, 'data-cut-width': $in.data('cut-width') || 0, 'data-cut-height': $in.data('cut-height') || 0,
+                'data-path': $in.data('path') || '', 'data-size': $in.data('size') || 0, 'data-type': $in.data('type') || 'gif,png,jpg,jpeg',
+                'data-max-width': $in.data('max-width') || 0, 'data-max-height': $in.data('max-height') || 0,
+                'data-cut-width': $in.data('cut-width') || 0, 'data-cut-height': $in.data('cut-height') || 0,
             });
         });
     };
@@ -618,7 +639,9 @@ $(function () {
             var $bt = $('<div class="uploadimage"><span><a data-file="mul" class="layui-icon layui-icon-upload-drag"></a></span><span data-file="images"></span></div>');
             var ims = this.value ? this.value.split('|') : [], $in = $(this).after($bt);
             $bt.find('[data-file]').attr({
-                'data-path': $in.data('path') || '', 'data-size': $in.data('size') || 0, 'data-type': $in.data('type') || 'gif,png,jpg,jpeg', 'data-max-width': $in.data('max-width') || 0, 'data-max-height': $in.data('max-height') || 0, 'data-cut-width': $in.data('cut-width') || 0, 'data-cut-height': $in.data('cut-height') || 0,
+                'data-path': $in.data('path') || '', 'data-size': $in.data('size') || 0, 'data-type': $in.data('type') || 'gif,png,jpg,jpeg',
+                'data-max-width': $in.data('max-width') || 0, 'data-max-height': $in.data('max-height') || 0,
+                'data-cut-width': $in.data('cut-width') || 0, 'data-cut-height': $in.data('cut-height') || 0,
             }).on('push', function (evt, src) {
                 ims.push(src), $in.val(ims.join('|')), showImageContainer([src]);
             }) && (ims.length > 0 && showImageContainer(ims));
@@ -628,7 +651,8 @@ $(function () {
                     $img = $('<div class="uploadimage uploadimagemtl"><div><a class="layui-icon">&#xe603;</a><a class="layui-icon">&#x1006;</a><a class="layui-icon">&#xe602;</a></div></div>');
                     $img.attr('data-tips-image', encodeURI(src)).css('backgroundImage', 'url(' + encodeURI(src) + ')').on('click', 'a', function (event, index, prevs, $item) {
                         event.stopPropagation(), $item = $(this).parent().parent(), index = $(this).index();
-                        if (index === 2 && $item.index() !== $bt.prevAll('div.uploadimage').length) $item.next().after($item); else if (index === 0 && $item.index() > 1) $item.prev().before($item); else if (index === 1) $item.remove();
+                        if (index === 2 && $item.index() !== $bt.prevAll('div.uploadimage').length) $item.next().after($item);
+                        else if (index === 0 && $item.index() > 1) $item.prev().before($item); else if (index === 1) $item.remove();
                         ims = [], $bt.prevAll('.uploadimage').map(function () {
                             ims.push($(this).attr('data-tips-image'));
                         });
@@ -1065,6 +1089,11 @@ $(function () {
     /*! 注册 data-phone-view 事件行为 */
     onEvent('click', '[data-phone-view]', function () {
         $.previewPhonePage(this.dataset.phoneView || this.href);
+    });
+
+    /*! 注册 data-target-submit 事件行为 */
+    onEvent('click', '[data-target-submit]', function () {
+        $(this.dataset.targetSubmit || this).submit();
     });
 
     /*! 表单编辑返回操作 */

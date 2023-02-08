@@ -1,17 +1,16 @@
 <?php
 
 // +----------------------------------------------------------------------
-// | ThinkAdmin
+// | Admin Plugin for ThinkAdmin
 // +----------------------------------------------------------------------
-// | 版权所有 2014~2022 广州楚才信息科技有限公司 [ http://www.cuci.cc ]
+// | 版权所有 2014~2023 Anyon<zoujingli@qq.com>
 // +----------------------------------------------------------------------
 // | 官方网站: https://thinkadmin.top
 // +----------------------------------------------------------------------
 // | 开源协议 ( https://mit-license.org )
 // | 免费声明 ( https://thinkadmin.top/disclaimer )
 // +----------------------------------------------------------------------
-// | gitee 代码仓库：https://gitee.com/zoujingli/ThinkAdmin
-// | github 代码仓库：https://github.com/zoujingli/ThinkAdmin
+// | gitee 代码仓库：https://gitee.com/zoujingli/think-plugs-admin
 // +----------------------------------------------------------------------
 
 namespace app\admin\controller;
@@ -75,13 +74,13 @@ class Base extends Controller
         if ($this->request->isGet()) {
             $this->types = SystemBase::types();
             $this->types[] = '--- 新增类型 ---';
-            $this->type = input('get.type') ?: ($this->types[0] ?? '-');
+            $this->type = $this->get['type'] ?? ($this->types[0] ?? '-');
         } else {
             $map = [];
             $map[] = ['deleted', '=', 0];
             $map[] = ['code', '=', $data['code']];
             $map[] = ['type', '=', $data['type']];
-            if (isset($data['id'])) $map[] = ['id', '<>', $data['id']];
+            $map[] = ['id', '<>', $data['id'] ?? 0];
             if (SystemBase::mk()->where($map)->count() > 0) {
                 $this->error("同类型的数据编码已经存在！");
             }

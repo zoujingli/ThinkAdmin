@@ -1,17 +1,16 @@
 <?php
 
 // +----------------------------------------------------------------------
-// | ThinkAdmin
+// | Admin Plugin for ThinkAdmin
 // +----------------------------------------------------------------------
-// | 版权所有 2014~2022 广州楚才信息科技有限公司 [ http://www.cuci.cc ]
+// | 版权所有 2014~2023 Anyon<zoujingli@qq.com>
 // +----------------------------------------------------------------------
 // | 官方网站: https://thinkadmin.top
 // +----------------------------------------------------------------------
 // | 开源协议 ( https://mit-license.org )
 // | 免费声明 ( https://thinkadmin.top/disclaimer )
 // +----------------------------------------------------------------------
-// | gitee 代码仓库：https://gitee.com/zoujingli/ThinkAdmin
-// | github 代码仓库：https://github.com/zoujingli/ThinkAdmin
+// | gitee 代码仓库：https://gitee.com/zoujingli/think-plugs-admin
 // +----------------------------------------------------------------------
 
 namespace app\admin\controller;
@@ -94,7 +93,7 @@ class Auth extends Controller
     {
         $map = $this->_vali(['auth.require#id' => '权限ID不能为空！']);
         if (input('action') === 'get') {
-            if ($this->app->isDebug()) AdminService::clearCache();
+            if ($this->app->isDebug()) AdminService::clear();
             $nodes = SystemNode::mk()->where($map)->column('node');
             $this->success('获取权限节点成功！', AdminService::getTree($nodes));
         } elseif (input('action') === 'save') {

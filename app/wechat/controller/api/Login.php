@@ -1,21 +1,21 @@
 <?php
 
 // +----------------------------------------------------------------------
-// | ThinkAdmin
+// | Wechat Plugin for ThinkAdmin
 // +----------------------------------------------------------------------
-// | 版权所有 2014~2022 广州楚才信息科技有限公司 [ http://www.cuci.cc ]
+// | 版权所有 2014~2023 Anyon <zoujingli@qq.com>
 // +----------------------------------------------------------------------
 // | 官方网站: https://thinkadmin.top
 // +----------------------------------------------------------------------
 // | 开源协议 ( https://mit-license.org )
 // | 免费声明 ( https://thinkadmin.top/disclaimer )
 // +----------------------------------------------------------------------
-// | gitee 代码仓库：https://gitee.com/zoujingli/ThinkAdmin
-// | github 代码仓库：https://github.com/zoujingli/ThinkAdmin
+// | gitee 代码仓库：https://gitee.com/zoujingli/think-plugs-wechat
 // +----------------------------------------------------------------------
 
 namespace app\wechat\controller\api;
 
+use app\wechat\service\MediaService;
 use app\wechat\service\WechatService;
 use think\admin\Controller;
 
@@ -40,10 +40,7 @@ class Login extends Controller
 
     /**
      * 扫描显示二维码
-     * @throws \Endroid\QrCode\Exceptions\ImageFunctionFailedException
-     * @throws \Endroid\QrCode\Exceptions\ImageFunctionUnknownException
-     * @throws \Endroid\QrCode\Exceptions\ImageTypeInvalidException
-     * @throws \think\exception\HttpResponseException
+     * @return void
      */
     public function qrc()
     {
@@ -51,10 +48,8 @@ class Login extends Controller
         $code = $this->prefix . md5(uniqid('t', true) . rand(10000, 99999));
         $text = url('wechat/api.login/oauth', [], false, true) . "?code={$code}&mode={$mode}";
         // 生成二维码并返回结果
-        $qrcode = new \Endroid\QrCode\QrCode();
-        $qrcode->setText($text)->setSize(300)->setPadding(20);
-        $content = base64_encode($qrcode->setImageType('png')->get());
-        $this->success('获取二维码成功', ['code' => $code, 'image' => "data:image/png;base64,{$content}"]);
+        $qrcode = MediaService::getQrcode($text);
+        $this->success('获取二维码成功', ['code' => $code, 'image' => $qrcode->getDataUri()]);
     }
 
     /**
@@ -73,7 +68,7 @@ class Login extends Controller
         if (stripos($this->code, $this->prefix) === 0) {
             $this->url = $this->request->url(true);
             $this->fans = WechatService::getWebOauthInfo($this->url, $this->mode);
-            if (is_array($this->fans) && isset($this->fans['openid'])) {
+            if (isset($this->fans['openid'])) {
                 $this->fans['token'] = md5(uniqid('t', true) . rand(10000, 99999));
                 $this->app->cache->set("wxlogin{$this->code}", $this->fans, $this->expire);
                 $this->app->cache->set($this->fans['openid'], $this->fans['token'], $this->expire);

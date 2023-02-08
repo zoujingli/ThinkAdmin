@@ -85,7 +85,7 @@
                         <label class="layui-form-label label-required">选取图文</label>
                         <div class="layui-input-block">
                             <input type="hidden" name="news_id" value="{$vo.news_id|default=0}">
-                            <a class="layui-btn layui-btn-sm layui-btn-primary" data-title="选择图文" data-iframe="{:url('wechat/news/select')}?field={:encode('news_id')}">选择图文</a>
+                            <a class="layui-btn layui-btn-sm layui-btn-primary" data-title="选择图文" data-iframe="{:url('news/select')}?field={:encode('news_id')}">选择图文</a>
                         </div>
                     </div>
 
@@ -168,7 +168,7 @@
                 {if isset($vo['id'])}<input type='hidden' value='{$vo.id}' name='id'>{/if}
                 {if isset($vo['code'])}<input type='hidden' value='{$vo.code}' name='code'>{/if}
                 <button class="layui-btn menu-submit">保存数据</button>
-                <button data-history-back class="layui-btn layui-btn-danger" type='button'>取消编辑</button>
+                <button data-close data-confirm="确定要取消编辑吗？" class="layui-btn layui-btn-danger" type='button'>取消编辑</button>
             </div>
         </form>
     </div>
@@ -180,9 +180,9 @@
         /*! 刷新预览显示 */
         function showReview(params, location) {
             if (params['type'] === 'news') {
-                location = '{:url("@wechat/api.view/news")}?id=_id_'.replace('_id_', params.content);
+                location = '{:url("api.view/news")}?id=_id_'.replace('_id_', params.content);
             } else {
-                location = '{:url("@wechat/api.view/_type_")}?'.replace('_type_', params.type) + $.param(params || {});
+                location = '{:url("api.view/_type_")}?'.replace('_type_', params.type) + $.param(params || {});
             }
             var iframe = '<iframe id="phone-preview" frameborder="0" marginheight="0" marginwidth="0"></iframe>';
             $('[data-iframe-box]').empty().append($(iframe).attr('src', location));

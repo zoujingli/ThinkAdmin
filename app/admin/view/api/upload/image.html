@@ -53,7 +53,8 @@
                     this.urls = [];
                     this.data.forEach(function (file) {
                         app.setValue(file.xurl);
-                    }), this.setInput();
+                    });
+                    this.setInput();
                 },
                 // 格式文件大小
                 formatSize: function (size) {
@@ -78,7 +79,8 @@
                     this.list.forEach(function (item) {
                         item.checked = !!app.idxs[item.id]
                         item.style = 'background-image:url(' + item.xurl + ')';
-                    }), this.addPage(count);
+                    });
+                    this.addPage(count);
                 },
                 // 设置选择数据
                 setValue: function (xurl) {
@@ -128,9 +130,17 @@
 <label class="layui-hide" id="ImageDialogUploadLayout">
     <!-- 图片上传组件 开始 -->
     {if isset($get.file) && $get.file eq 'image'}
-    <button class="layui-btn" data-file data-path="{$get.path|default=''}" data-type="png,jpg,jpeg,gif"></button>
+    <button data-file="one" data-type="gif,png,jpg,jpeg"
+            data-path="{$get.path|default=''}" data-size="{$get.size|default=0}"
+            data-cut-width="{$get.cutWidth|default=0}" data-cut-height="{$get.cutHeight|default=0}"
+            data-max-width="{$get.maxWidth|default=0}" data-max-height="{$get.maxHeight|default=0}"
+    ></button>
     {else}
-    <button class="layui-btn" data-file="mul" data-path="{$get.path|default=''}" data-type="png,jpg,jpeg,gif"></button>
+    <button data-file="mul" data-type="gif,png,jpg,jpeg"
+            data-path="{$get.path|default=''}" data-size="{$get.size|default=0}"
+            data-cut-width="{$get.cutWidth|default=0}" data-cut-height="{$get.cutHeight|default=0}"
+            data-max-width="{$get.maxWidth|default=0}" data-max-height="{$get.maxHeight|default=0}"
+    ></button>
     {/if}
     <!-- 图片上传组件 结束 -->
 </label>

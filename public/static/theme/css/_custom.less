@@ -829,25 +829,28 @@ input:not(.layui-hide,[type=hidden]) {
   box-shadow: @ShadowOuterMin;
 
   &.uploadvideo {
+    background-color: #223;
     background-image: url('../img/upvideo.png');
   }
 
   > span:first-child {
-    right: 0;
+    left: 50%;
     height: 20px;
+    bottom: 4px;
     z-index: 3;
     display: none;
     position: absolute;
+    margin-left: -33px;
     box-shadow: @ShadowOuterMin;
 
     .layui-icon {
       color: #fff;
       width: 22px;
+      float: left;
       height: 20px;
       text-align: center;
       line-height: 22px;
-      display: inline-block;
-      background: rgba(0, 0, 0, .8);
+      background: rgba(0, 0, 0, .75);
     }
 
     .layui-icon:first-child {
@@ -861,17 +864,16 @@ input:not(.layui-hide,[type=hidden]) {
     }
   }
 
+  &:hover > span:first-child {
+    display: block;
+  }
 
-  > span:last-child {
+  > span[data-file] {
     width: 100%;
     height: 100%;
     display: block;
     position: absolute;
     z-index: 2;
-  }
-
-  &:hover > span:first-child {
-    display: block;
   }
 }
 

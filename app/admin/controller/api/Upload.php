@@ -1,17 +1,16 @@
 <?php
 
 // +----------------------------------------------------------------------
-// | ThinkAdmin
+// | Admin Plugin for ThinkAdmin
 // +----------------------------------------------------------------------
-// | 版权所有 2014~2022 广州楚才信息科技有限公司 [ http://www.cuci.cc ]
+// | 版权所有 2014~2023 Anyon<zoujingli@qq.com>
 // +----------------------------------------------------------------------
 // | 官方网站: https://thinkadmin.top
 // +----------------------------------------------------------------------
 // | 开源协议 ( https://mit-license.org )
 // | 免费声明 ( https://thinkadmin.top/disclaimer )
 // +----------------------------------------------------------------------
-// | gitee 代码仓库：https://gitee.com/zoujingli/ThinkAdmin
-// | github 代码仓库：https://github.com/zoujingli/ThinkAdmin
+// | gitee 代码仓库：https://gitee.com/zoujingli/think-plugs-admin
 // +----------------------------------------------------------------------
 
 namespace app\admin\controller\api;
@@ -121,6 +120,81 @@ class Upload extends Controller
     }
 
     /**
+     * 更新文件状态
+     * @login true
+     * @return void
+     */
+    public function done()
+    {
+        $data = $this->_vali([
+            'id.require'   => '编号不能为空！',
+            'hash.require' => '哈希不能为空！',
+            'uuid.value'   => AdminService::getUserId(),
+        ]);
+        $file = SystemFile::mk()->where($data)->findOrEmpty();
+        if ($file->isEmpty()) $this->error('文件不存在！');
+        if ($file->save(['status' => 2])) {
+            $this->success('更新成功！');
+        } else {
+            $this->error('更新失败！');
+        }
+    }
+
+    /**
+     * 文件选择器
+     * @login true
+     * @return void
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\DbException
+     * @throws \think\db\exception\ModelNotFoundException
+     */
+    public function image()
+    {
+        SystemFile::mQuery()->layTable(function () {
+            $this->title = '文件选择器';
+        }, function (QueryHelper $query) {
+            $query->where(['status' => 2, 'issafe' => 0, 'uuid' => AdminService::getUserId()]);
+            $query->like('name,hash')->in('xext#type')->dateBetween('create_at')->order('id desc');
+        });
+    }
+
+    /**
+     * 视频选择器
+     * @login true
+     * @return void
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\DbException
+     * @throws \think\db\exception\ModelNotFoundException
+     */
+    public function video()
+    {
+        SystemFile::mQuery()->layTable(function () {
+            $this->title = '文件选择器';
+        }, function (QueryHelper $query) {
+            $query->like('name,hash')->dateBetween('create_at')->order('id desc');
+            $query->where(['status' => 2, 'issafe' => 0, 'uuid' => AdminService::getUserId()]);
+        });
+    }
+
+    /**
+     * 文档选择器
+     * @login true
+     * @return void
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\DbException
+     * @throws \think\db\exception\ModelNotFoundException
+     */
+    public function document()
+    {
+        SystemFile::mQuery()->layTable(function () {
+            $this->title = '文件选择器';
+        }, function (QueryHelper $query) {
+            $query->like('name,hash')->dateBetween('create_at')->order('id desc');
+            $query->where(['status' => 2, 'issafe' => 0, 'uuid' => AdminService::getUserId()]);
+        });
+    }
+
+    /**
      * 文件上传入口
      * @login true
      * @throws \think\db\exception\DataNotFoundException
@@ -177,47 +251,9 @@ class Upload extends Controller
         } catch (HttpResponseException $exception) {
             throw $exception;
         } catch (\Exception $exception) {
+            trace_file($exception);
             $this->error($exception->getMessage());
         }
-    }
-    
-    /**
-     * 更新文件状态
-     * @login true
-     * @return void
-     */
-    public function done()
-    {
-        $data = $this->_vali([
-            'id.require'   => '编号不能为空！',
-            'hash.require' => '哈希不能为空！',
-            'uuid.value'   => AdminService::getUserId(),
-        ]);
-        $file = SystemFile::mk()->where($data)->findOrEmpty();
-        if ($file->isEmpty()) $this->error('文件不存在！');
-        if ($file->save(['status' => 2])) {
-            $this->success('更新成功！');
-        } else {
-            $this->error('更新失败！');
-        }
-    }
-    
-    /**
-     * 文件选择器
-     * @login true
-     * @return void
-     * @throws \think\db\exception\DataNotFoundException
-     * @throws \think\db\exception\DbException
-     * @throws \think\db\exception\ModelNotFoundException
-     */
-    public function image()
-    {
-        SystemFile::mQuery()->layTable(function () {
-            $this->title = '文件选择器';
-        }, function (QueryHelper $query) {
-            $query->where(['status' => 2, 'issafe' => 0, 'uuid' => AdminService::getUserId()]);
-            $query->like('name,hash')->in('xext#type')->dateBetween('create_at')->order('id desc');
-        });
     }
 
     /**
@@ -262,6 +298,7 @@ class Upload extends Controller
         } catch (HttpResponseException $exception) {
             throw $exception;
         } catch (\Exception $exception) {
+            trace_file($exception);
             $this->error(lang($exception->getMessage()));
         }
     }

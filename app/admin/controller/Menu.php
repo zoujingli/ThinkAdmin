@@ -1,17 +1,16 @@
 <?php
 
 // +----------------------------------------------------------------------
-// | ThinkAdmin
+// | Admin Plugin for ThinkAdmin
 // +----------------------------------------------------------------------
-// | 版权所有 2014~2022 广州楚才信息科技有限公司 [ http://www.cuci.cc ]
+// | 版权所有 2014~2023 Anyon<zoujingli@qq.com>
 // +----------------------------------------------------------------------
 // | 官方网站: https://thinkadmin.top
 // +----------------------------------------------------------------------
 // | 开源协议 ( https://mit-license.org )
 // | 免费声明 ( https://thinkadmin.top/disclaimer )
 // +----------------------------------------------------------------------
-// | gitee 代码仓库：https://gitee.com/zoujingli/ThinkAdmin
-// | github 代码仓库：https://github.com/zoujingli/ThinkAdmin
+// | gitee 代码仓库：https://gitee.com/zoujingli/think-plugs-admin
 // +----------------------------------------------------------------------
 
 namespace app\admin\controller;
@@ -41,7 +40,7 @@ class Menu extends Controller
     public function index()
     {
         $this->title = '系统菜单管理';
-        $this->type = input('get.type', 'index');
+        $this->type = $this->get['type'] ?? 'index';
         SystemMenu::mQuery()->layTable();
     }
 
@@ -99,14 +98,13 @@ class Menu extends Controller
     protected function _form_filter(array &$vo)
     {
         if ($this->request->isGet()) {
+            $debug = $this->app->isDebug();
             /* 清理权限节点 */
-            if ($isDebug = $this->app->isDebug()) {
-                AdminService::clearCache();
-            }
+            $debug && AdminService::clear();
             /* 读取系统功能节点 */
             $this->auths = [];
-            $this->nodes = MenuService::getList($isDebug);
-            foreach (NodeService::getMethods($isDebug) as $node => $item) {
+            $this->nodes = MenuService::getList($debug);
+            foreach (NodeService::getMethods($debug) as $node => $item) {
                 if ($item['isauth'] && substr_count($node, '/') >= 2) {
                     $this->auths[] = ['node' => $node, 'title' => $item['title']];
                 }

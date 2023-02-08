@@ -1,17 +1,16 @@
 <?php
 
 // +----------------------------------------------------------------------
-// | ThinkAdmin
+// | Wechat Plugin for ThinkAdmin
 // +----------------------------------------------------------------------
-// | 版权所有 2014~2022 广州楚才信息科技有限公司 [ http://www.cuci.cc ]
+// | 版权所有 2014~2023 Anyon <zoujingli@qq.com>
 // +----------------------------------------------------------------------
 // | 官方网站: https://thinkadmin.top
 // +----------------------------------------------------------------------
 // | 开源协议 ( https://mit-license.org )
 // | 免费声明 ( https://thinkadmin.top/disclaimer )
 // +----------------------------------------------------------------------
-// | gitee 代码仓库：https://gitee.com/zoujingli/ThinkAdmin
-// | github 代码仓库：https://github.com/zoujingli/ThinkAdmin
+// | gitee 代码仓库：https://gitee.com/zoujingli/think-plugs-wechat
 // +----------------------------------------------------------------------
 
 namespace app\wechat\controller;
@@ -80,7 +79,7 @@ class News extends Controller
                 'create_by'  => AdminService::getUserId(),
                 'article_id' => $this->_buildArticle($this->request->post('data', [])),
             ];
-            if (WechatNews::mk()->insert($update) !== false) {
+            if (WechatNews::mk()->save($update) !== false) {
                 $this->success('图文添加成功！', 'javascript:history.back()');
             } else {
                 $this->error('图文添加失败，请稍候再试！');
@@ -109,7 +108,7 @@ class News extends Controller
         } else {
             $ids = $this->_buildArticle($this->request->post('data', []));
             [$map, $data] = [['id' => $this->id], ['article_id' => $ids]];
-            if (WechatNews::mk()->where($map)->update($data) !== false) {
+            if (WechatNews::mk()->where($map)->update($data)) {
                 $this->success('更新成功！', 'javascript:history.back()');
             } else {
                 $this->error('更新失败，请稍候再试！');
@@ -145,7 +144,7 @@ class News extends Controller
                 $id = intval($vo['id']);
                 $result = WechatNewsArticle::mk()->where('id', $id)->update($vo);
             }
-            if ($result !== false) $ids[] = $id;
+            if ($result) $ids[] = $id;
         }
         return join(',', $ids);
     }
