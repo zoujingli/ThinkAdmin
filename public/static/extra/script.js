@@ -1,7 +1,18 @@
-// --------------------------------------------------
-// 自定义后台扩展脚本，需要在加载 admin.js 后载入
-// 使用 php think xadmin:install static 时不会更新此文件
-// --------------------------------------------------
+// +----------------------------------------------------------------------
+// | Static Plugin for ThinkAdmin
+// +----------------------------------------------------------------------
+// | 官方网站: https://thinkadmin.top
+// +----------------------------------------------------------------------
+// | 版权所有 2014~2023 Anyon<zoujingli@qq.com>
+// +----------------------------------------------------------------------
+// | 免费声明 ( https://thinkadmin.top/disclaimer )
+// +----------------------------------------------------------------------
+// | gitee 代码仓库：https://gitee.com/zoujingli/think-plugs-static
+// +----------------------------------------------------------------------
+// | 自定义后台扩展脚本，需要在加载 admin.js 后载入
+// | 使用 php think xadmin:install static 时不会更新此文件
+// +----------------------------------------------------------------------
+
 $(function () {
     window.$body = $('body');
 
@@ -27,4 +38,14 @@ $(function () {
     // });
 
     /*! 其他 javascript 脚本代码 */
+
+    // 显示表格图片
+    window.showTableImage = function (image, circle, size, title) {
+        if (typeof image !== 'string' || image.length < 5) {
+            return '<span class="color-desc">-</span>' + (title ? laytpl('<span class="margin-left-5">{{d.title}}</span>').render({title: title}) : '');
+        }
+        return laytpl('<div class="headimg {{d.class}} headimg-{{d.size}}" data-tips-image data-tips-hover data-lazy-src="{{d.image}}" style="{{d.style}}"></div>').render({
+            size: size || 'ss', class: circle ? 'shadow-inset' : 'headimg-no', image: image, style: 'background-image:url(' + image + ');margin-right:0'
+        }) + (title ? laytpl('<span class="margin-left-5">{{d.title}}</span>').render({title: title}) : '');
+    };
 });

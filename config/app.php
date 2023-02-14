@@ -1,17 +1,15 @@
 <?php
 
 // +----------------------------------------------------------------------
-// | ThinkAdmin
+// | Static Plugin for ThinkAdmin
 // +----------------------------------------------------------------------
-// | 版权所有 2014~2022 广州楚才信息科技有限公司 [ http://www.cuci.cc ]
+// | 版权所有 2014~2023 Anyon<zoujingli@qq.com>
 // +----------------------------------------------------------------------
 // | 官方网站: https://thinkadmin.top
 // +----------------------------------------------------------------------
-// | 开源协议 ( https://mit-license.org )
 // | 免费声明 ( https://thinkadmin.top/disclaimer )
 // +----------------------------------------------------------------------
-// | gitee 代码仓库：https://gitee.com/zoujingli/ThinkAdmin
-// | github 代码仓库：https://github.com/zoujingli/ThinkAdmin
+// | gitee 代码仓库：https://gitee.com/zoujingli/think-plugs-static
 // +----------------------------------------------------------------------
 
 return [
@@ -38,14 +36,12 @@ return [
     // CORS 授权请求方法
     'cors_methods'            => 'GET,PUT,POST,PATCH,DELETE',
     // CORS 跨域头部字段
-    'cors_headers'            => 'Api-Type,Api-Name,Api-Uuid,Api-Token,User-Form-Token,User-Token,Token',
-    // 显示错误的消息，仅产品模式有效
+    'cors_headers'            => 'Api-Type,Api-Name,Api-Uuid,Jwt-Token,Api-Token,User-Form-Token,User-Token,Token',
+    // 显示错误消息内容，仅生产模式有效
     'error_message'           => '页面错误！请稍后再试～',
-    // 异常模板路径配置，仅开发模式有效
-    'exception_tmpl'          => app()->getRootPath() . 'app/admin/view/error.php',
     // 异常状态模板配置，仅生产模式有效
     'http_exception_template' => [
-        404 => app()->getRootPath() . 'public/static/theme/err/404.html',
-        500 => app()->getRootPath() . 'public/static/theme/err/500.html',
+        404 => syspath('public/static/theme/err/404.html'),
+        500 => syspath('public/static/theme/err/500.html'),
     ],
 ];

@@ -8,12 +8,13 @@
 // | 官方网站: https://thinkadmin.top
 // +----------------------------------------------------------------------
 // | 开源协议 ( https://mit-license.org )
-// | 免费声明 ( https://thinkadmin.top/disclaimer )
+// | 免责声明 ( https://thinkadmin.top/disclaimer )
 // +----------------------------------------------------------------------
 // | gitee 代码仓库：https://gitee.com/zoujingli/think-plugs-admin
 // | github 代码仓库：https://github.com/zoujingli/think-plugs-admin
 // +----------------------------------------------------------------------
 
+use app\admin\Service;
 use think\admin\extend\PhinxExtend;
 use think\admin\model\SystemConfig;
 use think\admin\model\SystemUser;
@@ -73,26 +74,7 @@ class InstallAdminData extends Migrator
             [
                 'name' => '系统管理',
                 'sort' => '100',
-                'subs' => [
-                    [
-                        'name' => '系统配置',
-                        'subs' => [
-                            ['name' => '系统参数配置', 'icon' => 'layui-icon layui-icon-set', 'node' => 'admin/config/index'],
-                            ['name' => '系统任务管理', 'icon' => 'layui-icon layui-icon-log', 'node' => 'admin/queue/index'],
-                            ['name' => '系统日志管理', 'icon' => 'layui-icon layui-icon-form', 'node' => 'admin/oplog/index'],
-                            ['name' => '数据字典管理', 'icon' => 'layui-icon layui-icon-code-circle', 'node' => 'admin/base/index'],
-                            ['name' => '系统文件管理', 'icon' => 'layui-icon layui-icon-carousel', 'node' => 'admin/file/index'],
-                            ['name' => '系统菜单管理', 'icon' => 'layui-icon layui-icon-layouts', 'node' => 'admin/menu/index'],
-                        ],
-                    ],
-                    [
-                        'name' => '权限管理',
-                        'subs' => [
-                            ['name' => '访问权限管理', 'icon' => 'layui-icon layui-icon-vercode', 'node' => 'admin/auth/index'],
-                            ['name' => '系统用户管理', 'icon' => 'layui-icon layui-icon-username', 'node' => 'admin/user/index'],
-                        ],
-                    ],
-                ],
+                'subs' => Service::menu(),
             ],
         ], [
             'url|node' => 'admin/config/index'

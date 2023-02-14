@@ -28,12 +28,6 @@
       "app\\": "app"
     }
   },
-  "scripts": {
-    "post-autoload-dump": [
-      "@php think service:discover",
-      "@php think vendor:publish"
-    ]
-  },
   "config": {
     "allow-plugins": {
       "zoujingli/think-install": true
