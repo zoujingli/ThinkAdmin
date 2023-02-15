@@ -103,7 +103,7 @@
 通过 `Composer` 工具安装系统：
 
 ```shell
-### 创建项目
+### 创建项目（ 需要在英文目录下面执行 ）
 composer create-project zoujingli/thinkadmin
 
 ### 进入项目根目录
