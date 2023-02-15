@@ -169,8 +169,8 @@ public function index(){
 部分代码来自互联网，若有异议可以联系作者进行删除。
 
 * 在线体验地址：https://v6.thinkadmin.top （账号和密码都是 admin ）
-* Gitee仓库地址：https://gitee.com/zoujingli/ThinkAdmin/tree/v6
-* GitHub仓库地址：https://github.com/zoujingli/ThinkAdmin/tree/v6
+* Gitee仓库地址：https://gitee.com/zoujingli/ThinkAdmin/tree/v6.1
+* GitHub仓库地址：https://github.com/zoujingli/ThinkAdmin/tree/v6.1
 
 ## 版权信息
 
