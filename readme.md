@@ -127,30 +127,16 @@ php think migrate:run
 
 > **A. 注意事项**
 >
-> 数据库是使用`Phinx`工具管理的，在未配置数据库时默认使用`Sqlite`，数据库文件位于`database/sqlite.db`，使用`Sqlite`
-> 数据库时仅限用于体验与测试，建议不要用于生产环境，生产环境建议使用免费开源的`MySQL`数据库；
+> 数据库是使用 `Phinx` 工具管理的，在未配置数据库时默认使用 `Sqlite`，数据库文件位于 `database/sqlite.db`，使用 `Sqlite`
+> 数据库时仅限用于体验与测试，建议不要用于生产环境，生产环境建议使用开源免费的 `MySQL` 数据库；
 
 > **B. 数据库初始化安装**
 >
-> 使用`MySql`,`SqlServer`,`Postgres`等服务型数据库时，需要先创建空的数据库并将参数配置到`config/database.php`
-> ，然后执行`composer install`或`composer update`或`php think migrate:run`
-> 安装并初始化数据库；开发部署系统时，如果要对数据库添加数据表或修改数据表，可以直接修改数据库或创建`Phinx`
-> 脚本后执行`composer update`进行数据库更新升级。另外系统也提供`php think xadmin:package`指令可以把现有`MySQl`
-> 数据库打包为`Phinx`脚本，迁移系统时只需要执行前面的安装步骤即可。
-
-## 技术支持
-
-开发前请认真阅读 ThinkPHP 官方文档和 ThinkAdmin 开发文档，相信会对您有所帮助哦！
-
-如果实在无法解决您所遇到的问题，可以加入官方群免费交流（需要提交认证信息）。
-
-**1.官方QQ交流群：** 513350915
-
-**2.官方QQ交流群：** 866345568
-
-**3.官方微信交流群**
-
-<img src="https://thinkadmin.top/static/img/wx.png" width="250">
+> 使用 `MySql`, `SqlServer`, `Postgres` 等服务型数据库时，需要先创建空的数据库并将参数配置到 `config/database.php`
+> ，然后执行`composer update`或`php think migrate:run`
+> 安装并初始化数据库；开发部署系统时，如果要对数据库添加数据表或修改数据表，可以直接修改数据库或创建 `Phinx`
+> 脚本后执行 `php think migrate:run` 进行数据库更新升级。另外系统提供 `php think xadmin:package` 指令可以把现有 `MySQl`
+> 数据库打包为 `Phinx` 脚本，迁移系统时只需要执行前面的安装步骤即可。
 
 ## 注解权限
 
@@ -188,13 +174,27 @@ public function index(){
 
 ## 版权信息
 
-[`ThinkAdmin`](https://thinkadmin.top)遵循[`MIT`](license)开源协议发布，并免费提供使用。
+[**ThinkAdmin**](https://thinkadmin.top) 遵循 [**MIT**](license) 开源协议发布，并免费提供使用。
 
 本项目包含的第三方源码和二进制文件的版权信息另行标注。
 
 版权所有 Copyright © 2014-2023 by ThinkAdmin (https://thinkadmin.top) All rights reserved。
 
 更多细节参阅[`lisense`](license)文件
+
+## 技术支持
+
+开发前请认真阅读 ThinkPHP 官方文档和 ThinkAdmin 开发文档，相信会对您有所帮助哦！
+
+如果实在无法解决您所遇到的问题，可以加入官方群免费交流（需要提交认证信息）。
+
+**1.官方QQ交流群：** 513350915
+
+**2.官方QQ交流群：** 866345568
+
+**3.官方微信交流群**
+
+<img src="https://thinkadmin.top/static/img/wx.png" width="250">
 
 ## 框架指令
 
@@ -207,14 +207,7 @@ public function index(){
 * 执行 `php think xadmin:version` 查看当前版本号，显示 `ThinkPHP` 版本及 `ThinkLibrary` 版本
 * 执行 `php think xadmin:database` 对数据库的所有表`repair|optimize`操作，优化并整理数据库碎片
 
-#### 1. 线上代码更新
-
-* 执行 `php think xadmin:install admin` 从线上服务更新 `admin` 模块的所有文件（注意文件安全）
-* 执行 `php think xadmin:install wechat` 从线上服务更新 `wechat` 模块的所有文件（注意文件安全）
-* 执行 `php think xadmin:install static` 从线上服务更新 `static` 静态资料文件（注意文件安全）
-* 执行 `php think xadmin:install config` 从线上服务更新 `config` 常用配置文件（注意文件安全）
-
-#### 2. 守护进程管理（可自建定时任务去守护监听主进程）
+#### 1. 守护进程管理（可自建定时任务去守护监听主进程）
 
 * 执行 `php think xadmin:queue listen` [监听]启动异步任务监听服务
 * 执行 `php think xadmin:queue start`  [控制]检查创建任务监听服务（建议定时任务执行）
@@ -222,7 +215,7 @@ public function index(){
 * 执行 `php think xadmin:queue status`  [控制]查看异步任务监听状态
 * 执行 `php think xadmin:queue stop`   [控制]平滑停止所有任务进程
 
-#### 3. 本地调试管理（可自建定时任务去守护监听主进程）
+#### 2. 本地调试管理（可自建定时任务去守护监听主进程）
 
 * 执行 `php think xadmin:queue webstop` [调试]停止本地调试服务
 * 执行 `php think xadmin:queue webstart` [调试]开启本地调试服务（建议定时任务执行）
