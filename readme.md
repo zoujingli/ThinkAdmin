@@ -5,42 +5,51 @@
 
 ### 项目介绍
 
-当前`ThinkAdmin`的最新版本为`v6.1`，从这个版本开始正式进入插件时代，基础组件及扩展插件统一使用`Composer`管理，因此在项目的初始目录下面是没有代码的，需要执行`composer install`或`composer update`安装后才会创建目录并初始化代码。`ThinkAdmin`与传统`ThinkPHP`多应用模式无差别，用户可以自行开发自己的模块，此次升级可完美兼容`ThinkAdmin v6.0`应用。我们强烈建议不要占用或修改`admin`和`wechat`两个目录里面的代码，这些未来可以通过`Composer`进行功能及安全升级。
+**ThinkAdmin** 是一款遵循 `MIT` 协议开源的快速开发框架，基于最新版本的 `ThinkPHP6` 极简后台，在使用 `ThinkAdmin`
+前请认真阅读[《免责声明》](https://thinkadmin.top/disclaimer)并同意该声明。
 
-**温馨提示：** 如果需要直接查看代码，请切换到`v6`分支查看，`v6.1`暂不直接提供源代码和数据库`SQL`文件，初始化及安装都由插件实现。
+我们致力于快速开发底层框架，让项目开发变得更容易。我们提供完善的基础组件以及对应的 `API`
+支持，基于此框架可以快速开发各种 `WEB` 应用。任何一个系统都不能完全满足所有的业务场景，**ThinkAdmin**
+免费提供基础底层的功能，这里包括系统权限管理，系统存储配置，微信授权管理，以及其他常用功能集成等……
+因此 **ThinkAdmin** 也被大家定性为外包二开基线系统。从 `v6.1` 开始我们提供会员尊享组件和定制业务插件服务。目前已经有许多公司及个人在使用
+**ThinkAdmin**，通过数据聚合统计已有 **3** 万多在线运行的项目。
 
-[`ThinkAdmin`](https://thinkadmin.top)从`v1`到`v6`经历了几次大的调整，但总体都是基于`ThinkPHP`最新版本并以最简后台为目标而设计，目前`ThinkAdmin`已通过`Composer`深度开发实现了插件自动安装机制，大大减少了项目初始化安装的成本。
+**ThinkAdmin v6** 是基于 `v1`-`v5` 大版本的积累，经历了几次大的调整，结合 `ThinkPHP6`
+的思维重新构建，减少大量原非必需的组件，自建存储层、服务层及队列任务机制，另外还增加了许多友好指令！当前 `v6`
+版本已经通过了数个系统实践与测试，过程中不停调整与优化，目前系统模块及微信模块已经趋于稳定，现将系统管理 `app\admin`
+及微信管理 `app\wechat` 定为 `v6` 内核两大模块并以 `MIT` 协议发布，后续可能还有其他模块及相关辅助模块更新发布，敬请期待……
 
-**特别提醒：** 使用`Composer`时建议安装最版本版本并使用官方源，目前国内大部分镜像经常出现`404`导致组件下载失败或安装不完整等异常情况！
+当前 **ThinkAdmin** 的最新版本为 `v6.1`，从这个版本开始正式进入插件时代，基础组件及扩展插件统一使用 `Composer`
+管理。现在通过对 `Composer` 深度开发已实现了插件自动安装机制，可以大大减少项目初始化安装的成本。**ThinkAdmin** 与传统 *
+*ThinkPHP** 多应用模式无差别，用户可以自行开发自己的模块，此次升级可完美兼容 **ThinkAdmin v6.0**
+应用。我们强烈建议不要占用或修改 `app/admin` 和 `app/wechat` 两个目录里面的代码，这些未来可以通过 **Composer** 进行功能及安全升级。
 
-任何一个系统都不能完全满足所有的业务场景，[`ThinkAdmin`](https://thinkadmin.top)
-只做最基础底层的功能，这里包括系统权限管理，系统存储配置，微信授权管理，以及其他常用功能集成等……
-因此[`ThinkAdmin`](https://thinkadmin.top)也被大家定性为外包二开基线系统，目前已经有许多公司及个人在使用（通过数据聚合统计已有3万多在线运行的项目）。
+系统核心组件 `ThinkLibrary` 封装了大量常用操作以及多应用组件，可快速开发各种应用程序，且不影响原 **ThinkPHP**
+生态，大大简化编码成本；可自行选择集成 **WechatDeveloper** 组件 (
+支持微信公众号、微信小程序、微信企业号、微信商户支付、支付宝支付接口等 ) 及 `QRcode`
+二维码生成工具等。里面还内置了ThinkPHP6多应用组件并且完美支持路由；文件存储支持本地服务器存储、七牛云对象存储（支持CDN加速）、又拍云USS存储（支持CDN加速）、阿里云OSS存储（支持CDN加速）、腾讯云COS存储（支持CDN加速）等存储方式；自带异步任务处理机制，可以并列多进程执行任务，任务响应延时小于 `0.5`
+秒，兼容 `windows` 及 `linux`。
 
-ThinkAdmin v6 是基于`v1-v5`大版本的积累，结合`ThinkPHP6`
-的思维重新构建，减少大量原非必需的组件，自建存储层、服务层及队列任务机制，另外还增加了许多友好指令！`ThinkAdmin v6`
-经历了数个系统实践与测试，不停的调整与优化，目前系统模块及微信模块已经趋于稳定，现将系统管理[admin]及微信管理[wechat]
-定为`v6`内核两大模块并以`MIT`协议发布，后续可能还有其他模块及相关辅助模块更新发布，敬请期待……
+温馨提示：如果需要直接查看源代码和数据库 `SQL` 文件，请切换到 `v6` 分支，从 `v6.1` 开始不再直接提供源代码和数据库 `SQL`
+文件，其初始化及安装都由插件实现。使用 `Composer` 时建议安装新版本并使用官方源，目前国内大部分镜像经常出现`404`
+导致组件下载失败或安装不完整等异常情况！
 
-我们致力于二开底层框架，提供完善的基础组件及对应的`API`支持，基于此框架可以快速开发各种`WEB`应用。`ThinkAdmin v6`
-依赖核心组件`ThinkLibrary v6`，其内封装了大量常用操作方法，简化编码成本；可自行选择集成`WechatDeveloper`
-组件 ( 支持微信公众号、微信小程序、微信企业号、微信商户支付、支付宝支付接口等 ) 及`QRcode`二维码生成工具。`ThinkLibrary`
-组件实现`ThinkPHP v6`多应用模式及路由支持，另外还支持本地服务文件存储、七牛云对象存储（支持CDN加速）、又拍云USS存储（支持CDN加速）、阿里云OSS存储（支持CDN加速）、腾讯云COS存储（支持CDN加速）。
-
-在使用`ThinkAdmin`开发应用时，建议先阅读`ThinkPHP`官方文档和`ThinkAdmin`开发文档，若实在无法解决当下问题可以加入官方微信群获得帮助。
+使用 **ThinkAdmin** 需要掌握 `ThinkPHP`、`jQuery`、`LayUI`、`RequireJs` 等开发技能，后台`UI`界面基于最新版本的 `LayUI`
+前端框架以及 `RequireJs` 组件加载方式，默认加载了所有 `LayUI` 的组件，框架中可以直接使用组件（独立页面需要注册`js`
+加载顺序哦），使用`RequireJs`加载插件，互联网上资源非常多，可自行下载进行二次扩展。目前后台大部分页面为单页程序，页面加载速度非常快速，也因此后台不再支持选项卡模式。
 
 ### 注意事项
 
-* [`ThinkAdmin`](https://thinkadmin.top)是基于国内最流行的`ThinkPHP6`框架开发，目前对`PHP`版本要求不得低于`PHP 7.2.5`
-  ，如果使用低版本的`PHP`可能会影响`composer`依赖组件的安装，或将存在一定的安全隐患，具体请阅读`ThinkPHP`更新日志及相关文档；
-* 系统的运行环境必需开启`PATHINFO`支持并配置对应的`rewrite`规则才能访问，不再支持`ThinkPHP`的`URL`兼容模式运行 (
+* **ThinkAdmin** 是基于国内最流行的 `ThinkPHP6` 框架开发，目前对 `PHP` 版本要求不得低于 `PHP 7.2.5`
+  ，如果使用低版本的 `PHP` 可能会影响 `Composer` 依赖组件的安装，或将存在一定的安全隐患，具体请阅读 `ThinkPHP` 更新日志及相关文档；
+* 系统的运行环境必需开启 `PATHINFO` 支持并配置对应的 `rewrite` 规则才能访问，不再支持 `ThinkPHP` 的 `URL` 兼容模式运行 (
   源于如何优雅地展示 )，可以阅读文档部署章节；
-* 代码仓库下载的文件不包含`composer`组件包的`vendor`目录，下载后需要执行`composer install`或`composer update`
-  安装依赖组件，同时会触发执行数据库`Phinx`安装脚本；
-* 为保持系统可持续在线升级功能，开发时建议不要在`admin`,`wechat`,`public/static`
-  这三个目录创建或修改文件，可以自行创建其他模块再编写自己的业务代码，自定义样式及脚本可以放置在目录`public/static/extra`
-  里面。系统是基于严格类型`PHP`新特性开发，务必使用专业的`IDE` ( 如：`PhpStorm`,`NetBeans`,`VsCode`,`Eclipse for PHP`等 )
-  进行项目开发以达到更好的体验与更高的效率！
+* 代码仓库下载的文件不包含 `Composer` 组件包的 `vendor` 目录，下载后需要执行 `composer install` 或 `composer update`
+  安装依赖组件，同时会触发执行数据库 `Phinx` 安装脚本；
+* 为保持系统可持续在线升级功能，开发时建议不要在`app/admin`,`app/wechat`,`public/static`
+  这三个目录创建或修改文件，可以自行创建其他模块再编写自己的业务代码，自定义样式及脚本可以放置在目录 `public/static/extra`
+  里面。系统是基于严格类型 `PHP` 新特性开发，务必使用专业的 `IDE` ( 如：`PhpStorm`,`NetBeans`,`VsCode`,`Eclipse for PHP`
+  等 ) 进行项目开发以达到更好的体验与更高的效率！
 * 若后台操作提示 “演示系统禁止操作” 等字样，需要删除演示路由的配置文件(`app/admin/route/demo.php`)；
 
 ## 插件生态
@@ -79,10 +88,39 @@ ThinkAdmin v6 是基于`v1-v5`大版本的积累，结合`ThinkPHP6`
 
 > 基础商品管理插件（目前处于重构中，可以安装体验用）
 > * 插件标识：`plugin-base-goods`
-> * 插件包名：`zoujingli/think-plugin-base-goods`
-> * 安装方式：`composer require zoujingli/think-plugin-base-goods dev-master`
-> * 插件仓库：https://gitee.com/zoujingli/think-plugin-base-goods
+> * 插件包名：`zoujingli/think-plugs-base-goods`
+> * 安装方式：`composer require zoujingli/think-plugs-base-goods dev-master`
+> * 插件仓库：https://gitee.com/zoujingli/think-plugs-base-goods
 > * 开源协议：MIT ( 免费开放 )
+
+## 系统安装
+
+通过 `Composer` 工具安装系统：
+
+```shell
+### 创建项目
+composer create-project zoujingli/thinkadmin
+
+### 进入项目根目录
+cd thinkadmin
+
+### 数据库初始化并安装
+php think migrate:run
+```
+
+> **A. 测试或体验环境**
+>
+> 系统默认使用`Sqlite`数据库，不需要配置任何参数，特别要注意使用`Sqlite`
+> 数据库时是没有密码的，容易造成数据丢失或泄露。执行上面的安装操作初始化并安装系统依赖组件，
+> 并自动安装数据库并初始化数据；执行`php think run`启动系统内置的`WEB`服务，用浏览器访问
+> `http://127.0.0.1:8000`进入后台登录界面后，使用系统默认的账号`admin`和密码`admin`登录管理后台；也可以使用其他`Web`
+> 服务软件方案实现。
+
+> **B. 开发或线上环境**
+>
+> 执行上面的安装操作初始化并安装系统依赖组件，通过数据库管理工具创建空数据库，并将数据库参数配置到`config/database.php`；
+> 然后执行`php think migrate:run`完成数据库初始化安装；线上环境还需要安装`Nginx`或`Apache`等`Web`服务 (
+> 推荐使用[宝塔](https://www.bt.cn/?invite_code=MV90a3Z6dmI=)集成环境 )，并按照`ThinkPHP6`系统要求配置网站参数。
 
 ## 数据管理
 
@@ -98,30 +136,6 @@ ThinkAdmin v6 是基于`v1-v5`大版本的积累，结合`ThinkPHP6`
 > 安装并初始化数据库；开发部署系统时，如果要对数据库添加数据表或修改数据表，可以直接修改数据库或创建`Phinx`
 > 脚本后执行`composer update`进行数据库更新升级。另外系统也提供`php think xadmin:package`指令可以把现有`MySQl`
 > 数据库打包为`Phinx`脚本，迁移系统时只需要执行前面的安装步骤即可。
-
-## 系统安装
-
-> **安装方式一：**
-> 1. 下载仓库源代码，关键需要包含`composer.json`文件；
-> 2. 执行`composer install`或`composer update`安装组件并初始化数据库；
-
-> **安装方式二：**
-> 1. 执行`composer create-project zoujingli/thinkadmin`安装项目；
-> 2. 执行`cd thinkadmin`进入到已安装的`ThinkAdmin`根目录；
-> 3. 执行`php think migrate:run`安装并初始化数据库；
-
-> **A. 测试或体验环境**
->
-> 系统默认使用`Sqlite`数据库，不需要配置任何参数，特别要注意使用`Sqlite`
-> 数据库时是没有密码的，容易造成数据丢失或泄露。执行上面的安装操作初始化并安装系统依赖组件，
-> 并自动安装数据库并初始化数据；执行`php think run`启动系统内置的`WEB`服务，用浏览器访问
-> `http://127.0.0.1:8000`进入后台登录界面后，使用系统默认的账号`admin`和密码`admin`登录管理后台；也可以使用其他`Web`服务软件方案实现。
-
-> **B. 开发或线上环境**
->
-> 执行上面的安装操作初始化并安装系统依赖组件，通过数据库管理工具创建空数据库，并将数据库参数配置到`config/database.php`；
-> 然后执行`php think migrate:run`完成数据库初始化安装；线上环境还需要安装`Nginx`或`Apache`等`Web`服务 (
-> 推荐使用[宝塔](https://www.bt.cn/?invite_code=MV90a3Z6dmI=)集成环境 )，并按照`ThinkPHP6`系统要求配置网站参数。
 
 ## 技术支持
 
