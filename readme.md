@@ -1,10 +1,10 @@
 大道至简 · 原生框架
 
-[![Latest Stable Version](https://poser.pugx.org/zoujingli/think-plugs-admin/v/stable)](https://packagist.org/packages/zoujingli/think-plugs-admin)
-[![Latest Unstable Version](https://poser.pugx.org/zoujingli/think-plugs-admin/v/unstable)](https://packagist.org/packages/zoujingli/think-plugs-admin)
-[![Total Downloads](https://poser.pugx.org/zoujingli/think-plugs-admin/downloads)](https://packagist.org/packages/zoujingli/think-plugs-admin)
-[![Monthly Downloads](http://img.shields.io/packagist/dm/zoujingli/think-plugs-admin.svg)](https://packagist.org/packages/zoujingli/think-plugs-admin)
-[![License](https://poser.pugx.org/zoujingli/think-plugs-admin/license)](https://packagist.org/packages/zoujingli/think-plugs-admin)
+[![Latest Stable Version](https://poser.pugx.org/zoujingli/thinkadmin/v/stable)](https://packagist.org/packages/zoujingli/thinkadmin)
+[![Latest Unstable Version](https://poser.pugx.org/zoujingli/thinkadmin/v/unstable)](https://packagist.org/packages/zoujingli/thinkadmin)
+[![Total Downloads](https://poser.pugx.org/zoujingli/thinkadmin/downloads)](https://packagist.org/packages/zoujingli/thinkadmin)
+[![Monthly Downloads](http://img.shields.io/packagist/dm/zoujingli/thinkadmin.svg)](https://packagist.org/packages/zoujingli/thinkadmin)
+[![License](https://poser.pugx.org/zoujingli/thinkadmin/license)](https://packagist.org/packages/zoujingli/thinkadmin)
 
 ### 项目介绍
 
