@@ -1,7 +1,10 @@
 大道至简 · 原生框架
----
-> 代码主仓库：
-> https://gitee.com/zoujingli/ThinkAdmin
+
+[![Latest Stable Version](https://poser.pugx.org/zoujingli/think-plugs-admin/v/stable)](https://packagist.org/packages/zoujingli/think-plugs-admin)
+[![Latest Unstable Version](https://poser.pugx.org/zoujingli/think-plugs-admin/v/unstable)](https://packagist.org/packages/zoujingli/think-plugs-admin)
+[![Total Downloads](https://poser.pugx.org/zoujingli/think-plugs-admin/downloads)](https://packagist.org/packages/zoujingli/think-plugs-admin)
+[![Monthly Downloads](http://img.shields.io/packagist/dm/zoujingli/think-plugs-admin.svg)](https://packagist.org/packages/zoujingli/think-plugs-admin)
+[![License](https://poser.pugx.org/zoujingli/think-plugs-admin/license)](https://packagist.org/packages/zoujingli/think-plugs-admin)
 
 ### 项目介绍
 
