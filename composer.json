@@ -22,7 +22,6 @@
   },
   "require": {
     "php": ">=7.1",
-    "zoujingli/think-plugs-admin": "^1.0",
-    "zoujingli/think-plugs-wechat": "^1.0"
+    "zoujingli/think-plugs-admin": "^1.0"
   }
 }
