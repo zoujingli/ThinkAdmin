@@ -32,3 +32,11 @@ public/static/plugs
 public/static/theme
 public/static/admin.js
 public/static/login.js
+
+/database/migrations/20221013031925_install_admin.php
+/database/migrations/20221013031926_install_admin_data.php
+/database/migrations/20221013045829_install_wechat.php
+/database/migrations/20221013045830_install_wechat_data.php
+/database/migrations/20221013045838_install_user.php
+/database/migrations/20221013045839_install_user_data.php
+/database/migrations/20221013045840_install_user_region.php
