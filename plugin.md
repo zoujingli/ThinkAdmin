@@ -25,7 +25,7 @@
 > * 插件仓库：https://github.com/zoujingli/think-plugs-static
 > * 开源协议：MIT ( 免费开放，里面有部分其他开源协议，具体可以查看源文件 )
 
-> 基础在线插件市场 ( 开发中，后期会成为 ThinkAdmin 生态市场 )
+> 基础在线插件市场 ( 开发中，后期开放 ThinkAdmin 生态市场 )
 > * 插件标识：`plugin-center`
 > * 插件包名：`zoujingli/think-plugs-center`
 > * 安装方式：`composer require zoujingli/think-plugs-center`
