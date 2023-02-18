@@ -2,6 +2,9 @@
 
 use think\migration\Migrator;
 
+@set_time_limit(0);
+@ini_set('memory_limit', -1);
+
 /**
  * 数据库初始化
  */
@@ -14,9 +17,6 @@ class InstallUserRegion extends Migrator
      */
     public function change()
     {
-        set_time_limit(0);
-        @ini_set('memory_limit', -1);
-
         $this->installRegion();
     }
 

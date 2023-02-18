@@ -17,8 +17,8 @@
 namespace app\admin\controller;
 
 use think\admin\Controller;
-use think\admin\Library;
 use think\admin\service\AdminService;
+use think\admin\service\ModuleService;
 use think\admin\service\RuntimeService;
 use think\admin\service\SystemService;
 use think\admin\storage\AliossStorage;
@@ -54,7 +54,7 @@ class Config extends Controller
     {
         $this->title = '系统参数配置';
         $this->super = AdminService::isSuper();
-        $this->version = Library::VERSION;
+        $this->version = ModuleService::getVersion();
         $this->fetch();
     }
 

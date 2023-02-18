@@ -14,11 +14,17 @@
       "email": "zoujingli@qq.com"
     }
   ],
-  "minimum-stability": "stable",
   "require": {
     "php": ">=7.1",
+    "zoujingli/think-library": "v6.0.x-dev",
     "zoujingli/think-plugs-admin": "^1.0",
     "zoujingli/think-plugs-wechat": "^1.0"
+  },
+  "repositories": {
+    "ThinkLibrary": {
+      "type": "path",
+      "url": "../ThinkLibrary"
+    }
   },
   "autoload": {
     "psr-0": {

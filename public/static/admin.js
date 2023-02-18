@@ -150,8 +150,14 @@ $(function () {
 
     /*! 消息组件实例 */
     $.msg = new function () {
-        this.idx = [], this.mdx = [], this.shade = [0.02, '#000000'];
-        /*! 关闭最新窗口 */
+        this.idx = [];
+        this.mdx = [];
+        this.shade = [0.02, '#000000'];
+        /*! 关闭元素所在窗口 */
+        this.closeThisModal = function (element) {
+            layer.close($(element).parents('div.layui-layer-page').attr('times'));
+        };
+        /*! 关闭顶层最新窗口 */
         this.closeLastModal = function () {
             while ($.msg.mdx.length > 0 && (this.tdx = $.msg.mdx.pop()) > 0) {
                 if ($('#layui-layer' + this.tdx).size()) return layer.close(this.tdx);
@@ -190,9 +196,9 @@ $(function () {
         };
         /*! Notify 调用入口 */
         // https://www.jq22.com/demo/jquerygrowl-notification202104021049
-        this.notify = function (title, msg, time, option) {
+        this.notify = function (title, message, time, option) {
             require(['notify'], function (Notify) {
-                Notify.notify(Object.assign({title: title || '', description: msg || '', position: 'top-right', closeTimeout: time || 3000}, (option || {})));
+                Notify.notify(Object.assign({title: title || '', description: message || '', position: 'top-right', closeTimeout: time || 3000}, (option || {})));
             });
         };
         /*! 页面加载层 */
@@ -318,7 +324,7 @@ $(function () {
         /*! 兼容跳转与执行 */
         this.goto = function (url) {
             if (typeof url !== 'string' || url.length < 1) return;
-            if (url.toLocaleString().indexOf('javascript:') === 0) {
+            if (url.toLowerCase().indexOf('javascript:') === 0) {
                 return eval(url.split('javascript:', 2)[1]);
             } else {
                 return location.href = url;
@@ -464,7 +470,8 @@ $(function () {
             this.tags = 'input,textarea';
             /* 预设检测规则 */
             this.patterns = {
-                phone: '^1[3-9][0-9]{9}$', email: '^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$'
+                phone: '^1[3-9][0-9]{9}$',
+                email: '^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$'
             };
             /*! 检测属性是否有定义 */
             this.hasProp = function (ele, prop) {
@@ -508,8 +515,8 @@ $(function () {
             this.form.attr({onsubmit: 'return false', novalidate: 'novalidate', autocomplete: 'off'});
             this.form.off(this.evts, this.tags).on(this.evts, this.tags, function () {
                 that.checkInput(this);
-            }).data('validate', this).bind("submit", function (evt) {
-                evt.button = that.form.find('button[type=submit],button:not([type=button])');
+            }).data('validate', this).bind('submit', function (event) {
+                event.button = that.form.find('button[type=submit],button:not([type=button])');
                 /* 检查所有表单元素是否通过H5的规则验证 */
                 if (that.checkAllInput() && typeof callable === 'function') {
                     if (typeof CKEDITOR === 'object' && typeof CKEDITOR.instances === 'object') {
@@ -517,12 +524,17 @@ $(function () {
                     }
                     /* 触发表单提交后，锁定三秒不能再次提交表单 */
                     if (that.form.attr('submit-locked')) return false;
-                    that.form.attr('submit-locked', 1), evt.button.addClass('submit-button-loading');
-                    callable.call(this, that.form.formToJson(), []), setTimeout(function () {
-                        that.form.removeAttr('submit-locked'), evt.button.removeClass('submit-button-loading');
-                    }, 3000);
+                    onConfirm(event.button.attr('data-confirm'), function () {
+                        that.form.attr('submit-locked', 1);
+                        event.button.addClass('submit-button-loading');
+                        callable.call(form, that.form.formToJson(), []);
+                        setTimeout(function () {
+                            that.form.removeAttr('submit-locked');
+                            event.button.removeClass('submit-button-loading');
+                        }, 3000);
+                    });
                 }
-                return evt.preventDefault(), false;
+                return event.preventDefault(), false;
             }).find('[data-form-loaded]').map(function () {
                 $(this).html(this.dataset.formLoaded || this.innerHTML);
                 $(this).removeAttr('data-form-loaded').removeClass('layui-disabled');
@@ -1017,7 +1029,7 @@ $(function () {
         var area = emap.area || [emap.width || '800px', emap.height || '580px'];
         var frame = emap.iframe + (emap.iframe.indexOf('?') > -1 ? '&' : '?') + $.param(data);
         return applyRuleValue(this, data, function () {
-            $(this).attr('data-index', $.form.iframe(frame, name, area, emap.offset || 'auto', function () {
+            $(this).attr('data-index', $.form.iframe(frame + '&' + $.param(data), name, area, emap.offset || 'auto', function () {
                 typeof emap.refresh !== 'undefined' && $.layTable.reload(emap.tableId || true);
             }, undefined, emap.full !== undefined));
         })

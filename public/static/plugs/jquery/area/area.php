@@ -20,10 +20,19 @@ new class() {
     {
         $url = 'https://api.map.baidu.com/api_region_search/v1/?keyword=%E5%85%A8%E5%9B%BD&sub_admin=3&ak=S7I1ewwAVr8r2MI3rnSKeF3R6GTCZiOo&extensions_code=1';
         $provs = json_decode(file_get_contents($url), true)['districts'][0]['districts'];
+        usort($provs, function ($a, $b) {
+            return $a['code'] > $b['code'] ? 1 : -1;
+        });
         foreach ($provs as &$prov) {
             $prov['list'] = $prov['districts'];
+            usort($prov['list'], function ($a, $b) {
+                return $a['code'] > $b['code'] ? 1 : -1;
+            });
             foreach ($prov['list'] as &$city) {
                 $city['list'] = $city['districts'];
+                usort($city['list'], function ($a, $b) {
+                    return $a['code'] > $b['code'] ? 1 : -1;
+                });
                 foreach ($city['list'] as &$area) {
                     unset($area['level'], $area['list'], $area['districts']);
                 }
@@ -31,7 +40,6 @@ new class() {
             }
             unset($prov['level'], $prov['districts']);
         }
-        ksort($provs);
         return $this->tree = $provs;
     }
 

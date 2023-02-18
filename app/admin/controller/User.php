@@ -22,7 +22,6 @@ use think\admin\model\SystemAuth;
 use think\admin\model\SystemBase;
 use think\admin\model\SystemUser;
 use think\admin\service\AdminService;
-use think\model\Relation;
 
 /**
  * 系统用户管理
@@ -52,7 +51,8 @@ class User extends Controller
             $query->where(['is_deleted' => 0, 'status' => intval($this->type === 'index')]);
 
             // 关联用户身份资料
-            $query->with(['userinfo' => function (Relation $relation) {
+            $query->with(['userinfo' => function ($relation) {
+                /** @var \think\model\Relation|\think\db\Query $relation */
                 $relation->field('code,name,content');
             }]);
 
