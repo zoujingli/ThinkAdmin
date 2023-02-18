@@ -142,7 +142,7 @@ public function index(){
 * 执行 `php think xadmin:fansall` 同步微信粉丝数据，依赖于 `ThinkPlugsWechat` 应用插件
 * 执行 `php think xadmin:replace` 可以批量替换数据库指定字符字段内容，通常用于文件地址替换
 * 执行 `php think xadmin:database` 对数据库的所有表 `repair|optimize` 操作，优化并整理数据库碎片
-* 执行 `php think xadmin:publish` 可自动安装现在模块或已安装应用插件，增加 `--migrate` 参数执行数据库脚本
+* 执行 `php think xadmin:publish` 可自动安装现在模块或已安装应用插件，参数 `--migrate` 执行数据库脚本
 
 #### 1. 守护进程管理（可自建定时任务去守护监听主进程）
 
