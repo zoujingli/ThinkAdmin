@@ -59,7 +59,7 @@
 
 ## 插件生态
 
-想了解更多插件信息请阅读 [《ThinkAdmin 插件生态》](plugin.md)
+了解更多插件信息请阅读 [《ThinkAdmin 插件生态》](plugin.md)
 
 ## 系统安装
 
@@ -139,16 +139,6 @@ public function index(){
 * Gitee仓库地址：https://gitee.com/zoujingli/ThinkAdmin/tree/v6.1
 * GitHub仓库地址：https://github.com/zoujingli/ThinkAdmin/tree/v6.1
 
-## 版权信息
-
-[**ThinkAdmin**](https://thinkadmin.top) 遵循 [**MIT**](license) 开源协议发布，并免费提供使用。
-
-本项目包含的第三方源码和二进制文件的版权信息另行标注。
-
-版权所有 Copyright © 2014-2023 by ThinkAdmin (https://thinkadmin.top) All rights reserved。
-
-更多细节参阅[`lisense`](license)文件
-
 ## 技术支持
 
 开发前请认真阅读 ThinkPHP 官方文档和 ThinkAdmin 开发文档，相信会对您有所帮助哦！
@@ -202,6 +192,16 @@ public function index(){
 * 增加`Phinx`数据库迁移脚本支持，可根据自己的需求安装对应模块，其中`admin`为改选模块！
 * 从分离`SystemService`分离出`RuntimeService`服务，精减服务启动入口，优化性能！
 * 增加插件模式，支持独立封装应用，可以通过`composer`管理并自动安装应用模块！
+
+## 版权信息
+
+[**ThinkAdmin**](https://thinkadmin.top) 遵循 [**MIT**](license) 开源协议发布，并免费提供使用。
+
+本项目包含的第三方源码和二进制文件的版权信息另行标注。
+
+版权所有 Copyright © 2014-2023 by ThinkAdmin (https://thinkadmin.top) All rights reserved。
+
+更多细节参阅 [`LISENSE`](license) 文件
 
 ## 系统版本
 
