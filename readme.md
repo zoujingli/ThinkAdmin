@@ -136,14 +136,13 @@ public function index(){
 
 ## 框架指令
 
-* 执行 `build.cmd` 可更新 `composer` 插件，会删除并替换 `vendor` 目录
 * 执行 `php think run` 启用本地开发环境，访问 `http://127.0.0.1:8000`
-* 执行 `php think xadmin:fansall` 同步微信粉丝数据（依赖于 `wechat` 模块）
-* 执行 `php think xadmin:sysmenu` 重写系统菜单并生成新编号并清理已禁用的菜单
-* 执行 `php think xadmin:package` 将现有`MySQL`数据库打包为`Phinx`数据库迁移脚本【新增】
-* 执行 `php think xadmin:replace` 可以批量替换数据库指定字符字段内容，通常用于文档地址替换
-* 执行 `php think xadmin:version` 查看当前版本号，显示 `ThinkPHP` 版本及 `ThinkLibrary` 版本
-* 执行 `php think xadmin:database` 对数据库的所有表`repair|optimize`操作，优化并整理数据库碎片
+* 执行 `php think xadmin:package` 将现有 `MySQL` 数据库打包为 `Phinx` 数据库脚本
+* 执行 `php think xadmin:sysmenu` 重写系统菜单并生成新编号，同时会清理已禁用的菜单数据
+* 执行 `php think xadmin:fansall` 同步微信粉丝数据，依赖于 `ThinkPlugsWechat` 应用插件
+* 执行 `php think xadmin:replace` 可以批量替换数据库指定字符字段内容，通常用于文件地址替换
+* 执行 `php think xadmin:database` 对数据库的所有表 `repair|optimize` 操作，优化并整理数据库碎片
+* 执行 `php think xadmin:publish` 可自动安装现在模块或已安装应用插件，增加`--migrate`参数执行数据库脚本
 
 #### 1. 守护进程管理（可自建定时任务去守护监听主进程）
 
