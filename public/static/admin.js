@@ -118,7 +118,7 @@ define('ThinkAdmin', function (require) {
             var idx1, idx2, temp, regx, field, rule = {};
             var json = layui.table.checkStatus(elem.dataset.tableId).data;
             layui.each(elem.dataset.rule.split(';'), function (idx, item, attr) {
-                (attr = item.split('#', 2)), rule[attr[0]] = attr[1];
+                attr = item.split('#', 2), rule[attr[0]] = attr[1];
             });
             for (idx1 in rule) {
                 temp = [], regx = new RegExp(/^{(.*?)}$/);
@@ -131,7 +131,7 @@ define('ThinkAdmin', function (require) {
                 }
             }
             return onConfirm(elem.dataset.confirm, function () {
-                return callabel.call(elem, data);
+                return callabel.call(elem, data, elem, elem.dataset || {});
             });
         } else if (elem.dataset.value || elem.dataset.rule) {
             var value = elem.dataset.value || (function (rule, array) {
@@ -145,11 +145,11 @@ define('ThinkAdmin', function (require) {
                 data[item.split('#')[0]] = item.split('#')[1];
             });
             return onConfirm(elem.dataset.confirm, function () {
-                return callabel.call(elem, data);
+                return callabel.call(elem, data, elem, elem.dataset || {});
             });
         } else {
             return onConfirm(elem.dataset.confirm, function () {
-                return callabel.call(elem, data);
+                return callabel.call(elem, data, elem, elem.dataset || {});
             });
         }
     }
@@ -474,9 +474,9 @@ define('ThinkAdmin', function (require) {
         $dom && $($dom).filter('form[data-auto]') && $els.add($dom);
         $els.size() > 0 && $els.map(function (idx, form) {
             $(this).vali(function (data) {
-                var emap = form.dataset, type = form.method || 'POST', href = form.action || location.href;
-                var tips = emap.tips || undefined, time = emap.time || undefined, taid = emap.tableId || false;
-                var call = window[emap.callable || '_default_callable'] || (taid ? function (ret) {
+                var dset = form.dataset, type = form.method || 'POST', href = form.action || location.href;
+                var tips = dset.tips || undefined, time = dset.time || undefined, taid = dset.tableId || false;
+                var call = window[dset.callable || '_default_callable'] || (taid ? function (ret) {
                     if (typeof ret === 'object' && ret.code > 0 && $('#' + taid).size() > 0) {
                         return $.msg.success(ret.info, 3, function () {
                             $.msg.closeLastModal();
@@ -484,7 +484,7 @@ define('ThinkAdmin', function (require) {
                         }) && false;
                     }
                 } : undefined);
-                onConfirm(emap.confirm, function () {
+                onConfirm(dset.confirm, function () {
                     $.form.load(href, data, type, call, true, tips, time);
                 });
             });
@@ -774,8 +774,8 @@ define('ThinkAdmin', function (require) {
 
     /*! 显示任务进度消息 */
     $.loadQueue = function (code, doScript, element) {
-        require(['queue'], function (method) {
-            method(code, doScript, element);
+        require(['queue'], function (Queue) {
+            new Queue(code, doScript, element);
         });
     };
 
@@ -787,9 +787,10 @@ define('ThinkAdmin', function (require) {
         var url = $(this).attr('action').replace(/&?page=\d+/g, '');
         if ((this.method || 'get').toLowerCase() === 'get') {
             var split = url.indexOf('?') > -1 ? '&' : '?', stype = location.href.indexOf('spm=') > -1 ? '#' : '';
-            return $.form.goto(stype + $.menu.parseUri(url + split + $(this).serialize().replace(/\+/g, ' ')));
+            $.form.goto(stype + $.menu.parseUri(url + split + $(this).serialize().replace(/\+/g, ' ')));
+        } else {
+            $.form.load(url, this, 'post');
         }
-        return $.form.load(url, this, 'post');
     });
 
     /*! 注册 data-file 事件行为 */
@@ -814,9 +815,8 @@ define('ThinkAdmin', function (require) {
 
     /*! 注册 data-load 事件行为 */
     onEvent('click', '[data-load]', function () {
-        var emap = this.dataset, data = {};
-        return applyRuleValue(this, data, function () {
-            $.form.load(emap.load, data, 'get', onConfirm.getLoadCallable(emap.tableId), true, emap.tips, emap.time);
+        applyRuleValue(this, {}, function (data, elem, dset) {
+            $.form.load(dset.load, data, 'get', onConfirm.getLoadCallable(dset.tableId), true, dset.tips, dset.time);
         });
     });
 
@@ -840,8 +840,8 @@ define('ThinkAdmin', function (require) {
 
     /*! 表单元素失去焦点时数字 */
     onEvent('blur', '[data-blur-number]', function () {
-        var emap = this.dataset, min = emap.valueMin, max = emap.valueMax;
-        var value = parseFloat(this.value) || 0, fiexd = parseInt(emap.blurNumber || 0);
+        var dset = this.dataset, min = dset.valueMin, max = dset.valueMax;
+        var value = parseFloat(this.value) || 0, fiexd = parseInt(dset.blurNumber || 0);
         if (typeof min !== 'undefined' && value < min) value = min;
         if (typeof max !== 'undefined' && value > max) value = max;
         this.value = parseFloat(value).toFixed(fiexd);
@@ -849,13 +849,13 @@ define('ThinkAdmin', function (require) {
 
     /*! 表单元素失焦时提交 */
     onEvent('blur', '[data-action-blur],[data-blur-action]', function () {
-        var that = $(this), emap = this.dataset, data = {'_token_': emap.token || emap.csrf || '--'};
-        var attrs = (emap.value || '').replace('{value}', that.val()).split(';');
+        var that = $(this), dset = this.dataset, data = {'_token_': dset.token || dset.csrf || '--'};
+        var attrs = (dset.value || '').replace('{value}', that.val()).split(';');
         for (var i in attrs) data[attrs[i].split('#')[0]] = attrs[i].split('#')[1];
-        onConfirm(emap.confirm, function () {
-            $.form.load(emap.actionBlur || emap.blurAction, data, emap.method || 'post', function (ret) {
+        onConfirm(dset.confirm, function () {
+            $.form.load(dset.actionBlur || dset.blurAction, data, dset.method || 'post', function (ret) {
                 return that.css('border', (ret && ret.code) ? '1px solid #e6e6e6' : '1px solid red') && false;
-            }, emap.loading !== 'false', emap.loading, emap.time);
+            }, dset.loading !== 'false', dset.loading, dset.time);
         });
     });
 
@@ -877,31 +877,29 @@ define('ThinkAdmin', function (require) {
 
     /*! 注册 data-action 事件行为 */
     onEvent('click', '[data-action]', function () {
-        var emap = this.dataset, data = {'_token_': emap.token || emap.csrf || '--'};
-        var load = emap.loading !== 'false', tips = typeof load === 'string' ? load : undefined;
-        return applyRuleValue(this, data, function () {
-            $.form.load(emap.action, data, emap.method || 'post', onConfirm.getLoadCallable(emap.tableId), load, tips, emap.time)
+        applyRuleValue(this, {}, function (data, elem, dset) {
+            Object.assign(data, {'_token_': dset.token || dset.csrf || '--'})
+            var load = dset.loading !== 'false', tips = typeof load === 'string' ? load : undefined;
+            $.form.load(dset.action, data, dset.method || 'post', onConfirm.getLoadCallable(dset.tableId), load, tips, dset.time)
         });
     });
 
     /*! 注册 data-modal 事件行为 */
     onEvent('click', '[data-modal]', function () {
-        var un = undefined, emap = this.dataset, data = {open_type: 'modal'};
-        return applyRuleValue(this, data, function () {
-            return $.form.modal(emap.modal, data, emap.title || this.innerText || '编辑', un, un, un, emap.area || emap.width || '800px', emap.offset || 'auto', emap.full !== un);
-        })
+        applyRuleValue(this, {open_type: 'modal'}, function (data, elem, dset) {
+            return $.form.modal(dset.modal, data, dset.title || this.innerText || '编辑', undefined, undefined, undefined, dset.area || dset.width || '800px', dset.offset || 'auto', dset.full !== undefined);
+        });
     });
 
     /*! 注册 data-iframe 事件行为 */
     onEvent('click', '[data-iframe]', function () {
-        var emap = this.dataset, data = {open_type: 'iframe'};
-        var name = emap.title || this.innerText || 'IFRAME 窗口';
-        var area = emap.area || [emap.width || '800px', emap.height || '580px'];
-        var frame = emap.iframe + (emap.iframe.indexOf('?') > -1 ? '&' : '?') + $.param(data);
-        return applyRuleValue(this, data, function () {
-            $(this).attr('data-index', $.form.iframe(frame + '&' + $.param(data), name, area, emap.offset || 'auto', function () {
-                typeof emap.refresh !== 'undefined' && $.layTable.reload(emap.tableId || true);
-            }, undefined, emap.full !== undefined));
+        applyRuleValue(this, {open_type: 'iframe'}, function (data, elem, dset) {
+            var name = dset.title || this.innerText || 'IFRAME 窗口';
+            var area = dset.area || [dset.width || '800px', dset.height || '580px'];
+            var frame = dset.iframe + (dset.iframe.indexOf('?') > -1 ? '&' : '?') + $.param(data);
+            $(this).attr('data-index', $.form.iframe(frame + '&' + $.param(data), name, area, dset.offset || 'auto', function () {
+                typeof dset.refresh !== 'undefined' && $.layTable.reload(dset.tableId || true);
+            }, undefined, dset.full !== undefined));
         })
     });
 
@@ -926,11 +924,10 @@ define('ThinkAdmin', function (require) {
 
     /*! 异步任务状态监听与展示 */
     onEvent('click', '[data-queue]', function () {
-        var that = this, emap = this.dataset;
-        onConfirm(emap.confirm || false, function () {
-            $.form.load(emap.queue, {}, 'post', function (ret) {
+        applyRuleValue(this, {}, function (data, elem, dset) {
+            $.form.load(dset.queue, data, 'post', function (ret) {
                 if (typeof ret.data === 'string' && ret.data.indexOf('Q') === 0) {
-                    return $.loadQueue(ret.data, true, that), false;
+                    return $.loadQueue(ret.data, true, elem), false;
                 }
             });
         });
@@ -949,7 +946,7 @@ define('ThinkAdmin', function (require) {
     onEvent('mouseenter', '[data-tips-image][data-tips-hover]', function () {
         var img = new Image(), ele = $(this);
         if ((img.src = this.dataset.tipsImage || this.dataset.lazySrc || this.src)) {
-            img.layopt = {time: 0, skin: 'layui-layer-image', anim: 5, isOutAnim: false, scrollbar: false};
+            img.layopt = {anim: 5, time: 0, skin: 'layui-layer-image', isOutAnim: false, scrollbar: false};
             img.referrerPolicy = 'no-referrer', img.style.maxWidth = '260px', img.style.maxHeight = '260px';
             ele.data('layidx', layer.tips(img.outerHTML, this, img.layopt)).off('mouseleave').on('mouseleave', function () {
                 layer.close(ele.data('layidx'));
