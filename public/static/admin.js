@@ -331,7 +331,7 @@ define('ThinkAdmin', function (require) {
         this.goto = function (url) {
             if (typeof url !== 'string' || url.length < 1) return;
             if (url.toLowerCase().indexOf('javascript:') === 0) {
-                return eval(url.split(':', 2)[1]);
+                return eval($.trim(url.substring(11)));
             } else {
                 return location.href = url;
             }
