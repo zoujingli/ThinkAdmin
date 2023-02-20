@@ -18,7 +18,7 @@
 {block name="content"}
 <div class="think-box-shadow">
     {include file='fans/index_search'}
-    <table id="UserData" data-url="{:sysuri()}" data-target-search="form.form-search"></table>
+    <table id="UserData" data-url="{:request()->url()}" data-target-search="form.form-search"></table>
 </div>
 {/block}
 

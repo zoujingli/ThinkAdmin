@@ -32,14 +32,14 @@
         <div class='mobile-body' data-iframe-box></div>
     </div>
     <div class="keys-container inline-block absolute margin-left-10 margin-right-15">
-        <form action="{:sysuri()}" method="post" data-auto="true" data-table-id="AutoTable" class="layui-form layui-card">
+        <form action="{:request()->url()}" method="post" data-auto="true" data-table-id="AutoTable" class="layui-form layui-card">
             <div class="layui-card relative shadow-none">
                 <div class="layui-card-header layui-bg-gray text-center">编辑回复规则</div>
                 <div class="layui-card-body">
                     <div class="layui-form-item margin-top-10">
                         <label class="layui-form-label">延迟时间</label>
                         <div class="layui-input-block">
-                            <input required readonly placeholder='请输入延迟时间' maxlength='20' id="timeInput" name='time' class="layui-input" value='{$vo.time|default="00小时00分00秒"}'>
+                            <input required readonly placeholder='请输入延迟时间' vali-name="延迟时间" maxlength='20' id="timeInput" name='time' class="layui-input" value='{$vo.time|default="00小时00分00秒"}'>
                             <script>layui.laydate.render({elem: '#timeInput', type: "time", format: 'HH小时mm分ss秒', btns: ['confirm']});</script>
                         </div>
                     </div>
@@ -76,7 +76,7 @@
                     <div class="layui-form-item" data-keys-type='text'>
                         <label class="layui-form-label">回复文字</label>
                         <div class="layui-input-block">
-                            <textarea name="content" required placeholder="请输入回复文字" maxlength="10000" class="layui-textarea">{$vo.content|raw|default='说点什么吧'}</textarea>
+                            <textarea name="content" required vali-name="回复文字" placeholder="请输入回复文字" maxlength="10000" class="layui-textarea">{$vo.content|raw|default='说点什么吧'}</textarea>
                         </div>
                     </div>
 
@@ -91,7 +91,7 @@
                     <div class="layui-form-item" data-keys-type='image'>
                         <label class="layui-form-label label-required">图片地址</label>
                         <div class="layui-input-block">
-                            <input class="layui-input padding-right-30" onchange="$(this).nextAll('img').attr('src', this.value)" value="{$vo.image_url|default=$defaultImage}" name="image_url" required placeholder="请上传图片或输入图片地址">
+                            <input class="layui-input padding-right-30" onchange="$(this).nextAll('img').attr('src', this.value)" value="{$vo.image_url|default=$defaultImage}" name="image_url" required vali-name="图片链接" placeholder="请上传图片或输入图片地址">
                             <a data-file="btn" data-type="bmp,png,jpeg,jpg,gif" data-field="image_url" class="input-right-icon"><i class="layui-icon layui-icon-upload"></i></a>
                             <p class="help-block">文件最大2Mb，支持bmp/png/jpeg/jpg/gif格式</p>
                             <img data-tips-image src='{$vo.image_url|default=$defaultImage}' alt="img">
@@ -101,7 +101,7 @@
                     <div class="layui-form-item" data-keys-type='voice'>
                         <label class="layui-form-label">上传语音</label>
                         <div class="layui-input-block">
-                            <input class='layui-input padding-right-30' value="{$vo.voice_url|default=''}" name="voice_url" required title="请上传语音文件或输入语音地址">
+                            <input class='layui-input padding-right-30' value="{$vo.voice_url|default=''}" name="voice_url" required vali-name="语音链接" placeholder="请上传语音文件或输入语音地址">
                             <a data-file="btn" data-type="mp3,wma,wav,amr" data-field="voice_url" class="input-right-icon"><i class="layui-icon layui-icon-upload"></i></a>
                             <p class="help-block">文件最大2Mb，播放长度不超过60s，mp3/wma/wav/amr格式</p>
                         </div>
@@ -110,14 +110,14 @@
                     <div class="layui-form-item" data-keys-type='music'>
                         <label class="layui-form-label">音乐标题</label>
                         <div class="layui-input-block">
-                            <input class='layui-input' value="{$vo.music_title|default='音乐标题'}" name="music_title" required title="请输入音乐标题">
+                            <input class='layui-input' value="{$vo.music_title|default='音乐标题'}" name="music_title" required vali-name="音乐标题">
                         </div>
                     </div>
 
                     <div class="layui-form-item" data-keys-type='music'>
                         <label class="layui-form-label label-required">上传音乐</label>
                         <div class="layui-input-block">
-                            <input class='layui-input padding-right-30' value="{$vo.music_url|default=''}" name="music_url" required title="请上传音乐文件或输入音乐地址">
+                            <input class='layui-input padding-right-30' value="{$vo.music_url|default=''}" name="music_url" required vali-name="音乐链接" placeholder="请上传音乐文件或输入音乐地址">
                             <a data-file="btn" data-type="mp3,wma,wav,amr" data-field="music_url" class="input-right-icon"><i class="layui-icon layui-icon-upload"></i></a>
                         </div>
                     </div>
@@ -132,7 +132,7 @@
                     <div class="layui-form-item" data-keys-type='music'>
                         <label class="layui-form-label">音乐图片</label>
                         <div class="layui-input-block">
-                            <input class="layui-input padding-right-30" value="{$vo.music_image|default=$defaultImage}" name="music_image" required title="请上传音乐图片或输入音乐图片地址">
+                            <input class="layui-input padding-right-30" value="{$vo.music_image|default=$defaultImage}" name="music_image" required vali-name="音乐图片" placeholder="请上传音乐图片或输入音乐图片地址">
                             <a data-file="btn" data-type="jpg,png" data-field="music_image" class="input-right-icon"><i class="layui-icon layui-icon-upload"></i></a>
                             <p class="help-block">文件最大64KB，只支持JPG格式</p>
                         </div>
@@ -148,7 +148,7 @@
                     <div class="layui-form-item" data-keys-type='video'>
                         <label class="layui-form-label">上传视频</label>
                         <div class="layui-input-block">
-                            <input class='layui-input padding-right-30' value="{$vo.video_url|default=''}" name="video_url" required title="请上传视频或输入音乐视频地址">
+                            <input class='layui-input padding-right-30' value="{$vo.video_url|default=''}" name="video_url" required vali-name="视频链接" placeholder="请上传视频或输入视频地址">
                             <a data-file="btn" data-type="mp4" data-field="video_url" class="input-right-icon"><i class="layui-icon layui-icon-upload"></i></a>
                             <p class="help-block">文件最大10MB，只支持MP4格式</p>
                         </div>

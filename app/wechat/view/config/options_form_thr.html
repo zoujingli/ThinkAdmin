@@ -1,8 +1,8 @@
-<form action="{:sysuri()}" method="post" data-auto="true" class="layui-form layui-card shadow-none">
+<form action="{:request()->url()}" method="post" data-auto="true" class="layui-form layui-card shadow-none">
 
     <div class="layui-card-header border-0">
         <div class="layui-bg-gray padding-left-20 padding-right-20 border-radius-5 layui-elip">
-            使用微信开放平台授权模式时，需要使用楚才开放平台的 <span>微信授权</span> 服务，接口需要使用 <span>Yar</span> 或 <span>JsonRpc</span> 通信。
+            使用微信开放平台授权模式时，微信将授权给第三方服务平台托管系统，消息数据使用 <span>JsonRpc</span> 通信协议转发。
         </div>
     </div>
 
@@ -38,7 +38,7 @@
         <div class="layui-form-item">
             <label class="layui-form-label"><b>AppId</b><br><span class="nowrap color-desc">公众号 AppId</span></label>
             <div class="layui-input-block">
-                <input name="wechat.thr_appid" placeholder="请输入以wx开头的18位公众号AppId（必填）" pattern="^wx[0-9a-z]{16}$" maxlength="18" required value="{:sysconf('wechat.thr_appid')}" class="layui-input">
+                <input name="wechat.thr_appid" vali-name="微信APPID" placeholder="请输入以wx开头的18位公众号AppId（必填）" pattern="^wx[0-9a-z]{16}$" maxlength="18" required value="{:sysconf('wechat.thr_appid')}" class="layui-input">
                 <p class="help-block">众号 appid 通过微信第三方授权自动获取. 若没有值请进行微信第三方授权。</p>
             </div>
         </div>
@@ -47,7 +47,7 @@
             <label class="layui-form-label"><b>AppKey</b><br><span class="nowrap color-desc">服务接口密钥</span></label>
             <div class="layui-input-block">
                 <label class="relative block">
-                    <input name="wechat.thr_appkey" required placeholder="请输入32位第三方平台接口密钥AppKey（必填）" value="{:sysconf('wechat.thr_appkey')}" maxlength="32" pattern="^[0-9a-z]{32}$" class="layui-input">
+                    <input name="wechat.thr_appkey" vali-name="接口密钥" required placeholder="请输入32位第三方平台接口密钥AppKey（必填）" value="{:sysconf('wechat.thr_appkey')}" maxlength="32" pattern="^[0-9a-z]{32}$" class="layui-input">
                     <p class="help-block">公众号服务平台接口密钥, 通过微信第三方授权自动获取, 若没有值请进行微信第三方授权。</p>
                 </label>
             </div>

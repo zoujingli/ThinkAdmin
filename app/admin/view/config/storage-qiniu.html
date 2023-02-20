@@ -49,7 +49,7 @@
                 <b class="color-green">空间名称</b><br><span class="nowrap color-desc">Bucket</span>
             </label>
             <div class="layui-input-block">
-                <input id="storage.qiniu_bucket" type="text" name="storage.qiniu_bucket" required value="{:sysconf('storage.qiniu_bucket')}" placeholder="请输入七牛云存储 Bucket (空间名称)" class="layui-input">
+                <input id="storage.qiniu_bucket" type="text" name="storage.qiniu_bucket" value="{:sysconf('storage.qiniu_bucket')}" required vali-name="空间名称" placeholder="请输入七牛云存储 Bucket (空间名称)" class="layui-input">
                 <p class="help-block">填写七牛云存储空间名称，如：static</p>
             </div>
         </div>
@@ -59,7 +59,7 @@
                 <b class="color-green">访问域名</b><br><span class="nowrap color-desc">Domain</span>
             </label>
             <div class="layui-input-block">
-                <input id="storage.qiniu_http_domain" type="text" name="storage.qiniu_http_domain" required value="{:sysconf('storage.qiniu_http_domain')}" placeholder="请输入七牛云存储 Domain (访问域名)" class="layui-input">
+                <input id="storage.qiniu_http_domain" type="text" name="storage.qiniu_http_domain" value="{:sysconf('storage.qiniu_http_domain')}" required vali-name="访问域名" placeholder="请输入七牛云存储 Domain (访问域名)" class="layui-input">
                 <p class="help-block">填写七牛云存储访问域名，如：static.qiniu.thinkadmin.top</p>
             </div>
         </div>
@@ -69,7 +69,7 @@
                 <b class="color-green">访问密钥</b><br><span class="nowrap color-desc">AccessKey</span>
             </label>
             <div class="layui-input-block">
-                <input id="storage.qiniu_access_key" type="text" name="storage.qiniu_access_key" required value="{:sysconf('storage.qiniu_access_key')}" placeholder="请输入七牛云授权 AccessKey (访问密钥)" class="layui-input">
+                <input id="storage.qiniu_access_key" type="text" name="storage.qiniu_access_key" value="{:sysconf('storage.qiniu_access_key')}" required vali-name="访问密钥" placeholder="请输入七牛云授权 AccessKey (访问密钥)" class="layui-input">
                 <p class="help-block">可以在 [ 七牛云 > 个人中心 ] 设置并获取到访问密钥</p>
             </div>
         </div>
@@ -79,7 +79,7 @@
                 <b class="color-green">安全密钥</b><br><span class="nowrap color-desc">SecretKey</span>
             </label>
             <div class="layui-input-block">
-                <input id="storage.qiniu_secret_key" type="text" name="storage.qiniu_secret_key" required value="{:sysconf('storage.qiniu_secret_key')}" maxlength="43" placeholder="请输入七牛云授权 SecretKey (安全密钥)" class="layui-input">
+                <input id="storage.qiniu_secret_key" type="text" name="storage.qiniu_secret_key" value="{:sysconf('storage.qiniu_secret_key')}" maxlength="43" required vali-name="安全密钥" placeholder="请输入七牛云授权 SecretKey (安全密钥)" class="layui-input">
                 <p class="help-block">可以在 [ 七牛云 > 个人中心 ] 设置并获取到安全密钥</p>
             </div>
         </div>

@@ -38,7 +38,7 @@
     </ul>
     <div class="layui-tab-content">
         {include file='keys/index_search'}
-        <table id="RuleTable" data-url="{:sysuri()}" data-target-search="form.form-search"></table>
+        <table id="RuleTable" data-url="{:request()->url()}" data-target-search="form.form-search"></table>
     </div>
 </div>
 {/block}
@@ -102,7 +102,7 @@
 
 <!-- 列表排序权重模板 -->
 <script type="text/html" id="SortInputTpl">
-    <input type="number" min="0" data-blur-number="0" data-action-blur="{:sysuri()}" data-value="id#{{d.id}};action#sort;sort#{value}" data-loading="false" value="{{d.sort}}" class="layui-input text-center">
+    <input type="number" min="0" data-blur-number="0" data-action-blur="{:request()->url()}" data-value="id#{{d.id}};action#sort;sort#{value}" data-loading="false" value="{{d.sort}}" class="layui-input text-center">
 </script>
 
 <!-- 状态切换模板 -->

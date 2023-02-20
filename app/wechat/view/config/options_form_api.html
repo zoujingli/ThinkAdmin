@@ -1,4 +1,4 @@
-<form action="{:sysuri()}" method="post" data-auto="true" class="layui-form layui-card shadow-none">
+<form action="{:request()->url()}" method="post" data-auto="true" class="layui-form layui-card shadow-none">
 
     <div class="layui-card-header border-0">
         <div class="layui-bg-gray padding-left-20 padding-right-20 border-radius-5 layui-elip">
@@ -11,7 +11,7 @@
         <div class="layui-form-item">
             <label class="layui-form-label"><b>Token</b><br><span class="nowrap color-desc">接口认证令牌</span></label>
             <div class="layui-input-block">
-                <input name="wechat.token" required placeholder="请输入消息推送对接认证Token（必填）" value="{:sysconf('wechat.token')}" class="layui-input">
+                <input name="wechat.token" required vali-name="认证TOKEN" placeholder="请输入消息推送对接认证Token（必填）" value="{:sysconf('wechat.token')}" class="layui-input">
                 <p class="help-block">公众号平台与系统对接认证Token，请优先填写此参数并保存，然后再在微信公众号平台操作对接。</p>
             </div>
         </div>
@@ -19,7 +19,7 @@
         <div class="layui-form-item">
             <label class="layui-form-label"><b>AppId</b><br><span class="nowrap color-desc">公众号 APPID</span></label>
             <div class="layui-input-block">
-                <input name="wechat.appid" placeholder="请输入以wx开头的18位公众号APPID（必填）" pattern="^wx[0-9a-z]{16}$" maxlength="18" required="required" value="{:sysconf('wechat.appid')}" class="layui-input">
+                <input name="wechat.appid" vali-name="微信APPID" placeholder="请输入以wx开头的18位公众号APPID（必填）" pattern="^wx[0-9a-z]{16}$" maxlength="18" required="required" value="{:sysconf('wechat.appid')}" class="layui-input">
                 <p class="help-block">公众号APPID是所有接口必要参数，可以在公众号平台 [ 开发 > 基本配置 ] 页面获取。</p>
             </div>
         </div>
@@ -27,7 +27,7 @@
         <div class="layui-form-item">
             <label class="layui-form-label"><b>AppSecret</b><br><span class="nowrap color-desc">公众号 Secret</span></label>
             <div class="layui-input-block">
-                <input name="wechat.appsecret" required placeholder="请输入32位公众号接口密钥AppSecret（必填）" value="{:sysconf('wechat.appsecret')}" maxlength="32" pattern="^[0-9a-z]{32}$" class="layui-input">
+                <input name="wechat.appsecret" required vali-name="接口密钥" placeholder="请输入32位公众号接口密钥AppSecret（必填）" value="{:sysconf('wechat.appsecret')}" maxlength="32" pattern="^[0-9a-z]{32}$" class="layui-input">
                 <p class="help-block">公众号应用密钥是所有接口必要参数，可以在公众号平台 [ 开发 > 基本配置 ] 页面授权后获取。</p>
             </div>
         </div>
@@ -35,7 +35,7 @@
         <div class="layui-form-item">
             <label class="layui-form-label"><b>AesKey</b><br><span class="nowrap color-desc">消息加密密钥</span></label>
             <div class="layui-input-block">
-                <input name="wechat.encodingaeskey" placeholder="请输入43位公众号消息推送加密密钥（可选）" value="{:sysconf('wechat.encodingaeskey')}" maxlength="43" pattern="^.{43}$" class="layui-input">
+                <input name="wechat.encodingaeskey" vali-name="消息密钥" placeholder="请输入43位公众号消息推送加密密钥（可选）" value="{:sysconf('wechat.encodingaeskey')}" maxlength="43" pattern="^.{43}$" class="layui-input">
                 <p class="help-block">若开启了消息加密时必需填写，消息加密密钥必需填写并保持与公众号平台一致。</p>
             </div>
         </div>

@@ -49,7 +49,7 @@
                 <b class="color-green">空间名称</b><br><span class="nowrap color-desc">Bucket</span>
             </label>
             <div class="layui-input-block">
-                <input id="storage.txcos_bucket" type="text" name="storage.txcos_bucket" required value="{:sysconf('storage.txcos_bucket')}" placeholder="请输入腾讯云COS存储 Bucket" class="layui-input">
+                <input id="storage.txcos_bucket" type="text" name="storage.txcos_bucket" value="{:sysconf('storage.txcos_bucket')}" required vali-name="空间名称" placeholder="请输入腾讯云COS存储 Bucket" class="layui-input">
                 <p class="help-block">填写腾讯云COS存储空间名称，如：thinkadmin-1251143395</p>
             </div>
         </div>
@@ -59,7 +59,7 @@
                 <b class="color-green">访问域名</b><br><span class="nowrap color-desc">Domain</span>
             </label>
             <div class="layui-input-block">
-                <input id="storage.txcos_http_domain" type="text" name="storage.txcos_http_domain" required value="{:sysconf('storage.txcos_http_domain')}" placeholder="请输入腾讯云COS存储 Domain" class="layui-input">
+                <input id="storage.txcos_http_domain" type="text" name="storage.txcos_http_domain" value="{:sysconf('storage.txcos_http_domain')}" required vali-name="访问域名" placeholder="请输入腾讯云COS存储 Domain" class="layui-input">
                 <p class="help-block">填写腾讯云COS存储外部访问域名，如：static.txcos.thinkadmin.top</p>
             </div>
         </div>
@@ -69,7 +69,7 @@
                 <b class="color-green">访问密钥</b><br><span class="nowrap color-desc">AccessKey</span>
             </label>
             <div class="layui-input-block">
-                <input id="storage.txcos_access_key" type="text" name="storage.txcos_access_key" required value="{:sysconf('storage.txcos_access_key')}" placeholder="请输入腾讯云COS存储 AccessKey" class="layui-input">
+                <input id="storage.txcos_access_key" type="text" name="storage.txcos_access_key" value="{:sysconf('storage.txcos_access_key')}" required vali-name="访问密钥" placeholder="请输入腾讯云COS存储 AccessKey" class="layui-input">
                 <p class="help-block">可以在 [ 腾讯云 > 个人中心 ] 设置并获取到访问密钥</p>
             </div>
         </div>
@@ -79,7 +79,7 @@
                 <b class="color-green">安全密钥</b><br><span class="nowrap color-desc">SecretKey</span>
             </label>
             <div class="layui-input-block">
-                <input id="storage.txcos_secret_key" type="text" name="storage.txcos_secret_key" required value="{:sysconf('storage.txcos_secret_key')}" maxlength="43" placeholder="请输入腾讯云COS存储 SecretKey" class="layui-input">
+                <input id="storage.txcos_secret_key" type="text" name="storage.txcos_secret_key" value="{:sysconf('storage.txcos_secret_key')}" maxlength="43" required vali-name="安全密钥" placeholder="请输入腾讯云COS存储 SecretKey" class="layui-input">
                 <p class="help-block">可以在 [ 腾讯云 > 个人中心 ] 设置并获取到安全密钥</p>
             </div>
         </div>

@@ -32,7 +32,7 @@
                 <b class="color-green">空间名称</b><br><span class="nowrap color-desc">Bucket</span>
             </label>
             <div class="layui-input-block">
-                <input id="storage.upyun_bucket" name="storage.upyun_bucket" required value="{:sysconf('storage.upyun_bucket')}" placeholder="请输入又拍云存储 Bucket (空间名称)" class="layui-input">
+                <input id="storage.upyun_bucket" name="storage.upyun_bucket" value="{:sysconf('storage.upyun_bucket')}" required vali-name="空间名称" placeholder="请输入又拍云存储 Bucket (空间名称)" class="layui-input">
                 <p class="help-block">填写又拍云存储空间名称，如：think-admin-uss（需要是全区唯一的值，不存在时会自动创建）</p>
             </div>
         </div>
@@ -42,7 +42,7 @@
                 <b class="color-green">访问域名</b><br><span class="nowrap color-desc">Domain</span>
             </label>
             <div class="layui-input-block">
-                <input id="storage.upyun_http_domain" name="storage.upyun_http_domain" required value="{:sysconf('storage.upyun_http_domain')}" placeholder="请输入又拍云存储 Domain (访问域名)" class="layui-input">
+                <input id="storage.upyun_http_domain" name="storage.upyun_http_domain" value="{:sysconf('storage.upyun_http_domain')}" required vali-name="访问域名" placeholder="请输入又拍云存储 Domain (访问域名)" class="layui-input">
                 <p class="help-block">填写又拍云存储外部访问域名，如：static.uss.thinkadmin.top</p>
             </div>
         </div>
@@ -52,7 +52,7 @@
                 <b class="color-green">操作账号</b><br><span class="nowrap color-desc">Username</span>
             </label>
             <div class="layui-input-block">
-                <input id="storage.upyun_access_key" name="storage.upyun_access_key" required value="{:sysconf('storage.upyun_access_key')}" maxlength="100" placeholder="请输入又拍云存储 Username (操作员账号)" class="layui-input">
+                <input id="storage.upyun_access_key" name="storage.upyun_access_key" value="{:sysconf('storage.upyun_access_key')}" maxlength="100" required vali-name="操作员账号" placeholder="请输入又拍云存储 Username (操作员账号)" class="layui-input">
                 <p class="help-block">可以在 [ 账户管理 > 操作员 ] 设置操作员账号并将空间给予授权。</p>
             </div>
         </div>
@@ -62,7 +62,7 @@
                 <b class="color-green">操作密码</b><br><span class="nowrap color-desc">Password</span>
             </label>
             <div class="layui-input-block">
-                <input id="storage.upyun_secret_key" name="storage.upyun_secret_key" required value="{:sysconf('storage.upyun_secret_key')}" maxlength="100" placeholder="请输入又拍云存储 Password (操作员密码)" class="layui-input">
+                <input id="storage.upyun_secret_key" name="storage.upyun_secret_key" value="{:sysconf('storage.upyun_secret_key')}" maxlength="100" required vali-name="操作员密码" placeholder="请输入又拍云存储 Password (操作员密码)" class="layui-input">
                 <p class="help-block">可以在 [ 账户管理 > 操作员 ] 设置操作员密码并将空间给予授权</p>
             </div>
         </div>

@@ -5,14 +5,14 @@
             <div class="layui-col-xs4 padding-bottom-0">
                 <label class="relative block">
                     <span class="help-label"><b>登录表单标题</b>Login Name</span>
-                    <input name="login_name" required placeholder="请输入登录页面的表单标题" value="{:sysconf('login_name')?:'系统管理'}" class="layui-input">
+                    <input name="login_name" required placeholder="请输入登录页面的表单标题" vali-name="登录标题" value="{:sysconf('login_name')?:'系统管理'}" class="layui-input">
                 </label>
             </div>
             <div class="layui-col-xs4 padding-bottom-0">
                 <div class="help-label label-required-prev"><b>后台登录入口</b>Login Entry</div>
                 <label class="layui-input relative block nowrap label-required-null">
                     <span>{:sysuri('@',[],false,true)}</span>
-                    <input autofocus required pattern="[a-zA-Z_][a-zA-Z0-9_]*" placeholder="请输入后台登录入口" class="layui-input inline-block padding-0 border-0" style="width:100px;background:none" value="{:substr(sysuri('admin/index/index',[],false), strlen(sysuri('@')))}" name="xpath">
+                    <input autofocus required pattern="[a-zA-Z_][a-zA-Z0-9_]*" vali-name="登录入口" placeholder="请输入后台登录入口" class="layui-input inline-block padding-0 border-0" style="width:100px;background:none" value="{:substr(sysuri('admin/index/index',[],false), strlen(sysuri('@')))}" name="xpath">
                 </label>
             </div>
             <div class="layui-col-xs4 padding-bottom-0">
@@ -40,7 +40,7 @@
         <div class="layui-form-item margin-bottom-5">
             <div class="help-label label-required-prev"><b>JWT 接口密钥</b>Jwt Key</div>
             <label class="relative block label-required-null">
-                <input class="layui-input" pattern=".{32}" maxlength="32" required placeholder="请输入32位JWT接口密钥" name="data.jwtkey" value="{:sysconf('data.jwtkey')?:md5(uniqid(strval(rand(1000,9999)),true))}">
+                <input class="layui-input" pattern=".{32}" maxlength="32" required vali-name="接口密钥" placeholder="请输入32位JWT接口密钥" name="data.jwtkey" value="{:sysconf('data.jwtkey')?:md5(uniqid(strval(rand(1000,9999)),true))}">
                 <a class="input-right-icon layui-icon layui-icon-refresh" id="RefreshJwtKey"></a>
             </label>
             <div class="help-block sub-span-blue">
@@ -51,7 +51,7 @@
         <div class="layui-form-item margin-bottom-5">
             <div class="help-label label-required-prev"><b>浏览器小图标</b>Browser Icon</div>
             <label class="relative block label-required-null">
-                <input class="layui-input" required pattern="^(http|/)" placeholder="请上传浏览器图标" value="{:sysconf('site_icon')}" name="site_icon">
+                <input class="layui-input" required pattern="url" vali-name="图标文件" placeholder="请上传浏览器图标" value="{:sysconf('site_icon')}" name="site_icon">
                 <a class="input-right-icon layui-icon layui-icon-upload-drag" data-file="btn" data-type="png,jpg,jpeg" data-field="site_icon"></a>
             </label>
             <div class="help-block sub-span-blue">
@@ -63,14 +63,14 @@
             <div class="layui-col-xs4 padding-bottom-0">
                 <label class="layui-form-item margin-bottom-5 relative block">
                     <span class="help-label"><b>网站名称</b>Site Name</span>
-                    <input name="site_name" required placeholder="请输入网站名称" value="{:sysconf('site_name')}" class="layui-input">
+                    <input name="site_name" required placeholder="请输入网站名称" vali-name="网站名称" value="{:sysconf('site_name')}" class="layui-input">
                     <span class="help-block">网站名称将显示在浏览器的标签上 ~</span>
                 </label>
             </div>
             <div class="layui-col-xs4 padding-bottom-0">
                 <label class="layui-form-item margin-bottom-5 relative block">
                     <span class="help-label"><b>后台程序名称</b>App Name</span>
-                    <input name="app_name" required placeholder="请输入程序名称" value="{:sysconf('app_name')}" class="layui-input">
+                    <input name="app_name" required placeholder="请输入程序名称" vali-name="程序名称" value="{:sysconf('app_name')}" class="layui-input">
                     <span class="help-block">管理程序名称显示在后台左上标题处 ~</span>
                 </label>
             </div>
@@ -96,7 +96,7 @@
             <div class="layui-col-xs4 padding-top-0 padding-bottom-0">
                 <label class="relative block">
                     <span class="help-label"><b>网站版权信息</b>Copyright</span>
-                    <input name="site_copy" required placeholder="请输入版权信息" value="{:sysconf('site_copy')}" class="layui-input">
+                    <input name="site_copy" required placeholder="请输入版权信息" vali-name="版权信息" value="{:sysconf('site_copy')}" class="layui-input">
                 </label>
             </div>
             <div class="layui-col-xs12 help-block padding-top-0">

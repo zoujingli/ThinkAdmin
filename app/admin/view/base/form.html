@@ -29,7 +29,7 @@
             {/if}
             <p class="help-block">请选择数据类型，数据创建后不能再次修改哦 ~</p>
             <div id="DataTypeInput" class="layui-hide relative">
-                <input class="layui-input" maxlength="20" name="type" required placeholder="请输入数据类型" value="{$vo.type|default=''}">
+                <input class="layui-input" maxlength="20" name="type" required vali-name="数据类型" placeholder="请输入数据类型" value="{$vo.type|default=''}">
                 <p class="help-block">请输入新的数据类型，数据创建后不能再次修改哦 ~</p>
             </div>
         </div>
@@ -37,16 +37,16 @@
         <label class="layui-form-item relative block">
             <span class="help-label"><b>数据编码</b>DataCode</span>
             {if isset($vo.code)}
-            <input readonly maxlength="100" class="layui-input think-bg-gray" name="code" value='{$vo.code|default=""}' required placeholder="请输入数据编码">
+            <input readonly maxlength="100" class="layui-input think-bg-gray" name="code" value='{$vo.code|default=""}' required required-error="数据编码不能为空" placeholder="请输入数据编码">
             {else}
-            <input maxlength="100" class="layui-input" name="code" value='{$vo.code|default=""}' required placeholder="请输入数据编码">
+            <input maxlength="100" class="layui-input" name="code" value='{$vo.code|default=""}' required vali-name="数据编码" placeholder="请输入数据编码">
             {/if}
             <span class="help-block">请输入新的数据编码，数据创建后不能再次修改，同种数据类型的数据编码不能出现重复 ~</span>
         </label>
 
         <label class="layui-form-item relative block">
             <span class="help-label"><b>数据名称</b>DataName</span>
-            <input maxlength="500" class="layui-input" name="name" value='{$vo.name|default=""}' required placeholder="请输入数据名称">
+            <input maxlength="500" class="layui-input" name="name" value='{$vo.name|default=""}' required vali-name="数据名称" placeholder="请输入数据名称">
             <span class="help-block">请输入当前数据名称，请尽量保持名称的唯一性，数据名称尽量不要出现重复 ~</span>
         </label>
 

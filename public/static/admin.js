@@ -29,15 +29,20 @@ require.config({
     baseUrl: baseRoot, waitSeconds: 60,
     map: {'*': {css: baseRoot + 'plugs/require/css.js'}},
     paths: {
+        // ---------- 自定义 ----------
+        'excel': ['plugs/admin/excel'],
+        'queue': ['plugs/admin/queue'],
+        'upload': [tapiRoot + '/api.upload/index?'],
+        'validate': ['plugs/admin/validate'],
+        'pcasunzips': ['plugs/jquery/pcasunzips'],
+        // ---------- 开源库 ----------
         'vue': ['plugs/vue/vue.min'],
         'md5': ['plugs/jquery/md5.min'],
         'json': ['plugs/jquery/json.min'],
         'xlsx': ['plugs/jquery/xlsx.min'],
         'jszip': ['plugs/jquery/jszip.min'],
-        'excel': ['plugs/jquery/excel.xlsx'],
         'marked': ['plugs/jquery/marked.min'],
         'base64': ['plugs/jquery/base64.min'],
-        'upload': [tapiRoot + '/api.upload/index?'],
         'notify': ['plugs/notify/notify.min'],
         'angular': ['plugs/angular/angular.min'],
         'cropper': ['plugs/cropper/cropper.min'],
@@ -46,7 +51,6 @@ require.config({
         'ckeditor5': ['plugs/ckeditor5/ckeditor'],
         'filesaver': ['plugs/jquery/filesaver.min'],
         'websocket': ['plugs/socket/websocket'],
-        'pcasunzips': ['plugs/jquery/pcasunzips'],
         'compressor': ['plugs/jquery/compressor.min'],
         'sortablejs': ['plugs/sortable/sortable.min'],
         'vue.sortable': ['plugs/sortable/vue.draggable.min'],
@@ -80,7 +84,9 @@ define('ckeditor', (function (type) {
     return ckeditor;
 });
 
-$(function () {
+/*! 注册 ThinkAdmin 组件 */
+define('ThinkAdmin', function (require) {
+
     window.$body = $('body');
 
     /*! 注册单次事件 */
@@ -325,7 +331,7 @@ $(function () {
         this.goto = function (url) {
             if (typeof url !== 'string' || url.length < 1) return;
             if (url.toLowerCase().indexOf('javascript:') === 0) {
-                return eval(url.split('javascript:', 2)[1]);
+                return eval(url.split(':', 2)[1]);
             } else {
                 return location.href = url;
             }
@@ -416,7 +422,7 @@ $(function () {
                 });
             });
             /*! 监听窗口大小及HASH切换 */
-            $(window).on('resize', function () {
+            return $(window).on('resize', function () {
                 (layui.data('AdminMenuType')['mini'] || $body.width() < 1000) ? layout.addClass(mclass) : layout.removeClass(mclass);
             }).trigger('resize').on('hashchange', function () {
                 if (/^#(https?:)?(\/\/|\\\\)/.test(location.hash)) return $.msg.tips('禁止访问外部链接！');
@@ -459,87 +465,7 @@ $(function () {
 
     /*! 表单验证组件 */
     $.vali = function (form, callable) {
-        return $(form).data('validate') || new Validate();
-
-        function Validate() {
-            var that = this;
-            /* 绑定表单元素 */
-            this.form = $(form);
-            /* 绑定元素事件, 筛选表单元素 */
-            this.evts = 'blur change';
-            this.tags = 'input,textarea';
-            /* 预设检测规则 */
-            this.patterns = {
-                phone: '^1[3-9][0-9]{9}$',
-                email: '^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$'
-            };
-            /*! 检测属性是否有定义 */
-            this.hasProp = function (ele, prop) {
-                var attrProp = ele.getAttribute(prop);
-                return typeof attrProp !== 'undefined' && attrProp !== null && attrProp !== false;
-            }, this.isRegex = function (ele) {
-                var real = $.trim($(ele).val());
-                var regexp = ele.getAttribute('pattern');
-                regexp = this.patterns[regexp] || regexp;
-                if (real === "" || !regexp) return true;
-                return new RegExp(regexp, 'i').test(real);
-            }, this.checkAllInput = function () {
-                var status = true;
-                return that.form.find(this.tags).each(function () {
-                    if (that.checkInput(this) === false) return $(this).focus(), status = false;
-                }), status;
-            }, this.checkInput = function (input) {
-                if (this.hasProp(input, 'data-auto-none')) return true;
-                var type = (input.getAttribute('type') || '').replace(/\W+/, "").toLowerCase();
-                var ingores = ['file', 'reset', 'image', 'radio', 'checkbox', 'submit', 'hidden'];
-                if (ingores.length > 0) for (var i in ingores) if (type === ingores[i]) return true;
-                if (this.hasProp(input, 'required') && $.trim($(input).val()) === '') return this.remind(input);
-                return this.isRegex(input) ? (this.hideError(input), true) : this.remind(input);
-            }, this.remind = function (input) {
-                if (!$(input).is(':visible')) return true;
-                return this.showError(input, input.getAttribute('title') || input.getAttribute('placeholder') || '输入错误'), false;
-            }, this.showError = function (ele, tip) {
-                $(ele).addClass('validate-error');
-                this.insertError(ele).addClass('layui-anim-fadein').css({width: 'auto'}).html(tip);
-            }, this.hideError = function (ele) {
-                $(ele).removeClass('validate-error');
-                this.insertError(ele).removeClass('layui-anim-fadein').css({width: '30px'}).html('');
-            }, this.insertError = function (ele) {
-                if ($(ele).data('input-info')) return $(ele).data('input-info');
-                var $html = $('<span class="absolute block layui-anim text-center font-s12 notselect" style="color:#A44;z-index:2"></span>');
-                var $next = $(ele).nextAll('.input-right-icon'), right = ($next ? $next.width() + parseFloat($next.css('right') || '0') : 0) + 10;
-                var style = {top: $(ele).position().top + 'px', right: right + 'px', lineHeight: ele.nodeName === 'TEXTAREA' ? '32px' : $(ele).css('height')};
-                return $(ele).data('input-info', $html.css(style).insertAfter(ele)), $html;
-            };
-            /*! 表单元素验证 */
-            this.form.attr({onsubmit: 'return false', novalidate: 'novalidate', autocomplete: 'off'});
-            this.form.off(this.evts, this.tags).on(this.evts, this.tags, function () {
-                that.checkInput(this);
-            }).data('validate', this).bind('submit', function (event) {
-                event.button = that.form.find('button[type=submit],button:not([type=button])');
-                /* 检查所有表单元素是否通过H5的规则验证 */
-                if (that.checkAllInput() && typeof callable === 'function') {
-                    if (typeof CKEDITOR === 'object' && typeof CKEDITOR.instances === 'object') {
-                        for (var i in CKEDITOR.instances) CKEDITOR.instances[i].updateElement();
-                    }
-                    /* 触发表单提交后，锁定三秒不能再次提交表单 */
-                    if (that.form.attr('submit-locked')) return false;
-                    onConfirm(event.button.attr('data-confirm'), function () {
-                        that.form.attr('submit-locked', 1);
-                        event.button.addClass('submit-button-loading');
-                        callable.call(form, that.form.formToJson(), []);
-                        setTimeout(function () {
-                            that.form.removeAttr('submit-locked');
-                            event.button.removeClass('submit-button-loading');
-                        }, 3000);
-                    });
-                }
-                return event.preventDefault(), false;
-            }).find('[data-form-loaded]').map(function () {
-                $(this).html(this.dataset.formLoaded || this.innerHTML);
-                $(this).removeAttr('data-form-loaded').removeClass('layui-disabled');
-            });
-        }
+        return $(form).data('validate') || new (require('validate'))(form, callable, onConfirm);
     };
 
     /*! 自动监听表单 */
@@ -848,64 +774,8 @@ $(function () {
 
     /*! 显示任务进度消息 */
     $.loadQueue = function (code, doScript, element) {
-        var doAjax = true, doReload = false, template = '<div class="padding-30 padding-bottom-0" data-queue-load="{{d.code}}"><div class="layui-elip notselect nowrap" data-message-title><b class="color-desc">...</b></div><div class="margin-top-15 layui-progress layui-progress-big" lay-showPercent="yes"><div class="layui-progress-bar transition" lay-percent="0.00%"></div></div>' + '<div class="margin-top-15"><code class="layui-textarea layui-bg-black border-0" style="resize:none;overflow:hidden;height:190px"></code></div></div>';
-        layer.open({
-            type: 1, title: false, area: ['560px', '315px'], anim: 2, shadeClose: false, end: function () {
-                doAjax = doReload && doScript && $.layTable.reload(((element || {}).dataset || {}).tableId || true), false;
-            }, content: laytpl(template).render({code: code}), success: function ($elem) {
-                new function () {
-                    var that = this;
-                    this.$box = $elem.find('[data-queue-load=' + code + ']');
-                    if (doAjax === false || this.$box.length < 1) return false;
-                    this.$coder = this.$box.find('code'), this.$name = this.$box.find('[data-message-title]');
-                    this.$percent = this.$box.find('.layui-progress div'), this.SetCache = function (code, index, value) {
-                        var ckey = code + '_' + index, ctype = 'admin-queue-script';
-                        return value !== undefined ? layui.data(ctype, {key: ckey, value: value}) : layui.data(ctype)[ckey] || 0;
-                    }, this.SetState = function (status, message) {
-                        if (message.indexOf('javascript:') === -1) if (status === 1) {
-                            that.$name.html('<b class="color-text">' + message + '</b>').addClass('text-center');
-                            that.$percent.addClass('layui-bg-blue').removeClass('layui-bg-green layui-bg-red');
-                        } else if (status === 2) {
-                            if (message.indexOf('>>>') > -1) {
-                                that.$name.html('<b class="color-blue">' + message + '</b>').addClass('text-center');
-                            } else {
-                                that.$name.html('<b class="color-blue">正在处理：</b>' + message).removeClass('text-center');
-                            }
-                            that.$percent.addClass('layui-bg-blue').removeClass('layui-bg-green layui-bg-red');
-                        } else if (status === 3) {
-                            doReload = true;
-                            that.$name.html('<b class="color-green">' + message + '</b>').addClass('text-center');
-                            that.$percent.addClass('layui-bg-green').removeClass('layui-bg-blue layui-bg-red');
-                        } else if (status === 4) {
-                            that.$name.html('<b class="color-red">' + message + '</b>').addClass('text-center');
-                            that.$percent.addClass('layui-bg-red').removeClass('layui-bg-blue layui-bg-green');
-                        }
-                    }, (this.LoadProgress = function () {
-                        if (doAjax === false || that.$box.length < 1) return false;
-                        $.form.load(tapiRoot + '/api.queue/progress', {code: code}, 'post', function (ret) {
-                            if (ret.code) {
-                                var lines = [];
-                                for (var idx in ret.data.history) {
-                                    var line = ret.data.history[idx], percent = '[ ' + line.progress + '% ] ';
-                                    if (line.message.indexOf('javascript:') === -1) {
-                                        lines.push(line.message.indexOf('>>>') > -1 ? line.message : percent + line.message);
-                                    } else if (!that.SetCache(code, idx) && doScript !== false) {
-                                        that.SetCache(code, idx, 1), $.form.goto(line.message);
-                                    }
-                                }
-                                if (ret.data.status > 0) {
-                                    that.SetState(parseInt(ret.data.status), ret.data.message);
-                                    that.$percent.attr('lay-percent', (parseFloat(ret.data.progress || '0.00').toFixed(2)) + '%'), layui.element.render();
-                                    that.$coder.html('<p class="layui-elip">' + lines.join('</p><p class="layui-elip">') + '</p>').animate({scrollTop: that.$coder[0].scrollHeight + 'px'}, 200);
-                                    return parseInt(ret.data.status) === 3 || parseInt(ret.data.status) === 4 || setTimeout(that.LoadProgress, Math.floor(Math.random() * 200)), false;
-                                } else {
-                                    return setTimeout(that.LoadProgress, Math.floor(Math.random() * 500) + 200), false;
-                                }
-                            }
-                        }, false);
-                    })();
-                };
-            }
+        require(['queue'], function (method) {
+            method(code, doScript, element);
         });
     };
 
@@ -1122,6 +992,9 @@ $(function () {
         event.target.src = baseRoot + 'theme/img/404_icon.png';
     }, true);
 
-    /*! 系统菜单表单页面初始化 */
-    $.menu.listen(), $.form.reInit($body);
+});
+
+/*! 系统菜单表单页面初始化 */
+require(['ThinkAdmin'], function () {
+    $.menu.listen() && $.form.reInit($body);
 });

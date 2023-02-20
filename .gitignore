@@ -34,3 +34,6 @@
 /database/migrations/20221013045838_install_user.php
 /database/migrations/20221013045839_install_user_data.php
 /database/migrations/20221013045840_install_user_region.php
+/database/migrations/20221215000001_install_center_data.php
+/database/migrations/20230219000001_install_table.php
+/database/migrations/20230219000002_install_package.php

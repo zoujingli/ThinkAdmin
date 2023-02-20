@@ -17,6 +17,7 @@
 namespace app\wechat\controller;
 
 use app\wechat\service\WechatService;
+use think\admin\Builder;
 use think\admin\Controller;
 use think\admin\storage\LocalStorage;
 
@@ -41,14 +42,18 @@ class Config extends Controller
         $this->thrNotify = sysuri('wechat/api.push/index', [], false, true);
         if ($this->request->isGet()) {
             try {
+                // 生成微信授权链接
                 $source = enbase64url(sysuri('admin/index/index', [], false, true) . '#' . $this->request->url());
-                $this->authurl = "https://open.cuci.cc/service/api.push/auth?source={$source}";
+                $authurl = sysconf('wechat.service_authurl|raw') ?: "https://open.cuci.cc/service/api.push/auth?source=SOURCE";
+                $this->authurl = str_replace('source=SOURCE', "source={$source}", $authurl);
+                // 授权成功后的参数保存
                 if (input('?appid') && input('?appkey')) {
                     sysconf('wechat.type', 'thr');
                     sysconf('wechat.thr_appid', input('appid'));
                     sysconf('wechat.thr_appkey', input('appkey'));
                     WechatService::ThinkServiceConfig()->setApiNotifyUri($this->thrNotify);
                 }
+                // 读取授权的微信参数
                 $this->wechat = WechatService::ThinkServiceConfig()->getConfig();
             } catch (\Exception $exception) {
                 $this->wechat = [];
@@ -63,16 +68,13 @@ class Config extends Controller
             $this->fetch();
         } else {
             foreach ($this->request->post() as $k => $v) sysconf($k, $v);
-            if ($this->request->post('wechat.type') === 'thr') {
-                try {
-                    WechatService::ThinkServiceConfig()->setApiNotifyUri($this->thrNotify);
-                } catch (\Exception $exception) {
-                    $this->error($exception->getMessage());
-                }
+            if ($this->request->post('wechat.type') === 'thr') try {
+                WechatService::ThinkServiceConfig()->setApiNotifyUri($this->thrNotify);
+            } catch (\Exception $exception) {
+                $this->error($exception->getMessage());
             }
             sysoplog('微信授权配置', '修改微信授权配置成功');
-            $location = url('wechat/config/options')->build() . '?uniqid=' . uniqid();
-            $this->success('微信授权修改成功！', sysuri('admin/index/index') . "#{$location}");
+            $this->success('微信授权修改成功！', admuri('', ['uniqid' => uniqid()]));
         }
     }
 
@@ -83,6 +85,35 @@ class Config extends Controller
     public function options_test()
     {
         $this->fetch();
+    }
+
+    /**
+     * 微信第三方平台接口配置
+     * @auth true
+     * @return void
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\DbException
+     * @throws \think\db\exception\ModelNotFoundException
+     */
+    public function options_jsonrpc()
+    {
+        if ($this->request->isGet()) {
+            $auth = sysconf('wechat.service_authurl|raw') ?: "https://open.cuci.cc/service/api.push/auth?source=SOURCE";
+            $jsonRpc = sysconf('wechat.service_jsonrpc|raw') ?: 'https://open.cuci.cc/service/api.client/jsonrpc?not_init_session=1&token=TOKEN';
+            Builder::mk()
+                ->addTextInput('auth_url', '微信绑定授权跳转入口', 'Getway', true, '进入微信绑定授权时会跳转到这个页面，由微信管的理员扫二维码进行授权。', '^https://.*?jsonrpc.*?source=SOURCE.*?')
+                ->addTextInput('json_rpc', '第三方服务平台 JsonRpc 接口', 'JsonRpc', true, '由应用插件 ThinkPlugsWechatService 服务提供的第三方平台 JSON-RPC 接口地址。', '^https://.*?jsonrpc.*?token=TOKEN.*?')
+                ->addSubmitButton('保存参数')->addCancelButton()
+                ->fetch(['vo' => ['auth_url' => $auth, 'json_rpc' => $jsonRpc]]);
+        } else {
+            $data = $this->_vali([
+                'auth_url.rquire'  => '授权跳转不能为空！',
+                'json_rpc.require' => '接口地址不能为空！'
+            ]);
+            sysconf('wechat.service_authurl', $data['auth_url']);
+            sysconf('wechat.service_jsonrpc', urldecode($data['json_rpc']));
+            $this->success('接口地址保存成功！');
+        }
     }
 
     /**

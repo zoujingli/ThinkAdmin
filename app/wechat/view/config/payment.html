@@ -9,10 +9,10 @@
 {block name="content"}
 <div class="think-box-shadow">
     <div class="layui-anim layui-anim-fadein padding-top-20" style="width:850px">
-        <form action="{:url('payment_save')}" method="post" data-auto="true"  class='layui-form layui-card shadow-none' lay-filter="payment">
+        <form action="{:url('payment_save')}" method="post" data-auto="true" class='layui-form layui-card shadow-none' lay-filter="payment">
 
             <div class="layui-card-header border-0">
-                <div class="layui-bg-gray padding-col-20 border-radius-5">
+                <div class="layui-bg-gray padding-col-20 border-radius-5 padding-left-20">
                     微信商户参数配置，此处交易的商户号需要与微信公众号对接的公众号 APPID 匹配。
                 </div>
             </div>
@@ -21,7 +21,7 @@
                 <div class="layui-form-item margin-top-15">
                     <label class="layui-form-label"><b>MCH_ID</b><br><span class="nowrap color-desc">微信商户账号</span></label>
                     <div class="layui-input-block">
-                        <input name="wechat.mch_id" required placeholder="请输入微信商户账号（必填）" value="{:sysconf('wechat.mch_id')}" class="layui-input">
+                        <input name="wechat.mch_id" required vali-name="微信商户号" placeholder="请输入微信商户账号（必填）" value="{:sysconf('wechat.mch_id')}" class="layui-input">
                         <p class="help-block">微信商户账号，需要在微信商户平台获取，MCH_ID 与 APPID 匹配</p>
                     </div>
                 </div>
@@ -29,7 +29,7 @@
                 <div class="layui-form-item">
                     <label class="layui-form-label"><b>MCH_KEY</b><br><span class="nowrap color-desc">微信商户密钥</span></label>
                     <div class="layui-input-block">
-                        <input name="wechat.mch_key" placeholder="请输入微信商户密钥（必填）" maxlength="32" pattern=".{32}" required value="{:sysconf('wechat.mch_key')}" class="layui-input">
+                        <input name="wechat.mch_key" vali-name="微信商户密钥" placeholder="请输入微信商户密钥（必填）" maxlength="32" pattern=".{32}" required value="{:sysconf('wechat.mch_key')}" class="layui-input">
                         <p class="help-block">微信商户密钥，需要在微信商户平台操作设置操作密码并获取商户接口密钥</p>
                     </div>
                 </div>

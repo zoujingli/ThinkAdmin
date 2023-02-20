@@ -1,6 +1,9 @@
 {extend name="main"}
 
 {block name="button"}
+<!--{if auth('options_jsonrpc')}-->
+<button data-modal="{:url('options_jsonrpc')}" data-width="600px" data-title="开放平台接口配置" class='layui-btn layui-btn-sm layui-btn-primary'>开放平台接口</button>
+<!--{/if}-->
 <!--{if auth("options_test")}-->
 <button data-modal="{:url('options_test')}" data-width="600px" data-title="微信授权测试（ 扫码 ）" class='layui-btn layui-btn-sm layui-btn-primary'>微信授权测试</button>
 <!--{/if}-->
@@ -12,7 +15,7 @@
         {foreach ['api'=>'微信公众平台直接模式','thr'=>'微信开放平台授权模式'] as $k=>$v}
         <input type="radio" data-wechat-type="{$k}" name="wechat.type" value="{$k}" title="{$v}" lay-filter="wechat_type">
         {/foreach}
-        <p class="help-block">请选择微信对接方式，其中微信开放平台授权模式是需要微信开放平台支持，还需要搭建微信授权服务！</p>
+        <p class="help-block">请选择微信对接方式，其中微信开放平台授权模式需要微信开放平台支持，还需要搭建第三方服务平台托管系统！</p>
     </div>
 </div>
 <div class="think-box-shadow margin-top-15">

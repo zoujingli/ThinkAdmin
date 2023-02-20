@@ -19,7 +19,7 @@
         <div class="layui-form-item">
             <label class="layui-form-label">菜单名称</label>
             <div class="layui-input-block">
-                <input name="title" value='{$vo.title|default=""}' required placeholder="请输入菜单名称" class="layui-input">
+                <input name="title" value='{$vo.title|default=""}' required vali-name="菜单名称" placeholder="请输入菜单名称" class="layui-input">
                 <p class="help-block"><b>必选</b>，请填写菜单名称 ( 如：系统管理 )，建议字符不要太长，一般 4-6 个汉字</p>
             </div>
         </div>
@@ -27,7 +27,7 @@
         <div class="layui-form-item">
             <label class="layui-form-label">菜单链接</label>
             <div class="layui-input-block">
-                <input onblur="this.value=this.value === ''?'#':this.value" name="url" required placeholder="请输入菜单链接" value="{$vo.url|default='#'}" class="layui-input">
+                <input onblur="this.value=this.value === ''?'#':this.value" name="url" required vali-name="菜单链接" placeholder="请输入菜单链接" value="{$vo.url|default='#'}" class="layui-input">
                 <p class="help-block">
                     <b>必选</b>，请填写链接地址或选择系统节点 ( 如：https://domain.com/admin/user/index.html 或 admin/user/index )
                     <br>当填写链接地址时，以下面的 “权限节点” 来判断菜单自动隐藏或显示，注意未填写 “权限节点” 时将不会隐藏该菜单哦
