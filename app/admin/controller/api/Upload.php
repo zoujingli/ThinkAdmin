@@ -48,12 +48,12 @@ class Upload extends Controller
     public function index(): Response
     {
         $data = ['exts' => []];
-        foreach (str2arr(sysconf('storage.allow_exts')) as $ext) {
+        foreach (str2arr(sysconf('storage.allow_exts|raw')) as $ext) {
             $data['exts'][$ext] = Storage::mime($ext);
         }
         $template = realpath(__DIR__ . '/../../view/api/upload.js');
         $data['exts'] = json_encode($data['exts'], JSON_UNESCAPED_UNICODE);
-        $data['nameType'] = sysconf('storage.name_type') ?: 'xmd5';
+        $data['nameType'] = sysconf('storage.name_type|raw') ?: 'xmd5';
         return view($template, $data)->contentType('application/x-javascript');
     }
 
@@ -219,7 +219,7 @@ class Upload extends Controller
             $this->error('文件后缀异常，请重新上传文件！');
         }
         // 屏蔽禁止上传指定后缀的文件
-        if (!in_array($extension, str2arr(sysconf('storage.allow_exts')))) {
+        if (!in_array($extension, str2arr(sysconf('storage.allow_exts|raw')))) {
             $this->error('文件类型受限，请在后台配置规则！');
         }
         if (in_array($extension, ['sh', 'asp', 'bat', 'cmd', 'exe', 'php'])) {
@@ -279,7 +279,7 @@ class Upload extends Controller
         if (in_array($type, ['local', 'qiniu', 'alioss', 'txcos', 'uptype'])) {
             return $type;
         } else {
-            return strtolower(sysconf('storage.type'));
+            return strtolower(sysconf('storage.type|raw'));
         }
     }
 

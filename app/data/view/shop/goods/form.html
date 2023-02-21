@@ -2,12 +2,12 @@
 
 {block name="content"}
 {include file='shop/goods/formstyle'}
-<form action="{:sysuri()}" method="post" data-auto="true" class="layui-form layui-card" id="GoodsForm">
+<form action="{:sysuri()}" method="post" data-auto="true" class="layui-form layui-card">
     <div class="layui-card-body">
 
         <!--{notempty name='marks'}-->
-        <div class="layui-form-item label-required-prev">
-            <span class="help-label"><b>商品标签</b>Mark Name</span>
+        <div class="layui-form-item">
+            <span class="help-label label-required-prev"><b>商品标签</b>Mark Name</span>
             <div class="layui-textarea help-checks">
                 {foreach $marks as $mark}
                 <label class="think-checkbox">
@@ -23,8 +23,8 @@
         <!--{/notempty}-->
 
         <!--{notempty name='payments'}-->
-        <div class="layui-form-item label-required-prev">
-            <span class="help-label"><b>支付方式</b>Goods Payment</span>
+        <div class="layui-form-item">
+            <span class="help-label label-required-prev"><b>支付方式</b>Goods Payment</span>
             <div class="layui-textarea help-checks">
                 {foreach $payments as $payment}
                 <label class="think-checkbox">
@@ -58,8 +58,8 @@
         </label>
 
         <!--{notempty name='trucks'}-->
-        <label class="layui-form-item block relative label-required-prev">
-            <span class="help-label"><b>邮费模板</b>Truck Template</span>
+        <div class="layui-form-item block relative">
+            <span class="help-label label-required-prev"><b>邮费模板</b>Truck Template</span>
             <select class="layui-select" name="truck_code" lay-search>
                 <option value="">--- 包 邮 ---</option>
                 {foreach $trucks as $truck}{if isset($vo.truck_code) and $vo.truck_code eq $truck.code}
@@ -68,11 +68,11 @@
                 <option value="{$truck.code}">{$truck.code} - {$truck.name|default=''}</option>
                 {/if}{/foreach}
             </select>
-        </label>
+        </div>
         <!--{/notempty}-->
 
-        <div class="layui-form-item label-required-prev">
-            <span class="help-label"><b>商品封面及轮播图片</b>Cover and Carousel Pictures</span>
+        <div class="layui-form-item">
+            <span class="help-label label-required-prev"><b>商品封面及轮播图片</b>Cover and Carousel Pictures</span>
             <table class="layui-table">
                 <thead>
                 <tr>
@@ -104,9 +104,9 @@
                     <div>
                         {foreach ['非返利商品，其代理不会获得奖励','是返利商品，其代理将会获得奖励'] as $k => $v}
                         {if (isset($vo.rebate_type) and $vo.rebate_type eq $k) or (empty($vo.rebate_type) and $k eq 0)}
-                        <input checked name="rebate_type" title="{$v}" type="radio" value="{$k}">
+                        <div class="nowrap"><input checked name="rebate_type" title="{$v}" type="radio" value="{$k}"></div>
                         {else}
-                        <input name="rebate_type" title="{$v}" type="radio" value="{$k}">
+                        <div class="nowrap"><input name="rebate_type" title="{$v}" type="radio" value="{$k}"></div>
                         {/if}{/foreach}
                     </div>
                 </fieldset>
@@ -115,9 +115,9 @@
                     <div>
                         {foreach ['非入会礼包，购买后不会升级等级','是入会礼包，购买后升级会员等级'] as $k=>$v}
                         {if (isset($vo.vip_entry) and $vo.vip_entry eq $k) or (empty($vo.vip_entry) and $k eq 0)}
-                        <input checked lay-filter="vip_entry" name="vip_entry" title="{$v}" type="radio" value="{$k}">
+                        <div class="nowrap"><input checked lay-filter="vip_entry" name="vip_entry" title="{$v}" type="radio" value="{$k}"></div>
                         {else}
-                        <input lay-filter="vip_entry" name="vip_entry" title="{$v}" type="radio" value="{$k}">
+                        <div class="nowrap"><input lay-filter="vip_entry" name="vip_entry" title="{$v}" type="radio" value="{$k}"></div>
                         {/if}{/foreach}
                     </div>
                 </fieldset>
@@ -189,7 +189,7 @@
             </div>
         </div>
 
-        <div class="layui-form-item">
+        <div class="layui-form-item" id="GoodsSpecs">
             <span class="help-label label-required-prev"><b>商品规格及商品SKU绑定</b><span class="color-red font-s12">（规格填写后不允许再次修改）</span></span>
             <div class="margin-bottom-10" ng-class="{true:'layui-show'}[mode==='add'&&specs.length>0]" ng-repeat="x in specs track by $index" style="display:none">
                 <div class="goods-spec-box padding-10 margin-0 relative" style="background:#ddd">
@@ -328,7 +328,7 @@
     /*! 加载扩展插件 */
     require(['ckeditor', 'angular'], function () {
         window.createEditor('[name="content"]', {height: 500});
-        var app = angular.module("GoodsForm", []).run(callback);
+        var app = angular.module('GoodsSpecs', []).run(callback);
         angular.bootstrap(document.getElementById(app.name), [app.name]);
 
         function getRand(length, prefix) {

@@ -13,7 +13,7 @@
 {block name="content"}
 <div class="think-box-shadow">
     {include file='oplog/index_search'}
-    <table id="OplogTable" data-url="{:sysuri()}" data-target-search="form.form-search"></table>
+    <table id="OplogTable" data-url="{:request()->url()}" data-target-search="form.form-search"></table>
 </div>
 {/block}
 

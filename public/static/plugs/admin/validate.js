@@ -18,10 +18,10 @@ define(function () {
         var that = this;
         // 绑定表单元素
         this.form = $(form);
+        // 绑定元素事件
+        this.evts = 'blur change';
         // 检测表单元素
         this.tags = 'input,textarea';
-        // 绑定元素事件,
-        this.evts = 'blur change';
         // 预设检测规则
         this.patterns = {
             qq: '^[1-9][0-9]{4,11}$',
@@ -33,17 +33,20 @@ define(function () {
             cardid: '^[1-9]\\d{5}(18|19|([23]\\d))\\d{2}((0[1-9])|(10|11|12))(([0-2][1-9])|10|20|30|31)\\d{3}[0-9Xx]$',
             userame: '^[a-zA-Z0-9_-]{4,16}$',
         };
-        // 检测属性是否有定义
+        this.isRegex = function (el, value, pattern) {
+            pattern = pattern || el.getAttribute('pattern');
+            if ((value = value || $.trim($(el).val())) === '') return true;
+            if (!(pattern = this.patterns[pattern] || pattern)) return true;
+            return new RegExp(pattern, 'i').test(value);
+        };
         this.hasProp = function (el, prop) {
             var attrProp = el.getAttribute(prop);
             return typeof attrProp !== 'undefined' && attrProp !== null && attrProp !== false;
         };
-        this.isRegex = function (el) {
-            var real = $.trim($(el).val());
-            var regexp = el.getAttribute('pattern');
-            regexp = this.patterns[regexp] || regexp;
-            if (real === "" || !regexp) return true;
-            return new RegExp(regexp, 'i').test(real);
+        this.needCheck = function (el, type) {
+            if (this.hasProp(el, 'data-auto-none')) return false;
+            type = (el.getAttribute('type') || '').replace(/\W+/, '').toLowerCase();
+            return $.inArray(type, ['file', 'reset', 'image', 'radio', 'checkbox', 'submit', 'hidden']) < 0;
         };
         this.checkAllInput = function () {
             var status = true;
@@ -52,9 +55,7 @@ define(function () {
             }) && status;
         };
         this.checkInput = function (el) {
-            if (this.hasProp(el, 'data-auto-none')) return true;
-            var type = (el.getAttribute('type') || '').replace(/\W+/, '').toLowerCase();
-            if ($.inArray(type, ['file', 'reset', 'image', 'radio', 'checkbox', 'submit', 'hidden']) > -1) return true;
+            if (!this.needCheck(el)) return true;
             if (this.hasProp(el, 'required') && $.trim($(el).val()) === '') return this.remind(el, 'required');
             return this.isRegex(el) ? !!this.hideError(el) : this.remind(el, 'pattern');
         };
@@ -79,7 +80,7 @@ define(function () {
         };
         /*! 预埋异常标签*/
         this.form.find(this.tags).each(function () {
-            that.hideError(this, '');
+            that.needCheck(this) && that.hideError(this, '');
         });
         /*! 表单元素验证 */
         this.form.attr({onsubmit: 'return false', novalidate: 'novalidate', autocomplete: 'off'}).on('keydown', this.tags, function () {

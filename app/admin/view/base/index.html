@@ -21,7 +21,7 @@
     </ul>
     <div class="layui-tab-content">
         {include file='base/index_search'}
-        <table id="BaseTable" data-url="{:sysuri()}" data-target-search="form.form-search"></table>
+        <table id="BaseTable" data-url="{:request()->url()}" data-target-search="form.form-search"></table>
     </div>
 </div>
 {/block}

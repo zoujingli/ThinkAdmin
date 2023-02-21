@@ -13,7 +13,7 @@
 {block name="content"}
 <div class="think-box-shadow">
     {include file='auth/index_search'}
-    <table id="RoleTable" data-url="{:sysuri()}" data-target-search="form.form-search"></table>
+    <table id="RoleTable" data-url="{:request()->url()}" data-target-search="form.form-search"></table>
 </div>
 {/block}
 
@@ -51,7 +51,7 @@
 
 <!-- 列表排序权重模板 -->
 <script type="text/html" id="SortInputRoleTableTpl">
-    <input type="number" min="0" data-blur-number="0" data-action-blur="{:sysuri()}" data-value="id#{{d.id}};action#sort;sort#{value}" data-loading="false" value="{{d.sort}}" class="layui-input text-center">
+    <input type="number" min="0" data-blur-number="0" data-action-blur="{:request()->url()}" data-value="id#{{d.id}};action#sort;sort#{value}" data-loading="false" value="{{d.sort}}" class="layui-input text-center">
 </script>
 
 <!-- 数据状态切换模板 -->

@@ -50,7 +50,7 @@ class Plugs extends Controller
         return response(join("\r\n", [
             sprintf("window.taDebug = %s;", $this->app->isDebug() ? 'true' : 'false'),
             sprintf("window.taAdmin = '%s';", sysuri('admin/index/index', [], false)),
-            sprintf("window.taEditor = '%s';", sysconf('base.editor') ?: 'ckeditor4'),
+            sprintf("window.taEditor = '%s';", sysconf('base.editor|raw') ?: 'ckeditor4'),
         ]))->contentType('application/x-javascript');
     }
 
