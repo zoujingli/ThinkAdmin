@@ -1,5 +1,19 @@
 <?php
 
+// +----------------------------------------------------------------------
+// | Shop-Demo for ThinkAdmin
+// +----------------------------------------------------------------------
+// | 版权所有 2022~2023 Anyon <zoujingli@qq.com>
+// +----------------------------------------------------------------------
+// | 官方网站: https://thinkadmin.top
+// +----------------------------------------------------------------------
+// | 免责声明 ( https://thinkadmin.top/disclaimer )
+// | 会员免费 ( https://thinkadmin.top/vip-introduce )
+// +----------------------------------------------------------------------
+// | gitee 代码仓库：https://gitee.com/zoujingli/ThinkAdmin
+// | github 代码仓库：https://github.com/zoujingli/ThinkAdmin
+// +----------------------------------------------------------------------
+
 use think\migration\Migrator;
 
 @set_time_limit(0);
@@ -16,7 +30,6 @@ class InstallUser extends Migrator
     public function change()
     {
         $this->_create_base_postage_company();
-        $this->_create_base_postage_region();
         $this->_create_base_postage_template();
         $this->_create_base_user_discount();
         $this->_create_base_user_message();
@@ -77,43 +90,6 @@ class InstallUser extends Migrator
             ->addIndex('code_3', ['name' => 'idx_base_postage_company_code_3'])
             ->addIndex('status', ['name' => 'idx_base_postage_company_status'])
             ->addIndex('deleted', ['name' => 'idx_base_postage_company_deleted'])
-            ->save();
-
-        // 修改主键长度
-        $this->table($table)->changeColumn('id', 'integer', ['limit' => 20, 'identity' => true]);
-    }
-
-    /**
-     * 创建数据对象
-     * @class BasePostageRegion
-     * @table base_postage_region
-     * @return void
-     */
-    private function _create_base_postage_region()
-    {
-
-        // 当前数据表
-        $table = 'base_postage_region';
-
-        // 存在则跳过
-        if ($this->hasTable($table)) return;
-
-        // 创建数据表
-        $this->table($table, [
-            'engine' => 'InnoDB', 'collation' => 'utf8mb4_general_ci', 'comment' => '数据-快递-区域',
-        ])
-            ->addColumn('pid', 'integer', ['limit' => 20, 'default' => 0, 'null' => true, 'comment' => '上级PID'])
-            ->addColumn('first', 'string', ['limit' => 50, 'default' => '', 'null' => true, 'comment' => '首字母'])
-            ->addColumn('short', 'string', ['limit' => 100, 'default' => '', 'null' => true, 'comment' => '区域简称'])
-            ->addColumn('name', 'string', ['limit' => 100, 'default' => '', 'null' => true, 'comment' => '区域名称'])
-            ->addColumn('level', 'integer', ['limit' => 4, 'default' => 0, 'null' => true, 'comment' => '区域层级'])
-            ->addColumn('pinyin', 'string', ['limit' => 100, 'default' => '', 'null' => true, 'comment' => '区域拼音'])
-            ->addColumn('code', 'string', ['limit' => 100, 'default' => '', 'null' => true, 'comment' => '区域邮编'])
-            ->addColumn('status', 'integer', ['limit' => 1, 'default' => 1, 'null' => true, 'comment' => '使用状态'])
-            ->addColumn('lng', 'string', ['limit' => 100, 'default' => '', 'null' => true, 'comment' => '所在经度'])
-            ->addColumn('lat', 'string', ['limit' => 100, 'default' => '', 'null' => true, 'comment' => '所在纬度'])
-            ->addIndex('pid', ['name' => 'idx_base_postage_region_pid'])
-            ->addIndex('name', ['name' => 'idx_base_postage_region_name'])
             ->save();
 
         // 修改主键长度

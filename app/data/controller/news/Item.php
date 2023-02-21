@@ -1,5 +1,19 @@
 <?php
 
+// +----------------------------------------------------------------------
+// | Shop-Demo for ThinkAdmin
+// +----------------------------------------------------------------------
+// | 版权所有 2022~2023 Anyon <zoujingli@qq.com>
+// +----------------------------------------------------------------------
+// | 官方网站: https://thinkadmin.top
+// +----------------------------------------------------------------------
+// | 免责声明 ( https://thinkadmin.top/disclaimer )
+// | 会员免费 ( https://thinkadmin.top/vip-introduce )
+// +----------------------------------------------------------------------
+// | gitee 代码仓库：https://gitee.com/zoujingli/ThinkAdmin
+// | github 代码仓库：https://github.com/zoujingli/ThinkAdmin
+// +----------------------------------------------------------------------
+
 namespace app\data\controller\news;
 
 use app\data\model\DataNewsItem;
@@ -26,7 +40,7 @@ class Item extends Controller
      */
     public function index()
     {
-        $this->type = input('get.type', 'index');
+        $this->type = $this->get['type'] ?? 'index';
         DataNewsItem::mQuery($this->get)->layTable(function () {
             $this->title = '文章内容管理';
             $this->marks = DataNewsMark::items();

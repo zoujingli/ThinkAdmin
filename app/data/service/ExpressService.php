@@ -1,10 +1,22 @@
 <?php
 
+// +----------------------------------------------------------------------
+// | Shop-Demo for ThinkAdmin
+// +----------------------------------------------------------------------
+// | 版权所有 2022~2023 Anyon <zoujingli@qq.com>
+// +----------------------------------------------------------------------
+// | 官方网站: https://thinkadmin.top
+// +----------------------------------------------------------------------
+// | 免责声明 ( https://thinkadmin.top/disclaimer )
+// | 会员免费 ( https://thinkadmin.top/vip-introduce )
+// +----------------------------------------------------------------------
+// | gitee 代码仓库：https://gitee.com/zoujingli/ThinkAdmin
+// | github 代码仓库：https://github.com/zoujingli/ThinkAdmin
+// +----------------------------------------------------------------------
+
 namespace app\data\service;
 
-use app\data\model\BasePostageRegion;
 use app\data\model\BasePostageTemplate;
-use think\admin\extend\DataExtend;
 use think\admin\Service;
 use think\admin\service\InterfaceService;
 
@@ -62,21 +74,34 @@ class ExpressService extends Service
     /**
      * 配送区域树型数据
      * @param integer $level 最大等级
-     * @param null|integer $status 状态筛选
+     * @param ?integer $status 状态筛选
      * @return array
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\DbException
+     * @throws \think\db\exception\ModelNotFoundException
      */
     public static function region(int $level = 3, ?int $status = null): array
     {
-        $query = BasePostageRegion::mk();
-        if (is_numeric($level)) $query->where('level', '<=', $level);
-        if (is_numeric($status)) $query->where(['status' => $status]);
-        $items = DataExtend::arr2tree($query->column('id,pid,name,status', 'id'), 'id', 'pid', 'subs');
-        // 排序子集为空的省份和城市
-        foreach ($items as $ik => $item) {
-            foreach ($item['subs'] as $ck => $city) {
-                if (isset($city['subs']) && empty($city['subs'])) unset($items[$ik]['subs'][$ck]);
+        [$items, $ncodes] = [[], sysdata('data.NotRegion')];
+        foreach (json_decode(file_get_contents(syspath('public/static/plugs/jquery/area/data.json')), true) as $prov) {
+            $pstat = intval(!in_array($prov['code'], $ncodes));
+            if (is_null($status) || is_numeric($status) && $status === $pstat) {
+                $mprov = ['id' => $prov['code'], 'pid' => 0, 'name' => $prov['name'], 'status' => $pstat, 'subs' => []];
+                if ($level > 1) foreach ($prov['list'] as $city) {
+                    $cstat = intval(!in_array($city['code'], $ncodes));
+                    if (is_null($status) || is_numeric($status) && $status === $cstat) {
+                        $mcity = ['id' => $city['code'], 'pid' => $prov['code'], 'name' => $city['name'], 'status' => $cstat, 'subs' => []];
+                        if ($level > 2) foreach ($city['list'] as $area) {
+                            $astat = intval(!in_array($area['code'], $ncodes));
+                            if (is_null($status) || is_numeric($status) && $status === $astat) {
+                                $mcity['subs'][] = ['id' => $area['code'], 'pid' => $city['code'], 'status' => $astat, 'name' => $area['name']];
+                            }
+                        }
+                        $mprov['subs'][] = $mcity;
+                    }
+                }
+                $items[] = $mprov;
             }
-            if (isset($item['subs']) && empty($item['subs'])) unset($items[$ik]);
         }
         return $items;
     }

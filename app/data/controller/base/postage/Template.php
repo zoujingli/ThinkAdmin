@@ -1,8 +1,21 @@
 <?php
 
+// +----------------------------------------------------------------------
+// | Shop-Demo for ThinkAdmin
+// +----------------------------------------------------------------------
+// | 版权所有 2022~2023 Anyon <zoujingli@qq.com>
+// +----------------------------------------------------------------------
+// | 官方网站: https://thinkadmin.top
+// +----------------------------------------------------------------------
+// | 免责声明 ( https://thinkadmin.top/disclaimer )
+// | 会员免费 ( https://thinkadmin.top/vip-introduce )
+// +----------------------------------------------------------------------
+// | gitee 代码仓库：https://gitee.com/zoujingli/ThinkAdmin
+// | github 代码仓库：https://github.com/zoujingli/ThinkAdmin
+// +----------------------------------------------------------------------
+
 namespace app\data\controller\base\postage;
 
-use app\data\model\BasePostageRegion;
 use app\data\model\BasePostageTemplate;
 use app\data\service\ExpressService;
 use think\admin\Controller;
@@ -26,7 +39,7 @@ class Template extends Controller
      */
     public function index()
     {
-        $this->type = input('get.type', 'index');
+        $this->type = $this->get['type'] ?? 'index';;
         BasePostageTemplate::mQuery()->layTable(function () {
             $this->title = '快递邮费模板';
         }, function (QueryHelper $query) {
@@ -38,17 +51,20 @@ class Template extends Controller
     /**
      * 配送区域管理
      * @auth true
+     * @return void
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\DbException
+     * @throws \think\db\exception\ModelNotFoundException
      */
     public function region()
     {
         if ($this->request->isGet()) {
             $this->title = '配送区域管理';
-            $this->citys = ExpressService::region(3, null);
+            $this->citys = ExpressService::region();
             $this->fetch('form_region');
         } else {
-            $data = $this->_vali(['nos.default' => '', 'oks.default' => '']);
-            if ($data['nos']) BasePostageRegion::mk()->whereIn('id', str2arr($data['nos']))->update(['status' => 0]);
-            if ($data['oks']) BasePostageRegion::mk()->whereIn('id', str2arr($data['oks']))->update(['status' => 1]);
+            $data = $this->_vali(['nos.default' => '']);
+            sysdata('data.NotRegion', str2arr($data['nos']));
             $this->success('修改配送区域成功！', 'javascript:history.back()');
         }
     }
@@ -76,6 +92,9 @@ class Template extends Controller
     /**
      * 表单数据处理
      * @param array $data
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\DbException
+     * @throws \think\db\exception\ModelNotFoundException
      */
     protected function _form_filter(array &$data)
     {

@@ -1,5 +1,19 @@
 <?php
 
+// +----------------------------------------------------------------------
+// | Shop-Demo for ThinkAdmin
+// +----------------------------------------------------------------------
+// | 版权所有 2022~2023 Anyon <zoujingli@qq.com>
+// +----------------------------------------------------------------------
+// | 官方网站: https://thinkadmin.top
+// +----------------------------------------------------------------------
+// | 免责声明 ( https://thinkadmin.top/disclaimer )
+// | 会员免费 ( https://thinkadmin.top/vip-introduce )
+// +----------------------------------------------------------------------
+// | gitee 代码仓库：https://gitee.com/zoujingli/ThinkAdmin
+// | github 代码仓库：https://github.com/zoujingli/ThinkAdmin
+// +----------------------------------------------------------------------
+
 namespace app\data\controller\api\auth;
 
 use app\data\controller\api\Auth;
@@ -7,6 +21,7 @@ use app\data\model\BaseUserUpgrade;
 use app\data\model\DataUser;
 use app\data\service\UserAdminService;
 use app\data\service\UserUpgradeService;
+use Exception;
 use think\admin\Storage;
 use think\exception\HttpResponseException;
 
@@ -68,7 +83,7 @@ class Center extends Auth
             }
         } catch (HttpResponseException $exception) {
             throw $exception;
-        } catch (\Exception $exception) {
+        } catch (Exception $exception) {
             trace_file($exception);
             $this->error($exception->getMessage());
         }

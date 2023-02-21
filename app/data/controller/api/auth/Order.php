@@ -1,5 +1,19 @@
 <?php
 
+// +----------------------------------------------------------------------
+// | Shop-Demo for ThinkAdmin
+// +----------------------------------------------------------------------
+// | 版权所有 2022~2023 Anyon <zoujingli@qq.com>
+// +----------------------------------------------------------------------
+// | 官方网站: https://thinkadmin.top
+// +----------------------------------------------------------------------
+// | 免责声明 ( https://thinkadmin.top/disclaimer )
+// | 会员免费 ( https://thinkadmin.top/vip-introduce )
+// +----------------------------------------------------------------------
+// | gitee 代码仓库：https://gitee.com/zoujingli/ThinkAdmin
+// | github 代码仓库：https://github.com/zoujingli/ThinkAdmin
+// +----------------------------------------------------------------------
+
 namespace app\data\controller\api\auth;
 
 use app\data\controller\api\Auth;
@@ -16,6 +30,8 @@ use app\data\service\GoodsService;
 use app\data\service\OrderService;
 use app\data\service\PaymentService;
 use app\data\service\UserAdminService;
+use Exception;
+use stdClass;
 use think\admin\extend\CodeExtend;
 use think\exception\HttpResponseException;
 
@@ -189,7 +205,7 @@ class Order extends Auth
             $this->success('商品下单成功', $order);
         } catch (HttpResponseException $exception) {
             throw $exception;
-        } catch (\Exception $exception) {
+        } catch (Exception $exception) {
             $this->error("商品下单失败，{$exception->getMessage()}");
         }
     }
@@ -358,10 +374,10 @@ class Order extends Auth
             // 返回订单数据及支付发起参数
             $type = $order['amount_real'] <= 0 ? 'empty' : $data['payment_code'];
             $param = PaymentService::instance($type)->create($openid, $order['order_no'], $order['amount_real'], '商城订单支付', '', $data['payment_back'], $data['payment_image']);
-            $this->success('获取支付参数', ['order' => ShopOrder::mk()->where($map)->find() ?: new \stdClass(), 'param' => $param]);
+            $this->success('获取支付参数', ['order' => ShopOrder::mk()->where($map)->find() ?: new stdClass(), 'param' => $param]);
         } catch (HttpResponseException $exception) {
             throw $exception;
-        } catch (\Exception $exception) {
+        } catch (Exception $exception) {
             $this->error($exception->getMessage());
         }
     }
@@ -489,7 +505,7 @@ class Order extends Auth
             empty($result['code']) ? $this->error($result['info']) : $this->success('快递追踪信息', $result);
         } catch (HttpResponseException $exception) {
             throw $exception;
-        } catch (\Exception $exception) {
+        } catch (Exception $exception) {
             $this->error($exception->getMessage());
         }
     }
