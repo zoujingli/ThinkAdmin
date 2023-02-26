@@ -16,11 +16,10 @@
   ],
   "require": {
     "php": ">=7.1",
+    "ext-json": "*",
     "zoujingli/think-library": "^6.0",
     "zoujingli/think-plugs-admin": "^1.0",
     "zoujingli/think-plugs-wechat": "^1.0"
-  },
-  "repositories": {
   },
   "autoload": {
     "psr-0": {
@@ -31,6 +30,7 @@
     }
   },
   "config": {
+    "sort-packages": true,
     "allow-plugins": {
       "zoujingli/think-install": true
     }

@@ -29,12 +29,6 @@ use think\admin\Plugin;
 class Service extends Plugin
 {
     /**
-     * 定义资源目录
-     * @var string
-     */
-    protected $appCopy = 'app/wechat';
-
-    /**
      * 定义当前包名
      * @var string
      */

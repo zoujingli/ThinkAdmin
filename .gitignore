@@ -35,5 +35,5 @@
 /database/migrations/20221013045839_install_user_data.php
 /database/migrations/20221013045840_install_user_region.php
 /database/migrations/20221215000001_install_center_data.php
-/database/migrations/20230219000001_install_table.php
-/database/migrations/20230219000002_install_package.php
+/database/migrations/20230209000001_install_wechat_service.php
+/database/migrations/20230224000001_install_account.php

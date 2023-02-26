@@ -122,7 +122,6 @@
             $.form.load('{:url("index")}', {output: 'json'}, 'get', function (ret) {
                 return $rootScope.$apply(function () {
                     $rootScope.keys = ret.data.keysdata || [], $rootScope.list = ret.data.menudata || [];
-                    console.log($rootScope.keys)
                     if ($rootScope.list.length < 1) $rootScope.list = [{name: '请输入名称', type: 'click', sub_button: []}];
                     for (var i in $rootScope.list) $rootScope.list[i].sub_button = $rootScope.list[i].sub_button || [];
                     $rootScope.list[0].show = true, $rootScope.list[0].active = true, $rootScope.item = $rootScope.list[0];
