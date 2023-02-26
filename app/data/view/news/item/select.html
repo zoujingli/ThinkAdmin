@@ -66,7 +66,7 @@
             ]]
         }).trigger('tool', function (item) {
             window.setItemValue(item.data.id, item.data.name);
-            item.tr.parents('div.layui-layer-page').find('a.layui-layer-close').trigger('click');
+            $.msg.closeThisModal(this);
         });
     });
 </script>
