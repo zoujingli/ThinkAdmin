@@ -1,7 +1,7 @@
 // +----------------------------------------------------------------------
 // | Static Plugin for ThinkAdmin
 // +----------------------------------------------------------------------
-// | 版权所有 2014~2023 Anyon <zoujingli@qq.com>
+// | 版权所有 2014~2023 ThinkAdmin [ thinkadmin.top ]
 // +----------------------------------------------------------------------
 // | 官方网站: https://thinkadmin.top
 // +----------------------------------------------------------------------
@@ -84,8 +84,7 @@ define('ckeditor', (function (type) {
     return ckeditor;
 });
 
-/*! 注册 ThinkAdmin 组件 */
-define('ThinkAdmin', function (require) {
+$(function () {
 
     window.$body = $('body');
 
@@ -173,7 +172,7 @@ define('ThinkAdmin', function (require) {
         this.close = function (idx) {
             if (idx !== null) return layer.close(idx);
             for (var i in this.idx) $.msg.close(this.idx[i]);
-            this.idx = [];
+            return (this.idx = []) !== false;
         };
         /*! 弹出警告框 */
         this.alert = function (msg, call) {
@@ -258,8 +257,11 @@ define('ThinkAdmin', function (require) {
         };
         /*! 内容区域动态加载后初始化 */
         this.reInit = function ($dom) {
+            $dom = $dom || $(this.selecter);
             layui.form.render(), layui.element.render(), $(window).trigger('scroll');
-            $.vali.listen($dom = $dom || $(this.selecter)), $body.trigger('reInit', $dom);
+            require(['ThinkAdmin'], function () {
+                $.vali.listen($dom) && $body.trigger('reInit', $dom);
+            });
             return $dom.find('[required]').map(function () {
                 this.$parent = $(this).parent();
                 if (this.$parent.is('label')) this.$parent.addClass('label-required-prev'); else this.$parent.prevAll('label.layui-form-label').addClass('label-required-next');
@@ -461,41 +463,6 @@ define('ThinkAdmin', function (require) {
                 setTimeout("$.menu.sync(1);", 100);
             }
         };
-    };
-
-    /*! 表单验证组件 */
-    $.vali = function (form, callable) {
-        return $(form).data('validate') || new (require('validate'))(form, callable, onConfirm);
-    };
-
-    /*! 自动监听表单 */
-    $.vali.listen = function ($dom, $els) {
-        $els = $($dom || $body).find('form[data-auto]');
-        $dom && $($dom).filter('form[data-auto]') && $els.add($dom);
-        $els.size() > 0 && $els.map(function (idx, form) {
-            $(this).vali(function (data) {
-                var dset = form.dataset, type = form.method || 'POST', href = form.action || location.href;
-                var tips = dset.tips || undefined, time = dset.time || undefined, taid = dset.tableId || false;
-                var call = window[dset.callable || '_default_callable'] || (taid ? function (ret) {
-                    if (typeof ret === 'object' && ret.code > 0 && $('#' + taid).size() > 0) {
-                        return $.msg.success(ret.info, 3, function () {
-                            $.msg.closeLastModal();
-                            (typeof ret.data === 'string' && ret.data) ? $.form.goto(ret.data) : $.layTable.reload(taid);
-                        }) && false;
-                    }
-                } : undefined);
-                onConfirm(dset.confirm, function () {
-                    $.form.load(href, data, type, call, true, tips, time);
-                });
-            });
-        });
-    };
-
-    /*! 注册对象到JqFn */
-    $.fn.vali = function (callable) {
-        return this.each(function () {
-            $.vali(this, callable);
-        });
     };
 
     /*! 表单转JSON */
@@ -754,13 +721,13 @@ define('ThinkAdmin', function (require) {
         img.style.background = '#FFF', img.referrerPolicy = 'no-referrer';
         img.style.height = 'auto', img.style.width = area || '100%', img.style.display = 'none';
         return document.body.appendChild(img), img.onerror = function () {
-            $.msg.close(loaded), defer.reject();
+            $.msg.close(loaded) && defer.reject();
         }, img.src = src, img.onload = function () {
             layer.open({
                 type: 1, title: false, shadeClose: true, content: $(img), success: function ($elem, idx) {
-                    $.msg.close(loaded), defer.notify($elem, idx);
+                    $.msg.close(loaded) && defer.notify($elem, idx);
                 }, area: area || '480px', skin: 'layui-layer-nobg', closeBtn: 1, end: function () {
-                    document.body.removeChild(img), defer.resolve()
+                    document.body.removeChild(img) && defer.resolve()
                 }
             });
         }, defer.promise();
@@ -772,226 +739,263 @@ define('ThinkAdmin', function (require) {
         layer.style(layer.open({type: true, resize: false, scrollbar: false, area: ['320px', '600px'], title: false, closeBtn: true, shadeClose: false, skin: 'layui-layer-nobg', content: laytpl(template).render({title: title || '公众号', url: href})}), {boxShadow: 'none'});
     };
 
-    /*! 显示任务进度消息 */
-    $.loadQueue = function (code, doScript, element) {
-        require(['queue'], function (Queue) {
-            new Queue(code, doScript, element);
+    /*! 注册 ThinkAdmin 组件及标签行为 */
+    define('ThinkAdmin', ['require', 'queue', 'validate'], function (require, Queue, Validate) {
+
+        /*! 显示任务进度 */
+        $.loadQueue = function (code, doScript, element) {
+            return new Queue(code, doScript, element);
+        };
+
+        /*! 创建表单验证 */
+        $.vali = function (form, callable) {
+            return $(form).data('validate') || new Validate(form, callable, onConfirm);
+        };
+
+        /*! 自动监听表单 */
+        $.vali.listen = function ($dom) {
+            var $els = $($dom || $body).find('form[data-auto]');
+            $dom && $($dom).filter('form[data-auto]') && $els.add($dom);
+            return $els.map(function (idx, form) {
+                $(this).vali(function (data) {
+                    var dset = form.dataset, type = form.method || 'POST', href = form.action || location.href;
+                    var tips = dset.tips || undefined, time = dset.time || undefined, taid = dset.tableId || false;
+                    var call = window[dset.callable || '_default_callable'] || (taid ? function (ret) {
+                        if (typeof ret === 'object' && ret.code > 0 && $('#' + taid).size() > 0) {
+                            return $.msg.success(ret.info, 3, function () {
+                                $.msg.closeLastModal();
+                                (typeof ret.data === 'string' && ret.data) ? $.form.goto(ret.data) : $.layTable.reload(taid);
+                            }) && false;
+                        }
+                    } : undefined);
+                    onConfirm(dset.confirm, function () {
+                        $.form.load(href, data, type, call, true, tips, time);
+                    });
+                });
+            });
+        };
+
+        /*! 注册对象到JqFn */
+        $.fn.vali = function (callable) {
+            return this.each(function () {
+                $.vali(this, callable);
+            });
+        };
+
+        /*! 注册 data-search 表单搜索行为 */
+        onEvent('submit', 'form.form-search', function () {
+            if (this.dataset.tableId) return $('table#' + this.dataset.tableId).trigger('reload', {
+                page: {curr: 1}, where: $(this).formToJson()
+            });
+            var url = $(this).attr('action').replace(/&?page=\d+/g, '');
+            if ((this.method || 'get').toLowerCase() === 'get') {
+                var split = url.indexOf('?') > -1 ? '&' : '?', stype = location.href.indexOf('spm=') > -1 ? '#' : '';
+                $.form.goto(stype + $.menu.parseUri(url + split + $(this).serialize().replace(/\+/g, ' ')));
+            } else {
+                $.form.load(url, this, 'post');
+            }
         });
-    };
 
-    /*! 注册 data-search 表单搜索行为 */
-    onEvent('submit', 'form.form-search', function () {
-        if (this.dataset.tableId) return $('table#' + this.dataset.tableId).trigger('reload', {
-            page: {curr: 1}, where: $(this).formToJson()
+        /*! 注册 data-file 事件行为 */
+        onEvent('click', '[data-file]', function () {
+            this.id = this.dataset.id = this.id || (function (date) {
+                return (date + Math.random()).replace('0.', '');
+            })(layui.util.toDateString(Date.now(), 'yyyyMMddHHmmss-'));
+            /*! 查找表单元素, 如果没有找到将不会自动写值 */
+            if (!(this.$elem = $(this)).data('input') && this.$elem.data('field')) {
+                var $input = $('input[name="' + this.$elem.data('field') + '"]:not([type=file])');
+                this.$elem.data('input', $input.size() > 0 ? $input.get(0) : null);
+            }
+            // 单图或多图选择器 ( image|images )
+            if (typeof this.dataset.file === 'string' && /^images?$/.test(this.dataset.file)) {
+                return $.form.modal(tapiRoot + '/api.upload/image', this.dataset, '图片选择器')
+            }
+            // 其他文件上传处理
+            this.dataset.inited || $(this).uploadFile(undefined, function () {
+                $(this).trigger('upload.start');
+            });
         });
-        var url = $(this).attr('action').replace(/&?page=\d+/g, '');
-        if ((this.method || 'get').toLowerCase() === 'get') {
-            var split = url.indexOf('?') > -1 ? '&' : '?', stype = location.href.indexOf('spm=') > -1 ? '#' : '';
-            $.form.goto(stype + $.menu.parseUri(url + split + $(this).serialize().replace(/\+/g, ' ')));
-        } else {
-            $.form.load(url, this, 'post');
-        }
-    });
 
-    /*! 注册 data-file 事件行为 */
-    onEvent('click', '[data-file]', function () {
-        this.id = this.dataset.id = this.id || (function (date) {
-            return (date + Math.random()).replace('0.', '');
-        })(layui.util.toDateString(Date.now(), 'yyyyMMddHHmmss-'));
-        /*! 查找表单元素, 如果没有找到将不会自动写值 */
-        if (!(this.$elem = $(this)).data('input') && this.$elem.data('field')) {
-            var $input = $('input[name="' + this.$elem.data('field') + '"]:not([type=file])');
-            this.$elem.data('input', $input.size() > 0 ? $input.get(0) : null);
-        }
-        // 单图或多图选择器 ( image|images )
-        if (typeof this.dataset.file === 'string' && /^images?$/.test(this.dataset.file)) {
-            return $.form.modal(tapiRoot + '/api.upload/image', this.dataset, '图片选择器')
-        }
-        // 其他文件上传处理
-        this.dataset.inited || $(this).uploadFile(undefined, function () {
-            $(this).trigger('upload.start');
+        /*! 注册 data-load 事件行为 */
+        onEvent('click', '[data-load]', function () {
+            applyRuleValue(this, {}, function (data, elem, dset) {
+                $.form.load(dset.load, data, 'get', onConfirm.getLoadCallable(dset.tableId), true, dset.tips, dset.time);
+            });
         });
-    });
 
-    /*! 注册 data-load 事件行为 */
-    onEvent('click', '[data-load]', function () {
-        applyRuleValue(this, {}, function (data, elem, dset) {
-            $.form.load(dset.load, data, 'get', onConfirm.getLoadCallable(dset.tableId), true, dset.tips, dset.time);
+        /*! 注册 data-reload 事件行为 */
+        onEvent('click', '[data-reload]', function () {
+            $.layTable.reload(this.dataset.tableId || true);
         });
-    });
 
-    /*! 注册 data-reload 事件行为 */
-    onEvent('click', '[data-reload]', function () {
-        $.layTable.reload(this.dataset.tableId || true);
-    });
-
-    /*! 注册 data-dbclick 事件行为 */
-    onEvent('dblclick', '[data-dbclick]', function () {
-        $(this).find(this.dataset.dbclick || '[data-dbclick]').trigger('click');
-    });
-
-    /*! 注册 data-check 事件行为 */
-    onEvent('click', '[data-check-target]', function () {
-        var target = this;
-        $(this.dataset.checkTarget).map(function () {
-            (this.checked = !!target.checked), $(this).trigger('change');
+        /*! 注册 data-dbclick 事件行为 */
+        onEvent('dblclick', '[data-dbclick]', function () {
+            $(this).find(this.dataset.dbclick || '[data-dbclick]').trigger('click');
         });
-    });
 
-    /*! 表单元素失去焦点时数字 */
-    onEvent('blur', '[data-blur-number]', function () {
-        var dset = this.dataset, min = dset.valueMin, max = dset.valueMax;
-        var value = parseFloat(this.value) || 0, fiexd = parseInt(dset.blurNumber || 0);
-        if (typeof min !== 'undefined' && value < min) value = min;
-        if (typeof max !== 'undefined' && value > max) value = max;
-        this.value = parseFloat(value).toFixed(fiexd);
-    });
-
-    /*! 表单元素失焦时提交 */
-    onEvent('blur', '[data-action-blur],[data-blur-action]', function () {
-        var that = $(this), dset = this.dataset, data = {'_token_': dset.token || dset.csrf || '--'};
-        var attrs = (dset.value || '').replace('{value}', that.val()).split(';');
-        for (var i in attrs) data[attrs[i].split('#')[0]] = attrs[i].split('#')[1];
-        onConfirm(dset.confirm, function () {
-            $.form.load(dset.actionBlur || dset.blurAction, data, dset.method || 'post', function (ret) {
-                return that.css('border', (ret && ret.code) ? '1px solid #e6e6e6' : '1px solid red') && false;
-            }, dset.loading !== 'false', dset.loading, dset.time);
+        /*! 注册 data-check 事件行为 */
+        onEvent('click', '[data-check-target]', function () {
+            var target = this;
+            $(this.dataset.checkTarget).map(function () {
+                (this.checked = !!target.checked), $(this).trigger('change');
+            });
         });
-    });
 
-    /*! 注册 data-href 事件行为 */
-    onEvent('click', '[data-href]', function () {
-        if (this.dataset.href && this.dataset.href.indexOf('#') !== 0) {
-            $.form.goto(this.dataset.href);
-        }
-    });
-
-    /*! 注册 data-open 事件行为 */
-    onEvent('click', '[data-open]', function () {
-        if (this.dataset.open.match(/^https?:/)) {
-            $.form.goto(this.dataset.open);
-        } else {
-            $.form.href(this.dataset.open, this);
-        }
-    });
-
-    /*! 注册 data-action 事件行为 */
-    onEvent('click', '[data-action]', function () {
-        applyRuleValue(this, {}, function (data, elem, dset) {
-            Object.assign(data, {'_token_': dset.token || dset.csrf || '--'})
-            var load = dset.loading !== 'false', tips = typeof load === 'string' ? load : undefined;
-            $.form.load(dset.action, data, dset.method || 'post', onConfirm.getLoadCallable(dset.tableId), load, tips, dset.time)
+        /*! 表单元素失去焦点时数字 */
+        onEvent('blur', '[data-blur-number]', function () {
+            var dset = this.dataset, min = dset.valueMin, max = dset.valueMax;
+            var value = parseFloat(this.value) || 0, fiexd = parseInt(dset.blurNumber || 0);
+            if (typeof min !== 'undefined' && value < min) value = min;
+            if (typeof max !== 'undefined' && value > max) value = max;
+            this.value = parseFloat(value).toFixed(fiexd);
         });
-    });
 
-    /*! 注册 data-modal 事件行为 */
-    onEvent('click', '[data-modal]', function () {
-        applyRuleValue(this, {open_type: 'modal'}, function (data, elem, dset) {
-            return $.form.modal(dset.modal, data, dset.title || this.innerText || '编辑', undefined, undefined, undefined, dset.area || dset.width || '800px', dset.offset || 'auto', dset.full !== undefined);
+        /*! 表单元素失焦时提交 */
+        onEvent('blur', '[data-action-blur],[data-blur-action]', function () {
+            var that = $(this), dset = this.dataset, data = {'_token_': dset.token || dset.csrf || '--'};
+            var attrs = (dset.value || '').replace('{value}', that.val()).split(';');
+            for (var i in attrs) data[attrs[i].split('#')[0]] = attrs[i].split('#')[1];
+            onConfirm(dset.confirm, function () {
+                $.form.load(dset.actionBlur || dset.blurAction, data, dset.method || 'post', function (ret) {
+                    return that.css('border', (ret && ret.code) ? '1px solid #e6e6e6' : '1px solid red') && false;
+                }, dset.loading !== 'false', dset.loading, dset.time);
+            });
         });
-    });
 
-    /*! 注册 data-iframe 事件行为 */
-    onEvent('click', '[data-iframe]', function () {
-        applyRuleValue(this, {open_type: 'iframe'}, function (data, elem, dset) {
-            var name = dset.title || this.innerText || 'IFRAME 窗口';
-            var area = dset.area || [dset.width || '800px', dset.height || '580px'];
-            var frame = dset.iframe + (dset.iframe.indexOf('?') > -1 ? '&' : '?') + $.param(data);
-            $(this).attr('data-index', $.form.iframe(frame + '&' + $.param(data), name, area, dset.offset || 'auto', function () {
-                typeof dset.refresh !== 'undefined' && $.layTable.reload(dset.tableId || true);
-            }, undefined, dset.full !== undefined));
-        })
-    });
+        /*! 注册 data-href 事件行为 */
+        onEvent('click', '[data-href]', function () {
+            if (this.dataset.href && this.dataset.href.indexOf('#') !== 0) {
+                $.form.goto(this.dataset.href);
+            }
+        });
 
-    /*! 注册 data-icon 事件行为 */
-    onEvent('click', '[data-icon]', function () {
-        var location = tapiRoot + '/api.plugs/icon', field = this.dataset.icon || this.dataset.field || 'icon';
-        $.form.iframe(location + (location.indexOf('?') > -1 ? '&' : '?') + 'field=' + field, '图标选择', ['900px', '700px']);
-    });
+        /*! 注册 data-open 事件行为 */
+        onEvent('click', '[data-open]', function () {
+            if (this.dataset.open.match(/^https?:/)) {
+                $.form.goto(this.dataset.open);
+            } else {
+                $.form.href(this.dataset.open, this);
+            }
+        });
 
-    /*! 注册 data-copy 事件行为 */
-    onEvent('click', '[data-copy]', function () {
-        var copy = this.dataset.copy || this.innerText;
-        if (window.clipboardData) {
-            window.clipboardData.setData('text', copy);
-            $.msg.tips('已复制到剪贴板！');
-        } else {
-            var $input = $('<textarea readonly></textarea>');
-            $input.css({position: 'fixed', top: '-500px'}).appendTo($body).val(copy).select();
-            $.msg.tips(document.execCommand('Copy') ? '已复制到剪贴板！' : '请使用鼠标操作复制！') && $input.remove();
-        }
-    });
+        /*! 注册 data-action 事件行为 */
+        onEvent('click', '[data-action]', function () {
+            applyRuleValue(this, {}, function (data, elem, dset) {
+                Object.assign(data, {'_token_': dset.token || dset.csrf || '--'})
+                var load = dset.loading !== 'false', tips = typeof load === 'string' ? load : undefined;
+                $.form.load(dset.action, data, dset.method || 'post', onConfirm.getLoadCallable(dset.tableId), load, tips, dset.time)
+            });
+        });
 
-    /*! 异步任务状态监听与展示 */
-    onEvent('click', '[data-queue]', function () {
-        applyRuleValue(this, {}, function (data, elem, dset) {
-            $.form.load(dset.queue, data, 'post', function (ret) {
-                if (typeof ret.data === 'string' && ret.data.indexOf('Q') === 0) {
-                    return $.loadQueue(ret.data, true, elem), false;
+        /*! 注册 data-modal 事件行为 */
+        onEvent('click', '[data-modal]', function () {
+            applyRuleValue(this, {open_type: 'modal'}, function (data, elem, dset) {
+                return $.form.modal(dset.modal, data, dset.title || this.innerText || '编辑', undefined, undefined, undefined, dset.area || dset.width || '800px', dset.offset || 'auto', dset.full !== undefined);
+            });
+        });
+
+        /*! 注册 data-iframe 事件行为 */
+        onEvent('click', '[data-iframe]', function () {
+            applyRuleValue(this, {open_type: 'iframe'}, function (data, elem, dset) {
+                var name = dset.title || this.innerText || 'IFRAME 窗口';
+                var area = dset.area || [dset.width || '800px', dset.height || '580px'];
+                var frame = dset.iframe + (dset.iframe.indexOf('?') > -1 ? '&' : '?') + $.param(data);
+                $(this).attr('data-index', $.form.iframe(frame + '&' + $.param(data), name, area, dset.offset || 'auto', function () {
+                    typeof dset.refresh !== 'undefined' && $.layTable.reload(dset.tableId || true);
+                }, undefined, dset.full !== undefined));
+            })
+        });
+
+        /*! 注册 data-icon 事件行为 */
+        onEvent('click', '[data-icon]', function () {
+            var location = tapiRoot + '/api.plugs/icon', field = this.dataset.icon || this.dataset.field || 'icon';
+            $.form.iframe(location + (location.indexOf('?') > -1 ? '&' : '?') + 'field=' + field, '图标选择', ['900px', '700px']);
+        });
+
+        /*! 注册 data-copy 事件行为 */
+        onEvent('click', '[data-copy]', function () {
+            var copy = this.dataset.copy || this.innerText;
+            if (window.clipboardData) {
+                window.clipboardData.setData('text', copy);
+                $.msg.tips('已复制到剪贴板！');
+            } else {
+                var $input = $('<textarea readonly></textarea>');
+                $input.css({position: 'fixed', top: '-500px'}).appendTo($body).val(copy).select();
+                $.msg.tips(document.execCommand('Copy') ? '已复制到剪贴板！' : '请使用鼠标操作复制！') && $input.remove();
+            }
+        });
+
+        /*! 异步任务状态监听与展示 */
+        onEvent('click', '[data-queue]', function () {
+            applyRuleValue(this, {}, function (data, elem, dset) {
+                $.form.load(dset.queue, data, 'post', function (ret) {
+                    if (typeof ret.data === 'string' && ret.data.indexOf('Q') === 0) {
+                        return $.loadQueue(ret.data, true, elem), false;
+                    }
+                });
+            });
+        });
+
+        /*! 注册 data-tips-text 事件行为 */
+        onEvent('mouseenter', '[data-tips-text]', function () {
+            var opts = {tips: [$(this).attr('data-tips-type') || 3, '#78BA32'], time: 0};
+            var layidx = layer.tips($(this).attr('data-tips-text') || this.innerText, this, opts);
+            $(this).off('mouseleave').on('mouseleave', function () {
+                setTimeout("layer.close('" + layidx + "')", 100);
+            });
+        });
+
+        /*! 注册 data-tips-hover 事件行为 */
+        onEvent('mouseenter', '[data-tips-image][data-tips-hover]', function () {
+            var img = new Image(), ele = $(this);
+            if ((img.src = this.dataset.tipsImage || this.dataset.lazySrc || this.src)) {
+                img.layopt = {anim: 5, time: 0, skin: 'layui-layer-image', isOutAnim: false, scrollbar: false};
+                img.referrerPolicy = 'no-referrer', img.style.maxWidth = '260px', img.style.maxHeight = '260px';
+                ele.data('layidx', layer.tips(img.outerHTML, this, img.layopt)).off('mouseleave').on('mouseleave', function () {
+                    layer.close(ele.data('layidx'));
+                });
+            }
+        });
+
+        /*! 注册 data-tips-image 事件行为 */
+        onEvent('click', '[data-tips-image]', function (event) {
+            (event.items = [], event.$imgs = $(this).parent().find('[data-tips-image]')).map(function () {
+                event.items.push({src: this.dataset.tipsImage || this.dataset.lazySrc || this.src});
+            }) && layer.photos({
+                anim: 5, closeBtn: 1, photos: {start: event.$imgs.index(this), data: event.items}, tab: function (pic, $ele) {
+                    $ele.find('img').attr('referrerpolicy', 'no-referrer');
+                    $ele.find('.layui-layer-close').css({top: '20px', right: '20px', position: 'fixed'});
                 }
             });
         });
-    });
 
-    /*! 注册 data-tips-text 事件行为 */
-    onEvent('mouseenter', '[data-tips-text]', function () {
-        var opts = {tips: [$(this).attr('data-tips-type') || 3, '#78BA32'], time: 0};
-        var layidx = layer.tips($(this).attr('data-tips-text') || this.innerText, this, opts);
-        $(this).off('mouseleave').on('mouseleave', function () {
-            setTimeout("layer.close('" + layidx + "')", 100);
+        /*! 注册 data-phone-view 事件行为 */
+        onEvent('click', '[data-phone-view]', function () {
+            $.previewPhonePage(this.dataset.phoneView || this.href);
         });
-    });
 
-    /*! 注册 data-tips-hover 事件行为 */
-    onEvent('mouseenter', '[data-tips-image][data-tips-hover]', function () {
-        var img = new Image(), ele = $(this);
-        if ((img.src = this.dataset.tipsImage || this.dataset.lazySrc || this.src)) {
-            img.layopt = {anim: 5, time: 0, skin: 'layui-layer-image', isOutAnim: false, scrollbar: false};
-            img.referrerPolicy = 'no-referrer', img.style.maxWidth = '260px', img.style.maxHeight = '260px';
-            ele.data('layidx', layer.tips(img.outerHTML, this, img.layopt)).off('mouseleave').on('mouseleave', function () {
-                layer.close(ele.data('layidx'));
-            });
-        }
-    });
-
-    /*! 注册 data-tips-image 事件行为 */
-    onEvent('click', '[data-tips-image]', function (event) {
-        (event.items = [], event.$imgs = $(this).parent().find('[data-tips-image]')).map(function () {
-            event.items.push({src: this.dataset.tipsImage || this.dataset.lazySrc || this.src});
-        }) && layer.photos({
-            anim: 5, closeBtn: 1, photos: {start: event.$imgs.index(this), data: event.items}, tab: function (pic, $ele) {
-                $ele.find('img').attr('referrerpolicy', 'no-referrer');
-                $ele.find('.layui-layer-close').css({top: '20px', right: '20px', position: 'fixed'});
-            }
+        /*! 注册 data-target-submit 事件行为 */
+        onEvent('click', '[data-target-submit]', function () {
+            $(this.dataset.targetSubmit || this).submit();
         });
+
+        /*! 表单编辑返回操作 */
+        onEvent('click', '[data-history-back]', function () {
+            $.msg.confirm(this.dataset.historyBack || '确定要返回吗？', function () {
+                history.back();
+            })
+        });
+
+        /*! 图片加载异常处理 */
+        document.addEventListener('error', function (event) {
+            if (event.target.nodeName !== 'IMG') return;
+            event.target.src = baseRoot + 'theme/img/404_icon.png';
+        }, true);
+
     });
 
-    /*! 注册 data-phone-view 事件行为 */
-    onEvent('click', '[data-phone-view]', function () {
-        $.previewPhonePage(this.dataset.phoneView || this.href);
+    /*! 系统菜单表单页面初始化 */
+    require(['ThinkAdmin'], function () {
+        $.menu.listen() && $.form.reInit($body);
     });
-
-    /*! 注册 data-target-submit 事件行为 */
-    onEvent('click', '[data-target-submit]', function () {
-        $(this.dataset.targetSubmit || this).submit();
-    });
-
-    /*! 表单编辑返回操作 */
-    onEvent('click', '[data-history-back]', function () {
-        $.msg.confirm(this.dataset.historyBack || '确定要返回吗？', function () {
-            history.back();
-        })
-    });
-
-    /*! 图片加载异常处理 */
-    document.addEventListener('error', function (event) {
-        if (event.target.nodeName !== 'IMG') return;
-        event.target.src = baseRoot + 'theme/img/404_icon.png';
-    }, true);
-
-});
-
-/*! 系统菜单表单页面初始化 */
-require(['ThinkAdmin'], function () {
-    $.menu.listen() && $.form.reInit($body);
 });
