@@ -13,7 +13,7 @@
                 <b class="color-green">访问协议</b><br><span class="nowrap color-desc">Protocol</span>
             </label>
             <div class="layui-input-block">
-                {if !sysconf('storage.local_http_protocol')}{php}sysconf('storage.local_http_protocol','http');{/php}{/if}
+                {if !sysconf('storage.local_http_protocol')}{php}sysconf('storage.local_http_protocol','follow');{/php}{/if}
                 {foreach ['follow'=>'FOLLOW','http'=>'HTTP','https'=>'HTTPS','path'=>'PATH','auto'=>'AUTO'] as $protocol=>$remark}
                 <label class="think-radio">
                     {if sysconf('storage.local_http_protocol') eq $protocol}
