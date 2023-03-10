@@ -47,6 +47,9 @@ cd thinkadmin
 
 ### 数据库初始化并安装
 php think migrate:run
+
+### 开启 PHP 内置 WEB 服务
+php think run --host 127.0.0.1
 ```
 
 **2. 通过源码安装：**（ 安装 admin、wechat、data 三个模块 ）
@@ -63,6 +66,9 @@ composer install --optimize-autoloader
 
 ### 数据库初始化并安装
 php think migrate:run
+
+### 开启 PHP 内置 WEB 服务
+php think run --host 127.0.0.1
 ```
 
 ## 数据库安装
