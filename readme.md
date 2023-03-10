@@ -46,7 +46,7 @@ composer create-project zoujingli/thinkadmin
 cd thinkadmin
 
 ### 数据库初始化并安装 
-# 默认使用 Sqlite 数据库，若使用其他数据库请修改配置后再执行
+### 默认后台登录账号及密码都是 admin
 php think migrate:run
 
 ### 开启PHP内置WEB服务 ( 默认账号及密码是 admin )
@@ -56,7 +56,7 @@ php think run --host 127.0.0.1
 **2. 通过源码安装：**（ 安装 admin、wechat、data 三个模块 ）
 
 ```shell
-### 下载项目
+### 下载项目（ 需要在英文目录下面执行 ）
 git clone https://github.com/zoujingli/ThinkAdmin
 
 ### 进入项目根目录
@@ -66,10 +66,11 @@ cd ThinkAdmin
 composer install --optimize-autoloader
 
 ### 数据库初始化并安装
-# 默认使用 Sqlite 数据库，若使用其他数据库请修改配置后再执行
+### 默认使用 Sqlite 数据库，若使用其他数据库请修改配置后再执行
 php think migrate:run
 
-### 开启PHP内置WEB服务 ( 默认账号及密码是 admin )
+### 开启PHP内置WEB服务
+# 默认后台登录账号及密码都是 admin
 php think run --host 127.0.0.1
 ```
 
