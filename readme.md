@@ -48,7 +48,7 @@ cd thinkadmin
 ### 数据库初始化并安装
 php think migrate:run
 
-### 开启 PHP 内置 WEB 服务
+### 开启PHP内置WEB服务 ( 默认账号及密码是 admin )
 php think run --host 127.0.0.1
 ```
 
@@ -67,7 +67,7 @@ composer install --optimize-autoloader
 ### 数据库初始化并安装
 php think migrate:run
 
-### 开启 PHP 内置 WEB 服务
+### 开启PHP内置WEB服务 ( 默认账号及密码是 admin )
 php think run --host 127.0.0.1
 ```
 
