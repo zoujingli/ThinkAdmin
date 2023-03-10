@@ -45,7 +45,8 @@ composer create-project zoujingli/thinkadmin
 ### 进入项目根目录
 cd thinkadmin
 
-### 数据库初始化并安装
+### 数据库初始化并安装 
+# 默认使用 Sqlite 数据库，若使用其他数据库请修改配置后再执行
 php think migrate:run
 
 ### 开启PHP内置WEB服务 ( 默认账号及密码是 admin )
@@ -65,6 +66,7 @@ cd ThinkAdmin
 composer install --optimize-autoloader
 
 ### 数据库初始化并安装
+# 默认使用 Sqlite 数据库，若使用其他数据库请修改配置后再执行
 php think migrate:run
 
 ### 开启PHP内置WEB服务 ( 默认账号及密码是 admin )
