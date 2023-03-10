@@ -46,10 +46,11 @@ composer create-project zoujingli/thinkadmin
 cd thinkadmin
 
 ### 数据库初始化并安装 
-### 默认后台登录账号及密码都是 admin
+### 默认使用 Sqlite 数据库，若使用其他数据库请修改配置后再执行
 php think migrate:run
 
-### 开启PHP内置WEB服务 ( 默认账号及密码是 admin )
+### 开启PHP内置WEB服务
+### 默认后台登录账号及密码都是 admin
 php think run --host 127.0.0.1
 ```
 
@@ -70,7 +71,7 @@ composer install --optimize-autoloader
 php think migrate:run
 
 ### 开启PHP内置WEB服务
-# 默认后台登录账号及密码都是 admin
+### 默认后台登录账号及密码都是 admin
 php think run --host 127.0.0.1
 ```
 
