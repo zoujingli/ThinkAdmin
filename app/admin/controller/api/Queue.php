@@ -16,6 +16,7 @@
 
 namespace app\admin\controller\api;
 
+use Error;
 use Exception;
 use think\admin\Controller;
 use think\admin\service\AdminService;
@@ -90,7 +91,7 @@ class Queue extends Controller
             } else {
                 echo "<span class='color-red pointer' data-tips-text='{$message}'>未启动</span>";
             }
-        } catch (Exception $exception) {
+        } catch (Error|Exception $exception) {
             echo "<span class='color-red pointer' data-tips-text='{$exception->getMessage()}'>异 常</span>";
         } else {
             echo "<span class='color-red pointer' data-tips-text='只有超级管理员才能操作！'>无权限</span>";

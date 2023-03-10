@@ -12,7 +12,7 @@
 // | github 代码仓库：https://github.com/zoujingli/think-plugs-static
 // +----------------------------------------------------------------------
 
-require(['ThinkAdmin'], function () {
+$(function () {
 
     window.$body = $('body');
 

@@ -17,7 +17,9 @@ define(function () {
     var doAjax = true, doReload = false;
     var template = '<div class="padding-30 padding-bottom-0" data-queue-load="{{d.code}}"><div class="layui-elip notselect nowrap" data-message-title><b class="color-desc">...</b></div><div class="margin-top-15 layui-progress layui-progress-big" lay-showPercent="yes"><div class="layui-progress-bar transition" lay-percent="0.00%"></div></div>' + '<div class="margin-top-15"><code class="layui-textarea layui-bg-black border-0" style="resize:none;overflow:hidden;height:190px"></code></div></div>';
 
-    return function (code, doScript, element) {
+    return Queue;
+
+    function Queue(code, doScript, element) {
         layer.open({
             type: 1, title: false, area: ['560px', '315px'], anim: 2, shadeClose: false, end: function () {
                 doAjax = doReload && doScript && $.layTable.reload(((element || {}).dataset || {}).tableId || true)
