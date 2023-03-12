@@ -79,18 +79,17 @@ define(function () {
             return this.insertError($(el).removeClass('validate-error')).removeClass('layui-anim-fadein').css({width: '30px'}).html('');
         };
         this.insertError = function (el) {
-            if ($(el).data('input-vali-tags')) return $(el).data('input-vali-tags');
-            var $html = $('<span class="absolute block layui-anim text-center font-s12 notselect" style="color:#A44;z-index:2"></span>');
-            var $next = $(el).nextAll('.input-right-icon'), right = ($next ? $next.width() + parseFloat($next.css('right') || '0') : 0) + 10;
-            var style = {top: $(el).position().top + 'px', right: right + 'px', lineHeight: el.nodeName === 'TEXTAREA' ? '32px' : $(el).css('height')};
-            $(el).data('input-vali-tags', $html.css(style).insertAfter(el));
-            return $html;
+            return (function ($el) {
+                return $el.data('vali-tags').css({top: $el.position().top + 'px'});
+            })($(el), $(el).data('vali-tags') || function ($el, $next) {
+                $el.data('vali-tags', $('<span class="layui-anim notselect" style="display:block;position:absolute;text-align:center;color:#c44;font-size:12px;z-index:2"></span>').css({
+                    lineHeight: el.nodeName === 'TEXTAREA' ? '32px' : $el.css('height'), right: (($next ? $next.width() + parseFloat($next.css('right') || 0) : 0) + 10) + 'px',
+                }).insertAfter(el));
+            }($(el), $(el).nextAll('.input-right-icon')));
         };
         /*! 预埋异常标签*/
         this.form.find(this.tags).each(function (i, el) {
-            that.hasCheck(this) && setTimeout(function () {
-                that.hideError(el, '');
-            }, 250);
+            that.hasCheck(this) && that.hideError(el, '');
         });
         /*! 表单元素验证 */
         this.form.attr({onsubmit: 'return false', novalidate: 'novalidate', autocomplete: 'off'}).on('keydown', this.tags, function () {

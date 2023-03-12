@@ -52,7 +52,6 @@ class Oplog extends Controller
 
     /**
      * 列表数据处理
-     * @auth true
      * @param array $data
      * @throws \Exception
      */
@@ -60,8 +59,7 @@ class Oplog extends Controller
     {
         $region = new Ip2Region();
         foreach ($data as &$vo) {
-            $isp = $region->btreeSearch($vo['geoip']);
-            $vo['geoisp'] = str_replace(['内网IP', '0', '|'], '', $isp['region'] ?? '') ?: '-';
+            $vo['geoisp'] = $region->simple($vo['geoip']);
         }
     }
 
