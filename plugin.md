@@ -31,12 +31,26 @@
 > * 插件仓库：https://github.com/zoujingli/think-plugs-static
 > * 开源协议：MIT ( 免费开放，里面有部分其他开源协议，具体可以查看源文件 )
 
+> 基于 Workerman 的 Http 服务插件（ 已稳定可用 ）
+> * 插件标识：`plugin-worker`
+> * 插件包名：`zoujingli/think-plugs-worker`
+> * 安装方式：`composer require zoujingli/think-plugs-worker`
+> * 插件仓库：https://github.com/zoujingli/think-plugs-worker
+> * 开源协议：Apache2 ( 免费开放 )
+
 > 基础在线插件市场 ( 开发中，后期开放 ThinkAdmin 生态市场 )
 > * 插件标识：`plugin-center`
 > * 插件包名：`zoujingli/think-plugs-center`
 > * 安装方式：`composer require zoujingli/think-plugs-center`
 > * 插件仓库：https://github.com/zoujingli/think-plugs-center
 > * 开源协议：Apache2 ( 免费开放，里面有部分其他开源协议，具体可以查看源文件 )
+
+> 微信开放平台基础插件（ 已稳定可用 ）
+> * 插件标识：`plugin-wechat-service`
+> * 插件包名：`zoujingli/think-plugin-wechat-service`
+> * 安装方式：`composer require zoujingli/think-plugin-wechat-service`
+> * 插件仓库：https://github.com/zoujingli/think-plugs-wechat-service
+> * 授权协议：VIP授权 ( 非VIP用户仅可用于学习，不得商用 )
 
 > 基础用户账号管理 ( 开发中，已支持微信公众号和小程序登录，后期会增加更多 )
 > * 插件标识：`plugin-account`
@@ -59,9 +73,3 @@
 > * 插件仓库：https://gitee.com/zoujingli/think-plugs-base-goods
 > * 开源协议：MIT ( 免费开放 )
 
-> 微信开放平台基础插件（ 已稳定可用 ）
-> * 插件标识：`plugin-wechat-service`
-> * 插件包名：`zoujingli/think-plugin-wechat-service`
-> * 安装方式：`composer require zoujingli/think-plugin-wechat-service`
-> * 插件仓库：https://github.com/zoujingli/think-plugs-wechat-service
-> * 授权协议：VIP授权 ( 非VIP用户仅可用于学习，不得商用 )
