@@ -81,135 +81,130 @@
     require(['angular', 'ckeditor'], function () {
 
         var editor;
-        var $form = $('form[name="news"]');
-        var $vali = $form.vali().data('validate');
+        $('form[name="news"]').vali(null, function () {
+            var vali = this, app = angular.module("NewsEditor", []).run(callback);
+            angular.bootstrap(document.getElementById(app.name), [app.name]);
 
-        var app = angular.module("NewsEditor", []).run(callback);
-        angular.bootstrap(document.getElementById(app.name), [app.name]);
+            function callback($rootScope) {
+                $rootScope.list = [];
+                $rootScope.item = {};
 
-        function callback($rootScope) {
-            $rootScope.list = [];
-            $rootScope.item = {};
-
-            $.form.load('{:request()->url()}', {output: 'json'}, 'get', function (ret) {
-                return $rootScope.$apply(function () {
-                    apply((ret.data || {articles: []}).articles || []);
-                }), false;
-            });
-
-            function apply(list) {
-                if (list.length < 1) list.push({
-                    title: '新建图文', author: '管理员', content: '文章内容',
-                    read_num: 0, local_url: '__FULL__/static/theme/img/image.png',
-                });
-                for (var i in list) {
-                    list[i].active = false;
-                    list[i].style = "background-image:url('" + list[i].local_url + "')";
-                }
-                $rootScope.list = list;
-                $rootScope.item = $rootScope.list[0];
-                $rootScope.setItemValue('active', true);
-                $('.layui-card-body.layui-hide').removeClass('layui-hide');
-                setTimeout(function () {
-                    if (editor) editor.destroy();
-                    editor = window.createEditor('[name="content"]');
-                    if (typeof editor !== 'undefined') {
-                        editor.setData($rootScope.item.content);
-                        $vali.checkAllInput();
-                    } else $('[name="content"]').on('editor.init', function (event, myEditor) {
-                        myEditor.setData($rootScope.item.content);
-                        editor = myEditor;
-                        $vali.checkAllInput();
+                $.form.load('{:request()->url()}', {output: 'json'}, 'get', function (ret) {
+                    $rootScope.$apply(function () {
+                        apply((ret.data || {articles: []}).articles || []);
                     });
-                }, 100);
-            }
+                    return false;
+                });
 
-            $rootScope.upItem = function (index, $event) {
-                $event.stopPropagation();
-                var tmp = [], cur = $rootScope.list[index];
-                if (index < 1) return false;
-                for (var i in $rootScope.list) {
-                    (parseInt(i) === parseInt(index) - 1) && tmp.push(cur);
-                    (parseInt(i) !== parseInt(index)) && tmp.push($rootScope.list[i]);
-                }
-                apply(tmp);
-            };
-            $rootScope.dnItem = function (index, $event) {
-                $event.stopPropagation();
-                var tmp = [], cur = $rootScope.list[index];
-                if (index > $rootScope.list.length - 2) return false;
-                for (var i in $rootScope.list) {
-                    (parseInt(i) !== parseInt(index)) && tmp.push($rootScope.list[i]);
-                    (parseInt(i) === parseInt(index) + 1) && tmp.push(cur);
-                }
-                apply(tmp);
-            };
-            $rootScope.delItem = function (index, $event) {
-                $event.stopPropagation();
-                var list = $rootScope.list, temp = [];
-                for (var i in list) (parseInt(i) !== parseInt(index)) && temp.push(list[i]);
-                apply(temp);
-            };
-            $rootScope.setItem = function (index, $event) {
-                $event.stopPropagation();
-                $vali.checkAllInput();
-                if ($form.find('.validate-error').size() > 0) return 0;
-                if (editor.getData().length < 1) {
-                    return $.msg.tips('文章内容不能为空，请输入文章内容！');
-                }
-                for (var i in $rootScope.list) if (parseInt(i) !== parseInt(index)) {
-                    $rootScope.list[i].active = false;
-                } else {
-                    $rootScope.item.content = editor.getData();
-                    $rootScope.item = $rootScope.list[i];
-                    editor.setData($rootScope.item.content);
+                function apply(list) {
+                    if (list.length < 1) list.push({
+                        title: '新建图文', author: '管理员', content: '文章内容',
+                        read_num: 0, local_url: '__FULL__/static/theme/img/image.png',
+                    });
+                    for (var i in list) {
+                        list[i].active = false;
+                        list[i].style = "background-image:url('" + list[i].local_url + "')";
+                    }
+                    $rootScope.list = list;
+                    $rootScope.item = $rootScope.list[0];
                     $rootScope.setItemValue('active', true);
+                    $('.layui-card-body.layui-hide').removeClass('layui-hide');
+                    setTimeout(function () {
+                        if (editor) editor.destroy();
+                        editor = window.createEditor('[name="content"]');
+                        if (typeof editor !== 'undefined') {
+                            editor.setData($rootScope.item.content);
+                            vali.checkAllInput();
+                        } else $('[name="content"]').on('editor.init', function (event, myEditor) {
+                            (editor = myEditor).setData($rootScope.item.content);
+                            vali.checkAllInput();
+                        });
+                    }, 100);
                 }
-            };
-            $rootScope.setItemValue = function (name, value) {
-                $rootScope.item[name] = value;
-                $rootScope.item.style = "background-image:url('" + $rootScope.item.local_url + "')";
-            };
-            $rootScope.addItem = function () {
-                if ($rootScope.list.length > 7) {
-                    return $.msg.tips('最多允许增加7篇文章哦！');
-                }
-                $rootScope.list.push({
-                    title: '新建图文',
-                    author: '管理员',
-                    content: '文章内容',
-                    read_num: 0,
-                    local_url: '__FULL__/static/theme/img/image.png',
-                    style: "background-image:url('__FULL__/static/theme/img/image.png')"
+
+                $rootScope.upItem = function (index, $event) {
+                    $event.stopPropagation();
+                    var tmp = [], cur = $rootScope.list[index];
+                    if (index < 1) return false;
+                    for (var i in $rootScope.list) {
+                        (parseInt(i) === parseInt(index) - 1) && tmp.push(cur);
+                        (parseInt(i) !== parseInt(index)) && tmp.push($rootScope.list[i]);
+                    }
+                    apply(tmp);
+                };
+                $rootScope.dnItem = function (index, $event) {
+                    $event.stopPropagation();
+                    var tmp = [], cur = $rootScope.list[index];
+                    if (index > $rootScope.list.length - 2) return false;
+                    for (var i in $rootScope.list) {
+                        (parseInt(i) !== parseInt(index)) && tmp.push($rootScope.list[i]);
+                        (parseInt(i) === parseInt(index) + 1) && tmp.push(cur);
+                    }
+                    apply(tmp);
+                };
+                $rootScope.delItem = function (index, $event) {
+                    $event.stopPropagation();
+                    var list = $rootScope.list, temp = [];
+                    for (var i in list) (parseInt(i) !== parseInt(index)) && temp.push(list[i]);
+                    apply(temp);
+                };
+                $rootScope.setItem = function (index, $event) {
+                    $event.stopPropagation();
+                    if (!vali.checkAllInput()) return;
+                    if (editor.getData().length < 1) {
+                        return $.msg.notify('操作提示', '文章内容不能为空，请输入内容！', 3000, {type: 'error', width: '400px'})
+                    }
+                    for (var i in $rootScope.list) if (parseInt(i) !== parseInt(index)) {
+                        $rootScope.list[i].active = false;
+                    } else {
+                        $rootScope.item.content = editor.getData();
+                        $rootScope.item = $rootScope.list[i];
+                        editor.setData($rootScope.item.content);
+                        $rootScope.setItemValue('active', true);
+                    }
+                };
+                $rootScope.setItemValue = function (name, value) {
+                    $rootScope.item[name] = value;
+                    $rootScope.item.style = "background-image:url('" + $rootScope.item.local_url + "')";
+                };
+                $rootScope.addItem = function () {
+                    if ($rootScope.list.length >= 7) {
+                        return $.msg.notify('操作提示', '最多允许增加 7 篇文章哦！', 3000, {type: 'error', width: '400px'})
+                    }
+                    $rootScope.list.push({
+                        title: '新建图文',
+                        author: '管理员',
+                        content: '文章内容',
+                        read_num: 0,
+                        local_url: '__FULL__/static/theme/img/image.png',
+                        style: "background-image:url('__FULL__/static/theme/img/image.png')"
+                    });
+                };
+                $rootScope.submit = function () {
+                    if (!vali.checkAllInput()) return false;
+                    $rootScope.item.content = editor.getData();
+                    var data = [];
+                    for (var i in $rootScope.list) data.push({
+                        id: $rootScope.list[i].id,
+                        title: $rootScope.list[i].title,
+                        author: $rootScope.list[i].author,
+                        digest: $rootScope.list[i].digest,
+                        content: $rootScope.list[i].content,
+                        read_num: $rootScope.list[i].read_num,
+                        local_url: $rootScope.list[i].local_url,
+                        show_cover_pic: $rootScope.list[i].show_cover_pic ? 1 : 0,
+                        content_source_url: $rootScope.list[i].content_source_url,
+                    });
+                    $.form.load('{:request()->url()}', {data: data}, "post");
+                };
+                $('[name="local_url"]').on('change', function () {
+                    var value = this.value;
+                    $rootScope.$apply(function () {
+                        $rootScope.setItemValue('local_url', value);
+                    });
                 });
-            };
-            $rootScope.submit = function () {
-                $vali.checkAllInput();
-                if ($form.find('.validate-error').size() > 0) {
-                    return $.msg.tips('表单验证不成功，请输入需要的内容！');
-                }
-                $rootScope.item.content = editor.getData();
-                var data = [];
-                for (var i in $rootScope.list) data.push({
-                    id: $rootScope.list[i].id,
-                    title: $rootScope.list[i].title,
-                    author: $rootScope.list[i].author,
-                    digest: $rootScope.list[i].digest,
-                    content: $rootScope.list[i].content,
-                    read_num: $rootScope.list[i].read_num,
-                    local_url: $rootScope.list[i].local_url,
-                    show_cover_pic: $rootScope.list[i].show_cover_pic ? 1 : 0,
-                    content_source_url: $rootScope.list[i].content_source_url,
-                });
-                $.form.load('{:request()->url()}', {data: data}, "post");
-            };
-            $('[name="local_url"]').on('change', function (value) {
-                value = this.value;
-                $rootScope.$apply(function () {
-                    $rootScope.setItemValue('local_url', value);
-                });
-            });
-        }
+            }
+        });
     });
 </script>
 {/block}

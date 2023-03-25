@@ -23,6 +23,7 @@ layui.config({base: baseRoot + 'plugs/layui_exts/'});
 window.form = layui.form, window.layer = layui.layer;
 window.laytpl = layui.laytpl, window.laydate = layui.laydate;
 window.jQuery = window.$ = window.jQuery || window.$ || layui.$;
+window.jQuery.ajaxSetup({xhrFields: {withCredentials: true}});
 
 /*! 配置 require 参数  */
 require.config({
@@ -61,7 +62,7 @@ require.config({
     }, shim: {
         'jszip': {deps: ['filesaver']},
         'excel': {deps: [baseRoot + 'plugs/layui_exts/excel.js']},
-        'notify': {deps: ['css!' + baseRoot + 'plugs/notify/light.css']},
+        'notify': {deps: ['css!' + baseRoot + 'plugs/notify/theme.css']},
         'cropper': {deps: ['css!' + baseRoot + 'plugs/cropper/cropper.min.css']},
         'websocket': {deps: [baseRoot + 'plugs/socket/swfobject.js']},
         'ckeditor5': {deps: ['jquery', 'upload', 'css!' + baseRoot + 'plugs/ckeditor5/ckeditor.css']},
@@ -203,7 +204,7 @@ $(function () {
         // https://www.jq22.com/demo/jquerygrowl-notification202104021049
         this.notify = function (title, message, time, option) {
             require(['notify'], function (Notify) {
-                Notify.notify(Object.assign({title: title || '', description: message || '', position: 'top-right', closeTimeout: time || 3000}, (option || {})));
+                Notify.notify(Object.assign({title: title || '', description: message || '', position: 'top-right', closeTimeout: time || 3000, width: '400px'}, option || {}));
             });
         };
         /*! 页面加载层 */
@@ -572,22 +573,21 @@ $(function () {
             var $this = $(this), tags = this.value ? this.value.split(',') : [];
             var $text = $('<textarea class="layui-input layui-input-inline layui-tag-input"></textarea>');
             var $tags = $('<div class="layui-tags"></div>').append($text);
-            $this.parent().append($tags), $text.off('keydown blur'), (tags.length > 0 && showTags(tags));
+            $this.parent().append($tags) && $text.off('keydown blur') && (tags.length > 0 && showTags(tags));
             $text.on('blur keydown', function (event, value) {
                 if (event.keyCode === 13 || event.type === 'blur') {
                     event.preventDefault(), (value = $text.val().replace(/^\s*|\s*$/g, ''));
-                    if (tags.indexOf($(this).val()) > -1) return layer.msg('该标签已经存在！');
-                    if (value.length > 0) tags.push(value), $this.val(tags.join(',')), showTags([value]), this.focus(), $text.val('');
+                    if (tags.indexOf($(this).val()) > -1) return $.msg.notify('温馨提示', '该标签已经存在！', 3000, {type: 'error', width: 280});
+                    else if (value.length > 0) tags.push(value), $this.val(tags.join(',')), showTags([value]), this.focus(), $text.val('');
                 }
             });
 
             function showTags(tagsArr) {
-                $(tagsArr).each(function (idx, text, elem) {
-                    elem = $('<div class="layui-tag"></div>').html(text + '<i class="layui-icon">&#x1006;</i>');
-                    elem.on('click', 'i', function (tagText, tagIdx) {
-                        tagText = $(this).parent().text(), tagIdx = tags.indexOf(tagText);
-                        tags.splice(tagIdx, 1), $(this).parent().remove(), $this.val(tags.join(','));
-                    }), $tags.append(elem, $text);
+                $(tagsArr).each(function (idx, text) {
+                    $('<div class="layui-tag"></div>').data('value', text).on('click', 'i', function () {
+                        tags.splice(tags.indexOf($(this).parent().data('value')), 1);
+                        $this.val(tags.join(',')) && $(this).parent().remove();
+                    }).insertBefore($text).html(text + '<i class="layui-icon">&#x1006;</i>');
                 });
             }
         });
@@ -753,9 +753,9 @@ $(function () {
     /*! 创建表单验证 */
     $.vali = function (form, done, init) {
         require(['validate'], function (Validate) {
-            /** @type {import("./plugs/admin/validate")|Validate} */
+            /** @type {import("./plugs/admin/validate")|Validate}*/
             var vali = $(form).data('validate') || new Validate(form, onConfirm);
-            typeof init === 'function' && init.call(vali, $(form).formToJson());
+            typeof init === 'function' && init.call(vali, $(form).formToJson(), vali);
             typeof done === 'function' && vali.addDoneEvent(done);
         });
     };

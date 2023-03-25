@@ -23,7 +23,7 @@ use think\admin\service\MenuService;
 
 /**
  * 后台界面入口
- * Class Index
+ * @class Index
  * @package app\admin\controller
  */
 class Index extends Controller
@@ -31,6 +31,7 @@ class Index extends Controller
     /**
      * 显示后台首页
      * @throws \ReflectionException
+     * @throws \think\admin\Exception
      * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\DbException
      * @throws \think\db\exception\ModelNotFoundException
@@ -58,9 +59,7 @@ class Index extends Controller
      * 后台主题切换
      * @login true
      * @return void
-     * @throws \think\db\exception\DataNotFoundException
-     * @throws \think\db\exception\DbException
-     * @throws \think\db\exception\ModelNotFoundException
+     * @throws \think\admin\Exception
      */
     public function theme()
     {

@@ -26,7 +26,7 @@ use think\admin\service\SystemService;
 
 /**
  * 用户登录管理
- * Class Login
+ * @class Login
  * @package app\admin\controller
  */
 class Login extends Controller
@@ -35,9 +35,7 @@ class Login extends Controller
     /**
      * 后台登录入口
      * @return void
-     * @throws \think\db\exception\DataNotFoundException
-     * @throws \think\db\exception\DbException
-     * @throws \think\db\exception\ModelNotFoundException
+     * @throws \think\admin\Exception
      */
     public function index()
     {

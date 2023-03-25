@@ -23,8 +23,8 @@ use think\admin\service\RuntimeService;
 use think\exception\HttpResponseException;
 
 /**
- * 系统运行控制管理
- * Class System
+ * 系统运行管理
+ * @class System
  * @package app\admin\controller\api
  */
 class System extends Controller
@@ -45,7 +45,7 @@ class System extends Controller
             trace_file($exception);
             $this->error($exception->getMessage());
         } else {
-            $this->error('只有超级管理员才能操作！');
+            $this->error('请使用超管账号操作！');
         }
     }
 
@@ -64,7 +64,7 @@ class System extends Controller
             trace_file($exception);
             $this->error($exception->getMessage());
         } else {
-            $this->error('只有超级管理员才能操作！');
+            $this->error('请使用超管账号操作！');
         }
     }
 
@@ -83,7 +83,7 @@ class System extends Controller
             sysoplog('系统运维管理', '生产模式切换为开发模式');
             $this->success('已切换为开发模式！', 'javascript:location.reload()');
         } else {
-            $this->error('只有超级管理员才能操作！');
+            $this->error('请使用超管账号操作！');
         }
     }
 
@@ -102,7 +102,7 @@ class System extends Controller
             sysoplog('系统运维管理', "切换编辑器为{$editor}");
             $this->success('已切换后台编辑器！', 'javascript:location.reload()');
         } else {
-            $this->error('只有超级管理员才能操作！');
+            $this->error('请使用超管账号操作！');
         }
     }
 
@@ -132,7 +132,7 @@ class System extends Controller
             trace_file($exception);
             $this->error($exception->getMessage());
         } else {
-            $this->error('只有超级管理员才能操作！');
+            $this->error('请使用超管账号操作！');
         }
     }
 }

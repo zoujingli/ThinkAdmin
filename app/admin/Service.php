@@ -20,7 +20,7 @@ use think\admin\Plugin;
 
 /**
  * 插件服务注册
- * Class Service
+ * @class Service
  * @package app\admin
  */
 class Service extends Plugin

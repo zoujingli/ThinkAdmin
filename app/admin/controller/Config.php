@@ -27,7 +27,7 @@ use think\admin\storage\TxcosStorage;
 
 /**
  * 系统参数配置
- * Class Config
+ * @class Config
  * @package app\admin\controller
  */
 class Config extends Controller

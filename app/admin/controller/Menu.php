@@ -25,7 +25,7 @@ use think\admin\service\NodeService;
 
 /**
  * 系统菜单管理
- * Class Menu
+ * @class Menu
  * @package app\admin\controller
  */
 class Menu extends Controller

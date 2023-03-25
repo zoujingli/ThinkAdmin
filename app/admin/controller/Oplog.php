@@ -25,7 +25,7 @@ use think\exception\HttpResponseException;
 
 /**
  * 系统日志管理
- * Class Oplog
+ * @class Oplog
  * @package app\admin\controller
  */
 class Oplog extends Controller

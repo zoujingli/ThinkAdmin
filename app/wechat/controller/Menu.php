@@ -78,7 +78,7 @@ class Menu extends Controller
     {
         try {
             WechatService::WeChatMenu()->delete();
-            $this->success('菜单取消成功，重新订阅可立即生效！');
+            $this->success('公众号菜单取消成功！');
         } catch (HttpResponseException $exception) {
             sysoplog('微信管理', '取消微信菜单成功');
             throw $exception;

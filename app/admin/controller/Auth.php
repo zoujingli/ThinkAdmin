@@ -24,7 +24,7 @@ use think\admin\service\AdminService;
 
 /**
  * 系统权限管理
- * Class Auth
+ * @class Auth
  * @package app\admin\controller
  */
 class Auth extends Controller

@@ -1,22 +1,26 @@
 {extend name='table'}
 
 {block name="button"}
-<!--{if isset($super) and $super}-->
-<a data-table-id="QueueTable" class="layui-btn layui-btn-sm layui-btn-primary" data-queue="{:url('admin/api.plugs/optimize')}">优化数据库</a>
-<!--{/if}-->
 
-<!--{if isset($super) and $super and $iswin}-->
+{if isset($super) and $super}
+
+<a data-table-id="QueueTable" class="layui-btn layui-btn-sm layui-btn-primary" data-queue="{:url('admin/api.plugs/optimize')}">优化数据库</a>
+
+{if isset($iswin) and ($iswin or php_sapi_name() eq 'cli')}
 <button data-load='{:url("admin/api.queue/start")}' class='layui-btn layui-btn-sm layui-btn-primary'>开启服务</button>
 <button data-load='{:url("admin/api.queue/stop")}' class='layui-btn layui-btn-sm layui-btn-primary'>关闭服务</button>
-<!--{/if}-->
+{/if}
 
-<!--{if auth("clean")}-->
+{if auth("clean")}
 <button data-table-id="QueueTable" data-queue='{:url("clean")}' class='layui-btn layui-btn-sm layui-btn-primary'>定时清理</button>
-<!--{/if}-->
+{/if}
 
-<!--{if auth("remove")}-->
+{/if}
+
+{if auth("remove")}
 <button data-table-id="QueueTable" data-action='{:url("remove")}' data-rule="id#{id}" data-confirm="确定批量删除记录吗？" class='layui-btn layui-btn-sm layui-btn-primary'>批量删除</button>
-<!--{/if}-->
+{/if}
+
 {/block}
 
 {block name="content"}

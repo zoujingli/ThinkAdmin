@@ -25,7 +25,7 @@ use think\admin\service\AdminService;
 
 /**
  * 系统用户管理
- * Class User
+ * @class User
  * @package app\admin\controller
  */
 class User extends Controller

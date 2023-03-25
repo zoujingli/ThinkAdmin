@@ -27,7 +27,7 @@ use think\exception\HttpResponseException;
 
 /**
  * 系统任务管理
- * Class Queue
+ * @class Queue
  * @package app\admin\controller
  */
 class Queue extends Controller

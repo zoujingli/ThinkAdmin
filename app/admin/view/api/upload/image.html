@@ -109,7 +109,7 @@
                 loadPage: function () {
                     this.params = {page: this.page, limit: this.limit, output: 'layui.table', name: this.keys || ''};
                     this.params.type = '{$get.type|default="gif,png,jpg,jpeg"}';
-                    $.form.load('{:url("image")}', this.params, 'get', function (ret) {
+                    $.form.load('{:url("image",[],false,true)}', this.params, 'get', function (ret) {
                         return app.setList(ret.data, ret.count), false;
                     });
                 },

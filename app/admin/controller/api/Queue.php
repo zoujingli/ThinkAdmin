@@ -24,25 +24,25 @@ use think\admin\service\QueueService;
 use think\exception\HttpResponseException;
 
 /**
- * 后台任务通用接口
- * Class Queue
+ * 任务监听服务管理
+ * @class Queue
  * @package app\admin\controller\api
  */
 class Queue extends Controller
 {
     /**
-     * WIN停止监听进程
+     * 停止监听服务
      * @login true
      */
     public function stop()
     {
-        try {
+        if (AdminService::isSuper()) try {
             $message = $this->app->console->call('xadmin:queue', ['stop'])->fetch();
             if (stripos($message, 'sent end signal to process')) {
-                sysoplog('系统运维管理', '尝试停止后台服务主进程');
-                $this->success('停止后台服务主进程成功！');
+                sysoplog('系统运维管理', '尝试停止任务监听服务');
+                $this->success('停止任务监听服务成功！');
             } elseif (stripos($message, 'processes to stop')) {
-                $this->success('没有找到需要停止的进程！');
+                $this->success('没有找到需要停止的服务！');
             } else {
                 $this->error(nl2br($message));
             }
@@ -51,22 +51,24 @@ class Queue extends Controller
         } catch (Exception $exception) {
             trace_file($exception);
             $this->error($exception->getMessage());
+        } else {
+            $this->error('请使用超管账号操作！');
         }
     }
 
     /**
-     * WIN创建监听进程
+     * 启动监听服务
      * @login true
      */
     public function start()
     {
-        try {
+        if (AdminService::isSuper()) try {
             $message = $this->app->console->call('xadmin:queue', ['start'])->fetch();
             if (stripos($message, 'daemons started successfully for pid')) {
-                sysoplog('系统运维管理', '尝试启动后台服务主进程');
-                $this->success('后台服务主进程启动成功！');
+                sysoplog('系统运维管理', '尝试启动任务监听服务');
+                $this->success('任务监听服务启动成功！');
             } elseif (stripos($message, 'daemons already exist for pid')) {
-                $this->success('后台服务主进程已经存在！');
+                $this->success('任务监听服务已经启动！');
             } else {
                 $this->error(nl2br($message));
             }
@@ -75,11 +77,13 @@ class Queue extends Controller
         } catch (Exception $exception) {
             trace_file($exception);
             $this->error($exception->getMessage());
+        } else {
+            $this->error('请使用超管账号操作！');
         }
     }
 
     /**
-     * 检查任务状态
+     * 检查监听服务
      * @login true
      */
     public function status()
@@ -99,7 +103,7 @@ class Queue extends Controller
     }
 
     /**
-     * 任务进度查询
+     * 查询任务进度
      * @login true
      * @throws \think\admin\Exception
      */

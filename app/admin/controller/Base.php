@@ -22,7 +22,7 @@ use think\admin\model\SystemBase;
 
 /**
  * 数据字典管理
- * Class Base
+ * @class Base
  * @package app\admin\controller
  */
 class Base extends Controller

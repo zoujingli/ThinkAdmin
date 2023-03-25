@@ -954,6 +954,20 @@ input:not(.layui-hide,[type=hidden]) {
   position: relative;
   transform: scale(1);
   text-align: center;
+  overflow: hidden;
+
+  &::before {
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    width: 100%;
+    height: 100%;
+    content: '';
+    display: block;
+    position: absolute;
+    background: rgba(0, 0, 0, .3);
+  }
 
   &::after {
     left: 50%;

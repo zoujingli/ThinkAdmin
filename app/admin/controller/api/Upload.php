@@ -32,25 +32,23 @@ use think\Response;
 
 /**
  * 文件上传接口
- * Class Upload
+ * @class Upload
  * @package app\admin\controller\api
  */
 class Upload extends Controller
 {
-
     /**
      * 文件上传脚本
      * @return Response
-     * @throws \think\db\exception\DataNotFoundException
-     * @throws \think\db\exception\DbException
-     * @throws \think\db\exception\ModelNotFoundException
+     * @throws \think\admin\Exception
      */
     public function index(): Response
     {
         $data = ['exts' => []];
-        foreach (str2arr(sysconf('storage.allow_exts|raw')) as $ext) {
-            $data['exts'][$ext] = Storage::mime($ext);
-        }
+        [$uuid, $unid, $exts] = $this->initUnid(false);
+        $allows = str2arr(sysconf('storage.allow_exts|raw'));
+        if (empty($uuid) && $unid > 0) $allows = array_intersect($exts, $allows);
+        foreach ($allows as $ext) $data['exts'][$ext] = Storage::mime($ext);
         $template = realpath(__DIR__ . '/../../view/api/upload.js');
         $data['exts'] = json_encode($data['exts'], JSON_UNESCAPED_UNICODE);
         $data['nameType'] = sysconf('storage.name_type|raw') ?: 'xmd5';
@@ -58,21 +56,42 @@ class Upload extends Controller
     }
 
     /**
-     * 文件上传检查
-     * @login true
-     * @throws \think\admin\Exception
+     * 文件选择器
      * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\DbException
      * @throws \think\db\exception\ModelNotFoundException
      */
+    public function image()
+    {
+        [$uuid, $unid] = $this->initUnid();
+        SystemFile::mQuery()->layTable(function () {
+            $this->title = '文件选择器';
+        }, function (QueryHelper $query) use ($unid, $uuid) {
+            if ($unid && $uuid) $query->where(function ($query) use ($uuid, $unid) {
+                /** @var \think\db\Query $query */
+                $query->whereOr([['uuid', '=', $uuid], ['unid', '=', $unid]]);
+            }); else {
+                $query->where($unid ? ['unid' => $unid] : ['uuid' => $uuid]);
+            }
+            $query->where(['status' => 2, 'issafe' => 0])->in('xext#type');
+            $query->like('name,hash')->dateBetween('create_at')->order('id desc');
+        });
+    }
+
+    /**
+     * 文件上传检查
+     * @throws \think\admin\Exception
+     */
     public function state()
     {
+        [$uuid, $unid] = $this->initUnid();
         [$name, $safe] = [input('name'), $this->getSafe()];
         $data = ['uptype' => $this->getType(), 'safe' => intval($safe), 'key' => input('key')];
         $file = SystemFile::mk()->data($this->_vali([
             'xkey.value'   => $data['key'],
             'type.value'   => $this->getType(),
-            'uuid.value'   => AdminService::getUserId(),
+            'uuid.value'   => $uuid,
+            'unid.value'   => $unid,
             'name.require' => '名称不能为空！',
             'hash.require' => '哈希不能为空！',
             'xext.require' => '后缀不能为空！',
@@ -80,9 +99,10 @@ class Upload extends Controller
             'mime.default' => '',
             'status.value' => 1,
         ]));
-        if (empty($file['mime'])) $file['mime'] = Storage::mime($file['xext']);
+        $mime = $file->getAttr('mime');
+        if (empty($mime)) $file->setAttr('mime', Storage::mime($file->getAttr('xext')));
         $info = Storage::instance($data['uptype'])->info($data['key'], $safe, $name);
-        if (is_array($info) && isset($info['url']) && isset($info['key'])) {
+        if (isset($info['url']) && isset($info['key'])) {
             $file->save(['xurl' => $info['url'], 'isfast' => 1, 'issafe' => $data['safe']]);
             $extr = ['id' => $file->id ?? 0, 'url' => $info['url'], 'key' => $info['key']];
             $this->success('文件已经上传', array_merge($data, $extr), 200);
@@ -110,7 +130,7 @@ class Upload extends Controller
             $data['q-sign-algorithm'] = $token['q-sign-algorithm'];
             $data['server'] = TxcosStorage::instance()->upload();
         } elseif ('upyun' === $data['uptype']) {
-            $token = UpyunStorage::instance()->buildUploadToken($data['key'], 3600, $name, input('size'), input('hash'));
+            $token = UpyunStorage::instance()->buildUploadToken($data['key'], 3600, $name, input('hash', ''));
             $data['url'] = $token['siteurl'];
             $data['policy'] = $token['policy'];
             $data['authorization'] = $token['authorization'];
@@ -122,15 +142,16 @@ class Upload extends Controller
 
     /**
      * 更新文件状态
-     * @login true
      * @return void
      */
     public function done()
     {
+        [$uuid, $unid] = $this->initUnid();
         $data = $this->_vali([
             'id.require'   => '编号不能为空！',
             'hash.require' => '哈希不能为空！',
-            'uuid.value'   => AdminService::getUserId(),
+            'uuid.value'   => $uuid,
+            'unid.value'   => $unid,
         ]);
         $file = SystemFile::mk()->where($data)->findOrEmpty();
         if ($file->isEmpty()) $this->error('文件不存在！');
@@ -142,74 +163,62 @@ class Upload extends Controller
     }
 
     /**
-     * 文件选择器
-     * @login true
-     * @return void
-     * @throws \think\db\exception\DataNotFoundException
-     * @throws \think\db\exception\DbException
-     * @throws \think\db\exception\ModelNotFoundException
-     */
-    public function image()
-    {
-        SystemFile::mQuery()->layTable(function () {
-            $this->title = '文件选择器';
-        }, function (QueryHelper $query) {
-            $query->where(['status' => 2, 'issafe' => 0, 'uuid' => AdminService::getUserId()]);
-            $query->like('name,hash')->in('xext#type')->dateBetween('create_at')->order('id desc');
-        });
-    }
-
-    /**
      * 文件上传入口
-     * @login true
-     * @throws \think\db\exception\DataNotFoundException
-     * @throws \think\db\exception\DbException
-     * @throws \think\db\exception\ModelNotFoundException
+     * @throws \think\admin\Exception
      */
     public function file()
     {
-        if (!($file = $this->getFile())->isValid()) {
-            $this->error('文件上传异常，文件过大或未上传！');
-        }
-        $safeMode = $this->getSafe();
+        [$uuid, $unid, $unexts] = $this->initUnid();
+        // 开始处理文件上传
+        $file = $this->getFile();
         $extension = strtolower($file->getOriginalExtension());
-        $saveName = input('key') ?: Storage::name($file->getPathname(), $extension, '', 'md5_file');
+        $saveFileName = input('key') ?: Storage::name($file->getPathname(), $extension, '', 'md5_file');
         // 检查文件名称是否合法
-        if (strpos($saveName, '../') !== false) {
+        if (strpos($saveFileName, '../') !== false) {
             $this->error('文件路径不能出现跳级操作！');
         }
         // 检查文件后缀是否被恶意修改
-        if (strtolower(pathinfo(parse_url($saveName, PHP_URL_PATH), PATHINFO_EXTENSION)) !== $extension) {
+        if (strtolower(pathinfo(parse_url($saveFileName, PHP_URL_PATH), PATHINFO_EXTENSION)) !== $extension) {
             $this->error('文件后缀异常，请重新上传文件！');
         }
         // 屏蔽禁止上传指定后缀的文件
         if (!in_array($extension, str2arr(sysconf('storage.allow_exts|raw')))) {
             $this->error('文件类型受限，请在后台配置规则！');
         }
+        // 前端用户上传后缀检查处理
+        if (empty($uuid) && $unid > 0 && !in_array($extension, $unexts)) {
+            $this->error('文件类型受限，请上传允许的文件类型！');
+        }
         if (in_array($extension, ['sh', 'asp', 'bat', 'cmd', 'exe', 'php'])) {
             $this->error('文件安全保护，禁止上传可执行文件！');
         }
         try {
-            if ($this->getType() === 'local') {
+            $safeMode = $this->getSafe();
+            if (($type = $this->getType()) === 'local') {
                 $local = LocalStorage::instance();
-                $distName = $local->path($saveName, $safeMode);
-                $file->move(dirname($distName), basename($distName));
-                $info = $local->info($saveName, $safeMode, $file->getOriginalName());
+                $distName = $local->path($saveFileName, $safeMode);
+                if (PHP_SAPI === 'cli') {
+                    is_dir(dirname($distName)) || mkdir(dirname($distName), 0777, true);
+                    rename($file->getPathname(), $distName);
+                } else {
+                    $file->move(dirname($distName), basename($distName));
+                }
+                $info = $local->info($saveFileName, $safeMode, $file->getOriginalName());
                 if (in_array($extension, ['jpg', 'gif', 'png', 'bmp', 'jpeg', 'wbmp'])) {
-                    if ($this->imgNotSafe($distName) && $local->del($saveName)) {
+                    if ($this->imgNotSafe($distName) && $local->del($saveFileName)) {
                         $this->error('图片未通过安全检查！');
                     }
                     [$width, $height] = getimagesize($distName);
-                    if (($width < 1 || $height < 1) && $local->del($saveName)) {
+                    if (($width < 1 || $height < 1) && $local->del($saveFileName)) {
                         $this->error('读取图片的尺寸失败！');
                     }
                 }
             } else {
                 $bina = file_get_contents($file->getPathname());
-                $info = Storage::instance($this->getType())->set($saveName, $bina, $safeMode, $file->getOriginalName());
+                $info = Storage::instance($type)->set($saveFileName, $bina, $safeMode, $file->getOriginalName());
             }
             if (isset($info['url'])) {
-                $this->success('文件上传成功！', ['url' => $safeMode ? $saveName : $info['url']]);
+                $this->success('文件上传成功！', ['url' => $safeMode ? $saveFileName : $info['url']]);
             } else {
                 $this->error('文件处理失败，请稍候再试！');
             }
@@ -222,7 +231,7 @@ class Upload extends Controller
     }
 
     /**
-     * 获取文件上传类型
+     * 获取上传类型
      * @return boolean
      */
     private function getSafe(): bool
@@ -231,11 +240,9 @@ class Upload extends Controller
     }
 
     /**
-     * 获取文件上传方式
+     * 获取上传方式
      * @return string
-     * @throws \think\db\exception\DataNotFoundException
-     * @throws \think\db\exception\DbException
-     * @throws \think\db\exception\ModelNotFoundException
+     * @throws \think\admin\Exception
      */
     private function getType(): string
     {
@@ -248,7 +255,7 @@ class Upload extends Controller
     }
 
     /**
-     * 获取本地文件对象
+     * 获取文件对象
      * @return UploadedFile|void
      */
     private function getFile(): UploadedFile
@@ -265,6 +272,22 @@ class Upload extends Controller
         } catch (\Exception $exception) {
             trace_file($exception);
             $this->error(lang($exception->getMessage()));
+        }
+    }
+
+    /**
+     * 初始化用户状态
+     * @param boolean $check
+     * @return array
+     */
+    private function initUnid(bool $check = true): array
+    {
+        $uuid = AdminService::getUserId();
+        [$unid, $exts] = AdminService::withUploadUnid();
+        if ($check && empty($uuid) && empty($unid)) {
+            $this->error('未登录，禁止使用文件上传！');
+        } else {
+            return [$uuid, $unid, $exts];
         }
     }
 

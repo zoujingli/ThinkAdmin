@@ -24,7 +24,7 @@ use think\admin\Storage;
 
 /**
  * 系统文件管理
- * Class File
+ * @class File
  * @package app\admin\controller
  */
 class File extends Controller
@@ -99,6 +99,7 @@ class File extends Controller
      * 清理重复文件
      * @auth true
      * @return void
+     * @throws \think\db\exception\DbException
      */
     public function distinct()
     {
