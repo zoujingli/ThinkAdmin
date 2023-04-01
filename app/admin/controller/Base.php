@@ -70,7 +70,7 @@ class Base extends Controller
      * @param array $data
      * @throws \think\db\exception\DbException
      */
-    protected function _form_filter(array &$data)
+    protected function _form_filter(array $data)
     {
         if ($this->request->isGet()) {
             $this->types = SystemBase::types();

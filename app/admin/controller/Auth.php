@@ -115,7 +115,7 @@ class Auth extends Controller
      * 表单后置数据处理
      * @param array $data
      */
-    protected function _apply_form_filter(array &$data)
+    protected function _apply_form_filter(array $data)
     {
         if ($this->request->isGet()) {
             $this->title = "编辑【{$data['title']}】授权";

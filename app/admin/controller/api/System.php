@@ -90,9 +90,7 @@ class System extends Controller
     /**
      * 修改富文本编辑器
      * @return void
-     * @throws \think\db\exception\DataNotFoundException
-     * @throws \think\db\exception\DbException
-     * @throws \think\db\exception\ModelNotFoundException
+     * @throws \think\admin\Exception
      */
     public function editor()
     {

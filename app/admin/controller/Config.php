@@ -61,9 +61,7 @@ class Config extends Controller
     /**
      * 修改系统参数
      * @auth true
-     * @throws \think\db\exception\DataNotFoundException
-     * @throws \think\db\exception\DbException
-     * @throws \think\db\exception\ModelNotFoundException
+     * @throws \think\admin\Exception
      */
     public function system()
     {
@@ -100,9 +98,7 @@ class Config extends Controller
     /**
      * 修改文件存储
      * @auth true
-     * @throws \think\db\exception\DataNotFoundException
-     * @throws \think\db\exception\DbException
-     * @throws \think\db\exception\ModelNotFoundException
+     * @throws \think\admin\Exception
      */
     public function storage()
     {

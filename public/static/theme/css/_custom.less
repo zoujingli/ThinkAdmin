@@ -508,6 +508,11 @@ table[data-line='3'] + div tbody .layui-table-cell {
         text-overflow: ellipsis;
         text-decoration: none;
 
+        span:after {
+          content: '';
+          display: inline-block;
+        }
+
         &:after {
           top: -1px;
           left: 0;
@@ -951,10 +956,10 @@ input:not(.layui-hide,[type=hidden]) {
 
 .submit-button-loading {
   cursor: default;
+  overflow: hidden;
   position: relative;
   transform: scale(1);
   text-align: center;
-  overflow: hidden;
 
   &::before {
     top: 0;
@@ -966,7 +971,7 @@ input:not(.layui-hide,[type=hidden]) {
     content: '';
     display: block;
     position: absolute;
-    background: rgba(0, 0, 0, .3);
+    background: rgba(0, 0, 0, .1);
   }
 
   &::after {
@@ -1118,24 +1123,45 @@ input:not(.layui-hide,[type=hidden]) {
 
   .portal-block {
     &-icon {
-      top: 45%;
-      right: 8%;
-      font-size: 65px;
+      top: 25%;
+      right: 30px;
       position: absolute;
-      color: rgba(255, 255, 255, 0.4);
+      font-size: 65px;
+      color: rgba(255, 255, 255, 0.2);
     }
 
     &-item {
       color: #fff;
       padding: 15px 25px;
       position: relative;
-      line-height: 3em;
       box-shadow: @ShadowOuterMax;
+      line-height: 3em;
+      text-shadow: 1px 1px 2px rgba(50, 50, 50, 0.8);
       border-radius: @BoxBorderRadius;
+      #notSelect();
 
-      > div:nth-child(2) {
+      > div:nth-child(1), &-name {
+        font-size: 16px;
+        font-weight: bold;
+      }
+
+      > div:nth-child(2), &-numb {
+        display: inline;
         font-size: 46px;
         line-height: 46px;
+      }
+
+      &-unit {
+        display: inline;
+        position: absolute;
+        font-size: 12px;
+        margin-top: 10px;
+        margin-left: 10px;
+      }
+
+      &-desc {
+        font-size: 13px;
+        line-height: 2em;
       }
     }
   }

@@ -145,6 +145,7 @@ define(['md5', 'notify'], function (SparkMD5, Notify, allowMime) {
                         uploader.form.append('Content-Disposition', 'inline;filename=' + encodeURIComponent(file.name));
                     }
                     uploader.form.append('file', file, file.name), jQuery.ajax({
+                        xhrFields: {withCredentials: ret.data.uptype === 'local'},
                         url: uploader.url, data: uploader.form, type: 'post', xhr: function (xhr) {
                             xhr = new XMLHttpRequest();
                             return xhr.upload.addEventListener('progress', function (event) {

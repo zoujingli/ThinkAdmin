@@ -64,7 +64,7 @@
     {if !sysconf('storage.link_type')}{php}sysconf('storage.link_type','none');{/php}{/if}
     {if !sysconf('storage.name_type')}{php}sysconf('storage.name_type','xmd5');{/php}{/if}
     {if !sysconf('storage.allow_exts')}{php}sysconf('storage.allow_exts','doc,gif,ico,jpg,mp3,mp4,p12,pem,png,rar,xls,xlsx');{/php}{/if}
-    {if !sysconf('storage.local_http_protocol')}{php}sysconf('storage.local_http_protocol','http');{/php}{/if}
+    {if !sysconf('storage.local_http_protocol')}{php}sysconf('storage.local_http_protocol','follow');{/php}{/if}
     <div class="layui-card-body layui-clear">
         <div class="layui-btn-group shadow-mini nowrap">
             {foreach ['local'=>'本地服务器存储','qiniu'=>'七牛云对象存储','upyun'=>'又拍云USS存储','alioss'=>'阿里云OSS存储','txcos'=>'腾讯云COS存储'] as $k => $v}{if sysconf('storage.type') eq $k}

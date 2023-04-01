@@ -14,26 +14,26 @@
 
 define(function () {
 
-    var doAjax = true, doReload = false;
     var template = '<div class="padding-30 padding-bottom-0" data-queue-load="{{d.code}}"><div class="layui-elip notselect nowrap" data-message-title><b class="color-desc">...</b></div><div class="margin-top-15 layui-progress layui-progress-big" lay-showPercent="yes"><div class="layui-progress-bar transition" lay-percent="0.00%"></div></div>' + '<div class="margin-top-15"><code class="layui-textarea layui-bg-black border-0" style="resize:none;overflow:hidden;height:190px"></code></div></div>';
 
     return Queue;
 
     function Queue(code, doScript, element) {
-        layer.open({
+        let queue = this;
+        (this.doAjax = true) && (this.doReload = false) || layer.open({
             type: 1, title: false, area: ['560px', '315px'], anim: 2, shadeClose: false, end: function () {
-                doAjax = doReload && doScript && $.layTable.reload(((element || {}).dataset || {}).tableId || true)
+                queue.doAjax = queue.doReload && doScript && $.layTable.reload(((element || {}).dataset || {}).tableId || true) && false;
             }, content: laytpl(template).render({code: code}), success: function ($elem) {
-                new Progress($elem, code, doScript);
+                new Progress($elem, code, queue, doScript);
             }
         });
     }
 
-    function Progress($elem, code, doScript) {
+    function Progress($elem, code, queue, doScript) {
         var that = this;
 
         this.$box = $elem.find('[data-queue-load=' + code + ']');
-        if (doAjax === false || this.$box.length < 1) return false;
+        if (queue.doAjax === false || this.$box.length < 1) return false;
 
         this.$code = this.$box.find('code');
         this.$title = this.$box.find('[data-message-title]');
@@ -58,7 +58,7 @@ define(function () {
                 }
                 that.$percent.addClass('layui-bg-blue').removeClass('layui-bg-green layui-bg-red');
             } else if (status === 3) {
-                doReload = true;
+                queue.doReload = true;
                 that.$title.html('<b class="color-green">' + message + '</b>').addClass('text-center');
                 that.$percent.addClass('layui-bg-green').removeClass('layui-bg-blue layui-bg-red');
             } else if (status === 4) {
@@ -69,7 +69,7 @@ define(function () {
 
         // 读取任务进度信息
         this.LoadProgress = function () {
-            if (doAjax === false || that.$box.length < 1) return false;
+            if (queue.doAjax === false || that.$box.length < 1) return false;
             $.form.load(tapiRoot + '/api.queue/progress', {code: code}, 'post', function (ret) {
                 if (ret.code) {
                     var lines = [];
