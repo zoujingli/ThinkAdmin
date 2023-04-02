@@ -26,7 +26,7 @@ use think\console\Output;
 
 /**
  * 向指定用户推送消息
- * Class Auto
+ * @class Auto
  * @package app\wechat\command
  */
 class Auto extends Command

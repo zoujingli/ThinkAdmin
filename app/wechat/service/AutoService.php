@@ -22,7 +22,7 @@ use think\admin\service\QueueService;
 
 /**
  * 关注自动回复服务
- * Class AutoService
+ * @class AutoService
  * @package app\wechat\service
  */
 class AutoService extends Service
@@ -31,9 +31,6 @@ class AutoService extends Service
      * 注册微信用户推送任务
      * @param string $openid
      * @throws \think\admin\Exception
-     * @throws \think\db\exception\DataNotFoundException
-     * @throws \think\db\exception\DbException
-     * @throws \think\db\exception\ModelNotFoundException
      */
     public static function register(string $openid)
     {

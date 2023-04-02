@@ -20,7 +20,7 @@ use think\admin\Model;
 
 /**
  * 微信媒体文件模型
- * Class WechatMedia
+ * @class WechatMedia
  * @package app\wechat\model
  */
 class WechatMedia extends Model

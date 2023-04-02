@@ -34,6 +34,14 @@
                     </div>
                 </div>
 
+                <div class="layui-form-item">
+                    <label class="layui-form-label"><b>MCH_V3_KEY</b><br><span class="nowrap color-desc">微信商户V3密钥</span></label>
+                    <div class="layui-input-block">
+                        <input name="wechat.mch_v3_key" vali-name="微信商户V3密钥" placeholder="请输入微信商户V3密钥（必填）" maxlength="32" pattern=".{32}" required value="{:sysconf('wechat.mch_v3_key')}" class="layui-input">
+                        <p class="help-block">微信商户密钥，需要在微信商户平台操作设置操作密码并获取商户接口密钥</p>
+                    </div>
+                </div>
+
                 <div class="hr-line-dashed"></div>
 
                 <div class="layui-form-item">

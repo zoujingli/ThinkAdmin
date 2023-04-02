@@ -22,7 +22,7 @@ use think\Response;
 
 /**
  * 前端JS获取控制器
- * Class Js
+ * @class Js
  * @package app\wechat\controller\api
  */
 class Js extends Controller
@@ -42,9 +42,6 @@ class Js extends Controller
      * @throws \WeChat\Exceptions\InvalidResponseException
      * @throws \WeChat\Exceptions\LocalCacheException
      * @throws \think\admin\Exception
-     * @throws \think\db\exception\DataNotFoundException
-     * @throws \think\db\exception\DbException
-     * @throws \think\db\exception\ModelNotFoundException
      */
     public function index(): Response
     {
@@ -71,9 +68,6 @@ class Js extends Controller
      * @throws \WeChat\Exceptions\InvalidResponseException
      * @throws \WeChat\Exceptions\LocalCacheException
      * @throws \think\admin\Exception
-     * @throws \think\db\exception\DataNotFoundException
-     * @throws \think\db\exception\DbException
-     * @throws \think\db\exception\ModelNotFoundException
      */
     public function sdk()
     {

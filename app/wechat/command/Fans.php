@@ -24,7 +24,7 @@ use think\admin\Command;
 
 /**
  * 微信粉丝管理指令
- * Class Fans
+ * @class Fans
  * @package app\wechat\command
  */
 class Fans extends Command
@@ -60,9 +60,6 @@ class Fans extends Command
      * @throws \WeChat\Exceptions\InvalidResponseException
      * @throws \WeChat\Exceptions\LocalCacheException
      * @throws \think\admin\Exception
-     * @throws \think\db\exception\DataNotFoundException
-     * @throws \think\db\exception\DbException
-     * @throws \think\db\exception\ModelNotFoundException
      */
     protected function _list(string $next = '', int $done = 0): string
     {
@@ -132,9 +129,6 @@ class Fans extends Command
      * @throws \WeChat\Exceptions\InvalidResponseException
      * @throws \WeChat\Exceptions\LocalCacheException
      * @throws \think\admin\Exception
-     * @throws \think\db\exception\DataNotFoundException
-     * @throws \think\db\exception\DbException
-     * @throws \think\db\exception\ModelNotFoundException
      */
     public function _tags(int $done = 0): string
     {

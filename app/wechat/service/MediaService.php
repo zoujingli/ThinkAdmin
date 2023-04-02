@@ -31,7 +31,7 @@ use WeChat\Contracts\MyCurlFile;
 
 /**
  * 微信素材管理
- * Class MediaService
+ * @class MediaService
  * @package app\wechat\service
  */
 class MediaService extends Service
@@ -73,9 +73,6 @@ class MediaService extends Service
      * @throws \WeChat\Exceptions\InvalidResponseException
      * @throws \WeChat\Exceptions\LocalCacheException
      * @throws \think\admin\Exception
-     * @throws \think\db\exception\DataNotFoundException
-     * @throws \think\db\exception\DbException
-     * @throws \think\db\exception\ModelNotFoundException
      */
     public static function upload(string $url, string $type = 'image', array $video = []): string
     {

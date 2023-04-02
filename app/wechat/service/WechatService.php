@@ -24,7 +24,8 @@ use think\admin\storage\LocalStorage;
 use think\exception\HttpResponseException;
 
 /**
- * Class WechatService
+ * 微信接口调度服务
+ * @class WechatService
  * @package app\wechat\serivce
  *
  * @method \WeChat\Card WeChatCard() static 微信卡券管理
@@ -77,6 +78,10 @@ use think\exception\HttpResponseException;
  * @method \WePay\Transfers WePayTransfers() static 微信商户打款到零钱
  * @method \WePay\TransfersBank WePayTransfersBank() static 微信商户打款到银行卡
  *
+ * ----- WePayV3 -----
+ * @method \WePayV3\Transfers WePayV3Transfers() static 微信商家转账到零钱
+ * @method \WePayV3\ProfitSharing WePayV3ProfitSharing() static 微信商户分账
+ *
  * ----- WeOpen -----
  * @method \WeOpen\Login WeOpenLogin() static 第三方微信登录
  * @method \WeOpen\Service WeOpenService() static 第三方服务
@@ -93,9 +98,6 @@ class WechatService extends Service
      * @param array $arguments
      * @return mixed
      * @throws \think\admin\Exception
-     * @throws \think\db\exception\DataNotFoundException
-     * @throws \think\db\exception\DbException
-     * @throws \think\db\exception\ModelNotFoundException
      */
     public static function __callStatic(string $name, array $arguments)
     {
@@ -127,7 +129,7 @@ class WechatService extends Service
      */
     private static function parseName(string $name): array
     {
-        foreach (['WeChat', 'WeMini', 'WeOpen', 'WePay', 'ThinkService'] as $type) {
+        foreach (['WeChat', 'WeMini', 'WeOpen', 'WePayV3', 'WePay', 'ThinkService'] as $type) {
             if (strpos($name, $type) === 0) {
                 [, $base] = explode($type, $name);
                 return [$type, $base, "\\{$type}\\{$base}"];
@@ -140,9 +142,6 @@ class WechatService extends Service
      * 获取当前微信APPID
      * @return string
      * @throws \think\admin\Exception
-     * @throws \think\db\exception\DataNotFoundException
-     * @throws \think\db\exception\DbException
-     * @throws \think\db\exception\ModelNotFoundException
      */
     public static function getAppid(): string
     {
@@ -157,9 +156,6 @@ class WechatService extends Service
      * 获取接口授权模式
      * @return string
      * @throws \think\admin\Exception
-     * @throws \think\db\exception\DataNotFoundException
-     * @throws \think\db\exception\DbException
-     * @throws \think\db\exception\ModelNotFoundException
      */
     public static function getType(): string
     {
@@ -172,9 +168,6 @@ class WechatService extends Service
      * 获取公众号配置参数
      * @return array
      * @throws \think\admin\Exception
-     * @throws \think\db\exception\DataNotFoundException
-     * @throws \think\db\exception\DbException
-     * @throws \think\db\exception\ModelNotFoundException
      */
     public static function getConfig(): array
     {
@@ -185,6 +178,7 @@ class WechatService extends Service
             'encodingaeskey' => sysconf('wechat.encodingaeskey'),
             'mch_id'         => sysconf('wechat.mch_id'),
             'mch_key'        => sysconf('wechat.mch_key'),
+            'mch_v3_key'     => sysconf('wechat.mch_v3_key'),
             'cache_path'     => syspath('runtime/wechat'),
         ];
         $local = LocalStorage::instance();
@@ -193,8 +187,10 @@ class WechatService extends Service
                 $options['ssl_p12'] = $local->path(sysconf('wechat.mch_ssl_p12'), true);
                 break;
             case 'pem':
-                $options['ssl_key'] = $local->path(sysconf('wechat.mch_ssl_key'), true);
                 $options['ssl_cer'] = $local->path(sysconf('wechat.mch_ssl_cer'), true);
+                $options['ssl_key'] = $local->path(sysconf('wechat.mch_ssl_key'), true);
+                $options['cert_public'] = $local->path(sysconf('wechat.mch_ssl_cer'), true);
+                $options['cert_private'] = $local->path(sysconf('wechat.mch_ssl_key'), true);
                 break;
         }
         return $options;
@@ -209,9 +205,6 @@ class WechatService extends Service
      * @throws \WeChat\Exceptions\InvalidResponseException
      * @throws \WeChat\Exceptions\LocalCacheException
      * @throws \think\admin\Exception
-     * @throws \think\db\exception\DataNotFoundException
-     * @throws \think\db\exception\DbException
-     * @throws \think\db\exception\ModelNotFoundException
      */
     public static function getWebOauthInfo(string $source, int $isfull = 0, bool $redirect = true): array
     {
@@ -275,9 +268,6 @@ class WechatService extends Service
      * @throws \WeChat\Exceptions\InvalidResponseException
      * @throws \WeChat\Exceptions\LocalCacheException
      * @throws \think\admin\Exception
-     * @throws \think\db\exception\DataNotFoundException
-     * @throws \think\db\exception\DbException
-     * @throws \think\db\exception\ModelNotFoundException
      */
     public static function getWebJssdkSign(?string $location = null): array
     {

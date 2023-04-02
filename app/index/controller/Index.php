@@ -3,7 +3,7 @@
 // +----------------------------------------------------------------------
 // | Static Plugin for ThinkAdmin
 // +----------------------------------------------------------------------
-// | 版权所有 2014~2023 Anyon <zoujingli@qq.com>
+// | 版权所有 2014~2023 ThinkAdmin [ thinkadmin.top ]
 // +----------------------------------------------------------------------
 // | 官方网站: https://thinkadmin.top
 // +----------------------------------------------------------------------
@@ -17,12 +17,11 @@
 namespace app\index\controller;
 
 use think\admin\Controller;
-use think\admin\extend\ToolsExtend;
 
 class Index extends Controller
 {
     public function index()
     {
-        ToolsExtend::removeEmptyDirectory(syspath('database'), true);
+        $this->redirect(sysuri('admin/login/index'));
     }
 }

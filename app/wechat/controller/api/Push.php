@@ -22,7 +22,7 @@ use think\admin\Controller;
 
 /**
  * 微信消息推送处理
- * Class Push
+ * @class Push
  * @package app\wechat\controller\api
  */
 class Push extends Controller
@@ -78,9 +78,9 @@ class Push extends Controller
 
     /**
      * 获取网络出口IP
-     * @return mixed
+     * @return string
      */
-    public function geoip()
+    public function geoip(): string
     {
         return $this->request->ip();
     }

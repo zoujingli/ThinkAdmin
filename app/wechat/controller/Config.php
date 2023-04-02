@@ -23,7 +23,7 @@ use think\admin\storage\LocalStorage;
 
 /**
  * 微信授权绑定
- * Class Config
+ * @class Config
  * @package app\wechat\controller
  */
 class Config extends Controller
@@ -32,9 +32,7 @@ class Config extends Controller
      * 微信授权配置
      * @auth true
      * @menu true
-     * @throws \think\db\exception\DataNotFoundException
-     * @throws \think\db\exception\DbException
-     * @throws \think\db\exception\ModelNotFoundException
+     * @throws \think\admin\Exception
      */
     public function options()
     {
@@ -90,10 +88,7 @@ class Config extends Controller
     /**
      * 微信第三方平台接口配置
      * @auth true
-     * @return void
-     * @throws \think\db\exception\DataNotFoundException
-     * @throws \think\db\exception\DbException
-     * @throws \think\db\exception\ModelNotFoundException
+     * @throws \think\admin\Exception
      */
     public function options_jsonrpc()
     {
@@ -121,9 +116,6 @@ class Config extends Controller
      * @auth true
      * @menu true
      * @throws \think\admin\Exception
-     * @throws \think\db\exception\DataNotFoundException
-     * @throws \think\db\exception\DbException
-     * @throws \think\db\exception\ModelNotFoundException
      */
     public function payment()
     {
@@ -155,9 +147,6 @@ class Config extends Controller
      * 微信支付修改
      * @auth true
      * @throws \think\admin\Exception
-     * @throws \think\db\exception\DataNotFoundException
-     * @throws \think\db\exception\DbException
-     * @throws \think\db\exception\ModelNotFoundException
      */
     public function payment_save()
     {

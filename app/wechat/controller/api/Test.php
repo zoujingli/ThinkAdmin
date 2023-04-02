@@ -25,7 +25,7 @@ use WeChat\Contracts\Tools;
 
 /**
  * 微信测试工具
- * Class Test
+ * @class Test
  * @package app\wechat\controller\api
  */
 class Test extends Controller
@@ -94,9 +94,6 @@ class Test extends Controller
      * @throws \WeChat\Exceptions\InvalidResponseException
      * @throws \WeChat\Exceptions\LocalCacheException
      * @throws \think\admin\Exception
-     * @throws \think\db\exception\DataNotFoundException
-     * @throws \think\db\exception\DbException
-     * @throws \think\db\exception\ModelNotFoundException
      */
     public function oauth()
     {
@@ -110,9 +107,6 @@ class Test extends Controller
      * @throws \WeChat\Exceptions\InvalidResponseException
      * @throws \WeChat\Exceptions\LocalCacheException
      * @throws \think\admin\Exception
-     * @throws \think\db\exception\DataNotFoundException
-     * @throws \think\db\exception\DbException
-     * @throws \think\db\exception\ModelNotFoundException
      */
     public function jssdk()
     {
@@ -163,12 +157,9 @@ class Test extends Controller
     /**
      * 微信JSAPI支付测试
      * @return string
+     * @throws \WeChat\Exceptions\InvalidResponseException
      * @throws \WeChat\Exceptions\LocalCacheException
      * @throws \think\admin\Exception
-     * @throws \think\db\exception\DataNotFoundException
-     * @throws \think\db\exception\DbException
-     * @throws \think\db\exception\ModelNotFoundException
-     * @throws \WeChat\Exceptions\InvalidResponseException
      */
     public function jsapi(): string
     {

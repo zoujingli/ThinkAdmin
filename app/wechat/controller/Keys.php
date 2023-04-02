@@ -25,7 +25,7 @@ use think\exception\HttpResponseException;
 
 /**
  * 回复规则管理
- * Class Keys
+ * @class Keys
  * @package app\wechat\controller
  */
 class Keys extends Controller

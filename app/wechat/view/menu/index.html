@@ -8,13 +8,13 @@
         <ul class='mobile-footer notselect'>
             <li class="parent-menu" style="{{getItemStyle(list)}}" ng-repeat="one in list">
                 <a ng-click="setActiveItem(one)" ng-class="{true:'active'}[one.active]">
-                    <i class="icon-sub" ng-if="one.sub_button.length>0"></i> <span ng-bind="one.name"></span>
+                    <i class="icon-sub" ng-if="one.sub_button.length>0"></i> <span ng-bind="one.name||'-'"></span>
                 </a>
                 <i class="close layui-bg-gray layui-icon" ng-click="delItem(one)">&#x1006;</i>
                 <div class="sub-menu text-center" ng-if="one.active||one.show">
                     <ul>
                         <li ng-repeat="two in one.sub_button">
-                            <a class="bottom-border" ng-click="setActiveItem(one,two)" ng-class="{true:'active'}[two.active]"><span ng-bind="two.name"></span></a>
+                            <a class="bottom-border" ng-click="setActiveItem(one,two)" ng-class="{true:'active'}[two.active]"><span ng-bind="two.name||'-'"></span></a>
                             <i class="close layui-bg-gray layui-icon" ng-click="delItem(one,two)">&#x1006;</i>
                         </li>
                         <li class="menu-add" ng-if="one.sub_button.length<5"><a ng-click="addItem(one.sub_button)"><i class="icon-add"></i></a></li>
@@ -152,16 +152,16 @@
                             if (one.sub_button[i].active) _two = one.sub_button[i];
                         }
                         one.sub_button = tmp;
-                        return $rootScope.setActiveItem(one, _two);
+                        return $rootScope.setActiveItem(one, _two, true);
                     }
                     for (var i in $rootScope.list) if (one !== $rootScope.list[i]) tmp.push($rootScope.list[i]);
                     $rootScope.list = tmp;
-                    if ($rootScope.list.length > 1) $rootScope.setActiveItem($rootScope.list[0])
+                    if ($rootScope.list.length > 1) $rootScope.setActiveItem($rootScope.list[0], null, false)
                 };
 
                 // 切换选择菜单
-                $rootScope.setActiveItem = function (one, two) {
-                    if (!vali.checkAllInput()) return;
+                $rootScope.setActiveItem = function (one, two, force) {
+                    if (!force && !vali.checkAllInput()) return;
                     $rootScope.list.forEach(function (item) {
                         item.show = item === one;
                         item.active = two ? false : (item === one)
@@ -171,30 +171,33 @@
                     });
                     $rootScope.item = two || one || {};
                     $rootScope.item.type = $rootScope.item.type || 'click';
-                    if ($rootScope.item.type === 'click') setTimeout(function () {
-                        layui.form.render('select'), ($rootScope.item.key = $('[lay-filter="key"]').val());
-                    }, 50);
+                    $rootScope.item.type === 'click' && syncActiveItem();
                 };
 
-                // 下拉列表处理
+                // 列表处理
                 $rootScope.$watch('item', function () {
-                    if ($rootScope.item.type === 'click') setTimeout(function () {
-                        layui.form.render('select'), ($rootScope.item.key = $('[lay-filter="key"]').val());
-                    }, 50)
+                    $rootScope.item.type === 'click' && syncActiveItem();
                 }, true);
-
-                layui.form.on('select(key)', function (data) {
-                    $rootScope.item.key = data.value;
-                });
 
                 // 提交数据
                 $rootScope.submit = function () {
                     if (!vali.checkAllInput()) return false;
                     $.form.load('{:url("push")}', {data: angular.toJson($rootScope.list)}, 'post');
                 }
+
+                // 同步选择项值
+                function syncActiveItem() {
+                    setTimeout(function () {
+                        layui.form.render('select');
+                        $rootScope.item.key = $('[lay-filter="key"]').val();
+                    }, 50);
+                }
+
+                layui.form.on('select(key)', function (data) {
+                    $rootScope.item.key = data.value;
+                });
             }
         });
     });
 </script>
-
 {/block}

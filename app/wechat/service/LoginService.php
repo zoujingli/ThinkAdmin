@@ -51,12 +51,13 @@ class LoginService
      * 生成授权二维码
      * @param string $code 请求编号
      * @param integer $mode 授权模式
+     * @param boolean|string $domain
      * @return array
      */
-    public static function qrcode(string $code, int $mode = 0): array
+    public static function qrcode(string $code, int $mode = 0, $domain = true): array
     {
         $data = ['auth' => self::gauth($code), 'mode' => $mode];
-        $image = MediaService::getQrcode(sysuri('wechat/api.login/oauth', $data, false, true));
+        $image = MediaService::getQrcode(sysuri('wechat/api.login/oauth', $data, false, $domain));
         return ['code' => $code, 'auth' => $data['auth'], 'image' => $image->getDataUri()];
     }
 
@@ -68,9 +69,6 @@ class LoginService
      * @throws \WeChat\Exceptions\InvalidResponseException
      * @throws \WeChat\Exceptions\LocalCacheException
      * @throws \think\admin\Exception
-     * @throws \think\db\exception\DataNotFoundException
-     * @throws \think\db\exception\DbException
-     * @throws \think\db\exception\ModelNotFoundException
      */
     public static function oauth(string $auth = '', int $mode = 0): bool
     {

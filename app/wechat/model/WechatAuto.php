@@ -20,7 +20,7 @@ use think\admin\Model;
 
 /**
  * 微信自动回复模型
- * Class WechatAuto
+ * @class WechatAuto
  * @package app\wechat\model
  */
 class WechatAuto extends Model

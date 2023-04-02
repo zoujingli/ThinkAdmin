@@ -21,7 +21,7 @@ use think\admin\Controller;
 
 /**
  * 微信扫码登录
- * Class Login
+ * @class Login
  * @package app\wechat\controller\api
  */
 class Login extends Controller
@@ -42,9 +42,6 @@ class Login extends Controller
      * @throws \WeChat\Exceptions\InvalidResponseException
      * @throws \WeChat\Exceptions\LocalCacheException
      * @throws \think\admin\Exception
-     * @throws \think\db\exception\DataNotFoundException
-     * @throws \think\db\exception\DbException
-     * @throws \think\db\exception\ModelNotFoundException
      */
     public function oauth()
     {

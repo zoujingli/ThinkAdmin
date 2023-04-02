@@ -24,7 +24,7 @@ use think\admin\service\SystemService;
 
 /**
  * 关注自动回复
- * Class Auto
+ * @class Auto
  * @package app\wechat\controller
  */
 class Auto extends Controller

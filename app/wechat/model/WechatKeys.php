@@ -20,7 +20,7 @@ use think\admin\Model;
 
 /**
  * 微信回复关键词模型
- * Class WechatKeys
+ * @class WechatKeys
  * @package app\wechat\model
  */
 class WechatKeys extends Model

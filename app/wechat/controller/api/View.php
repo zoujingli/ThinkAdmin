@@ -22,7 +22,7 @@ use think\admin\Controller;
 
 /**
  * 微信图文显示
- * Class View
+ * @class View
  * @package app\wechat\controller\api
  */
 class View extends Controller

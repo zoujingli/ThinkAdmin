@@ -23,7 +23,7 @@ use think\admin\Plugin;
 
 /**
  * 组件注册服务
- * Class Service
+ * @class Service
  * @package app\wechat
  */
 class Service extends Plugin

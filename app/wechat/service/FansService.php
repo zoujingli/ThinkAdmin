@@ -22,7 +22,7 @@ use think\admin\Service;
 
 /**
  * 微信粉丝信息
- * Class FansService
+ * @class FansService
  * @package app\wechat\service
  */
 class FansService extends Service

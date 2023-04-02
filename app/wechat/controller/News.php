@@ -25,7 +25,7 @@ use think\admin\service\AdminService;
 
 /**
  * 微信图文管理
- * Class News
+ * @class News
  * @package app\wechat\controller
  */
 class News extends Controller

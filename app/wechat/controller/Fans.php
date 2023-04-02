@@ -25,7 +25,7 @@ use think\exception\HttpResponseException;
 
 /**
  * 微信用户管理
- * Class Fans
+ * @class Fans
  * @package app\wechat\controller
  */
 class Fans extends Controller

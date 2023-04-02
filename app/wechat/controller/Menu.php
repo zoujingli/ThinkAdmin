@@ -22,7 +22,7 @@ use think\exception\HttpResponseException;
 
 /**
  * 微信菜单管理
- * Class Menu
+ * @class Menu
  * @package app\wechat\controller
  */
 class Menu extends Controller
@@ -54,6 +54,7 @@ class Menu extends Controller
      * 微信菜单管理
      * @auth true
      * @menu true
+     * @throws \think\admin\Exception
      * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\DbException
      * @throws \think\db\exception\ModelNotFoundException
