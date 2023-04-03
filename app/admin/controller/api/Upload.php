@@ -22,6 +22,7 @@ use think\admin\model\SystemFile;
 use think\admin\service\AdminService;
 use think\admin\Storage;
 use think\admin\storage\AliossStorage;
+use think\admin\storage\AlistStorage;
 use think\admin\storage\LocalStorage;
 use think\admin\storage\QiniuStorage;
 use think\admin\storage\TxcosStorage;
@@ -107,34 +108,47 @@ class Upload extends Controller
             $extr = ['id' => $file->id ?? 0, 'url' => $info['url'], 'key' => $info['key']];
             $this->success('文件已经上传', array_merge($data, $extr), 200);
         } elseif ('local' === $data['uptype']) {
-            $data['url'] = LocalStorage::instance()->url($data['key'], $safe, $name);
-            $data['server'] = LocalStorage::instance()->upload();
+            $local = LocalStorage::instance();
+            $data['url'] = $local->url($data['key'], $safe, $name);
+            $data['server'] = $local->upload();
         } elseif ('qiniu' === $data['uptype']) {
-            $data['url'] = QiniuStorage::instance()->url($data['key'], $safe, $name);
-            $data['token'] = QiniuStorage::instance()->buildUploadToken($data['key'], 3600, $name);
-            $data['server'] = QiniuStorage::instance()->upload();
+            $qiniu = QiniuStorage::instance();
+            $data['url'] = $qiniu->url($data['key'], $safe, $name);
+            $data['token'] = $qiniu->token($data['key'], 3600, $name);
+            $data['server'] = $qiniu->upload();
         } elseif ('alioss' === $data['uptype']) {
-            $token = AliossStorage::instance()->buildUploadToken($data['key'], 3600, $name);
+            $alioss = AliossStorage::instance();
+            $token = $alioss->token($data['key'], 3600, $name);
             $data['url'] = $token['siteurl'];
             $data['policy'] = $token['policy'];
             $data['signature'] = $token['signature'];
             $data['OSSAccessKeyId'] = $token['keyid'];
-            $data['server'] = AliossStorage::instance()->upload();
+            $data['server'] = $alioss->upload();
         } elseif ('txcos' === $data['uptype']) {
-            $token = TxcosStorage::instance()->buildUploadToken($data['key'], 3600, $name);
+            $txcos = TxcosStorage::instance();
+            $token = $txcos->token($data['key'], 3600, $name);
             $data['url'] = $token['siteurl'];
             $data['q-ak'] = $token['q-ak'];
             $data['policy'] = $token['policy'];
             $data['q-key-time'] = $token['q-key-time'];
             $data['q-signature'] = $token['q-signature'];
             $data['q-sign-algorithm'] = $token['q-sign-algorithm'];
-            $data['server'] = TxcosStorage::instance()->upload();
+            $data['server'] = $txcos->upload();
         } elseif ('upyun' === $data['uptype']) {
-            $token = UpyunStorage::instance()->buildUploadToken($data['key'], 3600, $name, input('hash', ''));
+            $upyun = UpyunStorage::instance();
+            $token = $upyun->token($data['key'], 3600, $name, input('hash', ''));
             $data['url'] = $token['siteurl'];
             $data['policy'] = $token['policy'];
+            $data['server'] = $upyun->upload();
             $data['authorization'] = $token['authorization'];
-            $data['server'] = UpyunStorage::instance()->upload();
+        } elseif ('alist' === $data['uptype']) {
+            $alist = AlistStorage::instance();
+            $data['url'] = $alist->url($data['key']);
+            $data['server'] = $alist->upload();
+            $data['filepath'] = $alist->real($data['key'], true);
+            $data['authorization'] = $alist->token();
+        } else {
+            $this->error('未知的存储引擎！');
         }
         $file->save(['xurl' => $data['url'], 'isfast' => 0, 'issafe' => $data['safe']]);
         $this->success('获取上传授权参数', array_merge($data, ['id' => $file->id ?? 0]), 404);

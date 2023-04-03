@@ -33,7 +33,7 @@
                 {
                     field: 'xurl', title: '查看文件', width: '7%', align: 'center', templet: function (d) {
                         if (typeof d.mime === 'string' && /^image\//.test(d.mime)) {
-                            return laytpl('<div class="headimg headimg-no headimg-ss margin-0" data-tips-hover data-tips-image="{{d.xurl}}" style="background-image:url({{d.xurl}})"></div>').render(d)
+                            return laytpl('<div><a target="_blank" data-tips-hover data-tips-image="{{d.xurl}}"><i class="layui-icon layui-icon-eye"></i></a></div>').render(d)
                         } else if (typeof d.mime === 'string' && /^(video|audio)\//.test(d.mime)) {
                             return laytpl('<div><a target="_blank" data-iframe="{{d.xurl}}" data-title="查看媒体">查看</a></div>').render(d);
                         } else {

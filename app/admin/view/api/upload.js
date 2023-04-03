@@ -114,13 +114,19 @@ define(['md5', 'notify'], function (SparkMD5, Notify, allowMime) {
                 file.xsafe = ret.data.safe, file.xpath = ret.data.key, file.xtype = ret.data.uptype;
                 if (parseInt(ret.code) === 404) {
                     var uploader = {};
+                    uploader.uptype = ret.data.uptype;
                     uploader.url = ret.data.server;
+                    uploader.head = {};
                     uploader.form = new FormData();
                     uploader.form.append('key', ret.data.key);
                     uploader.form.append('safe', ret.data.safe);
                     uploader.form.append('uptype', ret.data.uptype);
                     if (ret.data.uptype === 'qiniu') {
                         uploader.form.append('token', ret.data.token);
+                    } else if (ret.data.uptype === 'alist') {
+                        uploader.type = 'put';
+                        uploader.head['file-path'] = ret.data['filepath'];
+                        uploader.head['authorization'] = ret.data['authorization'];
                     } else if (ret.data.uptype === 'alioss') {
                         uploader.form.append('policy', ret.data['policy']);
                         uploader.form.append('signature', ret.data['signature']);
@@ -145,8 +151,8 @@ define(['md5', 'notify'], function (SparkMD5, Notify, allowMime) {
                         uploader.form.append('Content-Disposition', 'inline;filename=' + encodeURIComponent(file.name));
                     }
                     uploader.form.append('file', file, file.name), jQuery.ajax({
-                        xhrFields: {withCredentials: ret.data.uptype === 'local'},
-                        url: uploader.url, data: uploader.form, type: 'post', xhr: function (xhr) {
+                        xhrFields: {withCredentials: ret.data.uptype === 'local'}, headers: uploader.head,
+                        url: uploader.url, data: uploader.form, type: uploader.type || 'post', xhr: function (xhr) {
                             xhr = new XMLHttpRequest();
                             return xhr.upload.addEventListener('progress', function (event) {
                                 file.xtotal = event.total, file.xloaded = event.loaded || 0;
@@ -167,6 +173,8 @@ define(['md5', 'notify'], function (SparkMD5, Notify, allowMime) {
                             /*! 检查单个文件上传返回的结果 */
                             if (typeof ret === 'object' && ret.code < 1) {
                                 that.event('upload.error', {file: file}, file, ret.info || '上传失败');
+                            } else if (uploader.uptype === 'alist' && parseInt(ret.code) !== 200) {
+                                that.event('upload.error', {file: file}, file, ret.message || '上传失败');
                             } else {
                                 that.done(ret, file.index, file, done, '上传成功');
                             }

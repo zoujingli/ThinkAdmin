@@ -67,18 +67,19 @@
     {if !sysconf('storage.local_http_protocol')}{php}sysconf('storage.local_http_protocol','follow');{/php}{/if}
     <div class="layui-card-body layui-clear">
         <div class="layui-btn-group shadow-mini nowrap">
-            {foreach ['local'=>'本地服务器存储','qiniu'=>'七牛云对象存储','upyun'=>'又拍云USS存储','alioss'=>'阿里云OSS存储','txcos'=>'腾讯云COS存储'] as $k => $v}{if sysconf('storage.type') eq $k}
+            {foreach $files as $k => $v}{if sysconf('storage.type') eq $k}
             {if auth('storage')}<a data-title="配置{$v}" data-modal="{:url('storage')}?type={$k}" class="layui-btn layui-btn-sm layui-btn-active">{$v}</a>{else}<a class="layui-btn layui-btn-sm layui-btn-active">{$v}</a>{/if}
             {else}
             {if auth('storage')}<a data-title="配置{$v}" data-modal="{:url('storage')}?type={$k}" class="layui-btn layui-btn-sm layui-btn-primary">{$v}</a>{else}<a class="layui-btn layui-btn-sm layui-btn-primary">{$v}</a>{/if}
             {/if}{/foreach}
         </div>
         <div class="margin-top-20 nowrap full-width pull-left">
-            <p><b>本地服务器存储</b>：文件直接上传到本地服务器的 `static/upload` 目录，不支持大文件上传，占用服务器磁盘空间，访问时消耗服务器带宽流量。</p>
-            <p><b>七牛云对象存储</b>：文件直接上传到七牛云存储空间，支持大文件上传，不占用服务器空间及服务器带宽流量，支持 CDN 加速访问，访问量大时推荐使用。</p>
-            <p><b>又拍云USS存储</b>：文件直接上传到又拍云 USS 存储空间，支持大文件上传，不占用服务器空间及服务器带宽流量，支持 CDN 加速访问，访问量大时推荐使用。</p>
-            <p><b>阿里云OSS存储</b>：文件直接上传到阿里云 OSS 存储空间，支持大文件上传，不占用服务器空间及服务器带宽流量，支持 CDN 加速访问，访问量大时推荐使用。</p>
-            <p><b>腾讯云COS存储</b>：文件直接上传到腾讯云 COS 存储空间，支持大文件上传，不占用服务器空间及服务器带宽流量，支持 CDN 加速访问，访问量大时推荐使用。</p>
+            <p><b>本地服务器存储</b>：文件上传到本地服务器的 `static/upload` 目录，不支持大文件上传，占用服务器磁盘空间，访问时消耗服务器带宽流量。</p>
+            <p><b>自建<code>Alist</code>存储</b>：文件上传到 Alist 存储的服务器或云存储空间，根据服务配置可支持大文件上传，不占用本身服务器空间及服务器带宽流量。</p>
+            <p><b>七牛云对象存储</b>：文件上传到七牛云存储空间，支持大文件上传，不占用服务器空间及服务器带宽流量，支持 CDN 加速访问，访问量大时推荐使用。</p>
+            <p><b>又拍云<code>USS</code>存储</b>：文件上传到又拍云 USS 存储空间，支持大文件上传，不占用服务器空间及服务器带宽流量，支持 CDN 加速访问，访问量大时推荐使用。</p>
+            <p><b>阿里云<code>OSS</code>存储</b>：文件上传到阿里云 OSS 存储空间，支持大文件上传，不占用服务器空间及服务器带宽流量，支持 CDN 加速访问，访问量大时推荐使用。</p>
+            <p><b>腾讯云<code>COS</code>存储</b>：文件上传到腾讯云 COS 存储空间，支持大文件上传，不占用服务器空间及服务器带宽流量，支持 CDN 加速访问，访问量大时推荐使用。</p>
         </div>
     </div>
 </div>
@@ -113,7 +114,7 @@
             <div class="help-block">管理程序版本，将显示在后台左上角标题。</div>
         </div>
         <div class="layui-form-item">
-            <div class="help-label"><b>公网备案号</b>Baian</div>
+            <div class="help-label"><b>公网备案号</b>Beian</div>
             <label class="relative block">
                 <input readonly value="{:sysconf('beian')?:'-'}" class="layui-input layui-bg-gray">
                 <a data-copy="{:sysconf('beian')}" class="layui-icon layui-icon-release input-right-icon"></a>

@@ -21,6 +21,7 @@ use think\admin\service\AdminService;
 use think\admin\service\ModuleService;
 use think\admin\service\RuntimeService;
 use think\admin\service\SystemService;
+use think\admin\Storage;
 use think\admin\storage\AliossStorage;
 use think\admin\storage\QiniuStorage;
 use think\admin\storage\TxcosStorage;
@@ -53,6 +54,7 @@ class Config extends Controller
     public function index()
     {
         $this->title = '系统参数配置';
+        $this->files = Storage::types();
         $this->super = AdminService::isSuper();
         $this->version = ModuleService::getVersion();
         $this->fetch();
