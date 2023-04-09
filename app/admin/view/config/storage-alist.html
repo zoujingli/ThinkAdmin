@@ -39,12 +39,12 @@
         </div>
 
         <div class="layui-form-item">
-            <label class="layui-form-label" for="storage.alist_userpath">
+            <label class="layui-form-label" for="storage.alist_savepath">
                 <b class="color-green">存储目录</b><br><span class="nowrap color-desc">Directory</span>
             </label>
             <div class="layui-input-block">
-                <input id="storage.alist_userpath" type="text" name="storage.alist_userpath" value="{:sysconf('storage.alist_userpath')}" required vali-name="存储目录" placeholder="请输入 Alist 存储存储目录" class="layui-input">
-                <p class="help-block">请填写 Alist 存储目录 ( 如：/uploads )，填写 / 表示根目录（ 需要拥有读写权限 ）</p>
+                <input id="storage.alist_savepath" type="text" name="storage.alist_savepath" value="{:sysconf('storage.alist_savepath')}" required vali-name="存储目录" placeholder="请输入 Alist 存储目录" class="layui-input">
+                <p class="help-block">请填写 Alist 用户基本目录的相对存储位置，填写 / 表示用户基本目录（ 需要拥有读写权限 ）</p>
             </div>
         </div>
 

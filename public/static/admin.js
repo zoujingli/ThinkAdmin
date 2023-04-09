@@ -50,6 +50,7 @@ require.config({
         'echarts': ['plugs/echarts/echarts.min'],
         'ckeditor4': ['plugs/ckeditor4/ckeditor'],
         'ckeditor5': ['plugs/ckeditor5/ckeditor'],
+        'artplayer': ['plugs/jquery/artplayer.min'],
         'filesaver': ['plugs/jquery/filesaver.min'],
         'websocket': ['plugs/socket/websocket'],
         'compressor': ['plugs/jquery/compressor.min'],
@@ -906,6 +907,25 @@ $(function () {
                 typeof dset.refresh !== 'undefined' && $.layTable.reload(dset.tableId || true);
             }, undefined, dset.full !== undefined));
         })
+    });
+
+    /*! 注册 data-video-player 事件行为 */
+    onEvent('click', '[data-video-player]', function () {
+        let idx = $.msg.loading(), url = this.dataset.videoPlayer, name = this.dataset.title || '媒体播放器', payer;
+        require(['artplayer'], function () {
+            layer.open({
+                title: name, type: 1, fixed: true, maxmin: false, content: '<div class="data-play-video" style="width:800px;height:450px"></div>',
+                end: () => payer.destroy(), success: ($ele) => {
+                    payer = new Artplayer({
+                        url: url, container: $ele.selector + ' .data-play-video', controls: [
+                            {html: '全屏播放', position: 'right', click: () => payer.fullscreen = !payer.fullscreen},
+                        ],
+                    });
+                    payer.on('ready', () => (payer.autoHeight = payer.autoSize = true) && payer.play());
+                    $.msg.close(idx);
+                }
+            });
+        });
     });
 
     /*! 注册 data-icon 事件行为 */
