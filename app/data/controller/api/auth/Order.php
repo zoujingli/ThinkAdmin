@@ -106,7 +106,8 @@ class Order extends Auth
             // 限制购买数量
             if (isset($goodsInfo['limit_max_num']) && $goodsInfo['limit_max_num'] > 0) {
                 $map = [['a.uuid', '=', $this->uuid], ['a.status', 'in', [2, 3, 4, 5]], ['b.goods_code', '=', $goodsInfo['code']]];
-                $buys = ShopOrder::mk()->alias('a')->join('store_order_item b', 'a.order_no=b.order_no')->where($map)->sum('b.stock_sales');
+                $table = ShopOrderItem::mk()->getTable();
+                $buys = ShopOrder::mk()->alias('a')->join("{$table} b", 'a.order_no=b.order_no')->where($map)->sum('b.stock_sales');
                 if ($buys + $count > $goodsInfo['limit_max_num']) $this->error('超过限购数量');
             }
             // 限制购买身份
