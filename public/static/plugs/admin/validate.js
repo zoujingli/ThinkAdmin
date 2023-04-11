@@ -78,14 +78,16 @@ define(function () {
         this.hideError = function (el) {
             return this.insertError($(el).removeClass('validate-error')).removeClass('layui-anim-fadein').css({width: '30px'}).html('');
         };
-        this.insertError = function (el) {
-            return (function ($el) {
-                return $el.data('vali-tags').css({top: $el.position().top + 'px'});
-            })($(el), $(el).data('vali-tags') || function ($el, $next) {
-                $el.data('vali-tags', $('<span class="layui-anim notselect" style="display:block;position:absolute;text-align:center;color:#c44;font-size:12px;z-index:2"></span>').css({
-                    lineHeight: el.nodeName === 'TEXTAREA' ? '32px' : $el.css('height'), right: (($next ? $next.width() + parseFloat($next.css('right') || 0) : 0) + 10) + 'px',
-                }).insertAfter(el));
-            }($(el), $(el).nextAll('.input-right-icon')));
+        this.insertError = function ($el) {
+            return (function ($icon) {
+                return $el.data('vali-tags').css({
+                    top: $el.position().top + 'px', right: (($icon ? $icon.width() + parseFloat($icon.css('right') || 0) : 0) + 10) + 'px',
+                    paddingTop: $el.css('marginTop'), lineHeight: ($el.get(0).nodeName || '') === 'TEXTAREA' ? '32px' : $el.css('height'),
+                });
+            })($el.nextAll('.input-right-icon'), $el.data('vali-tags') || function () {
+                let css = 'display:block;position:absolute;text-align:center;color:#c44;font-size:12px;z-index:2';
+                $el.data('vali-tags', $('<span class="layui-anim notselect" style="' + css + '"></span>').insertAfter($el));
+            }());
         };
         /*! 预埋异常标签*/
         this.form.find(this.tags).each(function (i, el) {
