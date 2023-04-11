@@ -16,12 +16,14 @@
 
 namespace app\index\controller;
 
+use app\data\model\ShopOrderItem;
 use think\admin\Controller;
 
 class Index extends Controller
 {
     public function index()
     {
-        $this->redirect(sysuri('admin/login/index'));
+        echo ShopOrderItem::mk()->alias('a')->getTable();
+        //$this->redirect(sysuri('admin/login/index'));
     }
 }
