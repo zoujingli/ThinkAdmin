@@ -16,7 +16,6 @@
 
 namespace app\admin\controller;
 
-use Exception;
 use Ip2Region;
 use think\admin\Controller;
 use think\admin\helper\QueryHelper;
@@ -75,7 +74,7 @@ class Oplog extends Controller
             $this->success('日志清理成功！');
         } catch (HttpResponseException $exception) {
             throw $exception;
-        } catch (Exception $exception) {
+        } catch (\Exception $exception) {
             trace_file($exception);
             $this->error("日志清理失败，{$exception->getMessage()}");
         }

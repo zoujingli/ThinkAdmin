@@ -16,8 +16,6 @@
 
 namespace app\admin\controller\api;
 
-use Error;
-use Exception;
 use think\admin\Controller;
 use think\admin\service\AdminService;
 use think\admin\service\QueueService;
@@ -48,7 +46,7 @@ class Queue extends Controller
             }
         } catch (HttpResponseException $exception) {
             throw $exception;
-        } catch (Exception $exception) {
+        } catch (\Exception $exception) {
             trace_file($exception);
             $this->error($exception->getMessage());
         } else {
@@ -74,7 +72,7 @@ class Queue extends Controller
             }
         } catch (HttpResponseException $exception) {
             throw $exception;
-        } catch (Exception $exception) {
+        } catch (\Exception $exception) {
             trace_file($exception);
             $this->error($exception->getMessage());
         } else {
@@ -95,7 +93,7 @@ class Queue extends Controller
             } else {
                 echo "<span class='color-red pointer' data-tips-text='{$message}'>未启动</span>";
             }
-        } catch (Error|Exception $exception) {
+        } catch (\Error|\Exception $exception) {
             echo "<span class='color-red pointer' data-tips-text='{$exception->getMessage()}'>异 常</span>";
         } else {
             echo "<span class='color-red pointer' data-tips-text='只有超级管理员才能操作！'>无权限</span>";

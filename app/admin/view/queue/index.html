@@ -86,9 +86,10 @@
                             '<span class="pull-left layui-badge layui-badge-middle layui-bg-green">完成</span>',
                             '<span class="pull-left layui-badge layui-badge-middle layui-bg-red">失败</span>',
                         ][d.status] || '') + '执行时间：';
-                        d.enter_time = d.enter_time || '', d.outer_time = d.outer_time || '0.0000';
+                        d.enter_time = d.enter_time || '';
+                        d.outer_time = d.outer_time || '0.0000';
                         if (d.enter_time.length > 12) {
-                            d.html += d.enter_time.substring(12) + '<span class="color-desc"> ( 耗时 ' + d.outer_time + ' ) </span>';
+                            d.html += d.enter_time.substring(12) + '<span class="color-desc"> ( ' + d.outer_time + ' ) </span>';
                             d.html += ' 已执行 <b class="color-blue">' + (d.attempts || 0) + '</b> 次';
                         } else {
                             d.html += '<span class="color-desc">任务未执行</span>'

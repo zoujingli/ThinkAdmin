@@ -24,11 +24,7 @@
                 {field: 'id', title: 'ID', width: 80, align: 'center', sort: true},
                 {field: 'name', title: '文件名称', width: '12%', align: 'center'},
                 {field: 'hash', title: '文件哈希', width: '15%', align: 'center', templet: '<div><code>{{d.hash}}</code></div>'},
-                {
-                    field: 'size', title: '文件大小', align: 'center', width: '7%', sort: true, templet: function (d) {
-                        return $.formatFileSize(d.size)
-                    }
-                },
+                {field: 'size', title: '文件大小', align: 'center', width: '7%', sort: true, templet: '<div>{{-$.formatFileSize(d.size)}}</div>'},
                 {field: 'xext', title: '文件后缀', align: 'center', width: '7%', sort: true},
                 {
                     field: 'xurl', title: '查看文件', width: '7%', align: 'center', templet: function (d) {
@@ -51,7 +47,7 @@
                 },
                 {field: 'ctype', title: '存储方式', align: 'center', width: '10%'},
                 {field: 'create_at', title: '上传时间', align: 'center', width: '15%', sort: true},
-                {toolbar: '#toolbar', title: '操作面板', align: 'center', minWidth: 140, fixed: 'right'}
+                {toolbar: '#toolbar', title: '操作面板', align: 'center', minWidth: 150, fixed: 'right'}
             ]]
         });
     });

@@ -16,7 +16,6 @@
 
 namespace app\admin\controller;
 
-use Exception;
 use think\admin\Controller;
 use think\admin\helper\QueryHelper;
 use think\admin\model\SystemQueue;
@@ -90,7 +89,7 @@ class Queue extends Controller
             $this->success('任务重置成功！', $queue->code);
         } catch (HttpResponseException $exception) {
             throw $exception;
-        } catch (Exception $exception) {
+        } catch (\Exception $exception) {
             trace_file($exception);
             $this->error($exception->getMessage());
         }

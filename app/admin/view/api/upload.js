@@ -127,6 +127,7 @@ define(['md5', 'notify'], function (SparkMD5, Notify, allowMime) {
                         uploader.type = 'put';
                         uploader.head['file-path'] = ret.data['filepath'];
                         uploader.head['authorization'] = ret.data['authorization'];
+                        uploader.form = new FormData();
                     } else if (ret.data.uptype === 'alioss') {
                         uploader.form.append('policy', ret.data['policy']);
                         uploader.form.append('signature', ret.data['signature']);
