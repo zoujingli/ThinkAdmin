@@ -73,7 +73,7 @@ class News extends Controller
     public function add()
     {
         if ($this->request->isGet()) {
-            $this->title = '新建图文';
+            $this->title = '新建微信图文';
             $this->fetch('form');
         } else {
             $update = [
@@ -103,14 +103,14 @@ class News extends Controller
             if ($this->request->get('output') === 'json') {
                 $this->success('获取数据成功！', MediaService::news($this->id));
             } else {
-                $this->title = '编辑图文';
+                $this->title = '编辑微信图文';
                 $this->fetch('form');
             }
         } else {
             $ids = $this->_buildArticle($this->request->post('data', []));
             [$map, $data] = [['id' => $this->id], ['article_id' => $ids]];
-            if (WechatNews::mk()->where($map)->update($data)) {
-                $this->success('更新成功！', 'javascript:history.back()');
+            if (WechatNews::mk()->where($map)->update($data) !== false) {
+                $this->success('图文更新成功！', 'javascript:history.back()');
             } else {
                 $this->error('更新失败，请稍候再试！');
             }
@@ -136,7 +136,7 @@ class News extends Controller
         $ids = [];
         foreach ($data as $vo) {
             if (empty($vo['digest'])) {
-                $vo['digest'] = mb_substr(strip_tags(str_replace(["\s", '　'], '', $vo['content'])), 0, 120);
+                $vo['digest'] = mb_substr(strip_tags(preg_replace('#(\s+|　)#', '', $vo['content'])), 0, 120);
             }
             $vo['create_at'] = date('Y-m-d H:i:s');
             if (empty($vo['id'])) {

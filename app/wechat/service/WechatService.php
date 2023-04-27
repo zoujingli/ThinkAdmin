@@ -20,6 +20,7 @@ use think\admin\Exception;
 use think\admin\extend\JsonRpcClient;
 use think\admin\Library;
 use think\admin\Service;
+use think\admin\Storage;
 use think\admin\storage\LocalStorage;
 use think\exception\HttpResponseException;
 
@@ -181,17 +182,53 @@ class WechatService extends Service
             'mch_v3_key'     => sysconf('wechat.mch_v3_key'),
             'cache_path'     => syspath('runtime/wechat'),
         ];
+        if (in_array($sslType = strtolower(sysconf('wechat.mch_ssl_type')), ['p12', 'pem'])) {
+            [$local = LocalStorage::instance(), $options = static::withWxpayCert($options)];
+            if ((empty($options['ssl_cer']) || empty($options['ssl_key'])) && $sslType === 'p12') {
+                if (openssl_pkcs12_read($local->get(sysconf('wechat.mch_ssl_p12'), true), $certs, $options['mch_id'])) {
+                    sysconf('wechat.mch_ssl_cer', $local->set(Storage::name($certs['pkey'], 'pem'), $certs['pkey'], true)['url']);
+                    sysconf('wechat.mch_ssl_key', $local->set(Storage::name($certs['cert'], 'pem'), $certs['cert'], true)['url']);
+                    static::withWxpayCert($options);
+                } else {
+                    throw new Exception('商户账号与 P12 证书不匹配！');
+                }
+            }
+        }
+        return $options;
+    }
+
+    /**
+     * 处理支付证书配置
+     * @param array $options
+     * @return array
+     * @throws \think\admin\Exception
+     */
+    private static function withWxpayCert(array &$options): array
+    {
+        // 文本模式主要是为了解决分布式部署
         $local = LocalStorage::instance();
-        switch (strtolower(sysconf('wechat.mch_ssl_type'))) {
-            case 'p12':
-                $options['ssl_p12'] = $local->path(sysconf('wechat.mch_ssl_p12'), true);
-                break;
-            case 'pem':
-                $options['ssl_cer'] = $local->path(sysconf('wechat.mch_ssl_cer'), true);
-                $options['ssl_key'] = $local->path(sysconf('wechat.mch_ssl_key'), true);
-                $options['cert_public'] = $local->path(sysconf('wechat.mch_ssl_cer'), true);
-                $options['cert_private'] = $local->path(sysconf('wechat.mch_ssl_key'), true);
-                break;
+        if (!empty($data = sysdata('plugin.wechat.payment.config'))) {
+            if (empty($data['ssl_key_text']) || empty($data['ssl_cer_text'])) {
+                throw new Exception('商户证书不能为空！');
+            }
+            $name1 = Storage::name($data['ssl_cer_text'], 'pem');
+            $name2 = Storage::name($data['ssl_key_text'], 'pem');
+            if ($local->has($name1, true) && $local->has($name2, true)) {
+                $sslCer = $local->set($name1, $data['ssl_cer_text'], true)['file'];
+                $sslKey = $local->set($name2, $data['ssl_key_text'], true)['file'];
+            } else {
+                $sslCer = $local->path($name1, true);
+                $sslKey = $local->path($name2, true);
+            }
+            $options['ssl_cer'] = $sslCer;
+            $options['ssl_key'] = $sslKey;
+            $options['cert_public'] = $sslCer;
+            $options['cert_private'] = $sslKey;
+        } else {
+            $sslCer = $local->path(sysconf('wechat.mch_ssl_cer'), true);
+            $sslKey = $local->path(sysconf('wechat.mch_ssl_key'), true);
+            if (is_file($sslCer)) $options['cert_public'] = $options['ssl_cer'] = $sslCer;
+            if (is_file($sslKey)) $options['cert_private'] = $options['ssl_key'] = $sslKey;
         }
         return $options;
     }

@@ -71,7 +71,7 @@
                     <div class="layui-form-item margin-top-20" ng-if="item.type==='view'">
                         <label class="layui-form-label">跳转链接</label>
                         <div class="layui-input-block">
-                            <textarea required pattern="url" class="layui-textarea" vali-name="跳转链接" ng-model="item.url" placeholder="请输入跳转链接"></textarea>
+                            <input type="text" required vali-name="跳转链接" class="layui-input" ng-model="item.url" placeholder="请输入跳转链接">
                         </div>
                     </div>
                     <div ng-if="item.type==='miniprogram'">
