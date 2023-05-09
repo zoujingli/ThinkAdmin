@@ -41,8 +41,8 @@ define(function () {
             if (sortField.length > 0 && sortType.length > 0) {
                 location += (location.indexOf('?') > -1 ? '&' : '?') + '_order_=' + sortType + '&_field_=' + sortField;
             }
-            that.load(location, form.serialize(), method).then(function (ret) {
-                that.export(done.call(that, ret, []), name);
+            that.load(location, form.serialize(), method).then(function (data) {
+                that.export(done.call(that, data, []), name);
             }).fail(function (ret) {
                 $.msg.tips(ret || '文件导出失败');
             });
@@ -52,7 +52,7 @@ define(function () {
     /*! 加载导出的文档 */
     Excel.prototype.load = function (url, data, method) {
         return (function (defer, lists, loaded) {
-            loaded = $.msg.loading("正在加载 <span data-upload-count>0.00</span>%");
+            loaded = $.msg.loading('正在加载 <span data-upload-count>0.00</span>%');
             return (lists = []), LoadNextPage(1, 1), defer;
 
             function LoadNextPage(curPage, maxPage, urlParams) {
@@ -72,6 +72,51 @@ define(function () {
             }
         })($.Deferred());
     };
+
+    /**
+     * 设置表格导出样式
+     */
+    Excel.prototype.withStyle = function (data, colsWidth, defaultWidth, defaultHeight) {
+        // 自动计算列序
+        var idx, colN = 0, defaC = {}, lastCol;
+        for (idx in data[0]) defaC[lastCol = layui.excel.numToTitle(++colN)] = defaultWidth || 99;
+        defaC[lastCol] = 160;
+
+        // 设置表头样式
+        layui.excel.setExportCellStyle(data, 'A1:' + lastCol + '1', {
+            s: {
+                font: {sz: 12, bold: true, color: {rgb: "FFFFFF"}, name: '微软雅黑', shadow: true},
+                fill: {bgColor: {indexed: 64}, fgColor: {rgb: '5FB878'}},
+                alignment: {vertical: 'center', horizontal: 'center'}
+            }
+        });
+
+        // 设置内容样式
+        (function (style1, style2) {
+            layui.excel.setExportCellStyle(data, 'A2:' + lastCol + data.length, {s: style1}, function (rawCell, newCell, row, config, curRow) {
+                typeof rawCell !== 'object' && (rawCell = {v: rawCell});
+                rawCell.s = Object.assign({}, style2, rawCell.s || {});
+                return (curRow % 2 === 0) ? newCell : rawCell;
+            });
+        })({
+            font: {sz: 10, shadow: true, name: '微软雅黑'},
+            fill: {bgColor: {indexed: 64}, fgColor: {rgb: "EAEAEA"}},
+            alignment: {vertical: 'center', horizontal: 'center'}
+        }, {
+            font: {sz: 10, shadow: true, name: '微软雅黑'},
+            fill: {bgColor: {indexed: 64}, fgColor: {rgb: "FFFFFF"}},
+            alignment: {vertical: 'center', horizontal: 'center'}
+        });
+
+        // 设置表格行宽高，需要设置最后的行或列宽高，否则部分不生效 ？？？
+        var rowsC = {1: 33}, colsC = Object.assign({}, defaC, {A: 60}, colsWidth || {});
+        rowsC[data.length] = defaultHeight || 28, this.options.extend = {
+            '!cols': layui.excel.makeColConfig(colsC, defaultWidth || 99),
+            '!rows': layui.excel.makeRowConfig(rowsC, defaultHeight || 28),
+        };
+
+        return data;
+    }
 
     /*! 直接推送表格内容 */
     Excel.prototype.push = function (url, sheet, cols, filter) {
