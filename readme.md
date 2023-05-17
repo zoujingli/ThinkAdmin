@@ -8,9 +8,9 @@
 
 ### 项目介绍
 
-**ThinkAdmin** 是一款遵循 **MIT** 协议开源的快速开发框架，基于最新版本 **ThinkPHP6** 的极简后台管理系统，在使用 **ThinkAdmin** 前请认真阅读[《免责声明》](https://thinkadmin.top/disclaimer)并同意该声明。
+**ThinkAdmin** 是一款遵循 **MIT** 协议开源的快速开发框架，基于最新版本 **ThinkPHP6** 的极简后台管理系统，在使用 **ThinkAdmin** 前请认真阅读[《免责声明》](https://doc.thinkadmin.top/disclaimer)并同意该声明。
 
-当前 **ThinkAdmin** 的最新版本为[ **v6.1** ](https://gitee.com/zoujingli/ThinkAdmin/tree/v6.1)，从这个版本开始正式进入插件时代，基础组件及扩展插件统一使用 **Composer** 管理。**ThinkAdmin** 与传统 **ThinkPHP** 多应用模式无差别，用户可以自行开发自己的模块，此次升级可完美兼容 **ThinkAdmin v6.0** 应用，原 **ThinkAdmin v6.0** 只需安装 **ThinkPlugsAdmin** 组件即可升级到 **v6.1** 的插件模式。
+当前 **ThinkAdmin** 的最新版本为[ **v6.1** ](https://gitee.com/zoujingli/ThinkAdmin/tree/v6.1)，从这个版本开始正式进入插件时代，提供类似 **PaaS** 的组件升级更新服务，也可以本地化定制开发，基础组件及扩展插件统一使用 **Composer** 管理。**ThinkAdmin** 与传统 **ThinkPHP** 多应用模式无差别，用户可以自行开发自己的模块，此次升级可完美兼容 **ThinkAdmin v6.0** 应用，原 **ThinkAdmin v6.0** 只需安装 **ThinkPlugsAdmin** 组件即可升级到 **v6.1** 的插件模式。想要了解更多 **ThinkAdmin** 插件生态请阅读 [《ThinkAdmin 插件生态》](https://gitee.com/zoujingli/ThinkAdmin/blob/v6.1/plugin.md)
 
 **[查看 ThinkAdmin v6.1 详细介绍请切换至 v6.1 分支](https://gitee.com/zoujingli/ThinkAdmin/tree/v6.1)！！**
 
@@ -25,7 +25,7 @@
 #### 注意事项
 
 * **ThinkAdmin** 是基于国内最流行的 **ThinkPHP6** 框架开发，要求在不低于 **PHP 7.2.5** 的版本上运行，如果使用低版本的 **PHP** 可能会影响 **Composer** 依赖组件的安装，或将存在一定的安全隐患；
-* 运行环境必需开启 **PATHINFO** 并将对应的 **rewrite** 规则配置到站点才能访问，系统已不再支持 **ThinkPHP** 的 **URL** 兼容模式运行 ( 源于如何优雅地展示 )，可以阅读 **ThinkAdmin** 的文档[安装部署](https://thinkadmin.top/install)章节；
+* 运行环境必需开启 **PATHINFO** 并将对应的 **rewrite** 规则配置到站点才能访问，系统已不再支持 **ThinkPHP** 的 **URL** 兼容模式运行 ( 源于如何优雅地展示 )，可以阅读 **ThinkAdmin** 的文档[安装部署](https://doc.thinkadmin.top/install)章节；
 * 代码仓库下载的文件不包含 **Composer** 组件的 **vendor** 目录，下载后需要执行 **composer install** 安装依赖组件，同时会触发执行 **php think migrate:run** 安装数据库 **Phinx** 脚本，如需切换数据库只需要先配置再执行指令即可完成初始化安装数据；
 * 为保持系统可持续在线升级，建议不要在 **app/admin**、**app/wechat** 、**public/static** 这三个目录创建或修改文件，可以自行创建其他模块再编写自己的业务代码，自定义样式及脚本可以放置在 **public/static/extra** 目录里面。
 * 系统是基于严格类型 **PHP** 新特性开发，务必使用专业的 **IDE** ( 如：**PhpStorm**、**NetBeans**、**VsCode**、**Eclipse for PHP** 等 ) 进行项目开发以达到更好的体验与更高的效率！
@@ -91,7 +91,7 @@ php think run --host 127.0.0.1
 
 本地开发请使用 `php think run` 运行服务，访问 `http://127.0.0.1:8000` 即可进入项目。
 
-官方地址及开发指南：https://thinkadmin.top ，如果实在无法解决问题，可以加入官方群免费交流。
+官方地址及开发指南：https://doc.thinkadmin.top ，如果实在无法解决问题，可以加入官方群免费交流。
 
 **1.官方QQ交流群：** 513350915
 
@@ -99,7 +99,7 @@ php think run --host 127.0.0.1
 
 **3.官方微信交流群**
 
-<img src="https://thinkadmin.top/static/img/wx.png"  width="250">
+<img alt="" src="https://doc.thinkadmin.top/static/img/wx.png" width="250">
 
 ## 注解权限
 
