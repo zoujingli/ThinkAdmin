@@ -128,7 +128,7 @@ class Transfer extends Auth
             'total' => [
                 '锁定' => $locks,
                 '可提' => $total - $count,
-                '上月' => DataUserTransfer::mk()->where($map)->whereLike('date', date("Y-m-%", strtotime('-1 month')))->sum('amount'),
+                '上月' => DataUserTransfer::mk()->where($map)->whereLike('date', date("Y-m-%", strtotime('last day of -1 month')))->sum('amount'),
                 '本月' => DataUserTransfer::mk()->where($map)->whereLike('date', date("Y-m-%"))->sum('amount'),
                 '全年' => DataUserTransfer::mk()->where($map)->whereLike('date', date("Y-%"))->sum('amount'),
             ],
