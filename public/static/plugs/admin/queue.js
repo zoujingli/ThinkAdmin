@@ -14,7 +14,7 @@
 
 define(function () {
 
-    var template = '<div class="padding-30 padding-bottom-0" data-queue-load="{{d.code}}"><div class="layui-elip notselect nowrap" data-message-title><b class="color-desc">...</b></div><div class="margin-top-15 layui-progress layui-progress-big" lay-showPercent="yes"><div class="layui-progress-bar transition" lay-percent="0.00%"></div></div>' + '<div class="margin-top-15"><code class="layui-textarea layui-bg-black border-0" style="resize:none;overflow:hidden;height:190px"></code></div></div>';
+    let template = '<div class="padding-30 padding-bottom-0" data-queue-load="{{d.code}}"><div class="layui-elip notselect nowrap" data-message-title><b class="color-desc">...</b></div><div class="margin-top-15 layui-progress layui-progress-big" lay-showPercent="yes"><div class="layui-progress-bar transition" lay-percent="0.00%"></div></div>' + '<div class="margin-top-15"><code class="layui-textarea layui-bg-black border-0" style="resize:none;overflow:hidden;height:190px"></code></div></div>';
 
     return Queue;
 
@@ -30,7 +30,7 @@ define(function () {
     }
 
     function Progress($elem, code, queue, doScript) {
-        var that = this;
+        let that = this;
 
         this.$box = $elem.find('[data-queue-load=' + code + ']');
         if (queue.doAjax === false || this.$box.length < 1) return false;
@@ -41,7 +41,7 @@ define(function () {
 
         // 设置数据缓存
         this.SetCache = function (code, index, value) {
-            var ckey = code + '_' + index, ctype = 'admin-queue-script';
+            let ckey = code + '_' + index, ctype = 'admin-queue-script';
             return value !== undefined ? layui.data(ctype, {key: ckey, value: value}) : layui.data(ctype)[ckey] || 0;
         };
 
@@ -72,9 +72,9 @@ define(function () {
             if (queue.doAjax === false || that.$box.length < 1) return false;
             $.form.load(tapiRoot + '/api.queue/progress', {code: code}, 'post', function (ret) {
                 if (ret.code) {
-                    var lines = [];
-                    for (var idx in ret.data.history) {
-                        var line = ret.data.history[idx], percent = '[ ' + line.progress + '% ] ';
+                    let lines = [];
+                    for (let idx in ret.data.history) {
+                        let line = ret.data.history[idx], percent = '[ ' + line.progress + '% ] ';
                         if (line.message.indexOf('javascript:') === -1) {
                             lines.push(line.message.indexOf('>>>') > -1 ? line.message : percent + line.message);
                         } else if (!that.SetCache(code, idx) && doScript !== false) {

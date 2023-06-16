@@ -14,6 +14,8 @@
 // | github 代码仓库：https://github.com/zoujingli/think-plugs-admin
 // +----------------------------------------------------------------------
 
+declare(strict_types=1);
+
 namespace app\admin;
 
 use think\admin\Plugin;
@@ -26,7 +28,13 @@ use think\admin\Plugin;
 class Service extends Plugin
 {
     /**
-     * 定义安装包名称
+     * 定义插件名称
+     * @var string
+     */
+    protected $appName = '系统管理';
+
+    /**
+     * 定义安装包名
      * @var string
      */
     protected $package = 'zoujingli/think-plugs-admin';

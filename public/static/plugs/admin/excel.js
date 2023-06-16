@@ -30,14 +30,14 @@ define(function () {
 
     /*! 绑定导出的事件 */
     Excel.prototype.bind = function (done, filename) {
-        var that = this;
+        let that = this;
         this.options = {}; // {writeOpt: {bookSST: true}};
         $('body').off('click', '[data-form-export]').on('click', '[data-form-export]', function () {
-            var form = $(this).parents('form');
-            var name = this.dataset.filename || filename;
-            var method = this.dataset.method || form.attr('method') || 'get';
-            var location = this.dataset.excel || this.dataset.formExport || form.attr('action') || '';
-            var sortType = $(this).attr('data-sort-type') || '', sortField = $(this).attr('data-sort-field') || '';
+            let form = $(this).parents('form');
+            let name = this.dataset.filename || filename;
+            let method = this.dataset.method || form.attr('method') || 'get';
+            let location = this.dataset.excel || this.dataset.formExport || form.attr('action') || '';
+            let sortType = $(this).attr('data-sort-type') || '', sortField = $(this).attr('data-sort-field') || '';
             if (sortField.length > 0 && sortType.length > 0) {
                 location += (location.indexOf('?') > -1 ? '&' : '?') + '_order_=' + sortType + '&_field_=' + sortField;
             }
@@ -56,7 +56,7 @@ define(function () {
             return (lists = []), LoadNextPage(1, 1), defer;
 
             function LoadNextPage(curPage, maxPage, urlParams) {
-                var proc = (curPage / maxPage * 100).toFixed(2);
+                let proc = (curPage / maxPage * 100).toFixed(2);
                 $('[data-upload-count]').html(proc > 100 ? '100.00' : proc);
                 if (curPage > maxPage) return $.msg.close(loaded), defer.resolve(lists);
                 urlParams = (url.indexOf('?') > -1 ? '&' : '?') + 'output=json&not_cache_limit=1&limit=100&page=' + curPage;
@@ -78,7 +78,7 @@ define(function () {
      */
     Excel.prototype.withStyle = function (data, colsWidth, defaultWidth, defaultHeight) {
         // 自动计算列序
-        var idx, colN = 0, defaC = {}, lastCol;
+        let idx, colN = 0, defaC = {}, lastCol;
         for (idx in data[0]) defaC[lastCol = layui.excel.numToTitle(++colN)] = defaultWidth || 99;
         defaC[lastCol] = 160;
 
@@ -109,7 +109,7 @@ define(function () {
         });
 
         // 设置表格行宽高，需要设置最后的行或列宽高，否则部分不生效 ？？？
-        var rowsC = {1: 33}, colsC = Object.assign({}, defaC, {A: 60}, colsWidth || {});
+        let rowsC = {1: 33}, colsC = Object.assign({}, defaC, {A: 60}, colsWidth || {});
         rowsC[data.length] = defaultHeight || 28, this.options.extend = {
             '!cols': layui.excel.makeColConfig(colsC, defaultWidth || 99),
             '!rows': layui.excel.makeRowConfig(rowsC, defaultHeight || 28),
@@ -120,7 +120,7 @@ define(function () {
 
     /*! 直接推送表格内容 */
     Excel.prototype.push = function (url, sheet, cols, filter) {
-        var loaded, $input;
+        let loaded, $input;
         $input = $('<input class="layui-hide" type="file" accept="application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet">');
         $input.appendTo($('body')).click().on('change', function (event) {
             if (!event.target.files || event.target.files.length < 1) return $.msg.tips('没有可操作文件');
@@ -129,7 +129,7 @@ define(function () {
                 // 导入Excel数据，并逐行上传处理
                 layui.excel.importExcel(event.target.files, {}, function (data) {
                     if (!data[0][sheet]) return $.msg.tips('未读取到表[' + sheet + ']的数据');
-                    var _cols = {}, _data = data[0][sheet], items = [], row, col, key, item;
+                    let _cols = {}, _data = data[0][sheet], items = [], row, col, key, item;
                     for (row in _data) if (parseInt(row) + 1 === parseInt(cols._ || '1')) {
                         for (col in _data[row]) for (key in cols) if (_data[row][col] === cols[key]) _cols[key] = col;
                     } else if (parseInt(row) + 1 > cols._ || 1) {
@@ -156,7 +156,7 @@ define(function () {
                         $.form.reload();
                     });
                 } else {
-                    var proc = (idx * 100 / total).toFixed(2);
+                    let proc = (idx * 100 / total).toFixed(2);
                     $('[data-load-count]').html((proc > 100 ? '100.00' : proc) + '%（ 成功 ' + oks + ' 条, 失败 ' + ers + ' 条 ）');
                     /*! 单元数据过滤 */
                     data = item;

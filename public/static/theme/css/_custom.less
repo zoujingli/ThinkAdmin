@@ -15,8 +15,57 @@
 // | github 代码仓库：https://github.com/zoujingli/think-plugs-static
 // +----------------------------------------------------------------------
 
+// 新样式
+// .flex-x
+// .flex-x-center
+// .flex-y
+// .flex-y-center
+// .flex-center
+// .flex-between
+
 .flex {
   #flex();
+
+  each(range(5), {
+    &-@{value} {
+      flex: @value;
+    }
+  });
+
+  &-x {
+    #flex();
+    height: 100%;
+    #flexDirection(row);
+
+    &-center {
+      #flex();
+      height: 100%;
+      #flexAlign(center)
+    }
+  }
+
+  &-y {
+    #flex();
+    width: 100%;
+    #flexDirection(column);
+
+    &-center {
+      #flex();
+      width: 100%;
+      #flexJustify(center);
+    }
+  }
+
+  &-center {
+    #flex();
+    #flexAlign(center);
+    #flexJustify(center);
+  }
+
+  &-between {
+    #flex();
+    justify-content: space-between;
+  }
 
   &-inline {
     display: inline-flex;
@@ -95,26 +144,6 @@
         #flexJustify(space-evenly);
       }
     }
-  }
-
-  &-1 {
-    flex: 1;
-  }
-
-  &-2 {
-    flex: 2;
-  }
-
-  &-3 {
-    flex: 3;
-  }
-
-  &-4 {
-    flex: 4;
-  }
-
-  &-5 {
-    flex: 5;
   }
 }
 
@@ -956,7 +985,7 @@ input:not(.layui-hide,[type=hidden]) {
   height: 240px;
 }
 
-.layui-btn:not([type=button]) {
+button.layui-btn:not([type=button]) {
   overflow: hidden;
   position: relative;
 
@@ -1409,23 +1438,23 @@ label.think-checkbox {
 
 .sub-span- {
   &red span {
-    color: #e44 !important
+    color: #e44
   }
 
   &blue span {
-    color: #29f !important
+    color: #29f
   }
 
   &desc span {
-    color: #999 !important
+    color: #999
   }
 
   &text span {
-    color: #333 !important
+    color: #333
   }
 
   &green span {
-    color: #090 !important
+    color: #090
   }
 }
 
@@ -1443,23 +1472,23 @@ label.think-checkbox {
   }
 
   &red b {
-    color: #ec494e !important
+    color: #ec494e
   }
 
   &blue b {
-    color: #2494f2 !important
+    color: #2494f2
   }
 
   &desc b {
-    color: #999 !important
+    color: #999
   }
 
   &text b {
-    color: #333 !important
+    color: #333
   }
 
   &green b {
-    color: #090 !important
+    color: #090
   }
 }
 

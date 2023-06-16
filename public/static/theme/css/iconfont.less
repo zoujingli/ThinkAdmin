@@ -15,18 +15,48 @@
 // +----------------------------------------------------------------------
 
 @font-face {
-  font-family: "iconfont";
-  src: url('./icon/iconfont.woff2?t=2021') format('woff2'),
-  url('./icon/iconfont.woff?t=2021') format('woff'),
-  url('./icon/iconfont.ttf?t=2021') format('truetype');
+  font-family: iconfont;
+  src: url('./font/iconfont.woff2?t=2021') format('woff2'), url('./font/iconfont.woff?t=2021') format('woff'), url('./font/iconfont.ttf?t=2021') format('truetype');
 }
 
 .iconfont {
-  font-family: "iconfont" !important;
+  font-family: iconfont, serif !important;
   font-size: 16px;
   font-style: normal;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+.iconfont-logo:before {
+  content: "\e607";
+}
+
+.iconfont-x7:before {
+  content: "\e606";
+}
+
+.iconfont-x2:before {
+  content: "\e600";
+}
+
+.iconfont-x1:before {
+  content: "\e601";
+}
+
+.iconfont-x5:before {
+  content: "\e602";
+}
+
+.iconfont-x4:before {
+  content: "\e603";
+}
+
+.iconfont-x6:before {
+  content: "\e604";
+}
+
+.iconfont-x3:before {
+  content: "\e605";
 }
 
 .iconfont-shoplight:before {

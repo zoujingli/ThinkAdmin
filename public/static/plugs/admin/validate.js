@@ -16,8 +16,8 @@ define(function () {
 
     return Validate;
 
-    function Validate(form, onConfirm) {
-        var that = this;
+    function Validate(form) {
+        let that = this;
         // 绑定表单元素
         this.form = $(form);
         // 绑定元素事件
@@ -48,7 +48,7 @@ define(function () {
             return new RegExp(pattern, 'i').test(value);
         };
         this.hasProp = function (el, prop) {
-            var attrProp = el.getAttribute(prop);
+            let attrProp = el.getAttribute(prop);
             return typeof attrProp !== 'undefined' && attrProp !== null && attrProp !== false;
         };
         this.hasCheck = function (el, type) {
@@ -57,7 +57,7 @@ define(function () {
             return $.inArray(type, ['file', 'reset', 'image', 'radio', 'checkbox', 'submit', 'hidden']) < 0;
         };
         this.checkAllInput = function () {
-            var status = true;
+            let status = true;
             return this.form.find(this.tags).each(function () {
                 !that.checkInput(this) && status && (status = !$(this).focus());
             }) && status;
@@ -103,12 +103,12 @@ define(function () {
             /* 检查所有表单元素是否通过H5的规则验证 */
             if (that.checkAllInput() && that.dones.length > 0) {
                 if (typeof CKEDITOR === 'object' && typeof CKEDITOR.instances === 'object') {
-                    for (var i in CKEDITOR.instances) CKEDITOR.instances[i].updateElement();
+                    for (let i in CKEDITOR.instances) CKEDITOR.instances[i].updateElement();
                 }
                 /* 触发表单提交后，锁定三秒不能再次提交表单 */
                 if (that.form.attr('submit-locked')) return false;
                 evt.submit = that.form.find('button[type=submit],button:not([type=button])');
-                onConfirm(evt.submit.attr('data-confirm'), function () {
+                $.base.onConfirm(evt.submit.attr('data-confirm'), function () {
                     that.form.attr('submit-locked', 1) && evt.submit.addClass('submit-button-loading');
                     setTimeout(function () {
                         that.form.removeAttr('submit-locked') && evt.submit.removeClass('submit-button-loading');

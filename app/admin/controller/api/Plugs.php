@@ -35,6 +35,24 @@ class Plugs extends Controller
     public function icon()
     {
         $this->title = '图标选择器';
+        // 读取 layui 字体图标
+        if (empty($this->layuiIcons = $this->app->cache->get('LayuiIcons', []))) {
+            $style = file_get_contents(syspath('public/static/plugs/layui/css/layui.css'));
+            if (preg_match_all('#\.(layui-icon-[\w-]+):#', $style, $matches)) {
+                if (count($this->layuiIcons = $matches[1]) > 0) {
+                    $this->app->cache->set('LayuiIcons', $this->layuiIcons, 60);
+                }
+            }
+        }
+        // 读取自定义字体图标
+        if (empty($this->thinkIcons = $this->app->cache->get('ThinkAdminSelfIcons', []))) {
+            $style = file_get_contents(syspath('public/static/theme/css/iconfont.css'));
+            if (preg_match_all('#\.(iconfont-[\w-]+):#', $style, $matches)) {
+                if (count($this->thinkIcons = $matches[1]) > 0) {
+                    $this->app->cache->set('ThinkAdminSelfIcons', $this->thinkIcons, 60);
+                }
+            }
+        }
         $this->field = $this->app->request->get('field', 'icon');
         $this->fetch(realpath(__DIR__ . '/../../view/api/icon.html'));
     }

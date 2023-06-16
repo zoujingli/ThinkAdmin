@@ -29,7 +29,13 @@ use think\admin\Plugin;
 class Service extends Plugin
 {
     /**
-     * 定义当前包名
+     * 定义插件名称
+     * @var string
+     */
+    protected $appName = '微信管理';
+
+    /**
+     * 定义安装包名
      * @var string
      */
     protected $package = 'zoujingli/think-plugs-wechat';
