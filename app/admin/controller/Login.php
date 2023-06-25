@@ -59,8 +59,8 @@ class Login extends Controller
                     $this->app->session->set($this->captchaType, $this->captchaToken);
                 }
                 // 更新后台域名
-                if ($this->request->domain(true) !== sysconf('base.site_host|raw')) {
-                    sysconf('base.site_host', $this->request->domain(true));
+                if ($this->request->domain() !== sysconf('base.site_host|raw')) {
+                    sysconf('base.site_host', $this->request->domain());
                 }
                 // 加载登录模板
                 $this->title = '系统登录';

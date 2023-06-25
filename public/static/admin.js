@@ -856,11 +856,12 @@ $(function () {
 
     /*! 表单元素失去焦点时数字 */
     $.base.onEvent('blur', '[data-blur-number]', function () {
-        let dset = this.dataset, min = dset.valueMin, max = dset.valueMax;
-        let value = parseFloat(this.value) || 0, fiexd = parseInt(dset.blurNumber || 0);
-        if (typeof min !== 'undefined' && value < min) value = min;
-        if (typeof max !== 'undefined' && value > max) value = max;
-        this.value = parseFloat(value).toFixed(fiexd);
+        let set = this.dataset, value = parseFloat(this.value) || 0;
+        let min = $.isNumeric(set.valueMin) ? set.valueMin : this.min;
+        let max = $.isNumeric(set.valueMax) ? set.valueMax : this.max;
+        if ($.isNumeric(min) && value < min) value = parseFloat(min) || 0;
+        if ($.isNumeric(max) && value > max) value = parseFloat(max) || 0;
+        this.value = value.toFixed(parseInt(set.blurNumber) || 0);
     });
 
     /*! 表单元素失焦时提交 */

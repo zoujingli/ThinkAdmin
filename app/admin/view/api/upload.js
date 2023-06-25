@@ -85,8 +85,13 @@ define(['md5', 'notify'], function (SparkMD5, Notify, allowMime) {
             // 图片限宽限高压缩
             if (/^image\//.test(file.type) && (file.maxWidth + file.maxHeight + file.cutWidth + file.cutHeight > 0 || file.quality !== 1)) {
                 require(['compressor'], function (Compressor) {
-                    new Compressor(file, {
-                        quality: file.quality, resize: 'cover', width: file.cutWidth || 0, height: file.cutHeight || 0, maxWidth: file.maxWidth, maxHeight: file.maxHeight, success(blob) {
+                    let options = {quality: file.quality, resize: 'cover'};
+                    if (file.cutWidth) options.width = file.cutWidth;
+                    if (file.cutHeight) options.height = file.cutHeight;
+                    if (file.maxWidth) options.maxWidth = file.maxWidth;
+                    if (file.maxHeight) options.maxHeight = file.maxHeight;
+                    new Compressor(file, Object.assign(options, {
+                        success(blob) {
                             blob.index = file.index, blob.notify = file.notify, blob.path = file.path, files[index] = blob;
                             that.hash(files[index]).then(function (file) {
                                 that.event('upload.hash', file).request(file, done);
@@ -94,7 +99,7 @@ define(['md5', 'notify'], function (SparkMD5, Notify, allowMime) {
                         }, error: function () {
                             that.event('upload.error', {file: file}, file, '压缩失败');
                         }
-                    });
+                    }));
                 });
             } else {
                 that.hash(file).then(function (file) {

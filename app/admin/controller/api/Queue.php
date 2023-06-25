@@ -17,6 +17,7 @@
 namespace app\admin\controller\api;
 
 use think\admin\Controller;
+use think\admin\model\SystemQueue;
 use think\admin\service\AdminService;
 use think\admin\service\QueueService;
 use think\exception\HttpResponseException;
@@ -108,7 +109,12 @@ class Queue extends Controller
     public function progress()
     {
         $input = $this->_vali(['code.require' => '任务编号不能为空！']);
-        $queue = QueueService::instance()->initialize($input['code']);
-        $this->success('获取任务进度成功！', $queue->progress());
+        $message = SystemQueue::mk()->where($input)->value('message', '');
+        if (!empty($message)) {
+            $this->success('获取任务进度成功！', json_decode($message, true));
+        } else {
+            $queue = QueueService::instance()->initialize($input['code']);
+            $this->success('获取任务进度成功！', $queue->progress());
+        }
     }
 }
