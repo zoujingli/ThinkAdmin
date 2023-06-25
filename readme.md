@@ -59,7 +59,7 @@ php think run --host 127.0.0.1
 
 **2. 通过源码安装：**（ 默认安装 admin、wechat 两个模块 ）
 
-如果需要安装旧版本 data 模块代码，请跳转到
+如果需要安装演示系统的旧版本 **data** 模块代码，请跳转到
 https://gitee.com/zoujingli/think-plugs-data
 
 ```shell
