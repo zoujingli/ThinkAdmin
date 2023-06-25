@@ -27,15 +27,8 @@
 /public/static/theme/css/node_modules
 /public/static/theme/css/package-lock.json
 
-/database/migrations/20221013031925_install_admin.php
-/database/migrations/20221013031926_install_admin_data.php
-/database/migrations/20221013031927_install_admin20230325.php
-/database/migrations/20221013045829_install_wechat.php
-/database/migrations/20221013045830_install_wechat_data.php
-/database/migrations/20221013045838_install_user.php
-/database/migrations/20221013045839_install_user_data.php
-/database/migrations/20221013045840_install_user_region.php
-/database/migrations/20221215000001_install_center_data.php
-/database/migrations/20230209000001_install_wechat_service.php
-/database/migrations/20230224000001_install_account.php
-/database/migrations/20230225000001_install_payment.php
+### 屏蔽数据库脚本
+/database/migrations/*_install_*.php
+/database/migrations/*_upgrade_*.php
+!database/migrations/*_install*_table.php
+!database/migrations/*_install_package.php
