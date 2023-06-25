@@ -54,7 +54,10 @@ php think migrate:run
 php think run --host 127.0.0.1
 ```
 
-**2. 通过源码安装：**（ 安装 admin、wechat、data 三个模块 ）
+**2. 通过源码安装：**（ 安装 admin、wechat 两个模块 ）
+
+如果需要安装旧版本 data 模块代码，请跳转到
+https://gitee.com/zoujingli/think-plugs-data
 
 ```shell
 ### 下载项目（ 需要在英文目录下面执行 ）
