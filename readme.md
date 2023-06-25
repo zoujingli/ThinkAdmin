@@ -8,7 +8,7 @@
 
 ### 项目介绍
 
-**ThinkAdmin** 是一款遵循 **MIT** 协议开源的快速开发框架，基于最新版本 **ThinkPHP6** 的极简后台管理系统，在使用 **ThinkAdmin** 前请认真阅读[《免责声明》](https://doc.thinkadmin.top/disclaimer)并同意该声明。
+**ThinkAdmin** 是一款遵循 **MIT** 协议免费开源的快速开发框架，基于最新版本 **ThinkPHP6** 的极简后台管理系统，在使用 **ThinkAdmin** 前请认真阅读[《免责声明》](https://doc.thinkadmin.top/disclaimer)并同意该声明。
 
 当前 **ThinkAdmin** 的最新版本为[ **v6.1** ](https://gitee.com/zoujingli/ThinkAdmin/tree/v6.1)，从这个版本开始正式进入插件时代，提供类似 **PaaS** 的组件升级更新服务，也可以本地化定制开发，基础组件及扩展插件统一使用 **Composer** 管理。**ThinkAdmin** 与传统 **ThinkPHP** 多应用模式无差别，用户可以自行开发自己的模块，此次升级可完美兼容 **ThinkAdmin v6.0** 应用，原 **ThinkAdmin v6.0** 只需安装 **ThinkPlugsAdmin** 组件即可升级到 **v6.1** 的插件模式。想要了解更多 **ThinkAdmin** 插件生态请阅读 [《ThinkAdmin 插件生态》](https://gitee.com/zoujingli/ThinkAdmin/blob/v6.1/plugin.md)
 
@@ -36,7 +36,7 @@
 
 打开命令行窗口（ Windows 用户 ）或控制台（ Linux 和 Mac 用户 ）并执行如下命令：
 
-**1. 通过 Composer 安装：**( 推荐方式，仅安装 admin 模块 )
+**1. 通过 Composer 安装：**( 推荐方式，默认只安装 admin 模块 )
 
 ```shell
 ### 创建项目（ 需要在英文目录下面执行 ）
@@ -49,12 +49,15 @@ cd thinkadmin
 ### 默认使用 Sqlite 数据库，若使用其他数据库请修改配置后再执行
 php think migrate:run
 
+### 安装微信管理模块
+composer require zoujingli/think-plugs-wechat
+
 ### 开启PHP内置WEB服务
 ### 默认后台登录账号及密码都是 admin
 php think run --host 127.0.0.1
 ```
 
-**2. 通过源码安装：**（ 安装 admin、wechat 两个模块 ）
+**2. 通过源码安装：**（ 默认安装 admin、wechat 两个模块 ）
 
 如果需要安装旧版本 data 模块代码，请跳转到
 https://gitee.com/zoujingli/think-plugs-data
