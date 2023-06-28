@@ -664,7 +664,7 @@ $(function () {
                     res.data = params.filter(res.data, res);
                 }
                 if (!this.page || !this.page.curr) return res;
-                let curp = this.page.curr, maxp = Math.ceil(res.count / option.limit);
+                let curp = this.page.curr, maxp = Math.ceil(res.count / (this.page.limit || option.limit));
                 if (curp > maxp && maxp > 1) $table.trigger('reload', {page: {curr: maxp}});
                 return res;
             };

@@ -1,0 +1,72 @@
+<fieldset>
+    <legend>条件搜索</legend>
+    <form class="layui-form layui-form-pane form-search" action="{:request()->url()}" onsubmit="return false" method="get" autocomplete="off">
+
+        <div class="layui-form-item layui-inline">
+            <label class="layui-form-label">用户账号</label>
+            <label class="layui-input-inline">
+                <input name="nickname" value="{$get.nickname|default=''}" placeholder="请输入用户账号" class="layui-input">
+            </label>
+        </div>
+
+        <div class="layui-form-item layui-inline">
+            <label class="layui-form-label">订单内容</label>
+            <label class="layui-input-inline">
+                <input name="order" value="{$get.order|default=''}" placeholder="请输入订单内容" class="layui-input">
+            </label>
+        </div>
+
+        <div class="layui-form-item layui-inline">
+            <label class="layui-form-label">支付状态</label>
+            <label class="layui-input-inline">
+                <select class="layui-select" name="payment_status">
+                    <option value=''>-- 全部 --</option>
+                    {foreach ['未支付','已支付'] as $k=>$v}
+                    {if isset($get.payment_status) and $get.payment_status eq $k.""}
+                    <option selected value="{$k}">{$v}</option>
+                    {else}
+                    <option value="{$k}">{$v}</option>
+                    {/if}{/foreach}
+                </select>
+            </label>
+        </div>
+
+        <div class="layui-form-item layui-inline">
+            <label class="layui-form-label">创建时间</label>
+            <label class="layui-input-inline">
+                <input data-date-range name="create_time" value="{$get.create_time|default=''}" placeholder="请选择创建时间" class="layui-input">
+            </label>
+        </div>
+
+        <div class="layui-form-item layui-inline">
+            <button type="submit" class="layui-btn layui-btn-primary"><i class="layui-icon">&#xe615;</i> 搜 索</button>
+            <button type="button" data-form-export="{:url('index')}?type={$type|default=''}" class="layui-btn layui-btn-primary">
+                <i class="layui-icon layui-icon-export"></i> 导 出
+            </button>
+        </div>
+    </form>
+</fieldset>
+
+<script>
+    window.form.render();
+    require(['excel'], function (excel) {
+        excel.bind(function (data) {
+            data.forEach(function (item, index) {
+                data[index] = [
+                    item.id || 0,
+                    item.order_name || '',
+                    item.order_code || '',
+                    item.order_amount || '',
+                    item.payment_status ? '已支付' : '未支付',
+                    item.type || '',
+                    item.payment_time || '',
+                    item.create_time || '',
+                ];
+            });
+            data.unshift(['ID', '订单名称', '订单编号', '订单金额', '支付状态', '支付类型', '支付时间', '创建时间']);
+
+            return this.withStyle(data, {G: 160});
+
+        }, '支付行为数据' + layui.util.toDateString(Date.now(), '_yyyyMMdd_HHmmss'));
+    });
+</script>

@@ -1,0 +1,91 @@
+{extend name="table"}
+
+{block name="button"}
+<!--{if auth("queue")}-->
+<!--<button class='layui-btn layui-btn-sm layui-btn-primary' data-queue='{:url("queue")}'>刷新领取次数</button>-->
+<!--{/if}-->
+{/block}
+
+{block name="content"}
+<div class="think-box-shadow">
+    {include file='payment/record/index_search'}
+    <table id="PaymentRecord" data-url="{:request()->url()}" data-line="2" data-target-search="form.form-search"></table>
+</div>
+{/block}
+
+{block name='script'}
+<script>
+    $(function () {
+        $('#PaymentRecord').layTable({
+            even: true, height: 'full',
+            sort: {field: 'id', type: 'desc'},
+            cols: [[
+                {field: 'id', hide: true},
+                {field: 'headimg', title: '头像', width: 70, align: 'center', templet: '<div>{{-showTableImage(d.fans_headimg,true,"sm")}}</div>'},
+                {
+                    field: 'id', title: '用户信息', minWidth: 170, templet: function (d) {
+                        let tpls = [];
+                        tpls.push('用户昵称：{{d.fans_nickname||"-"}}');
+                        tpls.push('用户标识：{{d.openid||"-"}}');
+                        return laytpl(tpls.join('<br>')).render(d);
+                    }
+                },
+                {
+                    field: '', title: '订单内容', minWidth: 200, width: '18%', templet: function (d) {
+                        let tpls = [];
+                        tpls.push('订单编号：<b class="color-blue font-code">{{d.order_code}}</b>');
+                        tpls.push('订单名称：<span>{{d.order_name||"-"}}</span>');
+                        return laytpl(tpls.join('<br>')).render(d);
+                    }
+                },
+                {
+                    field: 'order_amount', title: '交易金额', sort: true, minWidth: 200, width: '18%', templet: function (d) {
+                        let lines = [];
+                        lines.push('交易单号：<b class="color-blue font-code">{{d.code||"-"}}</b>');
+                        if (d.payment_status) {
+                            lines.push('订单需支付 <b class="color-blue">{{d.order_amount}}</b> 元 ( 已支付 <b class="color-blue">{{d.payment_amount}}</b> 元 )');
+                        } else {
+                            lines.push('订单金额：<b class="color-blue">{{d.order_amount}}</b> 元');
+                        }
+                        return laytpl(lines.join('<br>')).render(d);
+                    }
+                },
+                {
+                    field: 'unlock', title: '交易状态', minWidth: 190, width: '17%', templet: function (d) {
+                        if (d.payment_status) {
+                            d.typeInfo = '<b class="color-green">已支付</b>';
+                            d.typeLabel = '支付';
+                            d.typeDatetime = d.payment_time || '-';
+                        } else {
+                            d.typeInfo = '<b class="color-blue">待支付</b>';
+                            d.typeLabel = '生成';
+                            d.typeDatetime = d.create_time || '-';
+                        }
+                        if (d.payment_amount > 0 && d.payment_amount <= d.refund_amount) {
+                            d.typeInfo += ' <b class="color-red">已全额退款</b>';
+                        } else if (d.payment_amount > 0 && d.refund_amount > 0) {
+                            d.typeInfo += '<b class="color-red"> 已退款 ' + d.refund_amount + ' 元</b>'
+                        }
+                        return laytpl('<div>当前状态：{{-d.typeInfo}}<br>{{d.typeLabel}}时间：{{d.typeDatetime}}</div>').render(d);
+                    }
+                },
+                {field: 'name', title: '支付描述', minWidth: 100, templet: '<div>支付类型：{{d.type_name||"-"}}<br>操作描述：{{d.payment_remark||"-"}}</div>'},
+                /* {if auth('refund') } */
+                {toolbar: '#toolbar', title: '操作面板', minWidth: 80, width: '10%', align: 'center', fixed: 'right'}
+                /* {/if} */
+                // {field: 'id', title: '操作时间', minWidth: 235, sort: true, templet: '<div>更新时间：{{d.update_time||"-"}}<br>创建时间：{{d.create_time||"-"}}</div>'},
+            ]]
+        });
+    });
+</script>
+
+<script type="text/html" id="toolbar">
+    <!--{if auth("refund")}-->
+    {{# if(d.payment_status && d.refund_amount < d.payment_amount){ }}
+    <a class="layui-btn layui-btn-sm layui-btn-danger" data-action="{:url('refund')}" data-value="code#{{d.code}}" data-confirm="确认要提交退款吗？">退 款</a>
+    {{# }else{ }}
+    <a class="layui-btn layui-btn-sm layui-disabled">退 款</a>
+    {{# }  }}
+    <!--{/if}-->
+</script>
+{/block}

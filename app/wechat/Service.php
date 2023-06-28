@@ -19,7 +19,10 @@ namespace app\wechat;
 use app\wechat\command\Auto;
 use app\wechat\command\Fans;
 use app\wechat\service\AutoService;
+use app\wechat\service\PaymentService;
+use think\admin\extend\CodeExtend;
 use think\admin\Plugin;
+use think\Request;
 
 /**
  * 组件注册服务
@@ -53,6 +56,16 @@ class Service extends Plugin
         $this->app->event->listen('WechatFansSubscribe', function ($openid) {
             AutoService::register($openid);
         });
+
+        // 注册支付通知路由
+        $this->app->route->any('/plugin-wxpay-notify/:vars', function (Request $request) {
+            try {
+                $data = json_decode(CodeExtend::deSafe64($request->param('vars')), true);
+                return PaymentService::notify($data);
+            } catch (\Exception|\Error $exception) {
+                return 'Error: ' . $exception->getMessage();
+            }
+        });
     }
 
     /**
@@ -80,6 +93,13 @@ class Service extends Plugin
                     ['name' => '关注自动回复', 'icon' => 'layui-icon layui-icon-release', 'node' => "wechat/auto/index"],
                 ],
             ],
+            [
+                'name' => '微信支付',
+                'subs' => [
+                    ['name' => '微信支付行为', 'icon' => 'layui-icon layui-icon-rmb', 'node' => "wechat/payment.record/index"],
+                    ['name' => '微信退款管理', 'icon' => 'layui-icon layui-icon-engine', 'node' => "wechat/payment.refund/index"],
+                ]
+            ]
         ];
     }
 }
