@@ -151,7 +151,7 @@ public function index(){
 * 执行 `php think xadmin:database` 对数据库的所有表 `repair|optimize` 操作，优化并整理数据库碎片
 * 执行 `php think xadmin:publish` 可自动安装现在模块或已安装应用插件，增加 `--migrate` 参数执行数据库脚本
 
-#### 1. 守护进程管理（可自建定时任务去守护监听主进程）
+#### 1. 任务进程管理（可自建定时任务去守护监听主进程）
 
 * 执行 `php think xadmin:queue listen` [监听]启动异步任务监听服务
 * 执行 `php think xadmin:queue start`  [控制]检查创建任务监听服务（建议定时任务执行）
