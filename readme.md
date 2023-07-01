@@ -8,7 +8,7 @@
 
 ### 项目介绍
 
-**ThinkAdmin** 是一款遵循 **MIT** 协议免费开源的快速开发框架，基于最新版本 **ThinkPHP6** 的极简后台管理系统，在使用 **ThinkAdmin** 前请认真阅读[《免责声明》](https://doc.thinkadmin.top/disclaimer)并同意该声明。
+**ThinkAdmin** 是一款遵循 **MIT** 协议免费开源的快速开发框架，基于最新版本 **ThinkPHP6** 的极简后台管理系统 ( 已兼容 **ThinkPHP8** )，在使用 **ThinkAdmin** 前请认真阅读[《免责声明》](https://doc.thinkadmin.top/disclaimer)并同意该声明。
 
 当前 **ThinkAdmin** 的最新版本为[ **v6.1** ](https://gitee.com/zoujingli/ThinkAdmin/tree/v6.1)，从这个版本开始正式进入插件时代，提供类似 **PaaS** 的组件升级更新服务，也可以本地化定制开发，基础组件及扩展插件统一使用 **Composer** 管理。**ThinkAdmin** 与传统 **ThinkPHP** 多应用模式无差别，用户可以自行开发自己的模块，此次升级可完美兼容 **ThinkAdmin v6.0** 应用，原 **ThinkAdmin v6.0** 只需安装 **ThinkPlugsAdmin** 组件即可升级到 **v6.1** 的插件模式。想要了解更多 **ThinkAdmin** 插件生态请阅读 [《ThinkAdmin 插件生态》](https://gitee.com/zoujingli/ThinkAdmin/blob/v6.1/plugin.md)
 
