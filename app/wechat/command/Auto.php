@@ -14,6 +14,8 @@
 // | github 代码仓库：https://github.com/zoujingli/think-plugs-wechat
 // +----------------------------------------------------------------------
 
+declare (strict_types=1);
+
 namespace app\wechat\command;
 
 use app\wechat\model\WechatAuto;

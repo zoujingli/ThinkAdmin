@@ -19,7 +19,6 @@ namespace app\wechat\controller;
 use app\wechat\service\WechatService;
 use think\admin\Builder;
 use think\admin\Controller;
-use think\admin\Storage;
 use think\admin\storage\LocalStorage;
 
 /**
@@ -145,7 +144,9 @@ class Config extends Controller
         if ($this->request->isPost()) {
             $local = LocalStorage::instance();
             $wechat = $this->request->post('wechat');
+            // PEM 证书模式处理
             if ($wechat['mch_ssl_type'] === 'pem') {
+                WechatService::withWxpayCert(['mch_id' => $wechat['mch_id']]);
                 if (empty($wechat['mch_ssl_key']) || !$local->has($wechat['mch_ssl_key'], true)) {
                     $this->error('商户证书 KEY 不能为空！');
                 }
@@ -153,20 +154,24 @@ class Config extends Controller
                     $this->error('商户证书 CERT 不能为空！');
                 }
             }
+            // P12 证书模式转 PEM 模式
             if ($wechat['mch_ssl_type'] === 'p12') {
                 if (empty($wechat['mch_ssl_p12']) || !$local->has($wechat['mch_ssl_p12'], true)) {
                     $this->error('商户证书 P12 不能为空！');
                 }
                 $content = $local->get($wechat['mch_ssl_p12'], true);
                 if (openssl_pkcs12_read($content, $certs, $wechat['mch_id'])) {
-                    $wechat['mch_ssl_key'] = $local->set(Storage::name($certs['pkey'], 'pem'), $certs['pkey'], true)['url'];
-                    $wechat['mch_ssl_cer'] = $local->set(Storage::name($certs['cert'], 'pem'), $certs['cert'], true)['url'];
+                    $name1 = "wxpay/{$wechat['mch_id']}_cer.pem";
+                    $name2 = "wxpay/{$wechat['mch_id']}_key.pem";
+                    $wechat['mch_ssl_cer'] = $local->set($name1, $certs['cert'], true)['url'];
+                    $wechat['mch_ssl_key'] = $local->set($name2, $certs['pkey'], true)['url'];
+                    $wechat['mch_ssl_type'] = 'pem';
                 } else {
                     $this->error('商户账号与 P12 证书不匹配！');
                 }
             }
             // 记录文本格式参数，兼容分布式部署
-            sysdata('plugin.wechat.payment.config', [
+            sysdata('plugin.wechat.payment', [
                 'appid'        => WechatService::getAppid(),
                 'mch_id'       => $wechat['mch_id'],
                 'mch_key'      => $wechat['mch_key'],
@@ -177,7 +182,7 @@ class Config extends Controller
             // 记录证书路径参数，兼容历史参数
             foreach ($wechat as $k => $v) sysconf("wechat.{$k}", $v);
             // 记录操作历史并返回保存结果
-            sysoplog('微信授权配置', '修改微信支付配置成功');
+            sysoplog('微信支付配置', '修改微信支付配置成功');
             $this->success('微信支付配置成功！');
         } else {
             $this->error('抱歉，访问方式错误！');

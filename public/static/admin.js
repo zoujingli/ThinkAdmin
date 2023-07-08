@@ -367,7 +367,7 @@ $(function () {
             this.load(url, data, 'GET', function (res) {
                 if (typeof res === 'object') return $.msg.auto(res), false;
                 return $.msg.mdx.push(this.idx = layer.open({
-                    type: 1, btn: false, area: area || "800px", resize: false, content: res, title: name || '', offset: offset || 'auto', success: function ($dom, idx) {
+                    type: 1, btn: false, area: area || "800px", resize: false, content: res, title: name === 'false' ? '' : name, offset: offset || 'auto', success: function ($dom, idx) {
                         typeof call === 'function' && call.call($.form, $dom);
                         $.form.reInit($dom.off('click', '[data-close]').on('click', '[data-close]', function () {
                             $.base.onConfirm(this.dataset.confirm, function () {

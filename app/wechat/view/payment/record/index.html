@@ -1,8 +1,8 @@
 {extend name="table"}
 
 {block name="button"}
-<!--{if auth("queue")}-->
-<!--<button class='layui-btn layui-btn-sm layui-btn-primary' data-queue='{:url("queue")}'>刷新领取次数</button>-->
+<!--{if auth("clear")}-->
+<button data-queue='{:url("clear")}' data-table-id="PaymentRecord" class='layui-btn layui-btn-sm layui-btn-primary'>清理24小时未支付数据</button>
 <!--{/if}-->
 {/block}
 
@@ -26,7 +26,7 @@
                     field: 'id', title: '用户信息', minWidth: 170, templet: function (d) {
                         let tpls = [];
                         tpls.push('用户昵称：{{d.fans_nickname||"-"}}');
-                        tpls.push('用户标识：{{d.openid||"-"}}');
+                        tpls.push('用户标识：<span class="font-code">{{d.openid||"-"}}</span>');
                         return laytpl(tpls.join('<br>')).render(d);
                     }
                 },

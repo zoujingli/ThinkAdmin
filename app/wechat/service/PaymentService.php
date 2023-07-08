@@ -74,17 +74,17 @@ class PaymentService
     {
         try {
             // 检查订单是否完成
-            if (self::isPayed($oCode, $oAmount)) {
+            if (self::isPayed($oCode, $oAmount, $oPayed)) {
                 return ['code' => 1, 'info' => '已完成支付！', 'data' => [], 'params' => []];
             }
             // 检查剩余支付金额
-            $leave = self::leave($oCode);
-            $pAmount = floatval(is_null($pAmount) ? (floatval($oAmount) - $leave) : $pAmount);
-            if ($leave + $pAmount > floatval($oAmount)) {
+            $pAmount = floatval(is_null($pAmount) ? (floatval($oAmount) - $oPayed) : $pAmount);
+            if ($oPayed + $pAmount > floatval($oAmount)) {
                 return ['code' => 0, 'info' => '支付总额超出！', 'data' => [], 'params' => []];
             }
             $config = WechatService::getConfig();
-            $pCode = CodeExtend::uniqidNumber(16, 'P');
+            do $pCode = CodeExtend::uniqidNumber(16, 'P');
+            while (WechatPaymentRecord::mk()->where(['code' => $pCode])->findOrEmpty()->isExists());
             $data = [
                 'appid'        => $config['appid'],
                 'mchid'        => $config['mch_id'],
@@ -291,22 +291,24 @@ class PaymentService
      * 判断是否完成支付
      * @param string $oCode 原订单单号
      * @param string $oAmount 需支付金额
+     * @param ?float $oPayed 已支付金额[赋值]
      * @return boolean
      */
-    public static function isPayed(string $oCode, string $oAmount): bool
+    public static function isPayed(string $oCode, string $oAmount, ?float &$oPayed = null): bool
     {
-        return self::leave($oCode) >= $oAmount;
+        return self::withPayed($oCode, $oPayed) >= $oAmount;
     }
 
     /**
      * 获取已支付金额
-     * @param string $oCode
+     * @param string $oCode 原订单单号
+     * @param ?float $oPayed 已支付金额[赋值]
      * @return float
      */
-    public static function leave(string $oCode): float
+    public static function withPayed(string $oCode, ?float &$oPayed = null): float
     {
         $where = ['order_code' => $oCode, 'payment_status' => 1];
-        return WechatPaymentRecord::mk()->where($where)->sum('payment_amount');
+        return $oPayed = WechatPaymentRecord::mk()->where($where)->sum('payment_amount');
     }
 
     /**
@@ -351,12 +353,11 @@ class PaymentService
     protected static function createPaymentAction(string $openid, string $oCode, string $oName, string $oAmount, string $pType, string $pCode, string $pAmount): array
     {
         // 检查是否已经支付
-        $leave = static::leave($oCode);
-        if ($leave >= floatval($oAmount)) {
+        if (static::withPayed($oCode, $oPayed) >= floatval($oAmount)) {
             throw new Exception("订单 {$oCode} 已经完成支付！", 1);
         }
-        if ($leave + floatval($pAmount) > floatval($oAmount)) {
-            throw new Exception('总支付金额大于订单金额！', 0);
+        if ($oPayed + floatval($pAmount) > floatval($oAmount)) {
+            throw new Exception('总支付大于订单金额！', 0);
         }
         $map = ['order_code' => $oCode, 'payment_status' => 1];
         $model = WechatPaymentRecord::mk()->where($map)->findOrEmpty();

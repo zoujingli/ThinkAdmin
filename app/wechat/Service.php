@@ -14,9 +14,12 @@
 // | github 代码仓库：https://github.com/zoujingli/think-plugs-wechat
 // +----------------------------------------------------------------------
 
+declare (strict_types=1);
+
 namespace app\wechat;
 
 use app\wechat\command\Auto;
+use app\wechat\command\Clear;
 use app\wechat\command\Fans;
 use app\wechat\service\AutoService;
 use app\wechat\service\PaymentService;
@@ -50,7 +53,7 @@ class Service extends Plugin
     public function register(): void
     {
         // 注册模块指令
-        $this->commands([Fans::class, Auto::class]);
+        $this->commands([Fans::class, Auto::class, Clear::class]);
 
         // 注册粉丝关注事件
         $this->app->event->listen('WechatFansSubscribe', function ($openid) {
@@ -74,30 +77,31 @@ class Service extends Plugin
      */
     public static function menu(): array
     {
+        $code = app(static::class)->appCode;
         // 设置插件菜单
         return [
             [
                 'name' => '微信管理',
                 'subs' => [
-                    ['name' => '微信接口配置', 'icon' => 'layui-icon layui-icon-set', 'node' => "wechat/config/options"],
-                    ['name' => '微信支付配置', 'icon' => 'layui-icon layui-icon-rmb', 'node' => "wechat/config/payment"],
+                    ['name' => '微信接口配置', 'icon' => 'layui-icon layui-icon-set', 'node' => "{$code}/config/options"],
+                    ['name' => '微信支付配置', 'icon' => 'layui-icon layui-icon-rmb', 'node' => "{$code}/config/payment"],
                 ],
             ],
             [
                 'name' => '微信定制',
                 'subs' => [
-                    ['name' => '微信粉丝管理', 'icon' => 'layui-icon layui-icon-username', 'node' => "wechat/fans/index"],
-                    ['name' => '微信图文管理', 'icon' => 'layui-icon layui-icon-template-1', 'node' => "wechat/news/index"],
-                    ['name' => '微信菜单配置', 'icon' => 'layui-icon layui-icon-cellphone', 'node' => "wechat/menu/index"],
-                    ['name' => '回复规则管理', 'icon' => 'layui-icon layui-icon-engine', 'node' => "wechat/keys/index"],
-                    ['name' => '关注自动回复', 'icon' => 'layui-icon layui-icon-release', 'node' => "wechat/auto/index"],
+                    ['name' => '微信粉丝管理', 'icon' => 'layui-icon layui-icon-username', 'node' => "{$code}/fans/index"],
+                    ['name' => '微信图文管理', 'icon' => 'layui-icon layui-icon-template-1', 'node' => "{$code}/news/index"],
+                    ['name' => '微信菜单配置', 'icon' => 'layui-icon layui-icon-cellphone', 'node' => "{$code}/menu/index"],
+                    ['name' => '回复规则管理', 'icon' => 'layui-icon layui-icon-engine', 'node' => "{$code}/keys/index"],
+                    ['name' => '关注自动回复', 'icon' => 'layui-icon layui-icon-release', 'node' => "{$code}/auto/index"],
                 ],
             ],
             [
                 'name' => '微信支付',
                 'subs' => [
-                    ['name' => '微信支付行为', 'icon' => 'layui-icon layui-icon-rmb', 'node' => "wechat/payment.record/index"],
-                    ['name' => '微信退款管理', 'icon' => 'layui-icon layui-icon-engine', 'node' => "wechat/payment.refund/index"],
+                    ['name' => '微信支付行为', 'icon' => 'layui-icon layui-icon-rmb', 'node' => "{$code}/payment.record/index"],
+                    ['name' => '微信退款管理', 'icon' => 'layui-icon layui-icon-engine', 'node' => "{$code}/payment.refund/index"],
                 ]
             ]
         ];

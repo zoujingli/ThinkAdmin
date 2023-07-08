@@ -42,7 +42,7 @@
                 {foreach ['pem'=>'上传 PEM 证书', 'p12'=>'上传 P12 证书'] as $k=>$v}
                 <input type="radio" data-pem-type="{$k}" name="wechat.mch_ssl_type" value="{$k}" title="{$v}" lay-filter="data-mch-type">
                 {/foreach}
-                <p class="help-block font-code">请选择需要上传证书类型，P12 或 PEM 二选一，证书需要从微信商户平台获取</p>
+                <p class="help-block font-code">请选择需要上传证书类型，上传 P12 证书会自动转换为 PEM 证书。</p>
 
                 <div class="padding-top-10">
                     <div data-mch-type="none"></div>

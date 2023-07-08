@@ -14,6 +14,8 @@
 // | github 代码仓库：https://github.com/zoujingli/think-plugs-wechat
 // +----------------------------------------------------------------------
 
+declare (strict_types=1);
+
 namespace app\wechat\controller\payment;
 
 use app\wechat\model\WechatFans;
@@ -72,5 +74,16 @@ class Record extends Controller
         } catch (\Exception $exception) {
             $this->error($exception->getMessage());
         }
+    }
+
+    /**
+     * 清理未支付数据
+     * @auth true
+     * @return void
+     */
+    public function clear()
+    {
+        sysoplog('微信支付清理', '创建粉丝未支付数据清理任务');
+        $this->_queue('清理微信未支付数据', "xadmin:fanspay", 0, [], 0, 600);
     }
 }
