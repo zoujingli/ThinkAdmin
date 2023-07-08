@@ -64,7 +64,8 @@ https://gitee.com/zoujingli/think-plugs-data
 
 ```shell
 ### 下载项目（ 需要在英文目录下面执行 ）
-git clone https://github.com/zoujingli/ThinkAdmin
+# git clone https://github.com/zoujingli/ThinkAdmin
+git clone https://gitee.com/zoujingli/ThinkAdmin
 
 ### 进入项目根目录
 cd ThinkAdmin
@@ -83,13 +84,24 @@ php think run --host 127.0.0.1
 
 ## 数据库安装
 
-1. 创建空的数据库并将参数配置到 **config/database.php** 文件；
-2. 导入数据库 **SQL** 文件或执行数据库初始化操作，视版本情况操作；
+1. 创建空的数据库，**Sqlite** 不需要创建；
+2. 将数据库配置到 **config/database.php** 文件；
 
-**温馨提示：** 当前下载的代码已经是 **v6.1** 版本！
+注意：数据库参数修改，除了要修改连接参数，还需要切换 **default** 默认连接名称，如下面的 **mysql**、**sqlite** 等。
 
-* 版本是 **v6.0** 的项目需要导入项目根目录下的 `SQL01-数据表结构.sql` 和 `SQL02-数据初始化.sql` 文件；
-* 版本是 **v6.1** 的项目不需要导入数据库 `SQL` 文件，修改数据库配置后执行 `php think migrate:run` 即可；
+```php
+return [
+     // 数据库类型
+    'default' => 'sqlite',
+    // 数据库连接参数
+    'connections' => [
+        'mysql'  => [ /* 具体参数省略 */ ], 
+        'sqlite' => [ /* 具体参数省略 */ ],
+    ]       
+]
+```
+
+当前版本是 **ThinkAdmin v6.1** ，不需要导入数据库 `SQL` 脚本，修改数据库配置后执行 `php think migrate:run` 即可；
 
 ## 技术支持
 
