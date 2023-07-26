@@ -57,8 +57,10 @@ class Oplog extends Controller
     protected function _index_page_filter(array &$data)
     {
         $region = new Ip2Region();
-        foreach ($data as &$vo) {
+        foreach ($data as &$vo) try {
             $vo['geoisp'] = $region->simple($vo['geoip']);
+        } catch (\Exception $exception) {
+            $vo['geoip'] = $exception->getMessage();
         }
     }
 

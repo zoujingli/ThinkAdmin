@@ -79,51 +79,9 @@
             // 设置表头内容
             data.unshift(['ID', '操作账号', '访问节点', '访问IP地址', '访问地理区域', '访问操作', '操作内容', '操作时间']);
 
-            // 自动计算列序号
-            var lastCol = layui.excel.numToTitle(data[0].length || 0);
+            // 应用表格样式
+            return this.withStyle(data, {A: 60, B: 80, C: 99, E: 120, G: 120});
 
-            // 设置表头样式
-            layui.excel.setExportCellStyle(data, 'A1:' + lastCol + '1', {
-                s: {
-                    font: {sz: 12, bold: true, color: {rgb: "FFFFFF"}, name: '微软雅黑', shadow: true},
-                    fill: {bgColor: {indexed: 64}, fgColor: {rgb: "5FB878"}},
-                    alignment: {vertical: 'center', horizontal: 'center'}
-                }
-            });
-
-            // 设置内容样式
-            var style1 = {
-                font: {sz: 10, shadow: true, name: '微软雅黑'},
-                fill: {bgColor: {indexed: 64}, fgColor: {rgb: "EAEAEA"}},
-                alignment: {vertical: 'center', horizontal: 'center'}
-            }, style2 = {
-                font: {sz: 10, shadow: true, name: '微软雅黑'},
-                fill: {bgColor: {indexed: 64}, fgColor: {rgb: "FFFFFF"}},
-                alignment: {vertical: 'center', horizontal: 'center'}
-            };
-            // 动态应用样式
-            layui.excel.setExportCellStyle(data, 'A2:' + lastCol + data.length, {s: style1}, function (raw, cell, list, conf, rows, cols) {
-                // @var raw  原有单元格数据
-                // @var cell 新的单元格数据
-                // @var list 所在行数据列表
-                // @var conf 当前样式配置
-                // @var rows 当前行的标号
-                // @var cols 当前列的标号
-                return (rows % 2 === 0) ? cell : (Object.assign({}, cell, {s: style2}));
-            });
-
-            // 设置表格行宽高，需要设置最后的行或列宽高，否则部分不生效 ？？？
-            var rowsC = {1: 33}, colsC = {A: 60, B: 80, C: 99, E: 80, G: 120};
-            rowsC[data.length] = 28, colsC[lastCol] = 160;
-            this.options.extend = {
-                '!rows': layui.excel.makeRowConfig(rowsC, 28), // 设置每行高度，默认 33
-                '!cols': layui.excel.makeColConfig(colsC, 99), // 设置每行宽度，默认 99
-            };
-
-            // 其他更多样式，可以配置 this.options.extend 参数，每次执行 bind 会被重置
-            // 在线文档：http://excel.wj2015.com/_book/docs/%E5%87%BD%E6%95%B0%E5%88%97%E8%A1%A8/%E6%A0%B7%E5%BC%8F%E8%AE%BE%E7%BD%AE%E7%9B%B8%E5%85%B3%E5%87%BD%E6%95%B0.html
-
-            return data;
         }, '操作日志' + layui.util.toDateString(Date.now(), '_yyyyMMdd_HHmmss'));
     });
 </script>
