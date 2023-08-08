@@ -20,6 +20,7 @@ use think\admin\Controller;
 use think\admin\helper\QueryHelper;
 use think\admin\model\SystemAuth;
 use think\admin\model\SystemNode;
+use think\admin\Plugin;
 use think\admin\service\AdminService;
 
 /**
@@ -95,8 +96,16 @@ class Auth extends Controller
         $map = $this->_vali(['auth.require#id' => '权限ID不能为空！']);
         if (input('action') === 'get') {
             if ($this->app->isDebug()) AdminService::clear();
-            $nodes = SystemNode::mk()->where($map)->column('node');
-            $this->success('获取权限节点成功！', AdminService::getTree($nodes));
+            $nodes = AdminService::getTree(SystemNode::mk()->where($map)->column('node'));
+            usort($nodes, static function ($a, $b) {
+                if (explode('-', $a['node'])[0] !== explode('-', $b['node'])[0]) {
+                    if (stripos($a['node'], 'plugin-') === 0) return 1;
+                }
+                return $a['node'] === $b['node'] ? 0 : ($a['node'] > $b['node'] ? 1 : -1);
+            });
+            [$ps, $cs] = [Plugin::get(), (array)$this->app->config->get('app.app_names', [])];
+            foreach ($nodes as &$t) $t['title'] = $cs[$t['node']] ?? (($ps[$t['node']] ?? [])['name'] ?? $t['title']);
+            $this->success('获取权限节点成功！', $nodes);
         } elseif (input('action') === 'save') {
             [$post, $data] = [$this->request->post(), []];
             foreach ($post['nodes'] ?? [] as $node) {

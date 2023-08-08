@@ -632,7 +632,9 @@ $(function () {
         }, this.render = function (tabldId) {
             return this.reload(tabldId, true);
         }, this.reload = function (tabldId, force) {
-            return typeof tabldId === 'string' ? $('#' + tabldId).trigger(force ? 'render' : 'reload') : $.form.reload();
+            return typeof tabldId === 'string' ? tabldId.split(',').map(function (tableid) {
+                $('#' + tableid).trigger(force ? 'render' : 'reload')
+            }) : $.form.reload();
         }, this.create = function (table, params) {
             // 动态初始化表格
             table.id = table.id || 't' + Math.random().toString().replace('.', '');
@@ -650,6 +652,8 @@ $(function () {
             if (option.height === 'full') if ($table.parents('.iframe-pagination').size()) {
                 $table.parents('.iframe-pagination').addClass('not-footer');
                 option.height = $(window).height() - $table.removeClass('layui-hide').offset().top - 20;
+            } else if ($table.parents('.laytable-pagination').size()) {
+                option.height = $table.parents('.laytable-pagination').height() - $table.removeClass('layui-hide').position().top - 20;
             } else {
                 option.height = $(window).height() - $table.removeClass('layui-hide').offset().top - 35;
             }
@@ -684,13 +688,17 @@ $(function () {
                 if (option.page === false) (opts || {}).page = false;
                 data = $.extend({}, data, (opts || {}).where || {});
                 opts = bindData($.extend({}, opts || {}, {loading: true}));
-                if (evt.type.indexOf('reload') > -1) {
-                    layui.table.reloadData(table.id, opts);
-                } else {
-                    layui.table.render(table.id, opts);
-                }
+                table.id.split(',').map(function (tableid) {
+                    if (evt.type.indexOf('reload') > -1) {
+                        layui.table.reloadData(tableid, opts);
+                    } else {
+                        layui.table.render(tableid, opts);
+                    }
+                })
             }).bind('row sort tool edit radio toolbar checkbox rowDouble', function (evt, call) {
-                layui.table.on(evt.type + '(' + table.dataset.id + ')', call)
+                table.id.split(',').map(function (tableid) {
+                    layui.table.on(evt.type + '(' + tableid + ')', call)
+                })
             }).bind('setFullHeight', function () {
                 $table.trigger('render', {height: $(window).height() - $table.next().offset().top - 35})
             }).trigger('sort', function (rets) {
@@ -797,9 +805,12 @@ $(function () {
 
     /*! 注册 data-search 表单搜索行为 */
     $.base.onEvent('submit', 'form.form-search', function () {
-        if (this.dataset.tableId) return $('table#' + this.dataset.tableId).trigger('reload', {
-            page: {curr: 1}, where: $(this).formToJson()
-        });
+        if (this.dataset.tableId) {
+            let data = $(this).formToJson();
+            return this.dataset.tableId.split(',').map(function (tableid) {
+                $('table#' + tableid).trigger('reload', {page: {curr: 1}, where: data});
+            });
+        }
         let url = $(this).attr('action').replace(/&?page=\d+/g, '');
         if ((this.method || 'get').toLowerCase() === 'get') {
             let split = url.indexOf('?') > -1 ? '&' : '?', stype = location.href.indexOf('spm=') > -1 ? '#' : '';

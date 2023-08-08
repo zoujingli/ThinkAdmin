@@ -84,7 +84,7 @@ class PaymentService
             }
             $config = WechatService::getConfig();
             do $pCode = CodeExtend::uniqidNumber(16, 'P');
-            while (WechatPaymentRecord::mk()->where(['code' => $pCode])->findOrEmpty()->isExists());
+            while (WechatPaymentRecord::mk()->master()->where(['code' => $pCode])->findOrEmpty()->isExists());
             $data = [
                 'appid'        => $config['appid'],
                 'mchid'        => $config['mch_id'],
@@ -207,7 +207,7 @@ class PaymentService
         }
         // 创建支付退款申请
         do $rcode = CodeExtend::uniqidNumber(16, 'R');
-        while (($model = WechatPaymentRefund::mk()->where(['code' => $rcode])->findOrEmpty())->isExists());
+        while (($model = WechatPaymentRefund::mk()->master()->where(['code' => $rcode])->findOrEmpty())->isExists());
         // 初始化退款申请记录
         $model->save(['code' => $rcode, 'record_code' => $pcode, 'refund_amount' => $amount, 'refund_remark' => $reason]);
         $options = [
@@ -354,14 +354,14 @@ class PaymentService
     {
         // 检查是否已经支付
         if (static::withPayed($oCode, $oPayed) >= floatval($oAmount)) {
-            throw new Exception("订单 {$oCode} 已经完成支付！", 1);
+            throw new Exception("已经完成支付", 1);
         }
         if ($oPayed + floatval($pAmount) > floatval($oAmount)) {
-            throw new Exception('总支付大于订单金额！', 0);
+            throw new Exception('总支付超出金额', 0);
         }
         $map = ['order_code' => $oCode, 'payment_status' => 1];
         $model = WechatPaymentRecord::mk()->where($map)->findOrEmpty();
-        if ($model->isExists()) throw new Exception("订单 {$oCode} 已经完成支付！", 1);
+        if ($model->isExists()) throw new Exception("已经完成支付", 1);
         // 写入订单支付行为
         $model->save([
             'type'         => $pType,

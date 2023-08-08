@@ -72,8 +72,13 @@
                     item.is_black ? '已拉黑' : '未拉黑',
                 ];
             });
+
+            // 设置表头内容
             data.unshift(['OPENID', '微信昵称', '所在国家', '所在省份', '所在城市', '性别', '订阅状态', '订阅时间', '是否拉黑']);
-            return data;
-        }, '微信粉丝数据');
+
+            // 应用表格样式
+            return this.withStyle(data, {A: 200, H: 120});
+
+        }, '微信粉丝数据' + layui.util.toDateString(Date.now(), '_yyyyMMdd_HHmmss'));
     });
 </script>

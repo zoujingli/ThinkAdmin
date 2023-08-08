@@ -166,13 +166,14 @@ class WechatService extends Service
 
     /**
      * 获取公众号配置参数
+     * @param string $appid
      * @return array
      * @throws \think\admin\Exception
      */
-    public static function getConfig(): array
+    public static function getConfig(string $appid = ''): array
     {
-        $config = [
-            'appid'          => static::getAppid(),
+        return static::withWxpayCert([
+            'appid'          => $appid ?: static::getAppid(),
             'token'          => sysconf('wechat.token'),
             'appsecret'      => sysconf('wechat.appsecret'),
             'encodingaeskey' => sysconf('wechat.encodingaeskey'),
@@ -180,12 +181,7 @@ class WechatService extends Service
             'mch_key'        => sysconf('wechat.mch_key'),
             'mch_v3_key'     => sysconf('wechat.mch_v3_key'),
             'cache_path'     => syspath('runtime/wechat'),
-        ];
-
-
-        return static::withWxpayCert($config);
-
-
+        ]);
     }
 
     /**
@@ -239,6 +235,8 @@ class WechatService extends Service
     public static function getWebOauthInfo(string $source, int $isfull = 0, bool $redirect = true): array
     {
         $appid = static::getAppid();
+        $sessid = Library::$sapp->session->getId();
+        $script =
         $openid = Library::$sapp->session->get("{$appid}_openid");
         $userinfo = Library::$sapp->session->get("{$appid}_fansinfo");
         if ((empty($isfull) && !empty($openid)) || (!empty($isfull) && !empty($openid) && !empty($userinfo))) {
@@ -269,7 +267,7 @@ class WechatService extends Service
             }
             if ($getVars['rcode']) {
                 $location = debase64url($getVars['rcode']);
-                throw new HttpResponseException($redirect ? redirect($location, 301) : response("location.href='{$location}'"));
+                throw new HttpResponseException($redirect ? redirect($location, 301) : response("location.href='{$location}';localStorage.setItem('wechat.session','{$sessid}');"));
             } elseif ((empty($isfull) && !empty($openid)) || (!empty($isfull) && !empty($openid) && !empty($userinfo))) {
                 return ['openid' => $openid, 'fansinfo' => $userinfo];
             } else {
@@ -286,7 +284,7 @@ class WechatService extends Service
             if ($redirect) {
                 throw new HttpResponseException(redirect($result['url'], 301));
             } else {
-                throw new HttpResponseException(response("location.href='{$result['url']}'"));
+                throw new HttpResponseException(response("location.href='{$result['url']}';localStorage.setItem('wechat.session','{$sessid}');"));
             }
         }
     }

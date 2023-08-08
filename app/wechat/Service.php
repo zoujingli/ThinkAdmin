@@ -38,7 +38,7 @@ class Service extends Plugin
      * 定义插件名称
      * @var string
      */
-    protected $appName = '微信管理';
+    protected $appName = '微信数据管理';
 
     /**
      * 定义安装包名
@@ -66,7 +66,7 @@ class Service extends Plugin
                 $data = json_decode(CodeExtend::deSafe64($request->param('vars')), true);
                 return PaymentService::notify($data);
             } catch (\Exception|\Error $exception) {
-                return 'Error: ' . $exception->getMessage();
+                return "Error: {$exception->getMessage()}";
             }
         });
     }

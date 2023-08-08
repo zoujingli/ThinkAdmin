@@ -17,6 +17,7 @@
 namespace app\admin\controller;
 
 use think\admin\Controller;
+use think\admin\Plugin;
 use think\admin\service\AdminService;
 use think\admin\service\ModuleService;
 use think\admin\service\RuntimeService;
@@ -57,6 +58,11 @@ class Config extends Controller
         $this->files = Storage::types();
         $this->super = AdminService::isSuper();
         $this->version = ModuleService::getVersion();
+        $this->plugins = Plugin::get('', true);
+        uasort($this->plugins, function ($a, $b) {
+            if ($a['space'] === $b['space']) return 0;
+            return $a['space'] > $b['space'] ? 1 : -1;
+        });
         $this->fetch();
     }
 

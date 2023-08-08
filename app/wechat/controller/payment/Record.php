@@ -65,9 +65,9 @@ class Record extends Controller
             $recode = WechatPaymentRecord::mk()->where($data)->findOrEmpty();
             if ($recode->isEmpty()) $this->error('支付单不存在！');
             if ($recode->getAttr('payment_status') < 1) $this->error('支付单未完成支付！');
-            $desc = "来自订单 {$recode['order_code']} 的退款！";
+            $reason = "来自订单 {$recode['order_code']} 的退款！";
             sysoplog('微信支付退款', "支付单 {$data['code']} 发起退款！");
-            [$state, $message] = PaymentService::refund($data['code'], $recode->getAttr('payment_amount'), $desc);
+            [$state, $message] = PaymentService::refund($data['code'], $recode->getAttr('payment_amount'), $reason);
             $state ? $this->success($message) : $this->error($message);
         } catch (HttpResponseException $exception) {
             throw $exception;

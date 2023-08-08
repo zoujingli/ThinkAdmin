@@ -149,7 +149,7 @@
         <table class="layui-table" lay-even>
             <tbody>
             <tr>
-                <th class="nowrap text-center">核心框架</th>
+                <th class="nowrap text-center" style="max-width:20%">核心框架</th>
                 <td><a target="_blank" href="https://www.thinkphp.cn">ThinkPHP Version {$app->version()}</a></td>
             </tr>
             <tr>
@@ -164,6 +164,43 @@
                 <th class="nowrap text-center">运行环境</th>
                 <td>{:ucfirst($request->server('SERVER_SOFTWARE',php_sapi_name()))} & PHP {$Think.const.PHP_VERSION} & {:ucfirst(app()->db->connect()->getConfig('type'))}</td>
             </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div class="layui-card padding-20 shadow">
+    <div class="layui-card-header notselect">
+        <b>插件信息</b><span class="color-desc font-s12 padding-left-5">Plugin Information</span>
+    </div>
+    <div class="layui-card-body">
+        <table class="layui-table" lay-even>
+            <thead>
+            <tr>
+                <th class="nowrap text-center">插件名称</th>
+                <th class="nowrap text-left">插件ID</th>
+                <th class="nowrap text-left">插件包名</th>
+                <th class="nowrap text-center">插件版本</th>
+                <th class="nowrap text-center">授权协议</th>
+            </tr>
+            </thead>
+            <tbody>
+            {foreach $plugins as $key=>$plugin}
+            <tr>
+                <td class="nowrap text-center">{$plugin.name}</td>
+                <td class="nowrap text-left">{$key}</td>
+                <td class="nowrap text-left">
+                    {if empty($plugin.install.document)}{$plugin.package}
+                    {else}<a target="_blank" href="{$plugin.install.document}">{$plugin.package}</a>{/if}
+                </td>
+                <td class="nowrap text-center">{$plugin.install.version|default='unknow'}</td>
+                <td class="nowrap text-center">
+                    {if empty($plugin.install.license)} -
+                    {elseif is_array($plugin.install.license)}{$plugin.install.license|join='、',###}
+                    {else}{$plugin.install.license|default='-'}{/if}
+                </td>
+            </tr>
+            {/foreach}
             </tbody>
         </table>
     </div>

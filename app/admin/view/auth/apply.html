@@ -20,7 +20,7 @@
                 view: {showLine: false, showIcon: false, dblClickExpand: false},
                 check: {enable: true, nocheck: false, chkboxType: {"Y": "ps", "N": "ps"}}, callback: {
                     beforeClick: function (id, node) {
-                        node.children.length < 1 ? that.ztree.checkNode(node, !node.checked, null, true) : that.ztree.expandNode(node);
+                        node.children.length < 1 ? that.ztree.checkNode(node, !node.checked, true, true) : that.ztree.expandNode(node);
                         return false;
                     }
                 }
@@ -67,6 +67,7 @@
 {block name="style"}
 <style>
     ul.ztree li {
+        line-height: 24px;
         white-space: normal !important;
     }
 
@@ -80,25 +81,43 @@
     }
 
     ul.ztree > li {
-        padding: 15px 25px 15px 15px;
+        border: 1px solid rgba(0, 0, 0, 0.10);
+        padding: 15px;
+        background: rgba(0, 0, 0, 0.05);
+        border-radius: 3px;
+        margin-bottom: 10px;
     }
 
     ul.ztree > li > ul {
-        margin-top: 12px;
-        border-top: 1px solid rgba(0, 0, 0, .1);
+        padding: 10px;
+        margin-top: 10px;
+        background: rgba(0, 0, 0, 0.05);
+        border-radius: 3px;
     }
 
     ul.ztree > li > ul > li {
-        padding: 5px;
+        padding: 5px 0;
     }
 
     ul.ztree > li > a > span {
-        font-weight: 700;
         font-size: 15px;
+        font-weight: 700;
     }
 
     ul.ztree .level2 .button.level2 {
-        background: 0 0;
+        width: 0;
+    }
+
+    ul.ztree li span.button.noline_open {
+        background-position-y: -73px;
+    }
+
+    ul.ztree li span.button.noline_close {
+        background-position-y: -73px;
+    }
+
+    ul.ztree .level1 > .node_name {
+        font-weight: bold;
     }
 </style>
 {/block}
