@@ -2,11 +2,11 @@
 
 {block name="button"}
 <!--{if auth("remove")}-->
-<button data-table-id="OplogTable" data-action='{:url("remove")}' data-rule="id#{id}" data-confirm="确定要删除选中的日志吗？" class='layui-btn layui-btn-sm layui-btn-primary'>批量删除</button>
+<button data-table-id="OplogTable" data-action='{:url("remove")}' data-rule="id#{id}" data-confirm="确定要删除选中的日志吗？" class='layui-btn layui-btn-sm layui-btn-primary'>{:lang('批量删除')}</button>
 <!--{/if}-->
 
 <!--{if auth("clear")}-->
-<button data-table-id="OplogTable" data-load='{:url("clear")}' data-confirm="确定要清空所有日志吗？" class='layui-btn layui-btn-sm layui-btn-primary'>清空日志</button>
+<button data-table-id="OplogTable" data-load='{:url("clear")}' data-confirm="确定要清空所有日志吗？" class='layui-btn layui-btn-sm layui-btn-primary'>{:lang('清空数据')}</button>
 <!--{/if}-->
 {/block}
 
@@ -26,14 +26,14 @@
             cols: [[
                 {checkbox: true},
                 {field: 'id', title: 'ID', width: 80, sort: true, align: 'center'},
-                {field: 'username', title: '操作账号', minWidth: 100, sort: true, align: 'center'},
-                {field: 'node', title: '操作节点', minWidth: 120},
-                {field: 'action', title: '操作行为', minWidth: 120},
-                {field: 'content', title: '操作描述', minWidth: 150},
-                {field: 'geoip', title: '访问地址', minWidth: 100},
-                {field: 'geoisp', title: '网络服务商', minWidth: 100},
-                {field: 'create_at', title: '操作时间', minWidth: 170, align: 'center', sort: true},
-                {toolbar: '#toolbar', title: '操作面板', align: 'center', minWidth: 80, fixed: 'right'}
+                {field: 'username', title: '{:lang("操作账号")}', minWidth: 100, sort: true, align: 'center'},
+                {field: 'node', title: '{:lang("操作节点")}', minWidth: 120},
+                {field: 'action', title: '{:lang("操作行为")}', minWidth: 120},
+                {field: 'content', title: '{:lang("操作内容")}', minWidth: 150},
+                {field: 'geoip', title: '{:lang("访问地址")}', minWidth: 100},
+                {field: 'geoisp', title: '{:lang("网络服务商")}', minWidth: 100},
+                {field: 'create_at', title: '{:lang("创建时间")}', minWidth: 170, align: 'center', sort: true},
+                {toolbar: '#toolbar', title: '{:lang("操作面板")}', align: 'center', minWidth: 80, fixed: 'right'}
             ]]
         });
     });
@@ -41,7 +41,7 @@
 
 <script type="text/html" id="toolbar">
     <!--{if auth('remove')}-->
-    <a data-action='{:url("remove")}' data-value="id#{{d.id}}" data-confirm="确认要删除这条记录吗？" class="layui-btn layui-btn-sm layui-btn-danger">删 除</a>
+    <a data-action='{:url("remove")}' data-value="id#{{d.id}}" data-confirm="确认要删除这条记录吗？" class="layui-btn layui-btn-sm layui-btn-danger">{:lang('删 除')}</a>
     <!--{/if}-->
 </script>
 {/block}

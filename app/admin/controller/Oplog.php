@@ -78,7 +78,7 @@ class Oplog extends Controller
             throw $exception;
         } catch (\Exception $exception) {
             trace_file($exception);
-            $this->error("日志清理失败，{$exception->getMessage()}");
+            $this->error(lang("日志清理失败，%s", [$exception->getMessage()]));
         }
     }
 

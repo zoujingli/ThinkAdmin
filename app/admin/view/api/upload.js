@@ -2,10 +2,10 @@ define(['md5', 'notify'], function (SparkMD5, Notify, allowMime) {
     allowMime = JSON.parse('{$exts|raw}');
 
     function UploadAdapter(elem, done) {
-        return new (function (elem, done, that) {
+        return new (function (elem, done) {
+            let that = this;
 
             /*! 初始化变量 */
-            that = this;
             this.option = {elem: $(elem), exts: [], mimes: []};
             this.option.size = this.option.elem.data('size') || 0;
             this.option.safe = this.option.elem.data('safe') ? 1 : 0;
@@ -69,21 +69,22 @@ define(['md5', 'notify'], function (SparkMD5, Notify, allowMime) {
 
     // 文件推送
     Adapter.prototype.upload = function (files, done) {
-        var that = this.init();
+        let that = this.init();
         layui.each(files, function (index, file) {
             that.count.total++, file.index = index, that.files[index] = file;
             if (!that.option.hide && !file.notify) {
                 file.notify = new NotifyExtend(file);
             }
             if (that.option.size && file.size > that.option.size) {
-                that.event('upload.error', {file: file}, file, '大小超出限制！');
+                that.event('upload.error', {file: file}, file, '{:lang("大小超出限制！")}');
             }
         });
         layui.each(files, function (index, file) {
             // 禁传异常状态文件
             if (typeof file.xstate === 'number' && file.xstate === -1) return;
             // 图片限宽限高压缩
-            if (/^image\//.test(file.type) && (file.maxWidth + file.maxHeight + file.cutWidth + file.cutHeight > 0 || file.quality !== 1)) {
+            let isGif = /^image\/gif/.test(file.type);
+            if (!isGif && /^image\//.test(file.type) && (file.maxWidth + file.maxHeight + file.cutWidth + file.cutHeight > 0 || file.quality !== 1)) {
                 require(['compressor'], function (Compressor) {
                     let options = {quality: file.quality, resize: 'cover'};
                     if (file.cutWidth) options.width = file.cutWidth;
@@ -97,7 +98,7 @@ define(['md5', 'notify'], function (SparkMD5, Notify, allowMime) {
                                 that.event('upload.hash', file).request(file, done);
                             });
                         }, error: function () {
-                            that.event('upload.error', {file: file}, file, '压缩失败');
+                            that.event('upload.error', {file: file}, file, '{:lang("图片压缩失败！")}');
                         }
                     }));
                 });
@@ -111,14 +112,14 @@ define(['md5', 'notify'], function (SparkMD5, Notify, allowMime) {
 
     // 文件上传
     Adapter.prototype.request = function (file, done) {
-        var that = this, data = {key: file.xkey, safe: that.option.safe, uptype: that.option.type};
+        let that = this, data = {key: file.xkey, safe: that.option.safe, uptype: that.option.type};
         data.size = file.size, data.name = file.name, data.hash = file.xmd5, data.mime = file.type, data.xext = file.xext;
         jQuery.ajax("{:url('admin/api.upload/state',[],false,true)}", {
             data: data, method: 'post', success: function (ret) {
                 file.id = ret.data.id || 0, file.xurl = ret.data.url;
                 file.xsafe = ret.data.safe, file.xpath = ret.data.key, file.xtype = ret.data.uptype;
                 if (parseInt(ret.code) === 404) {
-                    var uploader = {};
+                    let uploader = {};
                     uploader.uptype = ret.data.uptype;
                     uploader.url = ret.data.server;
                     uploader.head = {};
@@ -157,15 +158,14 @@ define(['md5', 'notify'], function (SparkMD5, Notify, allowMime) {
                         uploader.form.append('Content-Disposition', 'inline;filename=' + encodeURIComponent(file.name));
                     }
                     uploader.form.append('file', file, file.name), jQuery.ajax({
-                        xhrFields: {withCredentials: ret.data.uptype === 'local'}, headers: uploader.head,
-                        url: uploader.url, data: uploader.form, type: uploader.type || 'post', xhr: function (xhr) {
+                        xhrFields: {withCredentials: ret.data.uptype === 'local'}, headers: uploader.head, url: uploader.url, data: uploader.form, type: uploader.type || 'post', xhr: function (xhr) {
                             xhr = new XMLHttpRequest();
                             return xhr.upload.addEventListener('progress', function (event) {
                                 file.xtotal = event.total, file.xloaded = event.loaded || 0;
                                 that.progress((file.xloaded / file.xtotal * 100).toFixed(2), file)
                             }), xhr;
                         }, contentType: false, error: function () {
-                            that.event('upload.error', {file: file}, file, '接口异常');
+                            that.event('upload.error', {file: file}, file, '{:lang("上传接口异常！")}');
                         }, processData: false, success: function (ret) {
                             // 兼容数据格式
                             if (typeof ret === 'string' && ret.length > 0) try {
@@ -174,23 +174,23 @@ define(['md5', 'notify'], function (SparkMD5, Notify, allowMime) {
                                 console.log(e)
                             }
                             if (typeof ret !== 'object') {
-                                ret = {code: 1, url: file.xurl, info: '上传成功'};
+                                ret = {code: 1, url: file.xurl, info: '{:lang("文件上传成功！")}'};
                             }
                             /*! 检查单个文件上传返回的结果 */
                             if (typeof ret === 'object' && ret.code < 1) {
-                                that.event('upload.error', {file: file}, file, ret.info || '上传失败');
+                                that.event('upload.error', {file: file}, file, ret.info || '{:lang("文件上传失败！")}');
                             } else if (uploader.uptype === 'alist' && parseInt(ret.code) !== 200) {
-                                that.event('upload.error', {file: file}, file, ret.message || '上传失败');
+                                that.event('upload.error', {file: file}, file, ret.message || '{:lang("文件上传失败！")}');
                             } else {
-                                that.done(ret, file.index, file, done, '上传成功');
+                                that.done(ret, file.index, file, done, '{:lang("文件上传成功！")}');
                             }
                         }
                     });
                 } else if (parseInt(ret.code) === 200) {
                     (file.xurl = ret.data.url), that.progress('100.00', file);
-                    that.done({code: 1, url: file.xurl, info: file.xstats}, file.index, file, done, '秒传成功');
+                    that.done({code: 1, url: file.xurl, info: file.xstats}, file.index, file, done, '{:lang("文件秒传成功！")}');
                 } else {
-                    that.event('upload.error', {file: file}, file, ret.info || ret.error.message || '上传出错！');
+                    that.event('upload.error', {file: file}, file, ret.info || ret.error.message || '{:lang("文件上传出错！")}');
                 }
             }
         });
@@ -205,8 +205,8 @@ define(['md5', 'notify'], function (SparkMD5, Notify, allowMime) {
     // 上传结果
     Adapter.prototype.done = function (ret, idx, file, done, message) {
         /*! 检查单个文件上传返回的结果 */
-        if (ret.code < 1) return $.msg.tips(ret.info || '文件上传失败！');
-        if (typeof file.xurl !== 'string') return $.msg.tips('无效的文件上传对象！');
+        if (ret.code < 1) return $.msg.tips(ret.info || '{:lang("文件上传失败！")}');
+        if (typeof file.xurl !== 'string') return $.msg.tips('{:lang("无效的文件上传对象！")}');
         jQuery.post("{:url('admin/api.upload/done',[],false,true)}", {id: file.id, hash: file.xmd5});
         /*! 单个文件上传成功结果处理 */
         if (typeof done === 'function') {
@@ -220,9 +220,9 @@ define(['md5', 'notify'], function (SparkMD5, Notify, allowMime) {
         if (this.count.success + this.count.error >= this.count.total) {
             this.option.hide || $.msg.close(this.loader);
             if (this.option.mult > 0 && this.option.elem.data('input')) {
-                var urls = this.option.elem.data('input').value || [];
+                let urls = this.option.elem.data('input').value || [];
                 if (typeof urls === 'string') urls = urls.split('|');
-                for (var i in this.files) urls.push(this.files[i].xurl);
+                for (let i in this.files) urls.push(this.files[i].xurl);
                 $(this.option.elem.data('input')).val(urls.join('|')).trigger('change', this.files);
             }
             this.event('upload.complete', {file: this.files}, file).init().uploader && this.uploader.reload();
@@ -250,11 +250,11 @@ define(['md5', 'notify'], function (SparkMD5, Notify, allowMime) {
      * @return {Promise}
      */
     Adapter.prototype.hash = function (file) {
-        var defer = jQuery.Deferred();
+        let defer = jQuery.Deferred();
         file.xext = file.name.indexOf('.') > -1 ? file.name.split('.').pop() : 'tmp';
 
         /*! 兼容不能计算文件 HASH 的情况 */
-        var IsDate = '{$nameType|default=""}'.indexOf('date') > -1;
+        let IsDate = '{$nameType|default=""}'.indexOf('date') > -1;
         if (!window.FileReader || IsDate) return jQuery.when((function (xmd5, chars) {
             while (xmd5.length < 32) xmd5 += chars.charAt(Math.floor(Math.random() * chars.length));
             return SetFileXdata(file, xmd5, 6), defer.promise();
@@ -271,8 +271,8 @@ define(['md5', 'notify'], function (SparkMD5, Notify, allowMime) {
         }
 
         function LoadNextChunk(file) {
-            var that = this, reader = new FileReader(), spark = new SparkMD5.ArrayBuffer();
-            var slice = File.prototype.slice || File.prototype.mozSlice || File.prototype.webkitSlice;
+            let that = this, reader = new FileReader(), spark = new SparkMD5.ArrayBuffer();
+            let slice = File.prototype.slice || File.prototype.mozSlice || File.prototype.webkitSlice;
             this.chunkIdx = 0, this.chunkSize = 2097152, this.chunkTotal = Math.ceil(file.size / this.chunkSize);
             reader.onload = function (event) {
                 spark.append(event.target.result);
@@ -297,8 +297,8 @@ define(['md5', 'notify'], function (SparkMD5, Notify, allowMime) {
      * @constructor
      */
     function NotifyExtend(file) {
-        var that = this;
-        this.notify = Notify.notify({width: 260, title: file.name, showProgress: true, description: '上传进度 <span data-upload-progress>0%</span>', type: 'default', position: 'top-right', closeTimeout: 0});
+        let that = this, message = "{:lang('上传进度 %s', ['<span data-upload-progress>0%</span>'])}";
+        this.notify = Notify.notify({width: 260, title: file.name, showProgress: true, description: message, type: 'default', position: 'top-right', closeTimeout: 0});
         this.$elem = $(this.notify.notification.nodes);
         this.$elem.find('.growl-notification__progress').addClass('is-visible');
         this.$elem.find('.growl-notification__progress-bar').addClass('transition');
@@ -307,12 +307,12 @@ define(['md5', 'notify'], function (SparkMD5, Notify, allowMime) {
             this.$elem.find('.growl-notification__progress-bar').css({width: number + '%'});
             return this;
         }, this.setError = function (message) {
-            this.$elem.find('.growl-notification__desc').html(message || '文件上传失败！');
+            this.$elem.find('.growl-notification__desc').html(message || '{:lang("文件上传失败！")}');
             this.$elem.removeClass('growl-notification--default').addClass('growl-notification--error')
             return this.close();
         }, this.setSuccess = function (message) {
             this.setProgress('100.00');
-            this.$elem.find('.growl-notification__desc').html(message || '文件上传成功！');
+            this.$elem.find('.growl-notification__desc').html(message || '{:lang("文件上传成功！")}');
             this.$elem.removeClass('growl-notification--default').addClass('growl-notification--success');
             return this.close();
         }, this.close = function (timeout) {

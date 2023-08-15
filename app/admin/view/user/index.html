@@ -3,17 +3,17 @@
 {block name="button"}
 {if isset($type) and $type eq 'index'}
 <!--{if auth("add")}-->
-<button data-modal='{:url("add")}' data-title="添加用户" class='layui-btn layui-btn-sm layui-btn-primary'>添加用户</button>
+<button data-modal='{:url("add")}' data-title="{:lang('添加用户')}" class='layui-btn layui-btn-sm layui-btn-primary'>{:lang('添加用户')}</button>
 <!--{/if}-->
 <!--{if auth("state")}-->
-<a data-confirm="确定要启用该用户吗？" data-table-id="UserTable" data-action="{:url('state')}" data-rule="id#{id};status#0" class='layui-btn layui-btn-sm layui-btn-primary'>批量禁用</a>
+<a data-confirm="确定要启用该用户吗？" data-table-id="UserTable" data-action="{:url('state')}" data-rule="id#{id};status#0" class='layui-btn layui-btn-sm layui-btn-primary'>{:lang('批量禁用')}</a>
 <!--{/if}-->
 {else}
 <!--{if auth("state")}-->
-<a data-confirm="确定要恢复这些账号吗？" data-table-id="UserTable" data-action="{:url('state')}" data-rule="id#{id};status#1" class='layui-btn layui-btn-sm layui-btn-primary'>批量恢复</a>
+<a data-confirm="确定要恢复这些账号吗？" data-table-id="UserTable" data-action="{:url('state')}" data-rule="id#{id};status#1" class='layui-btn layui-btn-sm layui-btn-primary'>{:lang('批量恢复')}</a>
 <!--{/if}-->
 <!--{if auth("remove")}-->
-<a data-confirm="确定永久删除这些账号吗？" data-table-id="UserTable" data-action='{:url("remove")}' data-rule="id#{id}" class='layui-btn layui-btn-sm layui-btn-primary'>批量删除</a>
+<a data-confirm="确定永久删除这些账号吗？" data-table-id="UserTable" data-action='{:url("remove")}' data-rule="id#{id}" class='layui-btn layui-btn-sm layui-btn-primary'>{:lang('批量删除')}</a>
 <!--{/if}-->
 {/if}
 {/block}
@@ -21,7 +21,7 @@
 {block name="content"}
 <div class="layui-tab layui-tab-card">
     <ul class="layui-tab-title">
-        {foreach ['index'=>'系统用户','recycle'=>'回 收 站'] as $k=>$v}{if isset($type) and $type eq $k}
+        {foreach ['index'=>lang('系统用户'),'recycle'=>lang('回 收 站')] as $k=>$v}{if isset($type) and $type eq $k}
         <li data-open="{:url('index')}?type={$k}" class="layui-this">{$v}</li>
         {else}
         <li data-open="{:url('index')}?type={$k}">{$v}</li>
@@ -40,18 +40,18 @@
             where: {type: '{$type|default="index"}'},
             cols: [[
                 {checkbox: true, fixed: true},
-                {field: 'sort', title: '排序权重', width: 100, align: 'center', sort: true, templet: '#SortInputTpl'},
+                {field: 'sort', title: '{:lang("排序权重")}', width: 100, align: 'center', sort: true, templet: '#SortInputTpl'},
                 {
-                    field: 'headimg', title: '头像', width: 60, align: 'center', templet: function (d) {
+                    field: 'headimg', title: '{:lang("头像")}', width: 60, align: 'center', templet: function (d) {
                         if (!d.headimg) return '-';
                         return layui.laytpl('<div class="headimg headimg-ss shadow-inset margin-0" data-tips-image data-tips-hover data-lazy-src="{{d.headimg}}"></div>').render(d);
                     }
                 },
-                {field: 'username', title: '登录账号', minWidth: 100, align: 'center', templet: '<div>{{d.username||"-"}}</div>'},
-                {field: 'nickname', title: '用户名称', minWidth: 100, align: 'center', templet: '<div>{{d.nickname||"-"}}</div>'},
+                {field: 'username', title: '{:lang("登录账号")}', minWidth: 100, align: 'center', templet: '<div>{{d.username||"-"}}</div>'},
+                {field: 'nickname', title: '{:lang("用户名称")}', minWidth: 100, align: 'center', templet: '<div>{{d.nickname||"-"}}</div>'},
                 /* {notempty name='bases'} */
                 {
-                    field: 'usertype', title: '角色身份', minWidth: 100, align: 'center', templet: function (d) {
+                    field: 'usertype', title: '{:lang("角色身份")}', minWidth: 100, align: 'center', templet: function (d) {
                         d.userinfo = d.userinfo || {};
                         return d.userinfo.code ? (d.userinfo.name + ' ( ' + d.userinfo.code + ' ) ') : '-';
                     }
@@ -59,11 +59,11 @@
                 /* {/notempty} */
                 // {field: 'contact_mail', title: '联系邮箱', minWidth: 80, templet: '<div>{{d.contact_mail||"-"}}</div>'},
                 // {field: 'contact_phone', title: '联系电话', minWidth: 80, templet: '<div>{{d.contact_phone||"-"}}</div>'},
-                {field: 'status', title: '账号状态', align: 'center', minWidth: 110, templet: '#StatusSwitchTpl'},
-                {field: 'login_num', title: '登录次数', align: 'center', minWidth: 100, sort: true},
-                {field: 'login_at', title: '最后登录', align: 'center', minWidth: 170, sort: true},
-                {field: 'create_at', title: '创建时间', align: 'center', minWidth: 170, sort: true},
-                {toolbar: '#toolbar', title: '操作面板', align: 'center', minWidth: 150, fixed: 'right'}
+                {field: 'status', title: '{:lang("使用状态")}', align: 'center', minWidth: 110, templet: '#StatusSwitchTpl'},
+                {field: 'login_num', title: '{:lang("登录次数")}', align: 'center', minWidth: 100, sort: true},
+                {field: 'login_at', title: '{:lang("最后登录")}', align: 'center', minWidth: 170, sort: true},
+                {field: 'create_at', title: '{:lang("创建时间")}', align: 'center', minWidth: 170, sort: true},
+                {toolbar: '#toolbar', title: '{:lang("操作面板")}', align: 'center', minWidth: 180, fixed: 'right'}
             ]]
         });
 
@@ -85,9 +85,9 @@
 <!-- 数据状态切换模板 -->
 <script type="text/html" id="StatusSwitchTpl">
     <!--{if auth("state")}-->
-    <input type="checkbox" value="{{d.id}}" lay-skin="switch" lay-text="已激活|已禁用" lay-filter="StatusSwitch" {{-d.status>0?'checked':''}}>
+    <input type="checkbox" value="{{d.id}}" lay-skin="switch" lay-text="{:lang('已激活')}|{:lang('已禁用')}" lay-filter="StatusSwitch" {{-d.status>0?'checked':''}}>
     <!--{else}-->
-    {{-d.status ? '<b class="color-green">已启用</b>' : '<b class="color-red">已禁用</b>'}}
+    {{-d.status ? '<b class="color-green">{:lang("已激活")}</b>' : '<b class="color-red">{:lang("已禁用")}</b>'}}
     <!--{/if}-->
 </script>
 
@@ -99,17 +99,17 @@
 <script type="text/html" id="toolbar">
     {if isset($type) and $type eq 'index'}
     <!--{if auth("edit")}-->
-    <a class="layui-btn layui-btn-sm" data-event-dbclick data-title="编辑用户" data-modal='{:url("edit")}?id={{d.id}}'>编 辑</a>
+    <a class="layui-btn layui-btn-sm" data-event-dbclick data-title="{:lang('编辑用户')}" data-modal='{:url("edit")}?id={{d.id}}'>{:lang('编 辑')}</a>
     <!--{/if}-->
     <!--{if auth("pass")}-->
-    <a class="layui-btn layui-btn-sm layui-btn-normal" data-title="设置密码" data-modal='{:url("pass")}?id={{d.id}}'>密 码</a>
+    <a class="layui-btn layui-btn-sm layui-btn-normal" data-title="{:lang('设置密码')}" data-modal='{:url("pass")}?id={{d.id}}'>{:lang('密 码')}</a>
     <!--{/if}-->
     {else}
     <!--{if auth("edit")}-->
-    <a class="layui-btn layui-btn-sm" data-event-dbclick data-title="编辑用户" data-modal='{:url("edit")}?id={{d.id}}'>编 辑</a>
+    <a class="layui-btn layui-btn-sm" data-event-dbclick data-title="{:lang('编辑用户')}" data-modal='{:url("edit")}?id={{d.id}}'>{:lang('编 辑')}</a>
     <!--{/if}-->
     <!--{if auth("remove")}-->
-    <a class="layui-btn layui-btn-sm layui-btn-danger" data-confirm="确定要永久删除此账号吗？" data-action="{:url('remove')}" data-value="id#{{d.id}}">删 除</a>
+    <a class="layui-btn layui-btn-sm layui-btn-danger" data-confirm="{:lang('确定要永久删除吗？')}" data-action="{:url('remove')}" data-value="id#{{d.id}}">{:lang('删 除')}</a>
     <!--{/if}-->
     {/if}
 </script>

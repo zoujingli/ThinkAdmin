@@ -2,11 +2,11 @@
 
 {block name="button"}
 <!--{if isset($super) and $super}-->
-<a class="layui-btn layui-btn-sm layui-btn-primary" data-load="{:url('admin/api.system/config')}">清理无效配置</a>
+<a class="layui-btn layui-btn-sm layui-btn-primary" data-load="{:url('admin/api.system/config')}">{:lang('清理无效配置')}</a>
 <!--{/if}-->
 
 <!--{if auth('system')}-->
-<a class="layui-btn layui-btn-sm layui-btn-primary" data-modal="{:url('system')}">修改系统参数</a>
+<a class="layui-btn layui-btn-sm layui-btn-primary" data-modal="{:url('system')}">{:lang('修改系统参数')}</a>
 <!--{/if}-->
 {/block}
 
@@ -14,42 +14,42 @@
 <!--{notempty name='super'}-->
 <div class="layui-card padding-20 shadow">
     <div class="layui-card-header notselect">
-        <b>运行模式</b><span class="color-desc font-s12 padding-left-5">Run Mode</span>
+        <span class="help-label"><b style="color:#333!important;">{:lang('运行模式')}</b> ( {:lang('仅超级管理员可配置')} )</span>
     </div>
     <div class="layui-card-body">
         <div class="layui-btn-group shadow-mini nowrap">
             <!--{if $app->isDebug()}-->
-            <a class="layui-btn layui-btn-sm layui-btn-active">以开发模式运行</a>
-            <a class="layui-btn layui-btn-sm layui-btn-primary" data-confirm="确定要切换到生产模式运行吗？" data-load="{:url('admin/api.system/debug')}?state=1">以生产模式运行</a>
+            <a class="layui-btn layui-btn-sm layui-btn-active">{:lang('以开发模式运行')}</a>
+            <a class="layui-btn layui-btn-sm layui-btn-primary" data-confirm="{:lang('确定要切换到生产模式运行吗？')}" data-load="{:url('admin/api.system/debug')}?state=1">{:lang('以生产模式运行')}</a>
             <!--{else}-->
-            <a class="layui-btn layui-btn-sm layui-btn-primary" data-confirm="确定要切换到开发模式运行吗？" data-load="{:url('admin/api.system/debug')}?state=0">以开发模式运行</a>
-            <a class="layui-btn layui-btn-sm layui-btn-active">以生产模式运行</a>
+            <a class="layui-btn layui-btn-sm layui-btn-primary" data-confirm="{:lang('确定要切换到开发模式运行吗？')}" data-load="{:url('admin/api.system/debug')}?state=0">{:lang('以开发模式运行')}</a>
+            <a class="layui-btn layui-btn-sm layui-btn-active">{:lang('以生产模式运行')}</a>
             <!--{/if}-->
         </div>
         <div class="margin-top-20">
-            <p><b>开发模式</b>：开发人员或在功能调试时使用，系统异常时会显示详细的错误信息，同时还会记录操作日志及数据库 SQL 语句信息。</p>
-            <p><b>生产模式</b>：项目正式部署上线后使用，系统异常时统一显示 “{:config('app.error_message')}”，只记录重要的异常日志信息，强烈推荐上线后使用此模式。</p>
+            <p><b>{:lang('开发模式')}</b>：{:lang('开发人员或在功能调试时使用，系统异常时会显示详细的错误信息，同时还会记录操作日志及数据库 SQL 语句信息。')}</p>
+            <p><b>{:lang('生产模式')}</b>：{:lang('项目正式部署上线后使用，系统异常时统一显示 “%s”，只记录重要的异常日志信息，强烈推荐上线后使用此模式。',[config('app.error_message')])}</p>
         </div>
     </div>
 </div>
 
 <div class="layui-card padding-20 shadow">
     <div class="layui-card-header notselect">
-        <b>富编辑器</b><span class="color-desc font-s12 padding-left-5">Rich Text Editor</span>
+        <span class="help-label"><b style="color:#333!important;">{:lang('富编辑器')}</b> ( {:lang('仅超级管理员可配置')} )</span>
     </div>
     <div class="layui-card-body layui-clear">
-        <div class="layui-btn-group shadow-mini nowrap">
+        <div class="layui-btn-group shadow-mini">
             {if !in_array(sysconf('base.editor'),['ckeditor4','ckeditor5','auto'])}{php}sysconf('base.editor','ckeditor4');{/php}{/if}
-            {foreach ['ckeditor4'=>'CKEditor4','ckeditor5'=>'CKEditor5','auto'=>'自适应模式'] as $k => $v}{if sysconf('base.editor') eq $k}
+            {foreach ['ckeditor4'=>'CKEditor4','ckeditor5'=>'CKEditor5','auto'=>lang('自适应模式')] as $k => $v}{if sysconf('base.editor') eq $k}
             {if auth('storage')}<a data-title="配置{$v}" class="layui-btn layui-btn-sm layui-btn-active">{$v}</a>{else}<a class="layui-btn layui-btn-sm layui-btn-active">{$v}</a>{/if}
             {else}
             {if auth('storage')}<a data-title="配置{$v}" data-action="{:url('admin/api.system/editor')}" data-value="editor#{$k}" class="layui-btn layui-btn-sm layui-btn-primary">{$v}</a>{else}<a class="layui-btn layui-btn-sm layui-btn-primary">{$v}</a>{/if}
             {/if}{/foreach}
         </div>
-        <div class="margin-top-20 nowrap full-width pull-left">
-            <p><b>CKEditor4</b>：旧版本编辑器，对浏览器兼容较好，但内容编辑体验稍有不足。</p>
-            <p><b>CKEditor5</b>：新版本编辑器，只支持新特性浏览器，对内容编辑体验较好，推荐使用。</p>
-            <p><b>自适应模式</b>：优先使用新版本编辑器，若浏览器不支持新版本时自动降级为旧版本编辑器。</p>
+        <div class="margin-top-20 full-width pull-left">
+            <p><b>CKEditor4</b>：{:lang('旧版本编辑器，对浏览器兼容较好，但内容编辑体验稍有不足。')}</p>
+            <p><b>CKEditor5</b>：{:lang('新版本编辑器，只支持新特性浏览器，对内容编辑体验较好，推荐使用。')}</p>
+            <p><b>{:lang('自适应模式')}</b>：{:lang('优先使用新版本编辑器，若浏览器不支持新版本时自动降级为旧版本编辑器。')}</p>
         </div>
     </div>
 </div>
@@ -57,7 +57,7 @@
 
 <div class="layui-card padding-20 shadow">
     <div class="layui-card-header notselect">
-        <b>存储引擎</b><span class="color-desc font-s12 padding-left-5">Storage Engine</span>
+        <span class="help-label"><b style="color:#333!important;">{:lang('存储引擎')}</b> ( {:lang('文件默认存储方式')} )</span>
     </div>
     <!-- 初始化存储配置 -->
     {if !sysconf('storage.type')}{php}sysconf('storage.type','local');{/php}{/if}
@@ -73,69 +73,73 @@
             {if auth('storage')}<a data-title="配置{$v}" data-modal="{:url('storage')}?type={$k}" class="layui-btn layui-btn-sm layui-btn-primary">{$v}</a>{else}<a class="layui-btn layui-btn-sm layui-btn-primary">{$v}</a>{/if}
             {/if}{/foreach}
         </div>
-        <div class="margin-top-20 nowrap full-width pull-left">
-            <p><b>本地服务器存储</b>：文件上传到本地服务器的 `static/upload` 目录，不支持大文件上传，占用服务器磁盘空间，访问时消耗服务器带宽流量。</p>
-            <p><b>自建<code>Alist</code>存储</b>：文件上传到 Alist 存储的服务器或云存储空间，根据服务配置可支持大文件上传，不占用本身服务器空间及服务器带宽流量。</p>
-            <p><b>七牛云对象存储</b>：文件上传到七牛云存储空间，支持大文件上传，不占用服务器空间及服务器带宽流量，支持 CDN 加速访问，访问量大时推荐使用。</p>
-            <p><b>又拍云<code>USS</code>存储</b>：文件上传到又拍云 USS 存储空间，支持大文件上传，不占用服务器空间及服务器带宽流量，支持 CDN 加速访问，访问量大时推荐使用。</p>
-            <p><b>阿里云<code>OSS</code>存储</b>：文件上传到阿里云 OSS 存储空间，支持大文件上传，不占用服务器空间及服务器带宽流量，支持 CDN 加速访问，访问量大时推荐使用。</p>
-            <p><b>腾讯云<code>COS</code>存储</b>：文件上传到腾讯云 COS 存储空间，支持大文件上传，不占用服务器空间及服务器带宽流量，支持 CDN 加速访问，访问量大时推荐使用。</p>
+        <div class="margin-top-20 full-width pull-left">
+            <p><b>{:lang('本地服务器存储')}</b>：{:lang('文件上传到本地服务器的 `static/upload` 目录，不支持大文件上传，占用服务器磁盘空间，访问时消耗服务器带宽流量。')}</p>
+            <p><b>{:lang('自建Alist存储')}</b>：{:lang('文件上传到 Alist 存储的服务器或云存储空间，根据服务配置可支持大文件上传，不占用本身服务器空间及服务器带宽流量。')}</p>
+            <p><b>{:lang('七牛云对象存储')}</b>：{:lang('文件上传到七牛云存储空间，支持大文件上传，不占用服务器空间及服务器带宽流量，支持 CDN 加速访问，访问量大时推荐使用。')}</p>
+            <p><b>{:lang('又拍云USS存储')}</b>：{:lang('文件上传到又拍云 USS 存储空间，支持大文件上传，不占用服务器空间及服务器带宽流量，支持 CDN 加速访问，访问量大时推荐使用。')}</p>
+            <p><b>{:lang('阿里云OSS存储')}</b>：{:lang('文件上传到阿里云 OSS 存储空间，支持大文件上传，不占用服务器空间及服务器带宽流量，支持 CDN 加速访问，访问量大时推荐使用。')}</p>
+            <p><b>{:lang('腾讯云COS存储')}</b>：{:lang('文件上传到腾讯云 COS 存储空间，支持大文件上传，不占用服务器空间及服务器带宽流量，支持 CDN 加速访问，访问量大时推荐使用。')}</p>
         </div>
     </div>
 </div>
 
 <div class="layui-card padding-20 shadow">
     <div class="layui-card-header notselect">
-        <b>系统参数</b><span class="color-desc font-s12 padding-left-5">System Parameter</span>
+        <span class="help-label"><b style="color:#333!important;">{:lang('系统参数')}</b> ( {:lang('当前系统配置参数')} )</span>
     </div>
     <div class="layui-card-body">
         <div class="layui-form-item">
-            <div class="help-label"><b>网站名称</b>Website</div>
+            <div class="help-label"><b>{:lang('网站名称')}</b>Website</div>
             <label class="relative block">
                 <input readonly value="{:sysconf('site_name')}" class="layui-input layui-bg-gray">
                 <a data-copy="{:sysconf('site_name')}" class="layui-icon layui-icon-release input-right-icon"></a>
             </label>
-            <div class="help-block">网站名称及网站图标，将显示在浏览器的标签上。</div>
+            <div class="help-block">{:lang('网站名称及网站图标，将显示在浏览器的标签上。')}</div>
         </div>
         <div class="layui-form-item">
-            <div class="help-label"><b>管理程序名称</b>Name</div>
+            <div class="help-label"><b>{:lang('管理程序名称')}</b>Name</div>
             <label class="relative block">
                 <input readonly value="{:sysconf('app_name')}" class="layui-input layui-bg-gray">
                 <a data-copy="{:sysconf('app_name')}" class="layui-icon layui-icon-release input-right-icon"></a>
             </label>
-            <div class="help-block">管理程序名称，将显示在后台左上角标题。</div>
+            <div class="help-block">{:lang('管理程序名称，将显示在后台左上角标题。')}</div>
         </div>
         <div class="layui-form-item">
-            <div class="help-label"><b>管理程序版本</b>Version</div>
+            <div class="help-label"><b>{:lang('管理程序版本')}</b>Version</div>
             <label class="relative block">
                 <input readonly value="{:sysconf('app_version')}" class="layui-input layui-bg-gray">
                 <a data-copy="{:sysconf('app_version')}" class="layui-icon layui-icon-release input-right-icon"></a>
             </label>
-            <div class="help-block">管理程序版本，将显示在后台左上角标题。</div>
+            <div class="help-block">{:lang('管理程序版本，将显示在后台左上角标题。')}</div>
         </div>
         <div class="layui-form-item">
-            <div class="help-label"><b>公网备案号</b>Beian</div>
+            <div class="help-label"><b>{:lang('公安备案号')}</b>Beian</div>
             <label class="relative block">
                 <input readonly value="{:sysconf('beian')?:'-'}" class="layui-input layui-bg-gray">
                 <a data-copy="{:sysconf('beian')}" class="layui-icon layui-icon-release input-right-icon"></a>
             </label>
-            <p class="help-block">公网备案号，可以在 <a target="_blank" href="https://beian.miit.gov.cn">备案管理中心</a> 查询获取，将在登录页面下面显示。</p>
+            <p class="help-block">
+                {:lang('公安备案号，可以在 %s 查询获取，将在登录页面下面显示。',['<a target="_blank" href="https://www.beian.gov.cn/portal/registerSystemInfo">www.beian.gov.cn</a>'])}
+            </p>
         </div>
         <div class="layui-form-item">
-            <div class="help-label"><b>网站备案号</b>Miitbeian</div>
+            <div class="help-label"><b>{:lang('网站备案号')}</b>Miitbeian</div>
             <label class="relative block">
                 <input readonly value="{:sysconf('miitbeian')?:'-'}" class="layui-input layui-bg-gray">
                 <a data-copy="{:sysconf('miitbeian')}" class="layui-icon layui-icon-release input-right-icon"></a>
             </label>
-            <div class="help-block">网站备案号，可以在 <a target="_blank" href="https://beian.miit.gov.cn">备案管理中心</a> 查询获取，将显示在登录页面下面。</div>
+            <div class="help-block">
+                {:lang('网站备案号，可以在 %s 查询获取，将显示在登录页面下面。',['<a target="_blank" href="https://beian.miit.gov.cn">beian.miit.gov.cn</a>'])}
+            </div>
         </div>
         <div class="layui-form-item">
-            <div class="help-label"><b>网站版权信息</b>Copyright</div>
+            <div class="help-label"><b>{:lang('网站版权信息')}</b>Copyright</div>
             <label class="relative block">
                 <input readonly value="{:sysconf('site_copy')}" class="layui-input layui-bg-gray">
                 <a data-copy="{:sysconf('site_copy')}" class="layui-icon layui-icon-release input-right-icon"></a>
             </label>
-            <div class="help-block">网站版权信息，在后台登录页面显示版本信息并链接到备案到信息备案管理系统。</div>
+            <div class="help-block">{:lang('网站版权信息，在后台登录页面显示版本信息并链接到备案到信息备案管理系统。')}</div>
         </div>
     </div>
 </div>
@@ -143,25 +147,25 @@
 <!--{if $app->isDebug()}-->
 <div class="layui-card padding-20 shadow">
     <div class="layui-card-header notselect">
-        <b>系统信息</b><span class="color-desc font-s12 padding-left-5">System Information</span>
+        <span class="help-label"><b style="color:#333!important;">{:lang('系统信息')}</b> ( {:lang('仅开发模式可见')} )</span>
     </div>
     <div class="layui-card-body">
         <table class="layui-table" lay-even>
             <tbody>
             <tr>
-                <th class="nowrap text-center" style="max-width:20%">核心框架</th>
+                <td class="nowrap text-center">{:lang('核心框架')}</td>
                 <td><a target="_blank" href="https://www.thinkphp.cn">ThinkPHP Version {$app->version()}</a></td>
             </tr>
             <tr>
-                <th class="nowrap text-center">基础程序</th>
+                <td class="nowrap text-center">{:lang('平台框架')}</td>
                 <td><a target="_blank" href="https://thinkadmin.top">ThinkAdmin Version {$version|default='6.0.0'}</a></td>
             </tr>
             <tr>
-                <th class="nowrap text-center">操作系统</th>
+                <td class="nowrap text-center">{:lang('操作系统')}</td>
                 <td>{:php_uname()}</td>
             </tr>
             <tr>
-                <th class="nowrap text-center">运行环境</th>
+                <td class="nowrap text-center">{:lang('运行环境')}</td>
                 <td>{:ucfirst($request->server('SERVER_SOFTWARE',php_sapi_name()))} & PHP {$Think.const.PHP_VERSION} & {:ucfirst(app()->db->connect()->getConfig('type'))}</td>
             </tr>
             </tbody>
@@ -169,26 +173,27 @@
     </div>
 </div>
 
+{notempty name='plugins'}
 <div class="layui-card padding-20 shadow">
     <div class="layui-card-header notselect">
-        <b>插件信息</b><span class="color-desc font-s12 padding-left-5">Plugin Information</span>
+        <span class="help-label"><b style="color:#333!important;">{:lang('应用插件')}</b> ( {:lang('仅开发模式可见')} )</span>
     </div>
     <div class="layui-card-body">
         <table class="layui-table" lay-even>
             <thead>
             <tr>
-                <th class="nowrap text-center">插件名称</th>
-                <th class="nowrap text-left">插件ID</th>
-                <th class="nowrap text-left">插件包名</th>
-                <th class="nowrap text-center">插件版本</th>
-                <th class="nowrap text-center">授权协议</th>
+                <th class="nowrap text-center">{:lang('应用名称')}</th>
+                <th class="nowrap text-center">{:lang('插件名称')}</th>
+                <th class="nowrap text-left">{:lang('插件包名')}</th>
+                <th class="nowrap text-center">{:lang('插件版本')}</th>
+                <th class="nowrap text-center">{:lang('授权协议')}</th>
             </tr>
             </thead>
             <tbody>
             {foreach $plugins as $key=>$plugin}
             <tr>
-                <td class="nowrap text-center">{$plugin.name}</td>
-                <td class="nowrap text-left">{$key}</td>
+                <td class="nowrap text-center">{$key}</td>
+                <td class="nowrap text-center">{$plugin.name|lang}</td>
                 <td class="nowrap text-left">
                     {if empty($plugin.install.document)}{$plugin.package}
                     {else}<a target="_blank" href="{$plugin.install.document}">{$plugin.package}</a>{/if}
@@ -205,5 +210,6 @@
         </table>
     </div>
 </div>
+{/notempty}
 <!--{/if}-->
 {/block}

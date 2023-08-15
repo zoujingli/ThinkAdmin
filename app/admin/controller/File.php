@@ -99,7 +99,6 @@ class File extends Controller
      * 清理重复文件
      * @auth true
      * @return void
-     * @throws \think\db\exception\DbException
      */
     public function distinct()
     {

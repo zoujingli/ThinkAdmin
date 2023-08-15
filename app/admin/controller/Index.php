@@ -126,7 +126,7 @@ class Index extends Controller
     {
         $this->_applyFormToken();
         if (AdminService::getUserId() !== intval($id)) {
-            $this->error('只能修改当前用户的密码！');
+            $this->error('禁止修改他人密码！');
         }
         if ($this->app->request->isGet()) {
             $this->verify = true;

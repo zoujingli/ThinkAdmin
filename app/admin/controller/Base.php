@@ -74,7 +74,7 @@ class Base extends Controller
     {
         if ($this->request->isGet()) {
             $this->types = SystemBase::types();
-            $this->types[] = '--- 新增类型 ---';
+            $this->types[] = '--- ' . lang('新增类型') . ' ---';
             $this->type = $this->get['type'] ?? ($this->types[0] ?? '-');
         } else {
             $map = [];
@@ -83,7 +83,7 @@ class Base extends Controller
             $map[] = ['type', '=', $data['type']];
             $map[] = ['id', '<>', $data['id'] ?? 0];
             if (SystemBase::mk()->where($map)->count() > 0) {
-                $this->error("同类型的数据编码已经存在！");
+                $this->error("数据编码已经存在！");
             }
         }
     }

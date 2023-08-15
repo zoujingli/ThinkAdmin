@@ -21,23 +21,23 @@
         {if session('user.username')}
         <li class="layui-nav-item">
             <dl class="layui-nav-child">
-                <dd lay-unselect><a data-modal="{:sysuri('admin/index/info',['id'=>session('user.id')])}"><i class="layui-icon layui-icon-set-fill"></i> 基本资料</a></dd>
-                <dd lay-unselect><a data-modal="{:sysuri('admin/index/pass',['id'=>session('user.id')])}"><i class="layui-icon layui-icon-component"></i> 安全设置</a></dd>
+                <dd lay-unselect><a data-modal="{:sysuri('admin/index/info',['id'=>session('user.id')])}"><i class="layui-icon layui-icon-set-fill"></i> {:lang('基本资料')}</a></dd>
+                <dd lay-unselect><a data-modal="{:sysuri('admin/index/pass',['id'=>session('user.id')])}"><i class="layui-icon layui-icon-component"></i> {:lang('安全设置')}</a></dd>
                 {if isset($super) and $super}
-                <dd lay-unselect><a data-load="{:sysuri('admin/api.system/push')}"><i class="layui-icon layui-icon-template-1"></i> 缓存加速</a></dd>
-                <dd lay-unselect><a data-load="{:sysuri('admin/api.system/clear')}"><i class="layui-icon layui-icon-fonts-clear"></i> 清理缓存</a></dd>
+                <dd lay-unselect><a data-load="{:sysuri('admin/api.system/push')}"><i class="layui-icon layui-icon-template-1"></i> {:lang('缓存加速')}</a></dd>
+                <dd lay-unselect><a data-load="{:sysuri('admin/api.system/clear')}"><i class="layui-icon layui-icon-fonts-clear"></i> {:lang('清理缓存')}</a></dd>
                 {/if}
-                <dd lay-unselect><a data-width="520px" data-modal="{:sysuri('admin/index/theme')}"><i class="layui-icon layui-icon-theme"></i> 配色方案</a></dd>
-                <dd lay-unselect><a data-load="{:sysuri('admin/login/out')}" data-confirm="确定要退出登录吗？"><i class="layui-icon layui-icon-release"></i> 退出登录</a></dd>
+                <dd lay-unselect><a data-width="520px" data-modal="{:sysuri('admin/index/theme')}"><i class="layui-icon layui-icon-theme"></i> {:lang('配色方案')}</a></dd>
+                <dd lay-unselect><a data-load="{:sysuri('admin/login/out')}" data-confirm="{:lang('确定要退出登录吗？')}"><i class="layui-icon layui-icon-release"></i> {:lang('退出登录')}</a></dd>
             </dl>
             <a class="layui-elip">
                 <span class="headimg" data-lazy-src="{:htmlentities(session('user.headimg'))}"></span>
-                <span>{:htmlentities(session('user.nickname')?:session('user.username'))}</span>
+                <span>{:lang(htmlentities(session('user.nickname')?:session('user.username')))}</span>
             </a>
         </li>
         {else}
         <li class="layui-nav-item">
-            <a data-href="{:sysuri('admin/login/index')}"><i class="layui-icon layui-icon-username"></i> 立即登录</a>
+            <a data-href="{:sysuri('admin/login/index')}"><i class="layui-icon layui-icon-username"></i> {:lang('立即登录')}</a>
         </li>
         {/if}
     </ul>

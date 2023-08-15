@@ -1,18 +1,18 @@
 <form class="layui-form layui-form-pane form-search" action="{:sysuri()}" onsubmit="return false" method="get" autocomplete="off">
 
     <div class="layui-form-item layui-inline">
-        <label class="layui-form-label">账号名称</label>
+        <label class="layui-form-label">{:lang('账号名称')}</label>
         <label class="layui-input-inline">
-            <input name="username" value="{$get.username|default=''}" placeholder="请输入账号或名称" class="layui-input">
+            <input name="username" value="{$get.username|default=''}" placeholder="{:lang('请输入账号或名称')}" class="layui-input">
         </label>
     </div>
 
     <!--{notempty name='bases'}-->
     <div class="layui-form-item layui-inline">
-        <label class="layui-form-label">角色身份</label>
+        <label class="layui-form-label">{:lang('角色身份')}</label>
         <div class="layui-input-inline">
             <select name="usertype" lay-search class="layui-select">
-                <option value=''>-- 全部 --</option>
+                <option value=''>-- {:lang('全部')} --</option>
                 {foreach $bases as $base}{if $base.code eq input('get.usertype')}
                 <option selected value="{$base.code|default=''}">{$base.name|default=''} ( {$base.code|default=''} )</option>
                 {else}
@@ -23,36 +23,22 @@
     </div>
     <!--{/notempty}-->
 
-    <div class="layui-form-item layui-inline layui-hide">
-        <label class="layui-form-label">联系手机</label>
-        <label class="layui-input-inline">
-            <input name="phone" value="{$get.phone|default=''}" placeholder="请输入联系手机" class="layui-input">
-        </label>
-    </div>
-
-    <div class="layui-form-item layui-inline layui-hide">
-        <label class="layui-form-label">联系邮箱</label>
-        <label class="layui-input-inline">
-            <input name="mail" value="{$get.mail|default=''}" placeholder="请输入联系邮箱" class="layui-input">
-        </label>
-    </div>
-
     <div class="layui-form-item layui-inline">
-        <label class="layui-form-label">最后登录</label>
+        <label class="layui-form-label">{:lang('最后登录')}</label>
         <div class="layui-input-inline">
-            <input data-date-range name="login_at" value="{$get.login_at|default=''}" placeholder="请选择登录时间" class="layui-input">
+            <input data-date-range name="login_at" value="{$get.login_at|default=''}" placeholder="{:lang('请选择登录时间')}" class="layui-input">
         </div>
     </div>
 
     <div class="layui-form-item layui-inline">
-        <label class="layui-form-label">创建时间</label>
+        <label class="layui-form-label">{:lang('创建时间')}</label>
         <div class="layui-input-inline">
-            <input data-date-range name="create_at" value="{$get.create_at|default=''}" placeholder="请选择创建时间" class="layui-input">
+            <input data-date-range name="create_at" value="{$get.create_at|default=''}" placeholder="{:lang('请选择创建时间')}" class="layui-input">
         </div>
     </div>
 
     <div class="layui-form-item layui-inline">
         <input type="hidden" name="type" value="{$type|default='index'}">
-        <button class="layui-btn layui-btn-primary"><i class="layui-icon">&#xe615;</i> 搜 索</button>
+        <button class="layui-btn layui-btn-primary"><i class="layui-icon">&#xe615;</i> {:lang('搜 索')}</button>
     </div>
 </form>

@@ -2,11 +2,11 @@
 
 {block name="button"}
 <!--{if auth("add")}-->
-<button data-modal='{:url("add")}' data-width="600px" data-table-id="RoleTable" class='layui-btn layui-btn-sm layui-btn-primary'>添加权限</button>
+<button data-modal='{:url("add")}' data-width="600px" data-table-id="RoleTable" class='layui-btn layui-btn-sm layui-btn-primary'>{:lang('添加权限')}</button>
 <!--{/if}-->
 
 <!--{if auth("remove")}-->
-<button data-action='{:url("remove")}' data-rule="id#{id}" data-table-id="RoleTable" data-confirm="确定要批量删除权限吗？" class='layui-btn layui-btn-sm layui-btn-primary'>批量删除</button>
+<button data-action='{:url("remove")}' data-rule="id#{id}" data-table-id="RoleTable" data-confirm="{:lang('确定要批量删除权限吗？')}" class='layui-btn layui-btn-sm layui-btn-primary'>{:lang('批量删除')}</button>
 <!--{/if}-->
 {/block}
 
@@ -26,12 +26,12 @@
             sort: {field: 'sort desc,id', type: 'desc'},
             cols: [[
                 {checkbox: true, fixed: true},
-                {field: 'sort', title: '排序权重', align: 'center', width: 100, sort: true, templet: '#SortInputRoleTableTpl'},
-                {field: 'title', title: '权限名称', align: 'center', minWidth: 140},
-                {field: 'desc', title: '权限描述', align: 'center', minWidth: 110, templet: '<div>{{d.desc||"-"}}</div>'},
-                {field: 'status', title: '权限状态', align: 'center', minWidth: 110, templet: '#StatusSwitchRoleTableTpl'},
-                {field: 'create_at', title: '创建时间', align: 'center', minWidth: 170, sort: true},
-                {toolbar: '#ToolbarRoleTableTpl', title: '操作面板', align: 'center', minWidth: 210, fixed: 'right'},
+                {field: 'sort', title: '{:lang("排序权重")}', align: 'center', width: 100, sort: true, templet: '#SortInputRoleTableTpl'},
+                {field: 'title', title: '{:lang("权限名称")}', align: 'center', minWidth: 140},
+                {field: 'desc', title: '{:lang("权限描述")}', align: 'center', minWidth: 110, templet: '<div>{{d.desc||"-"}}</div>'},
+                {field: 'status', title: '{:lang("使用状态")}', align: 'center', minWidth: 110, templet: '#StatusSwitchRoleTableTpl'},
+                {field: 'create_at', title: '{:lang("创建时间")}', align: 'center', minWidth: 170, sort: true},
+                {toolbar: '#ToolbarRoleTableTpl', title: '{:lang("操作面板")}', align: 'center', minWidth: 210, fixed: 'right'},
             ]]
         });
 
@@ -57,24 +57,24 @@
 <!-- 数据状态切换模板 -->
 <script type="text/html" id="StatusSwitchRoleTableTpl">
     <!--{if auth("state")}-->
-    <input type="checkbox" value="{{d.id}}" lay-skin="switch" lay-text="已激活|已禁用" lay-filter="StatusSwitchRoleTable" {{-d.status>0?'checked':''}}>
+    <input type="checkbox" value="{{d.id}}" lay-skin="switch" lay-text="{:lang('已激活')}|{:lang('已禁用')}" lay-filter="StatusSwitchRoleTable" {{-d.status>0?'checked':''}}>
     <!--{else}-->
-    {{-d.status ? '<b class="color-green">已启用</b>' : '<b class="color-red">已禁用</b>'}}
+    {{-d.status ? '<b class="color-green">{:lang("已启用")}</b>' : '<b class="color-red">{:lang("已禁用")}</b>'}}
     <!--{/if}-->
 </script>
 
 <!-- 数据操作工具条模板 -->
 <script type="text/html" id="ToolbarRoleTableTpl">
     <!--{if auth('edit')}-->
-    <a class="layui-btn layui-btn-primary layui-btn-sm" data-event-dbclick data-width="600px" data-title="编辑权限" data-modal='{:url("edit")}?id={{d.id}}'>编 辑</a>
+    <a class="layui-btn layui-btn-primary layui-btn-sm" data-event-dbclick data-width="600px" data-title="{:lang('编辑权限')}" data-modal='{:url("edit")}?id={{d.id}}'>{:lang("编 辑")}</a>
     <!--{/if}-->
 
     <!--{if auth("apply")}-->
-    <a class="layui-btn layui-btn-normal layui-btn-sm" data-open='{:url("apply")}?id={{d.id}}'>授 权</a>
+    <a class="layui-btn layui-btn-normal layui-btn-sm" data-open='{:url("apply")}?id={{d.id}}'>{:lang('授 权')}</a>
     <!--{/if}-->
 
     <!--{if auth("remove")}-->
-    <a class="layui-btn layui-btn-danger layui-btn-sm" data-confirm="确定要删除权限吗?" data-action="{:url('remove')}" data-value="id#{{d.id}}">删 除</a>
+    <a class="layui-btn layui-btn-danger layui-btn-sm" data-confirm="{:lang('确定要删除权限吗?')}" data-action="{:url('remove')}" data-value="id#{{d.id}}">{:lang("删 除")}</a>
     <!--{/if}-->
 </script>
 {/block}

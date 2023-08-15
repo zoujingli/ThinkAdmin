@@ -3,27 +3,27 @@
     <div class="layui-card-body padding-left-40">
 
         <label class="layui-form-item relative block">
-            <span class="help-label"><b>文件名称</b>Name</span>
+            <span class="help-label"><b>{:lang('文件名称')}</b>Name</span>
             <input maxlength="100" class="layui-input" name="name" value='{$vo.name|default=""}' required vali-name="文件名称" placeholder="请输入文件名称">
         </label>
 
         <label class="layui-form-item relative block">
-            <span class="help-label"><b>文件大小</b>Size</span>
+            <span class="help-label"><b>{:lang('文件大小')}</b>Size</span>
             <input maxlength="100" class="layui-input layui-bg-gray" value='{$vo.size|default=0|format_bytes}' readonly>
         </label>
 
         <label class="layui-form-item relative block">
-            <span class="help-label"><b>存储方式</b>Type</span>
+            <span class="help-label"><b>{:lang('存储方式')}</b>Type</span>
             <input maxlength="100" class="layui-input layui-bg-gray" value='{$types[$vo.type]??""}' readonly>
         </label>
 
         <label class="layui-form-item relative block">
-            <span class="help-label"><b>文件哈希</b>Hash</span>
+            <span class="help-label"><b>{:lang('文件哈希')}</b>Hash</span>
             <input maxlength="100" class="layui-input layui-bg-gray" value='{$vo.hash|default=""}' readonly>
         </label>
 
         <label class="layui-form-item relative block">
-            <span class="help-label"><b>文件链接</b>Link</span>
+            <span class="help-label"><b>{:lang('文件链接')}</b>Link</span>
             <input maxlength="100" class="layui-input layui-bg-gray" value='{$vo.xurl|default=""}' readonly>
         </label>
 
@@ -34,7 +34,7 @@
     {notempty name='vo.id'}<input type='hidden' value='{$vo.id}' name='id'>{/notempty}
 
     <div class="layui-form-item text-center">
-        <button class="layui-btn" type='submit'>保存数据</button>
-        <button class="layui-btn layui-btn-danger" type='button' data-confirm="确定要取消编辑吗？" data-close>取消编辑</button>
+        <button class="layui-btn" type='submit'>{:lang('保存数据')}</button>
+        <button class="layui-btn layui-btn-danger" type='button' data-confirm="{:lang('确定要取消编辑吗？')}" data-close>{:lang('取消编辑')}</button>
     </div>
 </form>

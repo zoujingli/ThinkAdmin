@@ -31,7 +31,7 @@ class Service extends Plugin
      * 定义插件名称
      * @var string
      */
-    protected $appName = '系统配置管理';
+    protected $appName = '系统后台管理';
 
     /**
      * 定义安装包名
@@ -60,7 +60,7 @@ class Service extends Plugin
             [
                 'name' => '权限管理',
                 'subs' => [
-                    ['name' => '访问权限管理', 'icon' => 'layui-icon layui-icon-vercode', 'node' => 'admin/auth/index'],
+                    ['name' => '系统权限管理', 'icon' => 'layui-icon layui-icon-vercode', 'node' => 'admin/auth/index'],
                     ['name' => '系统用户管理', 'icon' => 'layui-icon layui-icon-username', 'node' => 'admin/user/index'],
                 ],
             ],

@@ -1,11 +1,11 @@
 <div class="image-dialog" id="ImageDialog">
     <div class="image-dialog-head">
         <label class="pull-left flex">
-            <input class="layui-input margin-right-5" v-model="keys" style="height:30px;line-height:30px" placeholder="请输入搜索关键词">
-            <a class="layui-btn layui-btn-sm layui-btn-normal" @click="search">搜 索</a>
+            <input class="layui-input margin-right-5" v-model="keys" style="height:30px;line-height:30px" placeholder="{:lang('请输入搜索关键词')}">
+            <a class="layui-btn layui-btn-sm layui-btn-normal" @click="search">{:lang('搜 索')}</a>
         </label>
         <div class="pull-right">
-            <a class="layui-btn layui-btn-sm layui-btn-normal" @click="uploadImage">上传图片</a>
+            <a class="layui-btn layui-btn-sm layui-btn-normal" @click="uploadImage">{:lang('上传图片')}</a>
         </div>
     </div>
     <div class="image-dialog-body">
@@ -19,7 +19,8 @@
     <div class="image-dialog-foot">
         <div id="ImageDialogPage" class="image-dialog-page"></div>
         <div id="ImageDialogButton layui-hide" class="image-dialog-button layui-btn layui-btn-normal" v-if="data.length>0" @click="confirm">
-            已选 {{ data.length }} 张，确认
+            {php} $tag = '{{data.length}}'; {/php}
+            {:lang('已选 %s 张，确认', [$tag])}
         </div>
     </div>
 </div>

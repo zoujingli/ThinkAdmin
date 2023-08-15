@@ -1,12 +1,12 @@
 <fieldset>
-    <legend>条件搜索</legend>
+    <legend>{:lang('条件搜索')}</legend>
     <form class="layui-form layui-form-pane form-search" action="{:sysuri()}" onsubmit="return false" method="get" autocomplete="off">
 
         <div class="layui-form-item layui-inline">
-            <label class="layui-form-label">操作账号</label>
+            <label class="layui-form-label">{:lang('操作账号')}</label>
             <div class="layui-input-inline">
                 <select name='username' lay-search class="layui-select">
-                    <option value=''>-- 全部账号 --</option>
+                    <option value=''>-- {:lang('全部')} --</option>
                     {foreach $users as $user}{if $user eq input('get.username')}
                     <option selected value="{$user}">{$user}</option>
                     {else}
@@ -17,10 +17,10 @@
         </div>
 
         <div class="layui-form-item layui-inline">
-            <label class="layui-form-label">操作行为</label>
+            <label class="layui-form-label">{:lang('操作行为')}</label>
             <div class="layui-input-inline">
                 <select name="action" lay-search class="layui-select">
-                    <option value=''>-- 全部行为 --</option>
+                    <option value=''>-- {:lang('全部')} --</option>
                     {foreach $actions as $action}{if $action eq input('get.action')}
                     <option selected value="{$action}">{$action}</option>
                     {else}
@@ -31,37 +31,37 @@
         </div>
 
         <div class="layui-form-item layui-inline">
-            <label class="layui-form-label">操作节点</label>
+            <label class="layui-form-label">{:lang('操作节点')}</label>
             <label class="layui-input-inline">
-                <input name="node" value="{$get.node|default=''}" placeholder="请输入操作内容" class="layui-input">
+                <input name="node" value="{$get.node|default=''}" placeholder="{:lang('请输入操作节点')}" class="layui-input">
             </label>
         </div>
 
         <div class="layui-form-item layui-inline">
-            <label class="layui-form-label">操作描述</label>
+            <label class="layui-form-label">{:lang('操作内容')}</label>
             <label class="layui-input-inline">
-                <input name="content" value="{$get.content|default=''}" placeholder="请输入操作内容" class="layui-input">
+                <input name="content" value="{$get.content|default=''}" placeholder="{:lang('请输入操作内容')}" class="layui-input">
             </label>
         </div>
 
         <div class="layui-form-item layui-inline">
-            <label class="layui-form-label">访问地址</label>
+            <label class="layui-form-label">{:lang('访问地址')}</label>
             <label class="layui-input-inline">
-                <input name="geoip" value="{$get.geoip|default=''}" placeholder="请输入访问地址" class="layui-input">
+                <input name="geoip" value="{$get.geoip|default=''}" placeholder="{:lang('请输入访问地址')}" class="layui-input">
             </label>
         </div>
 
         <div class="layui-form-item layui-inline">
-            <label class="layui-form-label">操作时间</label>
+            <label class="layui-form-label">{:lang('创建时间')}</label>
             <label class="layui-input-inline">
-                <input data-date-range name="create_at" value="{$get.create_at|default=''}" placeholder="请选择操作时间" class="layui-input">
+                <input data-date-range name="create_at" value="{$get.create_at|default=''}" placeholder="{:lang('请选择创建时间')}" class="layui-input">
             </label>
         </div>
 
         <div class="layui-form-item layui-inline">
-            <button type="submit" class="layui-btn layui-btn-primary"><i class="layui-icon">&#xe615;</i> 搜 索</button>
+            <button type="submit" class="layui-btn layui-btn-primary"><i class="layui-icon">&#xe615;</i> {:lang('搜 索')}</button>
             <button type="button" data-form-export="{:url('index')}?type={$type|default=''}" class="layui-btn layui-btn-primary">
-                <i class="layui-icon layui-icon-export"></i> 导 出
+                <i class="layui-icon layui-icon-export"></i> {:lang('导 出')}
             </button>
         </div>
     </form>
@@ -77,11 +77,11 @@
             });
 
             // 设置表头内容
-            data.unshift(['ID', '操作账号', '访问节点', '访问IP地址', '访问地理区域', '访问操作', '操作内容', '操作时间']);
+            data.unshift(['ID', '{:lang("操作账号")}', '{:lang("操作节点")}', '{:lang("访问地址")}', '{:lang("网络服务商")}', '{:lang("操作行为")}', '{:lang("操作内容")}', '{:lang("创建时间")}']);
 
             // 应用表格样式
             return this.withStyle(data, {A: 60, B: 80, C: 99, E: 120, G: 120});
 
-        }, '操作日志' + layui.util.toDateString(Date.now(), '_yyyyMMdd_HHmmss'));
+        }, '{:lang("操作日志")}' + layui.util.toDateString(Date.now(), '_yyyyMMdd_HHmmss'));
     });
 </script>

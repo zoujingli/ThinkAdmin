@@ -2,10 +2,10 @@
 
 {block name="button"}
 <!--{if auth("distinct")}-->
-<a data-table-id="FileTable" data-load='{:url("distinct")}' class='layui-btn layui-btn-sm layui-btn-primary'>清理重复</a>
+<a data-table-id="FileTable" data-load='{:url("distinct")}' class='layui-btn layui-btn-sm layui-btn-primary'>{:lang('清理重复')}</a>
 <!--{/if}-->
 <!--{if auth("remove")}-->
-<a data-confirm="确定删除这些记录吗？" data-table-id="FileTable" data-action='{:url("remove")}' data-rule="id#{id}" class='layui-btn layui-btn-sm layui-btn-primary'>批量删除</a>
+<a data-confirm="{:lang('确定删除这些记录吗？')}" data-table-id="FileTable" data-action='{:url("remove")}' data-rule="id#{id}" class='layui-btn layui-btn-sm layui-btn-primary'>{:lang('批量删除')}</a>
 <!--{/if}-->
 {/block}
 
@@ -22,32 +22,32 @@
             cols: [[
                 {checkbox: true, fixed: true},
                 {field: 'id', title: 'ID', width: 80, align: 'center', sort: true},
-                {field: 'name', title: '文件名称', width: '12%', align: 'center'},
-                {field: 'hash', title: '文件哈希', width: '15%', align: 'center', templet: '<div><code>{{d.hash}}</code></div>'},
-                {field: 'size', title: '文件大小', align: 'center', width: '7%', sort: true, templet: '<div>{{-$.formatFileSize(d.size)}}</div>'},
-                {field: 'xext', title: '文件后缀', align: 'center', width: '7%', sort: true},
+                {field: 'name', title: '{:lang("文件名称")}', width: '12%', align: 'center'},
+                {field: 'hash', title: '{:lang("文件哈希")}', width: '15%', align: 'center', templet: '<div><code>{{d.hash}}</code></div>'},
+                {field: 'size', title: '{:lang("文件大小")}', align: 'center', width: '7%', sort: true, templet: '<div>{{-$.formatFileSize(d.size)}}</div>'},
+                {field: 'xext', title: '{:lang("文件后缀")}', align: 'center', width: '7%', sort: true},
                 {
-                    field: 'xurl', title: '查看文件', width: '7%', align: 'center', templet: function (d) {
+                    field: 'xurl', title: '{:lang("查看文件")}', width: '7%', align: 'center', templet: function (d) {
                         if (typeof d.mime === 'string' && /^image\//.test(d.mime)) {
                             return laytpl('<div><a target="_blank" data-tips-hover data-tips-image="{{d.xurl}}"><i class="layui-icon layui-icon-picture"></i></a></div>').render(d)
                         }
                         if (typeof d.mime === 'string' && /^video\//.test(d.mime)) {
-                            return laytpl('<div><a target="_blank" data-video-player="{{d.xurl}}" data-tips-text="播放视频"><i class="layui-icon layui-icon-video"></i></a></div>').render(d);
+                            return laytpl('<div><a target="_blank" data-video-player="{{d.xurl}}" data-tips-text="{:lang(\'播放视频\')}"><i class="layui-icon layui-icon-video"></i></a></div>').render(d);
                         }
                         if (typeof d.mime === 'string' && /^audio\//.test(d.mime)) {
-                            return laytpl('<div><a target="_blank" data-video-player="{{d.xurl}}" data-tips-text="播放音频"><i class="layui-icon layui-icon-headset"></i></a></div>').render(d);
+                            return laytpl('<div><a target="_blank" data-video-player="{{d.xurl}}" data-tips-text="{:lang(\'播放音频\')}"><i class="layui-icon layui-icon-headset"></i></a></div>').render(d);
                         }
-                        return laytpl('<div><a target="_blank" href="{{d.xurl}}"  data-tips-text="查看下载"><i class="layui-icon layui-icon-file"></i></a></div>').render(d);
+                        return laytpl('<div><a target="_blank" href="{{d.xurl}}"  data-tips-text="{:lang(\'查看下载\')}"><i class="layui-icon layui-icon-file"></i></a></div>').render(d);
                     }
                 },
                 {
-                    field: 'isfast', title: '上传方式', align: 'center', width: '8%', templet: function (d) {
-                        return d.isfast ? '<b class="color-green">秒传</b>' : '<b class="color-blue">普通</b>';
+                    field: 'isfast', title: '{:lang("上传方式")}', align: 'center', width: '8%', templet: function (d) {
+                        return d.isfast ? '<b class="color-green">{:lang("秒传")}</b>' : '<b class="color-blue">{:lang("普通")}</b>';
                     }
                 },
-                {field: 'ctype', title: '存储方式', align: 'center', width: '10%'},
-                {field: 'create_at', title: '上传时间', align: 'center', width: '15%', sort: true},
-                {toolbar: '#toolbar', title: '操作面板', align: 'center', minWidth: 150, fixed: 'right'}
+                {field: 'ctype', title: '{:lang("存储方式")}', align: 'center', width: '10%'},
+                {field: 'create_at', title: '{:lang("创建时间")}', align: 'center', width: '15%', sort: true},
+                {toolbar: '#toolbar', title: '{:lang("操作面板")}', align: 'center', minWidth: 150, fixed: 'right'}
             ]]
         });
     });
@@ -55,10 +55,10 @@
 
 <script type="text/html" id="toolbar">
     <!--{if auth("remove")}-->
-    <a class="layui-btn layui-btn-sm" data-modal="{:url('edit')}?id={{d.id}}" data-title="编辑文件信息">编 辑</a>
+    <a class="layui-btn layui-btn-sm" data-modal="{:url('edit')}?id={{d.id}}" data-title="编辑文件信息">{:lang("编 辑")}</a>
     <!--{/if}-->
     <!--{if auth("remove")}-->
-    <a class="layui-btn layui-btn-sm layui-btn-danger" data-action="{:url('remove')}" data-value="id#{{d.id}}">删 除</a>
+    <a class="layui-btn layui-btn-sm layui-btn-danger" data-action="{:url('remove')}" data-value="id#{{d.id}}">{:lang("删 除")}</a>
     <!--{/if}-->
 </script>
 {/block}

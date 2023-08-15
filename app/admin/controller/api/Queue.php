@@ -90,14 +90,15 @@ class Queue extends Controller
         if (AdminService::isSuper()) try {
             $message = $this->app->console->call('xadmin:queue', ['status'])->fetch();
             if (preg_match('/process.*?\d+.*?running/', $message)) {
-                echo "<span class='color-green pointer' data-tips-text='{$message}'>已启动</span>";
+                echo "<span class='color-green pointer' data-tips-text='{$message}'>{$this->app->lang->get('已启动')}</span>";
             } else {
-                echo "<span class='color-red pointer' data-tips-text='{$message}'>未启动</span>";
+                echo "<span class='color-red pointer' data-tips-text='{$message}'>{$this->app->lang->get('未启动')}</span>";
             }
         } catch (\Error|\Exception $exception) {
-            echo "<span class='color-red pointer' data-tips-text='{$exception->getMessage()}'>异 常</span>";
+            echo "<span class='color-red pointer' data-tips-text='{$exception->getMessage()}'>{$this->app->lang->get('异 常')}</span>";
         } else {
-            echo "<span class='color-red pointer' data-tips-text='只有超级管理员才能操作！'>无权限</span>";
+            $message = lang('只有超级管理员才能操作！');
+            echo "<span class='color-red pointer' data-tips-text='{$message}'>{$this->app->lang->get('无权限')}</span>";
         }
     }
 

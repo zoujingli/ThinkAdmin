@@ -218,7 +218,7 @@ $(function () {
             this.stat = function () {
                 return this.$body.is(':visible');
             }, this.done = function () {
-                $.msg.page.$body.fadeOut();
+                return $.msg.page.$body.fadeOut();
             }, this.show = function () {
                 this.stat() || this.$main.removeClass('layui-hide').show();
             }, this.hide = function () {
@@ -292,7 +292,7 @@ $(function () {
         this.load = function (url, data, method, callable, loading, tips, time, headers) {
             // 如果主页面 loader 显示中，绝对不显示 loading 图标
             loading = $('.layui-page-loader').is(':visible') ? false : loading;
-            let loadidx = loading !== false ? $.msg.loading(tips) : 0;
+            let defer = jQuery.Deferred(), loadidx = loading !== false ? $.msg.loading(tips) : 0;
             if (typeof data === 'object' && typeof data['_token_'] === 'string') {
                 headers = headers || {}, headers['User-Form-Token'] = data['_token_'], delete data['_token_'];
             }
@@ -302,7 +302,7 @@ $(function () {
                     if (typeof headers === 'object') for (i in headers) xhr.setRequestHeader(i, headers[i]);
                 }, error: function (XMLHttpRequest, $dialog, layIdx, iframe) {
                     // 异常消息显示处理
-                    if (parseInt(XMLHttpRequest.status) !== 200 && XMLHttpRequest.responseText.indexOf('Call Stack') > -1) try {
+                    if (defer.notify('load.error') && parseInt(XMLHttpRequest.status) !== 200 && XMLHttpRequest.responseText.indexOf('Call Stack') > -1) try {
                         layIdx = layer.open({title: XMLHttpRequest.status + ' - ' + XMLHttpRequest.statusText, type: 2, move: false, content: 'javascript:;'});
                         layer.full(layIdx), $dialog = $('#layui-layer' + layIdx), iframe = $dialog.find('iframe').get(0);
                         (iframe.contentDocument || iframe.contentWindow.document).write(XMLHttpRequest.responseText);
@@ -321,15 +321,15 @@ $(function () {
                     } else {
                         this.success(XMLHttpRequest.responseText);
                     }
-                }, success: function (ret) {
-                    time = time || ret.wait || undefined;
-                    if (typeof callable === 'function' && callable.call($.form, ret, time) === false) return false;
-                    return typeof ret === 'object' ? $.msg.auto(ret, time) : $.form.show(ret);
+                }, success: function (res) {
+                    defer.notify('load.success', res) && (time = time || res.wait || undefined);
+                    if (typeof callable === 'function' && callable.call($.form, res, time, defer) === false) return false;
+                    return typeof res === 'object' ? $.msg.auto(res, time) : $.form.show(res);
                 }, complete: function () {
-                    $.msg.page.done();
-                    $.msg.close(loadidx);
+                    defer.notify('load.complete') && $.msg.page.done() && $.msg.close(loadidx);
                 }
             });
+            return defer;
         };
         /*! 兼容跳转与执行 */
         this.goto = function (url) {
@@ -362,20 +362,18 @@ $(function () {
             this.idx = layer.open({title: name || '窗口', type: 2, area: area || ['800px', '580px'], end: destroy || null, offset: offset, fixed: true, maxmin: false, content: url, success: success});
             return isfull && layer.full(this.idx), this.idx;
         };
-        /*! 加载 HTML 到弹出层 */
+        /*! 加载 HTML 到弹出层，返回 refer 对象 */
         this.modal = function (url, data, name, call, load, tips, area, offset, isfull) {
-            this.load(url, data, 'GET', function (res) {
-                if (typeof res === 'object') return $.msg.auto(res), false;
-                return $.msg.mdx.push(this.idx = layer.open({
-                    type: 1, btn: false, area: area || "800px", resize: false, content: res, title: name === 'false' ? '' : name, offset: offset || 'auto', success: function ($dom, idx) {
-                        typeof call === 'function' && call.call($.form, $dom);
+            return this.load(url, data, 'GET', function (res, time, defer) {
+                return typeof res === 'object' ? $.msg.auto(res) : $.msg.mdx.push(this.idx = layer.open({
+                    type: 1, btn: false, area: area || '800px', offset: offset || 'auto', resize: false, content: res,
+                    title: name === 'false' ? '' : name, end: () => defer.notify('modal.close'), success: function ($dom, idx) {
+                        defer.notify('modal.success', $dom) && typeof call === 'function' && call.call($.form, $dom);
                         $.form.reInit($dom.off('click', '[data-close]').on('click', '[data-close]', function () {
-                            $.base.onConfirm(this.dataset.confirm, function () {
-                                layer.close(idx);
-                            });
+                            $.base.onConfirm(this.dataset.confirm, () => layer.close(idx));
                         }));
                     }
-                })), isfull && layer.full(this.idx), false;
+                })) && isfull && layer.full(this.idx), false;
             }, load, tips);
         };
     };
@@ -916,7 +914,8 @@ $(function () {
     /*! 注册 data-modal 事件行为 */
     $.base.onEvent('click', '[data-modal]', function () {
         $.base.applyRuleValue(this, {open_type: 'modal'}, function (data, elem, dset) {
-            return $.form.modal(dset.modal, data, dset.title || this.innerText || '编辑', undefined, undefined, undefined, dset.area || dset.width || '800px', dset.offset || 'auto', dset.full !== undefined);
+            let defer = $.form.modal(dset.modal, data, dset.title || this.innerText || '编辑', undefined, undefined, undefined, dset.area || dset.width || '800px', dset.offset || 'auto', dset.full !== undefined);
+            defer.progress((type) => type === 'modal.close' && dset.closeRefresh && $.layTable.reload(dset.closeRefresh));
         });
     });
 
@@ -935,20 +934,15 @@ $(function () {
     /*! 注册 data-video-player 事件行为 */
     $.base.onEvent('click', '[data-video-player]', function () {
         let idx = $.msg.loading(), url = this.dataset.videoPlayer, name = this.dataset.title || '媒体播放器', payer;
-        require(['artplayer'], function () {
-            layer.open({
-                title: name, type: 1, fixed: true, maxmin: false, content: '<div class="data-play-video" style="width:800px;height:450px"></div>',
-                end: () => payer.destroy(), success: ($ele) => {
-                    payer = new Artplayer({
-                        url: url, container: $ele.selector + ' .data-play-video', controls: [
-                            {html: '全屏播放', position: 'right', click: () => payer.fullscreen = !payer.fullscreen},
-                        ],
-                    });
-                    payer.on('ready', () => (payer.autoHeight = payer.autoSize = true) && payer.play());
-                    $.msg.close(idx);
-                }
-            });
-        });
+        require(['artplayer'], () => layer.open({
+            title: name, type: 1, fixed: true, maxmin: false,
+            content: '<div class="data-play-video" style="width:800px;height:450px"></div>',
+            end: () => payer.destroy(), success: $ele => payer = new Artplayer({
+                url: url, container: $ele.selector + ' .data-play-video', controls: [
+                    {html: '全屏播放', position: 'right', click: () => payer.fullscreen = !payer.fullscreen},
+                ]
+            }, art => art.play(), $.msg.close(idx))
+        }));
     });
 
     /*! 注册 data-icon 事件行为 */

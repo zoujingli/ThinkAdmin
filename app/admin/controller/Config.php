@@ -73,7 +73,6 @@ class Config extends Controller
      */
     public function system()
     {
-        $this->_applyFormToken();
         if ($this->request->isGet()) {
             $this->title = '修改系统参数';
             $this->themes = static::themes;
@@ -83,10 +82,12 @@ class Config extends Controller
             // 修改网站后台入口路径
             if (!empty($post['xpath'])) {
                 if (!preg_match('/^[a-zA-Z_][a-zA-Z0-9_]*$/', $post['xpath'])) {
-                    $this->error('后台入口名称需要是由英文字母开头！');
+                    $this->error('后台入口格式错误！');
                 }
-                if ($post['xpath'] !== 'admin' && file_exists($this->app->getBasePath() . $post['xpath'])) {
-                    $this->error("后台入口名称{$post['xpath']}已经存在应用！");
+                if ($post['xpath'] !== 'admin') {
+                    if (is_dir(syspath("app/{$post['xpath']}")) || !empty(Plugin::get($post['xpath']))) {
+                        $this->error(lang('已存在 %s 应用！', [$post['xpath']]));
+                    }
                 }
                 RuntimeService::set(null, [$post['xpath'] => 'admin']);
             }
@@ -99,7 +100,7 @@ class Config extends Controller
             // 数据数据到系统配置表
             foreach ($post as $k => $v) sysconf($k, $v);
             sysoplog('系统配置管理', "修改系统参数成功");
-            $this->success('修改系统参数成功！', admuri('admin/config/index'));
+            $this->success('数据保存成功！', admuri('admin/config/index'));
         }
     }
 

@@ -1,26 +1,26 @@
 <fieldset>
-    <legend>条件搜索</legend>
+    <legend>{:lang('条件搜索')}</legend>
     <form class="layui-form layui-form-pane form-search" action="{:sysuri()}" onsubmit="return false" method="get" autocomplete="off">
 
         <div class="layui-form-item layui-inline">
-            <label class="layui-form-label">文件名称</label>
+            <label class="layui-form-label">{:lang('文件名称')}</label>
             <label class="layui-input-inline">
-                <input name="name" value="{$get.name|default=''}" placeholder="请输入文件名称" class="layui-input">
+                <input name="name" value="{$get.name|default=''}" placeholder="{:lang('请输入文件名称')}" class="layui-input">
             </label>
         </div>
 
         <div class="layui-form-item layui-inline">
-            <label class="layui-form-label">文件哈希</label>
+            <label class="layui-form-label">{:lang('文件哈希')}</label>
             <label class="layui-input-inline">
-                <input name="hash" value="{$get.hash|default=''}" placeholder="请输入文件哈希" class="layui-input">
+                <input name="hash" value="{$get.hash|default=''}" placeholder="{:lang('请输入文件哈希')}" class="layui-input">
             </label>
         </div>
 
         <div class="layui-form-item layui-inline">
-            <label class="layui-form-label">文件后缀</label>
+            <label class="layui-form-label">{:lang('文件后缀')}</label>
             <div class="layui-input-inline">
                 <select name="xext" lay-search class="layui-select">
-                    <option value=''>-- 全部后缀 --</option>
+                    <option value=''>-- {:lang('全部')} --</option>
                     {foreach $xexts as $v}{if isset($get.xext) and $k eq $get.xext}
                     <option selected value="{$v}">{$v}</option>
                     {else}
@@ -31,10 +31,10 @@
         </div>
 
         <div class="layui-form-item layui-inline">
-            <label class="layui-form-label">存储方式</label>
+            <label class="layui-form-label">{:lang('存储方式')}</label>
             <div class="layui-input-inline">
                 <select name="type" lay-search class="layui-select">
-                    <option value=''>-- 全部方式 --</option>
+                    <option value=''>-- {:lang('全部')} --</option>
                     {foreach $types as $k=>$v}{if isset($get.type) and $k eq $get.type}
                     <option selected value="{$k}">{$v}</option>
                     {else}
@@ -45,14 +45,14 @@
         </div>
 
         <div class="layui-form-item layui-inline">
-            <label class="layui-form-label">上传时间</label>
+            <label class="layui-form-label">{:lang('创建时间')}</label>
             <div class="layui-input-inline">
-                <input data-date-range name="create_at" value="{$get.create_at|default=''}" placeholder="请选择上传时间" class="layui-input">
+                <input data-date-range name="create_at" value="{$get.create_at|default=''}" placeholder="{:lang('请选择创建时间')}" class="layui-input">
             </div>
         </div>
 
         <div class="layui-form-item layui-inline">
-            <button class="layui-btn layui-btn-primary"><i class="layui-icon">&#xe615;</i> 搜 索</button>
+            <button class="layui-btn layui-btn-primary"><i class="layui-icon">&#xe615;</i> {:lang('搜 索')}</button>
         </div>
     </form>
 </fieldset>
