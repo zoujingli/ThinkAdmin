@@ -45,7 +45,7 @@ class Record extends Controller
     {
         WechatPaymentRecord::mQuery()->layTable(function () {
             $this->title = '支付行为管理';
-        }, function (QueryHelper $query) {
+        }, static function (QueryHelper $query) {
             $db = WechatFans::mQuery()->like('openid|nickname#nickname')->db();
             if ($db->getOptions('where')) $query->whereRaw("openid in {$db->field('openid')->buildSql()}");
             $query->like('order_code|order_name#order')->dateBetween('create_time');

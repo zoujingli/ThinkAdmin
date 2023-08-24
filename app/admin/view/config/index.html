@@ -14,7 +14,7 @@
 <!--{notempty name='super'}-->
 <div class="layui-card padding-20 shadow">
     <div class="layui-card-header notselect">
-        <span class="help-label"><b style="color:#333!important;">{:lang('运行模式')}</b> ( {:lang('仅超级管理员可配置')} )</span>
+        <span class="help-label"><b style="color:#333!important;">{:lang('运行模式')}</b>( {:lang('仅超级管理员可配置')} )</span>
     </div>
     <div class="layui-card-body">
         <div class="layui-btn-group shadow-mini nowrap">
@@ -35,7 +35,7 @@
 
 <div class="layui-card padding-20 shadow">
     <div class="layui-card-header notselect">
-        <span class="help-label"><b style="color:#333!important;">{:lang('富编辑器')}</b> ( {:lang('仅超级管理员可配置')} )</span>
+        <span class="help-label"><b style="color:#333!important;">{:lang('富编辑器')}</b>( {:lang('仅超级管理员可配置')} )</span>
     </div>
     <div class="layui-card-body layui-clear">
         <div class="layui-btn-group shadow-mini">
@@ -57,7 +57,7 @@
 
 <div class="layui-card padding-20 shadow">
     <div class="layui-card-header notselect">
-        <span class="help-label"><b style="color:#333!important;">{:lang('存储引擎')}</b> ( {:lang('文件默认存储方式')} )</span>
+        <span class="help-label"><b style="color:#333!important;">{:lang('存储引擎')}</b>( {:lang('文件默认存储方式')} )</span>
     </div>
     <!-- 初始化存储配置 -->
     {if !sysconf('storage.type')}{php}sysconf('storage.type','local');{/php}{/if}
@@ -65,7 +65,7 @@
     {if !sysconf('storage.name_type')}{php}sysconf('storage.name_type','xmd5');{/php}{/if}
     {if !sysconf('storage.allow_exts')}{php}sysconf('storage.allow_exts','doc,gif,ico,jpg,mp3,mp4,p12,pem,png,rar,xls,xlsx');{/php}{/if}
     {if !sysconf('storage.local_http_protocol')}{php}sysconf('storage.local_http_protocol','follow');{/php}{/if}
-    <div class="layui-card-body layui-clear">
+    <div class="layui-card-body">
         <div class="layui-btn-group shadow-mini nowrap">
             {foreach $files as $k => $v}{if sysconf('storage.type') eq $k}
             {if auth('storage')}<a data-title="配置{$v}" data-modal="{:url('storage')}?type={$k}" class="layui-btn layui-btn-sm layui-btn-active">{$v}</a>{else}<a class="layui-btn layui-btn-sm layui-btn-active">{$v}</a>{/if}
@@ -73,7 +73,7 @@
             {if auth('storage')}<a data-title="配置{$v}" data-modal="{:url('storage')}?type={$k}" class="layui-btn layui-btn-sm layui-btn-primary">{$v}</a>{else}<a class="layui-btn layui-btn-sm layui-btn-primary">{$v}</a>{/if}
             {/if}{/foreach}
         </div>
-        <div class="margin-top-20 full-width pull-left">
+        <div class="margin-top-20 full-width">
             <p><b>{:lang('本地服务器存储')}</b>：{:lang('文件上传到本地服务器的 `static/upload` 目录，不支持大文件上传，占用服务器磁盘空间，访问时消耗服务器带宽流量。')}</p>
             <p><b>{:lang('自建Alist存储')}</b>：{:lang('文件上传到 Alist 存储的服务器或云存储空间，根据服务配置可支持大文件上传，不占用本身服务器空间及服务器带宽流量。')}</p>
             <p><b>{:lang('七牛云对象存储')}</b>：{:lang('文件上传到七牛云存储空间，支持大文件上传，不占用服务器空间及服务器带宽流量，支持 CDN 加速访问，访问量大时推荐使用。')}</p>
@@ -86,7 +86,7 @@
 
 <div class="layui-card padding-20 shadow">
     <div class="layui-card-header notselect">
-        <span class="help-label"><b style="color:#333!important;">{:lang('系统参数')}</b> ( {:lang('当前系统配置参数')} )</span>
+        <span class="help-label"><b style="color:#333!important;">{:lang('系统参数')}</b>( {:lang('当前系统配置参数')} )</span>
     </div>
     <div class="layui-card-body">
         <div class="layui-form-item">
@@ -147,14 +147,14 @@
 <!--{if $app->isDebug()}-->
 <div class="layui-card padding-20 shadow">
     <div class="layui-card-header notselect">
-        <span class="help-label"><b style="color:#333!important;">{:lang('系统信息')}</b> ( {:lang('仅开发模式可见')} )</span>
+        <span class="help-label"><b style="color:#333!important;">{:lang('系统信息')}</b>( {:lang('仅开发模式可见')} )</span>
     </div>
     <div class="layui-card-body">
         <table class="layui-table" lay-even>
             <tbody>
             <tr>
                 <td class="nowrap text-center">{:lang('核心框架')}</td>
-                <td><a target="_blank" href="https://www.thinkphp.cn">ThinkPHP Version {$app->version()}</a></td>
+                <td><a target="_blank" href="https://www.thinkphp.cn">ThinkPHP Version {$framework.version|default='None'}</a></td>
             </tr>
             <tr>
                 <td class="nowrap text-center">{:lang('平台框架')}</td>
@@ -176,7 +176,7 @@
 {notempty name='plugins'}
 <div class="layui-card padding-20 shadow">
     <div class="layui-card-header notselect">
-        <span class="help-label"><b style="color:#333!important;">{:lang('应用插件')}</b> ( {:lang('仅开发模式可见')} )</span>
+        <span class="help-label"><b style="color:#333!important;">{:lang('应用插件')}</b>( {:lang('仅开发模式可见')} )</span>
     </div>
     <div class="layui-card-body">
         <table class="layui-table" lay-even>

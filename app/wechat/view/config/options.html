@@ -1,6 +1,9 @@
 {extend name="main"}
 
 {block name="button"}
+<!--{if auth('options_wxapp')}-->
+<button data-modal="{:url('options_wxapp')}" data-width="600px" data-title="绑定小程序" class='layui-btn layui-btn-sm layui-btn-primary'>绑定小程序</button>
+<!--{/if}-->
 <!--{if auth('options_jsonrpc')}-->
 <button data-modal="{:url('options_jsonrpc')}" data-width="600px" data-title="开放平台接口配置" class='layui-btn layui-btn-sm layui-btn-primary'>开放平台接口</button>
 <!--{/if}-->
@@ -11,11 +14,11 @@
 
 {block name="content"}
 <div class="think-box-shadow layui-form">
-    <div class="nowrap" style="margin-left:99px;max-width:850px">
-        {foreach ['api'=>'微信公众平台直接模式','thr'=>'微信开放平台授权模式'] as $k=>$v}
+    <div style="margin-left:99px;max-width:750px">
+        {foreach ['api'=>lang('微信公众平台直接模式'),'thr'=>lang('微信开放平台授权模式')] as $k=>$v}
         <input type="radio" data-wechat-type="{$k}" name="wechat.type" value="{$k}" title="{$v}" lay-filter="wechat_type">
         {/foreach}
-        <p class="help-block">请选择微信对接方式，其中微信开放平台授权模式需要微信开放平台支持，还需要搭建第三方服务平台托管系统！</p>
+        <div class="help-block">{:lang('请选择微信对接方式，其中微信开放平台授权模式需要微信开放平台支持，还需要搭建第三方服务平台托管系统！')}</div>
     </div>
 </div>
 <div class="think-box-shadow margin-top-15">

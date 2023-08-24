@@ -118,7 +118,7 @@ class System extends Controller
             foreach ($tmpdata as $type => $items) foreach ($items as $name => $value) {
                 $newdata[] = ['type' => $type, 'name' => $name, 'value' => $value];
             }
-            $this->app->db->transaction(function () use ($newdata) {
+            $this->app->db->transaction(static function () use ($newdata) {
                 SystemConfig::mQuery()->empty()->insertAll($newdata);
             });
             $this->app->cache->delete('SystemConfig');

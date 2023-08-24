@@ -32,7 +32,7 @@
             </dl>
             <a class="layui-elip">
                 <span class="headimg" data-lazy-src="{:htmlentities(session('user.headimg'))}"></span>
-                <span>{:lang(htmlentities(session('user.nickname')?:session('user.username')))}</span>
+                <span>{:htmlentities(lang(session('user.nickname')?:session('user.username')))}</span>
             </a>
         </li>
         {else}

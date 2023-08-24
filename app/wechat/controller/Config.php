@@ -112,6 +112,29 @@ class Config extends Controller
     }
 
     /**
+     * 绑定小程序
+     * @auth true
+     * @throws \think\admin\Exception
+     */
+    public function options_wxapp()
+    {
+        if ($this->request->isGet()) {
+            $data = sysdata('plugin.wechat.wxapp') ?: [];
+            Builder::mk()
+                ->addTextInput('appid', '小程序', 'AppId', true, '<b>必选</b>，微信小程序 AppID 需要微信公众号平台获取！', '^wx[0-9a-z]{16}$', ['maxlength' => 18])
+                ->addTextInput('appkey', '小程序密钥', 'AppSecret', true, '<b>必选</b>，微信小程序 AppSecret 需要微信公众号平台获取！', '^[0-9a-z]{32}$', ['maxlength' => 32])
+                ->addSubmitButton('保存参数')->addCancelButton()
+                ->fetch(['vo' => ['appid' => $data['appid'] ?? '', 'appkey' => $data['appkey'] ?? '']]);
+        } else {
+            sysdata('plugin.wechat.wxapp', $this->_vali([
+                'appid.require'  => '小程序ID不能为空！',
+                'appkey.require' => '小程序密钥不能为空！'
+            ]));
+            $this->success('参数保存成功！');
+        }
+    }
+
+    /**
      * 微信支付配置
      * @auth true
      * @menu true

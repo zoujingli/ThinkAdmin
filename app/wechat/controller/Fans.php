@@ -42,7 +42,7 @@ class Fans extends Controller
     {
         WechatFans::mQuery()->layTable(function () {
             $this->title = '微信用户管理';
-        }, function (QueryHelper $query) {
+        }, static function (QueryHelper $query) {
             $query->where(['appid' => WechatService::getAppid()]);
             $query->like('nickname')->equal('subscribe,is_black')->dateBetween('subscribe_at');
         });

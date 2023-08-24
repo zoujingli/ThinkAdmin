@@ -1,14 +1,15 @@
 <form action="{:request()->url()}" method="post" data-auto="true" class="layui-form layui-card shadow-none">
 
-    <div class="layui-card-header border-0">
-        <div class="layui-bg-gray padding-left-20 padding-right-20 border-radius-5 layui-elip">
-            使用微信开放平台授权模式时，微信将授权给第三方服务平台托管系统，消息数据使用 <span>JsonRpc</span> 通信协议转发。
+    <div class="layui-card-header border-0" style="height:auto">
+        <div class="layui-bg-gray padding-20 padding-top-0 border-radius-5" style="line-height:2em">
+            {:lang('使用微信开放平台授权模式时，微信将授权给第三方服务平台托管系统，消息数据使用 %s 通信协议转发。',['<span>JsonRpc</span>'])}
         </div>
     </div>
 
     <div class="layui-card-body">
 
         <!--{if !empty($wechat)}-->
+        <div class="hr-line-dashed"></div>
         <div class="layui-form-item margin-bottom-20">
             <label class="layui-form-label"><b>QRCode</b><br><span class="nowrap color-desc">公众号二维码</span></label>
             <div class="layui-input-block">

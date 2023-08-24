@@ -41,7 +41,6 @@ class User extends Controller
     public function index()
     {
         $this->type = $this->get['type'] ?? 'index';
-        // 创建快捷查询工具
         SystemUser::mQuery()->layTable(function () {
             $this->title = '系统用户管理';
             $this->bases = SystemBase::items('身份权限');
@@ -51,9 +50,9 @@ class User extends Controller
             $query->where(['is_deleted' => 0, 'status' => intval($this->type === 'index')]);
 
             // 关联用户身份资料
-            $query->with(['userinfo' => function ($relation) {
-                /** @var \think\model\Relation|\think\db\Query $relation */
-                $relation->field('code,name,content');
+            /** @var \think\model\Relation|\think\db\Query $query */
+            $query->with(['userinfo' => static function ($query) {
+                $query->field('code,name,content');
             }]);
 
             // 数据列表搜索过滤

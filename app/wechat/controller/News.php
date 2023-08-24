@@ -38,7 +38,7 @@ class News extends Controller
     public function index()
     {
         $this->title = '微信图文列表';
-        WechatNews::mQuery(null, function (QueryHelper $query) {
+        WechatNews::mQuery(null, static function (QueryHelper $query) {
             $query->where(['is_deleted' => 0])->order('id desc')->page();
         });
     }

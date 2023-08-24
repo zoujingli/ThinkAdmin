@@ -206,8 +206,8 @@ class PaymentService
             return [0, '退款大于支付金额！'];
         }
         // 创建支付退款申请
-        do $rcode = CodeExtend::uniqidNumber(16, 'R');
-        while (($model = WechatPaymentRefund::mk()->master()->where(['code' => $rcode])->findOrEmpty())->isExists());
+        do $check = ['code' => $rcode = CodeExtend::uniqidNumber(16, 'R')];
+        while (($model = WechatPaymentRefund::mk()->master()->where($check)->findOrEmpty())->isExists());
         // 初始化退款申请记录
         $model->save(['code' => $rcode, 'record_code' => $pcode, 'refund_amount' => $amount, 'refund_remark' => $reason]);
         $options = [

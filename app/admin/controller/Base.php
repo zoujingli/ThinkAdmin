@@ -41,7 +41,7 @@ class Base extends Controller
             $this->title = '数据字典管理';
             $this->types = SystemBase::types();
             $this->type = $this->get['type'] ?? ($this->types[0] ?? '-');
-        }, function (QueryHelper $query) {
+        }, static function (QueryHelper $query) {
             $query->where(['deleted' => 0])->equal('type');
             $query->like('code,name,status')->dateBetween('create_at');
         });

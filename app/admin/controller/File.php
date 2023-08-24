@@ -57,7 +57,7 @@ class File extends Controller
         SystemFile::mQuery()->layTable(function () {
             $this->title = '系统文件管理';
             $this->xexts = SystemFile::mk()->distinct()->column('xext');
-        }, function (QueryHelper $query) {
+        }, static function (QueryHelper $query) {
             $query->like('name,hash,xext')->equal('type')->dateBetween('create_at');
             $query->where(['issafe' => 0, 'status' => 2, 'uuid' => AdminService::getUserId()]);
         });

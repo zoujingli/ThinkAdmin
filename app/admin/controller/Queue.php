@@ -50,7 +50,7 @@ class Queue extends Controller
                     $this->command = "sudo -u {$_SERVER['USER']} {$this->command}";
                 }
             }
-        }, function (QueryHelper $query) {
+        }, static function (QueryHelper $query) {
             $query->equal('status')->like('code|title#title,command');
             $query->timeBetween('enter_time,exec_time')->dateBetween('create_at');
         });
@@ -68,7 +68,7 @@ class Queue extends Controller
     protected function _index_page_filter(array $data, array &$result)
     {
         $result['extra'] = ['dos' => 0, 'pre' => 0, 'oks' => 0, 'ers' => 0];
-        SystemQueue::mk()->field('status,count(1) count')->group('status')->select()->map(function ($item) use (&$result) {
+        SystemQueue::mk()->field('status,count(1) count')->group('status')->select()->map(static function ($item) use (&$result) {
             if (intval($item['status']) === 1) $result['extra']['pre'] = $item['count'];
             if (intval($item['status']) === 2) $result['extra']['dos'] = $item['count'];
             if (intval($item['status']) === 3) $result['extra']['oks'] = $item['count'];

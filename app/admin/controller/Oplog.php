@@ -44,7 +44,7 @@ class Oplog extends Controller
             $columns = SystemOplog::mk()->column('action,username', 'id');
             $this->users = array_unique(array_column($columns, 'username'));
             $this->actions = array_unique(array_column($columns, 'action'));
-        }, function (QueryHelper $query) {
+        }, static function (QueryHelper $query) {
             $query->dateBetween('create_at')->equal('username,action')->like('content,geoip,node');
         });
     }

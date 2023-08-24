@@ -42,7 +42,7 @@ class Auth extends Controller
     {
         SystemAuth::mQuery()->layTable(function () {
             $this->title = '系统权限管理';
-        }, function (QueryHelper $query) {
+        }, static function (QueryHelper $query) {
             $query->like('title,desc')->equal('status,utype')->dateBetween('create_at');
         });
     }
@@ -96,9 +96,7 @@ class Auth extends Controller
         $map = $this->_vali(['auth.require#id' => '权限ID不能为空！']);
         if (input('action') === 'get') {
             if ($this->app->isDebug()) AdminService::clear();
-            $nodes = SystemNode::mk()->where($map)->column('node');
-            foreach ($nodes as &$node) $node['title'] = lang($node['title']);
-            $ztree = AdminService::getTree($nodes);
+            $ztree = AdminService::getTree(SystemNode::mk()->where($map)->column('node'));
             usort($ztree, static function ($a, $b) {
                 if (explode('-', $a['node'])[0] !== explode('-', $b['node'])[0]) {
                     if (stripos($a['node'], 'plugin-') === 0) return 1;
