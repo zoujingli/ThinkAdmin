@@ -15,9 +15,14 @@
             sort: {field: 'id', type: 'desc'},
             cols: [[
                 {field: 'id', hide: true},
-                {field: 'headimg', title: '头像', width: 95, align: 'center', templet: '<div>{{-showTableImage(d.record.fans_headimg,true,"md")}}</div>'},
+                {
+                    field: 'headimg', title: '头像', width: 95, align: 'center', templet: function (d) {
+                        return d.record ? laytpl('{{-showTableImage(d.record.fans_headimg,true,"md")}}').render(d) : '-';
+                    }
+                },
                 {
                     field: '', title: '用户账号', minWidth: 170, templet: function (d) {
+                        if (!d.record) return '-';
                         let tpls = [];
                         tpls.push('<div class="padding-top-10"></div>用户昵称：{{d.record.fans_nickname||"-"}}');
                         tpls.push('用户标识：<span class="font-code">{{d.record.openid||"-"}}</span>');
@@ -26,6 +31,7 @@
                 },
                 {
                     field: '', title: '订单内容', minWidth: 180, width: '18%', templet: function (d) {
+                        if (!d.record) return '-';
                         let tpls = [];
                         tpls.push('<b class="color-blue font-code">{{d.record.order_code}}</b>');
                         tpls.push('{{d.record.order_name||"-"}}');
@@ -35,6 +41,7 @@
                 },
                 {
                     field: '', title: '支付交易', minWidth: 180, width: '20%', templet: function (d) {
+                        if (!d.record) return '-';
                         let lines = [];
                         lines.push('<b class="color-blue font-code">{{d.record.code||"-"}}</b>');
                         lines.push('<b class="color-blue font-code">{{d.record.payment_trade||"-"}}</b>');

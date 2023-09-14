@@ -236,7 +236,6 @@ class WechatService extends Service
     {
         $appid = static::getAppid();
         $sessid = Library::$sapp->session->getId();
-        $script =
         $openid = Library::$sapp->session->get("{$appid}_openid");
         $userinfo = Library::$sapp->session->get("{$appid}_fansinfo");
         if ((empty($isfull) && !empty($openid)) || (!empty($isfull) && !empty($openid) && !empty($userinfo))) {
@@ -258,16 +257,26 @@ class WechatService extends Service
                 $oauthurl = $wechat->getOauthRedirect($location, $appid, $isfull ? 'snsapi_userinfo' : 'snsapi_base');
                 throw new HttpResponseException($redirect ? redirect($oauthurl, 301) : response("location.href='{$oauthurl}'"));
             } elseif (($token = $wechat->getOauthAccessToken($getVars['code'])) && isset($token['openid'])) {
-                Library::$sapp->session->set("{$appid}_openid", $openid = $token['openid']);
+                $openid = $token['openid'];
+                // 如果是虚拟账号，不保存会话信息，下次重新授权
+                if (empty($token['is_snapshotuser'])) {
+                    Library::$sapp->session->set("{$appid}_openid", $openid);
+                }
                 if ($isfull && isset($token['access_token'])) {
                     $userinfo = $wechat->getUserInfo($token['access_token'], $openid);
-                    Library::$sapp->session->set("{$appid}_fansinfo", $userinfo);
-                    empty($userinfo) || FansService::set($userinfo, $appid);
+                    // 如果是虚拟账号，不保存会话信息，下次重新授权
+                    if (empty($token['is_snapshotuser'])) {
+                        $userinfo['is_snapshotuser'] = 0;
+                        Library::$sapp->session->set("{$appid}_fansinfo", $userinfo);
+                        empty($userinfo) || FansService::set($userinfo, $appid);
+                    } else {
+                        $userinfo['is_snapshotuser'] = 1;
+                    }
                 }
             }
             if ($getVars['rcode']) {
                 $location = debase64url($getVars['rcode']);
-                throw new HttpResponseException($redirect ? redirect($location, 301) : response("location.href='{$location}';localStorage.setItem('wechat.session','{$sessid}');"));
+                throw new HttpResponseException($redirect ? redirect($location, 301) : response("location.replace('{$location}');sessionStorage.setItem('wechat.session','{$sessid}');"));
             } elseif ((empty($isfull) && !empty($openid)) || (!empty($isfull) && !empty($openid) && !empty($userinfo))) {
                 return ['openid' => $openid, 'fansinfo' => $userinfo];
             } else {
@@ -275,16 +284,20 @@ class WechatService extends Service
             }
         } else {
             $result = static::ThinkServiceConfig()->oauth(Library::$sapp->session->getId(), $source, $isfull);
-            Library::$sapp->session->set("{$appid}_openid", $openid = $result['openid']);
-            Library::$sapp->session->set("{$appid}_fansinfo", $userinfo = $result['fans']);
+            [$openid, $userinfo] = [$result['openid'] ?? '', $result['fans'] ?? []];
+            // 如果是虚拟账号，不保存会话信息，下次重新授权
+            if (empty($result['token']['is_snapshotuser'])) {
+                Library::$sapp->session->set("{$appid}_openid", $openid);
+                Library::$sapp->session->set("{$appid}_fansinfo", $userinfo);
+            }
             if ((empty($isfull) && !empty($openid)) || (!empty($isfull) && !empty($openid) && !empty($userinfo))) {
-                empty($userinfo) || FansService::set($userinfo, $appid);
+                empty($result['token']['is_snapshotuser']) && empty($userinfo) || FansService::set($userinfo, $appid);
                 return ['openid' => $openid, 'fansinfo' => $userinfo];
             }
             if ($redirect) {
                 throw new HttpResponseException(redirect($result['url'], 301));
             } else {
-                throw new HttpResponseException(response("location.href='{$result['url']}';localStorage.setItem('wechat.session','{$sessid}');"));
+                throw new HttpResponseException(response("location.replace('{$result['url']}');localStorage.setItem('wechat.session','{$sessid}');"));
             }
         }
     }

@@ -56,12 +56,12 @@ class Service extends Plugin
         $this->commands([Fans::class, Auto::class, Clear::class]);
 
         // 注册粉丝关注事件
-        $this->app->event->listen('WechatFansSubscribe', function ($openid) {
+        $this->app->event->listen('WechatFansSubscribe', static function ($openid) {
             AutoService::register($openid);
         });
 
         // 注册支付通知路由
-        $this->app->route->any('/plugin-wxpay-notify/:vars', function (Request $request) {
+        $this->app->route->any('/plugin-wxpay-notify/:vars', static function (Request $request) {
             try {
                 $data = json_decode(CodeExtend::deSafe64($request->param('vars')), true);
                 return PaymentService::notify($data);
