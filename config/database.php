@@ -71,6 +71,7 @@ return [
             'trigger_sql' => true,
             // 其他参数字段
             'deploy'      => 0,
+            'suffix'      => '',
             'prefix'      => '',
             'hostname'    => '',
             'hostport'    => '',
