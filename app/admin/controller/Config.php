@@ -56,10 +56,11 @@ class Config extends Controller
     {
         $this->title = '系统参数配置';
         $this->files = Storage::types();
-        $this->super = AdminService::isSuper();
         $this->plugins = Plugin::get('', true);
-        $this->version = ModuleService::getVersion();
+        $this->issuper = AdminService::isSuper();
+        $this->systemid = ModuleService::getRunVar('uni');
         $this->framework = ModuleService::getLibrarys('topthink/framework');
+        $this->thinkadmin = ModuleService::getLibrarys('zoujingli/think-library');
         uasort($this->plugins, static function ($a, $b) {
             if ($a['space'] === $b['space']) return 0;
             return $a['space'] > $b['space'] ? 1 : -1;

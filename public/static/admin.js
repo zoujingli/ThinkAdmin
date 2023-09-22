@@ -359,12 +359,14 @@ $(function () {
         };
         /*! 打开 IFRAME 窗口 */
         this.iframe = function (url, name, area, offset, destroy, success, isfull) {
+            if (typeof area === 'string' && area.indexOf('[') === 0) area = eval('(' + area + ')');
             this.idx = layer.open({title: name || '窗口', type: 2, area: area || ['800px', '580px'], end: destroy || null, offset: offset, fixed: true, maxmin: false, content: url, success: success});
             return isfull && layer.full(this.idx), this.idx;
         };
         /*! 加载 HTML 到弹出层，返回 refer 对象 */
         this.modal = function (url, data, name, call, load, tips, area, offset, isfull) {
             return this.load(url, data, 'GET', function (res, time, defer) {
+                if (typeof area === 'string' && area.indexOf('[') === 0) area = eval('(' + area + ')');
                 return typeof res === 'object' ? $.msg.auto(res) : $.msg.mdx.push(this.idx = layer.open({
                     type: 1, btn: false, area: area || '800px', offset: offset || 'auto', resize: false, content: res,
                     title: name === 'false' ? '' : name, end: () => defer.notify('modal.close'), success: function ($dom, idx) {
@@ -642,9 +644,7 @@ $(function () {
             option.id = table.id, option.elem = table, option.url = params.url || table.dataset.url || location.href;
             option.limit = params.limit || 20, option.loading = params.loading !== false, option.autoSort = params.autoSort === true;
             option.page = params.page !== false ? (params.page || true) : false, option.cols = params.cols || [[]], option.success = params.done || '';
-            // 初始化不显示头部
-            let cls = ['.layui-table-header', '.layui-table-fixed', '.layui-table-body', '.layui-table-page'];
-            option.css = (option.css || '') + cls.join('{opacity:0}') + '{opacity:0}';
+
             // 默认动态设置页数, 动态设置最大高度
             if (option.page === true) option.page = {curr: layui.sessionData('pages')[option.id] || 1};
             if (option.height === 'full') if ($table.parents('.iframe-pagination').size()) {
@@ -655,12 +655,18 @@ $(function () {
             } else {
                 option.height = $(window).height() - $table.removeClass('layui-hide').offset().top - 35;
             }
+
+            // 初始化不显示头部
+            let cls = ['.layui-table-header', '.layui-table-fixed', '.layui-table-body', '.layui-table-page'];
+            option.css = (typeof option.height === 'number' ? '{height:' + option.height + 'px}' : '') + (option.css || '') + cls.concat(['']).join('{opacity:0}');
+
             // 动态计算最大页数
             option.done = function (res, curr, count) {
                 layui.sessionData('pages', {key: table.id, value: this.page.curr || 1});
                 typeof option.success === 'function' && option.success.call(this, res, curr, count);
                 $.form.reInit($table.next()).find('[data-load][data-time!="false"],[data-action][data-time!="false"],[data-queue],[data-iframe]').not('[data-table-id]').attr('data-table-id', table.id);
                 (option.loading = this.loading = true) && $table.data('next', this).next().find(cls.join(',')).animate({opacity: 1});
+
             }, option.parseData = function (res) {
                 if (typeof params.filter === 'function') {
                     res.data = params.filter(res.data, res);
@@ -784,8 +790,8 @@ $(function () {
         $dom && $($dom).filter('form[data-auto]') && $els.add($dom);
         return $els.map(function (idx, form) {
             $(this).vali(function (data) {
-                let dset = form.dataset, type = form.method || 'POST', href = form.action || location.href;
-                let tips = dset.tips || undefined, time = dset.time || undefined, taid = dset.tableId || false;
+                let type = form.getAttribute('method') || 'POST', href = form.getAttribute('action') || location.href;
+                let dset = form.dataset, tips = dset.tips || undefined, time = dset.time || undefined, taid = dset.tableId || false;
                 let call = window[dset.callable || '_default_callable'] || (taid ? function (ret) {
                     if (typeof ret === 'object' && ret.code > 0 && $('#' + taid).size() > 0) {
                         return $.msg.success(ret.info, 3, function () {

@@ -11,10 +11,12 @@
 {/block}
 
 {block name="content"}
-<!--{notempty name='super'}-->
+<!--{notempty name='issuper'}-->
 <div class="layui-card padding-20 shadow">
     <div class="layui-card-header notselect">
-        <span class="help-label"><b style="color:#333!important;">{:lang('运行模式')}</b>( {:lang('仅超级管理员可配置')} )</span>
+        <span class="help-label">
+            <b style="color:#333!important;">{:lang('运行模式')}</b>( {:lang('仅超级管理员可配置')} )
+        </span>
     </div>
     <div class="layui-card-body">
         <div class="layui-btn-group shadow-mini nowrap">
@@ -35,7 +37,9 @@
 
 <div class="layui-card padding-20 shadow">
     <div class="layui-card-header notselect">
-        <span class="help-label"><b style="color:#333!important;">{:lang('富编辑器')}</b>( {:lang('仅超级管理员可配置')} )</span>
+        <span class="help-label">
+            <b style="color:#333!important;">{:lang('富编辑器')}</b>( {:lang('仅超级管理员可配置')} )
+        </span>
     </div>
     <div class="layui-card-body layui-clear">
         <div class="layui-btn-group shadow-mini">
@@ -57,7 +61,9 @@
 
 <div class="layui-card padding-20 shadow">
     <div class="layui-card-header notselect">
-        <span class="help-label"><b style="color:#333!important;">{:lang('存储引擎')}</b>( {:lang('文件默认存储方式')} )</span>
+        <span class="help-label">
+            <b style="color:#333!important;">{:lang('存储引擎')}</b>( {:lang('文件默认存储方式')} )
+        </span>
     </div>
     <!-- 初始化存储配置 -->
     {if !sysconf('storage.type')}{php}sysconf('storage.type','local');{/php}{/if}
@@ -86,7 +92,9 @@
 
 <div class="layui-card padding-20 shadow">
     <div class="layui-card-header notselect">
-        <span class="help-label"><b style="color:#333!important;">{:lang('系统参数')}</b>( {:lang('当前系统配置参数')} )</span>
+        <span class="help-label">
+            <b style="color:#333!important;">{:lang('系统参数')}</b>( {:lang('当前系统配置参数')} )
+        </span>
     </div>
     <div class="layui-card-body">
         <div class="layui-form-item">
@@ -147,25 +155,33 @@
 <!--{if $app->isDebug()}-->
 <div class="layui-card padding-20 shadow">
     <div class="layui-card-header notselect">
-        <span class="help-label"><b style="color:#333!important;">{:lang('系统信息')}</b>( {:lang('仅开发模式可见')} )</span>
+        <span class="help-label">
+            <b style="color:#333!important;">{:lang('系统信息')}</b>( {:lang('仅开发模式可见')} )
+        </span>
     </div>
     <div class="layui-card-body">
         <table class="layui-table" lay-even>
             <tbody>
             <tr>
-                <td class="nowrap text-center">{:lang('核心框架')}</td>
+                <th class="nowrap text-center">{:lang('核心框架')}</th>
                 <td><a target="_blank" href="https://www.thinkphp.cn">ThinkPHP Version {$framework.version|default='None'}</a></td>
             </tr>
             <tr>
-                <td class="nowrap text-center">{:lang('平台框架')}</td>
-                <td><a target="_blank" href="https://thinkadmin.top">ThinkAdmin Version {$version|default='6.0.0'}</a></td>
+                <th class="nowrap text-center">{:lang('平台框架')}</th>
+                <td><a target="_blank" href="https://thinkadmin.top">ThinkAdmin Version {$thinkadmin.version|default='6.0.0'}</a></td>
             </tr>
+            <!-- {notempty name='systemid'} -->
             <tr>
-                <td class="nowrap text-center">{:lang('操作系统')}</td>
+                <th class="nowrap text-center">{:lang('安装编码')}</th>
+                <td>{$systemid}</td>
+            </tr>
+            <!-- {/notempty} -->
+            <tr>
+                <th class="nowrap text-center">{:lang('操作系统')}</th>
                 <td>{:php_uname()}</td>
             </tr>
             <tr>
-                <td class="nowrap text-center">{:lang('运行环境')}</td>
+                <th class="nowrap text-center">{:lang('运行环境')}</th>
                 <td>{:ucfirst($request->server('SERVER_SOFTWARE',php_sapi_name()))} & PHP {$Think.const.PHP_VERSION} & {:ucfirst(app()->db->connect()->getConfig('type'))}</td>
             </tr>
             </tbody>
@@ -176,7 +192,9 @@
 {notempty name='plugins'}
 <div class="layui-card padding-20 shadow">
     <div class="layui-card-header notselect">
-        <span class="help-label"><b style="color:#333!important;">{:lang('应用插件')}</b>( {:lang('仅开发模式可见')} )</span>
+        <span class="help-label">
+            <b style="color:#333!important;">{:lang('应用插件')}</b>( {:lang('仅开发模式可见')} )
+        </span>
     </div>
     <div class="layui-card-body">
         <table class="layui-table" lay-even>

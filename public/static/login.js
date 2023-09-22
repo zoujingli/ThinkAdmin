@@ -50,11 +50,11 @@ $(function () {
 
     /*! 登录图形验证码刷新 */
     $body.on('click', '[data-captcha]', function () {
-        var $that = $(this), $form = $that.parents('form');
-        var action = this.dataset.captcha || location.href;
+        let $that = $(this), $form = $that.parents('form');
+        let action = this.dataset.captcha || location.href;
         if (action.length < 5) return $.msg.tips('请设置验证码请求及验证地址');
-        var type = this.dataset.captchaType || 'captcha-type', token = this.dataset.captchaToken || 'captcha-token';
-        var uniqid = this.dataset.fieldUniqid || 'captcha-uniqid', verify = this.dataset.fieldVerify || 'captcha-verify';
+        let type = this.dataset.captchaType || 'captcha-type', token = this.dataset.captchaToken || 'captcha-token';
+        let uniqid = this.dataset.fieldUniqid || 'captcha-uniqid', verify = this.dataset.fieldVerify || 'captcha-verify';
         $.form.load(action, {type: type, token: token}, 'post', function (ret) {
             if (ret.code) {
                 $that.html('<img alt="img" src="' + ret.data.image + '"><input type="hidden">').find('input').attr('name', uniqid).val(ret.data.uniqid || '');

@@ -29,10 +29,19 @@ define(function () {
     };
 
     /*! 绑定导出的事件 */
-    Excel.prototype.bind = function (done, filename) {
+    // <a data-form-export>通用导出</a>
+    // <a data-form-export="URL链接">指定链接导出</a>
+    // <!-- 自定义导出 Excel 文件 -->
+    // <a id="EXPORT1" data-excel="URL链接">自定义导出1</a>
+    // <a id="EXPORT2" data-excel="URL链接">自定义导出2</a>
+    // <script>
+    //      Excel.bind(DONE1,FILENAME1,'#EXPORT1')
+    //      Excel.bind(DONE2,FILENAME2,'#EXPORT2')
+    // </script>
+    Excel.prototype.bind = function (done, filename, selector) {
         let that = this;
         this.options = {}; // {writeOpt: {bookSST: true}};
-        $('body').off('click', '[data-form-export]').on('click', '[data-form-export]', function () {
+        $('body').off('click', selector || '[data-form-export]').on('click', selector || '[data-form-export]', function () {
             let form = $(this).parents('form');
             let name = this.dataset.filename || filename;
             let method = this.dataset.method || form.attr('method') || 'get';
@@ -73,9 +82,8 @@ define(function () {
         })($.Deferred());
     };
 
-    /**
-     * 设置表格导出样式
-     */
+    /*! 设置表格导出样式 */
+    // this.withStyle(data, {A: 60, B: 80, C: 99, E: 120, G: 120}, 99, 28)
     Excel.prototype.withStyle = function (data, colsWidth, defaultWidth, defaultHeight) {
         // 自动计算列序
         let idx, colN = 0, defaC = {}, lastCol;
@@ -119,6 +127,11 @@ define(function () {
     }
 
     /*! 直接推送表格内容 */
+    // url： 记录推送地址
+    // sheet： 表格 Sheet 名称
+    // cols： { _: 1, 表头名1: 字段名1, 表头名2: 字段名2 }，其中字段 _ 配置起始行
+    // filter： 数据过滤处理，如果返回 false 不上传记录
+    // Excel.push(ACTION, '用户信息', {_:1, username: "用户名称", phone: "联系手机"})
     Excel.prototype.push = function (url, sheet, cols, filter) {
         let loaded, $input;
         $input = $('<input class="layui-hide" type="file" accept="application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet">');
