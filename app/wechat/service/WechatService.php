@@ -22,6 +22,7 @@ use think\admin\Library;
 use think\admin\Service;
 use think\admin\storage\LocalStorage;
 use think\exception\HttpResponseException;
+use think\Response;
 
 /**
  * 微信接口调度服务
@@ -235,7 +236,6 @@ class WechatService extends Service
     public static function getWebOauthInfo(string $source, int $isfull = 0, bool $redirect = true): array
     {
         $appid = static::getAppid();
-        $sessid = Library::$sapp->session->getId();
         $openid = Library::$sapp->session->get("{$appid}_openid");
         $userinfo = Library::$sapp->session->get("{$appid}_fansinfo");
         if ((empty($isfull) && !empty($openid)) || (!empty($isfull) && !empty($openid) && !empty($userinfo))) {
@@ -255,7 +255,7 @@ class WechatService extends Service
                 $params['rcode'] = enbase64url($source);
                 $location = strstr("{$source}?", '?', true) . '?' . http_build_query($params);
                 $oauthurl = $wechat->getOauthRedirect($location, $appid, $isfull ? 'snsapi_userinfo' : 'snsapi_base');
-                throw new HttpResponseException($redirect ? redirect($oauthurl, 301) : response("location.href='{$oauthurl}'"));
+                throw new HttpResponseException(static::createRedirect($oauthurl, $redirect));
             } elseif (($token = $wechat->getOauthAccessToken($getVars['code'])) && isset($token['openid'])) {
                 $openid = $token['openid'];
                 // 如果是虚拟账号，不保存会话信息，下次重新授权
@@ -275,8 +275,7 @@ class WechatService extends Service
                 }
             }
             if ($getVars['rcode']) {
-                $location = debase64url($getVars['rcode']);
-                throw new HttpResponseException($redirect ? redirect($location, 301) : response("location.replace('{$location}');sessionStorage.setItem('wechat.session','{$sessid}');"));
+                throw new HttpResponseException(static::createRedirect(debase64url($getVars['rcode']), $redirect));
             } elseif ((empty($isfull) && !empty($openid)) || (!empty($isfull) && !empty($openid) && !empty($userinfo))) {
                 return ['openid' => $openid, 'fansinfo' => $userinfo];
             } else {
@@ -294,12 +293,23 @@ class WechatService extends Service
                 empty($result['token']['is_snapshotuser']) && empty($userinfo) || FansService::set($userinfo, $appid);
                 return ['openid' => $openid, 'fansinfo' => $userinfo];
             }
-            if ($redirect) {
-                throw new HttpResponseException(redirect($result['url'], 301));
-            } else {
-                throw new HttpResponseException(response("location.replace('{$result['url']}');localStorage.setItem('wechat.session','{$sessid}');"));
-            }
+            throw new HttpResponseException(static::createRedirect($result['url'], $redirect));
         }
+    }
+
+    /**
+     * 网页授权链接跳转
+     * @param string $location 跳转链接
+     * @param boolean $redirect 强制跳转
+     * @return \think\Response
+     */
+    private static function createRedirect(string $location, bool $redirect = true): Response
+    {
+        if ($redirect) return redirect($location, 301);
+        [$ssid, $scripts] = [Library::$sapp->session->getId(), []];
+        $scripts[] = sprintf("location.replace('%s')", $location);
+        $scripts[] = sprintf("sessionStorage.setItem('wechat.session','%s')", $ssid);
+        return response(join(";\n", $scripts) . ";\n");
     }
 
     /**

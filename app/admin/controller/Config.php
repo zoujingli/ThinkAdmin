@@ -61,6 +61,10 @@ class Config extends Controller
         $this->systemid = ModuleService::getRunVar('uni');
         $this->framework = ModuleService::getLibrarys('topthink/framework');
         $this->thinkadmin = ModuleService::getLibrarys('zoujingli/think-library');
+        if (AdminService::isSuper() && $this->app->session->get('user.password') === md5('admin')) {
+            $url = url('admin/index/pass', ['id' => AdminService::getUserId()]);
+            $this->showErrorMessage = "超级管理员账号的密码未修改，建议立即<a data-modal='{$url}'>修改密码</a>！";
+        }
         uasort($this->plugins, static function ($a, $b) {
             if ($a['space'] === $b['space']) return 0;
             return $a['space'] > $b['space'] ? 1 : -1;

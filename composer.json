@@ -17,7 +17,7 @@
   "require": {
     "php": ">=7.1",
     "ext-json": "*",
-    "zoujingli/think-library": "^6.0",
+    "zoujingli/think-library": "^6.1",
     "zoujingli/think-plugs-admin": "^1.0",
     "zoujingli/think-plugs-wechat": "^1.0"
   },

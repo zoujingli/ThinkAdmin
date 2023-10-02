@@ -742,13 +742,31 @@ table[data-line='3'] + div tbody .layui-table-cell {
 
 .think-box-notify {
   display: block;
-  padding: 18px 20px;
+  padding: 15px 20px;
+  position: relative;
+  overflow: hidden;
   font-size: 14px;
   background: #FFF;
-  line-height: 1em;
+  line-height: 1.4em;
   margin-bottom: 10px;
   box-shadow: @ShadowOuterMax;
   border-radius: @BoxBorderRadius;
+
+  &[type] {
+    border-left: 6px solid #16baaa;
+  }
+
+  &[type=info] {
+    border-left: 6px solid #31bdec;
+  }
+
+  &[type=error] {
+    border-left: 6px solid #ff5722;
+  }
+
+  &[type=success] {
+    border-left: 6px solid #16b777;
+  }
 
   > b {
     font-size: 15px;

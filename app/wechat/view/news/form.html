@@ -80,9 +80,9 @@
 <script>
     require(['angular', 'ckeditor'], function () {
 
-        var editor;
+        let editor;
         $('form[name="news"]').vali(null, function () {
-            var vali = this, app = angular.module("NewsEditor", []).run(callback);
+            let vali = this, app = angular.module("NewsEditor", []).run(callback);
             angular.bootstrap(document.getElementById(app.name), [app.name]);
 
             function callback($rootScope) {
@@ -101,7 +101,7 @@
                         title: '新建图文', author: '管理员', content: '文章内容',
                         read_num: 0, local_url: '__FULL__/static/theme/img/image.png',
                     });
-                    for (var i in list) {
+                    for (let i in list) {
                         list[i].active = false;
                         list[i].style = "background-image:url('" + list[i].local_url + "')";
                     }
@@ -124,9 +124,9 @@
 
                 $rootScope.upItem = function (index, $event) {
                     $event.stopPropagation();
-                    var tmp = [], cur = $rootScope.list[index];
+                    let tmp = [], cur = $rootScope.list[index];
                     if (index < 1) return false;
-                    for (var i in $rootScope.list) {
+                    for (let i in $rootScope.list) {
                         (parseInt(i) === parseInt(index) - 1) && tmp.push(cur);
                         (parseInt(i) !== parseInt(index)) && tmp.push($rootScope.list[i]);
                     }
@@ -134,9 +134,9 @@
                 };
                 $rootScope.dnItem = function (index, $event) {
                     $event.stopPropagation();
-                    var tmp = [], cur = $rootScope.list[index];
+                    let tmp = [], cur = $rootScope.list[index];
                     if (index > $rootScope.list.length - 2) return false;
-                    for (var i in $rootScope.list) {
+                    for (let i in $rootScope.list) {
                         (parseInt(i) !== parseInt(index)) && tmp.push($rootScope.list[i]);
                         (parseInt(i) === parseInt(index) + 1) && tmp.push(cur);
                     }
@@ -144,8 +144,8 @@
                 };
                 $rootScope.delItem = function (index, $event) {
                     $event.stopPropagation();
-                    var list = $rootScope.list, temp = [];
-                    for (var i in list) (parseInt(i) !== parseInt(index)) && temp.push(list[i]);
+                    let list = $rootScope.list, temp = [];
+                    for (let i in list) (parseInt(i) !== parseInt(index)) && temp.push(list[i]);
                     apply(temp);
                 };
                 $rootScope.setItem = function (index, $event) {
@@ -154,7 +154,7 @@
                     if (editor.getData().length < 1) {
                         return $.msg.notify('操作提示', '文章内容不能为空，请输入内容！', 3000, {type: 'error', width: '400px'})
                     }
-                    for (var i in $rootScope.list) if (parseInt(i) !== parseInt(index)) {
+                    for (let i in $rootScope.list) if (parseInt(i) !== parseInt(index)) {
                         $rootScope.list[i].active = false;
                     } else {
                         $rootScope.item.content = editor.getData();
@@ -183,8 +183,8 @@
                 $rootScope.submit = function () {
                     if (!vali.checkAllInput()) return false;
                     $rootScope.item.content = editor.getData();
-                    var data = [];
-                    for (var i in $rootScope.list) data.push({
+                    let data = [];
+                    for (let i in $rootScope.list) data.push({
                         id: $rootScope.list[i].id,
                         title: $rootScope.list[i].title,
                         author: $rootScope.list[i].author,
@@ -198,7 +198,7 @@
                     $.form.load('{:request()->url()}', {data: data}, "post");
                 };
                 $('[name="local_url"]').on('change', function () {
-                    var value = this.value;
+                    let value = this.value;
                     $rootScope.$apply(function () {
                         $rootScope.setItemValue('local_url', value);
                     });

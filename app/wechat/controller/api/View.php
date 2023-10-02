@@ -45,18 +45,14 @@ class View extends Controller
     /**
      * 文章内容展示
      * @param string|integer $id 文章ID编号
-     * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\DbException
-     * @throws \think\db\exception\ModelNotFoundException
      */
     public function item($id = 0)
     {
         $map = ['id' => $id ?: input('id', 0)];
-        WechatNewsArticle::mk()->where($map)->update([
-            'read_num' => $this->app->db->raw('read_num+1'),
-        ]);
-        $this->info = WechatNewsArticle::mk()->where($map)->find();
-        $this->fetch();
+        $modal = WechatNewsArticle::mk()->where($map)->findOrEmpty();
+        $modal->isExists() && $modal->newQuery()->where($map)->setInc('read_num');
+        $this->fetch('item', ['info' => $modal->toArray()]);
     }
 
     /**
@@ -64,8 +60,8 @@ class View extends Controller
      */
     public function text()
     {
-        $this->content = strip_tags(input('content', ''), '<a><img>');
-        $this->fetch();
+        $text = strip_tags(input('content', ''), '<a><img>');
+        $this->fetch('text', ['content' => $text]);
     }
 
     /**
@@ -73,8 +69,8 @@ class View extends Controller
      */
     public function image()
     {
-        $this->content = strip_tags(input('content', ''), '<a><img>');
-        $this->fetch();
+        $text = strip_tags(input('content', ''), '<a><img>');
+        $this->fetch('image', ['content' => $text]);
     }
 
     /**

@@ -170,12 +170,6 @@
                 <th class="nowrap text-center">{:lang('平台框架')}</th>
                 <td><a target="_blank" href="https://thinkadmin.top">ThinkAdmin Version {$thinkadmin.version|default='6.0.0'}</a></td>
             </tr>
-            <!-- {notempty name='systemid'} -->
-            <tr>
-                <th class="nowrap text-center">{:lang('安装编码')}</th>
-                <td>{$systemid}</td>
-            </tr>
-            <!-- {/notempty} -->
             <tr>
                 <th class="nowrap text-center">{:lang('操作系统')}</th>
                 <td>{:php_uname()}</td>
@@ -184,6 +178,12 @@
                 <th class="nowrap text-center">{:lang('运行环境')}</th>
                 <td>{:ucfirst($request->server('SERVER_SOFTWARE',php_sapi_name()))} & PHP {$Think.const.PHP_VERSION} & {:ucfirst(app()->db->connect()->getConfig('type'))}</td>
             </tr>
+            <!-- {notempty name='systemid'} -->
+            <tr>
+                <th class="nowrap text-center">{:lang('系统序号')}</th>
+                <td>{$systemid|default=''}</td>
+            </tr>
+            <!-- {/notempty} -->
             </tbody>
         </table>
     </div>

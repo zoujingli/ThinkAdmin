@@ -24,7 +24,7 @@
     }
 </style>
 
-<div class="nowrap think-box-shadow" style="width:910px">
+<div class="nowrap padding-10">
     <div class='mobile-preview inline-block'>
         <div class='mobile-header'>公众号</div>
         <div class='mobile-body' data-iframe-box></div>
@@ -47,30 +47,34 @@
                     <div class="layui-form-item">
                         <label class="layui-form-label label-required">规则状态</label>
                         <div class="layui-input-block">
-                            {foreach ['1'=>'启用','0'=>'禁用'] as $k=>$v}
-                            <label class="think-radio">
-                                <!--{if (!isset($vo.status) and $k eq '1') or (isset($vo.status) and $vo.status eq $k)}-->
-                                <input type="radio" checked name="status" value="{$k}" lay-ignore> {$v}
-                                <!--{else}-->
-                                <input type="radio" name="status" value="{$k}" lay-ignore> {$v}
-                                <!--{/if}-->
-                            </label>
-                            {/foreach}
+                            <div class="layui-input help-checks">
+                                {foreach ['1'=>'启用','0'=>'禁用'] as $k=>$v}
+                                <label class="think-radio">
+                                    <!--{if (!isset($vo.status) and $k eq '1') or (isset($vo.status) and $vo.status eq $k)}-->
+                                    <input type="radio" checked name="status" value="{$k}" lay-ignore> {$v}
+                                    <!--{else}-->
+                                    <input type="radio" name="status" value="{$k}" lay-ignore> {$v}
+                                    <!--{/if}-->
+                                </label>
+                                {/foreach}
+                            </div>
                         </div>
                     </div>
 
                     <div class="layui-form-item">
                         <label class="layui-form-label label-required">消息类型</label>
-                        <div class="layui-input-block">
-                            {foreach $types as $k=>$v}
-                            <label class="think-radio">
-                                <!--{if (!isset($vo.type) and $k eq 'text') or (isset($vo.type) and$vo.type eq $k)}-->
-                                <input name="type" checked type="radio" value="{$k}" lay-ignore> {$v}
-                                <!--{else}-->
-                                <input name="type" type="radio" value="{$k}" lay-ignore> {$v}
-                                <!--{/if}-->
-                            </label>
-                            {/foreach}
+                        <div class="layui-input-block" style="white-space:normal">
+                            <div class="layui-textarea help-checks">
+                                {foreach $types as $k=>$v}
+                                <label class="think-radio">
+                                    <!--{if (!isset($vo.type) and $k eq 'text') or (isset($vo.type) and$vo.type eq $k)}-->
+                                    <input name="type" checked type="radio" value="{$k}" lay-ignore> {$v}
+                                    <!--{else}-->
+                                    <input name="type" type="radio" value="{$k}" lay-ignore> {$v}
+                                    <!--{/if}-->
+                                </label>
+                                {/foreach}
+                            </div>
                         </div>
                     </div>
 

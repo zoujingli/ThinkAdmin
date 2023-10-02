@@ -84,7 +84,7 @@ class Fans extends Command
         }
         $this->process->message($done > 0 ? '微信用户数据获取完成' : '未获取到微信用户数据');
         $this->process->message('');
-        return "共获取 {$done} 个用户数据";
+        return sprintf('共获取 %d 个用户数据', $done);
     }
 
     /**
@@ -98,7 +98,7 @@ class Fans extends Command
     public function _black(string $next = '', int $done = 0): string
     {
         $wechat = WechatService::WeChatUser();
-        $this->setQueueProgress("开始更新黑名单列表");
+        $this->setQueueProgress('开始更新黑名单列表');
 
         // 清理原来的黑名单，重新批量更新黑名单列表
         WechatFans::mk()->where(['is_black' => 1])->update(['is_black' => 0]);
@@ -112,12 +112,12 @@ class Fans extends Command
             }
             $next = $result['total'] > $done ? $result['next_openid'] : null;
         }
-        $this->setQueueProgress("完成更新 {$result['total']} 个黑名单", null, 1);
+        $this->setQueueProgress(sprintf('完成更新 %v 个黑名单', $result['total']), null, 1);
         $this->output->newLine();
         if (empty($result['total'])) {
             return ', 其中黑名单 0 人';
         } else {
-            return ", 其中黑名单 {$result['total']} 人";
+            return sprintf(', 其中黑名单 %v 人', $result['total']);
         }
     }
 
@@ -144,6 +144,6 @@ class Fans extends Command
         }
         $this->output->comment($done > 0 ? '微信用户标签数据获取完成' : '未获取到微信用户标签数据');
         $this->output->newLine();
-        return ", 获取到 {$done} 个标签";
+        return sprintf(', 获取到 %v 个标签', $done);
     }
 }

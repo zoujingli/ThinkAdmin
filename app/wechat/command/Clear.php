@@ -49,12 +49,12 @@ class Clear extends Command
         $query->where(['payment_status' => 0]);
         $query->whereTime('create_time', '<', strtotime('-24 hours'));
         [$total, $count] = [(clone $query)->count(), 0];
-        if (empty($total)) $this->setQueueSuccess("没有需要清理的24小时未支付数据！");
+        if (empty($total)) $this->setQueueSuccess('无需清理24小时未支付！');
         /** @var \think\Model $item */
         foreach ($query->cursor() as $item) {
-            $this->setQueueMessage($total, ++$count, "开始清理 {$item->getAttr('code')} 支付单...");
+            $this->setQueueMessage($total, ++$count, sprintf('开始清理 %s 支付单...', $item->getAttr('code')));
             $item->delete();
-            $this->setQueueMessage($total, $count, "完成清理 {$item->getAttr('code')} 支付单!!!", 1);
+            $this->setQueueMessage($total, $count, sprintf('完成清理 %s 支付单！', $item->getAttr('code')), 1);
         }
     }
 }

@@ -3,7 +3,7 @@
     {block name='header'}
     {notempty name='title'}
     <div class="layui-card-header">
-        <span class="layui-icon font-s10 color-desc margin-right-5">&#xe65b;</span>{$title|default=''|lang}
+        <span class="layui-icon font-s10 color-desc margin-right-5">&#xe65b;</span>{$title|lang}
         <div class="pull-right">{block name='button'}{/block}</div>
     </div>
     {/notempty}
@@ -11,6 +11,11 @@
     <div class="layui-card-line"></div>
     <div class="layui-card-body">
         <div class="layui-card-table">
+            {notempty name='showErrorMessage'}
+            <div class="think-box-notify" type="error">
+                <b>系统提示：</b><span>{$showErrorMessage|raw}</span>
+            </div>
+            {/notempty}
             {block name='content'}{/block}
         </div>
     </div>

@@ -328,5 +328,4 @@ class Push extends Controller
         }
         return $data;
     }
-
 }
