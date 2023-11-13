@@ -48,7 +48,7 @@ class Fans extends Command
      */
     public function handle()
     {
-        $this->setQueueSuccess($this->_list() . $this->_tags() . $this->_black());
+        $this->setQueueSuccess($this->_list() . $this->_black());
     }
 
     /**
@@ -112,12 +112,12 @@ class Fans extends Command
             }
             $next = $result['total'] > $done ? $result['next_openid'] : null;
         }
-        $this->setQueueProgress(sprintf('完成更新 %v 个黑名单', $result['total']), null, 1);
+        $this->setQueueProgress(sprintf('完成更新 %s 个黑名单', $result['total']), null, 1);
         $this->output->newLine();
         if (empty($result['total'])) {
             return ', 其中黑名单 0 人';
         } else {
-            return sprintf(', 其中黑名单 %v 人', $result['total']);
+            return sprintf(', 其中黑名单 %s 人', $result['total']);
         }
     }
 
@@ -144,6 +144,6 @@ class Fans extends Command
         }
         $this->output->comment($done > 0 ? '微信用户标签数据获取完成' : '未获取到微信用户标签数据');
         $this->output->newLine();
-        return sprintf(', 获取到 %v 个标签', $done);
+        return sprintf(', 获取到 %s 个标签', $done);
     }
 }

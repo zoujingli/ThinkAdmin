@@ -38,7 +38,7 @@ class Service extends Plugin
      * 定义插件名称
      * @var string
      */
-    protected $appName = '微信数据管理';
+    protected $appName = '微信管理';
 
     /**
      * 定义安装包名
