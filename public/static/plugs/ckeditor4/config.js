@@ -13,6 +13,7 @@ CKEDITOR.editorConfig = function (config) {
     config.removePlugins = 'easyimage,cloudservices,exportpdf';
     config.removeButtons = 'Underline,Subscript,Superscript';
     config.removeDialogTabs = 'image:advanced;link:advanced';
+    config.baseFloatZIndex = 19891019;
     // 内容过滤
     config.disallowedContent = 'script; *[on*]';
     config.allowedContent = {$1: {elements: CKEDITOR.dtd, attributes: true, styles: true, classes: true}};

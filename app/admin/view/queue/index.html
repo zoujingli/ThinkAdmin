@@ -24,10 +24,11 @@
 {/block}
 
 {block name="content"}
-<div class="think-box-notify">
+<div class="think-box-notify" type="info">
+
     <!--{if isset($super) and $super}-->
     <b>{:lang('服务状态')}：</b><b class="margin-right-5" data-queue-message><span class="color-desc">{:lang('检查中')}</span></b>
-    <b data-tips-text="{:lang('点击可复制【服务启动指令】')}" class="layui-icon pointer margin-right-20" data-copy="{$command|default=''}">&#xe60e;</b>
+    <b data-tips-text="{:lang('点击可复制【服务启动指令】')}" class="layui-icon pointer margin-right-20" data-copy="{$command|default=''}">&#xe633;</b>
     <script>$('[data-queue-message]').load('{:sysuri("admin/api.queue/status")}');</script>
     <!--{/if}-->
 
@@ -39,6 +40,7 @@
     ])}
 
 </div>
+
 <div class="think-box-shadow">
     {include file='queue/index_search'}
     <table id="QueueTable" data-line="2" data-url="{:request()->url()}" data-target-search="form.form-search"></table>

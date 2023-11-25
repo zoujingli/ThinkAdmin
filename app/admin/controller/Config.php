@@ -56,7 +56,7 @@ class Config extends Controller
     {
         $this->title = '系统参数配置';
         $this->files = Storage::types();
-        $this->plugins = Plugin::get('', true);
+        $this->plugins = Plugin::get(null, true);
         $this->issuper = AdminService::isSuper();
         $this->systemid = ModuleService::getRunVar('uni');
         $this->framework = ModuleService::getLibrarys('topthink/framework');

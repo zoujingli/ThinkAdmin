@@ -10,7 +10,9 @@
 
 **ThinkAdmin** 是一款遵循 **MIT** 协议免费开源的快速开发框架，基于最新版本 **ThinkPHP6** 的极简后台管理系统 ( 已兼容 **ThinkPHP8** )，在使用 **ThinkAdmin** 前请认真阅读[《免责声明》](https://doc.thinkadmin.top/disclaimer)并同意该声明。
 
-当前 **ThinkAdmin** 的最新版本为[ **v6.1** ](https://gitee.com/zoujingli/ThinkAdmin/tree/v6.1)，从这个版本开始正式进入插件时代，提供类似 **PaaS** 的组件升级更新服务，也可以本地化定制开发，基础组件及扩展插件统一使用 **Composer** 管理。**ThinkAdmin** 与传统 **ThinkPHP** 多应用模式无差别，用户可以自行开发自己的模块，此次升级可完美兼容 **ThinkAdmin v6.0** 应用，原 **ThinkAdmin v6.0** 只需安装 **ThinkPlugsAdmin** 组件即可升级到 **v6.1** 的插件模式。想要了解更多 **ThinkAdmin** 插件生态请阅读 [《ThinkAdmin 插件生态》](https://gitee.com/zoujingli/ThinkAdmin/blob/v6.1/plugin.md)
+当前 **ThinkAdmin** 的最新版本为[ **v6.1** ](https://gitee.com/zoujingli/ThinkAdmin/tree/v6.1)，从这个版本开始正式进入插件时代，提供类似 **PaaS** 的组件升级更新服务，也可以本地化定制开发，基础组件及扩展插件统一使用 **Composer** 管理。**ThinkAdmin** 与传统 **ThinkPHP** 多应用模式无差别，用户可以自行开发自己的模块，此次升级可完美兼容 **ThinkAdmin v6.0** 应用，原 **ThinkAdmin v6.0** 只需安装 **ThinkPlugsAdmin** 组件即可升级到 **v6.1** 的插件模式。
+
+[//]: # (想要了解更多 **ThinkAdmin** 插件生态请阅读 [《ThinkAdmin 插件生态》]&#40;https://doc.thinkadmin.top/guide/plugin.html&#41;)
 
 **[查看 ThinkAdmin v6.1 详细介绍请切换至 v6.1 分支](https://gitee.com/zoujingli/ThinkAdmin/tree/v6.1)！！**
 
@@ -20,7 +22,7 @@
 
 使用 **ThinkAdmin** 需要掌握 **ThinkPHP**、**jQuery**、**LayUI**、**RequireJs** 等开发技能，后台 **UI** 界面基于最新版本的 **LayUI** 前端框架以及 **RequireJs** 组件加载方式，默认加载了所有 **LayUI** 的组件，框架中可以直接使用组件（独立页面需要注意 **js** 加载顺序哦），使用 **RequireJs** 加载插件，互联网上资源非常多，可自行下载进行二次扩展。目前后台大部分页面为单页程序，页面加载速度非常快速，也因此后台不再支持选项卡模式。
 
-我们致力于快速开发的底层框架，让项目开发变得更容易。框架提供完善的基础组件以及对应的 **API** 支持，基于此框架可以快速开发各种 **WEB** 应用。任何一个系统都不能完全满足所有的业务场景，**ThinkAdmin** 免费提供基础底层的功能，这里包括系统权限管理，系统存储配置，微信授权管理，以及其他常用功能集成等…… 因此 **ThinkAdmin** 也被大家定性为外包二开基线系统。从 **v6.1** 开始我们提供会员尊享组件和定制业务插件服务。目前已经有许多公司及个人在使用 **ThinkAdmin**，通过数据聚合统计已有 **5** 万多在线运行的项目。
+我们致力于快速开发的底层框架，让项目开发变得更容易。框架提供完善的基础组件以及对应的 **API** 支持，基于此框架可以快速开发各种 **WEB** 应用。任何一个系统都不能完全满足所有的业务场景，**ThinkAdmin** 免费提供基础底层的功能，这里包括系统权限管理，系统存储配置，微信授权管理，以及其他常用功能集成等…… 因此 **ThinkAdmin** 也被大家定性为外包二开基线系统。目前已经有许多公司及个人在使用 **ThinkAdmin**，通过数据聚合统计已有 **5** 万多在线运行的项目。
 
 #### 注意事项
 
@@ -59,8 +61,9 @@ php think run --host 127.0.0.1
 
 **2. 通过源码安装：**（ 默认安装 admin、wechat 两个模块 ）
 
-如果需要安装演示系统的旧版本 **data** 模块代码，请跳转到
-https://gitee.com/zoujingli/think-plugs-data
+[//]: # (如果需要安装演示系统的旧版本 **data** 模块代码，请跳转到)
+
+[//]: # (https://gitee.com/zoujingli/think-plugs-data)
 
 ```shell
 ### 下载项目（ 需要在英文目录下面执行 ）

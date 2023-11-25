@@ -3,7 +3,7 @@
     <div class="layui-card-body padding-left-40">
 
         <div class="layui-form-item label-required-prev">
-            <div class="help-label"><b>数据类型</b>DataType</div>
+            <div class="help-label"><b>数据类型</b>Data Type</div>
             {if isset($vo.type)}
             <label><input readonly value="{$vo.type|default=''}" class="layui-input think-bg-gray"></label>
             {else}
@@ -35,9 +35,9 @@
         </div>
 
         <label class="layui-form-item relative block">
-            <span class="help-label"><b>数据编码</b>DataCode</span>
+            <span class="help-label"><b>数据编码</b>Data Code</span>
             {if isset($vo.code)}
-            <input readonly maxlength="100" class="layui-input think-bg-gray" name="code" value='{$vo.code|default=""}' required required-error="数据编码不能为空" placeholder="请输入数据编码">
+            <input readonly maxlength="100" class="layui-input think-bg-gray" name="code" value='{$vo.code|default=""}' required placeholder="请输入数据编码">
             {else}
             <input maxlength="100" class="layui-input" name="code" value='{$vo.code|default=""}' required vali-name="数据编码" placeholder="请输入数据编码">
             {/if}
@@ -45,13 +45,13 @@
         </label>
 
         <label class="layui-form-item relative block">
-            <span class="help-label"><b>数据名称</b>DataName</span>
+            <span class="help-label"><b>数据名称</b>Data Name</span>
             <input maxlength="500" class="layui-input" name="name" value='{$vo.name|default=""}' required vali-name="数据名称" placeholder="请输入数据名称">
             <span class="help-block">请输入当前数据名称，请尽量保持名称的唯一性，数据名称尽量不要出现重复 ~</span>
         </label>
 
         <label class="layui-form-item relative block">
-            <span class="help-label"><b>数据内容</b>DataContent</span>
+            <span class="help-label"><b>数据内容</b>Data Content</span>
             <textarea name="content" class="layui-textarea" placeholder="请输入数据内容">{$vo.content|default=''}</textarea>
         </label>
 
