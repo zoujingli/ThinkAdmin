@@ -23,9 +23,9 @@ define(function () {
     Excel.prototype.options = {writeOpt: {bookSST: true}};
 
     /*! 导出 Excel 文件 */
-    Excel.prototype.export = function (data, name) {
+    Excel.prototype.export = function (data, name, options) {
         if (name.substring(0, -5).toLowerCase() !== '.xlsx') name += '.xlsx';
-        layui.excel.exportExcel(data, name, 'xlsx', this.options || {writeOpt: {bookSST: true}});
+        layui.excel.exportExcel(data, name, 'xlsx', options || this.options || {writeOpt: {bookSST: true}});
     };
 
     /*! 绑定导出的事件 */
@@ -38,9 +38,8 @@ define(function () {
     //      Excel.bind(DONE1,FILENAME1,'#EXPORT1')
     //      Excel.bind(DONE2,FILENAME2,'#EXPORT2')
     // </script>
-    Excel.prototype.bind = function (done, filename, selector) {
+    Excel.prototype.bind = function (done, filename, selector, options) {
         let that = this;
-        this.options = {}; // {writeOpt: {bookSST: true}};
         $('body').off('click', selector || '[data-form-export]').on('click', selector || '[data-form-export]', function () {
             let form = $(this).parents('form');
             let name = this.dataset.filename || filename;
@@ -51,7 +50,7 @@ define(function () {
                 location += (location.indexOf('?') > -1 ? '&' : '?') + '_order_=' + sortType + '&_field_=' + sortField;
             }
             that.load(location, form.serialize(), method).then(function (data) {
-                that.export(done.call(that, data, []), name);
+                that.export(done.call(that, data, []), name, options || {});
             }).fail(function (ret) {
                 $.msg.tips(ret || '文件导出失败');
             });
