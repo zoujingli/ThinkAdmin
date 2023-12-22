@@ -1081,7 +1081,7 @@ button.layui-btn:not([type=button]) {
 
     // 显示删除按钮
     &:hover .image-dialog-item-close {
-      display: block !important;
+      display: flex !important;
     }
 
     .uploadimage {
@@ -1095,34 +1095,37 @@ button.layui-btn:not([type=button]) {
       top: 0;
       left: 0;
       right: 0;
-      padding: 2px;
+      padding: 4px;
+      display: flex;
       position: absolute;
+    }
 
+    &-type, &-size {
+      padding: 3px 5px;
+      font-size: 11px;
+      line-height: 12px;
+      margin-right: 3px;
     }
 
     &-type, &-size, &-close {
-      color: #FAFAFA;
-      padding: 1px 5px;
-      font-size: 12px;
-      transform: scale(0.9);
+      color: #fafafa;
       background: rgba(0, 0, 0, 0.6);
-      line-height: 18px;
       border-radius: 18px;
     }
 
     &-close {
-      float: right;
-      width: 22px;
-      height: 22px;
+      top: 4px;
+      right: 4px;
+      width: 20px;
+      height: 20px;
       cursor: pointer;
-      padding: 0;
       display: none;
+      position: absolute;
       font-size: 14px;
-      text-align: center;
-      line-height: 22px;
-      box-sizing: border-box;
-      background: rgba(238, 10, 10, 0.77);
+      background: rgba(238, 10, 10, 0.8);
       font-weight: bold;
+      align-items: center;
+      justify-content: center;
 
       &:hover {
         color: #FFF;
