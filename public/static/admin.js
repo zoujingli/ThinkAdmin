@@ -674,6 +674,7 @@ $(function () {
                 typeof option.success === 'function' && option.success.call(this, res, curr, count);
                 $.form.reInit($table.next()).find('[data-open],[data-load][data-time!="false"],[data-action][data-time!="false"],[data-queue],[data-iframe]').not('[data-table-id]').attr('data-table-id', table.id);
                 (option.loading = this.loading = true) && $table.data('next', this).next().find(cls.join(',')).animate({opacity: 1});
+                setTimeout(() => layui.table.resize(table.id), 10);
             }, option.parseData = function (res) {
                 if (typeof params.filter === 'function') {
                     res.data = params.filter(res.data, res);

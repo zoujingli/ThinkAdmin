@@ -12,8 +12,13 @@
         <div class="image-dialog-item" v-for="x in list" @click="setItem(x)" style="display:none" v-show="show" :class="{'image-dialog-checked':x.checked}">
             <div class="uploadimage" :style="x.style"></div>
             <p class="image-dialog-item-name layui-elip" v-text="x.name"></p>
-            <span class="image-dialog-item-size">{{formatSize(x.size)}}</span>
-            <span class="image-dialog-item-type">{{x.xext.toUpperCase()}}</span>
+            <div class="image-dialog-item-tool">
+                <span class="image-dialog-item-type">{{x.xext.toUpperCase()}}</span>
+                <span class="image-dialog-item-size">{{formatSize(x.size)}}</span>
+                {if auth('admin/file/remove')}
+                <span class="layui-icon layui-icon-close image-dialog-item-close" @click.stop="remove(x)"></span>
+                {/if}
+            </div>
         </div>
     </div>
     <div class="image-dialog-foot">
@@ -56,6 +61,15 @@
                         app.setValue(file.xurl);
                     });
                     this.setInput();
+                },
+                // 删除指定的图片
+                remove: function (x) {
+                    $.msg.confirm('确认要移除这张图片吗？', function () {
+                        $.form.load('{:url("admin/file/remove")}', {id: x.id}, 'POST', function (ret) {
+                            ret.code > 0 ? app.loadPage() : $.msg.error(ret.info);
+                            return app.$forceUpdate(), false;
+                        })
+                    })
                 },
                 // 格式文件大小
                 formatSize: function (size) {

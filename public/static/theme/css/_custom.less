@@ -1079,6 +1079,11 @@ button.layui-btn:not([type=button]) {
     margin-bottom: 12px;
     border-radius: @BoxBorderRadius;
 
+    // 显示删除按钮
+    &:hover .image-dialog-item-close {
+      display: block !important;
+    }
+
     .uploadimage {
       margin: 0;
       width: 145px;
@@ -1086,11 +1091,18 @@ button.layui-btn:not([type=button]) {
       background-color: #fff;
     }
 
-    &-type, &-size {
-      top: 2px;
-      color: #FFF;
-      padding: 0 6px;
+    &-tool {
+      top: 0;
+      left: 0;
+      right: 0;
+      padding: 2px;
       position: absolute;
+
+    }
+
+    &-type, &-size, &-close {
+      color: #FAFAFA;
+      padding: 1px 5px;
       font-size: 12px;
       transform: scale(0.9);
       background: rgba(0, 0, 0, 0.6);
@@ -1098,12 +1110,23 @@ button.layui-btn:not([type=button]) {
       border-radius: 18px;
     }
 
-    &-type {
-      left: 1px;
-    }
+    &-close {
+      float: right;
+      width: 22px;
+      height: 22px;
+      cursor: pointer;
+      padding: 0;
+      display: none;
+      font-size: 14px;
+      text-align: center;
+      line-height: 22px;
+      box-sizing: border-box;
+      background: rgba(238, 10, 10, 0.77);
+      font-weight: bold;
 
-    &-size {
-      right: 1px;
+      &:hover {
+        color: #FFF;
+      }
     }
 
     &-name {

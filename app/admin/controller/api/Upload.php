@@ -193,7 +193,7 @@ class Upload extends Controller
         $extension = strtolower($file->getOriginalExtension());
         $saveFileName = input('key') ?: Storage::name($file->getPathname(), $extension, '', 'md5_file');
         // 检查文件名称是否合法
-        if (strpos($saveFileName, '../') !== false) {
+        if (strpos($saveFileName, '..') !== false) {
             $this->error('文件路径不能出现跳级操作！');
         }
         // 检查文件后缀是否被恶意修改

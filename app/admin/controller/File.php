@@ -92,13 +92,17 @@ class File extends Controller
      */
     public function remove()
     {
-        SystemFile::mDelete();
+        if (!AdminService::isSuper()) {
+            $where = ['uuid' => AdminService::getUserId()];
+        }
+        SystemFile::mDelete('', $where ?? []);
     }
 
     /**
      * 清理重复文件
      * @auth true
      * @return void
+     * @throws \think\db\exception\DbException
      */
     public function distinct()
     {
