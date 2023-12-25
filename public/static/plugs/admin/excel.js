@@ -40,6 +40,7 @@ define(function () {
     // </script>
     Excel.prototype.bind = function (done, filename, selector, options) {
         let that = this;
+        this.options = options || {}
         $('body').off('click', selector || '[data-form-export]').on('click', selector || '[data-form-export]', function () {
             let form = $(this).parents('form');
             let name = this.dataset.filename || filename;
@@ -50,7 +51,7 @@ define(function () {
                 location += (location.indexOf('?') > -1 ? '&' : '?') + '_order_=' + sortType + '&_field_=' + sortField;
             }
             that.load(location, form.serialize(), method).then(function (data) {
-                that.export(done.call(that, data, []), name, options || {});
+                that.export(done.call(that, data, []), name);
             }).fail(function (ret) {
                 $.msg.tips(ret || '文件导出失败');
             });
@@ -117,11 +118,10 @@ define(function () {
 
         // 设置表格行宽高，需要设置最后的行或列宽高，否则部分不生效 ？？？
         let rowsC = {1: 33}, colsC = Object.assign({}, defaC, {A: 60}, colsWidth || {});
-        rowsC[data.length] = defaultHeight || 28, this.options.extend = {
+        rowsC[data.length] = defaultHeight || 28, this.options.extend = Object.assign({}, {
             '!cols': layui.excel.makeColConfig(colsC, defaultWidth || 99),
             '!rows': layui.excel.makeRowConfig(rowsC, defaultHeight || 28),
-        };
-
+        }, this.options.extend || {});
         return data;
     }
 
