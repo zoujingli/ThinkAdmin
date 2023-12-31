@@ -110,12 +110,12 @@ class Queue extends Controller
     public function progress()
     {
         $input = $this->_vali(['code.require' => '任务编号不能为空！']);
-        $message = SystemQueue::mk()->where($input)->value('message', '');
-        if (!empty($message)) {
-            $this->success('获取任务进度成功！', json_decode($message, true));
+        $result = QueueService::instance()->initialize($input['code'])->progress();
+        if (empty($result) || count($result['history']) < 2) {
+            $message = SystemQueue::mk()->where($input)->value('message', '');
+            $this->success('获取任务进度成功d！', json_decode($message, true));
         } else {
-            $queue = QueueService::instance()->initialize($input['code']);
-            $this->success('获取任务进度成功！', $queue->progress());
+            $this->success('获取任务进度成功c！', $result);
         }
     }
 }
