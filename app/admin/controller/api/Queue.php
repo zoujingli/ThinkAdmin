@@ -3,7 +3,7 @@
 // +----------------------------------------------------------------------
 // | Admin Plugin for ThinkAdmin
 // +----------------------------------------------------------------------
-// | 版权所有 2014~2023 ThinkAdmin [ thinkadmin.top ]
+// | 版权所有 2014~2024 ThinkAdmin [ thinkadmin.top ]
 // +----------------------------------------------------------------------
 // | 官方网站: https://thinkadmin.top
 // +----------------------------------------------------------------------
@@ -16,6 +16,7 @@
 
 namespace app\admin\controller\api;
 
+use Psr\Log\NullLogger;
 use think\admin\Controller;
 use think\admin\model\SystemQueue;
 use think\admin\service\AdminService;
@@ -105,17 +106,12 @@ class Queue extends Controller
     /**
      * 查询任务进度
      * @login true
-     * @throws \think\admin\Exception
      */
     public function progress()
     {
         $input = $this->_vali(['code.require' => '任务编号不能为空！']);
-        $result = QueueService::instance()->initialize($input['code'])->progress();
-        if (empty($result) || count($result['history']) < 2) {
-            $message = SystemQueue::mk()->where($input)->value('message', '');
-            $this->success('获取任务进度成功d！', json_decode($message, true));
-        } else {
-            $this->success('获取任务进度成功c！', $result);
-        }
+        $this->app->db->setLog(new NullLogger()); /* 关闭数据库请求日志 */
+        $message = SystemQueue::mk()->where($input)->value('message', '');
+        $this->success('获取任务进度成功d！', json_decode($message, true));
     }
 }
