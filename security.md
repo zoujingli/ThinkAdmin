@@ -13,4 +13,4 @@
 
 ## Reporting a Vulnerability
 
-If you have any security problems, you can send an email to zoujingli@qq.com
+If you have any security problems, you can email zoujingli@qq.com
