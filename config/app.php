@@ -3,7 +3,7 @@
 // +----------------------------------------------------------------------
 // | Static Plugin for ThinkAdmin
 // +----------------------------------------------------------------------
-// | 版权所有 2014~2023 ThinkAdmin [ thinkadmin.top ]
+// | 版权所有 2014~2024 ThinkAdmin [ thinkadmin.top ]
 // +----------------------------------------------------------------------
 // | 官方网站: https://thinkadmin.top
 // +----------------------------------------------------------------------
@@ -25,24 +25,24 @@ return [
     'super_user'              => 'admin',
     // 默认时区
     'default_timezone'        => 'Asia/Shanghai',
-    // 应用映射（自动多应用模式有效）
+    // 应用映射（多应用模式有效）
     'app_map'                 => [],
-    // 域名绑定（自动多应用模式有效）
+    // 域名绑定（多应用模式有效）
     'domain_bind'             => [],
-    // 禁止访问（自动多应用模式有效）
+    // 禁止访问（多应用模式有效）
     'deny_app_list'           => [],
-    // RBAC 登录地址（填写登录地址）
-    'rbac_login'              => '',
-    // RBAC 忽略应用（填写应用名称）
-    'rbac_ignore'             => ['index'],
     // CORS 启用状态（默认开启跨域）
     'cors_on'                 => true,
-    // CORS 配置跨域域名（仅需填写域名，留空则自适应域名）
+    // CORS 配置跨域域名（仅需填域名，留空则自动域名）
     'cors_host'               => [],
     // CORS 授权请求方法
     'cors_methods'            => 'GET,PUT,POST,PATCH,DELETE',
     // CORS 跨域头部字段
     'cors_headers'            => 'Api-Type,Api-Name,Api-Uuid,Jwt-Token,Api-Token,User-Form-Token,User-Token,Token',
+    // RBAC 登录页面（填写登录地址）
+    'rbac_login'              => '',
+    // RBAC 忽略应用（填写应用名称）
+    'rbac_ignore'             => ['index'],
     // 显示错误消息内容，仅生产模式有效
     'error_message'           => '页面错误！请稍后再试～',
     // 异常状态模板配置，仅生产模式有效
