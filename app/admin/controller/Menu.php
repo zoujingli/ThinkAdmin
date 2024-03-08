@@ -94,7 +94,6 @@ class Menu extends Controller
     /**
      * 表单数据处理
      * @param array $vo
-     * @throws \ReflectionException
      */
     protected function _form_filter(array &$vo)
     {

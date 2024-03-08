@@ -2,7 +2,7 @@
 
 {block name="button"}
 <!--{if auth("add")}-->
-<button data-modal='{:url("add")}' data-width="600px" data-table-id="RoleTable" class='layui-btn layui-btn-sm layui-btn-primary'>{:lang('添加权限')}</button>
+<button data-open='{:url("add")}' data-table-id="RoleTable" class='layui-btn layui-btn-sm layui-btn-primary'>{:lang('添加权限')}</button>
 <!--{/if}-->
 
 <!--{if auth("remove")}-->
@@ -37,7 +37,7 @@
 
         // 数据状态切换操作
         layui.form.on('switch(StatusSwitchRoleTable)', function (obj) {
-            var data = {id: obj.value, status: obj.elem.checked > 0 ? 1 : 0};
+            let data = {id: obj.value, status: obj.elem.checked > 0 ? 1 : 0};
             $.form.load("{:url('state')}", data, 'post', function (ret) {
                 if (ret.code < 1) $.msg.error(ret.info, 3, function () {
                     $('#RoleTable').trigger('reload');
@@ -66,15 +66,11 @@
 <!-- 数据操作工具条模板 -->
 <script type="text/html" id="ToolbarRoleTableTpl">
     <!--{if auth('edit')}-->
-    <a class="layui-btn layui-btn-primary layui-btn-sm" data-event-dbclick data-width="600px" data-title="{:lang('编辑权限')}" data-modal='{:url("edit")}?id={{d.id}}'>{:lang("编 辑")}</a>
-    <!--{/if}-->
-
-    <!--{if auth("apply")}-->
-    <a class="layui-btn layui-btn-normal layui-btn-sm" data-open='{:url("apply")}?id={{d.id}}'>{:lang('授 权')}</a>
+    <a class="layui-btn layui-btn-primary layui-btn-sm" data-open='{:url("edit")}?id={{d.id}}'>{:lang("编 辑")}</a>
     <!--{/if}-->
 
     <!--{if auth("remove")}-->
-    <a class="layui-btn layui-btn-danger layui-btn-sm" data-confirm="{:lang('确定要删除权限吗?')}" data-action="{:url('remove')}" data-value="id#{{d.id}}">{:lang("删 除")}</a>
+    <a class="layui-btn layui-btn-danger layui-btn-sm" data-action="{:url('remove')}" data-value="id#{{d.id}}" data-confirm="{:lang('确定要删除权限吗?')}">{:lang("删 除")}</a>
     <!--{/if}-->
 </script>
 {/block}

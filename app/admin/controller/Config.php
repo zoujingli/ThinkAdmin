@@ -63,7 +63,7 @@ class Config extends Controller
         $this->thinkadmin = ModuleService::getLibrarys('zoujingli/think-library');
         if (AdminService::isSuper() && $this->app->session->get('user.password') === md5('admin')) {
             $url = url('admin/index/pass', ['id' => AdminService::getUserId()]);
-            $this->showErrorMessage = "超级管理员账号的密码未修改，建议立即<a data-modal='{$url}'>修改密码</a>！";
+            $this->showErrorMessage = lang("超级管理员账号的密码未修改，建议立即<a data-modal='%s'>修改密码</a>！", [$url]);
         }
         uasort($this->plugins, static function ($a, $b) {
             if ($a['space'] === $b['space']) return 0;

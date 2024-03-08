@@ -116,30 +116,30 @@ class User extends Controller
     protected function _form_filter(array &$data)
     {
         if ($this->request->isPost()) {
-            // 账号权限绑定处理
+            // 检查资料是否完整
+            empty($data['username']) && $this->error('登录账号不能为空！');
+            if ($data['username'] !== AdminService::getSuperName()) {
+                empty($data['authorize']) && $this->error('未配置权限！');
+            }
+            // 处理上传的权限格式
             $data['authorize'] = arr2str($data['authorize'] ?? []);
-            if (isset($data['id']) && $data['id'] > 0) {
-                unset($data['username']);
-            } else {
+            if (empty($data['id'])) {
                 // 检查账号是否重复
-                if (empty($data['username'])) {
-                    $this->error('登录账号不能为空！');
-                }
                 $map = ['username' => $data['username'], 'is_deleted' => 0];
                 if (SystemUser::mk()->where($map)->count() > 0) {
                     $this->error("账号已经存在，请使用其它账号！");
                 }
                 // 新添加的用户密码与账号相同
                 $data['password'] = md5($data['username']);
+            } else {
+                unset($data['username']);
             }
         } else {
             // 权限绑定处理
             $data['authorize'] = str2arr($data['authorize'] ?? '');
-            // 用户身份数据
+            $this->auths = SystemAuth::items();
             $this->bases = SystemBase::items('身份权限');
-            // 用户权限管理
-            $this->superName = AdminService::getSuperName();
-            $this->authorizes = SystemAuth::items();
+            $this->super = AdminService::getSuperName();
         }
     }
 

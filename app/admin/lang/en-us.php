@@ -36,11 +36,15 @@ $extra['点击可复制【服务启动指令】'] = "Click to copy the 'Service 
 $extra['待处理 %s 个任务，处理中 %s 个任务，已完成 %s 个任务，已失败 %s 个任务。'] = 'There are %s tasks to be processed, %s tasks in progress, %s tasks completed, and %s tasks failed.';
 $extra['确定要切换到生产模式运行吗？'] = 'Are you sure you want to switch to Production mode?';
 $extra['确定要切换到开发模式运行吗？'] = 'Are you sure you want to switch to Development mode?';
+$extra["超级管理员账号的密码未修改，建议立即<a data-modal='%s'>修改密码</a>！"] = "The super administrator password has not been changed. Suggest <a data-modal='%s'>changing password</a>.";
 
 $extra['等待处理'] = 'Pending';
 $extra['正在处理'] = 'Processing';
 $extra['处理完成'] = 'Completed';
 $extra['处理失败'] = 'Failed';
+
+$extra['条件搜索'] = 'Search';
+$extra['批量删除'] = 'Batch Delete';
 
 $extra['上传进度 %s'] = 'Upload progress %s';
 $extra['文件上传出错！'] = 'File upload error.';
@@ -61,6 +65,7 @@ return array_merge($extra, [
     '配色方案'                => 'Color scheme',
     '立即登录'                => 'Login',
     '退出登录'                => 'Logout',
+    '系统提示：'               => 'System Notify: ',
     '清空日志缓存成功！'       => 'Successfully cleared the log cache.',
     '获取任务进度成功！'       => 'Successfully obtained task progress.',
     '网站缓存加速成功！'       => 'Website cache acceleration successful.',

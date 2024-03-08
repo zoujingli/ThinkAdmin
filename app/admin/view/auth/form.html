@@ -1,25 +1,143 @@
-<form action="{:sysuri()}" method="post" data-auto="true" class="layui-form layui-card" data-table-id="RoleTable">
+{extend name='main'}
 
-    <div class="layui-card-body padding-left-40">
+{block name="button"}
+<button data-target-submit class='layui-btn layui-btn-sm'>{:lang('保存数据')}</button>
+<button data-target-backup class="layui-btn layui-btn-sm layui-btn-danger">{:lang('取消编辑')}</button>
+{/block}
 
-        <label class="layui-form-item relative block">
-            <span class="help-label"><b>{:lang('权限名称')}</b>Permission Name</span>
-            <input maxlength="100" class="layui-input" name="title" value='{$vo.title|default=""}' required vali-name="{:lang('权限名称')}" placeholder="{:lang('请输入权限名称')}">
-            <span class="help-block">{:lang('访问权限名称需要保持不重复，在给用户授权时需要根据名称选择！')}</span>
-        </label>
+{block name="content"}
+<div class="think-box-shadow">
+    <form method="post" id="RoleForm" class="layui-form layui-card">
+        <div class="layui-card-body">
+            <label class="layui-form-item relative block">
+                <span class="help-label"><b>{:lang('权限名称')}</b>Auth Name</span>
+                <input maxlength="100" class="layui-input" name="title" value='{$vo.title|default=""}' required vali-name="{:lang('权限名称')}" placeholder="{:lang('请输入权限名称')}">
+                <span class="help-block">{:lang('访问权限名称需要保持不重复，在给用户授权时需要根据名称选择！')}</span>
+            </label>
+            <label class="layui-form-item relative block">
+                <span class="help-label"><b>{:lang('权限描述')}</b>Auth Remark</span>
+                <textarea placeholder="{:lang('请输入权限描述')}" maxlength="200" class="layui-textarea" name="desc">{$vo.desc|default=""}</textarea>
+            </label>
+            <div class="layui-form-item">
+                <span class="help-label label-required-prev"><b>{:lang('功能节点')}</b>Auth Nodes</span>
+                <ul id="zTree" class="ztree notselect"></ul>
+            </div>
+            <div class="hr-line-dashed"></div>
+            {notempty name='vo.id'}<input name="id" value="{$vo.id}" type="hidden"/>{/notempty}
+            <div class="layui-form-item text-center">
+                <button data-target-submit class="layui-btn">{:lang('保存数据')}</button>
+                <button data-target-backup class="layui-btn layui-btn-danger" type="button">{:lang('取消编辑')}</button>
+            </div>
+        </div>
+    </form>
+</div>
+{/block}
 
-        <label class="layui-form-item relative block">
-            <span class="help-label"><b>{:lang('权限描述')}</b>Permission Description</span>
-            <textarea placeholder="{:lang('请输入权限描述')}" maxlength="200" class="layui-textarea" name="desc">{$vo.desc|default=""}</textarea>
-        </label>
+{block name="script"}
+<script>
+    require(['jquery.ztree'], function () {
+        new function () {
+            let that = this;
+            this.data = {}, this.ztree = null, this.setting = {
+                view: {showLine: false, showIcon: false, dblClickExpand: false},
+                check: {enable: true, nocheck: false, chkboxType: {"Y": "ps", "N": "ps"}}, callback: {
+                    beforeClick: function (id, node) {
+                        node.children.length < 1 ? that.ztree.checkNode(node, !node.checked, true, true) : that.ztree.expandNode(node);
+                        return false;
+                    }
+                }
+            };
+            this.renderChildren = function (list, level) {
+                let childrens = [];
+                for (let i in list) childrens.push({
+                    open: true, node: list[i].node, name: list[i].title || list[i].node,
+                    checked: list[i].checked || false, children: this.renderChildren(list[i]._sub_, level + 1)
+                });
+                return childrens;
+            };
+            this.syncData = function () {
+                $.form.load('{:sysuri()}', {id: '{$vo.id|default=0}', action: 'json'}, 'post', function (ret) {
+                    return (that.data = that.renderChildren(ret.data, 1)), that.showTree(), false;
+                });
+            };
+            this.showTree = function () {
+                this.ztree = $.fn.zTree.init($("#zTree"), this.setting, this.data);
+                while (true) {
+                    let nodes = this.ztree.getNodesByFilter(function (node) {
+                        return (!node.node && node.children.length < 1);
+                    });
+                    if (nodes.length < 1) break;
+                    for (let i in nodes) this.ztree.removeNode(nodes[i]);
+                }
+            };
+            // 刷新数据
+            this.syncData();
+            // 监听表单提交
+            $('#RoleForm').vali(function (form) {
+                let data = that.ztree.getCheckedNodes(true);
+                Object.assign(form, {nodes: [], action: 'save'})
+                for (let i in data) if (data[i].node) form.nodes.push(data[i].node);
+                $.form.load('{:sysuri()}', form, 'post');
+            });
+        };
+    });
+</script>
+{/block}
 
-    </div>
+{block name="style"}
+<style>
+    ul.ztree li {
+        line-height: 24px;
+        white-space: normal !important;
+    }
 
-    <div class="hr-line-dashed"></div>
-    {notempty name='vo.id'}<input type='hidden' value='{$vo.id}' name='id'>{/notempty}
+    ul.ztree li span.button.switch {
+        margin-right: 5px;
+    }
 
-    <div class="layui-form-item text-center">
-        <button class="layui-btn" type='submit'>{:lang('保存数据')}</button>
-        <button class="layui-btn layui-btn-danger" type='button' data-confirm="确定要取消编辑吗？" data-close>{:lang('取消编辑')}</button>
-    </div>
-</form>
+    ul.ztree ul ul li {
+        display: inline-block;
+        white-space: normal;
+    }
+
+    ul.ztree > li {
+        border: 1px solid rgba(0, 0, 0, 0.10);
+        padding: 15px;
+        background: rgba(0, 0, 0, 0.05);
+        border-radius: 3px;
+        margin-bottom: 10px;
+    }
+
+    ul.ztree > li > ul {
+        padding: 10px;
+        margin-top: 10px;
+        background: rgba(0, 0, 0, 0.05);
+        border-radius: 3px;
+    }
+
+    ul.ztree > li > ul > li {
+        padding: 5px 0;
+    }
+
+    ul.ztree > li > a > span {
+        font-size: 15px;
+        font-weight: 700;
+    }
+
+    ul.ztree .level2 .button.level2 {
+        width: 0;
+    }
+
+    ul.ztree li span.button.noline_open {
+        background-position-y: -73px;
+    }
+
+    ul.ztree li span.button.noline_close {
+        background-position-y: -73px;
+    }
+
+    ul.ztree .level1 > .node_name {
+        font-weight: bold;
+    }
+</style>
+{/block}

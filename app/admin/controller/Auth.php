@@ -48,24 +48,6 @@ class Auth extends Controller
     }
 
     /**
-     * 添加系统权限
-     * @auth true
-     */
-    public function add()
-    {
-        SystemAuth::mForm('form');
-    }
-
-    /**
-     * 编辑系统权限
-     * @auth true
-     */
-    public function edit()
-    {
-        SystemAuth::mForm('form');
-    }
-
-    /**
      * 修改权限状态
      * @auth true
      */
@@ -86,17 +68,36 @@ class Auth extends Controller
         SystemAuth::mDelete();
     }
 
+
     /**
-     * 权限配置节点
+     * 添加系统权限
      * @auth true
-     * @throws \ReflectionException
      */
-    public function apply()
+    public function add()
     {
-        $map = $this->_vali(['auth.require#id' => '权限ID不能为空！']);
-        if (input('action') === 'get') {
+        SystemAuth::mForm('form');
+    }
+
+    /**
+     * 编辑系统权限
+     * @auth true
+     */
+    public function edit()
+    {
+        SystemAuth::mForm('form');
+    }
+
+    /**
+     * 表单后置数据处理
+     * @param array $data
+     */
+    protected function _form_filter(array $data)
+    {
+        if ($this->request->isGet()) {
+            $this->title = empty($data['title']) ? "添加访问授权" : "编辑【{$data['title']}】授权";
+        } elseif ($this->request->post('action') === 'json') {
             if ($this->app->isDebug()) AdminService::clear();
-            $ztree = AdminService::getTree(SystemNode::mk()->where($map)->column('node'));
+            $ztree = AdminService::getTree(empty($data['id']) ? [] : SystemNode::mk()->where(['auth' => $data['id']])->column('node'));
             usort($ztree, static function ($a, $b) {
                 if (explode('-', $a['node'])[0] !== explode('-', $b['node'])[0]) {
                     if (stripos($a['node'], 'plugin-') === 0) return 1;
@@ -106,28 +107,26 @@ class Auth extends Controller
             [$ps, $cs] = [Plugin::get(), (array)$this->app->config->get('app.app_names', [])];
             foreach ($ztree as &$n) $n['title'] = lang($cs[$n['node']] ?? (($ps[$n['node']] ?? [])['name'] ?? $n['title']));
             $this->success('获取权限节点成功！', $ztree);
-        } elseif (input('action') === 'save') {
-            [$post, $data] = [$this->request->post(), []];
-            foreach ($post['nodes'] ?? [] as $node) {
-                $data[] = ['auth' => $map['auth'], 'node' => $node];
-            }
-            SystemNode::mk()->where($map)->delete();
-            SystemNode::mk()->insertAll($data);
-            sysoplog('系统权限管理', "配置系统权限[{$map['auth']}]授权成功");
-            $this->success('访问权限修改成功！', 'javascript:history.back()');
-        } else {
-            SystemAuth::mForm('apply');
+        } elseif (empty($data['nodes'])) {
+            $this->error('未配置功能节点！');
         }
     }
 
     /**
-     * 表单后置数据处理
-     * @param array $data
+     * 节点更新处理
+     * @param boolean $state
+     * @param array $post
+     * @return void
      */
-    protected function _apply_form_filter(array $data)
+    protected function _form_result(bool $state, array $post)
     {
-        if ($this->request->isGet()) {
-            $this->title = "编辑【{$data['title']}】授权";
+        if ($state && $this->request->post('action') === 'save') {
+            [$map, $data] = [['auth' => $post['id']], []];
+            foreach ($post['nodes'] ?? [] as $node) $data[] = $map + ['node' => $node];
+            SystemNode::mk()->where($map)->delete();
+            count($data) > 0 && SystemNode::mk()->insertAll($data);
+            sysoplog('系统权限管理', "配置系统权限[{$map['auth']}]授权成功");
+            $this->success('权限修改成功！', 'javascript:history.back()');
         }
     }
 }

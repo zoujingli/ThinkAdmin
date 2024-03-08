@@ -6,7 +6,7 @@
 <button data-modal='{:url("add")}' data-title="{:lang('添加用户')}" class='layui-btn layui-btn-sm layui-btn-primary'>{:lang('添加用户')}</button>
 <!--{/if}-->
 <!--{if auth("state")}-->
-<a data-confirm="确定要启用该用户吗？" data-table-id="UserTable" data-action="{:url('state')}" data-rule="id#{id};status#0" class='layui-btn layui-btn-sm layui-btn-primary'>{:lang('批量禁用')}</a>
+<a data-confirm="确定要禁用这些用户吗？" data-table-id="UserTable" data-action="{:url('state')}" data-rule="id#{id};status#0" class='layui-btn layui-btn-sm layui-btn-primary'>{:lang('批量禁用')}</a>
 <!--{/if}-->
 {else}
 <!--{if auth("state")}-->

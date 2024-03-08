@@ -13,7 +13,7 @@
                     <label class="block relative">
                         <span class="help-label"><b>登录账号</b>User Name</span>
                         {if isset($vo) and isset($vo.username)}
-                        <input disabled value='{$vo.username|default=""}' required class="layui-input think-bg-gray">
+                        <input name="username" value='{$vo.username|default=""}' required readonly class="layui-input think-bg-gray">
                         {else}
                         <input name="username" value='{$vo.username|default=""}' required pattern="^.{4,}$" vali-name="登录账号" placeholder="请输入登录账号" class="layui-input">
                         {/if}
@@ -31,7 +31,7 @@
 
         </fieldset>
 
-        {if !empty($bases) || !empty($authorizes)}
+        {if !empty($bases) || !empty($auths)}
         <fieldset class="layui-bg-gray">
             <legend><b class="layui-badge think-bg-violet">用户权限</b></legend>
             {if !empty($bases)}
@@ -50,13 +50,13 @@
                 </div>
             </div>
             {/if}
-            {if !empty($authorizes)}
+            {if !empty($auths)}
             <div class="layui-form-item">
                 <div class="help-label"><b>访问权限</b>Role Permission</div>
                 <div class="layui-textarea help-checks">
-                    {if isset($vo.username) and $vo.username eq $superName}
+                    {if isset($vo.username) and $vo.username eq $super}
                     <span class="color-desc padding-left-5">超级用户拥所有访问权限，不需要配置权限。</span>
-                    {else}{foreach $authorizes as $authorize}
+                    {else}{foreach $auths as $authorize}
                     <label class="think-checkbox">
                         {if in_array($authorize.id, $vo.authorize)}
                         <input type="checkbox" checked name="authorize[]" value="{$authorize.id}" lay-ignore>{$authorize.title}

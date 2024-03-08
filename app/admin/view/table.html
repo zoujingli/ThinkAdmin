@@ -13,7 +13,7 @@
         <div class="layui-card-table">
             {notempty name='showErrorMessage'}
             <div class="think-box-notify" type="error">
-                <b>系统提示：</b><span>{$showErrorMessage|raw}</span>
+                <b>{:lang('系统提示：')}</b><span>{$showErrorMessage|raw}</span>
             </div>
             {/notempty}
             {block name='content'}{/block}
