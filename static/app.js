@@ -88,12 +88,16 @@
     window.getApp = () => app;
 
     // 绑定 data-route 路由处理
-    document.addEventListener('click', function (event) {
-        event.path.some(function (ele) {
-            if (ele.dataset && ele.dataset.route) {
-                return router.push(ele.dataset.route);
-            }
-        });
+    document.body.addEventListener('click', function (event) {
+        let target = event.target, attrname = 'data-router';
+        while (target && !target.hasAttribute(attrname)) {
+            target = target.parentElement;
+            if (target && target.hasAttribute(attrname)) break;
+        }
+        if (target && target.hasAttribute(attrname)) {
+            event.stopPropagation();
+            router.push(target.dataset.route);
+        }
     });
 
     // 应用组件及路由

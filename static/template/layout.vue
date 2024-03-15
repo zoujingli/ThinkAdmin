@@ -171,10 +171,15 @@ body > .el-container {
       --el-aside-width: 280px;
 
       .el-tabs {
+        width: 100%;
         height: 100%;
         user-select: none;
         -ms-user-select: none;
         -moz-user-select: none;
+
+        .el-tabs__nav {
+          width: 100%;
+        }
 
         .el-tabs__header {
           width: 58px;
@@ -195,8 +200,6 @@ body > .el-container {
 
           .el-tabs__item {
             color: #FFF;
-            width: 100% !important;
-            padding: 0 !important;
             height: 58px !important;
             line-height: 58px !important;
             text-align: center !important;
