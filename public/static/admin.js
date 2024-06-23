@@ -1005,7 +1005,7 @@ $(function () {
     });
 
     /*! 注册 data-tips-hover 事件行为 */
-    $.base.onEvent('mouseenter', '[data-tips-image][data-tips-hover]', function () {
+    $.base.onEvent('mouseenter', '[data-tips-image][data-tips-hover],[data-tips-image-hover]', function () {
         let $el = $(this), img = new Image();
         if ((img.src = this.dataset.tipsImage || this.dataset.lazySrc || this.src || this.value)) {
             img.layopt = {anim: 5, tips: 3, time: 0, skin: 'layui-layer-image', isOutAnim: false, scrollbar: false};
