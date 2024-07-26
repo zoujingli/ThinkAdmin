@@ -10,7 +10,7 @@
       <el-input v-model="login.verify" placeholder="请输入图形验证"></el-input>
     </el-form-item>
     <el-form-item>
-      <el-button type="primary" data-route="/static/template/pages/one.vue">登录</el-button>
+      <el-button type="primary" v-href="`/static/template/pages/one.vue`">登录</el-button>
     </el-form-item>
   </el-form>
 </template>
@@ -26,7 +26,7 @@
 </style>
 
 <script lang="ts" setup>
-import {reactive, ref} from 'vue'
+import {reactive} from 'vue'
 
 const login = reactive({
   verify: '',

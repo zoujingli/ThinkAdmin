@@ -54,24 +54,24 @@
                   <span>Navigator One</span>
                 </template>
 
-                <el-menu-item index="1-1" data-route="/static/template/pages/one.vue">item one route</el-menu-item>
-                <el-menu-item index="1-2" data-route="/static/template/pages/two.vue">item two route</el-menu-item>
-                <el-menu-item index="1-3" data-route="/static/template/pages/thr.vue">item Three route</el-menu-item>
+                <el-menu-item index="1-1" v-href="`/static/template/pages/one.vue`">item one route</el-menu-item>
+                <el-menu-item index="1-2" v-href="`/static/template/pages/two.vue`">item two route</el-menu-item>
+                <el-menu-item index="1-3" v-href="`/static/template/pages/thr.vue`">item Three route</el-menu-item>
 
               </el-sub-menu>
-              <el-menu-item index="2" data-route="/static/template/pages/two.vue">
+              <el-menu-item index="2" v-href="`/static/template/pages/two.vue`">
                 <el-icon>
                   <aim></aim>
                 </el-icon>
                 <span>Navigator Two</span>
               </el-menu-item>
-              <el-menu-item index="3" data-route="/static/template/pages/thr.vue">
+              <el-menu-item index="3" v-href="`/static/template/pages/thr.vue`">
                 <el-icon>
                   <document></document>
                 </el-icon>
                 <span>Navigator Three</span>
               </el-menu-item>
-              <el-menu-item index="4" data-route="/static/template/pages/four.vue">
+              <el-menu-item index="4" v-href="`/static/template/pages/four.vue`">
                 <el-icon>
                   <setting></setting>
                 </el-icon>

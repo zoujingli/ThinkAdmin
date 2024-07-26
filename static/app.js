@@ -1,15 +1,14 @@
 ;(async () => {
 
     /*! 项目应用根路径 */
-    window.appRoot = (function (script) {
-        return '/' + script.src.split('/').slice(3, -2).join('/') + '/';
-    })(document.querySelector('script[src*="app.js"]'));
+    window.appRoot = document.querySelector('script[src*="app.js"]').src.split('/').slice(3, -2).join('/') + '/';
 
     /*! 模块加载请求处理 */
     const options = {
-        moduleCache: {
-            vue: Vue, less: less
-        }, getFile(url) {
+        // 模块缓存
+        moduleCache: {vue: Vue, less: less},
+        // 动态加载文件
+        getFile(url) {
             if (!(/^(https?:)?\/\//)) {
                 url = (appRoot + url).replace(/\/+.?\/+/g, '/');
             }
@@ -22,10 +21,16 @@
                     throw Object.assign(new Error(url + ' ' + res.statusText), {res});
                 }
             });
-        }, addStyle(style) {
+        },
+        // 追加样式HTML
+        addStyle(style) {
             const before = document.head.getElementsByTagName('style')[0] || null;
             const object = Object.assign(document.createElement('style'), {textContent: style});
             document.head.insertBefore(object, before);
+        },
+        // 输出日志信息
+        log(type, ...args) {
+            console.log(type, ...args);
         },
     };
 
@@ -48,9 +53,7 @@
         let name = to.fullPath.replace(/[.\/]+/g, '_');
         if (router.hasRoute(name)) router.removeRoute(name)
         if (loading) loading = loading.close(), null;
-        document.querySelectorAll('.think-page-loader').forEach(function (el) {
-            el.style.display = 'none';
-        });
+        document.querySelectorAll('.think-page-loader').forEach((el) => el.style.display = 'none');
     });
 
     // 动态注册路由
@@ -79,6 +82,22 @@
 
     // 创建 Vue 应用
     const app = Vue.createApp({});
+    app.directive('href', {
+        mounted(el, binding) {
+            console.log(el)
+            el.addEventListener('click', (e) => {
+                e.stopPropagation();
+                if (binding.value) {
+                    router.push(binding.value);
+                }
+            }, {passive: false})
+        },
+        unmounted(el) {
+            // 移除点击事件监听器
+            el.removeEventListener('click');
+        }
+    })
+
 
     // 定义全局缓存，加载字体组件
     app.cache = {loadOpt: options, loadVue: loadVue, icons: ElementPlusIconsVue};
@@ -86,19 +105,6 @@
 
     // 注册 getApp 获取应用
     window.getApp = () => app;
-
-    // 绑定 data-route 路由处理
-    document.body.addEventListener('click', function (event) {
-        let target = event.target, attrname = 'data-router';
-        while (target && !target.hasAttribute(attrname)) {
-            target = target.parentElement;
-            if (target && target.hasAttribute(attrname)) break;
-        }
-        if (target && target.hasAttribute(attrname)) {
-            event.stopPropagation();
-            router.push(target.dataset.route);
-        }
-    });
 
     // 应用组件及路由
     app.use(ElementPlus).use(router).mount(document.body);
