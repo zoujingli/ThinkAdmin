@@ -27,10 +27,12 @@
 
     <style>
         @keyframes shadow {
+
             0%,
             100% {
                 transform: scale(1, 1);
             }
+
             50% {
                 transform: scale(1.2, 1);
             }
@@ -40,16 +42,20 @@
             17% {
                 border-bottom-right-radius: 3px;
             }
+
             25% {
                 transform: translateY(9px) rotate(22.5deg);
             }
+
             50% {
                 border-bottom-right-radius: 40px;
                 transform: translateY(18px) scale(1, 0.9) rotate(45deg);
             }
+
             75% {
                 transform: translateY(9px) rotate(67.5deg);
             }
+
             100% {
                 transform: translateY(0) rotate(90deg);
             }
@@ -105,10 +111,10 @@
 </head>
 
 <body>
-<div class="think-page-loader">
-    <div class="loader"></div>
-</div>
-<router-view></router-view>
+    <div class="think-page-loader">
+        <div class="loader"></div>
+    </div>
+    <router-view></router-view>
 </body>
 
 </html>

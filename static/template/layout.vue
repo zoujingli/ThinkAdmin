@@ -1,12 +1,7 @@
 <template>
   <el-container>
     <el-header>
-      <el-menu
-          mode="horizontal"
-          text-color="#fff"
-          background-color="rgba(54,25,88,0.9)"
-          active-text-color="rgba(54,25,88,1.0)"
-      >
+      <el-menu mode="horizontal" text-color="#fff" background-color="rgba(54,25,88,0.9)" active-text-color="rgba(54,25,88,1.0)">
         <el-menu-item data-route="/" index="1">
           <el-avatar size="small">Ta</el-avatar>
           <span style="margin-left:5px">ThinkAdmin For HTML</span>
@@ -85,25 +80,57 @@
         <el-main>
           <router-view></router-view>
         </el-main>
-        <el-footer>©版权所有 2014-2021 ThinkAdmin</el-footer>
+        <el-footer>©版权所有 2014-2024 ThinkAdmin</el-footer>
       </el-container>
     </el-container>
   </el-container>
 </template>
 
-<style lang="less">
+<script>
+export default {
+  name: 'layout',
+  data() {
+    return {
+      menus: [
+        { name: 'ONE', title: 'SHOW-ONE-LIST', subs: [] },
+        { name: 'TWO', title: 'SHOW-TWO-LIST', subs: [] },
+        { name: 'THR', title: 'SHOW-THR-LIST', subs: [] },
+        { name: 'FOR', title: 'SHOW-FOR-LIST', subs: [] },
+        { name: 'FIV', title: 'SHOW-FOR-LIST', subs: [] },
+        { name: 'SIX', title: 'SHOW-FOR-LIST', subs: [] },
+        { name: 'SEN', title: 'SHOW-FOR-LIST', subs: [] },
+        { name: 'SIX', title: 'SHOW-FOR-LIST', subs: [] },
+        { name: 'EVN', title: 'SHOW-FOR-LIST', subs: [] },
+        { name: 'TEN', title: 'SHOW-FOR-LIST', subs: [] },
+        { name: '111', title: 'SHOW-FOR-LIST', subs: [] },
+        { name: '122', title: 'SHOW-FOR-LIST', subs: [] },
+        { name: '133', title: 'SHOW-FOR-LIST', subs: [] },
+        { name: '144', title: 'SHOW-FOR-LIST', subs: [] },
+        { name: '155', title: 'SHOW-FOR-LIST', subs: [] },
+        { name: '166', title: 'SHOW-FOR-LIST', subs: [] },
+        { name: '177', title: 'SHOW-FOR-LIST', subs: [] },
+        { name: '188', title: 'SHOW-FOR-LIST', subs: [] },
+        { name: '199', title: 'SHOW-FOR-LIST', subs: [] },
+      ]
+    }
+  }
+}
+</script>
 
-html, body {
+
+<style lang="less">
+html,
+body {
   margin: 0;
   height: 100%;
   padding: 0;
   display: block;
 }
 
-body > .el-container {
+body>.el-container {
   height: 100%;
 
-  > .el-header {
+  >.el-header {
     margin: 0;
     padding: 0;
 
@@ -124,7 +151,10 @@ body > .el-container {
             padding: 0;
             font-weight: bold;
 
-            &:hover, &:active, &:focus, &.is-active {
+            &:hover,
+            &:active,
+            &:focus,
+            &.is-active {
               color: #FFF !important;
               background: rgba(0, 0, 0, 0) !important;
             }
@@ -162,10 +192,10 @@ body > .el-container {
     }
   }
 
-  > .el-container {
+  >.el-container {
     height: 1px;
 
-    > .el-aside {
+    >.el-aside {
       z-index: 99;
       background: #53a8ff;
       --el-aside-width: 280px;
@@ -200,9 +230,11 @@ body > .el-container {
 
           .el-tabs__item {
             color: #FFF;
+            display: flex;
             height: 58px !important;
             line-height: 58px !important;
             text-align: center !important;
+            justify-content: center;
 
             &.is-active {
               color: #333;
@@ -236,34 +268,34 @@ body > .el-container {
       }
     }
 
-    > .el-container {
-      > .el-main {
+    >.el-container {
+      >.el-main {
         padding: 0;
         background: #EFEFEF;
 
-        > .el-container {
+        >.el-container {
           height: 100%;
 
-          > .el-header {
+          >.el-header {
             z-index: 99;
             background: white;
             line-height: 60px;
             box-shadow: 0 0 6px 0 rgb(0 0 0 / 20%);
           }
 
-          > .el-main {
+          >.el-main {
             height: 1px;
             z-index: 88;
             --el-main-padding: 0;
 
-            > .el-scrollbar {
+            >.el-scrollbar {
               padding: 0;
               box-sizing: border-box;
 
-              > .el-scrollbar__wrap {
+              >.el-scrollbar__wrap {
                 border-radius: 5px;
 
-                > .el-scrollbar__view {
+                >.el-scrollbar__view {
                   margin: 15px;
                   padding: 20px;
                   background: #FFF;
@@ -276,7 +308,7 @@ body > .el-container {
         }
       }
 
-      > .el-footer {
+      >.el-footer {
         color: #333;
         z-index: 99;
         box-shadow: 0 0 6px 0 rgb(0 0 0 / 20%);
@@ -288,37 +320,3 @@ body > .el-container {
   }
 }
 </style>
-
-<script>
-export default {
-  name: 'layout',
-  data() {
-    return {
-      menus: [
-        {name: 'ONE', title: 'SHOW-ONE-LIST', subs: []},
-        {name: 'TWO', title: 'SHOW-TWO-LIST', subs: []},
-        {name: 'THR', title: 'SHOW-THR-LIST', subs: []},
-        {name: 'FOR', title: 'SHOW-FOR-LIST', subs: []},
-        {name: 'FIV', title: 'SHOW-FOR-LIST', subs: []},
-        {name: 'SIX', title: 'SHOW-FOR-LIST', subs: []},
-        {name: 'SEN', title: 'SHOW-FOR-LIST', subs: []},
-        {name: 'SIX', title: 'SHOW-FOR-LIST', subs: []},
-        {name: 'EVN', title: 'SHOW-FOR-LIST', subs: []},
-        {name: 'TEN', title: 'SHOW-FOR-LIST', subs: []},
-        {name: '111', title: 'SHOW-FOR-LIST', subs: []},
-        {name: '122', title: 'SHOW-FOR-LIST', subs: []},
-        {name: '133', title: 'SHOW-FOR-LIST', subs: []},
-        {name: '144', title: 'SHOW-FOR-LIST', subs: []},
-        {name: '155', title: 'SHOW-FOR-LIST', subs: []},
-        {name: '166', title: 'SHOW-FOR-LIST', subs: []},
-        {name: '177', title: 'SHOW-FOR-LIST', subs: []},
-        {name: '188', title: 'SHOW-FOR-LIST', subs: []},
-        {name: '199', title: 'SHOW-FOR-LIST', subs: []},
-      ]
-    }
-  },
-  created() {
-    let app = this;
-  }
-}
-</script>
