@@ -110,7 +110,7 @@ public function index(){
 
 ## 代码仓库
 
-主仓库放置于`Gitee`, `Github`为镜像仓库。
+我们的代码仓库已移至 **Github**，而 **Gitee** 则仅作为国内镜像仓库，方便广大开发者获取和使用。若想提交 **PR** 或 **ISSUE** 请在 [ThinkAdminDeveloper](https://github.com/zoujingli/ThinkAdminDeveloper) 仓库进行操作，如果在其他仓库操作或提交问题将无法处理！。
 
 部分代码来自互联网，若有异议可以联系作者进行删除。
 
