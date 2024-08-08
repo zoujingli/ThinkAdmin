@@ -23,5 +23,10 @@
   "require": {
     "php": ">=7.1",
     "zoujingli/think-plugs-admin": "^1.0"
+  },
+  "scripts": {
+    "post-autoload-dump": [
+      "@php -r \"file_exists('.env.example') && !file_exists('.env') && copy('.env.example', '.env');\""
+    ]
   }
 }
