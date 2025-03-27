@@ -22,6 +22,7 @@
   },
   "require": {
     "php": ">=7.1",
+    "topthink/think-orm": "^2.0|^3.0",
     "zoujingli/think-plugs-admin": "^1.0"
   }
 }
