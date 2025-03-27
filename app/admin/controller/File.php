@@ -108,11 +108,9 @@ class File extends Controller
      */
     public function distinct()
     {
-        $map = ['uuid' => AdminService::getUserId()];
-        $db1 = SystemFile::mk()->fieldRaw('max(id) id')->where($map)->group('type,xkey');
-        $db2 = $this->app->db->table($db1->buildSql())->alias('dt')->field('id');
-        SystemFile::mk()->whereRaw("id not in {$db2->buildSql()}")->delete();
-        SystemFile::mk()->where($map)->where(['status' => 1])->delete();
+        $map = ['issafe' => 0, 'uuid' => AdminService::getUserId()];
+        $subQuery = SystemFile::mk()->fieldRaw('MAX(id) AS id')->where($map)->group('type, xkey')->buildSql();
+        SystemFile::mk()->where($map)->whereRaw("id NOT IN ({$subQuery})")->delete();
         $this->success('清理重复文件成功！');
     }
 }

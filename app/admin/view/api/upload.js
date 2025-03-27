@@ -24,7 +24,7 @@ define(['md5', 'notify'], function (SparkMD5, Notify, allowMime) {
                 this.option.input = $(this.option.elem.data('input'))
             } else if (this.option.elem.data('field')) {
                 this.option.input = $('input[name="' + this.option.elem.data('field') + '"]:not([type=file])');
-                this.option.elem.data('input', this.option.input.size() > 0 ? this.option.input.get(0) : null);
+                this.option.elem.data('input', this.option.input.length > 0 ? this.option.input.get(0) : null);
             }
 
             /*! 文件选择筛选，使用 MIME 规则过滤文件列表 */

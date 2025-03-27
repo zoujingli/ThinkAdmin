@@ -24,6 +24,7 @@ window.form = layui.form, window.layer = layui.layer;
 window.laytpl = layui.laytpl, window.laydate = layui.laydate;
 window.jQuery = window.$ = window.jQuery || window.$ || layui.$;
 window.jQuery.ajaxSetup({xhrFields: {withCredentials: true}});
+window.jQuery.fn.size || (window.jQuery.fn.size = () => this.length);
 
 /*! 配置 require 参数  */
 require.config({
@@ -182,7 +183,7 @@ $(function () {
         /*! 关闭顶层最新窗口 */
         this.closeLastModal = function () {
             while ($.msg.mdx.length > 0 && (this.tdx = $.msg.mdx.pop()) > 0) {
-                if ($('#layui-layer' + this.tdx).size()) return layer.close(this.tdx);
+                if ($('#layui-layer' + this.tdx).length) return layer.close(this.tdx);
             }
         };
         /*! 关闭消息框 */
@@ -404,15 +405,15 @@ $(function () {
         this.queryNode = function (uri, node) {
             // 如果该节点存在直接返回 Node 值
             if (/^m-/.test(node = node || location.href.replace(/.*spm=([\d\-m]+).*/ig, '$1'))) {
-                if ($('[data-menu-node="' + node + '"]').size()) return node;
+                if ($('[data-menu-node="' + node + '"]').length) return node;
             }
             let path = uri.replace(/\.html$/ig, '');
             // 尝试通过 URI 查询节点值
             let $menu = $('[data-menu-node][data-open*="' + path + '"]');
-            if ($menu.size()) return $menu.get(0).dataset.menuNode;
+            if ($menu.length) return $menu.get(0).dataset.menuNode;
             // 尝试通过 URL 查询节点值
             $menu = $('[data-menu-node][data-open~="#' + path + '"]');
-            return $menu.size() ? $menu.get(0).dataset.menuNode : (/^m-/.test(node || '') ? node : '');
+            return $menu.length ? $menu.get(0).dataset.menuNode : (/^m-/.test(node || '') ? node : '');
         };
         /*! 完整 URL 转 URI 地址 */
         this.parseUri = function (uri, elem, vars, temp, attrs) {
@@ -665,10 +666,10 @@ $(function () {
             // 默认动态设置页数, 动态设置最大高度
             if (option.page === true) option.page = {curr: layui.sessionData('pages')[option.id] || 1};
             if (option.width === 'full') option.width = $table.parent().width();
-            if (option.height === 'full') if ($table.parents('.iframe-pagination').size()) {
+            if (option.height === 'full') if ($table.parents('.iframe-pagination').length) {
                 $table.parents('.iframe-pagination').addClass('not-footer');
                 option.height = $(window).height() - $table.removeClass('layui-hide').offset().top - 20;
-            } else if ($table.parents('.laytable-pagination').size()) {
+            } else if ($table.parents('.laytable-pagination').length) {
                 option.height = $table.parents('.laytable-pagination').height() - $table.removeClass('layui-hide').position().top - 20;
             } else {
                 option.height = $(window).height() - $table.removeClass('layui-hide').offset().top - 35;
@@ -814,7 +815,7 @@ $(function () {
                 let type = form.getAttribute('method') || 'POST', href = form.getAttribute('action') || location.href;
                 let dset = form.dataset, tips = dset.tips || undefined, time = dset.time || undefined, taid = dset.tableId || false;
                 let call = window[dset.callable || '_default_callable'] || (taid ? function (ret) {
-                    if (typeof ret === 'object' && ret.code > 0 && $('#' + taid).size() > 0) {
+                    if (typeof ret === 'object' && ret.code > 0 && $('#' + taid).length > 0) {
                         return $.msg.success(ret.info, 3, function () {
                             $.msg.closeLastModal();
                             (typeof ret.data === 'string' && ret.data) ? $.form.goto(ret.data) : $.layTable.reload(taid);
@@ -853,7 +854,7 @@ $(function () {
         /*! 查找表单元素, 如果没有找到将不会自动写值 */
         if (!(this.$elem = $(this)).data('input') && this.$elem.data('field')) {
             let $input = $('input[name="' + this.$elem.data('field') + '"]:not([type=file])');
-            this.$elem.data('input', $input.size() > 0 ? $input.get(0) : null);
+            this.$elem.data('input', $input.length > 0 ? $input.get(0) : null);
         }
         // 单图或多图选择器 ( image|images )
         if (typeof this.dataset.file === 'string' && /^images?$/.test(this.dataset.file)) {

@@ -82,7 +82,7 @@ class PaymentService
             if ($oPayed + $pAmount > floatval($oAmount)) {
                 return ['code' => 0, 'info' => '支付总额超出！', 'data' => [], 'params' => []];
             }
-            $config = WechatService::getConfig();
+            $config = WechatService::getConfig(true);
             do $pCode = CodeExtend::uniqidNumber(16, 'P');
             while (WechatPaymentRecord::mk()->master()->where(['code' => $pCode])->findOrEmpty()->isExists());
             $data = [
@@ -148,9 +148,15 @@ class PaymentService
     public static function notify(?array $data = null): Response
     {
         try {
-            $notify = static::withPayment()->notify();
+            p(Library::$sapp->request->post(), false, 'wechat_pay_notify');
+            $notify = static::withPayment()->notify(Library::$sapp->request->post());
             $result = empty($notify['result']) ? [] : json_decode($notify['result'], true);
-            if (empty($result) || !is_array($result)) return response('error', 500);
+            p($result, false, 'wechat_pay_notify');
+            p('------------------', false, 'wechat_pay_notify');
+            if (empty($result) || !is_array($result)) {
+                empty($data['order']) || self::query($data['order']);
+                return response('error', 500);
+            }
             //订单支付通知处理
             if ($data['scen'] === 'order' && isset($result['trade_state']) && $result['trade_state'] == 'SUCCESS') {
                 if ($data['order'] !== $result['out_trade_no']) return response('error', 500);
@@ -181,6 +187,7 @@ class PaymentService
             }
             return response('success');
         } catch (\Exception $exception) {
+            empty($data['order']) || self::query($data['order']);
             return json(['code' => 'FAIL', 'message' => $exception->getMessage()])->code(500);
         }
     }
@@ -321,7 +328,7 @@ class PaymentService
      */
     protected static function withPayment(?array $config = null): Order
     {
-        return Order::instance($config ?: WechatService::getConfig());
+        return Order::instance($config ?: WechatService::getConfig(true));
     }
 
     /**

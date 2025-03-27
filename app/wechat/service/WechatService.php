@@ -178,27 +178,25 @@ class WechatService extends Service
 
     /**
      * 获取公众号配置参数
-     * @param string $appid
+     * @param boolean $ispay 获取支付参数
      * @return array
      * @throws \think\admin\Exception
      */
-    public static function getConfig(string $appid = ''): array
+    public static function getConfig(bool $ispay = false): array
     {
-        return static::withWxpayCert([
-            'appid'          => $appid ?: static::getAppid(),
+        $config = [
+            'appid'          => static::getAppid(),
             'token'          => sysconf('wechat.token'),
             'appsecret'      => sysconf('wechat.appsecret'),
             'encodingaeskey' => sysconf('wechat.encodingaeskey'),
-            'mch_id'         => sysconf('wechat.mch_id'),
-            'mch_key'        => sysconf('wechat.mch_key'),
-            'mch_v3_key'     => sysconf('wechat.mch_v3_key'),
             'cache_path'     => syspath('runtime/wechat'),
-        ]);
+        ];
+        return $ispay ? static::withWxpayCert($config) : $config;
     }
 
     /**
      * 获取小程序配置参数
-     * @param boolean $ispay 支付参数
+     * @param boolean $ispay 获取支付参数
      * @return array
      * @throws \think\admin\Exception
      */
@@ -210,11 +208,7 @@ class WechatService extends Service
             'appsecret'  => $wxapp['appkey'] ?? '',
             'cache_path' => syspath('runtime/wechat'),
         ];
-        return $ispay ? static::withWxpayCert(array_merge([
-            'mch_id'     => sysconf('wechat.mch_id'),
-            'mch_key'    => sysconf('wechat.mch_key'),
-            'mch_v3_key' => sysconf('wechat.mch_v3_key'),
-        ], $config)) : $config;
+        return $ispay ? static::withWxpayCert($config) : $config;
     }
 
     /**
@@ -226,32 +220,29 @@ class WechatService extends Service
     public static function withWxpayCert(array $options): array
     {
         // 文本模式主要是为了解决分布式部署
+        $data = sysdata('plugin.wechat.payment');
+        if (empty($data['mch_id'])) {
+            throw new Exception('无效的支付配置！');
+        }
+        $name1 = sprintf("wxpay/%s_%s_cer.pem", $data['mch_id'], md5($data['ssl_cer_text']));
+        $name2 = sprintf("wxpay/%s_%s_key.pem", $data['mch_id'], md5($data['ssl_key_text']));
         $local = LocalStorage::instance();
-        $name1 = "wxpay/{$options['mch_id']}_cer.pem";
-        $name2 = "wxpay/{$options['mch_id']}_key.pem";
         if ($local->has($name1, true) && $local->has($name2, true)) {
             $sslCer = $local->path($name1, true);
             $sslKey = $local->path($name2, true);
+        } else {
+            $sslCer = $local->set($name1, $data['ssl_cer_text'], true)['file'];
+            $sslKey = $local->set($name2, $data['ssl_key_text'], true)['file'];
         }
-        if (empty($sslCer) || empty($sslKey)) {
-            if (!empty($data = sysdata('plugin.wechat.payment'))) {
-                if (!empty($data['ssl_key_text']) && !empty($data['ssl_cer_text'])) {
-                    $sslCer = $local->set($name1, $data['ssl_cer_text'], true)['file'];
-                    $sslKey = $local->set($name2, $data['ssl_key_text'], true)['file'];
-                }
-            } else {
-                $sslCer = $local->path(sysconf('wechat.mch_ssl_cer'), true);
-                $sslKey = $local->path(sysconf('wechat.mch_ssl_key'), true);
-                if (!$local->has($sslCer, true)) unset($sslCer);
-                if (!$local->has($sslKey, true)) unset($sslKey);
-            }
-        }
-        if (isset($sslCer) && isset($sslKey)) {
-            $options['ssl_cer'] = $sslCer;
-            $options['ssl_key'] = $sslKey;
-            $options['cert_public'] = $sslCer;
-            $options['cert_private'] = $sslKey;
-        }
+        $options['mch_id'] = $data['mch_id'];
+        $options['mch_key'] = $data['mch_key'];
+        $options['mch_v3_key'] = $data['mch_v3_key'];
+        $options['ssl_cer'] = $sslCer;
+        $options['ssl_key'] = $sslKey;
+        $options['cert_public'] = $sslCer;
+        $options['cert_private'] = $sslKey;
+        $options['mp_cert_serial'] = $data['mch_pay_sid'] ?? '';
+        $options['mp_cert_content'] = $data['ssl_pay_text'] ?? '';
         return $options;
     }
 

@@ -20,12 +20,13 @@ define(function () {
     }
 
     /*! 默认导出配置 */
-    Excel.prototype.options = {writeOpt: {bookSST: true}};
+    Excel.prototype.options = {writeOpt: {bookSST: false}};
 
     /*! 导出 Excel 文件 */
     Excel.prototype.export = function (data, name, options) {
+        name = name || '数据导出_' + layui.util.toDateString(Date.now(), '_yyyyMMdd_HHmmss');
         if (name.substring(0, -5).toLowerCase() !== '.xlsx') name += '.xlsx';
-        layui.excel.exportExcel(data, name, 'xlsx', options || this.options || {writeOpt: {bookSST: true}});
+        layui.excel.exportExcel(data, name, 'xlsx', $.extend(options || {}, this.options));
     };
 
     /*! 绑定导出的事件 */
@@ -40,23 +41,28 @@ define(function () {
     // </script>
     Excel.prototype.bind = function (done, filename, selector, options) {
         let that = this;
-        this.options = options || {}
+        this.options = $.extend(this.options, options || {});
+        this.bindLoadDone(function (data, button) {
+            that.export(done.call(that, data, []), button.dataset.filename || filename);
+        }, selector);
+    };
+
+    /*! 加载所有数据 */
+    Excel.prototype.bindLoadDone = function (done, selector) {
+        let that = this;
         $('body').off('click', selector || '[data-form-export]').on('click', selector || '[data-form-export]', function () {
-            let form = $(this).parents('form');
-            let name = this.dataset.filename || filename;
+            let button = this, form = $(this).parents('form');
             let method = this.dataset.method || form.attr('method') || 'get';
             let location = this.dataset.excel || this.dataset.formExport || form.attr('action') || '';
             let sortType = $(this).attr('data-sort-type') || '', sortField = $(this).attr('data-sort-field') || '';
             if (sortField.length > 0 && sortType.length > 0) {
                 location += (location.indexOf('?') > -1 ? '&' : '?') + '_order_=' + sortType + '&_field_=' + sortField;
             }
-            that.load(location, form.serialize(), method).then(function (data) {
-                that.export(done.call(that, data, []), name);
-            }).fail(function (ret) {
-                $.msg.tips(ret || '文件导出失败');
+            that.load(location, form.serialize(), method).then((data) => done.call(that, data, button)).fail(function (ret) {
+                $.msg.tips(ret || '数据加载失败');
             });
         });
-    };
+    }
 
     /*! 加载导出的文档 */
     Excel.prototype.load = function (url, data, method) {

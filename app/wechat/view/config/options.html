@@ -37,7 +37,7 @@
 
         function apply(data) {
             this.$active = $("[data-wechat-type='" + data.value + "']").trigger('click');
-            if (this.$active.size() < 1) $("[data-wechat-type]:first").trigger('click');
+            if (this.$active.length < 1) $("[data-wechat-type]:first").trigger('click');
             $('[data-type="' + data.value + '"]').show().siblings('[data-type]').hide();
         }
     });

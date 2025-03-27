@@ -81,12 +81,13 @@ define(function () {
         };
         this.insertError = function ($el) {
             return (function ($icon) {
+                console.log($icon)
                 return $el.data('vali-tags').css({
                     top: $el.position().top + 'px', right: (($icon ? $icon.width() + parseFloat($icon.css('right') || 0) : 0) + 10) + 'px',
                     paddingTop: $el.css('marginTop'), lineHeight: ($el.get(0).nodeName || '') === 'TEXTAREA' ? '32px' : $el.css('height'),
                 });
             })($el.nextAll('.input-right-icon'), $el.data('vali-tags') || function () {
-                let css = 'display:block;position:absolute;text-align:center;color:#c44;font-size:12px;z-index:2';
+                let css = 'display:block;position:absolute;text-align:center;color:#c44;font-size:12px;z-index:2;right:8px';
                 $el.data('vali-tags', $('<span class="layui-anim notselect" style="' + css + '"></span>').insertAfter($el));
             }());
         };
