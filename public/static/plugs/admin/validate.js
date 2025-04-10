@@ -81,9 +81,8 @@ define(function () {
         };
         this.insertError = function ($el) {
             return (function ($icon) {
-                console.log($icon)
                 return $el.data('vali-tags').css({
-                    top: $el.position().top + 'px', right: (($icon ? $icon.width() + parseFloat($icon.css('right') || 0) : 0) + 10) + 'px',
+                    top: $el.position().top + 'px', right: (($icon.length > 0 ? $icon.width() + parseFloat($icon.css('right') || 0) : 0) + 10) + 'px',
                     paddingTop: $el.css('marginTop'), lineHeight: ($el.get(0).nodeName || '') === 'TEXTAREA' ? '32px' : $el.css('height'),
                 });
             })($el.nextAll('.input-right-icon'), $el.data('vali-tags') || function () {

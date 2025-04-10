@@ -436,7 +436,13 @@ $(function () {
             $.base.onEvent('click', '[data-target-menu-type]', function () {
                 layui.data('AdminMenuType', {key: 'mini', value: layout.toggleClass(mini).hasClass(mini)});
             }).on('click', '[data-submenu-layout]>a', function () {
-                setTimeout("$.menu.sync(1)", 100);
+                // 关闭已展示的菜单组
+                let $this = $(this).parents('[data-submenu-layout]');
+                if ($this.hasClass('layui-nav-itemed')) {
+                    $this.siblings('[data-submenu-layout].layui-nav-itemed').find('>a').click()
+                }
+                // 缓存当前菜单状态
+                setTimeout("$.menu.sync(1)", 50);
             }).on('mouseenter', '[data-target-tips]', function (evt) {
                 if (!layout.hasClass(mini) || !this.dataset.targetTips) return;
                 evt.idx = layer.tips(this.dataset.targetTips, this, {time: 0});
@@ -455,7 +461,7 @@ $(function () {
             $('[data-submenu-layout]').map(function () {
                 let node = this.dataset.submenuLayout;
                 if (mode === 1) layui.data('AdminMenuState', {key: node, value: $(this).hasClass('layui-nav-itemed') ? 2 : 1});
-                if (mode === 2) (layui.data('AdminMenuState')[node] || 0) === 2 && $(this).addClass('layui-nav-itemed');
+                if (mode === 2) (layui.data('AdminMenuState')[node] || 0) === 2 && $(this).hasClass('layui-nav-itemed') ? '' : $(this).click();
             });
         };
         /*! 页面 LOCATION-HASH 跳转 */
@@ -479,7 +485,7 @@ $(function () {
                 } else {
                     $('.layui-layout-admin').addClass('layui-layout-left-hide');
                 }
-                setTimeout("$.menu.sync(1);", 100);
+                setTimeout("$.menu.sync(1);", 50);
             }
         };
     };
@@ -1006,7 +1012,9 @@ $(function () {
 
     /*! 注册 data-tips-text 事件行为 */
     $.base.onEvent('mouseenter', '[data-tips-text]', function () {
-        let opts = {tips: [$(this).attr('data-tips-type') || 3, '#78BA32'], time: 0};
+        // 获取自定义颜色（优先取 data-tips-color，否则用默认色）
+        const color = $(this).attr('data-tips-color') || '#78BA32';
+        let opts = {tips: [$(this).attr('data-tips-type') || 3, color], time: 0};
         let layidx = layer.tips($(this).attr('data-tips-text') || this.innerText, this, opts);
         $(this).off('mouseleave').on('mouseleave', function () {
             setTimeout("layer.close('" + layidx + "')", 100);

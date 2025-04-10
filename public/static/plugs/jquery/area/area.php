@@ -19,7 +19,8 @@ new class() {
     protected function initBd(): array
     {
         $url = 'https://api.map.baidu.com/api_region_search/v1/?keyword=%E5%85%A8%E5%9B%BD&sub_admin=3&ak=S7I1ewwAVr8r2MI3rnSKeF3R6GTCZiOo&extensions_code=1';
-        $provs = json_decode(file_get_contents($url), true)['districts'][0]['districts'];
+        $context = stream_context_create(["ssl" => ["verify_peer" => false, "verify_peer_name" => false]]);
+        $provs = json_decode(file_get_contents($url, false, $context), true)['districts'][0]['districts'];
         usort($provs, function ($a, $b) {
             return $a['code'] > $b['code'] ? 1 : -1;
         });
