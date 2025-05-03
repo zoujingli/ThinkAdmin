@@ -16,7 +16,9 @@
 <div class="think-box-shadow layui-form">
     <div style="margin-left:99px;max-width:750px">
         {foreach ['api'=>lang('微信公众平台直接模式'),'thr'=>lang('微信开放平台授权模式')] as $k=>$v}
-        <input type="radio" data-wechat-type="{$k}" name="wechat.type" value="{$k}" title="{$v}" lay-filter="wechat_type">
+        <label class="think-radio">
+            <input type="radio" data-wechat-type="{$k}" name="wechat.type" value="{$k}" title="{$v}" lay-ignore> {$v}
+        </label>
         {/foreach}
         <div class="help-block">{:lang('请选择微信对接方式，其中微信开放平台授权模式需要微信开放平台支持，还需要搭建第三方服务平台托管系统！')}</div>
     </div>
@@ -32,13 +34,19 @@
 {block name='script'}
 <script>
     $(function () {
-        window.form.on('radio(wechat_type)', apply);
-        apply({value: '{:sysconf("wechat.type")}' || 'api'});
 
-        function apply(data) {
-            this.$active = $("[data-wechat-type='" + data.value + "']").trigger('click');
-            if (this.$active.length < 1) $("[data-wechat-type]:first").trigger('click');
-            $('[data-type="' + data.value + '"]').show().siblings('[data-type]').hide();
+        $('body').off('change', '[data-wechat-type]').on('change', '[data-wechat-type]', apply);
+
+        // 初始化选择器
+        let value = '{:sysconf("wechat.type")}' || 'api';
+        $("[data-wechat-type='" + value + "']").trigger('click')
+
+        function apply() {
+            if ((value = $('input[data-wechat-type]:checked').val())) {
+                $('[data-type="' + value + '"]').show().siblings('[data-type]').hide();
+            } else {
+                $("[data-wechat-type]:frist").trigger('click')
+            }
         }
     });
 </script>
