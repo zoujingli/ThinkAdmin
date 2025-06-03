@@ -158,8 +158,19 @@ define(['md5', 'notify'], function (SparkMD5, Notify, allowMime) {
                         uploader.form.append('policy', ret.data['policy']);
                         uploader.form.append('authorization', ret.data['authorization']);
                         uploader.form.append('Content-Disposition', 'inline;filename=' + encodeURIComponent(file.name));
+                    } else if (ret.data.uptype === 'minio') {
+                        uploader.type = 'put';
+                        uploader.url = ret.data.server + '/' + ret.data.key; // 直接使用完整的上传 URL
+                        uploader.head = {
+                            'x-amz-algorithm': ret.data['x-amz-algorithm'],
+                            'x-amz-credential': ret.data['x-amz-credential'],
+                            'x-amz-date': ret.data['x-amz-date'],
+                            'x-amz-signature': ret.data['x-amz-signature'],
+                            'Content-Disposition': 'inline;filename=' + encodeURIComponent(file.name)
+                        };
+                        uploader.form = file; // MinIO 使用文件作为请求体
                     }
-                    uploader.form.append('file', file, file.name), jQuery.ajax({
+                   ret.data.uptype !== 'minio' && uploader.form.append('file', file, file.name), jQuery.ajax({
                         xhrFields: {withCredentials: ret.data.uptype === 'local'}, headers: uploader.head, url: uploader.url, data: uploader.form, type: uploader.type || 'post', xhr: function (xhr) {
                             xhr = new XMLHttpRequest();
                             return xhr.upload.addEventListener('progress', function (event) {
@@ -183,6 +194,8 @@ define(['md5', 'notify'], function (SparkMD5, Notify, allowMime) {
                                 that.event('upload.error', {file: file}, file, ret.info || '{:lang("文件上传失败！")}');
                             } else if (uploader.uptype === 'alist' && parseInt(ret.code) !== 200) {
                                 that.event('upload.error', {file: file}, file, ret.message || '{:lang("文件上传失败！")}');
+                            } else if (uploader.uptype === 'minio' && typeof ret !== 'object') {
+                                that.event('upload.error', {file: file}, file, '{:lang("MinIO文件上传失败！")}');
                             } else {
                                 that.done(ret, file.index, file, done, '{:lang("文件上传成功！")}');
                             }
