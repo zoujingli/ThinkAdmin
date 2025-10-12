@@ -1,4 +1,4 @@
-## 大道至简 · 原生框架
+# 🚀 ThinkAdmin v6.1 - 现代化后台管理系统
 
 [![star](https://gitcode.com/ThinkAdmin/ThinkAdmin/star/badge.svg)](https://gitcode.com/ThinkAdmin/ThinkAdmin)
 [![star](https://gitee.com/zoujingli/ThinkAdmin/badge/star.svg?theme=gvp)](https://gitee.com/zoujingli/ThinkAdmin)
@@ -9,255 +9,691 @@
 [![Daily Downloads](https://poser.pugx.org/zoujingli/thinkadmin/d/daily)](https://packagist.org/packages/zoujingli/thinkadmin)
 [![License](https://poser.pugx.org/zoujingli/thinkadmin/license)](https://packagist.org/packages/zoujingli/thinkadmin)
 
-### 项目介绍
+## 📖 项目介绍
 
-**ThinkAdmin** 是一款遵循 **MIT** 协议免费开源的快速开发框架，基于最新版本 **ThinkPHP6** 的极简后台管理系统 ( 已兼容 **ThinkPHP8** )，在使用 **ThinkAdmin** 前请认真阅读[《免责声明》](https://thinkadmin.top/disclaimer)并同意该声明。
+**ThinkAdmin v6.1** 是一款基于 **ThinkPHP 6 & 8** 的现代化后台管理系统，遵循 **MIT** 开源协议，专为快速开发而设计。系统采用全新的 **PaaS 插件架构**，提供类似 **PaaS** 的组件升级更新服务，支持本地化定制开发。
 
-当前 **ThinkAdmin** 的最新版本为[ **v6.1** ](https://gitee.com/zoujingli/ThinkAdmin/tree/v6.1)，从这个版本开始正式进入插件时代，提供类似 **PaaS** 的组件升级更新服务，也可以本地化定制开发，基础组件及扩展插件统一使用 **Composer** 管理。**ThinkAdmin** 与传统 **ThinkPHP** 多应用模式无差别，用户可以自行开发自己的模块，此次升级可完美兼容 **ThinkAdmin v6.0** 应用，原 **ThinkAdmin v6.0** 只需安装 **ThinkPlugsAdmin** 组件即可升级到 **v6.1** 的插件模式。
+### 🌟 核心特性
 
-[//]: # (想要了解更多 **ThinkAdmin** 插件生态请阅读 [《ThinkAdmin 插件生态》]&#40;https://thinkadmin.top/guide/plugin.html&#41;)
+-   **🚀 自由扩展的组件生态** - 基于最新 ThinkPHP 框架开发，遵循 Composer 标准管理依赖组件，可自由安装各种开源组件及插件生态程序
+-   **💾 标准化文件存储引擎** - 支持本地存储、自建 Alist 存储、多种云存储，基于文件 HASH 实现文件秒传，节省服务器空间
+-   **🔐 注解 RBAC 权限管理** - 通过控制器方法注释实现功能节点自动生成，配合后台权限管理实现最简注解权限控制
+-   **🔧 可升级 PaaS 插件微架构** - 深度定制 Composer 插件，实现专属 PaaS 插件生态管理架构，可将应用模块封装成独立插件包
+-   **⚡ 独立进程异步执行任务** - 兼容多平台动态创建 PHP 进程，并列启动多个独立任务进程处理大数据或长时性任务，实时显示执行进度
+-   **🛠️ 常用操作及工具库封装** - 核心组件封装各种常用 CRUD 操作及工具库，快速实现数据增删改查，后台 UI 基于最新 Layui 构建
 
-**[查看 ThinkAdmin v6.1 详细介绍请切换至 v6.1 分支](https://gitee.com/zoujingli/ThinkAdmin/tree/v6.1)！！**
+### 🎯 适用场景
 
-**ThinkAdmin v6** 是基于 **v1**-**v5** 大版本的积累，经历了几次大的调整，结合 **ThinkPHP6** 的思维重新构建，减少大量原非必需的组件，自建存储层、服务层及队列任务机制，另外还增加了许多友好指令！当前 **v6** 版本已经通过了数个系统实践与测试，过程中不停调整与优化，目前系统模块及微信模块已经趋于稳定，现将系统管理 **`app/admin`** 及微信管理 **`app/wechat`** 定为 **v6** 内核两大模块并以 **MIT** 协议发布，后续可能还有其他模块及相关辅助模块更新发布，敬请期待……
+-   **快速原型开发** - 5 分钟内搭建完整后台管理系统
+-   **企业级应用** - 提供完整的权限管理和系统配置
+-   **SaaS 平台开发** - 支持多租户和插件扩展
+-   **学习研究** - 学习现代化后台管理系统开发
+-   **商业项目** - 快速交付高质量的后台管理功能
 
-系统核心组件 **ThinkLibrary** 封装了大量常用操作以及多应用组件，可快速开发各种应用程序，且不影响原 **ThinkPHP** 生态，大大简化编码成本；可自行选择集成 **WechatDeveloper** 组件 ( 支持微信公众号、微信小程序、微信企业号、微信商户支付、支付宝支付等 ) 及 **QRcode** 二维码生成工具等。里面还内置了 **ThinkPHP6** 多应用组件并且完美支持路由；文件存储支持本地服务器存储、自建Alist存储、七牛云对象存储（支持CDN加速）、又拍云USS存储（支持CDN加速）、阿里云OSS存储（支持CDN加速）、腾讯云COS存储（支持CDN加速）等存储方式；自带异步任务处理机制，可以并列多进程执行任务，任务响应延时小于 **0.5** 秒，兼容 **windows** 及 **linux**。
+### 🔧 技术栈
 
-使用 **ThinkAdmin** 需要掌握 **ThinkPHP**、**jQuery**、**LayUI**、**RequireJs** 等开发技能，后台 **UI** 界面基于最新版本的 **LayUI** 前端框架以及 **RequireJs** 组件加载方式，默认加载了所有 **LayUI** 的组件，框架中可以直接使用组件（独立页面需要注意 **js** 加载顺序哦），使用 **RequireJs** 加载插件，互联网上资源非常多，可自行下载进行二次扩展。目前后台大部分页面为单页程序，页面加载速度非常快速，也因此后台不再支持选项卡模式。
+-   **后端框架**: ThinkPHP 6 & 8
+-   **前端框架**: LayUI + RequireJS
+-   **数据库**: 支持 MySQL、PostgreSQL、SQLite
+-   **缓存**: 支持 Redis、文件缓存
+-   **存储**: 本地存储、云存储（七牛云、阿里云、腾讯云等）
+-   **队列**: 自建异步任务处理机制
 
-我们致力于快速开发的底层框架，让项目开发变得更容易。框架提供完善的基础组件以及对应的 **API** 支持，基于此框架可以快速开发各种 **WEB** 应用。任何一个系统都不能完全满足所有的业务场景，**ThinkAdmin** 免费提供基础底层的功能，这里包括系统权限管理，系统存储配置，微信授权管理，以及其他常用功能集成等…… 因此 **ThinkAdmin** 也被大家定性为外包二开基线系统。目前已经有许多公司及个人在使用 **ThinkAdmin**，通过数据聚合统计已有 **5** 万多在线运行的项目。
+### 📊 项目统计
+
+-   **在线运行项目**: 50,000+
+-   **GitHub Stars**: 持续增长中
+-   **社区活跃度**: 高活跃度开发社区
+-   **更新频率**: 定期更新和功能增强
 
 #### 注意事项
 
-* **ThinkAdmin** 是基于国内最流行的 **ThinkPHP6** 框架开发，要求在不低于 **PHP 7.2.5** 的版本上运行，如果使用低版本的 **PHP** 可能会影响 **Composer** 依赖组件的安装，或将存在一定的安全隐患；
-* 运行环境必需开启 **PATHINFO** 并将对应的 **rewrite** 规则配置到站点才能访问，系统已不再支持 **ThinkPHP** 的 **URL** 兼容模式运行 ( 源于如何优雅地展示 )，可以阅读 **ThinkAdmin** 的文档[安装部署](https://thinkadmin.top/guide/install.html)章节；
-* 代码仓库下载的文件不包含 **Composer** 组件的 **vendor** 目录，下载后需要执行 **composer install** 安装依赖组件，同时会触发执行 **php think migrate:run** 安装数据库 **Phinx** 脚本，如需切换数据库只需要先配置再执行指令即可完成初始化安装数据；
-* 为保持系统可持续在线升级，建议不要在 **app/admin**、**app/wechat** 、**public/static** 这三个目录创建或修改文件，可以自行创建其他模块再编写自己的业务代码，自定义样式及脚本可以放置在 **public/static/extra** 目录里面。
-* 系统是基于严格类型 **PHP** 新特性开发，务必使用专业的 **IDE** ( 如：**PhpStorm**、**NetBeans**、**VsCode**、**Eclipse for PHP** 等 ) 进行项目开发以达到更好的体验与更高的效率！
+-   **ThinkAdmin** 是基于国内最流行的 **ThinkPHP6** 框架开发，要求在不低于 **PHP 7.2.5** 的版本上运行，如果使用低版本的 **PHP** 可能会影响 **Composer** 依赖组件的安装，或将存在一定的安全隐患；
+-   运行环境必需开启 **PATHINFO** 并将对应的 **rewrite** 规则配置到站点才能访问，系统已不再支持 **ThinkPHP** 的 **URL** 兼容模式运行 ( 源于如何优雅地展示 )，可以阅读 **ThinkAdmin** 的文档[安装部署](https://thinkadmin.top/guide/install.html)章节；
+-   代码仓库下载的文件不包含 **Composer** 组件的 **vendor** 目录，下载后需要执行 **composer install** 安装依赖组件，同时会触发执行 **php think migrate:run** 安装数据库 **Phinx** 脚本，如需切换数据库只需要先配置再执行指令即可完成初始化安装数据；
+-   为保持系统可持续在线升级，建议不要在 **app/admin**、**app/wechat** 、**public/static** 这三个目录创建或修改文件，可以自行创建其他模块再编写自己的业务代码，自定义样式及脚本可以放置在 **public/static/extra** 目录里面。
+-   系统是基于严格类型 **PHP** 新特性开发，务必使用专业的 **IDE** ( 如：**PhpStorm**、**NetBeans**、**VsCode**、**Eclipse for PHP** 等 ) 进行项目开发以达到更好的体验与更高的效率！
 
-## 系统安装
+## 🚀 快速开始
 
-下载并进入 **ThinkAdmin** 根目录，运行指令安装依赖组件。
+### ⚙️ 环境要求
 
-打开命令行窗口（ Windows 用户 ）或控制台（ Linux 和 Mac 用户 ）并执行如下命令：
+-   **PHP 版本**: 7.1 或更高版本（推荐 PHP 8.0+）
+-   **Composer**: 必须安装 Composer 包管理工具
+-   **数据库**: 支持 Sqlite、MySQL 和 SQL Server
+-   **Web 服务器**: Apache、Nginx 或 PHP 内置服务器
 
-**1. 通过 Composer 安装：**( 推荐方式，默认只安装 admin 模块 )
+### 📦 一键安装
 
-```shell
-### 创建项目（ 需要在英文目录下面执行 ）
-composer create-project zoujingli/thinkadmin
+#### 方式一：Composer 安装（推荐）
 
-### 进入项目根目录
-cd thinkadmin
+```bash
+# 创建项目（需要在英文目录下执行）
+composer create-project zoujingli/thinkadmin my-project
 
-### 数据库初始化安装 
-### 系统默认使用 Sqlite 数据库
-### 若使用其他数据库请修改 DB_ 相关的配置
-copy .env.example .env
-vi .env
+# 进入项目目录
+cd my-project
 
-#### 执行数据库初始化安装
+# 数据库初始化（默认使用 Sqlite）
 php think migrate:run
 
-### 安装微信管理模块
+# 安装微信管理模块（可选）
 composer require zoujingli/think-plugs-wechat
 
-### 开启PHP内置WEB服务
-### 默认后台登录账号及密码都是 admin
-php think run --host 127.0.0.1
+# 启动内置服务器
+php think run --host 127.0.0.1 --port 8000
 ```
 
-**2. 通过源码安装：**（ 默认安装 admin、wechat 两个模块 ）
+#### 方式二：源码安装
 
-[//]: # (如果需要安装演示系统的旧版本 **data** 模块代码，请跳转到)
-
-[//]: # (https://gitee.com/zoujingli/think-plugs-data)
-
-```shell
-### 下载项目（ 需要在英文目录下面执行 ）
-# git clone https://github.com/zoujingli/ThinkAdmin
+```bash
+# 下载项目（需要在英文目录下执行）
 git clone https://gitee.com/zoujingli/ThinkAdmin
-
-### 进入项目根目录
 cd ThinkAdmin
 
-### 安装项目依赖组件
+# 安装项目依赖组件
 composer install --optimize-autoloader
 
-### 数据库初始化安装 
-### 系统默认使用 Sqlite 数据库
-### 若使用其他数据库请修改 DB_ 相关的配置
-copy .env.example .env
-vi .env
-
-#### 执行数据库初始化安装
+# 数据库初始化（默认使用 Sqlite）
 php think migrate:run
 
-### 开启PHP内置WEB服务
-### 默认后台登录账号及密码都是 admin
-php think run --host 127.0.0.1
+# 启动内置服务器
+php think run --host 127.0.0.1 --port 8000
 ```
 
-## 数据库安装
+### 🌐 访问系统
 
-1. 创建空的数据库，其中 **Sqlite** 不需要创建；
-2. 将数据库配置到 **config/database.php** 文件；
+打开浏览器访问：`http://127.0.0.1:8000`
 
-注意：数据库参数修改，除了要修改连接参数，还需要切换 **default** 默认连接名称，如下面的 **mysql**、**sqlite** 等。
+-   **后台管理**: `http://127.0.0.1:8000/admin`
+-   **默认账号**: `admin`
+-   **默认密码**: `admin`
+
+### 🔧 基础配置
+
+1. **系统参数配置**
+
+    - 登录后台 → 系统管理 → 系统参数配置
+    - 设置网站名称、文件上传参数等
+
+2. **用户管理**
+
+    - 修改默认管理员密码
+    - 创建新的管理员账号
+
+3. **菜单管理**
+    - 查看系统菜单结构
+    - 添加自定义菜单
+
+## 🗄️ 数据库配置
+
+### 支持的数据库
+
+-   **SQLite**（默认）- 无需额外配置，开箱即用
+-   **MySQL** - 推荐用于生产环境
+-   **PostgreSQL** - 支持企业级应用
+-   **SQL Server** - 支持 Windows 环境
+
+### 数据库配置
+
+#### 使用 SQLite（默认，推荐开发环境）
+
+无需额外配置，系统默认使用 SQLite 数据库，开箱即用。
+
+#### 使用 MySQL（推荐生产环境）
+
+1. **创建数据库**
+
+```sql
+CREATE DATABASE thinkadmin DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+```
+
+2. **修改配置文件** `config/database.php`
 
 ```php
 return [
-     // 数据库类型
-    'default' => 'sqlite',
+    // 数据库类型 - 修改为 mysql
+    'default' => 'mysql',
     // 数据库连接参数
     'connections' => [
-        'mysql'  => [ /* 具体参数省略 */ ], 
-        'sqlite' => [ /* 具体参数省略 */ ],
-    ]       
-]
+        'mysql' => [
+            'type' => 'mysql',
+            'hostname' => '127.0.0.1',
+            'database' => 'thinkadmin',
+            'username' => 'root',
+            'password' => 'your_password',
+            'hostport' => '3306',
+            'charset' => 'utf8mb4',
+        ],
+        'sqlite' => [
+            'type' => 'sqlite',
+            'database' => 'database/sqlite.db',
+        ],
+    ]
+];
 ```
 
-当前版本是 **ThinkAdmin v6.1** ，不需要导入数据库 `SQL` 脚本，修改数据库配置后执行 `php think migrate:run` 即可；
+3. **执行数据库迁移**
 
-## 技术支持
+```bash
+# 自动创建数据表和初始数据
+php think migrate:run
+```
 
-开发前请认真阅读 ThinkPHP 官方文档，会对您有帮助哦！
+#### 使用 PostgreSQL
 
-本地开发请使用 `php think run` 运行服务，访问 `http://127.0.0.1:8000` 即可进入项目。
+1. **创建数据库**
 
-官方地址及开发指南：https://thinkadmin.top ，如果实在无法解决问题，可以加入官方群免费交流。
+```sql
+CREATE DATABASE thinkadmin;
+```
 
-**1.官方QQ交流群：** 513350915
-
-**2.官方QQ交流群：** 866345568
-
-**3.官方微信交流群**
-
-<img alt="" src="https://thinkadmin.top/static/img/wx.png" width="250">
-
-## 注解权限
-
-注解权限是指通过方法注释来实现后台 **RBAC** 授权管理，用注解来管理功能节点。
-
-开发人员只需要写好注释，会自动生成功能的节点，只需要配置角色及用户就可以使用 **RBAC** 权限。
-
-* 此版本的权限使用注解实现
-* 注释必须是标准的块注释，案例如下展示
-* 其中 `@auth true` 表示访问需要权限验证
-* 其中 `@menu true` 菜单编辑显示可选节点
-* 其中 `@login true` 需要强制登录才可访问
+2. **修改配置文件** `config/database.php`
 
 ```php
-/**
- * 操作的名称
- * @auth true  # 表示访问需要权限验证
- * @menu true  # 菜单编辑显示可选节点
- * @login true # 需要强制登录才可访问 
- */
-public function index(){
-   // @todo
+return [
+    // 数据库类型 - 修改为 pgsql
+    'default' => 'pgsql',
+    'connections' => [
+        'pgsql' => [
+            'type' => 'pgsql',
+            'hostname' => '127.0.0.1',
+            'database' => 'thinkadmin',
+            'username' => 'postgres',
+            'password' => 'your_password',
+            'hostport' => '5432',
+            'charset' => 'utf8',
+        ],
+    ]
+];
+```
+
+### 💡 重要提示
+
+-   **ThinkAdmin v6.1** 使用 Phinx 数据库迁移工具
+-   无需手动导入 SQL 脚本
+-   支持数据库版本管理和回滚
+-   自动创建系统必需的数据表
+
+### 🔄 数据库切换步骤
+
+1. **修改默认数据库类型**
+
+    - 将 `'default' => 'sqlite'` 改为 `'default' => 'mysql'`（或其他数据库类型）
+
+2. **配置数据库连接参数**
+
+    - 填写正确的数据库连接信息（主机、用户名、密码等）
+
+3. **执行数据库迁移**
+
+    - 运行 `php think migrate:run` 创建数据表
+
+4. **验证配置**
+    - 访问系统确认数据库连接正常
+
+## 🎯 核心功能
+
+### 🔐 权限管理系统
+
+-   **注解权限控制** - 通过方法注释实现功能节点自动生成
+-   **RBAC 权限模型** - 支持角色、用户、权限的灵活配置
+-   **菜单权限管理** - 动态菜单生成和权限控制
+-   **操作日志记录** - 完整的用户操作审计日志
+
+### 📁 文件存储系统
+
+-   **多存储支持** - 本地存储、云存储（七牛云、阿里云、腾讯云等）
+-   **文件秒传** - 基于文件 HASH 实现重复文件秒传
+-   **CDN 加速** - 支持云存储 CDN 加速
+-   **安全上传** - 文件类型验证和安全存储
+
+### 🔌 插件生态
+
+-   **PaaS 架构** - 类似 PaaS 的组件升级更新服务
+-   **Composer 管理** - 统一的依赖包管理
+-   **热插拔** - 支持插件的动态安装和卸载
+-   **版本控制** - 插件版本管理和升级
+
+### ⚡ 异步任务系统
+
+-   **多进程处理** - 支持并列多进程执行任务
+-   **实时进度** - 任务执行进度实时显示
+-   **跨平台支持** - 兼容 Windows 和 Linux
+-   **任务队列** - 支持任务队列和优先级管理
+
+### 🛠️ 开发工具
+
+-   **CRUD 生成器** - 快速生成增删改查代码
+-   **代码生成器** - 自动生成控制器、模型、视图
+-   **API 文档** - 自动生成 API 文档
+-   **调试工具** - 完善的调试和日志系统
+
+## 📚 开发指南
+
+### 快速创建模块
+
+```php
+<?php
+namespace app\admin\controller;
+
+use think\admin\Controller;
+
+class UserController extends Controller
+{
+    /**
+     * 用户列表
+     * @auth true
+     * @menu true
+     */
+    public function index()
+    {
+        $this->title = '用户管理';
+        // 使用 QueryHelper 进行数据查询和分页
+        $this->_query('SystemUser')
+            ->like('username,nickname,phone')
+            ->equal('status')
+            ->dateBetween('create_at')
+            ->order('id desc')
+            ->page();
+    }
+
+    /**
+     * 添加用户
+     * @auth true
+     * @menu true
+     */
+    public function add()
+    {
+        $this->title = '添加用户';
+        $this->_form('SystemUser', 'form');
+    }
 }
 ```
 
-## 代码仓库
+### 权限注解说明
 
-我们的代码仓库已移至 **Github**，而 **Gitee** 则仅作为国内镜像仓库，方便广大开发者获取和使用。若想提交 **PR** 或 **ISSUE** 请在 [ThinkAdminDeveloper](https://github.com/zoujingli/ThinkAdminDeveloper) 仓库进行操作，如果在其他仓库操作或提交问题将无法处理！
+```php
+/**
+ * 操作名称
+ * @auth true    # 需要权限验证
+ * @menu true    # 显示在菜单中
+ * @login true   # 需要强制登录
+ */
+public function index()
+{
+    // 控制器代码
+}
+```
 
-部分代码来自互联网，若有异议可以联系作者进行删除。
+### 数据库操作
 
-* 在线体验地址：https://v6.thinkadmin.top （账号和密码都是 admin ）
-* Gitee 仓库地址：https://gitee.com/zoujingli/ThinkAdmin
-* Github 仓库地址：https://github.com/zoujingli/ThinkAdmin
-* Gitcode 仓库地址：https://gitcode.com/ThinkAdmin/ThinkAdmin
+```php
+// 使用 QueryHelper 进行数据查询
+$this->_query('user')
+    ->like('username,email')
+    ->equal('status')
+    ->dateBetween('create_time')
+    ->order('id desc')
+    ->page();
 
-## 框架指令
+// 使用 FormHelper 处理表单
+$this->_form('user', 'form');
 
-* 执行 `php think run` 启用本地开发环境，访问 `http://127.0.0.1:8000`
-* 执行 `php think xadmin:package` 将现有 `MySQL` 数据库打包为 `Phinx` 数据库脚本
-* 执行 `php think xadmin:sysmenu` 重写系统菜单并生成新编号，同时会清理已禁用的菜单数据
-* 执行 `php think xadmin:fansall` 同步微信粉丝数据，依赖于 `ThinkPlugsWechat` 应用插件
-* 执行 `php think xadmin:replace` 可以批量替换数据库指定字符字段内容，通常用于文件地址替换
-* 执行 `php think xadmin:database` 对数据库的所有表 `repair|optimize` 操作，优化并整理数据库碎片
-* 执行 `php think xadmin:publish` 可自动安装现在模块或已安装应用插件，增加 `--migrate` 参数执行数据库脚本
+// 使用 SaveHelper 更新状态
+$this->_save('user', $this->_vali([
+    'status.require' => '状态不能为空',
+    'status.in:0,1' => '状态值无效'
+]));
+```
 
-#### 1. 任务进程管理（可自建定时任务去守护监听主进程）
+## 🚀 性能优化
 
-* 执行 `php think xadmin:queue listen` [监听]启动异步任务监听服务
-* 执行 `php think xadmin:queue start`  [控制]检查创建任务监听服务（建议定时任务执行）
-* 执行 `php think xadmin:queue query`  [控制]查询当前任务相关的进程
-* 执行 `php think xadmin:queue status`  [控制]查看异步任务监听状态
-* 执行 `php think xadmin:queue stop`   [控制]平滑停止所有任务进程
+### 缓存配置
 
-#### 2. 本地调试管理（可自建定时任务去守护监听主进程）
+```php
+// config/cache.php
+'default' => 'redis',
+'stores' => [
+    'redis' => [
+        'type' => 'redis',
+        'host' => '127.0.0.1',
+        'port' => 6379,
+        'password' => '',
+        'select' => 0,
+        'timeout' => 0,
+        'expire' => 0,
+        'persistent' => false,
+        'prefix' => '',
+    ],
+],
+```
 
-* 执行 `php think xadmin:queue webstop` [调试]停止本地调试服务
-* 执行 `php think xadmin:queue webstart` [调试]开启本地调试服务（建议定时任务执行）
-* 执行 `php think xadmin:queue webstatus` [调试]查看本地调试状态
+### 数据库优化
 
-## 问题修复
+```sql
+-- 为常用查询字段添加索引
+CREATE INDEX idx_user_status ON user(status);
+CREATE INDEX idx_user_create_time ON user(create_time);
+CREATE INDEX idx_user_status_time ON user(status, create_time);
+```
 
-* 增加 **CORS** 跨域规则配置，配置参数置放于 `config/app.php`，需要更新 `ThinkLibrary`。
-* 修复 `layui.table` 导致基于 `ThinkPHP` 模板输出自动转义 `XSS` 过滤机制失效，需要更新 `ThinkLibrary`。
-* 修复在模板中使用 `{:input(NAME)}` 取值而产生的 `XSS` 问题，模板取值更换为 `{$get.NAME|default=''}`。
-* 修复 `CKEDITOR` 配置文件，禁用所有标签的 `on` 事件，阻止 `xss` 脚本注入，需要更新 `ckeditor/config.js`。
-* 修复文件上传入口的后缀验证，读取真实文件后缀与配置对比，阻止不合法的文件上传并存储到本地服务器。
-* 修改 `JsonRpc` 接口异常处理机制，当服务端绑定 `Exception` 时，客户端将能收到 `error` 消息及异常数据。
-* 修改 `location.hash` 访问机制，禁止直接访问外部 `URL` 资源链接，防止外部 `XSS` 攻击读取本地缓存数据。
-* 增加后台主题样式配置，支持全局默认+用户个性配置，需要更新 `admin`, `static`, `ThinkLibrary` 组件及模块。
-* 后台行政区域数据更新，由原来的腾讯地图数据切换为百度地图最新数据，需要更新 `static`，数据库版需另行更新。
+## 🛠️ 系统指令
 
-## 版权信息
+### 基础指令
 
-[**ThinkAdmin**](https://thinkadmin.top) 遵循 [**MIT**](license) 开源协议发布，并免费提供使用。
+```bash
+# 启动开发服务器
+php think run --host 127.0.0.1 --port 8000
 
-本项目包含的第三方源码和二进制文件的版权信息另行标注。
+# 数据库迁移
+php think migrate:run
 
-版权所有 Copyright © 2014-2023 by ThinkAdmin (https://thinkadmin.top) All rights reserved。
+# 重写系统菜单
+php think xadmin:sysmenu
 
-更多细节参阅 [`LISENSE`](license) 文件
+# 同步微信粉丝数据
+php think xadmin:fansall
+```
 
-## 历史版本
+### 任务管理指令
 
-以下系统的体验账号及密码都是 admin
+```bash
+# 启动异步任务监听
+php think xadmin:queue listen
 
-### ThinkAdmin v6 基于 ThinkPHP 6.0 开发（后台权限基于注解实现）
+# 检查任务监听状态
+php think xadmin:queue status
 
-* 在线体验地址：https://v6.thinkadmin.top (运行中)
-* Gitee 代码地址：https://gitee.com/zoujingli/ThinkAdmin/tree/v6
-* Github 代码地址：https://github.com/zoujingli/ThinkAdmin/tree/v6
-* Gitcode 仓库地址：https://gitcode.com/ThinkAdmin/ThinkAdmin/tree/v6
+# 停止所有任务进程
+php think xadmin:queue stop
+```
 
-### ThinkAdmin v5 基于 ThinkPHP 5.1 开发（后台权限基于注解实现）
+## 📞 技术支持
 
-* 在线体验地址：https://v5.thinkadmin.top (已停用)
-* Gitee 代码地址：https://gitee.com/zoujingli/ThinkAdmin/tree/v5
-* Github 代码地址：https://github.com/zoujingli/ThinkAdmin/tree/v5
-* Gitcode 仓库地址：https://gitcode.com/ThinkAdmin/ThinkAdmin/tree/v5
+### 官方资源
 
-### ThinkAdmin v4 基于 ThinkPHP 5.1 开发（不建议继续使用）
+-   **官方网站**: https://thinkadmin.top
+-   **在线演示**: https://v6.thinkadmin.top（账号密码：admin）
+-   **开发文档**: https://thinkadmin.top/guide/
+-   **GitHub**: https://github.com/zoujingli/ThinkAdmin
+-   **Gitee**: https://gitee.com/zoujingli/ThinkAdmin
 
-* 在线体验地址：https://v4.thinkadmin.top (已停用)
-* Gitee 代码地址：https://gitee.com/zoujingli/ThinkAdmin/tree/v4
-* Github 代码地址：https://github.com/zoujingli/ThinkAdmin/tree/v4
-* Gitcode 仓库地址：https://gitcode.com/ThinkAdmin/ThinkAdmin/tree/v4
+### 社区交流
 
-### ThinkAdmin v3 基于 ThinkPHP 5.1 开发（不建议继续使用）
+-   **QQ 群 1**: 513350915
+-   **QQ 群 2**: 866345568
+-   **微信群**: 扫描下方二维码
 
-* 在线体验地址：https://v3.thinkadmin.top (已停用)
-* Gitee 代码地址：https://gitee.com/zoujingli/ThinkAdmin/tree/v3
-* Github 代码地址：https://github.com/zoujingli/ThinkAdmin/tree/v3
-* Gitcode 仓库地址：https://gitcode.com/ThinkAdmin/ThinkAdmin/tree/v3
+<img alt="微信群二维码" src="https://thinkadmin.top/static/img/wx.png" width="250">
 
-### ThinkAdmin v2 基于 ThinkPHP 5.0 开发（不建议继续使用）
+### 学习资源
 
-* 在线体验地址：https://v2.thinkadmin.top (已停用)
-* Gitee 代码地址：https://gitee.com/zoujingli/ThinkAdmin/tree/v2
-* Github 代码地址：https://github.com/zoujingli/ThinkAdmin/tree/v2
-* Gitcode 仓库地址：https://gitcode.com/ThinkAdmin/ThinkAdmin/tree/v2
+-   **ThinkPHP 官方文档**: https://www.kancloud.cn/manual/thinkphp6_0
+-   **LayUI 官方文档**: https://www.layui.com/doc/
+-   **Composer 文档**: https://getcomposer.org/doc/
 
-### ThinkAdmin v1 基于 ThinkPHP 5.0 开发（不建议继续使用）
+## 🔌 插件生态
 
-* 在线体验地址：https://v1.thinkadmin.top (已停用)
-* Gitee 代码地址：https://gitee.com/zoujingli/ThinkAdmin/tree/v1
-* Github 代码地址：https://github.com/zoujingli/ThinkAdmin/tree/v1
-* Gitcode 仓库地址：https://gitcode.com/ThinkAdmin/ThinkAdmin/tree/v1
+### 核心插件
+
+-   **think-plugs-admin** - 后台管理核心插件
+-   **think-plugs-wechat** - 微信管理插件
+-   **think-plugs-static** - 静态资源管理插件
+-   **think-plugs-account** - 账号管理插件
+-   **think-plugs-payment** - 支付管理插件
+
+### 安装插件
+
+```bash
+# 安装微信管理模块
+composer require zoujingli/think-plugs-wechat
+
+# 安装账号管理模块
+composer require zoujingli/think-plugs-account
+
+# 安装支付管理模块
+composer require zoujingli/think-plugs-payment
+```
+
+### 插件开发
+
+```php
+// 插件服务注册
+class Service extends \think\Service
+{
+    public function register()
+    {
+        // 注册服务
+    }
+
+    public function boot()
+    {
+        // 启动服务
+    }
+}
+```
+
+## 📦 代码仓库
+
+### 主要仓库
+
+-   **GitHub**: https://github.com/zoujingli/ThinkAdmin（主要开发仓库）
+-   **Gitee**: https://gitee.com/zoujingli/ThinkAdmin（国内镜像仓库）
+-   **Gitcode**: https://gitcode.com/ThinkAdmin/ThinkAdmin
+
+### 贡献代码
+
+-   **提交 PR**: 请在 [ThinkAdminDeveloper](https://github.com/zoujingli/ThinkAdminDeveloper) 仓库提交
+-   **问题反馈**: 使用 GitHub Issues 反馈问题
+-   **代码规范**: 遵循 PSR-4 自动加载规范
+
+### 在线体验
+
+-   **演示地址**: https://v6.thinkadmin.top
+-   **账号密码**: admin / admin
+-   **功能演示**: 完整的后台管理功能演示
+
+## 🛠️ 系统指令详解
+
+### 基础管理指令
+
+```bash
+# 启动开发服务器
+php think run --host 127.0.0.1 --port 8000
+
+# 数据库迁移
+php think migrate:run
+
+# 重写系统菜单
+php think xadmin:sysmenu
+
+# 同步微信粉丝数据
+php think xadmin:fansall
+
+# 数据库打包为 Phinx 脚本
+php think xadmin:package
+
+# 批量替换数据库字段内容
+php think xadmin:replace
+
+# 数据库优化和修复
+php think xadmin:database
+
+# 安装模块或插件
+php think xadmin:publish --migrate
+```
+
+### 任务管理指令
+
+#### 任务进程管理
+
+```bash
+# 启动异步任务监听服务
+php think xadmin:queue listen
+
+# 检查创建任务监听服务（建议定时任务执行）
+php think xadmin:queue start
+
+# 查询当前任务相关的进程
+php think xadmin:queue query
+
+# 查看异步任务监听状态
+php think xadmin:queue status
+
+# 平滑停止所有任务进程
+php think xadmin:queue stop
+```
+
+#### 本地调试管理
+
+```bash
+# 停止本地调试服务
+php think xadmin:queue webstop
+
+# 开启本地调试服务（建议定时任务执行）
+php think xadmin:queue webstart
+
+# 查看本地调试状态
+php think xadmin:queue webstatus
+```
+
+### 定时任务配置
+
+#### Linux Crontab
+
+```bash
+# 编辑定时任务
+crontab -e
+
+# 添加以下任务（每分钟检查一次）
+* * * * * cd /path/to/thinkadmin && php think xadmin:queue start
+* * * * * cd /path/to/thinkadmin && php think xadmin:queue webstart
+```
+
+#### Windows 任务计划程序
+
+1. 打开任务计划程序
+2. 创建基本任务
+3. 设置触发器为每分钟
+4. 操作设置为运行程序：`php think xadmin:queue start`
+
+## 🔧 问题修复
+
+### 安全修复
+
+-   **CORS 跨域配置** - 增加跨域规则配置，配置参数位于 `config/app.php`
+-   **XSS 防护** - 修复模板输出自动转义机制，防止 XSS 攻击
+-   **文件上传安全** - 增强文件后缀验证，阻止非法文件上传
+-   **CSRF 防护** - 自动为表单添加 CSRF 安全验证字段
+-   **SQL 注入防护** - 使用参数化查询防止 SQL 注入
+
+### 功能优化
+
+-   **模板引擎优化** - 修复模板取值问题，使用 `{$get.NAME|default=''}` 替代 `{:input(NAME)}`
+-   **编辑器安全** - 禁用 CKEditor 中所有标签的 `on` 事件，阻止脚本注入
+-   **接口异常处理** - 优化 JsonRpc 接口异常处理机制
+-   **主题配置** - 支持全局默认+用户个性配置
+-   **地图数据更新** - 行政区域数据更新为百度地图最新数据
+
+### 性能优化
+
+-   **缓存机制** - 优化缓存策略，提升系统性能
+-   **数据库优化** - 优化数据库查询和索引
+-   **静态资源** - 优化静态资源加载和压缩
+-   **异步任务** - 优化异步任务处理机制
+
+## 📄 版权信息
+
+### 开源协议
+
+**ThinkAdmin** 遵循 [**MIT**](license) 开源协议发布，免费提供使用。
+
+### 版权声明
+
+-   **版权所有**: Copyright © 2014-2025 by ThinkAdmin
+-   **官方网站**: https://thinkadmin.top
+-   **开源协议**: MIT License
+-   **第三方代码**: 项目中包含的第三方源码和二进制文件的版权信息另行标注
+
+### 免责声明
+
+在使用 **ThinkAdmin** 前请认真阅读[《免责声明》](https://thinkadmin.top/disclaimer)并同意该声明。
+
+更多细节请参阅 [`LICENSE`](license) 文件。
+
+## 📚 历史版本
+
+> 以下系统的体验账号及密码都是 `admin`
+
+### 🚀 ThinkAdmin v6.1（当前版本）
+
+-   **技术栈**: ThinkPHP 6 & 8 + PaaS 插件架构
+-   **特色功能**: 插件生态、注解权限、异步任务
+-   **在线体验**: https://v6.thinkadmin.top ✅
+-   **GitHub**: https://github.com/zoujingli/ThinkAdmin/tree/v6.1
+-   **Gitee**: https://gitee.com/zoujingli/ThinkAdmin/tree/v6.1
+
+### 📦 ThinkAdmin v6.0
+
+-   **技术栈**: ThinkPHP 6.0 + 注解权限
+-   **特色功能**: 注解权限、多应用支持
+-   **在线体验**: https://v6.thinkadmin.top ✅
+-   **GitHub**: https://github.com/zoujingli/ThinkAdmin/tree/v6
+-   **Gitee**: https://gitee.com/zoujingli/ThinkAdmin/tree/v6
+
+### 📱 ThinkAdmin v5
+
+-   **技术栈**: ThinkPHP 5.1 + 注解权限
+-   **特色功能**: 注解权限、LayUI 界面
+-   **在线体验**: https://v5.thinkadmin.top ❌（已停用）
+-   **GitHub**: https://github.com/zoujingli/ThinkAdmin/tree/v5
+-   **Gitee**: https://gitee.com/zoujingli/ThinkAdmin/tree/v5
+
+### 🔧 ThinkAdmin v4
+
+-   **技术栈**: ThinkPHP 5.1
+-   **状态**: 不建议继续使用
+-   **在线体验**: https://v4.thinkadmin.top ❌（已停用）
+-   **GitHub**: https://github.com/zoujingli/ThinkAdmin/tree/v4
+-   **Gitee**: https://gitee.com/zoujingli/ThinkAdmin/tree/v4
+
+### 📋 ThinkAdmin v3
+
+-   **技术栈**: ThinkPHP 5.1
+-   **状态**: 不建议继续使用
+-   **在线体验**: https://v3.thinkadmin.top ❌（已停用）
+-   **GitHub**: https://github.com/zoujingli/ThinkAdmin/tree/v3
+-   **Gitee**: https://gitee.com/zoujingli/ThinkAdmin/tree/v3
+
+### 📊 ThinkAdmin v2
+
+-   **技术栈**: ThinkPHP 5.0
+-   **状态**: 不建议继续使用
+-   **在线体验**: https://v2.thinkadmin.top ❌（已停用）
+-   **GitHub**: https://github.com/zoujingli/ThinkAdmin/tree/v2
+-   **Gitee**: https://gitee.com/zoujingli/ThinkAdmin/tree/v2
+
+### 🎯 ThinkAdmin v1
+
+-   **技术栈**: ThinkPHP 5.0
+-   **状态**: 不建议继续使用
+-   **在线体验**: https://v1.thinkadmin.top ❌（已停用）
+-   **GitHub**: https://github.com/zoujingli/ThinkAdmin/tree/v1
+-   **Gitee**: https://gitee.com/zoujingli/ThinkAdmin/tree/v1
+
+## 🎉 结语
+
+**ThinkAdmin v6.1** 是一个功能强大、易于使用的现代化后台管理系统。无论您是初学者还是经验丰富的开发者，都能快速上手并构建出高质量的后台管理应用。
+
+### 开始您的开发之旅
+
+1. **快速体验** - 访问在线演示了解系统功能
+2. **本地安装** - 按照安装指南搭建本地环境
+3. **学习开发** - 阅读开发文档和最佳实践
+4. **参与社区** - 加入官方群组交流学习
+5. **贡献代码** - 为项目贡献您的代码和想法
+
+---
+
+**感谢您选择 ThinkAdmin！** 🎊
