@@ -8,7 +8,7 @@
 [![PHP Version](https://img.shields.io/badge/php-%3E%3D7.1-blue.svg)](https://www.php.net/)
 [![ThinkPHP](https://img.shields.io/badge/ThinkPHP-6%20%7C%208-brightgreen.svg)](https://www.thinkphp.cn/)
 
-基于 **ThinkPHP 6 & 8** 的现代化后台管理系统，采用 **PaaS 插件架构**，提供完整的后台管理解决方案。系统遵循 **MIT** 开源协议，专为快速开发而设计，深度定制 Composer 插件，实现专属 PaaS 插件生态管理架构，可将应用模块封装成独立插件包。
+基于 **ThinkPHP 6 & 8** 的现代化后台管理系统，采用 **Composer 插件定制**，提供完整的后台管理解决方案。系统遵循 **MIT** 开源协议，专为快速开发而设计，深度定制 Composer 插件，实现专属插件生态管理架构，可将应用模块封装成独立插件包。
 
 ## 项目简介
 
@@ -182,9 +182,9 @@ class MyController extends \think\admin\Controller {
 - **动态菜单** - 根据用户权限动态显示功能菜单，支持三级菜单结构
 - **操作日志** - 完整记录用户操作行为，支持安全审计
 
-### 🔧 可升级 PaaS 插件微架构
+### 🔧 可升级 Composer 插件微架构
 
-深度定制 Composer 插件，实现专属 PaaS 插件生态管理架构，可将应用模块封装成独立插件包。系统强制要求使用插件架构，所有业务功能都必须通过自定义插件实现。
+深度定制 Composer 插件，实现专属插件生态管理架构，可将应用模块封装成独立插件包。系统强制要求使用插件架构，所有业务功能都必须通过自定义插件实现。
 
 ### ⚡ 独立进程异步执行任务
 
@@ -439,7 +439,7 @@ ThinkAdmin 基于 **ThinkPHP 6 & 8** 框架开发，支持 **PHP 7.1+** 版本�
 
 ## 插件生态
 
-ThinkAdmin 采用 PaaS 插件架构，提供丰富的插件生态：
+ThinkAdmin 采用 Composer 插件定制架构，提供丰富的插件生态：
 
 ### 核心插件
 
