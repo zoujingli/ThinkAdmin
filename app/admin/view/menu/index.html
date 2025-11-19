@@ -108,9 +108,9 @@
     <!-- {else} -->
     {if auth('remove')}
     {{# if( (d.spc<1 || d.status<1)){ }}
-    <a class="layui-btn layui-btn-sm layui-btn-danger" data-confirm="确定要删除菜单吗？" data-action="{:url('remove')}" data-value="id#{{d.sps}}">删 除</a>
+    <a class="layui-btn layui-btn-sm layui-btn-danger" data-confirm="{:lang('确定要删除菜单吗？')}" data-action="{:url('remove')}" data-value="id#{{d.sps}}">{:lang('删 除')}</a>
     {{# }else{ }}
-    <a class="layui-btn layui-btn-disabled layui-btn-sm">删 除</a>
+    <a class="layui-btn layui-btn-disabled layui-btn-sm">{:lang('删 除')}</a>
     {{# } }}
     {/if}
     <!-- {/if} -->

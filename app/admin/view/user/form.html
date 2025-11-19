@@ -2,7 +2,7 @@
     <div class="layui-card-body padding-left-40">
 
         <fieldset class="layui-bg-gray">
-            <legend><b class="layui-badge think-bg-violet">用户账号</b></legend>
+            <legend><b class="layui-badge think-bg-violet">{:lang('用户账号')}</b></legend>
 
             <div class="layui-row layui-col-space15">
                 <div class="layui-col-xs2 text-center padding-top-15">
@@ -11,20 +11,20 @@
                 </div>
                 <div class="layui-col-xs5">
                     <label class="block relative">
-                        <span class="help-label"><b>登录账号</b>User Name</span>
+                        <span class="help-label"><b>{:lang('登录账号')}</b>User Name</span>
                         {if isset($vo) and isset($vo.username)}
                         <input name="username" value='{$vo.username|default=""}' required readonly class="layui-input think-bg-gray">
                         {else}
-                        <input name="username" value='{$vo.username|default=""}' required pattern="^.{4,}$" vali-name="登录账号" placeholder="请输入登录账号" class="layui-input">
+                        <input name="username" value='{$vo.username|default=""}' required pattern="^.{4,}$" vali-name="{:lang('登录账号')}" placeholder="{:lang('请输入登录账号')}" class="layui-input">
                         {/if}
-                        <span class="help-block">登录账号不能少于4位字符，创建后不能再次修改.</span>
+                        <span class="help-block">{:lang('登录账号不能少于4位字符，创建后不能再次修改.')}</span>
                     </label>
                 </div>
                 <div class="layui-col-xs5">
                     <label class="block relative">
-                        <span class="help-label"><b>用户名称</b>Nick Name</span>
-                        <input name="nickname" value='{$vo.nickname|default=""}' required vali-name="用户名称" placeholder="请输入用户名称" class="layui-input">
-                        <span class="help-block">用于区分用户数据的用户名称，请尽量不要重复.</span>
+                        <span class="help-label"><b>{:lang('用户名称')}</b>Nick Name</span>
+                        <input name="nickname" value='{$vo.nickname|default=""}' required vali-name="{:lang('用户名称')}" placeholder="{:lang('请输入用户名称')}" class="layui-input">
+                        <span class="help-block">{:lang('用于区分用户数据的用户名称，请尽量不要重复.')}</span>
                     </label>
                 </div>
             </div>
@@ -33,10 +33,10 @@
 
         {if !empty($bases) || !empty($auths)}
         <fieldset class="layui-bg-gray">
-            <legend><b class="layui-badge think-bg-violet">用户权限</b></legend>
+            <legend><b class="layui-badge think-bg-violet">{:lang('用户权限')}</b></legend>
             {if !empty($bases)}
             <div class="layui-form-item">
-                <div class="help-label"><b>角色身份</b>Role Identity</div>
+                <div class="help-label"><b>{:lang('角色身份')}</b>Role Identity</div>
                 <div class="layui-textarea help-checks">
                     {foreach $bases as $base}
                     <label class="think-checkbox">
@@ -52,10 +52,10 @@
             {/if}
             {if !empty($auths)}
             <div class="layui-form-item">
-                <div class="help-label"><b>访问权限</b>Role Permission</div>
+                <div class="help-label"><b>{:lang('访问权限')}</b>Role Permission</div>
                 <div class="layui-textarea help-checks">
                     {if isset($vo.username) and $vo.username eq $super}
-                    <span class="color-desc padding-left-5">超级用户拥所有访问权限，不需要配置权限。</span>
+                    <span class="color-desc padding-left-5">{:lang('超级用户拥所有访问权限，不需要配置权限。')}</span>
                     {else}{foreach $auths as $authorize}
                     <label class="think-checkbox">
                         {if in_array($authorize.id, $vo.authorize)}
@@ -72,33 +72,33 @@
         {/if}
 
         <fieldset class="layui-bg-gray">
-            <legend><b class="layui-badge think-bg-violet">用户资料</b></legend>
+            <legend><b class="layui-badge think-bg-violet">{:lang('用户资料')}</b></legend>
             <div class="layui-row layui-col-space15">
                 <div class="layui-col-xs4">
                     <label class="relative block">
-                        <span class="help-label"><b>联系邮箱</b>Contact Email</span>
-                        <input name="contact_mail" value='{$vo.contact_mail|default=""}' pattern="email" vali-name="联系邮箱" placeholder="请输入联系电子邮箱" class="layui-input">
-                        <span class="color-desc">可选，请填写用户常用的电子邮箱</span>
+                        <span class="help-label"><b>{:lang('联系邮箱')}</b>Contact Email</span>
+                        <input name="contact_mail" value='{$vo.contact_mail|default=""}' pattern="email" vali-name="{:lang('联系邮箱')}" placeholder="{:lang('请输入联系电子邮箱')}" class="layui-input">
+                        <span class="color-desc">{:lang('可选，请填写用户常用的电子邮箱')}</span>
                     </label>
                 </div>
                 <div class="layui-col-xs4">
                     <label class="relative block">
-                        <span class="help-label"><b>联系手机</b>Contact Mobile</span>
-                        <input type="tel" maxlength="11" name="contact_phone" value='{$vo.contact_phone|default=""}' pattern="phone" vali-name="联系手机" placeholder="请输入用户联系手机" class="layui-input">
-                        <span class="color-desc">可选，请填写用户常用的联系手机号</span>
+                        <span class="help-label"><b>{:lang('联系手机')}</b>Contact Mobile</span>
+                        <input type="tel" maxlength="11" name="contact_phone" value='{$vo.contact_phone|default=""}' pattern="phone" vali-name="{:lang('联系手机')}" placeholder="{:lang('请输入用户联系手机')}" class="layui-input">
+                        <span class="color-desc">{:lang('可选，请填写用户常用的联系手机号')}</span>
                     </label>
                 </div>
                 <div class="layui-col-xs4">
                     <label class="relative block">
-                        <span class="help-label"><b>联系ＱＱ</b>Contact QQ</span>
-                        <input name="contact_qq" maxlength="11" value='{$vo.contact_qq|default=""}' pattern="qq" vali-name="联系ＱＱ" placeholder="请输入常用的联系ＱＱ" class="layui-input">
-                        <span class="color-desc">可选，请填写用户常用的联系ＱＱ号</span>
+                        <span class="help-label"><b>{:lang('联系ＱＱ')}</b>Contact QQ</span>
+                        <input name="contact_qq" maxlength="11" value='{$vo.contact_qq|default=""}' pattern="qq" vali-name="{:lang('联系ＱＱ')}" placeholder="{:lang('请输入常用的联系ＱＱ')}" class="layui-input">
+                        <span class="color-desc">{:lang('可选，请填写用户常用的联系ＱＱ号')}</span>
                     </label>
                 </div>
             </div>
             <label class="layui-form-item block relative margin-top-10">
-                <span class="help-label"><b>用户描述</b>User Remark</span>
-                <textarea placeholder="请输入用户描述" class="layui-textarea" name="describe">{$vo.describe|default=""}</textarea>
+                <span class="help-label"><b>{:lang('用户描述')}</b>User Remark</span>
+                <textarea placeholder="{:lang('请输入用户描述')}" class="layui-textarea" name="describe">{$vo.describe|default=""}</textarea>
             </label>
         </fieldset>
 
@@ -108,7 +108,7 @@
     {notempty name='vo.id'}<input type='hidden' value='{$vo.id}' name='id'>{/notempty}
 
     <div class="layui-form-item text-center">
-        <button class="layui-btn" type='submit'>保存数据</button>
-        <button class="layui-btn layui-btn-danger" type='button' data-confirm="确定要取消编辑吗？" data-close>取消编辑</button>
+        <button class="layui-btn" type='submit'>{:lang('保存数据')}</button>
+        <button class="layui-btn layui-btn-danger" type='button' data-confirm="{:lang('确定要取消编辑吗？')}" data-close>{:lang('取消编辑')}</button>
     </div>
 </form>

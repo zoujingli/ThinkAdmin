@@ -2,11 +2,11 @@
 
 {block name="button"}
 <!--{if auth("add")}-->
-<button data-table-id="BaseTable" data-modal='{:url("add")}?type={$type|default=""}' class='layui-btn layui-btn-sm layui-btn-primary'>添加数据</button>
+<button data-table-id="BaseTable" data-modal='{:url("add")}?type={$type|default=""}' class='layui-btn layui-btn-sm layui-btn-primary'>{:lang('添加数据')}</button>
 <!--{/if}-->
 
 <!--{if auth("remove")}-->
-<button data-table-id="BaseTable" data-action='{:url("remove")}' data-rule="id#{id}" data-confirm="确定要批量删除数据吗？" class='layui-btn layui-btn-sm layui-btn-primary'>批量删除</button>
+<button data-table-id="BaseTable" data-action='{:url("remove")}' data-rule="id#{id}" data-confirm="{:lang('确定要批量删除数据吗？')}" class='layui-btn layui-btn-sm layui-btn-primary'>{:lang('批量删除')}</button>
 <!--{/if}-->
 {/block}
 
@@ -38,11 +38,11 @@
                 {checkbox: true, fixed: true},
                 {field: 'sort', title: '{:lang("排序权重")}', width: 100, align: 'center', sort: true, templet: '#SortInputTpl'},
                 // {field: 'type', title: '数据类型', minWidth: 140, align: 'center'},
-                {field: 'code', title: '数据编码', width: '20%', align: 'left'},
-                {field: 'name', title: '数据名称', width: '30%', align: 'left'},
-                {field: 'status', title: '数据状态', minWidth: 110, align: 'center', templet: '#StatusSwitchTpl'},
-                {field: 'create_at', title: '创建时间', minWidth: 170, align: 'center', sort: true},
-                {toolbar: '#toolbar', align: 'center', minWidth: 150, title: '数据操作', fixed: 'right'},
+                {field: 'code', title: '{:lang("数据编码")}', width: '20%', align: 'left'},
+                {field: 'name', title: '{:lang("数据名称")}', width: '30%', align: 'left'},
+                {field: 'status', title: '{:lang("数据状态")}', minWidth: 110, align: 'center', templet: '#StatusSwitchTpl'},
+                {field: 'create_at', title: '{:lang("创建时间")}', minWidth: 170, align: 'center', sort: true},
+                {toolbar: '#toolbar', align: 'center', minWidth: 150, title: '{:lang("数据操作")}', fixed: 'right'},
             ]]
         });
 
@@ -67,20 +67,20 @@
 <!-- 数据状态切换模板 -->
 <script type="text/html" id="StatusSwitchTpl">
     <!--{if auth("state")}-->
-    <input type="checkbox" value="{{d.id}}" lay-skin="switch" lay-text="已激活|已禁用" lay-filter="StatusSwitch" {{-d.status>0?'checked':''}}>
+    <input type="checkbox" value="{{d.id}}" lay-skin="switch" lay-text="{:lang('已激活')}|{:lang('已禁用')}" lay-filter="StatusSwitch" {{-d.status>0?'checked':''}}>
     <!--{else}-->
-    {{-d.status ? '<b class="color-green">已启用</b>' : '<b class="color-red">已禁用</b>'}}
+    {{-d.status ? '<b class="color-green">{:lang("已启用")}</b>' : '<b class="color-red">{:lang("已禁用")}</b>'}}
     <!--{/if}-->
 </script>
 
 <!-- 数据操作工具条模板 -->
 <script type="text/html" id="toolbar">
     <!--{if auth('edit')}-->
-    <a class="layui-btn layui-btn-primary layui-btn-sm" data-event-dbclick data-title="编辑数据" data-modal='{:url("edit")}?id={{d.id}}'>编 辑</a>
+    <a class="layui-btn layui-btn-primary layui-btn-sm" data-event-dbclick data-title="{:lang('编辑数据')}" data-modal='{:url("edit")}?id={{d.id}}'>{:lang('编 辑')}</a>
     <!--{/if}-->
 
     <!--{if auth("remove")}-->
-    <a class="layui-btn layui-btn-danger layui-btn-sm" data-confirm="确定要删除数据吗?" data-action="{:url('remove')}" data-value="id#{{d.id}}">删 除</a>
+    <a class="layui-btn layui-btn-danger layui-btn-sm" data-confirm="{:lang('确定要删除数据吗?')}" data-action="{:url('remove')}" data-value="id#{{d.id}}">{:lang('删 除')}</a>
     <!--{/if}-->
 </script>
 {/block}

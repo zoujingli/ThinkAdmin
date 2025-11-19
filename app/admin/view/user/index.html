@@ -6,14 +6,14 @@
 <button data-modal='{:url("add")}' data-title="{:lang('添加用户')}" class='layui-btn layui-btn-sm layui-btn-primary'>{:lang('添加用户')}</button>
 <!--{/if}-->
 <!--{if auth("state")}-->
-<a data-confirm="确定要禁用这些用户吗？" data-table-id="UserTable" data-action="{:url('state')}" data-rule="id#{id};status#0" class='layui-btn layui-btn-sm layui-btn-primary'>{:lang('批量禁用')}</a>
+<a data-confirm="{:lang('确定要禁用这些用户吗？')}" data-table-id="UserTable" data-action="{:url('state')}" data-rule="id#{id};status#0" class='layui-btn layui-btn-sm layui-btn-primary'>{:lang('批量禁用')}</a>
 <!--{/if}-->
 {else}
 <!--{if auth("state")}-->
-<a data-confirm="确定要恢复这些账号吗？" data-table-id="UserTable" data-action="{:url('state')}" data-rule="id#{id};status#1" class='layui-btn layui-btn-sm layui-btn-primary'>{:lang('批量恢复')}</a>
+<a data-confirm="{:lang('确定要恢复这些账号吗？')}" data-table-id="UserTable" data-action="{:url('state')}" data-rule="id#{id};status#1" class='layui-btn layui-btn-sm layui-btn-primary'>{:lang('批量恢复')}</a>
 <!--{/if}-->
 <!--{if auth("remove")}-->
-<a data-confirm="确定永久删除这些账号吗？" data-table-id="UserTable" data-action='{:url("remove")}' data-rule="id#{id}" class='layui-btn layui-btn-sm layui-btn-primary'>{:lang('批量删除')}</a>
+<a data-confirm="{:lang('确定永久删除这些账号吗？')}" data-table-id="UserTable" data-action='{:url("remove")}' data-rule="id#{id}" class='layui-btn layui-btn-sm layui-btn-primary'>{:lang('批量删除')}</a>
 <!--{/if}-->
 {/if}
 {/block}

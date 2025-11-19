@@ -12,25 +12,25 @@
                     <option value='{$menu.id}'>{$menu.spl|raw}{$menu.title}</option>
                     {/eq}{/foreach}
                 </select>
-                <p class="help-block"><b>必选</b>，请选择上级菜单或顶级菜单 ( 目前最多支持三级菜单 )</p>
+                <p class="help-block"><b>{:lang('必选')}</b>，{:lang('请选择上级菜单或顶级菜单 ( 目前最多支持三级菜单 )')}</p>
             </div>
         </div>
 
         <div class="layui-form-item">
             <label class="layui-form-label">{:lang('菜单名称')}</label>
             <div class="layui-input-block">
-                <input name="title" value='{$vo.title|default=""}' required vali-name="菜单名称" placeholder="请输入菜单名称" class="layui-input">
-                <p class="help-block"><b>必选</b>，请填写菜单名称 ( 如：系统管理 )，建议字符不要太长，一般 4-6 个汉字</p>
+                <input name="title" value='{$vo.title|default=""}' required vali-name="{:lang('菜单名称')}" placeholder="{:lang('请输入菜单名称')}" class="layui-input">
+                <p class="help-block"><b>{:lang('必选')}</b>，{:lang('请填写菜单名称 ( 如：系统管理 )，建议字符不要太长，一般 4-6 个汉字')}</p>
             </div>
         </div>
 
         <div class="layui-form-item">
             <label class="layui-form-label">{:lang('菜单链接')}</label>
             <div class="layui-input-block">
-                <input onblur="this.value=this.value === ''?'#':this.value" name="url" required vali-name="菜单链接" placeholder="请输入菜单链接" value="{$vo.url|default='#'}" class="layui-input">
+                <input onblur="this.value=this.value === ''?'#':this.value" name="url" required vali-name="{:lang('菜单链接')}" placeholder="{:lang('请输入菜单链接')}" value="{$vo.url|default='#'}" class="layui-input">
                 <p class="help-block">
-                    <b>必选</b>，请填写链接地址或选择系统节点 ( 如：https://domain.com/admin/user/index.html 或 admin/user/index )
-                    <br>当填写链接地址时，以下面的 “权限节点” 来判断菜单自动隐藏或显示，注意未填写 “权限节点” 时将不会隐藏该菜单哦
+                    <b>{:lang('必选')}</b>，{:lang('请填写链接地址或选择系统节点 ( 如：https://domain.com/admin/user/index.html 或 admin/user/index )')}
+                    <br>{:lang('当填写链接地址时，以下面的 "权限节点" 来判断菜单自动隐藏或显示，注意未填写 "权限节点" 时将不会隐藏该菜单哦')}
                 </p>
             </div>
         </div>
@@ -38,16 +38,16 @@
         <div class="layui-form-item">
             <label class="layui-form-label">{:lang('链接参数')}</label>
             <div class="layui-input-block">
-                <input name="params" placeholder="请输入链接参数" value="{$vo.params|default=''}" class="layui-input">
-                <p class="help-block"><b>可选</b>，设置菜单链接的 GET 访问参数 ( 如：name=1&age=3 )</p>
+                <input name="params" placeholder="{:lang('请输入链接参数')}" value="{$vo.params|default=''}" class="layui-input">
+                <p class="help-block"><b>{:lang('可选')}</b>，{:lang('设置菜单链接的 GET 访问参数 ( 如：name=1&age=3 )')}</p>
             </div>
         </div>
 
         <div class="layui-form-item">
             <label class="layui-form-label">{:lang('权限节点')}</label>
             <div class="layui-input-block">
-                <input name="node" placeholder="请输入权限节点" value="{$vo.node|default=''}" class="layui-input">
-                <p class="help-block"><b>可选</b>，请填写系统权限节点 ( 如：admin/user/index )，未填写时默认解释"菜单链接"判断是否拥有访问权限；</p>
+                <input name="node" placeholder="{:lang('请输入权限节点')}" value="{$vo.node|default=''}" class="layui-input">
+                <p class="help-block"><b>{:lang('可选')}</b>，{:lang('请填写系统权限节点 ( 如：admin/user/index )，未填写时默认解释"菜单链接"判断是否拥有访问权限；')}</p>
             </div>
         </div>
 
@@ -55,13 +55,13 @@
             <label class="layui-form-label">{:lang('菜单图标')}</label>
             <div class="layui-input-block">
                 <div class="layui-input-inline">
-                    <input placeholder="请输入或选择图标" name="icon" value='{$vo.icon|default=""}' class="layui-input">
+                    <input placeholder="{:lang('请输入或选择图标')}" name="icon" value='{$vo.icon|default=""}' class="layui-input">
                 </div>
                 <span style="padding:0 12px;min-width:45px" class='layui-btn layui-btn-primary'>
                     <i style="font-size:1.2em;margin:0;float:none" class='{$vo.icon|default=""}'></i>
                 </span>
                 <button data-icon='icon' type='button' class='layui-btn layui-btn-primary'>{:lang('选择图标')}</button>
-                <p class="help-block"><b>可选</b>，设置菜单选项前置图标，目前支持 layui 字体图标及 iconfont 定制字体图标。</p>
+                <p class="help-block"><b>{:lang('可选')}</b>，{:lang('设置菜单选项前置图标，目前支持 layui 字体图标及 iconfont 定制字体图标。')}</p>
             </div>
         </div>
 

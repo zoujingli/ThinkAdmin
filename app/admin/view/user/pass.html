@@ -3,29 +3,29 @@
 
 
         <label class="layui-form-item relative block">
-            <span class="help-label"><b>登录用户账号</b>Username</span>
+            <span class="help-label"><b>{:lang('登录用户账号')}</b>Username</span>
             <input disabled value='{$vo.username|default=""}' class="layui-input think-bg-gray">
-            <span class="help-block">登录用户账号创建后，不允许再次修改。</span>
+            <span class="help-block">{:lang('登录用户账号创建后，不允许再次修改。')}</span>
         </label>
 
         <!--{if $verify}-->
         <label class="layui-form-item relative block">
-            <span class="help-label"><b>旧的登录密码</b>Old Password</span>
-            <input type="password" autofocus name="oldpassword" value='' pattern="^\S{1,}$" required vali-name="验证密码" placeholder="请输入旧的登录密码" class="layui-input">
-            <span class="color-desc">请输入旧密码来验证修改权限，旧密码不限制格式。</span>
+            <span class="help-label"><b>{:lang('旧的登录密码')}</b>Old Password</span>
+            <input type="password" autofocus name="oldpassword" value='' pattern="^\S{1,}$" required vali-name="{:lang('验证密码')}" placeholder="{:lang('请输入旧的登录密码')}" class="layui-input">
+            <span class="color-desc">{:lang('请输入旧密码来验证修改权限，旧密码不限制格式。')}</span>
         </label>
         <!--{/if}-->
 
         <label class="layui-form-item relative block">
-            <span class="help-label"><b>新的登录密码</b>New Password</span>
-            <input type="password" name="password" maxlength="32" pattern="^(?![\d]+$)(?![a-zA-Z]+$)(?![^\da-zA-Z]+$).{6,32}$" required vali-name="登录密码" placeholder="请输入新的登录密码" class="layui-input">
-            <span class="color-desc">密码必须包含大小写字母、数字、符号的任意两者组合。</span>
+            <span class="help-label"><b>{:lang('新的登录密码')}</b>New Password</span>
+            <input type="password" name="password" maxlength="32" pattern="^(?![\d]+$)(?![a-zA-Z]+$)(?![^\da-zA-Z]+$).{6,32}$" required vali-name="{:lang('登录密码')}" placeholder="{:lang('请输入新的登录密码')}" class="layui-input">
+            <span class="color-desc">{:lang('密码必须包含大小写字母、数字、符号的任意两者组合。')}</span>
         </label>
 
         <label class="layui-form-item relative block">
-            <span class="help-label"><b>重复登录密码</b>Repeat Password</span>
-            <input type="password" name="repassword" maxlength="32" pattern="^(?![\d]+$)(?![a-zA-Z]+$)(?![^\da-zA-Z]+$).{6,32}$" required vali-name="重复密码" placeholder="请重复输入登录密码" class="layui-input">
-            <span class="color-desc">密码必须包含大小写字母、数字、符号的任意两者组合。</span>
+            <span class="help-label"><b>{:lang('重复登录密码')}</b>Repeat Password</span>
+            <input type="password" name="repassword" maxlength="32" pattern="^(?![\d]+$)(?![a-zA-Z]+$)(?![^\da-zA-Z]+$).{6,32}$" required vali-name="{:lang('重复密码')}" placeholder="{:lang('请重复输入登录密码')}" class="layui-input">
+            <span class="color-desc">{:lang('密码必须包含大小写字母、数字、符号的任意两者组合。')}</span>
         </label>
 
     </div>
@@ -34,7 +34,7 @@
     {notempty name='vo.id'}<input type='hidden' value='{$vo.id}' name='id'>{/notempty}
 
     <div class="layui-form-item text-center">
-        <button class="layui-btn" type='submit'>保存数据</button>
-        <button class="layui-btn layui-btn-danger" type='button' data-confirm="确定要取消编辑吗？" data-close>取消编辑</button>
+        <button class="layui-btn" type='submit'>{:lang('保存数据')}</button>
+        <button class="layui-btn layui-btn-danger" type='button' data-confirm="{:lang('确定要取消编辑吗？')}" data-close>{:lang('取消编辑')}</button>
     </div>
 </form>
