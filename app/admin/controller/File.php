@@ -109,8 +109,12 @@ class File extends Controller
     public function distinct()
     {
         $map = ['issafe' => 0, 'uuid' => AdminService::getUserId()];
-        $subQuery = SystemFile::mk()->fieldRaw('MAX(id) AS id')->where($map)->group('type, xkey')->buildSql();
-        SystemFile::mk()->where($map)->whereRaw("id NOT IN ({$subQuery})")->delete();
+        // 使用派生表包装子查询，避免直接引用同一表
+        $keepSubQuery = SystemFile::mk()->fieldRaw('MAX(id) AS id')->where($map)->group('type, xkey')->buildSql();
+        // 使用 whereNotExists 配合派生表子查询删除，避免 1093 错误和 whereIn
+        SystemFile::mk()->where($map)->whereNotExists(function ($query) use ($keepSubQuery) {
+            $query->table("({$keepSubQuery})")->alias('f2')->whereRaw('f2.id = system_file.id');
+        })->delete();
         $this->success('清理重复文件成功！');
     }
 }
