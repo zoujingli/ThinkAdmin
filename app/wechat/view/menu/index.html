@@ -3,7 +3,7 @@
 {block name='content'}
 <div id="MenuEditor" class="layui-hide think-box-shadow" style="width:900px">
     <div class='mobile-preview inline-block'>
-        <div class='mobile-header'>公众号</div>
+        <div class='mobile-header'>{:lang('公众号')}</div>
         <div class='mobile-body'></div>
         <ul class='mobile-footer notselect'>
             <li class="parent-menu" style="{{getItemStyle(list)}}" ng-repeat="one in list">
@@ -30,22 +30,22 @@
     </div>
 
     <div class="absolute inline-block layui-card margin-left-10" style="height:578px;width:570px">
-        <div class="layui-card-header layui-bg-gray text-center">菜单编辑</div>
+        <div class="layui-card-header layui-bg-gray text-center">{:lang('菜单编辑')}</div>
         <div class="layui-card-body" ng-if="list.length<1">
-            <blockquote class="layui-elem-quote border-0 text-center">请在左侧创建菜单...</blockquote>
+            <blockquote class="layui-elem-quote border-0 text-center">{:lang('请在左侧创建菜单...')}</blockquote>
         </div>
         <div class="layui-card-body">
             <form class="layui-form padding-right-40" name="menu" role="form" onsubmit="return false">
                 <div ng-if="list.length>0">
                     <div class="layui-form-item margin-top-20">
-                        <label class="layui-form-label">菜单名称</label>
+                        <label class="layui-form-label">{:lang('菜单名称')}</label>
                         <div class="layui-input-block">
-                            <input required vali-name="菜单名称" ng-model="item.name" class="layui-input" placeholder="请输入菜单名称">
-                            <span class="help-block">字数不超过13个汉字或40个字母</span>
+                            <input required vali-name="{:lang('菜单名称')}" ng-model="item.name" class="layui-input" placeholder="{:lang('请输入菜单名称')}">
+                            <span class="help-block">{:lang('字数不超过13个汉字或40个字母')}</span>
                         </div>
                     </div>
                     <div class="layui-form-item margin-top-20" ng-if="!item.sub_button||item.sub_button.length<1">
-                        <label class="layui-form-label label-required">菜单类型</label>
+                        <label class="layui-form-label label-required">{:lang('菜单类型')}</label>
                         <div class="layui-input-block">
                             {foreach $menuTypes as $key => $type}
                             <label class="think-radio layui-elip">

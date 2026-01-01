@@ -3,18 +3,18 @@
     <form class="layui-form layui-form-pane form-search" action="{:request()->url()}" onsubmit="return false" method="get" autocomplete="off">
 
         <div class="layui-form-item layui-inline">
-            <label class="layui-form-label">微信昵称</label>
+            <label class="layui-form-label">{:lang('微信昵称')}</label>
             <label class="layui-input-inline">
-                <input name="nickname" value="{$get.nickname|default=''}" placeholder="请输入微信昵称" class="layui-input">
+                <input name="nickname" value="{$get.nickname|default=''}" placeholder="{:lang('请输入微信昵称')}" class="layui-input">
             </label>
         </div>
 
         <div class="layui-form-item layui-inline">
-            <label class="layui-form-label">订阅状态</label>
+            <label class="layui-form-label">{:lang('订阅状态')}</label>
             <label class="layui-input-inline">
                 <select class="layui-select" name="subscribe">
-                    <option value=''>-- 全部 --</option>
-                    {foreach ['显示未订阅的粉丝','显示已订阅的粉丝'] as $k=>$v}
+                    <option value=''>-- {:lang('全部')} --</option>
+                    {foreach [lang('显示未订阅的粉丝'),lang('显示已订阅的粉丝')] as $k=>$v}
                     {if isset($get.subscribe) and $get.subscribe eq $k.""}
                     <option selected value="{$k}">{$v}</option>
                     {else}
@@ -25,11 +25,11 @@
         </div>
 
         <div class="layui-form-item layui-inline">
-            <label class="layui-form-label">拉黑状态</label>
+            <label class="layui-form-label">{:lang('拉黑状态')}</label>
             <label class="layui-input-inline">
                 <select class="layui-select" name="is_black">
-                    <option value=''>-- 全部 --</option>
-                    {foreach ['显示未拉黑的粉丝','显示已拉黑的粉丝'] as $k=>$v}
+                    <option value=''>-- {:lang('全部')} --</option>
+                    {foreach [lang('显示未拉黑的粉丝'),lang('显示已拉黑的粉丝')] as $k=>$v}
                     {if isset($get.is_black) and $get.is_black eq $k.""}
                     <option selected value="{$k}">{$v}</option>
                     {else}
@@ -40,16 +40,16 @@
         </div>
 
         <div class="layui-form-item layui-inline">
-            <label class="layui-form-label">订阅时间</label>
+            <label class="layui-form-label">{:lang('订阅时间')}</label>
             <label class="layui-input-inline">
-                <input data-date-range name="subscribe_at" value="{$get.subscribe_at|default=''}" placeholder="请选择订阅时间" class="layui-input">
+                <input data-date-range name="subscribe_at" value="{$get.subscribe_at|default=''}" placeholder="{:lang('请选择订阅时间')}" class="layui-input">
             </label>
         </div>
 
         <div class="layui-form-item layui-inline">
-            <button type="submit" class="layui-btn layui-btn-primary"><i class="layui-icon">&#xe615;</i> 搜 索</button>
+            <button type="submit" class="layui-btn layui-btn-primary"><i class="layui-icon">&#xe615;</i> {:lang('搜 索')}</button>
             <button type="button" data-form-export="{:url('index')}?type={$type|default=''}" class="layui-btn layui-btn-primary">
-                <i class="layui-icon layui-icon-export"></i> 导 出
+                <i class="layui-icon layui-icon-export"></i> {:lang('导 出')}
             </button>
         </div>
     </form>
@@ -58,7 +58,7 @@
 <script>
     require(['excel'], function (excel) {
         excel.bind(function (data, sexs) {
-            sexs = {1: '男', 2: '女'};
+            sexs = {1: '{:lang("男")}', 2: '{:lang("女")}'};
             data.forEach(function (item, index) {
                 data[index] = [
                     item.openid || '',
@@ -66,19 +66,19 @@
                     item.country || '',
                     item.province || '',
                     item.city || '',
-                    sexs[item.sex] || '未知',
-                    item.subscribe ? '已订阅' : '未订阅',
+                    sexs[item.sex] || '{:lang("未知")}',
+                    item.subscribe ? '{:lang("已订阅")}' : '{:lang("未订阅")}',
                     item.subscribe_at || '',
-                    item.is_black ? '已拉黑' : '未拉黑',
+                    item.is_black ? '{:lang("已拉黑")}' : '{:lang("未拉黑")}',
                 ];
             });
 
             // 设置表头内容
-            data.unshift(['OPENID', '微信昵称', '所在国家', '所在省份', '所在城市', '性别', '订阅状态', '订阅时间', '是否拉黑']);
+            data.unshift(['OPENID', '{:lang("微信昵称")}', '{:lang("所在国家")}', '{:lang("所在省份")}', '{:lang("所在城市")}', '{:lang("性别")}', '{:lang("订阅状态")}', '{:lang("订阅时间")}', '{:lang("是否拉黑")}']);
 
             // 应用表格样式
             return this.withStyle(data, {A: 200, H: 120});
 
-        }, '微信粉丝数据' + layui.util.toDateString(Date.now(), '_yyyyMMdd_HHmmss'));
+        }, '{:lang("微信粉丝数据")}' + layui.util.toDateString(Date.now(), '_yyyyMMdd_HHmmss'));
     });
 </script>

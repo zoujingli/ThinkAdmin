@@ -2,13 +2,13 @@
 
 {block name="button"}
 <!--{if auth('options_wxapp')}-->
-<button data-modal="{:url('options_wxapp')}" data-width="600px" data-title="绑定小程序" class='layui-btn layui-btn-sm layui-btn-primary'>绑定小程序</button>
+<button data-modal="{:url('options_wxapp')}" data-width="600px" data-title="{:lang('绑定小程序')}" class='layui-btn layui-btn-sm layui-btn-primary'>{:lang('绑定小程序')}</button>
 <!--{/if}-->
 <!--{if auth('options_jsonrpc')}-->
-<button data-modal="{:url('options_jsonrpc')}" data-width="600px" data-title="开放平台接口配置" class='layui-btn layui-btn-sm layui-btn-primary'>开放平台接口</button>
+<button data-modal="{:url('options_jsonrpc')}" data-width="600px" data-title="{:lang('开放平台接口配置')}" class='layui-btn layui-btn-sm layui-btn-primary'>{:lang('开放平台接口')}</button>
 <!--{/if}-->
 <!--{if auth("options_test")}-->
-<button data-modal="{:url('options_test')}" data-width="600px" data-title="微信授权测试（ 扫码 ）" class='layui-btn layui-btn-sm layui-btn-primary'>微信授权测试</button>
+<button data-modal="{:url('options_test')}" data-width="600px" data-title="{:lang('微信授权测试（ 扫码 ）')}" class='layui-btn layui-btn-sm layui-btn-primary'>{:lang('微信授权测试')}</button>
 <!--{/if}-->
 {/block}
 

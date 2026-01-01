@@ -2,16 +2,16 @@
 
 {block name="button"}
 <!--{if auth("black")}-->
-<button data-action='{:url("black")}' data-table-id="UserData" data-rule="openid#{openid};black#1" class='layui-btn layui-btn-sm layui-btn-primary'>拉入黑名单</button>
-<button data-action='{:url("black")}' data-table-id="UserData" data-rule="openid#{openid};black#0" class='layui-btn layui-btn-sm layui-btn-primary'>移出黑名单</button>
+<button data-action='{:url("black")}' data-table-id="UserData" data-rule="openid#{openid};black#1" class='layui-btn layui-btn-sm layui-btn-primary'>{:lang('拉入黑名单')}</button>
+<button data-action='{:url("black")}' data-table-id="UserData" data-rule="openid#{openid};black#0" class='layui-btn layui-btn-sm layui-btn-primary'>{:lang('移出黑名单')}</button>
 <!--{/if}-->
 
 <!--{if auth("truncate")}-->
-<button data-load='{:url("truncate")}' data-confirm="确定要清空所有用户数据吗？" class='layui-btn layui-btn-sm layui-btn-primary'>清空用户数据</button>
+<button data-load='{:url("truncate")}' data-confirm="{:lang('确定要清空所有用户数据吗？')}" class='layui-btn layui-btn-sm layui-btn-primary'>{:lang('清空用户数据')}</button>
 <!--{/if}-->
 
 <!--{if auth("sync")}-->
-<button data-queue='{:url("sync")}' data-table-id="UserData" data-confirm="确定要创建同步用户数据的后台任务？" class='layui-btn layui-btn-sm layui-btn-primary'>同步用户数据</button>
+<button data-queue='{:url("sync")}' data-table-id="UserData" data-confirm="{:lang('确定要创建同步用户数据的后台任务？')}" class='layui-btn layui-btn-sm layui-btn-primary'>{:lang('同步用户数据')}</button>
 <!--{/if}-->
 {/block}
 
@@ -31,19 +31,19 @@
             cols: [[
                 {checkbox: true},
                 {field: 'id', hide: true},
-                {field: 'headimg', title: '头像', width: 65, align: "center", templet: '<div>{{-$.layTable.showImage(d.headimgurl)}}</div>'},
-                {field: 'nickname', title: '微信昵称', align: "center", minWidth: 100, templet: '<div>{{d.nickname||"-"}}</div>'},
-                {field: 'province', title: '所在区域', align: "center", minWidth: 120, templet: '<div>{{d.country||"-"}} {{d.province}} {{d.city}}</div>'},
-                {field: 'sex', title: '性别', align: 'center', minWidth: 80, templet: '<div>{{d.sex==1 ? "男" : (d.sex==2 ? "女" : "未知")}}</div>'},
-                {field: 'language', title: '使用语言', align: 'center', minWidth: 100, templet: '<div>{{d.language}}</div>'},
+                {field: 'headimg', title: '{:lang("头像")}', width: 65, align: "center", templet: '<div>{{-$.layTable.showImage(d.headimgurl)}}</div>'},
+                {field: 'nickname', title: '{:lang("微信昵称")}', align: "center", minWidth: 100, templet: '<div>{{d.nickname||"-"}}</div>'},
+                {field: 'province', title: '{:lang("所在区域")}', align: "center", minWidth: 120, templet: '<div>{{d.country||"-"}} {{d.province}} {{d.city}}</div>'},
+                {field: 'sex', title: '{:lang("性别")}', align: 'center', minWidth: 80, templet: '<div>{{d.sex==1 ? "' + '{:lang("男")}' + '" : (d.sex==2 ? "' + '{:lang("女")}' + '" : "' + '{:lang("未知")}' + '")}}</div>'},
+                {field: 'language', title: '{:lang("使用语言")}', align: 'center', minWidth: 100, templet: '<div>{{d.language}}</div>'},
                 {
-                    field: 'subscribe', title: '订阅状态', align: "center", minWidth: 90, templet: function (d) {
-                        return d.subscribe > 0 ? '<span class="layui-badge layui-bg-green">已订阅</span>' : '<span class="layui-badge">未订阅</span>';
+                    field: 'subscribe', title: '{:lang("订阅状态")}', align: "center", minWidth: 90, templet: function (d) {
+                        return d.subscribe > 0 ? '<span class="layui-badge layui-bg-green">' + '{:lang("已订阅")}' + '</span>' : '<span class="layui-badge">' + '{:lang("未订阅")}' + '</span>';
                     }
                 },
-                {field: 'subscribe_time', title: '订阅时间', minWidth: 170, align: 'center', sort: true, templet: '<div>{{d.subscribe_at}}</div>'},
-                {field: 'is_black', title: '是否黑名单', align: 'center', minWidth: 110, templet: '#StatusSwitchTpl'},
-                {toolbar: '#toolbar', title: '操作面板', align: 'center', fixed: 'right', minWidth: 80}
+                {field: 'subscribe_time', title: '{:lang("订阅时间")}', minWidth: 170, align: 'center', sort: true, templet: '<div>{{d.subscribe_at}}</div>'},
+                {field: 'is_black', title: '{:lang("是否黑名单")}', align: 'center', minWidth: 110, templet: '#StatusSwitchTpl'},
+                {toolbar: '#toolbar', title: '{:lang("操作面板")}', align: 'center', fixed: 'right', minWidth: 80}
             ]]
         });
 
