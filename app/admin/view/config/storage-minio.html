@@ -1,0 +1,91 @@
+<form action="{:sysuri()}" method="post" data-auto="true" class="layui-form layui-card">
+    <div class="layui-card-body padding-top-20">
+
+        <div class="color-text layui-code text-center layui-bg-gray" style="border-left-width:1px;margin:0 0 15px 40px">
+            <p class="margin-bottom-5 font-w7">文件将上传到 <a target="_blank" href="https://min.io/">MinIO</a> 对象存储服务，需要自行搭建 MinIO 存储服务器。</p>
+            <p>MinIO 是一个基于Apache License v2.0开源协议的对象存储服务，适合于存储非结构化数据。</p>
+            <p>建议配置HTTPS访问协议，确保数据传输安全性，同时正确设置存储桶(Bucket)访问权限。</p>
+        </div>
+
+        {include file='config/storage-0'}
+
+        <div class="layui-form-item">
+            <label class="layui-form-label label-required">
+                <b class="color-green">访问协议</b><br><span class="nowrap color-desc">Protocol</span>
+            </label>
+            <div class="layui-input-block">
+                {if !sysconf('storage.minio_http_protocol')}{php}sysconf('storage.minio_http_protocol','http');{/php}{/if}
+                <div class="layui-input help-checks">
+                    {foreach ['http'=>'HTTP','https'=>'HTTPS','auto'=>"AUTO"] as $protocol=>$remark}
+                    <label class="think-radio">
+                        {if sysconf('storage.minio_http_protocol') eq $protocol}
+                        <input checked type="radio" name="storage.minio_http_protocol" value="{$protocol}" lay-ignore> {$remark}
+                        {else}
+                        <input type="radio" name="storage.minio_http_protocol" value="{$protocol}" lay-ignore> {$remark}
+                        {/if}
+                    </label>
+                    {/foreach}
+                </div>
+                <p class="help-block">请选择 MinIO 存储访问协议，推荐使用 HTTPS 协议（ AUTO 为相对协议 ）</p>
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label" for="storage.minio_http_domain">
+                <b class="color-green">访问域名</b><br><span class="nowrap color-desc">Domain</span>
+            </label>
+            <div class="layui-input-block">
+                <input id="storage.minio_http_domain" type="text" name="storage.minio_http_domain" value="{:sysconf('storage.minio_http_domain')}" required vali-name="访问域名" placeholder="请输入 MinIO 存储的访问域名" class="layui-input">
+                <p class="help-block">请填写 MinIO 服务访问域名，不需要填写访问协议，如：minio.yourdomain.com:9000</p>
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label" for="storage.minio_bucket">
+                <b class="color-green">存储空间</b><br><span class="nowrap color-desc">Bucket</span>
+            </label>
+            <div class="layui-input-block">
+                <input id="storage.minio_bucket" type="text" name="storage.minio_bucket" value="{:sysconf('storage.minio_bucket')}" required vali-name="存储空间" placeholder="请输入 MinIO 存储空间名称" class="layui-input">
+                <p class="help-block">请填写 MinIO 存储空间名称，如：mybucket（需要提前创建好存储空间）</p>
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label" for="storage.minio_access_key">
+                <b class="color-green">访问密钥</b><br><span class="nowrap color-desc">AccessKey</span>
+            </label>
+            <div class="layui-input-block">
+                <input id="storage.minio_access_key" name="storage.minio_access_key" value="{:sysconf('storage.minio_access_key')}" maxlength="100" required vali-name="AccessKey" placeholder="请输入 MinIO AccessKey" class="layui-input">
+                <p class="help-block">请填写 MinIO AccessKey，用于接口认证</p>
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label" for="storage.minio_secret_key">
+                <b class="color-green">安全密钥</b><br><span class="nowrap color-desc">SecretKey</span>
+            </label>
+            <div class="layui-input-block">
+                <input id="storage.minio_secret_key" name="storage.minio_secret_key" value="{:sysconf('storage.minio_secret_key')}" maxlength="100" required vali-name="SecretKey" placeholder="请输入 MinIO SecretKey" class="layui-input">
+                <p class="help-block">请填写 MinIO SecretKey，用于接口认证</p>
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label" for="storage.minio_region">
+                <b class="color-green">存储区域</b><br><span class="nowrap color-desc">Region</span>
+            </label>
+            <div class="layui-input-block">
+                <input id="storage.minio_region" name="storage.minio_region" value="{:sysconf('storage.minio_region')}" maxlength="100" vali-name="存储区域" placeholder="请输入 MinIO 存储区域" class="layui-input">
+                <p class="help-block">请填写 MinIO 存储区域，如：us-east-1（默认）</p>
+            </div>
+        </div>
+
+        <div class="hr-line-dashed margin-left-40"></div>
+        <input type="hidden" name="storage.type" value="minio">
+
+        <div class="layui-form-item text-center padding-left-40">
+            <button class="layui-btn" type="submit">保存配置</button>
+            <button class="layui-btn layui-btn-danger" type='button' data-confirm="确定要取消修改吗？" data-close>取消修改</button>
+        </div>
+    </div>
+</form>

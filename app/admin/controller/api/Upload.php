@@ -26,6 +26,7 @@ use think\admin\Storage;
 use think\admin\storage\AliossStorage;
 use think\admin\storage\AlistStorage;
 use think\admin\storage\LocalStorage;
+use think\admin\storage\MinioStorage;
 use think\admin\storage\QiniuStorage;
 use think\admin\storage\TxcosStorage;
 use think\admin\storage\UpyunStorage;
@@ -103,7 +104,9 @@ class Upload extends Controller
             ]));
             $mime = $file->getAttr('mime');
             if (empty($mime)) $file->setAttr('mime', Storage::mime($file->getAttr('xext')));
+
             $info = Storage::instance($data['uptype'])->info($data['key'], $safe, $name);
+
             if (isset($info['url']) && isset($info['key'])) {
                 $file->save(['xurl' => $info['url'], 'isfast' => 1, 'issafe' => $data['safe']]);
                 $extr = ['id' => $file->id ?? 0, 'url' => $info['url'], 'key' => $info['key']];
@@ -148,6 +151,16 @@ class Upload extends Controller
                 $data['server'] = $alist->upload();
                 $data['filepath'] = $alist->real($data['key']);
                 $data['authorization'] = $alist->token();
+            } elseif ('minio' === $data['uptype']) {
+                $minio = MinioStorage::instance();
+                $token = $minio->token($data['key'], 3600, $name);
+                $data['url'] = $token['siteurl'];
+                $data['policy'] = $token['policy'];
+                $data['x-amz-algorithm'] = $token['x-amz-algorithm'];
+                $data['x-amz-credential'] = $token['x-amz-credential'];
+                $data['x-amz-date'] = $token['x-amz-date'];
+                $data['x-amz-signature'] = $token['x-amz-signature'];
+                $data['server'] = $minio->upload();
             } else {
                 $this->error('未知的存储引擎！');
             }
