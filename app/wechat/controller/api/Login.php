@@ -1,36 +1,39 @@
 <?php
 
-// +----------------------------------------------------------------------
-// | Wechat Plugin for ThinkAdmin
-// +----------------------------------------------------------------------
-// | 版权所有 2014~2025 Anyon <zoujingli@qq.com>
-// +----------------------------------------------------------------------
-// | 官方网站: https://thinkadmin.top
-// +----------------------------------------------------------------------
-// | 开源协议 ( https://mit-license.org )
-// | 免责声明 ( https://thinkadmin.top/disclaimer )
-// +----------------------------------------------------------------------
-// | gitee 代码仓库：https://gitee.com/zoujingli/think-plugs-wechat
-// | github 代码仓库：https://github.com/zoujingli/think-plugs-wechat
-// +----------------------------------------------------------------------
-
-declare (strict_types=1);
+declare(strict_types=1);
+/**
+ * +----------------------------------------------------------------------
+ * | ThinkAdmin Plugin for ThinkAdmin
+ * +----------------------------------------------------------------------
+ * | 版权所有 2014~2026 ThinkAdmin [ thinkadmin.top ]
+ * +----------------------------------------------------------------------
+ * | 官方网站: https://thinkadmin.top
+ * +----------------------------------------------------------------------
+ * | 开源协议 ( https://mit-license.org )
+ * | 免责声明 ( https://thinkadmin.top/disclaimer )
+ * | 会员特权 ( https://thinkadmin.top/vip-introduce )
+ * +----------------------------------------------------------------------
+ * | gitee 代码仓库：https://gitee.com/zoujingli/ThinkAdmin
+ * | github 代码仓库：https://github.com/zoujingli/ThinkAdmin
+ * +----------------------------------------------------------------------
+ */
 
 namespace app\wechat\controller\api;
 
 use app\wechat\service\LoginService;
 use think\admin\Controller;
+use think\admin\Exception;
+use WeChat\Exceptions\InvalidResponseException;
+use WeChat\Exceptions\LocalCacheException;
 
 /**
- * 微信扫码登录
+ * 微信扫码登录.
  * @class Login
- * @package app\wechat\controller\api
  */
 class Login extends Controller
 {
     /**
      * 显示二维码
-     * @return void
      */
     public function qrc()
     {
@@ -40,10 +43,10 @@ class Login extends Controller
     }
 
     /**
-     * 微信授权处理
-     * @throws \WeChat\Exceptions\InvalidResponseException
-     * @throws \WeChat\Exceptions\LocalCacheException
-     * @throws \think\admin\Exception
+     * 微信授权处理.
+     * @throws InvalidResponseException
+     * @throws LocalCacheException
+     * @throws Exception
      */
     public function oauth()
     {
@@ -57,7 +60,7 @@ class Login extends Controller
 
     /**
      * 获取授权信息
-     * 用定时器请求这个接口
+     * 用定时器请求这个接口.
      */
     public function query()
     {

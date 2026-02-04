@@ -1,20 +1,22 @@
 <?php
 
-// +----------------------------------------------------------------------
-// | Wechat Plugin for ThinkAdmin
-// +----------------------------------------------------------------------
-// | 版权所有 2014~2025 Anyon <zoujingli@qq.com>
-// +----------------------------------------------------------------------
-// | 官方网站: https://thinkadmin.top
-// +----------------------------------------------------------------------
-// | 开源协议 ( https://mit-license.org )
-// | 免责声明 ( https://thinkadmin.top/disclaimer )
-// +----------------------------------------------------------------------
-// | gitee 代码仓库：https://gitee.com/zoujingli/think-plugs-wechat
-// | github 代码仓库：https://github.com/zoujingli/think-plugs-wechat
-// +----------------------------------------------------------------------
-
-declare (strict_types=1);
+declare(strict_types=1);
+/**
+ * +----------------------------------------------------------------------
+ * | ThinkAdmin Plugin for ThinkAdmin
+ * +----------------------------------------------------------------------
+ * | 版权所有 2014~2026 ThinkAdmin [ thinkadmin.top ]
+ * +----------------------------------------------------------------------
+ * | 官方网站: https://thinkadmin.top
+ * +----------------------------------------------------------------------
+ * | 开源协议 ( https://mit-license.org )
+ * | 免责声明 ( https://thinkadmin.top/disclaimer )
+ * | 会员特权 ( https://thinkadmin.top/vip-introduce )
+ * +----------------------------------------------------------------------
+ * | gitee 代码仓库：https://gitee.com/zoujingli/ThinkAdmin
+ * | github 代码仓库：https://github.com/zoujingli/ThinkAdmin
+ * +----------------------------------------------------------------------
+ */
 
 namespace app\wechat\controller;
 
@@ -24,16 +26,18 @@ use app\wechat\service\MediaService;
 use think\admin\Controller;
 use think\admin\helper\QueryHelper;
 use think\admin\service\AdminService;
+use think\db\exception\DataNotFoundException;
+use think\db\exception\DbException;
+use think\db\exception\ModelNotFoundException;
 
 /**
- * 微信图文管理
+ * 微信图文管理.
  * @class News
- * @package app\wechat\controller
  */
 class News extends Controller
 {
     /**
-     * 微信图文管理
+     * 微信图文管理.
      * @auth true
      * @menu true
      */
@@ -46,21 +50,7 @@ class News extends Controller
     }
 
     /**
-     * 图文列表数据处理
-     * @param array $data
-     * @throws \think\db\exception\DataNotFoundException
-     * @throws \think\db\exception\DbException
-     * @throws \think\db\exception\ModelNotFoundException
-     */
-    protected function _page_filter(array &$data)
-    {
-        foreach ($data as &$vo) {
-            $vo = MediaService::news($vo['id']);
-        }
-    }
-
-    /**
-     * 图文选择器
+     * 图文选择器.
      * @auth true
      */
     public function select()
@@ -69,7 +59,7 @@ class News extends Controller
     }
 
     /**
-     * 添加微信图文
+     * 添加微信图文.
      * @auth true
      */
     public function add()
@@ -79,7 +69,7 @@ class News extends Controller
             $this->fetch('form');
         } else {
             $update = [
-                'create_by'  => AdminService::getUserId(),
+                'create_by' => AdminService::getUserId(),
                 'article_id' => $this->_buildArticle($this->request->post('data', [])),
             ];
             if (WechatNews::mk()->save($update) !== false) {
@@ -91,16 +81,18 @@ class News extends Controller
     }
 
     /**
-     * 编辑微信图文
+     * 编辑微信图文.
      * @auth true
-     * @throws \think\db\exception\DataNotFoundException
-     * @throws \think\db\exception\DbException
-     * @throws \think\db\exception\ModelNotFoundException
+     * @throws DataNotFoundException
+     * @throws DbException
+     * @throws ModelNotFoundException
      */
     public function edit()
     {
         $this->id = $this->request->get('id');
-        if (empty($this->id)) $this->error('参数错误，请稍候再试！');
+        if (empty($this->id)) {
+            $this->error('参数错误，请稍候再试！');
+        }
         if ($this->request->isGet()) {
             if ($this->request->get('output') === 'json') {
                 $this->success('获取数据成功！', MediaService::news($this->id));
@@ -121,7 +113,7 @@ class News extends Controller
 
     /**
      * 删除微信图文
-     * auth true
+     * auth true.
      */
     public function remove()
     {
@@ -129,9 +121,20 @@ class News extends Controller
     }
 
     /**
-     * 图文更新操作
-     * @param array $data
-     * @return string
+     * 图文列表数据处理.
+     * @throws DataNotFoundException
+     * @throws DbException
+     * @throws ModelNotFoundException
+     */
+    protected function _page_filter(array &$data)
+    {
+        foreach ($data as &$vo) {
+            $vo = MediaService::news($vo['id']);
+        }
+    }
+
+    /**
+     * 图文更新操作.
      */
     private function _buildArticle(array $data): string
     {
@@ -147,7 +150,9 @@ class News extends Controller
                 $id = intval($vo['id']);
                 $result = WechatNewsArticle::mk()->where('id', $id)->update($vo);
             }
-            if ($result) $ids[] = $id;
+            if ($result) {
+                $ids[] = $id;
+            }
         }
         return join(',', $ids);
     }

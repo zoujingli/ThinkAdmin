@@ -1,20 +1,22 @@
 <?php
 
-// +----------------------------------------------------------------------
-// | Admin Plugin for ThinkAdmin
-// +----------------------------------------------------------------------
-// | 版权所有 2014~2025 ThinkAdmin [ thinkadmin.top ]
-// +----------------------------------------------------------------------
-// | 官方网站: https://thinkadmin.top
-// +----------------------------------------------------------------------
-// | 开源协议 ( https://mit-license.org )
-// | 免责声明 ( https://thinkadmin.top/disclaimer )
-// +----------------------------------------------------------------------
-// | gitee 代码仓库：https://gitee.com/zoujingli/think-plugs-admin
-// | github 代码仓库：https://github.com/zoujingli/think-plugs-admin
-// +----------------------------------------------------------------------
-
 declare(strict_types=1);
+/**
+ * +----------------------------------------------------------------------
+ * | ThinkAdmin Plugin for ThinkAdmin
+ * +----------------------------------------------------------------------
+ * | 版权所有 2014~2026 ThinkAdmin [ thinkadmin.top ]
+ * +----------------------------------------------------------------------
+ * | 官方网站: https://thinkadmin.top
+ * +----------------------------------------------------------------------
+ * | 开源协议 ( https://mit-license.org )
+ * | 免责声明 ( https://thinkadmin.top/disclaimer )
+ * | 会员特权 ( https://thinkadmin.top/vip-introduce )
+ * +----------------------------------------------------------------------
+ * | gitee 代码仓库：https://gitee.com/zoujingli/ThinkAdmin
+ * | github 代码仓库：https://github.com/zoujingli/ThinkAdmin
+ * +----------------------------------------------------------------------
+ */
 
 namespace app\admin\controller;
 
@@ -24,22 +26,24 @@ use think\admin\model\SystemQueue;
 use think\admin\service\AdminService;
 use think\admin\service\ProcessService;
 use think\admin\service\QueueService;
+use think\db\exception\DataNotFoundException;
+use think\db\exception\DbException;
+use think\db\exception\ModelNotFoundException;
 use think\exception\HttpResponseException;
 
 /**
- * 系统任务管理
+ * 系统任务管理.
  * @class Queue
- * @package app\admin\controller
  */
 class Queue extends Controller
 {
     /**
-     * 系统任务管理
+     * 系统任务管理.
      * @auth true
      * @menu true
-     * @throws \think\db\exception\DataNotFoundException
-     * @throws \think\db\exception\DbException
-     * @throws \think\db\exception\ModelNotFoundException
+     * @throws DataNotFoundException
+     * @throws DbException
+     * @throws ModelNotFoundException
      */
     public function index()
     {
@@ -55,26 +59,6 @@ class Queue extends Controller
         }, static function (QueryHelper $query) {
             $query->equal('status')->like('code|title#title,command');
             $query->timeBetween('enter_time,exec_time')->dateBetween('create_at');
-        });
-    }
-
-    /**
-     * 分页数据回调处理
-     * @param array $data
-     * @param array $result
-     * @return void
-     * @throws \think\db\exception\DataNotFoundException
-     * @throws \think\db\exception\DbException
-     * @throws \think\db\exception\ModelNotFoundException
-     */
-    protected function _index_page_filter(array $data, array &$result)
-    {
-        $result['extra'] = ['dos' => 0, 'pre' => 0, 'oks' => 0, 'ers' => 0];
-        SystemQueue::mk()->field('status,count(1) count')->group('status')->select()->map(static function ($item) use (&$result) {
-            if (intval($item['status']) === 1) $result['extra']['pre'] = $item['count'];
-            if (intval($item['status']) === 2) $result['extra']['dos'] = $item['count'];
-            if (intval($item['status']) === 3) $result['extra']['oks'] = $item['count'];
-            if (intval($item['status']) === 4) $result['extra']['ers'] = $item['count'];
         });
     }
 
@@ -98,12 +82,12 @@ class Queue extends Controller
     }
 
     /**
-     * 清理运行数据
+     * 清理运行数据.
      * @auth true
      */
     public function clean()
     {
-        $this->_queue('定时清理系统运行数据', "xadmin:queue clean", 0, [], 0, 3600);
+        $this->_queue('定时清理系统运行数据', 'xadmin:queue clean', 0, [], 0, 3600);
     }
 
     /**
@@ -113,5 +97,30 @@ class Queue extends Controller
     public function remove()
     {
         SystemQueue::mDelete();
+    }
+
+    /**
+     * 分页数据回调处理.
+     * @throws DataNotFoundException
+     * @throws DbException
+     * @throws ModelNotFoundException
+     */
+    protected function _index_page_filter(array $data, array &$result)
+    {
+        $result['extra'] = ['dos' => 0, 'pre' => 0, 'oks' => 0, 'ers' => 0];
+        SystemQueue::mk()->field('status,count(1) count')->group('status')->select()->map(static function ($item) use (&$result) {
+            if (intval($item['status']) === 1) {
+                $result['extra']['pre'] = $item['count'];
+            }
+            if (intval($item['status']) === 2) {
+                $result['extra']['dos'] = $item['count'];
+            }
+            if (intval($item['status']) === 3) {
+                $result['extra']['oks'] = $item['count'];
+            }
+            if (intval($item['status']) === 4) {
+                $result['extra']['ers'] = $item['count'];
+            }
+        });
     }
 }

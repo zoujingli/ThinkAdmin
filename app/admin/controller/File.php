@@ -1,20 +1,22 @@
 <?php
 
-// +----------------------------------------------------------------------
-// | Admin Plugin for ThinkAdmin
-// +----------------------------------------------------------------------
-// | 版权所有 2014~2025 ThinkAdmin [ thinkadmin.top ]
-// +----------------------------------------------------------------------
-// | 官方网站: https://thinkadmin.top
-// +----------------------------------------------------------------------
-// | 开源协议 ( https://mit-license.org )
-// | 免责声明 ( https://thinkadmin.top/disclaimer )
-// +----------------------------------------------------------------------
-// | gitee 代码仓库：https://gitee.com/zoujingli/think-plugs-admin
-// | github 代码仓库：https://github.com/zoujingli/think-plugs-admin
-// +----------------------------------------------------------------------
-
 declare(strict_types=1);
+/**
+ * +----------------------------------------------------------------------
+ * | ThinkAdmin Plugin for ThinkAdmin
+ * +----------------------------------------------------------------------
+ * | 版权所有 2014~2026 ThinkAdmin [ thinkadmin.top ]
+ * +----------------------------------------------------------------------
+ * | 官方网站: https://thinkadmin.top
+ * +----------------------------------------------------------------------
+ * | 开源协议 ( https://mit-license.org )
+ * | 免责声明 ( https://thinkadmin.top/disclaimer )
+ * | 会员特权 ( https://thinkadmin.top/vip-introduce )
+ * +----------------------------------------------------------------------
+ * | gitee 代码仓库：https://gitee.com/zoujingli/ThinkAdmin
+ * | github 代码仓库：https://github.com/zoujingli/ThinkAdmin
+ * +----------------------------------------------------------------------
+ */
 
 namespace app\admin\controller;
 
@@ -23,36 +25,29 @@ use think\admin\helper\QueryHelper;
 use think\admin\model\SystemFile;
 use think\admin\service\AdminService;
 use think\admin\Storage;
+use think\db\exception\DataNotFoundException;
+use think\db\exception\DbException;
+use think\db\exception\ModelNotFoundException;
 
 /**
- * 系统文件管理
+ * 系统文件管理.
  * @class File
- * @package app\admin\controller
  */
 class File extends Controller
 {
     /**
-     * 存储类型
+     * 存储类型.
      * @var array
      */
     protected $types;
 
     /**
-     * 控制器初始化
-     * @return void
-     */
-    protected function initialize()
-    {
-        $this->types = Storage::types();
-    }
-
-    /**
-     * 系统文件管理
+     * 系统文件管理.
      * @auth true
      * @menu true
-     * @throws \think\db\exception\DataNotFoundException
-     * @throws \think\db\exception\DbException
-     * @throws \think\db\exception\ModelNotFoundException
+     * @throws DataNotFoundException
+     * @throws DbException
+     * @throws ModelNotFoundException
      */
     public function index()
     {
@@ -66,21 +61,8 @@ class File extends Controller
     }
 
     /**
-     * 数据列表处理
-     * @param array $data
-     * @return void
-     */
-    protected function _page_filter(array &$data)
-    {
-        foreach ($data as &$vo) {
-            $vo['ctype'] = $this->types[$vo['type']] ?? $vo['type'];
-        }
-    }
-
-    /**
-     * 编辑系统文件
+     * 编辑系统文件.
      * @auth true
-     * @return void
      */
     public function edit()
     {
@@ -88,9 +70,8 @@ class File extends Controller
     }
 
     /**
-     * 删除系统文件
+     * 删除系统文件.
      * @auth true
-     * @return void
      */
     public function remove()
     {
@@ -101,10 +82,9 @@ class File extends Controller
     }
 
     /**
-     * 清理重复文件
+     * 清理重复文件.
      * @auth true
-     * @return void
-     * @throws \think\db\exception\DbException
+     * @throws DbException
      */
     public function distinct()
     {
@@ -116,5 +96,23 @@ class File extends Controller
             $query->table("({$keepSubQuery})")->alias('f2')->whereRaw('f2.id = system_file.id');
         })->delete();
         $this->success('清理重复文件成功！');
+    }
+
+    /**
+     * 控制器初始化.
+     */
+    protected function initialize()
+    {
+        $this->types = Storage::types();
+    }
+
+    /**
+     * 数据列表处理.
+     */
+    protected function _page_filter(array &$data)
+    {
+        foreach ($data as &$vo) {
+            $vo['ctype'] = $this->types[$vo['type']] ?? $vo['type'];
+        }
     }
 }

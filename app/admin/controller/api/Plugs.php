@@ -1,37 +1,38 @@
 <?php
 
-// +----------------------------------------------------------------------
-// | Admin Plugin for ThinkAdmin
-// +----------------------------------------------------------------------
-// | 版权所有 2014~2025 ThinkAdmin [ thinkadmin.top ]
-// +----------------------------------------------------------------------
-// | 官方网站: https://thinkadmin.top
-// +----------------------------------------------------------------------
-// | 开源协议 ( https://mit-license.org )
-// | 免责声明 ( https://thinkadmin.top/disclaimer )
-// +----------------------------------------------------------------------
-// | gitee 代码仓库：https://gitee.com/zoujingli/think-plugs-admin
-// | github 代码仓库：https://github.com/zoujingli/think-plugs-admin
-// +----------------------------------------------------------------------
-
 declare(strict_types=1);
+/**
+ * +----------------------------------------------------------------------
+ * | ThinkAdmin Plugin for ThinkAdmin
+ * +----------------------------------------------------------------------
+ * | 版权所有 2014~2026 ThinkAdmin [ thinkadmin.top ]
+ * +----------------------------------------------------------------------
+ * | 官方网站: https://thinkadmin.top
+ * +----------------------------------------------------------------------
+ * | 开源协议 ( https://mit-license.org )
+ * | 免责声明 ( https://thinkadmin.top/disclaimer )
+ * | 会员特权 ( https://thinkadmin.top/vip-introduce )
+ * +----------------------------------------------------------------------
+ * | gitee 代码仓库：https://gitee.com/zoujingli/ThinkAdmin
+ * | github 代码仓库：https://github.com/zoujingli/ThinkAdmin
+ * +----------------------------------------------------------------------
+ */
 
 namespace app\admin\controller\api;
 
 use think\admin\Controller;
+use think\admin\Exception;
 use think\admin\service\AdminService;
 use think\Response;
 
 /**
- * 扩展插件管理
+ * 扩展插件管理.
  * @class Plugs
- * @package app\admin\controller\api
  */
 class Plugs extends Controller
 {
-
     /**
-     * 图标选择器
+     * 图标选择器.
      * @login true
      */
     public function icon()
@@ -72,23 +73,22 @@ class Plugs extends Controller
     }
 
     /**
-     * 前端脚本变量
-     * @return \think\Response
-     * @throws \think\admin\Exception
+     * 前端脚本变量.
+     * @throws Exception
      */
     public function script(): Response
     {
         $token = $this->request->get('uptoken', '');
         $domain = boolval(AdminService::withUploadUnid($token));
         return response(join("\r\n", [
-            sprintf("window.taDebug = %s;", $this->app->isDebug() ? 'true' : 'false'),
+            sprintf('window.taDebug = %s;', $this->app->isDebug() ? 'true' : 'false'),
             sprintf("window.taAdmin = '%s';", sysuri('admin/index/index', [], false, $domain)),
             sprintf("window.taEditor = '%s';", sysconf('base.editor|raw') ?: 'ckeditor4'),
         ]))->contentType('application/javascript');
     }
 
     /**
-     * 优化数据库
+     * 优化数据库.
      * @login true
      */
     public function optimize()

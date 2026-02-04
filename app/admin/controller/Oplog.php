@@ -1,43 +1,46 @@
 <?php
 
-// +----------------------------------------------------------------------
-// | Admin Plugin for ThinkAdmin
-// +----------------------------------------------------------------------
-// | 版权所有 2014~2025 ThinkAdmin [ thinkadmin.top ]
-// +----------------------------------------------------------------------
-// | 官方网站: https://thinkadmin.top
-// +----------------------------------------------------------------------
-// | 开源协议 ( https://mit-license.org )
-// | 免责声明 ( https://thinkadmin.top/disclaimer )
-// +----------------------------------------------------------------------
-// | gitee 代码仓库：https://gitee.com/zoujingli/think-plugs-admin
-// | github 代码仓库：https://github.com/zoujingli/think-plugs-admin
-// +----------------------------------------------------------------------
-
 declare(strict_types=1);
+/**
+ * +----------------------------------------------------------------------
+ * | ThinkAdmin Plugin for ThinkAdmin
+ * +----------------------------------------------------------------------
+ * | 版权所有 2014~2026 ThinkAdmin [ thinkadmin.top ]
+ * +----------------------------------------------------------------------
+ * | 官方网站: https://thinkadmin.top
+ * +----------------------------------------------------------------------
+ * | 开源协议 ( https://mit-license.org )
+ * | 免责声明 ( https://thinkadmin.top/disclaimer )
+ * | 会员特权 ( https://thinkadmin.top/vip-introduce )
+ * +----------------------------------------------------------------------
+ * | gitee 代码仓库：https://gitee.com/zoujingli/ThinkAdmin
+ * | github 代码仓库：https://github.com/zoujingli/ThinkAdmin
+ * +----------------------------------------------------------------------
+ */
 
 namespace app\admin\controller;
 
-use Ip2Region;
 use think\admin\Controller;
 use think\admin\helper\QueryHelper;
 use think\admin\model\SystemOplog;
+use think\db\exception\DataNotFoundException;
+use think\db\exception\DbException;
+use think\db\exception\ModelNotFoundException;
 use think\exception\HttpResponseException;
 
 /**
- * 系统日志管理
+ * 系统日志管理.
  * @class Oplog
- * @package app\admin\controller
  */
 class Oplog extends Controller
 {
     /**
-     * 系统日志管理
+     * 系统日志管理.
      * @auth true
      * @menu true
-     * @throws \think\db\exception\DataNotFoundException
-     * @throws \think\db\exception\DbException
-     * @throws \think\db\exception\ModelNotFoundException
+     * @throws DataNotFoundException
+     * @throws DbException
+     * @throws ModelNotFoundException
      */
     public function index()
     {
@@ -52,22 +55,7 @@ class Oplog extends Controller
     }
 
     /**
-     * 列表数据处理
-     * @param array $data
-     * @throws \Exception
-     */
-    protected function _index_page_filter(array &$data)
-    {
-        $region = new Ip2Region();
-        foreach ($data as &$vo) try {
-            $vo['geoisp'] = $region->simple($vo['geoip']);
-        } catch (\Exception $exception) {
-            $vo['geoip'] = $exception->getMessage();
-        }
-    }
-
-    /**
-     * 清理系统日志
+     * 清理系统日志.
      * @auth true
      */
     public function clear()
@@ -80,16 +68,32 @@ class Oplog extends Controller
             throw $exception;
         } catch (\Exception $exception) {
             trace_file($exception);
-            $this->error(lang("日志清理失败，%s", [$exception->getMessage()]));
+            $this->error(lang('日志清理失败，%s', [$exception->getMessage()]));
         }
     }
 
     /**
-     * 删除系统日志
+     * 删除系统日志.
      * @auth true
      */
     public function remove()
     {
         SystemOplog::mDelete();
+    }
+
+    /**
+     * 列表数据处理.
+     * @throws \Exception
+     */
+    protected function _index_page_filter(array &$data)
+    {
+        $region = new \Ip2Region();
+        foreach ($data as &$vo) {
+            try {
+                $vo['geoisp'] = $region->simple($vo['geoip']);
+            } catch (\Exception $exception) {
+                $vo['geoip'] = $exception->getMessage();
+            }
+        }
     }
 }

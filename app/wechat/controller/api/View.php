@@ -1,41 +1,44 @@
 <?php
 
-// +----------------------------------------------------------------------
-// | Wechat Plugin for ThinkAdmin
-// +----------------------------------------------------------------------
-// | 版权所有 2014~2025 Anyon <zoujingli@qq.com>
-// +----------------------------------------------------------------------
-// | 官方网站: https://thinkadmin.top
-// +----------------------------------------------------------------------
-// | 开源协议 ( https://mit-license.org )
-// | 免责声明 ( https://thinkadmin.top/disclaimer )
-// +----------------------------------------------------------------------
-// | gitee 代码仓库：https://gitee.com/zoujingli/think-plugs-wechat
-// | github 代码仓库：https://github.com/zoujingli/think-plugs-wechat
-// +----------------------------------------------------------------------
-
-declare (strict_types=1);
+declare(strict_types=1);
+/**
+ * +----------------------------------------------------------------------
+ * | ThinkAdmin Plugin for ThinkAdmin
+ * +----------------------------------------------------------------------
+ * | 版权所有 2014~2026 ThinkAdmin [ thinkadmin.top ]
+ * +----------------------------------------------------------------------
+ * | 官方网站: https://thinkadmin.top
+ * +----------------------------------------------------------------------
+ * | 开源协议 ( https://mit-license.org )
+ * | 免责声明 ( https://thinkadmin.top/disclaimer )
+ * | 会员特权 ( https://thinkadmin.top/vip-introduce )
+ * +----------------------------------------------------------------------
+ * | gitee 代码仓库：https://gitee.com/zoujingli/ThinkAdmin
+ * | github 代码仓库：https://github.com/zoujingli/ThinkAdmin
+ * +----------------------------------------------------------------------
+ */
 
 namespace app\wechat\controller\api;
 
 use app\wechat\model\WechatNewsArticle;
 use app\wechat\service\MediaService;
 use think\admin\Controller;
+use think\db\exception\DataNotFoundException;
+use think\db\exception\DbException;
+use think\db\exception\ModelNotFoundException;
 
 /**
- * 微信图文显示
+ * 微信图文显示.
  * @class View
- * @package app\wechat\controller\api
  */
 class View extends Controller
 {
-
     /**
-     * 图文列表展示
-     * @param string|integer $id 图文ID编号
-     * @throws \think\db\exception\DataNotFoundException
-     * @throws \think\db\exception\DbException
-     * @throws \think\db\exception\ModelNotFoundException
+     * 图文列表展示.
+     * @param int|string $id 图文ID编号
+     * @throws DataNotFoundException
+     * @throws DbException
+     * @throws ModelNotFoundException
      */
     public function news($id = 0)
     {
@@ -45,9 +48,9 @@ class View extends Controller
     }
 
     /**
-     * 文章内容展示
-     * @param string|integer $id 文章ID编号
-     * @throws \think\db\exception\DbException
+     * 文章内容展示.
+     * @param int|string $id 文章ID编号
+     * @throws DbException
      */
     public function item($id = 0)
     {
@@ -58,7 +61,7 @@ class View extends Controller
     }
 
     /**
-     * 文本展示
+     * 文本展示.
      */
     public function text()
     {
@@ -67,7 +70,7 @@ class View extends Controller
     }
 
     /**
-     * 图片展示
+     * 图片展示.
      */
     public function image()
     {
@@ -76,7 +79,7 @@ class View extends Controller
     }
 
     /**
-     * 视频展示
+     * 视频展示.
      */
     public function video()
     {
@@ -86,7 +89,7 @@ class View extends Controller
     }
 
     /**
-     * 语音展示
+     * 语音展示.
      */
     public function voice()
     {
@@ -95,7 +98,7 @@ class View extends Controller
     }
 
     /**
-     * 音乐展示
+     * 音乐展示.
      */
     public function music()
     {

@@ -1,20 +1,22 @@
 <?php
 
-// +----------------------------------------------------------------------
-// | Wechat Plugin for ThinkAdmin
-// +----------------------------------------------------------------------
-// | 版权所有 2014~2025 Anyon <zoujingli@qq.com>
-// +----------------------------------------------------------------------
-// | 官方网站: https://thinkadmin.top
-// +----------------------------------------------------------------------
-// | 开源协议 ( https://mit-license.org )
-// | 免责声明 ( https://thinkadmin.top/disclaimer )
-// +----------------------------------------------------------------------
-// | gitee 代码仓库：https://gitee.com/zoujingli/think-plugs-wechat
-// | github 代码仓库：https://github.com/zoujingli/think-plugs-wechat
-// +----------------------------------------------------------------------
-
-declare (strict_types=1);
+declare(strict_types=1);
+/**
+ * +----------------------------------------------------------------------
+ * | ThinkAdmin Plugin for ThinkAdmin
+ * +----------------------------------------------------------------------
+ * | 版权所有 2014~2026 ThinkAdmin [ thinkadmin.top ]
+ * +----------------------------------------------------------------------
+ * | 官方网站: https://thinkadmin.top
+ * +----------------------------------------------------------------------
+ * | 开源协议 ( https://mit-license.org )
+ * | 免责声明 ( https://thinkadmin.top/disclaimer )
+ * | 会员特权 ( https://thinkadmin.top/vip-introduce )
+ * +----------------------------------------------------------------------
+ * | gitee 代码仓库：https://gitee.com/zoujingli/ThinkAdmin
+ * | github 代码仓库：https://github.com/zoujingli/ThinkAdmin
+ * +----------------------------------------------------------------------
+ */
 
 namespace app\wechat\controller;
 
@@ -23,22 +25,24 @@ use app\wechat\model\WechatFansTags;
 use app\wechat\service\WechatService;
 use think\admin\Controller;
 use think\admin\helper\QueryHelper;
+use think\db\exception\DataNotFoundException;
+use think\db\exception\DbException;
+use think\db\exception\ModelNotFoundException;
 use think\exception\HttpResponseException;
 
 /**
- * 微信用户管理
+ * 微信用户管理.
  * @class Fans
- * @package app\wechat\controller
  */
 class Fans extends Controller
 {
     /**
-     * 微信用户管理
+     * 微信用户管理.
      * @auth true
      * @menu true
-     * @throws \think\db\exception\DataNotFoundException
-     * @throws \think\db\exception\DbException
-     * @throws \think\db\exception\ModelNotFoundException
+     * @throws DataNotFoundException
+     * @throws DbException
+     * @throws ModelNotFoundException
      */
     public function index()
     {
@@ -51,33 +55,24 @@ class Fans extends Controller
     }
 
     /**
-     * 列表数据处理
-     * @param array $data
-     */
-    protected function _index_page_filter(array &$data)
-    {
-        foreach ($data as &$vo) $vo['subscribe_at'] = format_datetime($vo['subscribe_at']);
-    }
-
-    /**
-     * 同步用户数据
+     * 同步用户数据.
      * @auth true
      */
     public function sync()
     {
         sysoplog('微信授权配置', '创建粉丝用户同步任务');
-        $this->_queue('同步微信用户数据', "xadmin:fansall");
+        $this->_queue('同步微信用户数据', 'xadmin:fansall');
     }
 
     /**
-     * 黑名单列表操作
+     * 黑名单列表操作.
      * @auth true
      */
     public function black()
     {
         try {
             $data = $this->_vali([
-                'black.require'  => '操作类型不能为空！',
+                'black.require' => '操作类型不能为空！',
                 'openid.require' => '操作用户不能为空！',
             ]);
             foreach (array_chunk(str2arr($data['openid']), 20) as $openids) {
@@ -102,7 +97,7 @@ class Fans extends Controller
     }
 
     /**
-     * 删除用户信息
+     * 删除用户信息.
      * @auth true
      */
     public function remove()
@@ -111,7 +106,7 @@ class Fans extends Controller
     }
 
     /**
-     * 清空用户数据
+     * 清空用户数据.
      * @auth true
      */
     public function truncate()
@@ -121,9 +116,19 @@ class Fans extends Controller
             WechatFansTags::mQuery()->empty();
             $this->success('清空用户数据成功！');
         } catch (HttpResponseException $exception) {
-            throw  $exception;
+            throw $exception;
         } catch (\Exception $exception) {
             $this->error("清空用户数据失败，{$exception->getMessage()}");
+        }
+    }
+
+    /**
+     * 列表数据处理.
+     */
+    protected function _index_page_filter(array &$data)
+    {
+        foreach ($data as &$vo) {
+            $vo['subscribe_at'] = format_datetime($vo['subscribe_at']);
         }
     }
 }

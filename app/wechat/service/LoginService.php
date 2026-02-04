@@ -1,38 +1,42 @@
 <?php
 
-// +----------------------------------------------------------------------
-// | Wechat Plugin for ThinkAdmin
-// +----------------------------------------------------------------------
-// | 版权所有 2014~2025 Anyon <zoujingli@qq.com>
-// +----------------------------------------------------------------------
-// | 官方网站: https://thinkadmin.top
-// +----------------------------------------------------------------------
-// | 开源协议 ( https://mit-license.org )
-// | 免责声明 ( https://thinkadmin.top/disclaimer )
-// +----------------------------------------------------------------------
-// | gitee 代码仓库：https://gitee.com/zoujingli/think-plugs-wechat
-// | github 代码仓库：https://github.com/zoujingli/think-plugs-wechat
-// +----------------------------------------------------------------------
-
-declare (strict_types=1);
+declare(strict_types=1);
+/**
+ * +----------------------------------------------------------------------
+ * | ThinkAdmin Plugin for ThinkAdmin
+ * +----------------------------------------------------------------------
+ * | 版权所有 2014~2026 ThinkAdmin [ thinkadmin.top ]
+ * +----------------------------------------------------------------------
+ * | 官方网站: https://thinkadmin.top
+ * +----------------------------------------------------------------------
+ * | 开源协议 ( https://mit-license.org )
+ * | 免责声明 ( https://thinkadmin.top/disclaimer )
+ * | 会员特权 ( https://thinkadmin.top/vip-introduce )
+ * +----------------------------------------------------------------------
+ * | gitee 代码仓库：https://gitee.com/zoujingli/ThinkAdmin
+ * | github 代码仓库：https://github.com/zoujingli/ThinkAdmin
+ * +----------------------------------------------------------------------
+ */
 
 namespace app\wechat\service;
 
+use think\admin\Exception;
 use think\admin\Library;
+use WeChat\Exceptions\InvalidResponseException;
+use WeChat\Exceptions\LocalCacheException;
 
 /**
  * 微信扫码登录服务
  * @class LoginService
- * @package app\wechat\service
  */
 class LoginService
 {
     private const expire = 3600;
+
     private const prefix = 'wxlogin';
 
     /**
-     * 生成请求编号
-     * @return string
+     * 生成请求编号.
      */
     public static function gcode(): string
     {
@@ -42,7 +46,6 @@ class LoginService
     /**
      * 生成授权码
      * @param string $code 请求编号
-     * @return string
      */
     public static function gauth(string $code): string
     {
@@ -52,9 +55,8 @@ class LoginService
     /**
      * 生成授权二维码
      * @param string $code 请求编号
-     * @param integer $mode 授权模式
-     * @param boolean|string $domain
-     * @return array
+     * @param int $mode 授权模式
+     * @param bool|string $domain
      */
     public static function qrcode(string $code, int $mode = 0, $domain = true): array
     {
@@ -64,13 +66,12 @@ class LoginService
     }
 
     /**
-     * 发起网页授权处理
+     * 发起网页授权处理.
      * @param string $auth 授权编号
-     * @param integer $mode 授权模式
-     * @return boolean
-     * @throws \WeChat\Exceptions\InvalidResponseException
-     * @throws \WeChat\Exceptions\LocalCacheException
-     * @throws \think\admin\Exception
+     * @param int $mode 授权模式
+     * @throws InvalidResponseException
+     * @throws LocalCacheException
+     * @throws Exception
      */
     public static function oauth(string $auth = '', int $mode = 0): bool
     {
@@ -86,9 +87,8 @@ class LoginService
     }
 
     /**
-     * 检查是否授权
+     * 检查是否授权.
      * @param string $code 请求编号
-     * @return ?array
      */
     public static function query(string $code): ?array
     {
@@ -96,9 +96,7 @@ class LoginService
     }
 
     /**
-     * 删除授权缓存
-     * @param string $code
-     * @return bool
+     * 删除授权缓存.
      */
     public static function remove(string $code): bool
     {

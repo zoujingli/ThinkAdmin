@@ -1,5 +1,7 @@
 <?php
 
+use think\facade\App;
+
 if (!function_exists('parse_padding')) {
     function parse_padding($source)
     {
@@ -212,7 +214,7 @@ if (!function_exists('echo_value')) {
             box-sizing: border-box;
             font-size: 14px;
             font-family: "Century Gothic", Consolas, "Liberation Mono", Courier, Verdana, serif;
-            padding-left: <?php echo (isset($source) && ! empty($source)) ? parse_padding($source): 40;?> px;
+            padding-left: <?php echo (isset($source) && !empty($source)) ? parse_padding($source) : 40; ?> px;
         }
 
         .exception .source-code pre li {
@@ -372,7 +374,7 @@ if (!function_exists('echo_value')) {
     </style>
 </head>
 <body>
-<?php if (\think\facade\App::isDebug()) { ?>
+<?php if (App::isDebug()) { ?>
     <?php foreach ($traces as $index => $trace) { ?>
         <div class="exception">
             <div class="message">
@@ -391,7 +393,7 @@ if (!function_exists('echo_value')) {
                 </div>
             <?php } ?>
             <div class="trace">
-                <h2 data-expand="<?php echo 0 === $index ? '1' : '0'; ?>">Call Stack</h2>
+                <h2 data-expand="<?php echo $index === 0 ? '1' : '0'; ?>">Call Stack</h2>
                 <ol>
                     <li><?php echo sprintf('in %s', parse_file($trace['file'], $trace['line'])); ?></li>
                     <?php foreach ((array)$trace['trace'] as $value) { ?>
@@ -402,11 +404,11 @@ if (!function_exists('echo_value')) {
                                 echo sprintf('at %s%s%s(%s)', isset($value['class']) ? parse_class($value['class']) : '', $value['type'] ?? '', $value['function'], isset($value['args']) ? parse_args($value['args']) : '');
                             }
 
-                            // Show line
-                            if (isset($value['file']) && isset($value['line'])) {
-                                echo sprintf(' in %s', parse_file($value['file'], $value['line']));
-                            }
-                            ?>
+                        // Show line
+                        if (isset($value['file'], $value['line'])) {
+                            echo sprintf(' in %s', parse_file($value['file'], $value['line']));
+                        }
+                        ?>
                         </li>
                     <?php } ?>
                 </ol>
@@ -465,7 +467,7 @@ if (!function_exists('echo_value')) {
     </div>
 <?php } ?>
 
-<?php if (\think\facade\App::isDebug()) { ?>
+<?php if (App::isDebug()) { ?>
     <script>
         function $(selector, node) {
             var elements;

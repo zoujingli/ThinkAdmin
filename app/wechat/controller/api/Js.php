@@ -1,31 +1,35 @@
 <?php
 
-// +----------------------------------------------------------------------
-// | Wechat Plugin for ThinkAdmin
-// +----------------------------------------------------------------------
-// | 版权所有 2014~2025 Anyon <zoujingli@qq.com>
-// +----------------------------------------------------------------------
-// | 官方网站: https://thinkadmin.top
-// +----------------------------------------------------------------------
-// | 开源协议 ( https://mit-license.org )
-// | 免责声明 ( https://thinkadmin.top/disclaimer )
-// +----------------------------------------------------------------------
-// | gitee 代码仓库：https://gitee.com/zoujingli/think-plugs-wechat
-// | github 代码仓库：https://github.com/zoujingli/think-plugs-wechat
-// +----------------------------------------------------------------------
-
-declare (strict_types=1);
+declare(strict_types=1);
+/**
+ * +----------------------------------------------------------------------
+ * | ThinkAdmin Plugin for ThinkAdmin
+ * +----------------------------------------------------------------------
+ * | 版权所有 2014~2026 ThinkAdmin [ thinkadmin.top ]
+ * +----------------------------------------------------------------------
+ * | 官方网站: https://thinkadmin.top
+ * +----------------------------------------------------------------------
+ * | 开源协议 ( https://mit-license.org )
+ * | 免责声明 ( https://thinkadmin.top/disclaimer )
+ * | 会员特权 ( https://thinkadmin.top/vip-introduce )
+ * +----------------------------------------------------------------------
+ * | gitee 代码仓库：https://gitee.com/zoujingli/ThinkAdmin
+ * | github 代码仓库：https://github.com/zoujingli/ThinkAdmin
+ * +----------------------------------------------------------------------
+ */
 
 namespace app\wechat\controller\api;
 
 use app\wechat\service\WechatService;
 use think\admin\Controller;
+use think\admin\Exception;
 use think\Response;
+use WeChat\Exceptions\InvalidResponseException;
+use WeChat\Exceptions\LocalCacheException;
 
 /**
- * 前端JS获取控制器
+ * 前端JS获取控制器.
  * @class Js
- * @package app\wechat\controller\api
  */
 class Js extends Controller
 {
@@ -39,11 +43,10 @@ class Js extends Controller
     protected $fansinfo;
 
     /**
-     * 生成网页授权的JS内容
-     * @return \think\Response
-     * @throws \WeChat\Exceptions\InvalidResponseException
-     * @throws \WeChat\Exceptions\LocalCacheException
-     * @throws \think\admin\Exception
+     * 生成网页授权的JS内容.
+     * @throws InvalidResponseException
+     * @throws LocalCacheException
+     * @throws Exception
      */
     public function index(): Response
     {
@@ -66,10 +69,10 @@ class Js extends Controller
     }
 
     /**
-     * 给指定地址创建签名参数
-     * @throws \WeChat\Exceptions\InvalidResponseException
-     * @throws \WeChat\Exceptions\LocalCacheException
-     * @throws \think\admin\Exception
+     * 给指定地址创建签名参数.
+     * @throws InvalidResponseException
+     * @throws LocalCacheException
+     * @throws Exception
      */
     public function sdk()
     {
@@ -78,8 +81,7 @@ class Js extends Controller
     }
 
     /**
-     * 生成授权内容
-     * @return string
+     * 生成授权内容.
      */
     private function _buildContent(): string
     {

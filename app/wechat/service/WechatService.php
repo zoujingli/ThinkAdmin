@@ -1,6 +1,22 @@
 <?php
 
-// +----------------------------------------------------------------------
+declare(strict_types=1);
+/**
+ * +----------------------------------------------------------------------
+ * | ThinkAdmin Plugin for ThinkAdmin
+ * +----------------------------------------------------------------------
+ * | 版权所有 2014~2026 ThinkAdmin [ thinkadmin.top ]
+ * +----------------------------------------------------------------------
+ * | 官方网站: https://thinkadmin.top
+ * +----------------------------------------------------------------------
+ * | 开源协议 ( https://mit-license.org )
+ * | 免责声明 ( https://thinkadmin.top/disclaimer )
+ * | 会员特权 ( https://thinkadmin.top/vip-introduce )
+ * +----------------------------------------------------------------------
+ * | gitee 代码仓库：https://gitee.com/zoujingli/ThinkAdmin
+ * | github 代码仓库：https://github.com/zoujingli/ThinkAdmin
+ * +----------------------------------------------------------------------
+ */
 // | Wechat Plugin for ThinkAdmin
 // +----------------------------------------------------------------------
 // | 版权所有 2014~2025 Anyon <zoujingli@qq.com>
@@ -10,8 +26,7 @@
 // | 开源协议 ( https://mit-license.org )
 // | 免责声明 ( https://thinkadmin.top/disclaimer )
 // +----------------------------------------------------------------------
-// | gitee 代码仓库：https://gitee.com/zoujingli/think-plugs-wechat
-// | github 代码仓库：https://github.com/zoujingli/think-plugs-wechat
+// || github 代码仓库：https://github.com/zoujingli/think-plugs-wechat
 // +----------------------------------------------------------------------
 
 namespace app\wechat\service;
@@ -23,11 +38,12 @@ use think\admin\Service;
 use think\admin\storage\LocalStorage;
 use think\exception\HttpResponseException;
 use think\Response;
+use WeChat\Exceptions\InvalidResponseException;
+use WeChat\Exceptions\LocalCacheException;
 
 /**
  * 微信接口调度服务
  * @class WechatService
- * @package app\wechat\serivce
  *
  * @method \WeChat\Card WeChatCard() static 微信卡券管理
  * @method \WeChat\Custom WeChatCustom() static 微信客服消息
@@ -56,7 +72,7 @@ use think\Response;
  * @method \WeMini\Domain WeMiniDomain() static 小程序域名管理
  * @method \WeMini\Tester WeMinitester() static 小程序成员管理
  * @method \WeMini\User WeMiniUser() static 小程序帐号管理
- * --------------------
+ *                                   --------------------
  * @method \WeMini\Crypt WeMiniCrypt() static 小程序数据加密处理
  * @method \WeMini\Delivery WeMiniDelivery() static 小程序即时配送
  * @method \WeMini\Guide WeMiniGuide() static 小程序导购助手
@@ -103,13 +119,10 @@ use think\Response;
  */
 class WechatService extends Service
 {
-
     /**
      * 静态初始化对象
-     * @param string $name
-     * @param array $arguments
      * @return mixed
-     * @throws \think\admin\Exception
+     * @throws Exception
      */
     public static function __callStatic(string $name, array $arguments)
     {
@@ -120,9 +133,8 @@ class WechatService extends Service
         if (sysconf('wechat.type') === 'api' || in_array($type, ['WePay', 'WePayV3'])) {
             if (class_exists($class)) {
                 return new $class($type === 'WeMini' ? static::getWxconf() : static::getConfig());
-            } else {
-                throw new Exception("抱歉，接口模式无法实例 {$class} 对象！");
             }
+            throw new Exception("抱歉，接口模式无法实例 {$class} 对象！");
         } else {
             [$appid, $appkey] = [sysconf('wechat.thr_appid'), sysconf('wechat.thr_appkey')];
             $data = ['class' => $name, 'appid' => $appid, 'time' => time(), 'nostr' => uniqid()];
@@ -135,87 +147,66 @@ class WechatService extends Service
     }
 
     /**
-     * 解析调用对象名称
-     * @param string $name
-     * @return array
-     */
-    private static function parseName(string $name): array
-    {
-        foreach (['WeChat', 'WeMini', 'WeOpen', 'WePayV3', 'WePay', 'ThinkService'] as $type) {
-            if (strpos($name, $type) === 0) {
-                [, $base] = explode($type, $name);
-                return [$type, $base, "\\{$type}\\{$base}"];
-            }
-        }
-        return ['-', '-', $name];
-    }
-
-    /**
-     * 获取当前微信APPID
-     * @return string
-     * @throws \think\admin\Exception
+     * 获取当前微信APPID.
+     * @throws Exception
      */
     public static function getAppid(): string
     {
         if (static::getType() === 'api') {
             return sysconf('wechat.appid');
-        } else {
-            return sysconf('wechat.thr_appid');
         }
+        return sysconf('wechat.thr_appid');
     }
 
     /**
-     * 获取接口授权模式
-     * @return string
-     * @throws \think\admin\Exception
+     * 获取接口授权模式.
+     * @throws Exception
      */
     public static function getType(): string
     {
         $type = strtolower(sysconf('wechat.type'));
-        if (in_array($type, ['api', 'thr'])) return $type;
+        if (in_array($type, ['api', 'thr'])) {
+            return $type;
+        }
         throw new Exception('请在后台配置微信对接授权模式');
     }
 
     /**
-     * 获取公众号配置参数
-     * @param boolean $ispay 获取支付参数
-     * @return array
-     * @throws \think\admin\Exception
+     * 获取公众号配置参数.
+     * @param bool $ispay 获取支付参数
+     * @throws Exception
      */
     public static function getConfig(bool $ispay = false): array
     {
         $config = [
-            'appid'          => static::getAppid(),
-            'token'          => sysconf('wechat.token'),
-            'appsecret'      => sysconf('wechat.appsecret'),
+            'appid' => static::getAppid(),
+            'token' => sysconf('wechat.token'),
+            'appsecret' => sysconf('wechat.appsecret'),
             'encodingaeskey' => sysconf('wechat.encodingaeskey'),
-            'cache_path'     => syspath('runtime/wechat'),
-        ];
-        return $ispay ? static::withWxpayCert($config) : $config;
-    }
-
-    /**
-     * 获取小程序配置参数
-     * @param boolean $ispay 获取支付参数
-     * @return array
-     * @throws \think\admin\Exception
-     */
-    public static function getWxconf(bool $ispay = false): array
-    {
-        $wxapp = sysdata('plugin.wechat.wxapp');
-        $config = [
-            'appid'      => $wxapp['appid'] ?? '',
-            'appsecret'  => $wxapp['appkey'] ?? '',
             'cache_path' => syspath('runtime/wechat'),
         ];
         return $ispay ? static::withWxpayCert($config) : $config;
     }
 
     /**
-     * 处理支付证书配置
-     * @param array $options
-     * @return array
-     * @throws \think\admin\Exception
+     * 获取小程序配置参数.
+     * @param bool $ispay 获取支付参数
+     * @throws Exception
+     */
+    public static function getWxconf(bool $ispay = false): array
+    {
+        $wxapp = sysdata('plugin.wechat.wxapp');
+        $config = [
+            'appid' => $wxapp['appid'] ?? '',
+            'appsecret' => $wxapp['appkey'] ?? '',
+            'cache_path' => syspath('runtime/wechat'),
+        ];
+        return $ispay ? static::withWxpayCert($config) : $config;
+    }
+
+    /**
+     * 处理支付证书配置.
+     * @throws Exception
      */
     public static function withWxpayCert(array $options): array
     {
@@ -224,8 +215,8 @@ class WechatService extends Service
         if (empty($data['mch_id'])) {
             throw new Exception('无效的支付配置！');
         }
-        $name1 = sprintf("wxpay/%s_%s_cer.pem", $data['mch_id'], md5($data['ssl_cer_text']));
-        $name2 = sprintf("wxpay/%s_%s_key.pem", $data['mch_id'], md5($data['ssl_key_text']));
+        $name1 = sprintf('wxpay/%s_%s_cer.pem', $data['mch_id'], md5($data['ssl_cer_text']));
+        $name2 = sprintf('wxpay/%s_%s_key.pem', $data['mch_id'], md5($data['ssl_key_text']));
         $local = LocalStorage::instance();
         if ($local->has($name1, true) && $local->has($name2, true)) {
             $sslCer = $local->path($name1, true);
@@ -247,8 +238,7 @@ class WechatService extends Service
     }
 
     /**
-     * 获取会话名称
-     * @return string
+     * 获取会话名称.
      */
     public static function getSsid(): string
     {
@@ -258,14 +248,13 @@ class WechatService extends Service
     }
 
     /**
-     * 通过网页授权获取粉丝信息
+     * 通过网页授权获取粉丝信息.
      * @param string $source 回跳URL地址
-     * @param integer $isfull 获取资料模式
-     * @param boolean $redirect 是否直接跳转
-     * @return array
-     * @throws \WeChat\Exceptions\InvalidResponseException
-     * @throws \WeChat\Exceptions\LocalCacheException
-     * @throws \think\admin\Exception
+     * @param int $isfull 获取资料模式
+     * @param bool $redirect 是否直接跳转
+     * @throws InvalidResponseException
+     * @throws LocalCacheException
+     * @throws Exception
      */
     public static function getWebOauthInfo(string $source, int $isfull = 0, bool $redirect = true): array
     {
@@ -280,7 +269,7 @@ class WechatService extends Service
             // 解析 GET 参数
             parse_str(parse_url($source, PHP_URL_QUERY), $params);
             $getVars = [
-                'code'  => $params['code'] ?? input('code', ''),
+                'code' => $params['code'] ?? input('code', ''),
                 'rcode' => $params['rcode'] ?? input('rcode', ''),
                 'state' => $params['state'] ?? input('state', ''),
             ];
@@ -290,7 +279,8 @@ class WechatService extends Service
                 $location = strstr("{$source}?", '?', true) . '?' . http_build_query($params);
                 $oauthurl = $wechat->getOauthRedirect($location, $appid, $isfull ? 'snsapi_userinfo' : 'snsapi_base');
                 throw new HttpResponseException(static::createRedirect($oauthurl, $redirect));
-            } elseif (($token = $wechat->getOauthAccessToken($getVars['code'])) && isset($token['openid'])) {
+            }
+            if (($token = $wechat->getOauthAccessToken($getVars['code'])) && isset($token['openid'])) {
                 $openid = $token['openid'];
                 // 如果是虚拟账号，不保存会话信息，下次重新授权
                 if (empty($token['is_snapshotuser'])) {
@@ -311,11 +301,11 @@ class WechatService extends Service
             }
             if ($getVars['rcode']) {
                 throw new HttpResponseException(static::createRedirect(debase64url($getVars['rcode']), $redirect));
-            } elseif ((empty($isfull) && !empty($openid)) || (!empty($isfull) && !empty($openid) && !empty($userinfo))) {
-                return ['openid' => $openid, 'fansinfo' => $userinfo];
-            } else {
-                throw new Exception('Query params [rcode] not find.');
             }
+            if ((empty($isfull) && !empty($openid)) || (!empty($isfull) && !empty($openid) && !empty($userinfo))) {
+                return ['openid' => $openid, 'fansinfo' => $userinfo];
+            }
+            throw new Exception('Query params [rcode] not find.');
         } else {
             $result = static::ThinkServiceConfig()->oauth(self::getSsid(), $source, $isfull);
             [$openid, $userinfo] = [$result['openid'] ?? '', $result['fans'] ?? []];
@@ -333,34 +323,45 @@ class WechatService extends Service
     }
 
     /**
-     * 网页授权链接跳转
-     * @param string $location 跳转链接
-     * @param boolean $redirect 强制跳转
-     * @return \think\Response
-     */
-    private static function createRedirect(string $location, bool $redirect = true): Response
-    {
-        return $redirect ? redirect($location) : response(join(";\n", [
-            sprintf("sessionStorage.setItem('wechat.session','%s')", self::getSsid()),
-            sprintf("location.replace('%s')", $location), ''
-        ]));
-    }
-
-    /**
-     * 获取微信网页JSSDK签名参数
+     * 获取微信网页JSSDK签名参数.
      * @param null|string $location 签名地址
-     * @return array
-     * @throws \WeChat\Exceptions\InvalidResponseException
-     * @throws \WeChat\Exceptions\LocalCacheException
-     * @throws \think\admin\Exception
+     * @throws InvalidResponseException
+     * @throws LocalCacheException
+     * @throws Exception
      */
     public static function getWebJssdkSign(?string $location = null): array
     {
         $location = $location ?: Library::$sapp->request->url(true);
         if (static::getType() === 'api') {
             return static::WeChatScript()->getJsSign($location);
-        } else {
-            return static::ThinkServiceConfig()->jsSign($location);
         }
+        return static::ThinkServiceConfig()->jsSign($location);
+    }
+
+    /**
+     * 解析调用对象名称.
+     */
+    private static function parseName(string $name): array
+    {
+        foreach (['WeChat', 'WeMini', 'WeOpen', 'WePayV3', 'WePay', 'ThinkService'] as $type) {
+            if (strpos($name, $type) === 0) {
+                [, $base] = explode($type, $name);
+                return [$type, $base, "\\{$type}\\{$base}"];
+            }
+        }
+        return ['-', '-', $name];
+    }
+
+    /**
+     * 网页授权链接跳转.
+     * @param string $location 跳转链接
+     * @param bool $redirect 强制跳转
+     */
+    private static function createRedirect(string $location, bool $redirect = true): Response
+    {
+        return $redirect ? redirect($location) : response(join(";\n", [
+            sprintf("sessionStorage.setItem('wechat.session','%s')", self::getSsid()),
+            sprintf("location.replace('%s')", $location), '',
+        ]));
     }
 }

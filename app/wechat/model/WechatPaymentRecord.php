@@ -1,20 +1,22 @@
 <?php
 
-// +----------------------------------------------------------------------
-// | Wechat Plugin for ThinkAdmin
-// +----------------------------------------------------------------------
-// | 版权所有 2014~2025 Anyon <zoujingli@qq.com>
-// +----------------------------------------------------------------------
-// | 官方网站: https://thinkadmin.top
-// +----------------------------------------------------------------------
-// | 开源协议 ( https://mit-license.org )
-// | 免责声明 ( https://thinkadmin.top/disclaimer )
-// +----------------------------------------------------------------------
-// | gitee 代码仓库：https://gitee.com/zoujingli/think-plugs-wechat
-// | github 代码仓库：https://github.com/zoujingli/think-plugs-wechat
-// +----------------------------------------------------------------------
-
-declare (strict_types=1);
+declare(strict_types=1);
+/**
+ * +----------------------------------------------------------------------
+ * | ThinkAdmin Plugin for ThinkAdmin
+ * +----------------------------------------------------------------------
+ * | 版权所有 2014~2026 ThinkAdmin [ thinkadmin.top ]
+ * +----------------------------------------------------------------------
+ * | 官方网站: https://thinkadmin.top
+ * +----------------------------------------------------------------------
+ * | 开源协议 ( https://mit-license.org )
+ * | 免责声明 ( https://thinkadmin.top/disclaimer )
+ * | 会员特权 ( https://thinkadmin.top/vip-introduce )
+ * +----------------------------------------------------------------------
+ * | gitee 代码仓库：https://gitee.com/zoujingli/ThinkAdmin
+ * | github 代码仓库：https://github.com/zoujingli/ThinkAdmin
+ * +----------------------------------------------------------------------
+ */
 
 namespace app\wechat\model;
 
@@ -23,7 +25,7 @@ use think\admin\Model;
 use think\model\relation\HasOne;
 
 /**
- * 微信支付行为模型
+ * 微信支付行为模型.
  *
  * @property float $order_amount 原订单金额
  * @property float $payment_amount 实际到账金额
@@ -44,16 +46,14 @@ use think\model\relation\HasOne;
  * @property string $payment_trade 平台交易编号
  * @property string $type 交易方式
  * @property string $update_time 更新时间
- * @property-read \app\wechat\model\WechatFans $bind_fans
- * @property-read \app\wechat\model\WechatFans $fans
+ * @property WechatFans $bind_fans
+ * @property WechatFans $fans
  * @class WechatPaymentRecord
- * @package app\wechat\model
  */
 class WechatPaymentRecord extends Model
 {
     /**
-     * 关联用户粉丝数据
-     * @return \think\model\relation\HasOne
+     * 关联用户粉丝数据.
      */
     public function fans(): HasOne
     {
@@ -61,21 +61,19 @@ class WechatPaymentRecord extends Model
     }
 
     /**
-     * 绑定用户粉丝数据
-     * @return \think\model\relation\HasOne
+     * 绑定用户粉丝数据.
      */
     public function bindFans(): HasOne
     {
         return $this->fans()->bind([
-            'fans_headimg'  => 'headimgurl',
+            'fans_headimg' => 'headimgurl',
             'fans_nickname' => 'nickname',
         ]);
     }
 
     /**
-     * 格式化输出时间格式
+     * 格式化输出时间格式.
      * @param mixed $value
-     * @return string
      */
     public function getCreateTimeAttr($value): string
     {
@@ -83,9 +81,8 @@ class WechatPaymentRecord extends Model
     }
 
     /**
-     * 格式化输出时间格式
+     * 格式化输出时间格式.
      * @param mixed $value
-     * @return string
      */
     public function getUpdateTimeAttr($value): string
     {
@@ -93,9 +90,8 @@ class WechatPaymentRecord extends Model
     }
 
     /**
-     * 格式化输出时间格式
+     * 格式化输出时间格式.
      * @param mixed $value
-     * @return string
      */
     public function getPaymentTimeAttr($value): string
     {
@@ -103,8 +99,7 @@ class WechatPaymentRecord extends Model
     }
 
     /**
-     * 转换数据类型
-     * @return array
+     * 转换数据类型.
      */
     public function toArray(): array
     {

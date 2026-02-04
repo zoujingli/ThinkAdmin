@@ -1,20 +1,22 @@
 <?php
 
-// +----------------------------------------------------------------------
-// | Wechat Plugin for ThinkAdmin
-// +----------------------------------------------------------------------
-// | 版权所有 2014~2025 Anyon <zoujingli@qq.com>
-// +----------------------------------------------------------------------
-// | 官方网站: https://thinkadmin.top
-// +----------------------------------------------------------------------
-// | 开源协议 ( https://mit-license.org )
-// | 免责声明 ( https://thinkadmin.top/disclaimer )
-// +----------------------------------------------------------------------
-// | gitee 代码仓库：https://gitee.com/zoujingli/think-plugs-wechat
-// | github 代码仓库：https://github.com/zoujingli/think-plugs-wechat
-// +----------------------------------------------------------------------
-
-declare (strict_types=1);
+declare(strict_types=1);
+/**
+ * +----------------------------------------------------------------------
+ * | ThinkAdmin Plugin for ThinkAdmin
+ * +----------------------------------------------------------------------
+ * | 版权所有 2014~2026 ThinkAdmin [ thinkadmin.top ]
+ * +----------------------------------------------------------------------
+ * | 官方网站: https://thinkadmin.top
+ * +----------------------------------------------------------------------
+ * | 开源协议 ( https://mit-license.org )
+ * | 免责声明 ( https://thinkadmin.top/disclaimer )
+ * | 会员特权 ( https://thinkadmin.top/vip-introduce )
+ * +----------------------------------------------------------------------
+ * | gitee 代码仓库：https://gitee.com/zoujingli/ThinkAdmin
+ * | github 代码仓库：https://github.com/zoujingli/ThinkAdmin
+ * +----------------------------------------------------------------------
+ */
 
 namespace app\wechat\controller;
 
@@ -23,43 +25,47 @@ use app\wechat\service\WechatService;
 use think\admin\Controller;
 use think\admin\helper\QueryHelper;
 use think\admin\service\SystemService;
+use think\db\exception\DataNotFoundException;
+use think\db\exception\DbException;
+use think\db\exception\ModelNotFoundException;
 use think\exception\HttpResponseException;
 
 /**
- * 回复规则管理
+ * 回复规则管理.
  * @class Keys
- * @package app\wechat\controller
  */
 class Keys extends Controller
 {
     /**
-     * 消息类型
+     * 消息类型.
      * @var array
      */
     public $types = [
-        'text'  => '文字', 'news' => '图文', 'image' => '图片', 'music' => '音乐',
+        'text' => '文字', 'news' => '图文', 'image' => '图片', 'music' => '音乐',
         'video' => '视频', 'voice' => '语音', 'customservice' => '转客服',
     ];
 
     /**
-     * 回复规则管理
+     * 回复规则管理.
      * @auth true
      * @menu true
-     * @throws \think\db\exception\DataNotFoundException
-     * @throws \think\db\exception\DbException
-     * @throws \think\db\exception\ModelNotFoundException
+     * @throws DataNotFoundException
+     * @throws DbException
+     * @throws ModelNotFoundException
      */
     public function index()
     {
         // 关键字二维码生成
-        if ($this->request->get('action') === 'qrc') try {
-            $wechat = WechatService::WeChatQrcode();
-            $result = $wechat->create($this->request->get('keys', ''));
-            $this->success('生成二维码成功！', "javascript:$.previewImage('{$wechat->url($result['ticket'])}')");
-        } catch (HttpResponseException $exception) {
-            throw $exception;
-        } catch (\Exception $exception) {
-            $this->error("生成二维码失败，请稍候再试！<br> {$exception->getMessage()}");
+        if ($this->request->get('action') === 'qrc') {
+            try {
+                $wechat = WechatService::WeChatQrcode();
+                $result = $wechat->create($this->request->get('keys', ''));
+                $this->success('生成二维码成功！', "javascript:$.previewImage('{$wechat->url($result['ticket'])}')");
+            } catch (HttpResponseException $exception) {
+                throw $exception;
+            } catch (\Exception $exception) {
+                $this->error("生成二维码失败，请稍候再试！<br> {$exception->getMessage()}");
+            }
         }
         // 数据列表分页处理
         $this->type = $this->get['type'] ?? 'index';
@@ -73,19 +79,7 @@ class Keys extends Controller
     }
 
     /**
-     * 列表数据处理
-     * @param array $data
-     */
-    protected function _index_page_filter(array &$data)
-    {
-        foreach ($data as &$vo) {
-            $vo['type'] = $this->types[$vo['type']] ?? $vo['type'];
-            $vo['qrc'] = sysuri('wechat/keys/index') . "?action=qrc&keys={$vo['keys']}";
-        }
-    }
-
-    /**
-     * 添加回复规则
+     * 添加回复规则.
      * @auth true
      */
     public function add()
@@ -95,7 +89,7 @@ class Keys extends Controller
     }
 
     /**
-     * 编辑回复规则
+     * 编辑回复规则.
      * @auth true
      */
     public function edit()
@@ -111,13 +105,13 @@ class Keys extends Controller
     public function state()
     {
         WechatKeys::mSave($this->_vali([
-            'status.in:0,1'  => '状态值范围异常！',
+            'status.in:0,1' => '状态值范围异常！',
             'status.require' => '状态值不能为空！',
         ]));
     }
 
     /**
-     * 删除回复规则
+     * 删除回复规则.
      * @auth true
      */
     public function remove()
@@ -126,7 +120,7 @@ class Keys extends Controller
     }
 
     /**
-     * 配置订阅回复
+     * 配置订阅回复.
      * @auth true
      */
     public function subscribe()
@@ -136,7 +130,7 @@ class Keys extends Controller
     }
 
     /**
-     * 配置默认回复
+     * 配置默认回复.
      * @auth true
      */
     public function defaults()
@@ -146,15 +140,27 @@ class Keys extends Controller
     }
 
     /**
-     * 添加数据处理
-     * @param array $data
-     * @throws \think\db\exception\DbException
+     * 列表数据处理.
+     */
+    protected function _index_page_filter(array &$data)
+    {
+        foreach ($data as &$vo) {
+            $vo['type'] = $this->types[$vo['type']] ?? $vo['type'];
+            $vo['qrc'] = sysuri('wechat/keys/index') . "?action=qrc&keys={$vo['keys']}";
+        }
+    }
+
+    /**
+     * 添加数据处理.
+     * @throws DbException
      */
     protected function _form_filter(array &$data)
     {
         if ($this->request->isPost()) {
             $map = [['keys', '=', $data['keys']], ['id', '<>', $data['id'] ?? 0]];
-            if (WechatKeys::mk()->where($map)->count() > 0) $this->error('关键字已经存在！');
+            if (WechatKeys::mk()->where($map)->count() > 0) {
+                $this->error('关键字已经存在！');
+            }
             $data['content'] = strip_tags($data['content'] ?? '', '<a>');
         } elseif ($this->request->isGet()) {
             $this->defaultImage = SystemService::uri('/static/theme/img/image.png', '__FULL__');

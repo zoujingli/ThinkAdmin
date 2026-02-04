@@ -1,20 +1,22 @@
 <?php
 
-// +----------------------------------------------------------------------
-// | Wechat Plugin for ThinkAdmin
-// +----------------------------------------------------------------------
-// | 版权所有 2014~2025 Anyon <zoujingli@qq.com>
-// +----------------------------------------------------------------------
-// | 官方网站: https://thinkadmin.top
-// +----------------------------------------------------------------------
-// | 开源协议 ( https://mit-license.org )
-// | 免责声明 ( https://thinkadmin.top/disclaimer )
-// +----------------------------------------------------------------------
-// | gitee 代码仓库：https://gitee.com/zoujingli/think-plugs-wechat
-// | github 代码仓库：https://github.com/zoujingli/think-plugs-wechat
-// +----------------------------------------------------------------------
-
-declare (strict_types=1);
+declare(strict_types=1);
+/**
+ * +----------------------------------------------------------------------
+ * | ThinkAdmin Plugin for ThinkAdmin
+ * +----------------------------------------------------------------------
+ * | 版权所有 2014~2026 ThinkAdmin [ thinkadmin.top ]
+ * +----------------------------------------------------------------------
+ * | 官方网站: https://thinkadmin.top
+ * +----------------------------------------------------------------------
+ * | 开源协议 ( https://mit-license.org )
+ * | 免责声明 ( https://thinkadmin.top/disclaimer )
+ * | 会员特权 ( https://thinkadmin.top/vip-introduce )
+ * +----------------------------------------------------------------------
+ * | gitee 代码仓库：https://gitee.com/zoujingli/ThinkAdmin
+ * | github 代码仓库：https://github.com/zoujingli/ThinkAdmin
+ * +----------------------------------------------------------------------
+ */
 
 namespace app\wechat\controller\api;
 
@@ -22,21 +24,24 @@ use app\wechat\service\MediaService;
 use app\wechat\service\PaymentService;
 use app\wechat\service\WechatService;
 use think\admin\Controller;
+use think\admin\Exception;
 use think\admin\extend\CodeExtend;
 use think\Response;
 use WeChat\Contracts\Tools;
+use WeChat\Exceptions\InvalidResponseException;
+use WeChat\Exceptions\LocalCacheException;
 
 /**
- * 微信测试工具
+ * 微信测试工具.
  * @class Test
- * @package app\wechat\controller\api
+ * @internal
+ * @coversNothing
  */
 class Test extends Controller
 {
     /**
      * 微信JSAPI支付二维码
      * @login true
-     * @return \think\Response
      */
     public function jsapiQrc(): Response
     {
@@ -47,7 +52,6 @@ class Test extends Controller
     /**
      * 显示网页授权二维码
      * @login true
-     * @return \think\Response
      */
     public function oauthQrc(): Response
     {
@@ -58,7 +62,6 @@ class Test extends Controller
     /**
      * 显示网页授权二维码
      * @login true
-     * @return \think\Response
      */
     public function jssdkQrc(): Response
     {
@@ -67,9 +70,8 @@ class Test extends Controller
     }
 
     /**
-     * 微信扫码支付模式一二维码显示
+     * 微信扫码支付模式一二维码显示.
      * @login true
-     * @return \think\Response
      */
     public function scanOneQrc(): Response
     {
@@ -80,8 +82,7 @@ class Test extends Controller
     /**
      * 扫码支付模式二测试二维码
      * @login true
-     * @return \think\Response
-     * @throws \think\admin\Exception
+     * @throws Exception
      */
     public function scanTwoQrc(): Response
     {
@@ -100,10 +101,10 @@ class Test extends Controller
     }
 
     /**
-     * 网页授权测试
-     * @throws \WeChat\Exceptions\InvalidResponseException
-     * @throws \WeChat\Exceptions\LocalCacheException
-     * @throws \think\admin\Exception
+     * 网页授权测试.
+     * @throws InvalidResponseException
+     * @throws LocalCacheException
+     * @throws Exception
      */
     public function oauth()
     {
@@ -113,10 +114,10 @@ class Test extends Controller
     }
 
     /**
-     * JSSDK测试
-     * @throws \WeChat\Exceptions\InvalidResponseException
-     * @throws \WeChat\Exceptions\LocalCacheException
-     * @throws \think\admin\Exception
+     * JSSDK测试.
+     * @throws InvalidResponseException
+     * @throws LocalCacheException
+     * @throws Exception
      */
     public function jssdk()
     {
@@ -127,9 +128,8 @@ class Test extends Controller
     /**
      * 微信扫码支付模式一通知处理
      * -- 注意，需要在微信商户配置支付通知地址
-     * @return string
-     * @throws \WeChat\Exceptions\InvalidResponseException
-     * @throws \WeChat\Exceptions\LocalCacheException
+     * @throws InvalidResponseException
+     * @throws LocalCacheException
      */
     public function scanOneNotify(): string
     {
@@ -139,11 +139,11 @@ class Test extends Controller
         p($notify);
         // 微信统一下单处理
         $options = [
-            'body'             => "测试商品，商品ID：{$notify['product_id']}",
-            'total_fee'        => '1',
-            'trade_type'       => 'NATIVE',
-            'notify_url'       => sysuri('wechat/api.test/notify', [], false, true),
-            'out_trade_no'     => CodeExtend::uniqidDate(18),
+            'body' => "测试商品，商品ID：{$notify['product_id']}",
+            'total_fee' => '1',
+            'trade_type' => 'NATIVE',
+            'notify_url' => sysuri('wechat/api.test/notify', [], false, true),
+            'out_trade_no' => CodeExtend::uniqidDate(18),
             'spbill_create_ip' => $this->request->ip(),
         ];
         p('======= 来自扫码支付1统一下单结果 ======');
@@ -151,11 +151,11 @@ class Test extends Controller
         // 回复XML文本
         $result = [
             'return_code' => 'SUCCESS',
-            'return_msg'  => '处理成功',
-            'appid'       => $notify['appid'],
-            'mch_id'      => $notify['mch_id'],
-            'nonce_str'   => Tools::createNoncestr(),
-            'prepay_id'   => $order['prepay_id'],
+            'return_msg' => '处理成功',
+            'appid' => $notify['appid'],
+            'mch_id' => $notify['mch_id'],
+            'nonce_str' => Tools::createNoncestr(),
+            'prepay_id' => $order['prepay_id'],
             'result_code' => 'SUCCESS',
         ];
         $result['sign'] = $pay->getPaySign($result);
@@ -165,17 +165,19 @@ class Test extends Controller
     }
 
     /**
-     * 微信JSAPI支付测试
-     * @return void|string
-     * @throws \WeChat\Exceptions\InvalidResponseException
-     * @throws \WeChat\Exceptions\LocalCacheException
-     * @throws \think\admin\Exception
+     * 微信JSAPI支付测试.
+     * @return string|void
+     * @throws InvalidResponseException
+     * @throws LocalCacheException
+     * @throws Exception
      */
     public function jsapi()
     {
         // 微信用户信息
         $this->user = WechatService::getWebOauthInfo($this->request->url(true));
-        if (empty($this->user['openid'])) return '<h3>网页授权获取OPENID失败！</h3>';
+        if (empty($this->user['openid'])) {
+            return '<h3>网页授权获取OPENID失败！</h3>';
+        }
         // 生成支付参数
         $oCode = CodeExtend::uniqidDate(18, 'TX');
         $this->result = PaymentService::create($this->user['openid'], $oCode, "JSAPI 支付测试 {$oCode}", '0.01', PaymentService::WECHAT_GZH);
@@ -185,9 +187,8 @@ class Test extends Controller
     }
 
     /**
-     * 支付通知接收处理
-     * @return string
-     * @throws \WeChat\Exceptions\InvalidResponseException
+     * 支付通知接收处理.
+     * @throws InvalidResponseException
      */
     public function notify(): string
     {
@@ -197,9 +198,8 @@ class Test extends Controller
     }
 
     /**
-     * 创建二维码响应对应
+     * 创建二维码响应对应.
      * @param string $url 二维码内容
-     * @return \think\Response
      */
     private function _buildQrcResponse(string $url): Response
     {

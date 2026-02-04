@@ -1,20 +1,22 @@
 <?php
 
-// +----------------------------------------------------------------------
-// | Wechat Plugin for ThinkAdmin
-// +----------------------------------------------------------------------
-// | 版权所有 2014~2025 Anyon <zoujingli@qq.com>
-// +----------------------------------------------------------------------
-// | 官方网站: https://thinkadmin.top
-// +----------------------------------------------------------------------
-// | 开源协议 ( https://mit-license.org )
-// | 免责声明 ( https://thinkadmin.top/disclaimer )
-// +----------------------------------------------------------------------
-// | gitee 代码仓库：https://gitee.com/zoujingli/think-plugs-wechat
-// | github 代码仓库：https://github.com/zoujingli/think-plugs-wechat
-// +----------------------------------------------------------------------
-
-declare (strict_types=1);
+declare(strict_types=1);
+/**
+ * +----------------------------------------------------------------------
+ * | ThinkAdmin Plugin for ThinkAdmin
+ * +----------------------------------------------------------------------
+ * | 版权所有 2014~2026 ThinkAdmin [ thinkadmin.top ]
+ * +----------------------------------------------------------------------
+ * | 官方网站: https://thinkadmin.top
+ * +----------------------------------------------------------------------
+ * | 开源协议 ( https://mit-license.org )
+ * | 免责声明 ( https://thinkadmin.top/disclaimer )
+ * | 会员特权 ( https://thinkadmin.top/vip-introduce )
+ * +----------------------------------------------------------------------
+ * | gitee 代码仓库：https://gitee.com/zoujingli/ThinkAdmin
+ * | github 代码仓库：https://github.com/zoujingli/ThinkAdmin
+ * +----------------------------------------------------------------------
+ */
 
 namespace app\wechat\controller;
 
@@ -24,14 +26,13 @@ use think\admin\Controller;
 use think\admin\storage\LocalStorage;
 
 /**
- * 微信授权绑定
+ * 微信授权绑定.
  * @class Config
- * @package app\wechat\controller
  */
 class Config extends Controller
 {
     /**
-     * 微信授权配置
+     * 微信授权配置.
      * @auth true
      * @menu true
      * @throws \think\admin\Exception
@@ -43,7 +44,7 @@ class Config extends Controller
             try {
                 // 生成微信授权链接
                 $source = enbase64url(sysuri('admin/index/index', [], false, true) . '#' . $this->request->url());
-                $authurl = sysconf('wechat.service_authurl|raw') ?: "https://open.cuci.cc/plugin-wechat-service/api.push/auth?source=SOURCE";
+                $authurl = sysconf('wechat.service_authurl|raw') ?: 'https://open.cuci.cc/plugin-wechat-service/api.push/auth?source=SOURCE';
                 $this->authurl = str_replace('source=SOURCE', "source={$source}", $authurl);
                 // 授权成功后的参数保存
                 if (input('?appid') && input('?appkey')) {
@@ -66,11 +67,15 @@ class Config extends Controller
             $this->title = '微信授权配置';
             $this->fetch();
         } else {
-            foreach ($this->request->post() as $k => $v) sysconf($k, $v);
-            if ($this->request->post('wechat.type') === 'thr') try {
-                WechatService::ThinkServiceConfig()->setApiNotifyUri($this->thrNotify);
-            } catch (\Exception $exception) {
-                $this->error($exception->getMessage());
+            foreach ($this->request->post() as $k => $v) {
+                sysconf($k, $v);
+            }
+            if ($this->request->post('wechat.type') === 'thr') {
+                try {
+                    WechatService::ThinkServiceConfig()->setApiNotifyUri($this->thrNotify);
+                } catch (\Exception $exception) {
+                    $this->error($exception->getMessage());
+                }
             }
             sysoplog('微信授权配置', '修改微信授权配置成功');
             $this->success('微信授权修改成功！', admuri('', ['uniqid' => uniqid()]));
@@ -78,7 +83,7 @@ class Config extends Controller
     }
 
     /**
-     * 微信授权测试
+     * 微信授权测试.
      * @auth true
      */
     public function options_test()
@@ -87,14 +92,14 @@ class Config extends Controller
     }
 
     /**
-     * 微信第三方平台接口配置
+     * 微信第三方平台接口配置.
      * @auth true
      * @throws \think\admin\Exception
      */
     public function options_jsonrpc()
     {
         if ($this->request->isGet()) {
-            $authUrl = sysconf('wechat.service_authurl|raw') ?: "https://open.cuci.cc/plugin-wechat-service/api.push/auth?source=SOURCE";
+            $authUrl = sysconf('wechat.service_authurl|raw') ?: 'https://open.cuci.cc/plugin-wechat-service/api.push/auth?source=SOURCE';
             $jsonRpc = sysconf('wechat.service_jsonrpc|raw') ?: 'https://open.cuci.cc/plugin-wechat-service/api.client/jsonrpc?token=TOKEN';
             Builder::mk()
                 ->addTextInput('auth_url', '公众号授权跳转入口', 'Getway', true, '进行微信授权时会跳转到这个页面，由微信管理员扫二维码进行授权。', '^https?://.*?auth.*?source=SOURCE')
@@ -103,7 +108,7 @@ class Config extends Controller
         } else {
             $data = $this->_vali([
                 'auth_url.require' => '授权跳转不能为空！',
-                'json_rpc.require' => '接口地址不能为空！'
+                'json_rpc.require' => '接口地址不能为空！',
             ]);
             sysconf('wechat.service_authurl', $data['auth_url']);
             sysconf('wechat.service_jsonrpc', $data['json_rpc']);
@@ -112,7 +117,7 @@ class Config extends Controller
     }
 
     /**
-     * 绑定小程序
+     * 绑定小程序.
      * @auth true
      * @throws \think\admin\Exception
      */
@@ -127,15 +132,15 @@ class Config extends Controller
                 ->fetch(['vo' => ['appid' => $data['appid'] ?? '', 'appkey' => $data['appkey'] ?? '']]);
         } else {
             sysdata('plugin.wechat.wxapp', $this->_vali([
-                'appid.require'  => '小程序ID不能为空！',
-                'appkey.require' => '小程序密钥不能为空！'
+                'appid.require' => '小程序ID不能为空！',
+                'appkey.require' => '小程序密钥不能为空！',
             ]));
             $this->success('参数保存成功！');
         }
     }
 
     /**
-     * 微信支付配置
+     * 微信支付配置.
      * @auth true
      * @menu true
      * @throws \think\admin\Exception
@@ -150,10 +155,18 @@ class Config extends Controller
             $this->mch_ssl_key = $this->data['mch_ssl_key'] ?? '';
             $this->mch_ssl_p12 = $this->data['mch_ssl_p12'] ?? '';
             $this->mch_ssl_pay = $this->data['mch_ssl_pay'] ?? '';
-            if (!$local->has($this->mch_ssl_cer, true)) $this->mch_ssl_cer = '';
-            if (!$local->has($this->mch_ssl_key, true)) $this->mch_ssl_key = '';
-            if (!$local->has($this->mch_ssl_p12, true)) $this->mch_ssl_p12 = '';
-            if (!$local->has($this->mch_ssl_pay, true)) $this->mch_ssl_pay = '';
+            if (!$local->has($this->mch_ssl_cer, true)) {
+                $this->mch_ssl_cer = '';
+            }
+            if (!$local->has($this->mch_ssl_key, true)) {
+                $this->mch_ssl_key = '';
+            }
+            if (!$local->has($this->mch_ssl_p12, true)) {
+                $this->mch_ssl_p12 = '';
+            }
+            if (!$local->has($this->mch_ssl_pay, true)) {
+                $this->mch_ssl_pay = '';
+            }
             $this->fetch();
         } else {
             $this->error('抱歉，数据提交地址错误！');
@@ -161,7 +174,7 @@ class Config extends Controller
     }
 
     /**
-     * 微信支付修改
+     * 微信支付修改.
      * @auth true
      * @throws \think\admin\Exception
      */
@@ -191,8 +204,8 @@ class Config extends Controller
                     $this->error('商户证书 P12 不能为空！');
                 }
                 if (openssl_pkcs12_read($local->get($wechat['mch_ssl_p12'], true), $certs, $wechat['mch_id'])) {
-                    $name1 = sprintf("wxpay/%s_%s_cer.pem", $wechat['mch_id'], md5($certs['cert']));
-                    $name2 = sprintf("wxpay/%s_%s_key.pem", $wechat['mch_id'], md5($certs['pkey']));
+                    $name1 = sprintf('wxpay/%s_%s_cer.pem', $wechat['mch_id'], md5($certs['cert']));
+                    $name2 = sprintf('wxpay/%s_%s_key.pem', $wechat['mch_id'], md5($certs['pkey']));
                     $wechat['mch_ssl_cer'] = $local->set($name1, $certs['cert'], true)['url'];
                     $wechat['mch_ssl_key'] = $local->set($name2, $certs['pkey'], true)['url'];
                     $wechat['mch_ssl_type'] = 'pem';
@@ -202,14 +215,14 @@ class Config extends Controller
             }
             // 记录文本格式参数，兼容分布式部署
             sysdata('plugin.wechat.payment', [
-                'appid'        => WechatService::getAppid(),
-                'mch_id'       => $wechat['mch_id'],
-                'mch_key'      => $wechat['mch_key'],
-                'mch_v3_key'   => $wechat['mch_v3_key'],
-                'mch_ssl_cer'  => $wechat['mch_ssl_cer'],
-                'mch_ssl_key'  => $wechat['mch_ssl_key'],
-                'mch_ssl_pay'  => $wechat['mch_ssl_pay'],
-                'mch_pay_sid'  => $wechat['mch_pay_sid'] ?? '',
+                'appid' => WechatService::getAppid(),
+                'mch_id' => $wechat['mch_id'],
+                'mch_key' => $wechat['mch_key'],
+                'mch_v3_key' => $wechat['mch_v3_key'],
+                'mch_ssl_cer' => $wechat['mch_ssl_cer'],
+                'mch_ssl_key' => $wechat['mch_ssl_key'],
+                'mch_ssl_pay' => $wechat['mch_ssl_pay'],
+                'mch_pay_sid' => $wechat['mch_pay_sid'] ?? '',
                 'ssl_pay_text' => $local->get($wechat['mch_ssl_pay'], true),
                 'ssl_cer_text' => $local->get($wechat['mch_ssl_cer'], true),
                 'ssl_key_text' => $local->get($wechat['mch_ssl_key'], true),
@@ -225,7 +238,7 @@ class Config extends Controller
     }
 
     /**
-     * 微信支付测试
+     * 微信支付测试.
      * @auth true
      */
     public function payment_test()
