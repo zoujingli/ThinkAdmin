@@ -1,40 +1,83 @@
 define(['md5', 'notify'], function (SparkMD5, Notify, allowMime) {
     allowMime = JSON.parse('{$exts|raw}');
 
+    function readOptionValue($elem, name, fallback) {
+        let value = $elem.attr('data-' + name);
+        if (typeof value === 'undefined' || value === null) value = $elem.data(name);
+        return typeof value === 'undefined' || value === null ? fallback : value;
+    }
+
+    function readOptionBool(value) {
+        if (typeof value === 'boolean') return value;
+        if (typeof value === 'number') return value > 0;
+        return /^(1|true|yes|on)$/i.test(String(value || ''));
+    }
+
+    function normalizePath(path) {
+        return String(path || '').replace(/\\/g, '/').split('/').map(function (part) {
+            return part.replace(/[^\w-]/g, '');
+        }).filter(function (part) {
+            return part.length > 0;
+        }).join('/');
+    }
+
+    function resolveInput($elem) {
+        let input = $elem.data('input');
+        if (input) return $(input);
+        let field = readOptionValue($elem, 'field', '');
+        if (field) {
+            input = $('input[name="' + field + '"]:not([type=file])');
+            $elem.data('input', input.length > 0 ? input.get(0) : null);
+        }
+        return input && input.length ? input : $();
+    }
+
+    function resolveValue($elem, $input, name, fallback) {
+        let value = readOptionValue($elem, name);
+        if ((typeof value === 'undefined' || value === null || value === '') && $input && $input.length) {
+            value = readOptionValue($input, name);
+        }
+        return typeof value === 'undefined' || value === null ? fallback : value;
+    }
+
+    function resolveOption($elem, current) {
+        let option = Object.assign({elem: $elem, exts: [], mimes: []}, current || {});
+        let $input = resolveInput($elem);
+        let types = String(resolveValue($elem, $input, 'type', '') || '');
+        option.elem = $elem;
+        option.input = $input.length ? $input : undefined;
+        option.size = parseInt(resolveValue($elem, $input, 'size', 0)) || 0;
+        option.safe = readOptionBool(resolveValue($elem, $input, 'safe', 0)) ? 1 : 0;
+        option.hide = readOptionBool(resolveValue($elem, $input, 'hload', 0)) ? 1 : 0;
+        option.mult = parseInt(resolveValue($elem, $input, 'multiple', 0)) > 0;
+        option.path = normalizePath(resolveValue($elem, $input, 'path', ''));
+        option.type = option.safe ? 'local' : String(resolveValue($elem, $input, 'uptype', '') || '');
+        option.quality = parseFloat(resolveValue($elem, $input, 'quality', '1.0') || '1.0');
+        option.maxWidth = parseInt(resolveValue($elem, $input, 'max-width', 0)) || 0;
+        option.maxHeight = parseInt(resolveValue($elem, $input, 'max-height', 0)) || 0;
+        option.cutWidth = parseInt(resolveValue($elem, $input, 'cut-width', 0)) || 0;
+        option.cutHeight = parseInt(resolveValue($elem, $input, 'cut-height', 0)) || 0;
+        option.exts = [];
+        option.mimes = [];
+        $(types.split(',')).map(function (i, ext) {
+            ext = $.trim(String(ext || '').toLowerCase());
+            if (allowMime[ext]) option.exts.push(ext), option.mimes.push(allowMime[ext]);
+        });
+        return option;
+    }
+
     function UploadAdapter(elem, done) {
         return new (function (elem, done) {
             let that = this;
 
             /*! 初始化变量 */
-            this.option = {elem: $(elem), exts: [], mimes: []};
-            this.option.size = this.option.elem.data('size') || 0;
-            this.option.safe = this.option.elem.data('safe') ? 1 : 0;
-            this.option.hide = this.option.elem.data('hload') ? 1 : 0;
-            this.option.mult = this.option.elem.data('multiple') > 0;
-            this.option.path = (this.option.elem.data('path') || '').replace(/\W/g, '');
-            this.option.type = this.option.safe ? 'local' : this.option.elem.attr('data-uptype') || '';
-            this.option.quality = parseFloat(this.option.elem.data('quality') || '1.0');
-            this.option.maxWidth = parseInt(this.option.elem.data('max-width') || '0');
-            this.option.maxHeight = parseInt(this.option.elem.data('max-height') || '0');
-            this.option.cutWidth = parseInt(this.option.elem.data('cut-width') || '0');
-            this.option.cutHeight = parseInt(this.option.elem.data('cut-height') || '0');
-
-            /*! 查找表单元素, 如果没有找到将不会自动写值 */
-            if (this.option.elem.data('input')) {
-                this.option.input = $(this.option.elem.data('input'))
-            } else if (this.option.elem.data('field')) {
-                this.option.input = $('input[name="' + this.option.elem.data('field') + '"]:not([type=file])');
-                this.option.elem.data('input', this.option.input.length > 0 ? this.option.input.get(0) : null);
-            }
-
-            /*! 文件选择筛选，使用 MIME 规则过滤文件列表 */
-            $((this.option.elem.data('type') || '').split(',')).map(function (i, e) {
-                if (allowMime[e]) that.option.exts.push(e), that.option.mimes.push(allowMime[e]);
-            });
+            this.option = resolveOption($(elem));
 
             /*! 初始化上传组件 */
             this.adapter = new Adapter(this.option, layui.upload.render({
                 url: '{:url("admin/api.upload/file",[],false,true)}', auto: false, elem: elem, accept: 'file', multiple: this.option.mult, exts: this.option.exts.join('|'), acceptMime: this.option.mimes.join(','), choose: function (obj) {
+                    that.option = resolveOption(that.option.elem, that.option);
+                    that.adapter.config(that.option);
                     obj.items = [], obj.files = obj.pushFile();
                     layui.each(obj.files, function (idx, file) {
                         obj.items.push(file);

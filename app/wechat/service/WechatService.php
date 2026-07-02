@@ -267,7 +267,8 @@ class WechatService extends Service
         }
         if (static::getType() === 'api') {
             // 解析 GET 参数
-            parse_str(parse_url($source, PHP_URL_QUERY), $params);
+            $query = parse_url($source, PHP_URL_QUERY);
+            parse_str(is_string($query) ? $query : '', $params);
             $getVars = [
                 'code' => $params['code'] ?? input('code', ''),
                 'rcode' => $params['rcode'] ?? input('rcode', ''),
