@@ -100,19 +100,29 @@ $(function () {
         };
 
         /*! 获取加载回调 */
-        this.onConfirm.getLoadCallable = function (tabldId, callable) {
+        this.onConfirm.getLoadCallable = function (tabldId, callable, options) {
             typeof callable === 'function' && callable();
-            return tabldId ? function (ret, time) {
+            options = options || {};
+            let errorAlert = options.errorAlert === true || String(options.errorAlert) === 'true';
+            if (!tabldId && !errorAlert) return false;
+            return function (ret, time) {
                 // 单独处理 javascript: 返回内容处理
                 if (typeof ret.data === 'string' && ret.data.indexOf('javascript:') === 0) {
                     $.msg.goto(ret.data)
                 }
-                if (ret.code < 1) return true;
+                if (parseInt(ret.code) < 1) {
+                    if (errorAlert) {
+                        layer.alert(ret.info || ret.msg || '操作失败', {icon: 2, title: '提示', scrollbar: false});
+                        return false;
+                    }
+                    return true;
+                }
+                if (!tabldId) return true;
                 time === 'false' ? $.layTable.reload(tabldId) : $.msg.success(ret.info, time, function () {
                     $.layTable.reload(tabldId);
                 });
                 return false;
-            } : false;
+            };
         };
 
         /*! 读取 data-value & data-rule 并应用到 callable */
@@ -877,7 +887,7 @@ $(function () {
     /*! 注册 data-load 事件行为 */
     $.base.onEvent('click', '[data-load]', function () {
         $.base.applyRuleValue(this, {}, function (data, elem, dset) {
-            $.form.load(dset.load, data, 'get', $.base.onConfirm.getLoadCallable(dset.tableId), true, dset.tips, dset.time);
+            $.form.load(dset.load, data, 'get', $.base.onConfirm.getLoadCallable(dset.tableId, null, {errorAlert: dset.errorAlert}), true, dset.tips, dset.time);
         });
     });
 
@@ -948,7 +958,7 @@ $(function () {
         $.base.applyRuleValue(this, {}, function (data, elem, dset) {
             Object.assign(data, {'_token_': dset.token || dset.csrf || '--'})
             let load = dset.loading !== 'false', tips = typeof load === 'string' ? load : undefined;
-            $.form.load(dset.action, data, dset.method || 'post', $.base.onConfirm.getLoadCallable(dset.tableId), load, tips, dset.time)
+            $.form.load(dset.action, data, dset.method || 'post', $.base.onConfirm.getLoadCallable(dset.tableId, null, {errorAlert: dset.errorAlert}), load, tips, dset.time)
         });
     });
 
