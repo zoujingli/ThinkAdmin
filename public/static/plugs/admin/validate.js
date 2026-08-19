@@ -18,7 +18,14 @@ define(function () {
         this.patterns = {
             qq: '^[1-9][0-9]{4,11}$',
             ip: '^(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$',
-            url: '^https?://([a-zA-Z0-9-]+\\.)+[-_a-zA-Z0-9-]+',
+            url: function (value) {
+                try {
+                    let url = new URL(value);
+                    return /^(http|https):$/.test(url.protocol) && !!url.hostname;
+                } catch (e) {
+                    return false;
+                }
+            },
             phone: '^1[3-9][0-9]{9}$',
             mobile: '^1[3-9][0-9]{9}$',
             email: '^([a-zA-Z0-9_\\.-])+@(([a-zA-Z0-9-])+\\.)+([a-zA-Z0-9]{2,4})+$',
@@ -34,7 +41,7 @@ define(function () {
             pattern = pattern || el.getAttribute('pattern');
             if ((value = value || $.trim($(el).val())) === '') return true;
             if (!(pattern = this.patterns[pattern] || pattern)) return true;
-            return new RegExp(pattern, 'i').test(value);
+            return typeof pattern === 'function' ? pattern.call(this, value, el) : new RegExp(pattern, 'i').test(value);
         };
         this.hasProp = function (el, prop) {
             let attrProp = el.getAttribute(prop);
