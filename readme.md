@@ -780,6 +780,10 @@ A: 检查数据库配置：
 
 如果这个项目对您有帮助，欢迎通过以下方式支持我们：
 
+- **JetBrains 开源支持** - 感谢 JetBrains 通过开源项目支持计划，为 ThinkAdmin 项目维护提供一份 [PhpStorm](https://www.jetbrains.com/phpstorm/) 开源开发许可证，支持项目的非商业开源开发与持续维护。
+
+> 该许可证仅限用于 ThinkAdmin 的非商业开源开发，并仅供项目活跃贡献者使用。
+
 - ⭐ Star 项目
 - 🍴 Fork 项目
 - 📢 分享给更多人
