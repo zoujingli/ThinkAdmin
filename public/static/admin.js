@@ -275,6 +275,7 @@ $(function () {
         this.reInit = function ($dom) {
             layui.form.render() && layui.element.render() && $(window).trigger('scroll');
             $.vali.listen($dom = $dom || $(this.selecter)) && $body.trigger('reInit', $dom);
+            initUploadFiles($dom);
             return $dom.find('[required]').map(function () {
                 this.$parent = $(this).parent();
                 if (this.$parent.is('label')) this.$parent.addClass('label-required-prev'); else this.$parent.prevAll('label.layui-form-label').addClass('label-required-next');
@@ -527,15 +528,46 @@ $(function () {
     /*! 全局文件上传 */
     $.fn.uploadFile = function (callable, initialize) {
         return this.each(function (idx, elem) {
-            if (elem.dataset.inited) return false; else elem.dataset.inited = 'true';
+            if (elem.dataset.inited) return;
+            if (elem.dataset.initing) {
+                if (typeof initialize === 'function') {
+                    $(elem).one('upload.inited', function () {
+                        initialize.call(elem, elem);
+                    });
+                }
+                return;
+            }
+            elem.dataset.initing = 'true';
             elem.dataset.multiple = '|one|btn|'.indexOf(elem.dataset.file || 'one') > -1 ? '0' : '1';
             require(['upload'], function (apply) {
-                apply(elem, callable) && setTimeout(function () {
+                let $elem = $(elem), inited = false;
+                try {
+                    inited = !!apply(elem, callable);
+                } catch (e) {
+                    delete elem.dataset.initing;
+                    throw e;
+                }
+                delete elem.dataset.initing;
+                if (inited) {
+                    elem.dataset.inited = 'true';
+                    $elem.triggerHandler('upload.inited');
                     typeof initialize === 'function' && initialize.call(elem, elem);
-                }, 100);
+                }
+            }, function () {
+                delete elem.dataset.initing;
             });
         });
     };
+
+    function initUploadFiles($dom, force) {
+        return $dom.find('[data-file]').addBack('[data-file]').filter(function () {
+            let $elem = $(this);
+            if (this.dataset.inited || this.dataset.initing) return false;
+            if (/^images?$/.test(this.dataset.file || '')) return false;
+            if ($elem.is('span[data-file]')) return false;
+            return force === true || !!($elem.data('input') || $elem.data('field') || $elem.closest('#ImageDialogUploadLayout').length);
+        }).uploadFile();
+    }
 
     /*! 上传单个视频 */
     $.fn.uploadOneVideo = function () {
@@ -553,6 +585,7 @@ $(function () {
             copyUploadAttrs($in, $bt.find('[data-file]').data('input', this), {
                 'path': '', 'size': 0, 'type': 'mp4', 'uptype': '', 'safe': 0, 'hload': 0, 'quality': '1.0',
             });
+            initUploadFiles($bt, true);
         });
     };
 
@@ -573,6 +606,7 @@ $(function () {
                 'path': '', 'size': 0, 'type': 'gif,png,jpg,jpeg', 'max-width': 0, 'max-height': 0,
                 'cut-width': 0, 'cut-height': 0, 'uptype': '', 'safe': 0, 'hload': 0, 'quality': '1.0',
             });
+            initUploadFiles($bt, true);
         });
     };
 
@@ -588,6 +622,7 @@ $(function () {
             }).on('push', function (evt, src) {
                 ims.push(src), $in.val(ims.join('|')).trigger('change'), showImageContainer([src]);
             }) && (ims.length > 0 && showImageContainer(ims));
+            initUploadFiles($bt, true);
 
             function showImageContainer(srcs) {
                 $(srcs).each(function (idx, src, $img) {
@@ -881,6 +916,7 @@ $(function () {
         // 其他文件上传处理
         this.dataset.inited || $(this).uploadFile(undefined, function () {
             $(this).trigger('upload.start');
+            $(this).triggerHandler('click.lay_upload_start');
         });
     });
 
