@@ -20,6 +20,7 @@ declare(strict_types=1);
 
 namespace app\admin\controller;
 
+use app\admin\service\UploadSecurity;
 use think\admin\Controller;
 use think\admin\Plugin;
 use think\admin\service\AdminService;
@@ -140,10 +141,11 @@ class Config extends Controller
         } else {
             $post = $this->request->post();
             if (!empty($post['storage']['allow_exts'])) {
-                $deny = ['sh', 'asp', 'bat', 'cmd', 'exe', 'php'];
                 $exts = array_unique(str2arr(strtolower($post['storage']['allow_exts'])));
-                if (count(array_intersect($deny, $exts)) > 0) {
-                    $this->error('禁止上传可执行的文件！');
+                foreach ($exts as $extension) {
+                    if (!UploadSecurity::isExtensionSafe($extension)) {
+                        $this->error('禁止上传可执行的文件！');
+                    }
                 }
                 $post['storage']['allow_exts'] = join(',', $exts);
             }

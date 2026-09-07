@@ -20,6 +20,7 @@ declare(strict_types=1);
 
 namespace app\admin\controller\api;
 
+use app\admin\service\UploadSecurity;
 use think\admin\Controller;
 use think\admin\helper\QueryHelper;
 use think\admin\model\SystemFile;
@@ -97,7 +98,8 @@ class Upload extends Controller
         try {
             [$uuid, $unid] = $this->initUnid();
             [$name, $safe] = [input('name'), $this->getSafe()];
-            $data = ['uptype' => $this->getType(), 'safe' => intval($safe), 'key' => input('key')];
+            $key = input('key', '');
+            $data = ['uptype' => $this->getType(), 'safe' => intval($safe), 'key' => is_string($key) ? $key : ''];
             $file = SystemFile::mk()->data($this->_vali([
                 'xkey.value' => $data['key'],
                 'type.value' => $this->getType(),
@@ -113,6 +115,14 @@ class Upload extends Controller
             $mime = $file->getAttr('mime');
             if (empty($mime)) {
                 $file->setAttr('mime', Storage::mime($file->getAttr('xext')));
+            }
+            $extension = $file->getAttr('xext');
+            $extension = is_string($extension) ? strtolower($extension) : '';
+            if (!UploadSecurity::isNameSafe($data['key'], $extension)) {
+                $this->error('文件路径或后缀异常，请重新上传文件！');
+            }
+            if (!UploadSecurity::isExtensionSafe($extension)) {
+                $this->error('文件安全保护，禁止上传可执行文件！');
             }
             $info = Storage::instance($data['uptype'])->info($data['key'], $safe, $name);
             if (isset($info['url'], $info['key'])) {
@@ -204,14 +214,14 @@ class Upload extends Controller
         // 开始处理文件上传
         $file = $this->getFile();
         $extension = strtolower($file->getOriginalExtension());
-        $saveFileName = input('key') ?: Storage::name($file->getPathname(), $extension, '', 'md5_file');
-        // 检查文件名称是否合法
-        if (strpos($saveFileName, '..') !== false) {
-            $this->error('文件路径不能出现跳级操作！');
+        $key = input('key', '');
+        if (!is_string($key) && $key !== '') {
+            $this->error('文件路径或后缀异常，请重新上传文件！');
         }
-        // 检查文件后缀是否被恶意修改
-        if (strtolower(pathinfo(parse_url($saveFileName, PHP_URL_PATH), PATHINFO_EXTENSION)) !== $extension) {
-            $this->error('文件后缀异常，请重新上传文件！');
+        $saveFileName = is_string($key) ? $key : '';
+        $saveFileName = $saveFileName ?: Storage::name($file->getPathname(), $extension, '', 'md5_file');
+        if (!UploadSecurity::isNameSafe($saveFileName, $extension)) {
+            $this->error('文件路径或后缀异常，请重新上传文件！');
         }
         // 屏蔽禁止上传指定后缀的文件
         if (!in_array($extension, str2arr(sysconf('storage.allow_exts|raw')))) {
@@ -221,11 +231,17 @@ class Upload extends Controller
         if (empty($uuid) && $unid > 0 && !in_array($extension, $unexts)) {
             $this->error('文件类型受限，请上传允许的文件类型！');
         }
-        if (in_array($extension, ['sh', 'asp', 'bat', 'cmd', 'exe', 'php'])) {
+        if (!UploadSecurity::isExtensionSafe($extension)) {
             $this->error('文件安全保护，禁止上传可执行文件！');
         }
         try {
             $safeMode = $this->getSafe();
+            if (in_array($extension, ['jpg', 'gif', 'png', 'bmp', 'jpeg', 'wbmp'])) {
+                $imageSize = @getimagesize($file->getPathname());
+                if (!UploadSecurity::isImageSafe($file->getPathname()) || $imageSize === false || $imageSize[0] < 1 || $imageSize[1] < 1) {
+                    $this->error('图片未通过安全检查！');
+                }
+            }
             if (($type = $this->getType()) === 'local') {
                 $local = LocalStorage::instance();
                 $distName = $local->path($saveFileName, $safeMode);
@@ -236,15 +252,6 @@ class Upload extends Controller
                     $file->move(dirname($distName), basename($distName));
                 }
                 $info = $local->info($saveFileName, $safeMode, $file->getOriginalName());
-                if (in_array($extension, ['jpg', 'gif', 'png', 'bmp', 'jpeg', 'wbmp'])) {
-                    if ($this->imgNotSafe($distName) && $local->del($saveFileName)) {
-                        $this->error('图片未通过安全检查！');
-                    }
-                    [$width, $height] = getimagesize($distName);
-                    if (($width < 1 || $height < 1) && $local->del($saveFileName)) {
-                        $this->error('读取图片的尺寸失败！');
-                    }
-                }
             } else {
                 $bina = file_get_contents($file->getPathname());
                 $info = Storage::instance($type)->set($saveFileName, $bina, $safeMode, $file->getOriginalName());
@@ -315,32 +322,5 @@ class Upload extends Controller
         } else {
             return [$uuid, $unid, $exts];
         }
-    }
-
-    /**
-     * 检查图片是否安全.
-     */
-    private function imgNotSafe(string $filename): bool
-    {
-        $source = fopen($filename, 'rb');
-        if (($size = filesize($filename)) > 512) {
-            $hexs = bin2hex(fread($source, 512));
-            fseek($source, $size - 512);
-            $hexs .= bin2hex(fread($source, 512));
-        } else {
-            $hexs = bin2hex(fread($source, $size));
-        }
-        if (is_resource($source)) {
-            fclose($source);
-        }
-        $bins = hex2bin($hexs);
-        /* 匹配十六进制中的 <% ( ) %> 或 <? ( ) ?> 或 <script | /script> */
-        foreach (['<?php ', '<% ', '<script '] as $key) {
-            if (stripos($bins, $key) !== false) {
-                return true;
-            }
-        }
-        $result = preg_match('/(3c25.*?28.*?29.*?253e)|(3c3f.*?28.*?29.*?3f3e)|(3C534352495054)|(2F5343524950543E)|(3C736372697074)|(2F7363726970743E)/is', $hexs);
-        return $result === false || $result > 0;
     }
 }
