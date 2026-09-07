@@ -112,8 +112,8 @@ class News extends Controller
     }
 
     /**
-     * 删除微信图文
-     * auth true.
+     * 删除微信图文.
+     * @auth true
      */
     public function remove()
     {
