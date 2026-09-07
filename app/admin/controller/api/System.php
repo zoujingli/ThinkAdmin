@@ -100,6 +100,7 @@ class System extends Controller
 
     /**
      * 修改富文本编辑器.
+     * @login true
      * @throws \think\admin\Exception
      */
     public function editor()
