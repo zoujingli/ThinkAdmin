@@ -80,6 +80,9 @@ class System extends Controller
      */
     public function debug()
     {
+        if (RuntimeService::check('demo')) {
+            $this->error('演示环境禁止修改系统配置！');
+        }
         if (AdminService::isSuper()) {
             if (input('state')) {
                 RuntimeService::set('product');

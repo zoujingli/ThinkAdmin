@@ -90,6 +90,9 @@ class Config extends Controller
             $this->themes = static::themes;
             $this->fetch();
         } else {
+            if (RuntimeService::check('demo')) {
+                $this->error('演示环境禁止修改系统配置！');
+            }
             $post = $this->request->post();
             // 修改网站后台入口路径
             if (!empty($post['xpath'])) {
@@ -127,6 +130,9 @@ class Config extends Controller
      */
     public function storage()
     {
+        if (!$this->request->isGet() && RuntimeService::check('demo')) {
+            $this->error('演示环境禁止修改系统配置！');
+        }
         $this->_applyFormToken();
         if ($this->request->isGet()) {
             $this->type = input('type', 'local');
