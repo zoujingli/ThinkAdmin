@@ -2,803 +2,459 @@
 
 [![Latest Stable Version](https://poser.pugx.org/zoujingli/thinkadmin/v/stable)](https://packagist.org/packages/zoujingli/thinkadmin)
 [![Total Downloads](https://poser.pugx.org/zoujingli/thinkadmin/downloads)](https://packagist.org/packages/zoujingli/thinkadmin)
-[![Monthly Downloads](https://poser.pugx.org/zoujingli/thinkadmin/d/monthly)](https://poser.pugx.org/zoujingli/thinkadmin)
-[![Daily Downloads](https://poser.pugx.org/zoujingli/thinkadmin/d/daily)](https://poser.pugx.org/zoujingli/thinkadmin)
-[![License](https://poser.pugx.org/zoujingli/thinkadmin/license)](https://packagist.org/packages/zoujingli/thinkadmin)
-[![PHP Version](https://img.shields.io/badge/php-%3E%3D7.1-blue.svg)](https://www.php.net/)
+[![License](https://poser.pugx.org/zoujingli/thinkadmin/license)](license)
+[![PHP Version](https://img.shields.io/badge/php-%3E%3D7.1-blue.svg)](composer.json)
 [![ThinkPHP](https://img.shields.io/badge/ThinkPHP-6%20%7C%208-brightgreen.svg)](https://www.thinkphp.cn/)
 
-基于 **ThinkPHP 6 & 8** 的现代化后台管理系统，采用 **Composer 插件定制**，提供完整的后台管理解决方案。系统遵循 **MIT** 开源协议，专为快速开发而设计，深度定制 Composer 插件，实现专属插件生态管理架构，可将应用模块封装成独立插件包。
+ThinkAdmin 是一套面向 **PHP 开发者**的开源后台开发框架，基于 **ThinkPHP**，提供用户、权限、菜单、表单、文件上传、异步任务和微信管理等常用功能。
 
-## 项目简介
+开发业务后台时，许多基础工作总会反复出现：给同事开账号、限制操作权限、做带筛选的列表、上传图片、处理耗时任务。ThinkAdmin 把这些常用能力和对应的管理页面放在一起，让你从一个可以运行、可以继续扩展的后台开始，把更多时间用在业务规则和功能交付上。
 
-**ThinkAdmin** 是一个功能强大的后台管理系统，基于最新的 **ThinkPHP 6 & 8** 框架开发，专为简化后台管理流程而设计。系统采用现代化的技术栈，提供丰富的功能模块和插件生态，帮助开发者快速构建企业级后台管理系统。
+当前 v6 系列使用 **ThinkLibrary** 提供通用开发能力，通过 **Composer** 管理依赖和插件。默认页面采用 PHP 模板配合 JavaScript 交互的方式组织，熟悉 ThinkPHP 的开发者可以从现有控制器、模型和模板入手，逐步加入自己的业务。
 
-### 核心优势
+[官方网站与开发文档](https://thinkadmin.top) · [在线演示](https://v6.thinkadmin.top) · [版本发布](https://github.com/zoujingli/ThinkAdmin/releases) · [问题反馈](https://github.com/zoujingli/ThinkAdmin/issues)
 
-- **🚀 快速开发** - 基于 ThinkPHP 6 & 8 框架，提供完整的后台管理功能，开箱即用
-- **🔌 插件生态** - 支持 Composer 插件管理，可扩展性强，支持热插拔
-- **⚡ 稳定可靠** - 经过多个项目实践验证，系统稳定，性能优异
-- **🛡️ 安全完善** - 内置 RBAC 权限管理、操作日志、数据加密等安全机制
-- **📚 文档齐全** - 提供完整的开发文档和使用指南，学习成本低
-- **🚀 现代化架构** - 支持多应用模式、异步任务、文件存储等现代特性
+## 目录
 
-### 适用场景
+- [项目特点](#项目特点)
+- [适用场景](#适用场景)
+- [功能概览](#功能概览)
+- [技术与组件](#技术与组件)
+- [环境要求](#环境要求)
+- [快速开始](#快速开始)
+- [配置与部署](#配置与部署)
+- [项目结构](#项目结构)
+- [开发与扩展](#开发与扩展)
+- [常用命令](#常用命令)
+- [常见问题](#常见问题)
+- [交流与贡献](#交流与贡献)
+- [赞助支持](#赞助支持)
+- [支持项目](#支持项目)
+- [开源协议](#开源协议)
 
-- **快速原型开发** - MVP 产品、概念验证、演示系统
-- **企业管理系统** - CRM、ERP、OA、财务系统
-- **SaaS 平台** - 多租户应用、订阅服务、API 管理
-- **学习研究** - 技术学习、框架研究、最佳实践
+## 项目特点
 
-## 在线演示
+- **常用管理功能已经具备。** 系统用户、权限、菜单、参数配置、日志和文件管理都有对应页面，可以作为业务后台的基础部分继续使用。
+- **列表和表单有一致的开发方式。** 查询筛选、分页、表单提交、数据校验和状态更新都有现成封装，做不同业务页面时可以沿用同一套写法。
+- **前后端代码便于对照。** 仓库同时包含控制器和页面模板，遇到筛选、弹窗、上传等需求，可以从一个完整功能中找到服务端和页面端的实现。
+- **按项目需要扩展。** 可以在独立应用中编写业务，也可以把需要重复使用的模块整理成 Composer 插件。是否拆成插件，由项目的复用和维护需要决定。
+- **支持基于源码继续开发和交付。** 项目采用 MIT 许可证，可在遵守许可证的前提下用于个人或商业项目，修改界面与业务代码；第三方组件仍按各自的许可使用。
 
-- **演示地址**: [https://v6.thinkadmin.top](https://v6.thinkadmin.top)
-- **默认账号**: admin
-- **默认密码**: admin
+## 适用场景
 
-## 特性
+ThinkAdmin 更适合需要自行开发业务、又希望复用通用后台能力的项目：
 
-- 🚀 **快速开发** - 基于 ThinkPHP 6 & 8，开箱即用
-- 🔌 **插件生态** - 支持 Composer 插件管理，热插拔
-- 💾 **文件存储** - 支持多种存储方案，文件秒传
-- 🔐 **权限管理** - 基于注解的 RBAC 权限控制
-- ⚡ **异步任务** - 多进程异步任务处理
-- 🛠️ **开发工具** - 丰富的开发工具和内置函数
-- 📱 **响应式** - 基于 LayUI 2.x，支持多设备
-- 🌐 **多语言** - 支持多语言包管理
-- 🔧 **易扩展** - 支持自定义插件开发
+| 项目场景 | 可以复用的部分 | 需要补充的业务 |
+| --- | --- | --- |
+| 企业内部管理 | 账号、权限、菜单、列表、表单和日志 | 客户、订单、审批等具体流程 |
+| 内容与运营后台 | 图文编辑、文件上传、分类字典和状态管理 | 内容模型、审核规则、展示页面 |
+| 微信公众号相关业务 | 粉丝、菜单、图文、回复规则及支付管理基础 | 自己的账号配置、活动逻辑和业务订单 |
+| 项目原型与定制开发 | 已有后台界面、数据操作方式和基础组件 | 行业数据模型、业务规则及交付细节 |
+
+如果你熟悉 PHP / ThinkPHP，希望在已有后台上持续开发自己的系统，可以先通过[在线演示](https://v6.thinkadmin.top)了解操作方式，再结合源码评估是否适合项目。
+
+CRM、ERP、OA、多租户或订阅系统都可以作为业务开发方向，但它们的业务规则、数据隔离和计费逻辑仍需要按项目要求实现。
+
+## 功能概览
+
+| 能力 | 说明 |
+| --- | --- |
+| 后台管理 | 系统用户、权限、菜单、参数配置、数据字典、操作日志和文件管理 |
+| 权限控制 | 基于控制器注解的登录与权限校验，配合菜单、角色授权控制后台访问 |
+| 数据操作 | 查询筛选、分页、表单处理、输入校验、状态更新和删除等通用封装 |
+| 文件存储 | 本地、Alist、七牛云、阿里云 OSS、腾讯云 COS、又拍云；支持文件哈希检查和图片处理 |
+| 异步任务 | 任务登记、独立进程执行、进度展示和执行结果管理 |
+| 微信管理 | 公众号配置、粉丝、图文、菜单、自动回复，以及微信支付记录和退款管理 |
+| 前端组件 | Layui、jQuery、RequireJS，以及按需使用的 ECharts、Vue 和富文本编辑器 |
+
+### 账号、菜单与日常管理
+
+系统用户管理提供账号维护、密码修改、状态管理和权限分配等操作。系统菜单管理用来组织后台入口，参数配置用来调整站点名称、登录入口、主题和存储设置。
+
+对实际项目来说，这些功能可以承接常见的管理工作：为新同事创建账号、调整可访问的模块、停用离职人员账号，或者修改网站显示信息。你可以在此基础上增加业务页面，不必为每个项目重新设计一套管理入口。
+
+数据字典可统一维护分类、编码等基础选项；操作日志可查看已记录的管理行为，并按账号、操作类型、时间等条件查找。自定义业务需要记录的关键操作，可以继续接入这套日志能力。
+
+### 权限配置，从页面入口到具体操作
+
+ThinkAdmin 通过控制器方法上的注解描述登录和权限要求，再结合后台授权配置决定哪些账号可以访问哪些功能。模板中的权限判断可以控制按钮显示，服务端同时负责对应接口的访问校验。
+
+例如，一个运营账号可以查看和编辑指定资料，但没有删除或修改系统配置的权限。开发新功能时，按同样的方式标注方法、配置菜单和授权，就能将业务功能纳入现有权限管理。
+
+这套机制主要解决功能访问权限。部门数据范围、订单归属、多租户隔离等业务规则，需要在自己的查询和操作逻辑中继续处理。
+
+### 列表与表单，沿用熟悉的开发方式
+
+后台页面经常需要按关键词、状态、时间范围筛选数据，也需要分页、编辑弹窗、保存提示和状态开关。ThinkLibrary 的数据操作封装与项目的前端组件共同处理这些重复工作。
+
+仓库中的系统用户页面就是一个完整参考：控制器组织筛选条件，模板定义表格列和操作按钮，表单负责输入与提交。新业务可以参照这条流程，替换为自己的模型、字段和校验规则。
+
+通用封装负责处理常见流程，业务逻辑仍由你掌握。涉及金额、库存、审批状态等操作时，应在服务端明确校验规则和允许的状态变化。
+
+### 文件与图片，按需要选择存储方式
+
+开发阶段可以使用本地存储；业务需要时，也可以配置 Alist、七牛云、阿里云 OSS、腾讯云 COS 或又拍云。上传组件读取统一的文件类型、大小、存储方式和图片处理参数，业务页面可以复用同一套上传交互。
+
+- **文件复用：** 上传流程支持计算文件哈希并检查对应存储文件，已存在时可以复用结果，避免再次传输相同文件内容。
+- **图片处理：** 支持单图、多图上传与图片选择，以及按参数进行图片压缩、尺寸限制和裁切，适合头像、封面和内容配图等场景。
+- **文件管理：** 后台可查看文件记录、按条件查找文件，并在授权范围内编辑、删除或清理重复记录。
+- **安全文件：** 安全模式文件使用本地 `safefile/` 目录，与公开上传目录分开保存；业务中谁能读取这些文件，仍应由相应接口控制。
+
+各存储服务需要配置自己的连接信息或访问凭据。更换存储方式影响后续上传，已有文件的搬迁和地址调整需要另外处理。
+
+### 耗时工作，交给后台任务执行
+
+批量同步、数据整理或其他耗时操作，不适合一直占用用户当前的页面请求。ThinkAdmin 提供任务登记、队列监听、独立进程执行和进度展示，页面可以发起任务，再从“系统任务管理”查看执行情况。
+
+队列支持延时和循环任务，后台提供执行记录、进度和重跑入口。任务代码可以主动报告“已处理多少条”“进行到哪一步”等进度，方便使用者了解处理情况。仓库中的微信粉丝同步命令可以作为实际参考，自定义任务也可以沿用相同的任务管理方式。
+
+使用时需要启动队列监听进程。重试规则以及重复执行时如何避免重复扣款、重复通知等问题，应由具体任务设计；生产环境的进程托管方式见[配置与部署](#配置与部署)。
+
+### 微信管理，集中处理常见公众号操作
+
+默认微信模块提供常见的公众号管理和微信支付管理功能，适合将微信运营与自己的业务后台放在一起：
+
+- 配置公众号接口，同步和查看粉丝资料、关注状态及黑名单等信息。
+- 维护图文素材、自定义菜单和回复规则。
+- 配置关注回复与相关消息处理。
+- 配置微信支付参数，查看支付记录并处理退款相关操作。
+
+使用前需要准备自己的公众号或商户信息，按微信要求配置回调地址、域名和接口权限。具体能使用哪些能力，也取决于账号类型及微信平台开放的权限；业务订单和活动流程则需要与你自己的系统对接。
+
+### 界面与交互，保留现成组件，也方便定制
+
+默认后台使用 Layui、jQuery 和 RequireJS，提供表格、表单、弹窗、日期选择、文件上传等常见交互。项目还包含 ECharts、Vue、CKEditor 与 wangEditor 相关资源，可根据页面需求使用。
+
+普通部署可以直接使用仓库中的静态资源。调整站点名称、登录背景和主题可以从后台配置开始；需要更细的样式或交互时，可使用项目级扩展文件，也可以修改模板。修改 Less 主题源码时，再执行对应的主题构建。
+
+项目使用语言键组织界面文字，并提供已有语言包作为参考。增加业务页面或补充其他语言时，需要同步维护相应文字与翻译。
+
+## 技术与组件
+
+ThinkAdmin 项目、核心库和应用插件各有职责。了解这些部分，更容易判断一个改动应该放在哪里：
+
+默认依赖见 [composer.json](composer.json)：
+
+| 组件 | 职责 |
+| --- | --- |
+| `zoujingli/think-library` | 核心工具库、控制器与模型辅助能力、存储和任务服务 |
+| `zoujingli/think-plugs-admin` | 后台基础管理模块 |
+| `zoujingli/think-plugs-wechat` | 微信管理模块，当前项目已直接依赖，无需重复安装 |
+| `topthink/think-orm` | 数据访问层，根依赖约束支持 2.x / 3.x |
+
+后台页面的通用能力主要来自 ThinkLibrary，后台管理和微信管理由对应插件提供。静态资源由相关插件引入并发布到 `public/static/`，ThinkORM 负责数据访问。
+
+当前项目面向 ThinkPHP 6 / 8 相关依赖组合，安装时由 Composer 根据版本约束选择依赖。更多组件、版本要求及适用范围以各插件文档和实际安装结果为准。
 
 ## 环境要求
 
-### 基础要求
+本地体验可以先用 SQLite，不需要单独启动 MySQL；正式项目可以根据团队的数据库环境选择。无论采用哪一种方式，都要先准备 PHP、Composer 和对应扩展。
 
-| 组件 | 最低要求 | 推荐版本 | 说明 |
-|------|----------|----------|------|
-| **PHP** | 7.1+ | 8.0+ | 支持最新 PHP 特性 |
-| **Composer** | 2.0+ | 2.5+ | 包管理工具 |
-| **数据库** | SQLite 3 | MySQL 8.0+ | 支持多种数据库 |
-| **Web 服务器** | PHP 内置 | Nginx/Apache | 生产环境推荐 |
-| **内存** | 128MB | 512MB+ | 推荐更大内存 |
-| **磁盘空间** | 100MB | 1GB+ | 包含依赖和文件 |
+| 项目 | 要求与说明 |
+| --- | --- |
+| PHP | 根依赖声明为 `>=7.1`，实际最低版本还受 ThinkPHP、ThinkLibrary 及其他依赖版本约束；建议使用仍受维护且与依赖兼容的 PHP 8.x |
+| Composer | 建议使用 Composer 2，并允许项目配置中的 `zoujingli/think-install` 插件执行安装流程 |
+| 数据库 | 默认 SQLite；仓库同时提供 MySQL 连接配置。其他数据库需自行验证驱动、迁移和业务兼容性 |
+| Web 服务 | 本地调试可用 PHP 内置服务器；正式部署使用 Nginx、Apache 等，站点根目录设为 `public/` |
+| 命令行 | 异步任务和数据库迁移需要 PHP CLI；队列运行还需要相应的进程执行权限 |
 
-### 必需的 PHP 扩展
+PHP 扩展按实际依赖及使用场景安装：
 
-- `gd` - 图像处理
-- `mbstring` - 多字节字符串处理
-- `openssl` - 加密功能
-- `pdo` - 数据库抽象层
-- `curl` - HTTP 客户端
-- `fileinfo` - 文件类型检测
-- `json` - JSON 处理
-- `zip` - 压缩文件处理
+- 核心库涉及 `curl`、`gd`、`iconv`、`json`、`mbstring`、`openssl`、`zlib` 等扩展，框架还涉及 `ctype`。
+- 数据库需要 `pdo`，并按选择启用 `pdo_sqlite` 或 `pdo_mysql`。
+- 微信 SDK 涉及 `bcmath`、`libxml`、`simplexml`、`xml` 等扩展；文件类型检测需要 `fileinfo`。
+- `zip` 可用于依赖包解压，Redis 等驱动按需配置，不是默认 SQLite / 文件缓存方案的前提。
 
-### 环境检测
-
-在安装前，请确保您的环境满足以下要求：
+安装依赖后，在项目根目录检查实际运行要求：
 
 ```bash
-# 检查 PHP 版本
 php -v
-
-# 检查 Composer
-composer -v
-
-# 检查 PHP 扩展
-php -m | grep -E "(gd|mbstring|openssl|pdo|curl|fileinfo|json|zip)"
+php -m
+composer --no-plugins check-platform-reqs
 ```
+
+项目声明的 `PHP >=7.1` 只是最外层的依赖条件，不代表每一种依赖组合都能运行在 PHP 7.1 上。`check-platform-reqs` 会检查你实际安装的版本是否满足要求。也请确认命令行与网站使用的是同一套兼容的 PHP 环境，避免出现“命令能运行，网页却报错”的情况。
 
 ## 快速开始
 
-### 快速安装体验
+以下安装方式二选一，建议使用不含中文和空格的项目路径。Composer 创建项目适合从发布版本开始；克隆源码适合需要查看 Git 历史、跟进 v6 分支或参与开发的情况。当前默认安装包含后台管理和微信管理模块。
+
+> Composer 安装器会发布插件文件，并尝试执行数据库迁移。使用 MySQL 时，应先准备数据库和连接配置；已有项目安装或更新依赖前，应先备份数据库并保存本地代码改动。
+
+### 方式一：Composer 创建项目
+
+默认使用 SQLite，需先启用 `pdo_sqlite`：
 
 ```bash
-# 创建项目（需要在英文目录下执行，默认只安装 admin 和 static 模块）
-composer create-project zoujingli/thinkadmin
-
-# 进入项目根目录
+composer create-project zoujingli/thinkadmin thinkadmin "^6.0"
 cd thinkadmin
+```
 
-# 数据库初始化并安装
-# 默认使用 Sqlite 数据库，若使用其他数据库请修改配置后再执行
+### 方式二：从源码安装
+
+```bash
+git clone --branch v6 https://github.com/zoujingli/ThinkAdmin.git thinkadmin
+cd thinkadmin
+```
+
+默认 SQLite 可直接安装。使用 MySQL 时，先按[数据库配置](#数据库配置)创建项目根目录的 `.env`，再执行：
+
+```bash
+composer install
+```
+
+### 初始化与启动
+
+完成上述任一安装方式后，在项目根目录执行：
+
+```bash
+# 检查已安装依赖的 PHP 版本与扩展要求
+composer --no-plugins check-platform-reqs
+
+# 执行尚未完成的数据库迁移；自动迁移成功后通常没有待执行项
 php think migrate:run
 
-# 安装微信管理模块（可选模块）
-composer require zoujingli/think-plugs-wechat
-
-# 🚀 开启 PHP 内置 WEB 服务
-# 默认后台登录账号及密码都是 admin
-php think run --host 127.0.0.1
+# 启动本地调试服务器
+php think run --host 127.0.0.1 --port 8000
 ```
 
-### 访问系统
+访问 [http://127.0.0.1:8000/admin](http://127.0.0.1:8000/admin)。默认根路径 `/` 也会跳转到后台登录页，并非独立门户首页。
 
-安装完成后，打开浏览器访问系统：
+首次初始化空用户表时，默认管理员账号为 `admin`，密码为 `admin`。首次登录后立即修改密码；已有数据库不会因此重置账号。PHP 内置服务器仅用于本地调试，不用于正式部署。
 
-| 访问地址 | 说明 | 默认账号 |
-|---------|------|----------|
-| `http://127.0.0.1:8000` | 系统首页 | - |
-| `http://127.0.0.1:8000/admin` | 后台管理 | admin/admin |
-| `http://127.0.0.1:8000/api` | API 接口 | - |
+### 首次配置
 
-### 首次使用指南
+安装完成后，可以按下面的顺序熟悉后台：
 
-1. **登录后台管理**
-   - 访问 `http://127.0.0.1:8000/admin`
-   - 使用默认账号 `admin` / `admin` 登录
+1. **先处理账号与权限。** 修改管理员密码，为实际使用人员创建独立账号，再分配所需的访问权限。
+2. **设置站点信息。** 在“系统参数配置”中调整站点名称、登录背景和主题。修改后台登录入口后，记下新的访问地址。
+3. **确认文件上传可用。** 选择本地或云存储，配置允许的文件类型，再用测试文件确认上传、图片选择和访问地址正常。
+4. **按需配置微信与任务。** 使用微信功能时，再填写自己的公众号或商户参数；需要同步或批量处理时，启动队列监听并查看任务记录。
+5. **从一个简单业务页开始。** 先完成一个列表和编辑表单，再逐步加入菜单、权限和其他业务流程。开发入口见下文[开发与扩展](#开发与扩展)。
 
-2. **修改默认密码**
-   - 进入"系统管理" → "用户管理"
-   - 修改管理员密码
+## 配置与部署
 
-3. **配置系统参数**
-   - 进入"系统管理" → "系统参数配置"
-   - 设置网站名称、Logo 等基本信息
+### 数据库配置
 
-4. **创建业务模块**
-   - 使用代码生成器创建 CRUD 功能
-   - 开发自定义插件实现业务逻辑
+连接配置见 [config/database.php](config/database.php)。默认 SQLite 数据文件为项目根目录下的 `database/sqlite.db`，PHP 运行用户需对该文件及所在目录拥有必要的写权限。
 
-### 安装 ThinkLibrary
+使用 MySQL 时，先创建数据库及数据库账号，再在项目根目录的 `.env` 中配置：
 
-ThinkAdmin 基于 ThinkLibrary 核心工具库，如需单独安装：
-
-```bash
-# 安装 ThinkLibrary
-composer require zoujingli/think-library
-
-# 确保控制器继承自 think\admin\Controller
-class MyController extends \think\admin\Controller {
-    protected $dbQuery = '数据表名';
-    // 使用 ThinkLibrary 提供的功能
-}
+```ini
+DB_TYPE=mysql
+DB_MYSQL_HOST=127.0.0.1
+DB_MYSQL_PORT=3306
+DB_MYSQL_DATABASE=thinkadmin
+DB_MYSQL_USERNAME=thinkadmin
+DB_MYSQL_PASSWORD=replace_with_your_password
+DB_MYSQL_CHARSET=utf8mb4
+DB_MYSQL_PREFIX=
 ```
 
-## 核心功能
+请替换示例中的连接信息，并为迁移准备所需的建表、改表权限。[.env.example](.env.example) 还提供缓存和会话配置项，其中的主机和账号只是示例，不应直接用于生产环境。
 
-### 🚀 自由扩展的组件生态
+修改数据库连接不会自动迁移旧数据库中的业务数据；切换数据库时需要另行安排数据迁移与校验。
 
-基于最新 ThinkPHP 框架开发，遵循 Composer 标准管理依赖组件，可自由安装各种开源组件及插件生态程序。系统将功能模块封装为独立的插件包，支持通过 Composer 进行安装和更新，让开发者可以根据项目需求选择性地安装所需的功能模块。
+### 缓存、会话与运行模式
 
-### 💾 标准化文件存储引擎
+开发时通常先使用默认的文件缓存和会话配置即可。接入 Redis、调整会话时间或上线部署时，再按项目需求修改：
 
-支持本地存储、自建 Alist 存储、多种云存储，基于文件 HASH 实现文件秒传，节省服务器空间。提供统一的文件存储引擎，支持多种存储方案，满足不同场景下的数据存储需求。
+- 缓存默认为文件驱动，Redis 配置见 [config/cache.php](config/cache.php)。
+- 会话配置见 [config/session.php](config/session.php)，可通过 `SESSION_*` 环境变量调整。
+- 超级管理员可在“系统参数配置”中切换开发 / 生产模式。运行模式及后台入口映射保存在 `runtime/.env`，与项目根目录的连接配置 `.env` 不同。
 
-**支持的存储方案**:
-- 本地服务器存储
-- 自建 Alist 存储
-- 七牛云空间存储
-- 阿里云 OSS 存储
-- 腾讯云 COS 存储
-- 又拍云 USS 存储
+### 正式部署
 
-### 🔐 注解 RBAC 权限管理
+- 将站点根目录指向 `public/`，配置入口转发规则；Apache 可参考 [public/.htaccess](public/.htaccess)。不要直接暴露项目根目录。
+- 启用 HTTPS，修改默认账号密码，按需分配权限并切换为生产模式。
+- 为 `runtime/`、`safefile/`、本地上传目录 `public/upload/` 设置必要写权限；SQLite 还需数据库目录可写。修改站点图标时需允许写入 `public/favicon.ico`，不要将整个项目设为全员可写。
+- 保护 `.env`、`runtime/.env`、数据库和安全文件，定期备份数据及上传文件。
+- 使用队列时，可用 Supervisor、systemd 等管理前台 `php think xadmin:queue listen` 进程，并检查进程与任务日志。
 
-通过控制器方法注释实现功能节点自动生成，配合后台权限管理实现最简注解权限控制。系统实现了基于注解的简化 RBAC 权限模型，支持精确到按钮级别的权限控制。
+### 依赖更新
 
-**权限系统特点**:
-- **注解驱动** - 通过控制器注释自动生成权限节点，简化权限配置
-- **精确控制** - 权限控制精确到按钮级别，提供最大灵活性
-- **自动维护** - 功能节点由系统自动维护，根据控制器代码注释进行刷新
-- **动态菜单** - 根据用户权限动态显示功能菜单，支持三级菜单结构
-- **操作日志** - 完整记录用户操作行为，支持安全审计
+Composer 插件可能将文件复制到 `app/`、`config/`、`public/` 等目录。如果你直接修改过基础插件或静态资源，更新依赖时就需要留意这些改动是否会被覆盖。
 
-### 🔧 可升级 Composer 插件微架构
+建议把升级分成几步：先保存当前代码并备份数据库与上传文件，再在测试环境更新，随后查看文件差异、迁移结果和关键业务页面。确认登录、权限、上传以及实际使用的业务流程正常后，再部署到正式环境。
 
-深度定制 Composer 插件，实现专属插件生态管理架构，可将应用模块封装成独立插件包。系统强制要求使用插件架构，所有业务功能都必须通过自定义插件实现。
+本仓库未跟踪 `composer.lock`。业务项目应保存经过验证的依赖锁定文件与部署版本，避免不同环境重新解析出不同的依赖组合。
 
-### ⚡ 独立进程异步执行任务
+## 项目结构
 
-兼容多平台动态创建 PHP 进程，并列启动多个独立任务进程处理大数据或长时性任务，实时显示执行进度。支持多进程异步任务处理，显著提高任务处理效率。
-
-**任务系统特性**:
-- **多进程架构** - 支持多进程并发执行任务，提高处理效率
-- **跨平台支持** - 兼容 Windows 和 Linux 系统
-- **自动监控** - 每 0.5 秒扫描任务数据表，自动执行待处理任务
-- **进程管理** - 支持 START、STOP、QUERY、LISTEN 等进程管理指令
-- **进度跟踪** - 支持任务完成状态跟进和进度显示
-- **异常恢复** - 支持自动重启和异常处理
-- **守护进程** - 支持后台守护进程模式运行
-
-### 🛠️ 常用操作及工具库封装
-
-核心组件封装各种常用 CRUD 操作及工具库，快速实现数据增删改查，后台 UI 基于最新 Layui 构建。基于 ThinkLibrary 核心工具库，提供完整的 CRUD 操作和一系列常用工具。
-
-**核心功能模块**:
-1. **数据列表展示组件** - 展示数据列表，支持分页、排序和高级搜索
-2. **表单处理模块** - 用于创建、展示和提交表单数据，完善的表单验证和错误处理机制
-3. **数据状态快速处理模块** - 根据业务需求快速更新数据状态，支持多字段同时更新
-4. **数据安全删除模块** - 安全删除数据，支持软删除和硬删除
-5. **文件存储通用组件** - 支持多种文件存储方式，统一接口和配置
-6. **通用数据保存更新模块** - 基于 key 和条件判断数据存在性，进行更新或新增
-7. **通用网络请求模块** - 支持 GET、POST 和 PUT 请求，统一接口
-8. **系统参数配置模块** - 快速配置并保存系统参数
-9. **UTF-8 加密算法支持** - 提供 UTF-8 字符串加密和解密功能
-10. **接口 CORS 跨域支持** - 默认支持跨域请求，输出标准化 JSON 数据
-11. **表单 CSRF 安全验证** - 自动为表单添加 CSRF 安全验证字段
-
-## 核心功能详解
-
-### 插件生态架构
-
-基于 Composer 标准管理依赖组件，支持插件热插拔和在线升级。
-
-```php
-<?php
-namespace app\plugin\example;
-
-use think\admin\Plugin;
-
-class ExamplePlugin extends Plugin
-{
-    public function install()
-    {
-        // 安装插件时的操作
-        $this->createTables();
-        $this->createMenus();
-    }
-    
-    public function uninstall()
-    {
-        // 卸载插件时的操作
-        $this->dropTables();
-        $this->removeMenus();
-    }
-}
+```text
+ThinkAdmin/
+|-- app/
+|   |-- admin/          后台管理模块
+|   |-- index/          默认入口，跳转后台登录
+|   `-- wechat/         微信管理模块
+|-- config/             应用、数据库、缓存等配置
+|-- database/           数据库迁移脚本及默认 SQLite 数据文件
+|-- public/
+|   |-- index.php       Web 入口
+|   |-- static/         前端组件、主题及扩展资源
+|   `-- upload/         本地公开上传文件
+|-- runtime/            运行缓存、日志及运行模式配置
+|-- safefile/           本地安全文件与相关缓存
+|-- vendor/             Composer 依赖与生成配置
+|-- composer.json       项目依赖及自动加载配置
+`-- think               命令行入口
 ```
 
-### 注解权限管理
+部分目录和文件由依赖安装或运行过程生成，不一定出现在初始源码中。
 
-通过控制器方法注释实现功能节点自动生成，简化权限配置。
+## 开发与扩展
 
-```php
-<?php
-namespace app\admin\controller;
+### 后台业务开发
 
-use think\admin\Controller;
+业务应用可按 `controller`、`model`、`view`、`service` 等目录组织。建议将自定义业务放在独立应用中，减少直接修改基础插件带来的升级冲突；需要跨项目复用时，再封装为 Composer 插件。
 
-class UserController extends Controller
-{
-    /**
-     * 用户列表
-     * @auth true
-     * @menu true
-     */
-    public function index()
-    {
-        $this->title = '用户管理';
-        $this->_query('SystemUser')
-            ->like('username,nickname,phone')
-            ->equal('status')
-            ->dateBetween('create_at')
-            ->order('id desc')
-            ->page();
-    }
-}
-```
+例如，要新增一个客户管理模块，可以按下面的顺序开展：
 
-### 文件存储系统
+1. **先定义数据。** 确定客户记录有哪些字段、哪些字段必须唯一、有哪些状态，以及数据归属如何判断，再准备数据表和模型。
+2. **完成查询列表。** 在控制器中组织关键词、状态和时间等筛选条件，使用查询封装处理列表和分页。
+3. **编写页面模板。** 定义表格列、筛选表单、编辑弹窗和操作按钮，复用已有的后台布局与组件。
+4. **补齐保存规则。** 处理必填项、格式校验、重复数据和状态限制；重要规则放在服务端，确保通过接口提交时也会检查。
+5. **接入菜单与授权。** 标注需要权限或登录的方法，配置菜单，再用普通账号检查可见内容和允许的操作是否符合预期。
 
-支持多种存储方案，基于文件 HASH 实现文件秒传。
+后台控制器通常继承 `think\admin\Controller`，使用 ThinkLibrary 的查询、表单、校验与状态更新能力。参考仓库中的实际实现：
 
-```php
-<?php
-namespace app\admin\service;
+| 需求 | 参考入口 |
+| --- | --- |
+| 列表筛选、表单与状态操作 | [系统用户控制器](app/admin/controller/User.php)及[对应模板](app/admin/view/user/) |
+| 权限与菜单配置 | [权限控制器](app/admin/controller/Auth.php)、[菜单控制器](app/admin/controller/Menu.php) |
+| 文件上传与上传配置 | [上传接口](app/admin/controller/api/Upload.php)、[上传脚本模板](app/admin/view/api/upload.js) |
+| 命令注册与任务处理 | [微信服务注册](app/wechat/Service.php)、[粉丝同步命令](app/wechat/command/Fans.php) |
 
-use think\admin\Storage;
+权限注解用于描述控制器方法的访问要求：
 
-class FileService
-{
-    public function upload($file, $type = 'local')
-    {
-        $storage = Storage::instance($type);
-        
-        // 文件去重检查
-        $hash = md5_file($file->getPathname());
-        $exists = $this->checkFileExists($hash);
-        
-        if ($exists) {
-            return $exists['url'];
-        }
-        
-        // 上传文件
-        $result = $storage->upload($file);
-        return $result['url'];
-    }
-}
-```
+- `@auth true`：需要权限校验。
+- `@login true`：需要登录。
+- `@menu true`：标记可用于菜单配置的节点，不会自动创建完整菜单或角色授权。
 
-### 异步任务系统
-
-支持多进程异步任务处理，实时显示执行进度。
-
-```php
-<?php
-namespace app\admin\service;
-
-use think\admin\service\QueueService;
-
-class TaskService
-{
-    // 注册邮件发送任务
-    public function sendEmail($to, $subject, $content)
-    {
-        $name = "发送邮件到 {$to}";
-        $command = "xadmin:service email {$to} {$subject}";
-        
-        return QueueService::register($name, $command, 0);
-    }
-}
-
-// 邮件队列处理类
-class EmailQueue extends QueueService
-{
-    public function execute(array $data = [])
-    {
-        $this->setQueueProgress('开始发送邮件...', 10.00);
-        
-        try {
-            // 发送邮件逻辑
-            $result = $this->sendMail($data['to'], $data['subject'], $data['content']);
-            
-            if ($result) {
-                $this->setQueueProgress('邮件发送成功', 100.00);
-                $this->setQueueSuccess('邮件发送成功');
-            } else {
-                $this->setQueueError('邮件发送失败');
-            }
-        } catch (\Exception $e) {
-            $this->setQueueError('邮件发送异常: ' . $e->getMessage());
-        }
-    }
-}
-```
-
-### 开发工具
-
-基于 ThinkLibrary 核心工具库，提供完整的 CRUD 操作。
-
-```php
-<?php
-namespace app\admin\controller;
-
-use think\admin\Controller;
-
-class ProductController extends Controller
-{
-    protected $dbQuery = 'Product';
-    
-    public function index()
-    {
-        $this->title = '商品管理';
-        $this->_query($this->dbQuery)
-            ->like('name,description')
-            ->equal('category_id,status')
-            ->dateBetween('create_at')
-            ->order('id desc')
-            ->page();
-    }
-    
-    public function add()
-    {
-        $this->title = '添加商品';
-        $this->_form($this->dbQuery, 'form');
-    }
-    
-    public function save()
-    {
-        $this->_save($this->dbQuery, $this->_vali([
-            'status.require' => '状态不能为空',
-            'status.in:0,1' => '状态值无效'
-        ]));
-    }
-}
-```
-
-## 技术栈
-
-### 后端技术
-
-ThinkAdmin 基于 **ThinkPHP 6 & 8** 框架开发，支持 **PHP 7.1+** 版本，充分利用现代 PHP 特性：
-
-- **框架版本**: ThinkPHP 6 & 8 (支持最新 PHP 8.x)
-- **核心依赖**: ThinkLibrary v6.1+ (核心工具库)
-- **插件生态**: ThinkPlugsAdmin v1.0+ (后台管理)、ThinkPlugsWechat v1.0+ (微信管理)
-- **数据库支持**: MySQL、PostgreSQL、SQLite、SQL Server
-- **ORM 支持**: ThinkORM 2.0+，支持模型关联、查询构建器
-- **缓存系统**: Redis、Memcached、文件缓存
-- **队列系统**: 支持异步任务处理
-- **数据库迁移**: 使用 Phinx 进行版本控制
-- **多语言支持**: 支持全局、应用、动态三种语言包类型
-- **路由管理**: 支持全局路由和应用路由，模块化管理
-- **运行模式**: 支持开发模式和生产模式切换
-- **内置函数**: 提供 20+ 个内置函数，简化开发流程
-
-### 前端技术
-
-前端采用现代化的技术栈，提供良好的用户体验和开发体验：
-
-- **UI 框架**: LayUI 2.x (轻量级、响应式)
-- **模块管理**: RequireJS (按需加载)
-- **图表组件**: ECharts (数据可视化)
-- **富文本编辑**: CKEditor (内容编辑)
-- **图标字体**: Font Awesome (图标系统)
-- **响应式设计**: 支持移动端和桌面端
-- **表格组件**: LayUI Table 组件，支持动态高度、搜索绑定
-- **表单组件**: 支持自动提交、数据验证
-- **弹层组件**: LayUI Layer 弹层组件
-- **工具函数**: 内置 jQuery 扩展和工具函数
-
-### 第三方集成
-
-系统提供了丰富的第三方服务集成，支持主流云服务和平台：
-
-- **云存储**: 七牛云、阿里云 OSS、腾讯云 COS、又拍云 USS、自建 Alist 存储
-- **微信生态**: 公众号管理、小程序管理、微信支付、用户管理、素材管理
-- **支付集成**: 微信支付、支付宝等主流支付方式
-- **消息推送**: 邮件发送、短信发送等基础消息推送功能
-
-## 插件生态
-
-ThinkAdmin 采用 Composer 插件定制架构，提供丰富的插件生态：
-
-### 核心插件
-
-- **ThinkLibrary v6.1+** - 核心工具库，提供完整的 CRUD 操作和一系列常用工具，特别注重多应用支持
-- **ThinkPlugsAdmin v1.0+** - 后台基础管理模块，提供用户、权限、菜单、系统配置等核心功能
-- **ThinkPlugsWechat v1.0+** - 微信平台管理，支持公众号、小程序、微信支付等完整功能
-
-### 扩展插件
-
-- **ThinkPlugsAccount** - 账号管理插件
-- **ThinkPlugsPayment** - 支付管理插件
-- **ThinkPlugsWorker** - 高性能 Worker 运行插件
-- **ThinkPlugsStatic** - 静态资源管理插件
-
-### 插件特点
-
-- **热插拔** - 支持插件的动态安装和卸载
-- **统一管理** - 通过 Composer 进行插件依赖管理
-- **本地化开发** - 支持插件本地化定制开发
-- **版本控制** - 支持插件版本管理和更新
+新增后台页面还需配置菜单与对应权限；不能把“菜单不可见”等同于接口已受保护。核心 API 与扩展说明请参阅 [ThinkLibrary](https://github.com/zoujingli/ThinkLibrary) 和[官方文档](https://thinkadmin.top)。
 
 ### 插件开发
 
-系统强制要求使用插件架构，所有业务功能都必须通过自定义插件实现。开发者必须基于统一的插件接口规范开发自定义插件来实现具体的业务功能。
+如果一个模块只服务于当前项目，先放在独立应用中通常更直接。如果它需要在多个项目间复用，或者需要单独维护版本和依赖，再整理成插件会更方便。
 
-**插件开发示例**:
-```php
-<?php
-namespace app\plugin\example;
+插件通过 Composer 管理依赖、安装路径和服务注册。应用服务类继承 `think\admin\Plugin`，定义插件信息与 `menu()`，按需使用 `register()`、`boot()` 注册服务、命令和事件。这样可以将一组相关的控制器、模板、配置和数据初始化安排在同一个模块中维护。
 
-use think\admin\Plugin;
+可参考 [后台模块服务](app/admin/Service.php)与[微信模块服务](app/wechat/Service.php)。安装、更新和卸载行为取决于插件包的配置及安装器逻辑，不能假定卸载一定保留或一定删除数据；操作前应阅读插件文档并备份。
 
-class ExamplePlugin extends Plugin
-{
-    public function install()
-    {
-        // 安装插件时的操作
-        $this->createTables();
-        $this->createMenus();
-    }
-    
-    public function uninstall()
-    {
-        // 卸载插件时的操作
-        $this->dropTables();
-        $this->removeMenus();
-    }
-}
-```
+### 前端定制
 
-## 数据库配置
+项目已包含可运行的静态资源，正常部署不需要额外执行前端构建。默认开发方式是 PHP 输出模板，再由 JavaScript 处理表格加载、表单提交和弹窗等交互，不要求你先搭建一个独立的前端单页应用。
 
-### SQLite (默认)
-```php
-// config/database.php
-return [
-    'default' => 'sqlite',
-    'connections' => [
-        'sqlite' => [
-            'type' => 'sqlite',
-            'database' => 'database/sqlite.db',
-        ],
-    ]
-];
-```
+现有页面中有一些常用约定，可以结合源码直接学习：
 
-### MySQL
-```php
-// config/database.php
-return [
-    'default' => 'mysql',
-    'connections' => [
-        'mysql' => [
-            'type' => 'mysql',
-            'hostname' => '127.0.0.1',
-            'database' => 'thinkadmin',
-            'username' => 'root',
-            'password' => 'your_password',
-            'hostport' => '3306',
-            'charset' => 'utf8mb4',
-        ],
-    ]
-];
-```
+| 页面约定 | 作用 |
+| --- | --- |
+| `data-modal` | 打开服务端页面作为弹窗内容，常用于新增、编辑表单 |
+| `data-action` | 发起操作请求，可配合 `data-confirm` 显示确认提示 |
+| `data-table-id` | 在支持该参数的操作中，指定成功后需要刷新的表格 |
+| `data-auto` | 将表单接入已有的校验和提交处理流程 |
+| `data-file` | 接入文件上传或图片选择，按属性指定类型和参数 |
 
-## 系统命令
+这些约定用于复用页面交互，具体的权限、字段校验和业务处理仍写在服务端。调整样式和脚本时，可以先从以下位置入手：
+
+- 项目级样式和脚本扩展入口为 [public/static/extra/style.css](public/static/extra/style.css) 和 [public/static/extra/script.js](public/static/extra/script.js)。
+- 后台通用交互位于 [public/static/admin.js](public/static/admin.js)，第三方组件位于 `public/static/plugs/`。
+- 主题 Less 源文件及构建脚本位于 [public/static/theme/css/](public/static/theme/css/)，只在修改主题源码时需要 Node.js 与相关编译工具。
+
+修改主题后可执行：
 
 ```bash
-# 启动开发服务器
-php think run --host 127.0.0.1 --port 8000
-
-# 数据库迁移
-php think migrate:run
-
-# 清除缓存
-php think clear
-
-# 异步任务管理
-php think xadmin:queue start    # 启动守护进程
-php think xadmin:queue stop     # 停止进程
-php think xadmin:queue query    # 查询任务
-php think xadmin:queue listen   # 监听进程
+npm install --global less less-plugin-clean-css
+cd public/static/theme/css
+npm run build
 ```
 
-## 开发指南
+提交主题修改时，应同步提交相关 Less 源文件、生成的 CSS 和 source map，避免源码与页面实际使用的资源不一致。
 
-### 创建控制器
-```php
-<?php
-namespace app\admin\controller;
+## 常用命令
 
-use think\admin\Controller;
+除主题构建外，下列命令均在项目根目录执行：
 
-class MyController extends Controller
-{
-    /**
-     * 我的页面
-     * @auth true
-     * @menu true
-     */
-    public function index()
-    {
-        $this->title = '我的页面';
-        $this->fetch();
-    }
-}
-```
+| 命令 | 用途 |
+| --- | --- |
+| `php think list` | 查看当前安装版本支持的命令 |
+| `php think help xadmin:queue` | 查看队列命令参数 |
+| `php think migrate:status` | 查看数据库迁移状态 |
+| `php think migrate:run` | 执行尚未完成的迁移，会修改数据库 |
+| `php think clear` | 清理运行缓存 |
+| `php think xadmin:queue start` | 在后台启动队列监听进程 |
+| `php think xadmin:queue listen` | 在前台监听任务，适合交给进程管理器托管 |
+| `php think xadmin:queue status` | 查看队列监听进程状态 |
+| `php think xadmin:queue query` | 查看相关队列进程，并非查询任务记录 |
+| `php think xadmin:queue stop` | 停止相关队列进程，执行前确认在途任务 |
 
-### 权限控制
-```php
-/**
- * 需要权限验证的方法
- * @auth true    # 需要权限验证
- * @menu true    # 添加到菜单
- * @login true   # 需要登录
- */
-public function myMethod()
-{
-    // 方法内容
-}
-```
-
-### 数据操作
-```php
-// 查询数据
-$this->_query('user')
-    ->like('username,email')
-    ->equal('status')
-    ->dateBetween('create_time')
-    ->order('id desc')
-    ->page();
-
-// 表单处理
-$this->_form('user', 'form');
-
-// 状态更新
-$this->_save('user', $this->_vali([
-    'status.require' => '状态不能为空',
-    'status.in:0,1' => '状态值无效'
-]));
-```
+后台的“系统任务管理”用于查看任务记录、执行状态和进度。`start` 只负责启动后台进程，不等同于配置了开机启动或进程崩溃后的自动恢复。
 
 ## 常见问题
 
-### 安装部署
+### 可以用于商业项目吗
 
-**Q: 安装时提示 Composer 错误怎么办？**
+可以。ThinkAdmin 采用 MIT 许可证，允许按许可条款使用、修改和分发，包括商业用途。交付或分发时需要保留相应版权声明和许可文本；另外安装的组件、插件及第三方服务，要分别确认它们的许可和使用条件。
 
-A: 请检查以下几点：
-1. **PHP 版本**: 确保 PHP 版本 ≥ 7.1
-2. **Composer 版本**: 执行 `composer self-update` 更新到最新版本
-3. **网络问题**: 如果网络不稳定，可以配置国内镜像
+### 不使用微信功能，可以只做普通后台吗
 
-**Q: 数据库初始化失败怎么办？**
+可以。当前依赖包含微信管理模块，但普通后台业务不要求先开通公众号或商户。你可以先使用账号、权限、菜单、列表和文件管理等功能，需要微信业务时再配置相关模块。
 
-A: 请检查：
-1. **数据库配置**: 检查 `config/database.php` 配置是否正确
-2. **数据库权限**: 确保数据库用户有创建表的权限
-3. **数据库连接**: 测试数据库连接是否正常
+### Composer 安装或 PHP 命令无法启动，先看哪里
 
-**Q: 无法访问后台管理页面？**
+先看错误信息指向的是 PHP 版本、缺少扩展，还是依赖下载失败。安装依赖后，可以用 `composer --no-plugins check-platform-reqs` 核对版本和扩展；命令行环境正常而网页报错时，还要检查 Web 服务实际使用的 PHP 配置。
 
-A: 可能的原因：
-1. **URL 路径**: 确保访问的是 `/admin` 或 `/admin.html`
-2. **Web 服务器配置**: 检查伪静态规则是否正确配置
-3. **PHP 扩展**: 确保安装了必要的 PHP 扩展
+如果依赖已下载，但资源发布或数据库迁移失败，应先解决后续步骤的报错，再完成安装流程。跳过平台检查或安装脚本可能让问题留到首次打开页面时才暴露。
 
-### 功能使用
+### 后台出现 404 或无法登录，怎么检查
 
-**Q: 如何修改后台登录入口？**
+先确认站点根目录是 `public/`，再检查入口转发规则。新安装可访问 `/admin` 或 `/admin/login/index.html`；如果已经修改了后台入口，应使用新的地址。本仓库没有预置独立的 `/api` 应用入口。
 
-A: 在后台 **系统管理** → **系统参数配置** 中修改：
-1. 找到"后台入口地址"配置项
-2. 设置新的入口地址（如：`/myadmin`）
-3. 保存配置，原入口将自动失效
+如果能打开登录页但登录失败，还应确认当前数据库和账号信息。`admin / admin` 是首次初始化空用户表时的默认账号，不会在每次启动或升级后重新设置。
 
-**Q: 文件上传失败怎么办？**
+### 数据库连接或迁移失败，怎么处理
 
-A: 检查以下配置：
-1. **上传目录权限**: 确保 `public/upload` 目录可写
-2. **PHP 配置**: 检查 `upload_max_filesize` 和 `post_max_size`
-3. **系统参数**: 在后台配置正确的文件上传参数
+检查项目根目录 `.env` 与 `config/database.php`，确认实际选用的数据库、驱动和连接信息。SQLite 需要数据文件及所在目录可写；MySQL 需要先建库，并给执行迁移的账号配置必要权限。
 
-**Q: 如何添加自定义菜单？**
+涉及已有业务数据时，先备份再排查，不要通过删除数据库来解决迁移报错。切换到另一台数据库服务器，也需要同时确认原有数据是否已经迁移。
 
-A: 在后台 **系统管理** → **菜单管理** 中：
-1. 点击"添加菜单"
-2. 填写菜单名称和链接地址
-3. 选择父级菜单
-4. 设置菜单图标和排序
+### 文件上传失败，应该检查哪些设置
 
-### 开发相关
+- 文件类型和大小是否符合页面及后台存储配置的限制。
+- PHP 的 `upload_max_filesize`、`post_max_size` 以及 Web 服务的请求大小限制是否足够。
+- 本地目录是否可写，云存储的账号、访问凭据和相关域名是否配置正确。
+- 上传成功但图片无法显示时，继续检查返回地址、公开访问策略和域名，而不只是上传接口本身。
 
-**Q: 如何创建新的控制器？**
+### 任务一直等待，或者失败后需要重跑怎么办
 
-A: 在 `app/admin/controller/` 目录下创建控制器文件，继承 `think\admin\Controller`。
+先确认队列监听进程是否在运行，再检查 PHP CLI 环境和进程执行权限。后台任务记录可以帮助区分“尚未开始”和“已经执行但失败”，任务代码报告的进度消息也能提供排查线索。
 
-**Q: 如何添加权限控制？**
+排除失败原因后，可按权限使用后台的重置入口重新排队。涉及支付、通知或其他有外部影响的任务，应先确认是否已经部分执行，再决定如何重跑。
 
-A: 在控制器方法上添加注释：`@auth true`、`@menu true`、`@login true`。
+排查错误时，可结合 `runtime/` 下的应用日志、[日志配置](config/log.php)以及 Web 服务 / PHP 错误日志；公开反馈前请移除密码、密钥、令牌及用户数据。
 
-**Q: 如何自定义主题样式？**
+## 交流与贡献
 
-A: 可以通过以下方式自定义：
-1. **CSS 文件**: 在 `public/static/css/` 目录下添加自定义样式
-2. **系统参数**: 在后台配置主题相关参数
-3. **模板文件**: 修改 `app/admin/view/` 下的模板文件
+- 源码仓库：[GitHub](https://github.com/zoujingli/ThinkAdmin)、[Gitee](https://gitee.com/zoujingli/ThinkAdmin)。
+- 使用说明、插件文档和技术交流群入口：[官方网站](https://thinkadmin.top)。
+- 报告问题时，请提供版本、运行环境、复现步骤和脱敏后的错误信息。
+- 提交 Pull Request 时，请说明修改目的和验证方式，不同功能尽量拆分提交；涉及前端源码与构建产物时保持同步。
+- 安全问题请按[安全政策](security.md)联系维护者，不要在公开 Issue 中披露敏感信息或未修复漏洞细节。
 
-### 插件相关
+欢迎贡献代码、完善文档、提交可复现的问题以及分享实践经验。
 
-**Q: 如何安装插件？**
+## 赞助支持
 
-A: 使用 Composer 安装：
-```bash
-# 安装免费插件
-composer require zoujingli/think-plugs-wechat
+感谢以下支持方为 ThinkAdmin 的开发与维护提供支持：
 
-# 安装付费插件（需要授权）
-composer require zoujingli/think-plugs-account
-```
+- **[JetBrains](https://www.jetbrains.com/)** - 通过[开源项目支持计划](https://www.jetbrains.com/community/opensource/)，为项目活跃贡献者提供一份 [PhpStorm](https://www.jetbrains.com/phpstorm/) 使用许可，用于 ThinkAdmin 的非商业开源开发与维护。
 
-**Q: 插件安装后没有显示怎么办？**
+## 支持项目
 
-A: 检查以下几点：
-1. **插件状态**: 在后台插件管理中查看插件状态
-2. **权限配置**: 确保当前用户有访问插件的权限
-3. **缓存清理**: 清除系统缓存后重新访问
+如果 ThinkAdmin 对你有帮助，欢迎 Star、Fork、分享项目，或参与代码和文档贡献。开发赞助方式请访问[官方网站](https://thinkadmin.top)了解。
 
-**Q: 如何卸载插件？**
+## 开源协议
 
-A: 使用 Composer 卸载：
-```bash
-composer remove zoujingli/plugin-name
-```
+本项目基于 [MIT License](license) 开源，可按许可证条款使用、修改和分发。使用或分发时应保留相应版权声明和许可文本；第三方依赖遵循各自的许可证。
 
-**注意**: 卸载插件不会自动删除相关数据表，需要手动清理。
-
-### 性能优化
-
-**Q: 系统运行缓慢怎么办？**
-
-A: 可以尝试以下优化：
-1. **开启缓存**: 在后台切换到生产模式
-2. **数据库优化**: 为常用查询字段添加索引
-3. **文件存储**: 使用云存储提升文件访问速度
-4. **服务器配置**: 优化 PHP 和 Web 服务器配置
-
-**Q: 如何开启生产模式？**
-
-A: 在后台 **系统管理** → **系统参数配置** 中：
-1. 找到"运行模式"配置项
-2. 选择"生产模式"
-3. 保存配置并清理缓存
-
-### 错误排查
-
-**Q: 页面显示 500 错误？**
-
-A: 检查以下内容：
-1. **错误日志**: 查看 `runtime/log/` 目录下的错误日志
-2. **PHP 错误**: 检查 PHP 错误日志
-3. **权限问题**: 确保目录权限正确
-4. **配置问题**: 检查配置文件是否正确
-
-**Q: 数据库连接失败？**
-
-A: 检查数据库配置：
-1. **连接参数**: 检查 `config/database.php` 中的连接参数
-2. **数据库服务**: 确保数据库服务正在运行
-3. **网络连接**: 检查网络连接是否正常
-4. **用户权限**: 确保数据库用户有相应权限
-
-## 贡献
-
-我们欢迎所有形式的贡献，包括但不限于：
-
-### 如何贡献
-
-1. **报告问题**
-   - 在 [GitHub Issues](https://github.com/zoujingli/ThinkAdmin/issues) 或 [Gitee Issues](https://gitee.com/zoujingli/ThinkAdmin/issues) 报告 Bug
-   - 提供详细的问题描述和复现步骤
-   - 包含系统环境信息
-
-2. **提交代码**
-   - Fork 项目到您的 GitHub 账户
-   - 创建功能分支：`git checkout -b feature/AmazingFeature`
-   - 提交更改：`git commit -m 'Add some AmazingFeature'`
-   - 推送分支：`git push origin feature/AmazingFeature`
-   - 创建 Pull Request
-
-3. **改进文档**
-   - 完善 README 文档
-   - 添加使用示例
-   - 翻译文档到其他语言
-
-4. **分享经验**
-   - 分享使用心得
-   - 编写教程文章
-   - 参与社区讨论
-
-### 开发计划
-
-- [ ] 支持更多数据库类型
-- [ ] 优化前端界面
-- [ ] 增加更多插件
-- [ ] 完善 API 文档
-- [ ] 支持 Docker 部署
-
-### 社区支持
-
-- **GitHub**: [https://github.com/zoujingli/ThinkAdmin](https://github.com/zoujingli/ThinkAdmin)
-- **Gitee**: [https://gitee.com/zoujingli/ThinkAdmin](https://gitee.com/zoujingli/ThinkAdmin)
-- **官方网站**: [https://thinkadmin.top](https://thinkadmin.top)
-- **在线演示**: [https://v6.thinkadmin.top](https://v6.thinkadmin.top)
-- **技术交流群**: 请访问官网获取群号
-
-### 赞助支持
-
-如果这个项目对您有帮助，欢迎通过以下方式支持我们：
-
-- **JetBrains 开源支持** - 感谢 JetBrains 通过开源项目支持计划，为 ThinkAdmin 项目维护提供一份 [PhpStorm](https://www.jetbrains.com/phpstorm/) 开源开发许可证，支持项目的非商业开源开发与持续维护。
-
-> 该许可证仅限用于 ThinkAdmin 的非商业开源开发，并仅供项目活跃贡献者使用。
-
-- ⭐ Star 项目
-- 🍴 Fork 项目
-- 📢 分享给更多人
-- 💰 赞助开发（请访问官网了解详情）
-
-## 许可证
-
-本项目基于 [MIT](https://mit-license.org) 许可证开源。
-
-## 版权
-
-版权所有 Copyright © 2018-2025 by ThinkAdmin (https://thinkadmin.top) All rights reserved.
-
-**备案信息**: [粤ICP备16006642号](https://beian.miit.gov.cn)
-
----
-
-**提示**: 遇到问题时，建议先查看错误日志，大多数问题都能通过日志找到原因。
+版权信息以许可证文件中的声明为准。官方网站：[thinkadmin.top](https://thinkadmin.top)；备案信息：[粤ICP备16006642号](https://beian.miit.gov.cn)。
