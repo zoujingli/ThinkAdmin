@@ -29,6 +29,7 @@ ThinkAdmin 是一套面向 **PHP 开发者**的开源后台开发框架，基于
 - [常见问题](#常见问题)
 - [交流与贡献](#交流与贡献)
 - [赞助支持](#赞助支持)
+- [工具推荐](#工具推荐)
 - [支持项目](#支持项目)
 - [开源协议](#开源协议)
 
@@ -448,6 +449,10 @@ npm run build
 感谢以下支持方为 ThinkAdmin 的开发与维护提供支持：
 
 - **[JetBrains](https://www.jetbrains.com/)** - 通过[开源项目支持计划](https://www.jetbrains.com/community/opensource/)，为项目活跃贡献者提供一份 [PhpStorm](https://www.jetbrains.com/phpstorm/) 使用许可，用于 ThinkAdmin 的非商业开源开发与维护。
+
+## 工具推荐
+
+- **[狗狗加速](https://www.dginv.click/#/register?code=JLdSICSx)** - 网络加速服务，帮助改善 ChatGPT 等在线工具的访问体验。（邀请注册链接）
 
 ## 支持项目
 
