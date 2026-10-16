@@ -867,8 +867,13 @@ $(function () {
             $(this).vali(function (data) {
                 let type = form.getAttribute('method') || 'POST', href = form.getAttribute('action') || location.href;
                 let dset = form.dataset, tips = dset.tips || undefined, time = dset.time || undefined, taid = dset.tableId || false;
-                let call = window[dset.callable || '_default_callable'] || (taid ? function (ret) {
-                    if (typeof ret === 'object' && ret.code > 0 && $('#' + taid).length > 0) {
+                let errorAlert = dset.errorAlert === true || String(dset.errorAlert) === 'true';
+                let call = window[dset.callable || '_default_callable'] || ((taid || errorAlert) ? function (ret) {
+                    if (errorAlert && parseInt(ret && ret.code) < 1) {
+                        $.msg.alert((ret && (ret.info || ret.msg)) || '操作失败');
+                        return false;
+                    }
+                    if (taid && typeof ret === 'object' && ret.code > 0 && $('#' + taid).length > 0) {
                         return $.msg.success(ret.info, 3, function () {
                             $.msg.closeLastModal();
                             (typeof ret.data === 'string' && ret.data) ? $.form.goto(ret.data) : $.layTable.reload(taid);
