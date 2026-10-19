@@ -100,11 +100,11 @@ $(function () {
         };
 
         /*! 获取加载回调 */
-        this.onConfirm.getLoadCallable = function (tabldId, callable, options) {
+        this.onConfirm.getLoadCallable = function (tableId, callable, options) {
             typeof callable === 'function' && callable();
             options = options || {};
             let errorAlert = options.errorAlert === true || String(options.errorAlert) === 'true';
-            if (!tabldId && !errorAlert) return false;
+            if (!tableId && !errorAlert) return false;
             return function (ret, time) {
                 // 单独处理 javascript: 返回内容处理
                 if (typeof ret.data === 'string' && ret.data.indexOf('javascript:') === 0) {
@@ -117,9 +117,9 @@ $(function () {
                     }
                     return true;
                 }
-                if (!tabldId) return true;
-                time === 'false' ? $.layTable.reload(tabldId) : $.msg.success(ret.info, time, function () {
-                    $.layTable.reload(tabldId);
+                if (!tableId) return true;
+                time === 'false' ? $.layTable.reload(tableId) : $.msg.success(ret.info, time, function () {
+                    $.layTable.reload(tableId);
                 });
                 return false;
             };
