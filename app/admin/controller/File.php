@@ -82,7 +82,8 @@ class File extends Controller
     }
 
     /**
-     * 清理重复文件.
+     * 清理当前管理员的非安全重复文件，按存储类型和路径保留最大编号。
+     * 仅删除数据库记录；查询失败时传递异常，不删除存储中的文件。
      * @auth true
      * @throws DbException
      */
@@ -92,8 +93,10 @@ class File extends Controller
         // 使用派生表包装子查询，避免直接引用同一表
         $keepSubQuery = SystemFile::mk()->fieldRaw('MAX(id) AS id')->where($map)->group('type, xkey')->buildSql();
         // 使用 whereNotExists 配合派生表子查询删除，避免 1093 错误和 whereIn
-        SystemFile::mk()->where($map)->whereNotExists(function ($query) use ($keepSubQuery) {
-            $query->table("({$keepSubQuery})")->alias('f2')->whereRaw('f2.id = system_file.id');
+        $deleteQuery = SystemFile::mk()->where($map);
+        $table = $deleteQuery->getTable();
+        $deleteQuery->whereNotExists(function ($query) use ($keepSubQuery, $table) {
+            $query->table("({$keepSubQuery})")->alias('f2')->whereColumn('f2.id', $table . '.id');
         })->delete();
         $this->success('清理重复文件成功！');
     }
