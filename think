@@ -1,7 +1,6 @@
 #!/usr/bin/env php
 <?php
 
-declare(strict_types=1);
 /**
  * // +----------------------------------------------------------------------
  * // | Payment Plugin for ThinkAdmin
@@ -20,8 +19,21 @@ declare(strict_types=1);
  */
 use think\admin\service\RuntimeService;
 
+// 带 shebang 的入口不声明 strict_types，兼容 PHP 7.2 的包含调用。
 // 加载基础文件
 require __DIR__ . '/vendor/autoload.php';
 
-// 命令行应用初始化
-RuntimeService::doConsoleInit();
+/**
+ * 初始化命令行应用。
+ * 直接执行时将未捕获异常交由 PHP 原生处理，确保失败以非零状态退出。
+ * 包含入口时保留调用方异常处理器，并向上传递原异常。
+ * @throws \Throwable 初始化或命令执行中未被控制台捕获的异常
+ */
+try {
+    RuntimeService::doConsoleInit();
+} catch (\Throwable $error) {
+    if (in_array(PHP_SAPI, ['cli', 'phpdbg'], true) && realpath($_SERVER['SCRIPT_FILENAME'] ?? '') === __FILE__) {
+        set_exception_handler(null);
+    }
+    throw $error;
+}
