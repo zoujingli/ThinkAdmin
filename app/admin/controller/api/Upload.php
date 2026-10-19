@@ -29,6 +29,7 @@ use think\admin\Storage;
 use think\admin\storage\AliossStorage;
 use think\admin\storage\AlistStorage;
 use think\admin\storage\LocalStorage;
+use think\admin\storage\MinioStorage;
 use think\admin\storage\QiniuStorage;
 use think\admin\storage\TxcosStorage;
 use think\admin\storage\UpyunStorage;
@@ -91,7 +92,7 @@ class Upload extends Controller
     }
 
     /**
-     * 文件上传检查.
+     * 文件上传检查；MinIO 普通文件签发单键授权，安全文件沿用本地安全目录.
      */
     public function state()
     {
@@ -100,9 +101,12 @@ class Upload extends Controller
             [$name, $safe] = [input('name'), $this->getSafe()];
             $key = input('key', '');
             $data = ['uptype' => $this->getType(), 'safe' => intval($safe), 'key' => is_string($key) ? $key : ''];
+            if ($safe && $data['uptype'] === 'minio') {
+                $data['uptype'] = 'local';
+            }
             $file = SystemFile::mk()->data($this->_vali([
                 'xkey.value' => $data['key'],
-                'type.value' => $this->getType(),
+                'type.value' => $data['uptype'],
                 'uuid.value' => $uuid,
                 'unid.value' => $unid,
                 'name.require' => '名称不能为空！',
@@ -133,6 +137,12 @@ class Upload extends Controller
                 $local = LocalStorage::instance();
                 $data['url'] = $local->url($data['key'], $safe, $name);
                 $data['server'] = $local->upload();
+            } elseif ($data['uptype'] === 'minio') {
+                $minio = MinioStorage::instance();
+                $token = $minio->token($data['key'], 3600, $name);
+                $data['url'] = $token['siteurl'];
+                $data['fields'] = $token['fields'];
+                $data['server'] = $minio->upload();
             } elseif ($data['uptype'] === 'qiniu') {
                 $qiniu = QiniuStorage::instance();
                 $data['url'] = $qiniu->url($data['key'], $safe, $name);

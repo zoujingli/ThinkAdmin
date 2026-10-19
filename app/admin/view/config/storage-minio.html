@@ -1,0 +1,66 @@
+<form action="{:sysuri()}" method="post" data-auto="true" class="layui-form layui-card">
+    <div class="layui-card-body padding-top-20">
+        <div class="color-text layui-code text-center layui-bg-gray" style="border-left-width:1px;margin:0 0 15px 40px">
+            <p class="margin-bottom-5 font-w7">普通文件上传至 MinIO，安全文件仍存入本地安全目录</p>
+            <p>请预先创建存储桶，为普通文件配置只读访问，并允许本站来源的 POST 跨域上传；不要开放匿名写入或删除</p>
+        </div>
+
+        {include file='config/storage-0'}
+
+        <div class="layui-form-item">
+            <label class="layui-form-label label-required"><b class="color-green">访问协议</b><br><span class="nowrap color-desc">Protocol</span></label>
+            <div class="layui-input-block">
+                <select name="storage.minio_http_protocol" class="layui-select">
+                    <option value="https" {if sysconf('storage.minio_http_protocol') neq 'http'}selected{/if}>HTTPS</option>
+                    <option value="http" {if sysconf('storage.minio_http_protocol') eq 'http'}selected{/if}>HTTP</option>
+                </select>
+                <p class="help-block">HTTPS 会验证证书；协议应与 S3 API 端点一致</p>
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label label-required" for="storage.minio_http_domain"><b class="color-green">API 地址</b><br><span class="nowrap color-desc">Endpoint</span></label>
+            <div class="layui-input-block">
+                <input id="storage.minio_http_domain" name="storage.minio_http_domain" value="{:sysconf('storage.minio_http_domain')}" required placeholder="例如 s3.example.com:9000" class="layui-input">
+                <p class="help-block">填写 PHP 服务端和浏览器均可访问的 S3 域名及可选端口，不含协议、桶名或路径；不是 Console 管理地址</p>
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label label-required" for="storage.minio_bucket"><b class="color-green">空间名称</b><br><span class="nowrap color-desc">Bucket</span></label>
+            <div class="layui-input-block">
+                <input id="storage.minio_bucket" name="storage.minio_bucket" value="{:sysconf('storage.minio_bucket')}" required placeholder="请输入已创建的存储桶名称" class="layui-input">
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label" for="storage.minio_region"><b class="color-green">存储区域</b><br><span class="nowrap color-desc">Region</span></label>
+            <div class="layui-input-block">
+                <input id="storage.minio_region" name="storage.minio_region" value="{:sysconf('storage.minio_region')}" placeholder="未配置时使用 us-east-1" class="layui-input">
+                <p class="help-block">必须与 MinIO 部署区域一致</p>
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label label-required" for="storage.minio_access_key"><b class="color-green">访问密钥</b><br><span class="nowrap color-desc">AccessKey</span></label>
+            <div class="layui-input-block">
+                <input id="storage.minio_access_key" name="storage.minio_access_key" value="{:sysconf('storage.minio_access_key')}" required autocomplete="off" class="layui-input">
+                <p class="help-block">使用仅授权目标桶对象读写、查询和删除的访问密钥</p>
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label label-required" for="storage.minio_secret_key"><b class="color-green">安全密钥</b><br><span class="nowrap color-desc">SecretKey</span></label>
+            <div class="layui-input-block">
+                <input id="storage.minio_secret_key" type="password" name="storage.minio_secret_key" value="{:sysconf('storage.minio_secret_key')}" required autocomplete="new-password" class="layui-input">
+            </div>
+        </div>
+
+        <div class="hr-line-dashed margin-left-40"></div>
+        <input type="hidden" name="storage.type" value="minio">
+        <div class="layui-form-item text-center padding-left-40">
+            <button class="layui-btn" type="submit">保存配置</button>
+            <button class="layui-btn layui-btn-danger" type="button" data-confirm="确定要取消修改吗？" data-close>取消修改</button>
+        </div>
+    </div>
+</form>

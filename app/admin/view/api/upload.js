@@ -174,6 +174,12 @@ define(['md5', 'notify'], function (SparkMD5, Notify, allowMime) {
                     uploader.form.append('uptype', ret.data.uptype);
                     if (ret.data.uptype === 'qiniu') {
                         uploader.form.append('token', ret.data.token);
+                    } else if (ret.data.uptype === 'minio') {
+                        // S3 policy 校验所有表单字段，不发送本地上传的 safe、uptype。
+                        uploader.form = new FormData();
+                        Object.keys(ret.data.fields).forEach(function (name) {
+                            uploader.form.append(name, ret.data.fields[name]);
+                        });
                     } else if (ret.data.uptype === 'alist') {
                         uploader.type = 'put';
                         uploader.head['file-path'] = ret.data['filepath'];
