@@ -31,6 +31,7 @@ use think\admin\Storage;
 use think\admin\storage\AliossStorage;
 use think\admin\storage\QiniuStorage;
 use think\admin\storage\TxcosStorage;
+use think\exception\HttpException;
 
 /**
  * 系统参数配置.
@@ -132,6 +133,9 @@ class Config extends Controller
     {
         if (!$this->request->isGet() && RuntimeService::check('demo')) {
             $this->error('演示环境禁止修改系统配置！');
+        }
+        if (!in_array($this->request->method(), ['GET', 'POST'], true)) {
+            throw new HttpException(405, 'Method Not Allowed', null, ['Allow' => 'GET, POST']);
         }
         $this->_applyFormToken();
         if ($this->request->isGet()) {

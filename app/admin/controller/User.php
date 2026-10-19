@@ -29,6 +29,7 @@ use think\admin\service\AdminService;
 use think\db\exception\DataNotFoundException;
 use think\db\exception\DbException;
 use think\db\exception\ModelNotFoundException;
+use think\exception\HttpException;
 
 /**
  * 系统用户管理.
@@ -90,6 +91,9 @@ class User extends Controller
      */
     public function pass()
     {
+        if (!in_array($this->request->method(), ['GET', 'POST'], true)) {
+            throw new HttpException(405, 'Method Not Allowed', null, ['Allow' => 'GET, POST']);
+        }
         $this->_applyFormToken();
         if ($this->request->isGet()) {
             $this->verify = false;
